@@ -2,9 +2,10 @@
 
 Fetches teams_colors_logos.csv from the nflverse-data release and writes
 the subset the site needs: abbreviation, full name, and the two primary
-brand colors. Defunct relocation-era abbreviations are dropped, but both
-Rams abbreviations (LA in nflverse play-by-play data, LAR elsewhere) are
-kept so lookups work with either.
+brand colors. Defunct relocation-era abbreviations are dropped. The site
+standardizes on LAR for the Rams, so the LA alias (nflverse play-by-play
+convention) is dropped too; pipelines that ingest play-by-play data must
+normalize LA to LAR before writing site data.
 
 Run from the repo root:
     python3 pipelines/build_teams.py
@@ -26,6 +27,8 @@ SOURCE_URL = (
 )
 OUT_PATH = Path(__file__).resolve().parent.parent / 'src' / 'data' / 'teams.json'
 DEFUNCT = {'OAK', 'SD', 'STL'}
+# nflverse pbp alias for LAR; the site standardizes on LAR
+ALIASES = {'LA'}
 
 
 def load_csv() -> str:
@@ -49,7 +52,7 @@ def main() -> None:
 
     teams = []
     for row in csv.DictReader(io.StringIO(text)):
-        if row['team_abbr'] in DEFUNCT:
+        if row['team_abbr'] in DEFUNCT | ALIASES:
             continue
         teams.append(
             {
