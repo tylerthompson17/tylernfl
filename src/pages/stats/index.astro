@@ -10,7 +10,7 @@ const leaders = leadersData as LeadersData;
 function columnsFor(valueLabel: string) {
   return [
     { key: 'rank', label: 'Rk', kind: 'number' as const },
-    { key: 'player', label: 'Player' },
+    { key: 'player', label: 'Player', kind: 'player' as const },
     { key: 'team', label: 'Team', kind: 'team' as const },
     { key: 'value', label: valueLabel, kind: 'number' as const },
   ];

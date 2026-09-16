@@ -6,11 +6,13 @@
  * their panel, never the page.
  */
 import TeamChip from './TeamChip.astro';
+import { url } from '../utils/url';
+import { playerSlug } from '../utils/slug';
 
 export interface StatTableColumn {
   key: string;
   label: string;
-  kind?: 'text' | 'number' | 'team';
+  kind?: 'text' | 'number' | 'team' | 'player';
 }
 
 interface Props {
@@ -39,6 +41,8 @@ const { columns, rows, caption } = Astro.props;
               <td class={col.kind ?? 'text'}>
                 {col.kind === 'team' && row[col.key] != null ? (
                   <TeamChip abbr={String(row[col.key])} size="sm" />
+                ) : col.kind === 'player' && row[col.key] != null ? (
+                  <a href={url(`players/${playerSlug(String(row[col.key]))}`)}>{row[col.key]}</a>
                 ) : (
                   row[col.key]
                 )}

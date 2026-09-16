@@ -1,6 +1,8 @@
 ---
 /**
- * Team abbreviation on the team's primary color.
+ * Team abbreviation on the team's primary color, linking to the team
+ * page. Deliberately not styled as a blue underlined link: the chip's
+ * brand color is the affordance.
  *
  * Text color is picked per team for contrast: chalk on dark colors, page
  * background on light ones, whichever contrast ratio is higher. A named
@@ -8,6 +10,7 @@
  */
 import teamsData from '../data/teams.json';
 import type { TeamsData } from '../data/types';
+import { url } from '../utils/url';
 
 interface Props {
   abbr: string;
@@ -44,14 +47,15 @@ const textColor =
     : 'var(--on-brand-dark)';
 ---
 
-<span
+<a
   class:list={['chip', size]}
   style={`--chip-bg: ${background}; --chip-text: ${textColor};`}
+  href={url(`teams/${abbr}`)}
   title={team?.name}
 >
   <slot name="logo" />
   {abbr}
-</span>
+</a>
 
 <style>
   .chip {

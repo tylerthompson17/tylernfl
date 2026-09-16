@@ -5,6 +5,7 @@
  * carry the quarter and clock on a yellow highlight background.
  */
 import type { TickerGame } from '../data/types';
+import { url } from '../utils/url';
 
 interface Props {
   game: TickerGame;
@@ -21,11 +22,11 @@ const awayWon =
 <li class="game">
   <span class:list={['detail', { live: game.state === 'live' }]}>{game.detail}</span>
   <span class:list={['line', { won: awayWon === true }]}>
-    <span>{game.away}</span>
+    <a class="team" href={url(`teams/${game.away}`)}>{game.away}</a>
     {game.awayScore != null && <span class="num">{game.awayScore}</span>}
   </span>
   <span class:list={['line', { won: awayWon === false }]}>
-    <span>{game.home}</span>
+    <a class="team" href={url(`teams/${game.home}`)}>{game.home}</a>
     {game.homeScore != null && <span class="num">{game.homeScore}</span>}
   </span>
 </li>
@@ -68,5 +69,16 @@ const awayWon =
 
   .line.won {
     font-weight: 700;
+  }
+
+  /* Scoreboard chrome: team links keep text color, underline on hover
+     only. A deliberate exception to blue underlined links. */
+  .team {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .team:hover {
+    text-decoration: underline;
   }
 </style>

@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import TeamChip from '../../components/TeamChip.astro';
+import leadersData from '../../data/leaders.json';
+import type { LeadersData } from '../../data/types';
+import { playerSlug } from '../../utils/slug';
+
+export function getStaticPaths() {
+  const leaders = leadersData as LeadersData;
+  const players = new Map<string, { player: string; team: string }>();
+  for (const category of leaders.categories) {
+    for (const row of category.rows) {
+      players.set(playerSlug(row.player), { player: row.player, team: row.team });
+    }
+  }
+  return [...players.entries()].map(([slug, props]) => ({ params: { slug }, props }));
+}
+
+const { player, team } = Astro.props;
+const leaders = leadersData as LeadersData;
+
+const lines = leaders.categories.flatMap((category) =>
+  category.rows
+    .filter((row) => row.player === player)
+    .map((row) => ({ label: category.label, rank: row.rank, value: row.value }))
+);
+---
+
+<BaseLayout title={player}>
+  <h1 class="page-title player-heading">
+    {player}
+    <TeamChip abbr={team} size="sm" />
+  </h1>
+  <div class="content-grid">
+    <Panel title={`${leaders.season} season, through week ${leaders.throughWeek}`}>
+      <ul class="lines">
+        {
+          lines.map((line) => (
+            <li>
+              <span>{line.label}</span>
+              <span class="num">
+                {line.value} (#{line.rank})
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </Panel>
+    <Panel title="Player stats">
+      <p class="placeholder-note">
+        Full season and career stats land here when the data pipelines run.
+      </p>
+    </Panel>
+  </div>
+</BaseLayout>
+
+<style>
+  .player-heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .lines {
+    list-style: none;
+    padding: 0;
+  }
+
+  .lines li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    max-width: 320px;
+  }
+
+  .lines li + li {
+    margin-top: var(--space-1);
+    padding-top: var(--space-1);
+    border-top: 1px dotted var(--rule-soft);
+  }
+</style>

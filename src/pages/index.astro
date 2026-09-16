@@ -18,7 +18,7 @@ const latest = articles[0];
 
 const leaderColumns = [
   { key: 'rank', label: 'Rk', kind: 'number' as const },
-  { key: 'player', label: 'Player' },
+  { key: 'player', label: 'Player', kind: 'player' as const },
   { key: 'team', label: 'Team', kind: 'team' as const },
   { key: 'value', label: receiving?.valueLabel ?? 'Yds', kind: 'number' as const },
 ];
