@@ -1,19 +1,22 @@
 /* Design tokens. Single source of truth: components never hardcode colors or spacing. */
 
 :root {
-  /* Color: broadcast field at night */
-  --bg: #0f1720; /* page background */
-  --panel: #151f2b; /* grid cells */
-  --panel-hover: #1b2735; /* row/cell hover */
-  --rule: #2a3746; /* all dividers */
-  --text: #e9eef2; /* primary text (chalk) */
-  --text-dim: #8a99a8; /* secondary text */
-  --accent: #f2d22e; /* first-down yellow, one use per view */
-  --win: #3fb27f; /* positive values */
-  --loss: #e0565b; /* negative values */
+  /* Color: utilitarian, dense, light (PFR reference feel) */
+  --bg: #e9ebee; /* page background */
+  --panel: #ffffff; /* panel body */
+  --header: #1f2e3d; /* panel header bars (stadium slate) */
+  --header-text: #ffffff; /* header bar titles */
+  --rule: #c3c9d0; /* panel borders, table borders */
+  --rule-soft: #d9dde2; /* inner dotted dividers */
+  --text: #1a1d21; /* body text */
+  --text-dim: #5b6570; /* secondary text */
+  --link: #1a56b5; /* all links, underlined */
+  --highlight: #f2d22e; /* first-down yellow, background only, never text */
+  --win: #1e7a4c; /* positive values */
+  --loss: #b3363b; /* negative values */
 
-  /* Text over team brand colors. Pure white/black, not the chalk/bg
-     tokens: mid-tone brand colors need the extra contrast for WCAG AA. */
+  /* Text over team brand colors (TeamChip). Pure white/black for WCAG AA
+     contrast against mid-tone brand colors. */
   --on-brand-light: #ffffff;
   --on-brand-dark: #000000;
 
@@ -25,7 +28,11 @@
   --space-5: 24px;
   --space-6: 32px;
 
-  /* Radius: none, anywhere */
+  /* Structural paddings from the design spec */
+  --header-pad: 6px 10px; /* panel header bars */
+  --cell-pad: 2px 6px; /* table cells */
+
+  /* Radius: none, anywhere. No shadows, no gradients, no motion. */
   --radius: 0;
 
   /* Type */

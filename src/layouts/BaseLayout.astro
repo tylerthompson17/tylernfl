@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import { url } from '../utils/url';
 import Panel from '../components/Panel.astro';
-import StatCard from '../components/StatCard.astro';
 import TickerItem from '../components/TickerItem.astro';
 import tickerData from '../data/ticker.json';
 import onThisDayData from '../data/on_this_day.json';
@@ -93,11 +92,10 @@ function isActive(href: string): boolean {
       </main>
 
       <aside class="rail" aria-label="Extras">
-        <StatCard
-          label="4th down model record"
-          value={record}
-          sub={`${modelRecord.season} season, graded calls, updated ${recordUpdated}`}
-        />
+        <Panel title="4th down model record">
+          <p class="record num">{record}</p>
+          <p class="record-sub">{modelRecord.season} season, graded calls, updated {recordUpdated}</p>
+        </Panel>
         <Panel title="On this day">
           <ul class="otd">
             {
@@ -129,7 +127,9 @@ function isActive(href: string): boolean {
 </html>
 
 <style>
-  /* One connected grid: every region is a cell, the 1px gaps are the dividers. */
+  /* Panels sit on the gray page with a 12px gap. Regions that read as
+     panels carry their own white background and 1px border; the shell
+     itself is just the gray page. */
   .shell {
     min-height: 100vh;
     display: grid;
@@ -140,19 +140,21 @@ function isActive(href: string): boolean {
       'header header header'
       'nav    main   rail'
       'footer footer footer';
-    gap: 1px;
-    background: var(--rule);
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: var(--bg);
   }
 
   .shell > * {
-    background: var(--panel);
     min-width: 0;
   }
 
-  /* Ticker */
+  /* Ticker: a white strip of boxed game slots */
   .ticker {
     grid-area: ticker;
     overflow-x: auto;
+    background: var(--panel);
+    border: 1px solid var(--rule);
   }
 
   .ticker-track {
@@ -162,28 +164,32 @@ function isActive(href: string): boolean {
     width: max-content;
   }
 
-  /* Header */
+  /* Header: slate bar, like a panel header for the whole site */
   .header {
     grid-area: header;
     display: flex;
     align-items: center;
     gap: var(--space-4);
-    padding: var(--space-3) var(--space-4);
+    padding: var(--space-2) var(--space-3);
+    background: var(--header);
+    color: var(--header-text);
   }
 
   .wordmark {
     font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 24px;
+    font-weight: 700;
+    font-size: 22px;
     letter-spacing: 0.02em;
     white-space: nowrap;
+    color: var(--header-text);
+    text-decoration: none;
   }
 
   .menu-button {
     display: none;
     padding: var(--space-1) var(--space-3);
     border: 1px solid var(--rule);
-    color: var(--text-dim);
+    color: var(--header-text);
   }
 
   .search {
@@ -192,8 +198,8 @@ function isActive(href: string): boolean {
 
   .search input {
     width: 260px;
-    padding: var(--space-2) var(--space-3);
-    background: var(--bg);
+    padding: var(--space-1) var(--space-2);
+    background: var(--panel);
     border: 1px solid var(--rule);
     color: var(--text);
     font: inherit;
@@ -203,10 +209,13 @@ function isActive(href: string): boolean {
     color: var(--text-dim);
   }
 
-  /* Left nav */
+  /* Left nav: white panel of links */
   .nav {
     grid-area: nav;
-    padding: var(--space-3) 0;
+    align-self: start;
+    padding: var(--space-2) 0;
+    background: var(--panel);
+    border: 1px solid var(--rule);
   }
 
   .nav ul {
@@ -216,61 +225,71 @@ function isActive(href: string): boolean {
 
   .nav a {
     display: block;
-    padding: var(--space-2) var(--space-4);
-    color: var(--text-dim);
-  }
-
-  .nav a:hover {
-    background: var(--panel-hover);
+    padding: var(--space-1) var(--space-3);
   }
 
   .nav a[aria-current='page'] {
     color: var(--text);
-    box-shadow: inset 3px 0 0 var(--accent);
+    text-decoration: none;
+    font-weight: 700;
   }
 
-  /* Main */
+  /* Main: transparent; pages lay their own panels on the gray */
   .main {
     grid-area: main;
-    padding: var(--space-5) var(--space-5) var(--space-6);
   }
 
-  /* Right rail */
+  /* Right rail: stack of panels */
   .rail {
     grid-area: rail;
     display: grid;
     align-content: start;
-    gap: 1px;
-    background: var(--rule);
+    gap: var(--space-3);
   }
 
-  /* On this day list */
+  /* Model record */
+  .record {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.1;
+  }
+
+  .record-sub {
+    margin-top: var(--space-1);
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  /* On this day list: dotted dividers between items */
   .otd {
     list-style: none;
     padding: 0;
-    display: grid;
-    gap: var(--space-3);
   }
 
   .otd li {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: var(--space-3);
-    font-size: 14px;
+    gap: var(--space-2);
+  }
+
+  .otd li + li {
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px dotted var(--rule-soft);
   }
 
   .otd-year {
     font-family: var(--font-heading);
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-dim);
   }
 
   /* Footer */
   .footer {
     grid-area: footer;
-    padding: var(--space-4);
     color: var(--text-dim);
-    font-size: 13px;
+    font-size: 12px;
   }
 
   /* Rail moves under main */
@@ -325,15 +344,16 @@ function isActive(href: string): boolean {
     color: var(--text-dim);
   }
 
+  /* Panels on the gray page, 12px apart. Each panel brings its own
+     border; the container is invisible. */
   .content-grid {
     display: grid;
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
+    gap: var(--space-3);
+    align-items: start;
   }
 
   .page-title {
-    font-size: 28px;
-    margin-bottom: var(--space-4);
+    font-size: 22px;
+    margin-bottom: var(--space-3);
   }
 </style>

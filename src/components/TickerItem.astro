@@ -1,8 +1,8 @@
 ---
 /**
  * One game slot in the score ticker. Upcoming games show kickoff time
- * with no scores; finals dim the loser; live games get the accent dot
- * (the ticker's one allowed accent use).
+ * with no scores; finals put the winner in bold, not color; live games
+ * carry the quarter and clock on a yellow highlight background.
  */
 import type { TickerGame } from '../data/types';
 
@@ -20,11 +20,11 @@ const awayWon =
 
 <li class="game">
   <span class:list={['detail', { live: game.state === 'live' }]}>{game.detail}</span>
-  <span class:list={['line', { dim: awayWon === false }]}>
+  <span class:list={['line', { won: awayWon === true }]}>
     <span>{game.away}</span>
     {game.awayScore != null && <span class="num">{game.awayScore}</span>}
   </span>
-  <span class:list={['line', { dim: awayWon === true }]}>
+  <span class:list={['line', { won: awayWon === false }]}>
     <span>{game.home}</span>
     {game.homeScore != null && <span class="num">{game.homeScore}</span>}
   </span>
@@ -37,11 +37,11 @@ const awayWon =
       'detail away'
       'detail home';
     column-gap: var(--space-3);
-    padding: var(--space-2) var(--space-4);
+    padding: var(--space-1) var(--space-3);
     border-right: 1px solid var(--rule);
     font-family: var(--font-heading);
-    font-weight: 500;
-    font-size: 15px;
+    font-weight: 400;
+    font-size: 14px;
     line-height: 1.35;
   }
 
@@ -49,22 +49,14 @@ const awayWon =
     grid-area: detail;
     align-self: center;
     color: var(--text-dim);
-    font-size: 13px;
+    font-size: 12px;
     max-width: 72px;
   }
 
   .detail.live {
+    background: var(--highlight);
     color: var(--text);
-  }
-
-  .detail.live::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: var(--accent);
-    margin-right: var(--space-1);
-    vertical-align: middle;
+    padding: 0 var(--space-1);
   }
 
   .line {
@@ -74,12 +66,7 @@ const awayWon =
     min-width: 64px;
   }
 
-  .line .num {
-    color: var(--text);
-  }
-
-  .line.dim,
-  .line.dim .num {
-    color: var(--text-dim);
+  .line.won {
+    font-weight: 700;
   }
 </style>

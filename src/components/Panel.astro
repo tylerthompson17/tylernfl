@@ -1,9 +1,8 @@
 ---
 /**
- * One cell of a content grid. Sits inside a container that uses the
- * 1px-gap rule technique; the panel supplies its own cell background.
- *
- * `flush` removes body padding so tables and lists can run edge to edge.
+ * One panel on the gray page: 1px border, slate header bar with a white
+ * title, white body. `flush` removes body padding for content that
+ * manages its own (rare now that tables are boxed units inside the body).
  */
 interface Props {
   title?: string;
@@ -25,17 +24,19 @@ const { title, flush = false, class: className } = Astro.props;
 <style>
   .panel {
     background: var(--panel);
+    border: 1px solid var(--rule);
     min-width: 0;
   }
 
   .panel-title {
-    font-size: 18px;
-    padding: var(--space-3) var(--space-4);
-    border-bottom: 1px solid var(--rule);
+    font-size: 15px;
+    padding: var(--header-pad);
+    background: var(--header);
+    color: var(--header-text);
   }
 
   .panel-body {
-    padding: var(--space-4);
+    padding: var(--space-3);
   }
 
   .panel-body.flush {

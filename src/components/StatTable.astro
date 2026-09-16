@@ -1,8 +1,9 @@
 ---
 /**
- * Semantic data table. Numeric columns right-align with tabular figures,
- * team columns render a TeamChip, and wide tables scroll horizontally
- * inside their panel (never the page). Use inside a flush Panel.
+ * Semantic data table as a boxed unit: 1px borders on every cell,
+ * compact padding, 12px type, right-aligned tabular numbers. Team
+ * columns render a TeamChip. Wide tables scroll horizontally inside
+ * their panel, never the page.
  */
 import TeamChip from './TeamChip.astro';
 
@@ -57,21 +58,20 @@ const { columns, rows, caption } = Astro.props;
 
   table {
     width: 100%;
+    font-size: 12px;
   }
 
   th,
   td {
-    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--rule);
+    padding: var(--cell-pad);
     text-align: left;
     white-space: nowrap;
   }
 
   th {
-    font-family: var(--font-heading);
-    font-weight: 500;
-    font-size: 14px;
-    color: var(--text-dim);
-    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    font-weight: 700;
   }
 
   th.number,
@@ -79,12 +79,9 @@ const { columns, rows, caption } = Astro.props;
     text-align: right;
   }
 
+  /* Highlighted row on hover: yellow as background only */
   tbody tr:hover {
-    background: var(--panel-hover);
-  }
-
-  tbody tr + tr td {
-    border-top: 1px solid var(--rule);
+    background: var(--highlight);
   }
 
   .visually-hidden {

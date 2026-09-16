@@ -49,59 +49,42 @@ tylernfl/
 
 ## Design direction
 
-Reference feel: StatMuse / FanDuel / ESPN layout pattern (score ticker, left nav, wide center, right rail), but **griddier**: one connected grid with shared hairline dividers instead of floating rounded cards.
+Reference feel: Pro Football Reference's visual style (not its layout or
+content). Utilitarian, dense, light. Structure comes from colored panel
+header bars and boxed content, not decoration. Do not use PFR's green.
 
-Subject-grounded identity: the broadcast field. Dark slate like a night game, chalk white text, and the yellow first-down line as the single accent.
-
-### Tokens (starting values, all in `tokens.css`)
+### Tokens
 
 | Token | Value | Use |
 |---|---|---|
-| `--bg` | `#0F1720` | page background |
-| `--panel` | `#151F2B` | grid cells |
-| `--panel-hover` | `#1B2735` | row/cell hover |
-| `--rule` | `#2A3746` | all dividers |
-| `--text` | `#E9EEF2` | primary text (chalk) |
-| `--text-dim` | `#8A99A8` | secondary text |
-| `--accent` | `#F2D22E` | first-down yellow, used sparingly |
-| `--win` | `#3FB27F` | positive values |
-| `--loss` | `#E0565B` | negative values |
+| `--bg` | `#E9EBEE` | page background |
+| `--panel` | `#FFFFFF` | panel body |
+| `--header` | `#1F2E3D` | panel header bars (stadium slate) |
+| `--header-text` | `#FFFFFF` | header bar titles |
+| `--rule` | `#C3C9D0` | panel borders, table borders |
+| `--rule-soft` | `#D9DDE2` | inner dotted dividers |
+| `--text` | `#1A1D21` | body text |
+| `--text-dim` | `#5B6570` | secondary text |
+| `--link` | `#1A56B5` | all links, underlined |
+| `--highlight` | `#F2D22E` | first-down yellow, background only |
+| `--win` | `#1E7A4C` | positive values |
+| `--loss` | `#B3363B` | negative values |
 
-- Spacing scale: 4, 8, 12, 16, 24, 32.
-- Radius: 0 everywhere.
-- Type: **Barlow** for body, **Barlow Condensed** for headings, panel titles, and ticker (scoreboard feel). All numeric cells use `font-variant-numeric: tabular-nums`; verify the font supports it and report if not.
-- Labels in sentence case. No all-caps eyebrow labels, no monospace for data labels, no arrows appended to link text.
-- Motion: none by default. Hover state changes background only. Respect `prefers-reduced-motion`.
-- The accent is for one thing per view (active nav item, key number, live indicator). Not decoration.
+- Radius 0, no shadows, no gradients, no motion.
+- Body text 13px, tables 12px, line-height 1.35. Headers in Barlow Condensed, bold.
+- Links are blue and underlined. Player and team names are always links.
+- Yellow is only ever a background (announcement strip, highlighted row),
+  never text, since it fails contrast on white.
+- Winners in bold, not colored.
 
-### Grid technique
+### Panel structure
 
-- Grid containers use `background: var(--rule); gap: 1px;` and each cell uses `background: var(--panel)`. The 1px gaps become shared dividers.
-- Place cells explicitly so no empty tracks expose the rule color as a block.
-- Outer page shell follows the same rule: ticker, header, sidebar, main, and rail are all cells of one grid.
-
-### Shell
-
-```
-┌──────────────────────────────────────────────┐
-│ score ticker (horizontal scroll)             │
-├──────────────────────────────────────────────┤
-│ header: wordmark, search (non-functional)    │
-├─────────┬───────────────────────┬────────────┤
-│ nav     │ main                  │ right rail │
-│ 220px   │ fluid                 │ 320px      │
-└─────────┴───────────────────────┴────────────┘
-```
-
-- Below 1100px: right rail moves under main.
-- Below 760px: nav collapses into a menu button in the header.
-- Wide tables scroll horizontally inside their panel; the page body never scrolls sideways.
-
-### Team identity
-
-- Default: team abbreviation on the team's primary color (`TeamChip`), with accessible text contrast.
-- No NFL or team logos in the site's own branding, wordmark, or favicon. Logos may be added later on large elements only; build `TeamChip` so a logo slot can be added without refactoring.
-- Footer includes: "Not affiliated with or endorsed by the NFL or any team."
+- Panels sit on the gray page with a 12px gap and a 1px `--rule` border.
+- Every panel has a header bar: `--header` background, white title, 6px 10px padding.
+- Inside panels, group content into boxed units (score boxes, mini tables)
+  with 1px borders or dotted `--rule-soft` dividers.
+- Tables: 1px borders on every cell, compact padding (2px 6px),
+  right-aligned tabular numbers.
 
 ## Quality bar
 

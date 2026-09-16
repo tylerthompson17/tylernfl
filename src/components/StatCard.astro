@@ -1,14 +1,14 @@
 ---
 /**
- * One key number with a label and optional context line.
- * `tone` colors the value: win (positive), loss (negative), accent for
- * the single key number a view is allowed to highlight.
+ * One key number as a boxed unit inside a panel: 1px border, label,
+ * value, optional context line. `tone` colors the value for positive or
+ * negative values only; yellow is never text.
  */
 interface Props {
   label: string;
   value: string | number;
   sub?: string;
-  tone?: 'neutral' | 'win' | 'loss' | 'accent';
+  tone?: 'neutral' | 'win' | 'loss';
 }
 
 const { label, value, sub, tone = 'neutral' } = Astro.props;
@@ -23,21 +23,21 @@ const { label, value, sub, tone = 'neutral' } = Astro.props;
 <style>
   .stat-card {
     background: var(--panel);
-    padding: var(--space-4);
+    border: 1px solid var(--rule);
+    padding: var(--space-2) var(--space-3);
     min-width: 0;
   }
 
   .label {
     color: var(--text-dim);
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .value {
     font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 32px;
+    font-weight: 700;
+    font-size: 24px;
     line-height: 1.1;
-    margin-top: var(--space-1);
   }
 
   .value.win {
@@ -48,13 +48,8 @@ const { label, value, sub, tone = 'neutral' } = Astro.props;
     color: var(--loss);
   }
 
-  .value.accent {
-    color: var(--accent);
-  }
-
   .sub {
     color: var(--text-dim);
-    font-size: 13px;
-    margin-top: var(--space-1);
+    font-size: 12px;
   }
 </style>

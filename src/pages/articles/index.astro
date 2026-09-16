@@ -22,7 +22,7 @@ function formatDate(date: Date): string {
           <Panel>
             <p class="date num">{formatDate(article.data.pubDate)}</p>
             <h2 class="title">
-              <a class="text-link" href={url(`articles/${article.id}`)}>{article.data.title}</a>
+              <a href={url(`articles/${article.id}`)}>{article.data.title}</a>
             </h2>
             <p class="desc">{article.data.description}</p>
           </Panel>
@@ -39,11 +39,11 @@ function formatDate(date: Date): string {
 <style>
   .date {
     color: var(--text-dim);
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .title {
-    font-size: 22px;
+    font-size: 18px;
     margin-top: var(--space-1);
   }
 

@@ -2,10 +2,9 @@
 
 /* Fonts, self-hosted via @fontsource. No external font requests. */
 @import '@fontsource/barlow/400.css';
-@import '@fontsource/barlow/500.css';
 @import '@fontsource/barlow/600.css';
-@import '@fontsource/barlow-condensed/500.css';
-@import '@fontsource/barlow-condensed/600.css';
+@import '@fontsource/barlow/700.css';
+@import '@fontsource/barlow-condensed/700.css';
 
 /* Reset */
 *,
@@ -16,32 +15,35 @@
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.35;
   -webkit-font-smoothing: antialiased;
   /* Wide tables scroll inside their panel; the page never scrolls sideways. */
   overflow-x: hidden;
 }
 
+/* Headers in Barlow Condensed, bold */
 h1,
 h2,
 h3,
 h4 {
   font-family: var(--font-heading);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.2;
 }
 
+/* Links are blue and underlined, everywhere */
 a {
-  color: inherit;
-  text-decoration: none;
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 img,
@@ -71,19 +73,8 @@ th,
 
 /* Focus: visible everywhere, keyboard only where supported */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--link);
   outline-offset: -2px;
-}
-
-/* Inline text links: underlined, no arrows, no decoration */
-.text-link {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-color: var(--text-dim);
-}
-
-.text-link:hover {
-  text-decoration-color: var(--text);
 }
 
 /* Article body text */
@@ -92,23 +83,13 @@ th,
 }
 
 .prose p {
-  margin-bottom: var(--space-4);
-}
-
-.prose h2 {
-  font-size: 22px;
-  margin-top: var(--space-5);
   margin-bottom: var(--space-3);
 }
 
-.prose a {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-color: var(--text-dim);
-}
-
-.prose a:hover {
-  text-decoration-color: var(--text);
+.prose h2 {
+  font-size: 18px;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
 }
 
 /* Screen reader only */

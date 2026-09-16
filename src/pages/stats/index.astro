@@ -25,7 +25,7 @@ function columnsFor(valueLabel: string) {
   <div class="content-grid stats-grid">
     {
       leaders.categories.map((category) => (
-        <Panel title={category.label} flush>
+        <Panel title={category.label}>
           <StatTable
             columns={columnsFor(category.valueLabel)}
             rows={category.rows}
