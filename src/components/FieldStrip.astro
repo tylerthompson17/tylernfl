@@ -1,0 +1,87 @@
+---
+/**
+ * The yardline strip: a thin slice of the broadcast field. Chalk line of
+ * scrimmage, yellow first down line, shaded distance between them, hash
+ * ticks every 10 yards. It only renders real state; it is never
+ * decoration.
+ *
+ * Convention: the offense always drives left to right. Positions are
+ * yards from the offense's own goal line (0) to the opponent's (100).
+ */
+interface Props {
+  /** Line of scrimmage, 0 to 100 */
+  ballOn: number;
+  /** First down line, 0 to 100 */
+  lineToGain: number;
+  /** Situation text, e.g. "4th & 3 at DET 42" */
+  label: string;
+}
+
+const { ballOn, lineToGain, label } = Astro.props;
+
+const spot = Math.min(Math.max(ballOn, 0), 100);
+const line = Math.min(Math.max(lineToGain, spot), 100);
+---
+
+<figure class="strip">
+  <figcaption class="label num">{label}</figcaption>
+  <div class="field" role="img" aria-label={`${label}: ${Math.round(line - spot)} yards to gain`}>
+    <div class="togo" style={`left: ${spot}%; width: ${line - spot}%;`}></div>
+    <div class="scrimmage" style={`left: ${spot}%;`}></div>
+    <div class="first-down" style={`left: ${line}%;`}></div>
+  </div>
+</figure>
+
+<style>
+  .strip {
+    margin: 0;
+  }
+
+  .label {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: var(--space-2);
+  }
+
+  .field {
+    position: relative;
+    height: 40px;
+    background: var(--bg);
+    /* Hash ticks every 10 yards */
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--rule) 0,
+      var(--rule) 1px,
+      transparent 1px,
+      transparent 10%
+    );
+    border: 1px solid var(--rule);
+    overflow: hidden;
+  }
+
+  .togo {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: var(--panel-hover);
+  }
+
+  .scrimmage {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    margin-left: -1px;
+    background: var(--text);
+  }
+
+  .first-down {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    margin-left: -1px;
+    background: var(--accent);
+  }
+</style>

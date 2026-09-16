@@ -1,15 +1,25 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Panel from '../components/Panel.astro';
+import { url } from '../utils/url';
 ---
 
 <BaseLayout title="About">
   <h1 class="page-title">About</h1>
   <div class="content-grid">
     <Panel title="About this site">
-      <p class="placeholder-note">
-        Placeholder. A short note about the site, the models behind it, and how to get in touch lands here.
-      </p>
+      <div class="prose">
+        <p>
+          Tyler NFL is a one person analytics site. The centerpiece is a 4th down model that grades
+          go or kick decisions by win probability; around it are stat leaders, a daily history note,
+          and the occasional <a href={url('articles')}>article</a> about what the numbers say.
+        </p>
+        <p>
+          Data comes from the nflverse project. The models are built and maintained by Tyler; the
+          site reports what they say and keeps a running record of graded calls, wins and losses
+          alike.
+        </p>
+      </div>
     </Panel>
   </div>
 </BaseLayout>

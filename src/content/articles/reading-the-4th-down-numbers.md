@@ -1,0 +1,23 @@
+---
+title: How to read the 4th down numbers
+description: What a go or kick recommendation actually means, and why the margin matters more than the verdict.
+pubDate: 2026-09-14
+---
+
+Every 4th down recommendation on this site comes down to one comparison: the offense's chance of winning the game if they go for it, against their chance if they kick. Not the chance of converting. The chance of winning. Those are different questions, and the difference is where most of the arguments start.
+
+## Conversion is not the point
+
+A team facing 4th and 2 at midfield might convert around 60 percent of the time. That number alone tells you nothing about whether to go. Failing at midfield hands the opponent a short field, and punting hands them a long one, and the cost of each depends on the score, the clock, and how many possessions are left. The model's job is to fold all of that into two win probabilities and report which one is bigger.
+
+## The margin is the story
+
+When the two numbers are close, say within a point of win probability, the call is a coin flip and the recommendation is closer to a shrug than a verdict. Coaches who kick in those spots are not making mistakes. The interesting calls are the ones where the gap is two, three, four points of win probability and the sideline still sends out the punt unit. Those are the decisions this site tracks.
+
+So when you see a recommendation here, read the margin before the verdict. A "go" by 0.3 points and a "go" by 3 points are different claims, and only one of them is worth being loud about.
+
+## What the record means
+
+The model record in the sidebar counts graded calls: situations where the model's recommendation and the coach's choice disagreed, scored by what happened next. It is a running tally, not a proof. Single games are noisy, and a good process loses plenty of individual bets. The record is there so you can watch the sample grow, not so anyone can declare victory in week 3.
+
+The calculator itself is in progress. When it goes live, you will be able to set any situation, down to the timeout count, and see both win probabilities and the margin between them.

@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import FieldStrip from '../../components/FieldStrip.astro';
+---
+
+<BaseLayout
+  title="4th down calculator"
+  description="Set any 4th down situation and compare the win probability of going for it against kicking."
+>
+  <h1 class="page-title">4th down calculator</h1>
+  <div class="content-grid">
+    <Panel title="Example situation">
+      <FieldStrip ballOn={58} lineToGain={61} label="4th & 3 at DET 42" />
+      <p class="explain">
+        The strip reads left to right: the chalk line is the ball, the yellow line is the first
+        down, and the shaded gap is the distance. When the calculator is live, you will set the
+        spot, distance, score, and clock, and this page will show the win probability for each
+        choice.
+      </p>
+    </Panel>
+    <Panel title="Status">
+      <p>
+        The model is being trained and is not on this page yet. The site around it is real: the
+        interface it will plug into is defined, and graded calls will feed the record in the
+        sidebar.
+      </p>
+    </Panel>
+  </div>
+</BaseLayout>
+
+<style>
+  .explain {
+    margin-top: var(--space-4);
+    max-width: 60ch;
+    color: var(--text-dim);
+  }
+</style>

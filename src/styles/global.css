@@ -75,6 +75,52 @@ th,
   outline-offset: -2px;
 }
 
+/* Inline text links: underlined, no arrows, no decoration */
+.text-link {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--text-dim);
+}
+
+.text-link:hover {
+  text-decoration-color: var(--text);
+}
+
+/* Article body text */
+.prose {
+  max-width: 68ch;
+}
+
+.prose p {
+  margin-bottom: var(--space-4);
+}
+
+.prose h2 {
+  font-size: 22px;
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-3);
+}
+
+.prose a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--text-dim);
+}
+
+.prose a:hover {
+  text-decoration-color: var(--text);
+}
+
+/* Screen reader only */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* Motion: none by default, and respect the preference regardless */
 @media (prefers-reduced-motion: reduce) {
   *,

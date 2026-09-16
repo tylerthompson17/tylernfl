@@ -1,19 +1,100 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Panel from '../components/Panel.astro';
+import StatTable from '../components/StatTable.astro';
+import FieldStrip from '../components/FieldStrip.astro';
+import { url } from '../utils/url';
+import leadersData from '../data/leaders.json';
+import type { LeadersData } from '../data/types';
+
+const leaders = leadersData as LeadersData;
+const receiving = leaders.categories.find((c) => c.key === 'rec_yds');
+
+const articles = (await getCollection('articles')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const latest = articles[0];
+
+const leaderColumns = [
+  { key: 'rank', label: 'Rk', kind: 'number' as const },
+  { key: 'player', label: 'Player' },
+  { key: 'team', label: 'Team', kind: 'team' as const },
+  { key: 'value', label: receiving?.valueLabel ?? 'Yds', kind: 'number' as const },
+];
 ---
 
 <BaseLayout title="Home">
-  <h1 class="page-title">Home</h1>
-  <div class="content-grid">
-    <Panel title="Stat leaders">
-      <p class="placeholder-note">Placeholder. Weekly passing, rushing, and receiving leaders land here.</p>
+  <h1 class="visually-hidden">Tyler NFL home</h1>
+  <div class="content-grid home-grid">
+    <Panel title="4th down calculator" class="lead">
+      <FieldStrip ballOn={55} lineToGain={57} label="4th & 2 at MIN 45" />
+      <p class="lead-copy">
+        Go or kick? Every 4th down comes down to two win probabilities. The calculator will grade
+        any situation you set, down to the timeout count.
+      </p>
+      <p><a class="text-link" href={url('tools/4th-down')}>Open the calculator</a></p>
     </Panel>
-    <Panel title="4th down calculator">
-      <p class="placeholder-note">Placeholder. The featured tool gets a preview card here.</p>
+    <Panel title="Receiving yards leaders" flush>
+      {receiving && <StatTable columns={leaderColumns} rows={receiving.rows} caption="Receiving yards leaders" />}
+      <p class="table-foot">
+        Through week {leaders.throughWeek}. <a class="text-link" href={url('stats')}>All stat leaders</a>
+      </p>
     </Panel>
     <Panel title="Latest article">
-      <p class="placeholder-note">Placeholder. The most recent article gets a teaser here.</p>
+      {
+        latest ? (
+          <>
+            <h3 class="article-title">
+              <a class="text-link" href={url(`articles/${latest.id}`)}>{latest.data.title}</a>
+            </h3>
+            <p class="article-desc">{latest.data.description}</p>
+          </>
+        ) : (
+          <p class="placeholder-note">No articles yet.</p>
+        )
+      }
     </Panel>
   </div>
 </BaseLayout>
+
+<style>
+  .home-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-grid > :global(.lead) {
+    grid-column: 1 / -1;
+  }
+
+  .lead-copy {
+    margin-top: var(--space-4);
+    max-width: 60ch;
+  }
+
+  .lead-copy + p {
+    margin-top: var(--space-2);
+  }
+
+  .table-foot {
+    padding: var(--space-3) var(--space-4);
+    border-top: 1px solid var(--rule);
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  .article-title {
+    font-size: 20px;
+  }
+
+  .article-desc {
+    margin-top: var(--space-2);
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 900px) {
+    .home-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

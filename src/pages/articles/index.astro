@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import { url } from '../../utils/url';
+
+const articles = (await getCollection('articles')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+---
+
+<BaseLayout title="Articles">
+  <h1 class="page-title">Articles</h1>
+  <div class="content-grid">
+    {
+      articles.length > 0 ? (
+        articles.map((article) => (
+          <Panel>
+            <p class="date num">{formatDate(article.data.pubDate)}</p>
+            <h2 class="title">
+              <a class="text-link" href={url(`articles/${article.id}`)}>{article.data.title}</a>
+            </h2>
+            <p class="desc">{article.data.description}</p>
+          </Panel>
+        ))
+      ) : (
+        <Panel>
+          <p class="placeholder-note">No articles yet. The first one is being written.</p>
+        </Panel>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .date {
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  .title {
+    font-size: 22px;
+    margin-top: var(--space-1);
+  }
+
+  .desc {
+    margin-top: var(--space-2);
+    color: var(--text-dim);
+    max-width: 70ch;
+  }
+</style>

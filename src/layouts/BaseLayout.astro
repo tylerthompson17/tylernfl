@@ -2,11 +2,25 @@
 import '../styles/global.css';
 import { url } from '../utils/url';
 import Panel from '../components/Panel.astro';
+import StatCard from '../components/StatCard.astro';
 import TickerItem from '../components/TickerItem.astro';
 import tickerData from '../data/ticker.json';
-import type { TickerData } from '../data/types';
+import onThisDayData from '../data/on_this_day.json';
+import modelRecordData from '../data/model_record.json';
+import type { TickerData, OnThisDayData, ModelRecordData } from '../data/types';
 
 const ticker = tickerData as TickerData;
+const onThisDay = onThisDayData as OnThisDayData;
+const modelRecord = modelRecordData as ModelRecordData;
+
+const record =
+  modelRecord.pushes > 0
+    ? `${modelRecord.wins}-${modelRecord.losses}-${modelRecord.pushes}`
+    : `${modelRecord.wins}-${modelRecord.losses}`;
+const recordUpdated = new Date(modelRecord.updated).toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+});
 
 interface Props {
   title: string;
@@ -19,6 +33,7 @@ const navItems = [
   { label: 'Home', href: url() },
   { label: 'Stats', href: url('stats') },
   { label: 'Tools', href: url('tools') },
+  { label: 'Articles', href: url('articles') },
   { label: 'About', href: url('about') },
 ];
 
@@ -52,9 +67,11 @@ function isActive(href: string): boolean {
           Menu
         </button>
         <a class="wordmark" href={url()}>Tyler NFL</a>
-        <form class="search" role="search">
-          <input type="search" name="q" placeholder="Search players, teams, stats" aria-label="Search players, teams, stats" />
-        </form>
+        <!-- Search is specced but not built yet. No form wrapper, so
+             pressing Enter does nothing instead of faking a submit. -->
+        <div class="search">
+          <input type="search" placeholder="Search players, teams, stats" aria-label="Search players, teams, stats (not available yet)" />
+        </div>
       </header>
 
       <nav class="nav" id="site-nav" aria-label="Site">
@@ -76,11 +93,22 @@ function isActive(href: string): boolean {
       </main>
 
       <aside class="rail" aria-label="Extras">
-        <Panel title="Model record">
-          <p class="placeholder-note">Placeholder. Season record for the 4th down model lands here.</p>
-        </Panel>
+        <StatCard
+          label="4th down model record"
+          value={record}
+          sub={`${modelRecord.season} season, graded calls, updated ${recordUpdated}`}
+        />
         <Panel title="On this day">
-          <p class="placeholder-note">Placeholder. A daily NFL history note lands here.</p>
+          <ul class="otd">
+            {
+              onThisDay.items.map((item) => (
+                <li>
+                  <span class="otd-year num">{item.year}</span>
+                  <span>{item.text}</span>
+                </li>
+              ))
+            }
+          </ul>
         </Panel>
       </aside>
 
@@ -214,6 +242,27 @@ function isActive(href: string): boolean {
     align-content: start;
     gap: 1px;
     background: var(--rule);
+  }
+
+  /* On this day list */
+  .otd {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .otd li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-3);
+    font-size: 14px;
+  }
+
+  .otd-year {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--text-dim);
   }
 
   /* Footer */

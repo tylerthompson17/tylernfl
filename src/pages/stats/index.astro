@@ -1,13 +1,62 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
+import StatTable from '../../components/StatTable.astro';
+import leadersData from '../../data/leaders.json';
+import type { LeadersData } from '../../data/types';
+
+const leaders = leadersData as LeadersData;
+
+function columnsFor(valueLabel: string) {
+  return [
+    { key: 'rank', label: 'Rk', kind: 'number' as const },
+    { key: 'player', label: 'Player' },
+    { key: 'team', label: 'Team', kind: 'team' as const },
+    { key: 'value', label: valueLabel, kind: 'number' as const },
+  ];
+}
 ---
 
-<BaseLayout title="Stats">
-  <h1 class="page-title">Stats</h1>
-  <div class="content-grid">
-    <Panel title="Stat leaders">
-      <p class="placeholder-note">Placeholder. League leader tables land here in build step 4.</p>
-    </Panel>
+<BaseLayout title="Stat leaders">
+  <h1 class="page-title">Stat leaders</h1>
+  <p class="page-intro">
+    {leaders.season} season, through week {leaders.throughWeek}.
+  </p>
+  <div class="content-grid stats-grid">
+    {
+      leaders.categories.map((category) => (
+        <Panel title={category.label} flush>
+          <StatTable
+            columns={columnsFor(category.valueLabel)}
+            rows={category.rows}
+            caption={`${category.label} leaders`}
+          />
+        </Panel>
+      ))
+    }
   </div>
 </BaseLayout>
+
+<style>
+  .page-intro {
+    color: var(--text-dim);
+    margin-bottom: var(--space-4);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* One column by default; two on wide screens, with an odd last table
+     spanning the full row so no empty track exposes the rule color. */
+  .stats-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 1200px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stats-grid > :global(section:last-child:nth-child(odd)) {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

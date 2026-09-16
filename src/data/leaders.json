@@ -1,0 +1,42 @@
+{
+  "season": 2026,
+  "throughWeek": 2,
+  "categories": [
+    {
+      "key": "pass_yds",
+      "label": "Passing yards",
+      "valueLabel": "Yds",
+      "rows": [
+        { "rank": 1, "player": "Josh Allen", "team": "BUF", "value": 641 },
+        { "rank": 2, "player": "Jared Goff", "team": "DET", "value": 634 },
+        { "rank": 3, "player": "Patrick Mahomes", "team": "KC", "value": 612 },
+        { "rank": 4, "player": "Joe Burrow", "team": "CIN", "value": 598 },
+        { "rank": 5, "player": "C.J. Stroud", "team": "HOU", "value": 571 }
+      ]
+    },
+    {
+      "key": "rush_yds",
+      "label": "Rushing yards",
+      "valueLabel": "Yds",
+      "rows": [
+        { "rank": 1, "player": "Bijan Robinson", "team": "ATL", "value": 248 },
+        { "rank": 2, "player": "Jahmyr Gibbs", "team": "DET", "value": 231 },
+        { "rank": 3, "player": "Saquon Barkley", "team": "PHI", "value": 224 },
+        { "rank": 4, "player": "Jonathan Taylor", "team": "IND", "value": 209 },
+        { "rank": 5, "player": "De'Von Achane", "team": "MIA", "value": 197 }
+      ]
+    },
+    {
+      "key": "rec_yds",
+      "label": "Receiving yards",
+      "valueLabel": "Yds",
+      "rows": [
+        { "rank": 1, "player": "Ja'Marr Chase", "team": "CIN", "value": 274 },
+        { "rank": 2, "player": "Justin Jefferson", "team": "MIN", "value": 262 },
+        { "rank": 3, "player": "CeeDee Lamb", "team": "DAL", "value": 241 },
+        { "rank": 4, "player": "Amon-Ra St. Brown", "team": "DET", "value": 228 },
+        { "rank": 5, "player": "Nico Collins", "team": "HOU", "value": 219 }
+      ]
+    }
+  ]
+}
