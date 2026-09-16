@@ -1,0 +1,33 @@
+/* Design tokens. Single source of truth: components never hardcode colors or spacing. */
+
+:root {
+  /* Color: broadcast field at night */
+  --bg: #0f1720; /* page background */
+  --panel: #151f2b; /* grid cells */
+  --panel-hover: #1b2735; /* row/cell hover */
+  --rule: #2a3746; /* all dividers */
+  --text: #e9eef2; /* primary text (chalk) */
+  --text-dim: #8a99a8; /* secondary text */
+  --accent: #f2d22e; /* first-down yellow, one use per view */
+  --win: #3fb27f; /* positive values */
+  --loss: #e0565b; /* negative values */
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* Radius: none, anywhere */
+  --radius: 0;
+
+  /* Type */
+  --font-body: 'Barlow', system-ui, sans-serif;
+  --font-heading: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+
+  /* Layout */
+  --nav-width: 220px;
+  --rail-width: 320px;
+}

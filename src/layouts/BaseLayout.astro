@@ -1,0 +1,363 @@
+---
+import '../styles/global.css';
+import { url } from '../utils/url';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Personal NFL analytics: 4th down model, stat leaders, and daily features.' } = Astro.props;
+
+const navItems = [
+  { label: 'Home', href: url() },
+  { label: 'Stats', href: url('stats') },
+  { label: 'Tools', href: url('tools') },
+  { label: 'About', href: url('about') },
+];
+
+// Active item: exact match for home, prefix match for sections.
+const current = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+function isActive(href: string): boolean {
+  if (href === url()) return current === href;
+  return current.startsWith(href);
+}
+
+// Placeholder ticker slots. Replaced by TickerItem + ticker.json in step 3.
+const tickerGames = [
+  { away: 'DET', awayScore: 27, home: 'BUF', homeScore: 31, state: 'Final' },
+  { away: 'PHI', awayScore: 24, home: 'TEN', homeScore: 10, state: 'Final' },
+  { away: 'PIT', awayScore: 17, home: 'NE', homeScore: 14, state: 'Final' },
+  { away: 'MIN', awayScore: 20, home: 'CHI', homeScore: 23, state: 'Final' },
+  { away: 'CAR', awayScore: 13, home: 'ATL', homeScore: 26, state: 'Final' },
+  { away: 'GB', awayScore: 30, home: 'NYJ', homeScore: 21, state: 'Final' },
+  { away: 'KC', awayScore: 28, home: 'LAC', homeScore: 24, state: 'Final' },
+  { away: 'SF', awayScore: 19, home: 'SEA', homeScore: 16, state: 'Final' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title} | Tyler NFL</title>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="ticker" aria-label="Scores">
+        <ul class="ticker-track">
+          {
+            tickerGames.map((g) => (
+              <li class="ticker-game">
+                <span class="ticker-state">{g.state}</span>
+                <span class="ticker-line">
+                  <span>{g.away}</span>
+                  <span class="num">{g.awayScore}</span>
+                </span>
+                <span class="ticker-line">
+                  <span>{g.home}</span>
+                  <span class="num">{g.homeScore}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <header class="header">
+        <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">
+          Menu
+        </button>
+        <a class="wordmark" href={url()}>Tyler NFL</a>
+        <form class="search" role="search">
+          <input type="search" name="q" placeholder="Search players, teams, stats" aria-label="Search players, teams, stats" />
+        </form>
+      </header>
+
+      <nav class="nav" id="site-nav" aria-label="Site">
+        <ul>
+          {
+            navItems.map((item) => (
+              <li>
+                <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <main class="main" id="main">
+        <slot />
+      </main>
+
+      <aside class="rail" aria-label="Extras">
+        <section class="rail-panel">
+          <h2>Model record</h2>
+          <p class="placeholder-note">Placeholder. Season record for the 4th down model lands here.</p>
+        </section>
+        <section class="rail-panel">
+          <h2>On this day</h2>
+          <p class="placeholder-note">Placeholder. A daily NFL history note lands here.</p>
+        </section>
+      </aside>
+
+      <footer class="footer">
+        <p>Not affiliated with or endorsed by the NFL or any team.</p>
+      </footer>
+    </div>
+
+    <script>
+      const button = document.querySelector('.menu-button');
+      const shell = document.querySelector('.shell');
+      button?.addEventListener('click', () => {
+        const open = shell?.classList.toggle('nav-open') ?? false;
+        button.setAttribute('aria-expanded', String(open));
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  /* One connected grid: every region is a cell, the 1px gaps are the dividers. */
+  .shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: var(--nav-width) minmax(0, 1fr) var(--rail-width);
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-areas:
+      'ticker ticker ticker'
+      'header header header'
+      'nav    main   rail'
+      'footer footer footer';
+    gap: 1px;
+    background: var(--rule);
+  }
+
+  .shell > * {
+    background: var(--panel);
+    min-width: 0;
+  }
+
+  /* Ticker */
+  .ticker {
+    grid-area: ticker;
+    overflow-x: auto;
+  }
+
+  .ticker-track {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    width: max-content;
+  }
+
+  .ticker-game {
+    display: grid;
+    grid-template-areas:
+      'state away'
+      'state home';
+    column-gap: var(--space-3);
+    padding: var(--space-2) var(--space-4);
+    border-right: 1px solid var(--rule);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  .ticker-state {
+    grid-area: state;
+    align-self: center;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  .ticker-line {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    min-width: 64px;
+  }
+
+  .ticker-line .num {
+    color: var(--text-dim);
+  }
+
+  /* Header */
+  .header {
+    grid-area: header;
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .wordmark {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .menu-button {
+    display: none;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--rule);
+    color: var(--text-dim);
+  }
+
+  .search {
+    margin-left: auto;
+  }
+
+  .search input {
+    width: 260px;
+    padding: var(--space-2) var(--space-3);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    color: var(--text);
+    font: inherit;
+  }
+
+  .search input::placeholder {
+    color: var(--text-dim);
+  }
+
+  /* Left nav */
+  .nav {
+    grid-area: nav;
+    padding: var(--space-3) 0;
+  }
+
+  .nav ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .nav a {
+    display: block;
+    padding: var(--space-2) var(--space-4);
+    color: var(--text-dim);
+  }
+
+  .nav a:hover {
+    background: var(--panel-hover);
+  }
+
+  .nav a[aria-current='page'] {
+    color: var(--text);
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+
+  /* Main */
+  .main {
+    grid-area: main;
+    padding: var(--space-5) var(--space-5) var(--space-6);
+  }
+
+  /* Right rail */
+  .rail {
+    grid-area: rail;
+    display: grid;
+    align-content: start;
+    gap: 1px;
+    background: var(--rule);
+  }
+
+  .rail-panel {
+    background: var(--panel);
+    padding: var(--space-4);
+  }
+
+  .rail-panel h2 {
+    font-size: 18px;
+    margin-bottom: var(--space-2);
+  }
+
+  /* Footer */
+  .footer {
+    grid-area: footer;
+    padding: var(--space-4);
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  /* Rail moves under main */
+  @media (max-width: 1100px) {
+    .shell {
+      grid-template-columns: var(--nav-width) minmax(0, 1fr);
+      grid-template-rows: auto auto 1fr auto auto;
+      grid-template-areas:
+        'ticker ticker'
+        'header header'
+        'nav    main'
+        'nav    rail'
+        'footer footer';
+    }
+  }
+
+  /* Nav collapses behind a menu button */
+  @media (max-width: 760px) {
+    .shell {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto auto 1fr auto auto;
+      grid-template-areas:
+        'ticker'
+        'header'
+        'nav'
+        'main'
+        'rail'
+        'footer';
+    }
+
+    .menu-button {
+      display: block;
+    }
+
+    .nav {
+      display: none;
+    }
+
+    .shell.nav-open .nav {
+      display: block;
+    }
+
+    .search input {
+      width: 100%;
+    }
+  }
+</style>
+
+<style is:global>
+  /* Temporary placeholder styles until Panel exists (build step 3). */
+  .placeholder-note {
+    color: var(--text-dim);
+  }
+
+  .content-grid {
+    display: grid;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+
+  .content-panel {
+    background: var(--panel);
+    padding: var(--space-4);
+  }
+
+  .content-panel h2 {
+    font-size: 18px;
+    margin-bottom: var(--space-2);
+  }
+
+  .page-title {
+    font-size: 28px;
+    margin-bottom: var(--space-4);
+  }
+</style>
