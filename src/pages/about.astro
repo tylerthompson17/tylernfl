@@ -1,15 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Panel from '../components/Panel.astro';
 ---
 
 <BaseLayout title="About">
   <h1 class="page-title">About</h1>
   <div class="content-grid">
-    <section class="content-panel">
-      <h2>About this site</h2>
+    <Panel title="About this site">
       <p class="placeholder-note">
         Placeholder. A short note about the site, the models behind it, and how to get in touch lands here.
       </p>
-    </section>
+    </Panel>
   </div>
 </BaseLayout>

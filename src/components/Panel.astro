@@ -1,0 +1,42 @@
+---
+/**
+ * One cell of a content grid. Sits inside a container that uses the
+ * 1px-gap rule technique; the panel supplies its own cell background.
+ *
+ * `flush` removes body padding so tables and lists can run edge to edge.
+ */
+interface Props {
+  title?: string;
+  flush?: boolean;
+}
+
+const { title, flush = false } = Astro.props;
+---
+
+<section class="panel">
+  {title && <h2 class="panel-title">{title}</h2>}
+  <div class:list={['panel-body', { flush }]}>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .panel {
+    background: var(--panel);
+    min-width: 0;
+  }
+
+  .panel-title {
+    font-size: 18px;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .panel-body {
+    padding: var(--space-4);
+  }
+
+  .panel-body.flush {
+    padding: 0;
+  }
+</style>

@@ -1,0 +1,98 @@
+---
+/**
+ * Semantic data table. Numeric columns right-align with tabular figures,
+ * team columns render a TeamChip, and wide tables scroll horizontally
+ * inside their panel (never the page). Use inside a flush Panel.
+ */
+import TeamChip from './TeamChip.astro';
+
+export interface StatTableColumn {
+  key: string;
+  label: string;
+  kind?: 'text' | 'number' | 'team';
+}
+
+interface Props {
+  columns: StatTableColumn[];
+  rows: Record<string, string | number | null>[];
+  /** Screen reader description of the table */
+  caption: string;
+}
+
+const { columns, rows, caption } = Astro.props;
+---
+
+<div class="scroll" tabindex="0">
+  <table>
+    <caption class="visually-hidden">{caption}</caption>
+    <thead>
+      <tr>
+        {columns.map((col) => <th scope="col" class={col.kind ?? 'text'}>{col.label}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr>
+            {columns.map((col) => (
+              <td class={col.kind ?? 'text'}>
+                {col.kind === 'team' && row[col.key] != null ? (
+                  <TeamChip abbr={String(row[col.key])} size="sm" />
+                ) : (
+                  row[col.key]
+                )}
+              </td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .scroll {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: var(--space-2) var(--space-4);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  th.number,
+  td.number {
+    text-align: right;
+  }
+
+  tbody tr:hover {
+    background: var(--panel-hover);
+  }
+
+  tbody tr + tr td {
+    border-top: 1px solid var(--rule);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>

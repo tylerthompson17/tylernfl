@@ -1,6 +1,12 @@
 ---
 import '../styles/global.css';
 import { url } from '../utils/url';
+import Panel from '../components/Panel.astro';
+import TickerItem from '../components/TickerItem.astro';
+import tickerData from '../data/ticker.json';
+import type { TickerData } from '../data/types';
+
+const ticker = tickerData as TickerData;
 
 interface Props {
   title: string;
@@ -23,17 +29,6 @@ function isActive(href: string): boolean {
   return current.startsWith(href);
 }
 
-// Placeholder ticker slots. Replaced by TickerItem + ticker.json in step 3.
-const tickerGames = [
-  { away: 'DET', awayScore: 27, home: 'BUF', homeScore: 31, state: 'Final' },
-  { away: 'PHI', awayScore: 24, home: 'TEN', homeScore: 10, state: 'Final' },
-  { away: 'PIT', awayScore: 17, home: 'NE', homeScore: 14, state: 'Final' },
-  { away: 'MIN', awayScore: 20, home: 'CHI', homeScore: 23, state: 'Final' },
-  { away: 'CAR', awayScore: 13, home: 'ATL', homeScore: 26, state: 'Final' },
-  { away: 'GB', awayScore: 30, home: 'NYJ', homeScore: 21, state: 'Final' },
-  { away: 'KC', awayScore: 28, home: 'LAC', homeScore: 24, state: 'Final' },
-  { away: 'SF', awayScore: 19, home: 'SEA', homeScore: 16, state: 'Final' },
-];
 ---
 
 <!doctype html>
@@ -48,21 +43,7 @@ const tickerGames = [
     <div class="shell">
       <div class="ticker" aria-label="Scores">
         <ul class="ticker-track">
-          {
-            tickerGames.map((g) => (
-              <li class="ticker-game">
-                <span class="ticker-state">{g.state}</span>
-                <span class="ticker-line">
-                  <span>{g.away}</span>
-                  <span class="num">{g.awayScore}</span>
-                </span>
-                <span class="ticker-line">
-                  <span>{g.home}</span>
-                  <span class="num">{g.homeScore}</span>
-                </span>
-              </li>
-            ))
-          }
+          {ticker.games.map((game) => <TickerItem game={game} />)}
         </ul>
       </div>
 
@@ -95,14 +76,12 @@ const tickerGames = [
       </main>
 
       <aside class="rail" aria-label="Extras">
-        <section class="rail-panel">
-          <h2>Model record</h2>
+        <Panel title="Model record">
           <p class="placeholder-note">Placeholder. Season record for the 4th down model lands here.</p>
-        </section>
-        <section class="rail-panel">
-          <h2>On this day</h2>
+        </Panel>
+        <Panel title="On this day">
           <p class="placeholder-note">Placeholder. A daily NFL history note lands here.</p>
-        </section>
+        </Panel>
       </aside>
 
       <footer class="footer">
@@ -153,38 +132,6 @@ const tickerGames = [
     list-style: none;
     padding: 0;
     width: max-content;
-  }
-
-  .ticker-game {
-    display: grid;
-    grid-template-areas:
-      'state away'
-      'state home';
-    column-gap: var(--space-3);
-    padding: var(--space-2) var(--space-4);
-    border-right: 1px solid var(--rule);
-    font-family: var(--font-heading);
-    font-weight: 500;
-    font-size: 15px;
-    line-height: 1.35;
-  }
-
-  .ticker-state {
-    grid-area: state;
-    align-self: center;
-    color: var(--text-dim);
-    font-size: 13px;
-  }
-
-  .ticker-line {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-3);
-    min-width: 64px;
-  }
-
-  .ticker-line .num {
-    color: var(--text-dim);
   }
 
   /* Header */
@@ -269,16 +216,6 @@ const tickerGames = [
     background: var(--rule);
   }
 
-  .rail-panel {
-    background: var(--panel);
-    padding: var(--space-4);
-  }
-
-  .rail-panel h2 {
-    font-size: 18px;
-    margin-bottom: var(--space-2);
-  }
-
   /* Footer */
   .footer {
     grid-area: footer;
@@ -334,7 +271,7 @@ const tickerGames = [
 </style>
 
 <style is:global>
-  /* Temporary placeholder styles until Panel exists (build step 3). */
+  /* Page-level building blocks shared by all pages. */
   .placeholder-note {
     color: var(--text-dim);
   }
@@ -344,16 +281,6 @@ const tickerGames = [
     gap: 1px;
     background: var(--rule);
     border: 1px solid var(--rule);
-  }
-
-  .content-panel {
-    background: var(--panel);
-    padding: var(--space-4);
-  }
-
-  .content-panel h2 {
-    font-size: 18px;
-    margin-bottom: var(--space-2);
   }
 
   .page-title {

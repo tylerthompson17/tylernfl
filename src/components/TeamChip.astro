@@ -1,0 +1,80 @@
+---
+/**
+ * Team abbreviation on the team's primary color.
+ *
+ * Text color is picked per team for contrast: chalk on dark colors, page
+ * background on light ones, whichever contrast ratio is higher. A named
+ * `logo` slot exists so logos can be added later without refactoring.
+ */
+import teamsData from '../data/teams.json';
+import type { TeamsData } from '../data/types';
+
+interface Props {
+  abbr: string;
+  size?: 'sm' | 'md';
+}
+
+const { abbr, size = 'md' } = Astro.props;
+
+const team = (teamsData as TeamsData).find((t) => t.abbr === abbr);
+const background = team?.primary ?? '#4a5a6a';
+
+// Contrast math needs literal values; these mirror --on-brand-light and
+// --on-brand-dark in tokens.css. Keep in sync if the tokens change.
+const LIGHT_HEX = '#ffffff';
+const DARK_HEX = '#000000';
+
+function luminance(hex: string): number {
+  const n = parseInt(hex.replace('#', ''), 16);
+  const channels = [n >> 16, (n >> 8) & 0xff, n & 0xff].map((c) => {
+    const s = c / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * channels[0]! + 0.7152 * channels[1]! + 0.0722 * channels[2]!;
+}
+
+function contrast(a: string, b: string): number {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi! + 0.05) / (lo! + 0.05);
+}
+
+const textColor =
+  contrast(background, LIGHT_HEX) >= contrast(background, DARK_HEX)
+    ? 'var(--on-brand-light)'
+    : 'var(--on-brand-dark)';
+---
+
+<span
+  class:list={['chip', size]}
+  style={`--chip-bg: ${background}; --chip-text: ${textColor};`}
+  title={team?.name}
+>
+  <slot name="logo" />
+  {abbr}
+</span>
+
+<style>
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    background: var(--chip-bg);
+    color: var(--chip-text);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .chip.md {
+    min-width: 40px;
+    padding: var(--space-1) var(--space-2);
+    font-size: 15px;
+  }
+
+  .chip.sm {
+    min-width: 34px;
+    padding: var(--space-1) var(--space-2);
+    font-size: 13px;
+  }
+</style>

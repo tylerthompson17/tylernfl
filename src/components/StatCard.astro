@@ -1,0 +1,60 @@
+---
+/**
+ * One key number with a label and optional context line.
+ * `tone` colors the value: win (positive), loss (negative), accent for
+ * the single key number a view is allowed to highlight.
+ */
+interface Props {
+  label: string;
+  value: string | number;
+  sub?: string;
+  tone?: 'neutral' | 'win' | 'loss' | 'accent';
+}
+
+const { label, value, sub, tone = 'neutral' } = Astro.props;
+---
+
+<div class="stat-card">
+  <p class="label">{label}</p>
+  <p class:list={['value', 'num', tone]}>{value}</p>
+  {sub && <p class="sub">{sub}</p>}
+</div>
+
+<style>
+  .stat-card {
+    background: var(--panel);
+    padding: var(--space-4);
+    min-width: 0;
+  }
+
+  .label {
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  .value {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1.1;
+    margin-top: var(--space-1);
+  }
+
+  .value.win {
+    color: var(--win);
+  }
+
+  .value.loss {
+    color: var(--loss);
+  }
+
+  .value.accent {
+    color: var(--accent);
+  }
+
+  .sub {
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-top: var(--space-1);
+  }
+</style>

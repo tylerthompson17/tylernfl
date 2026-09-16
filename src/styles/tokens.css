@@ -12,6 +12,11 @@
   --win: #3fb27f; /* positive values */
   --loss: #e0565b; /* negative values */
 
+  /* Text over team brand colors. Pure white/black, not the chalk/bg
+     tokens: mid-tone brand colors need the extra contrast for WCAG AA. */
+  --on-brand-light: #ffffff;
+  --on-brand-dark: #000000;
+
   /* Spacing scale */
   --space-1: 4px;
   --space-2: 8px;

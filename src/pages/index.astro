@@ -1,21 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Panel from '../components/Panel.astro';
 ---
 
 <BaseLayout title="Home">
   <h1 class="page-title">Home</h1>
   <div class="content-grid">
-    <section class="content-panel">
-      <h2>Stat leaders</h2>
+    <Panel title="Stat leaders">
       <p class="placeholder-note">Placeholder. Weekly passing, rushing, and receiving leaders land here.</p>
-    </section>
-    <section class="content-panel">
-      <h2>4th down calculator</h2>
+    </Panel>
+    <Panel title="4th down calculator">
       <p class="placeholder-note">Placeholder. The featured tool gets a preview card here.</p>
-    </section>
-    <section class="content-panel">
-      <h2>Latest article</h2>
+    </Panel>
+    <Panel title="Latest article">
       <p class="placeholder-note">Placeholder. The most recent article gets a teaser here.</p>
-    </section>
+    </Panel>
   </div>
 </BaseLayout>

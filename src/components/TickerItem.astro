@@ -1,0 +1,85 @@
+---
+/**
+ * One game slot in the score ticker. Upcoming games show kickoff time
+ * with no scores; finals dim the loser; live games get the accent dot
+ * (the ticker's one allowed accent use).
+ */
+import type { TickerGame } from '../data/types';
+
+interface Props {
+  game: TickerGame;
+}
+
+const { game } = Astro.props;
+
+const awayWon =
+  game.state === 'final' && game.awayScore != null && game.homeScore != null
+    ? game.awayScore > game.homeScore
+    : null;
+---
+
+<li class="game">
+  <span class:list={['detail', { live: game.state === 'live' }]}>{game.detail}</span>
+  <span class:list={['line', { dim: awayWon === false }]}>
+    <span>{game.away}</span>
+    {game.awayScore != null && <span class="num">{game.awayScore}</span>}
+  </span>
+  <span class:list={['line', { dim: awayWon === true }]}>
+    <span>{game.home}</span>
+    {game.homeScore != null && <span class="num">{game.homeScore}</span>}
+  </span>
+</li>
+
+<style>
+  .game {
+    display: grid;
+    grid-template-areas:
+      'detail away'
+      'detail home';
+    column-gap: var(--space-3);
+    padding: var(--space-2) var(--space-4);
+    border-right: 1px solid var(--rule);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  .detail {
+    grid-area: detail;
+    align-self: center;
+    color: var(--text-dim);
+    font-size: 13px;
+    max-width: 72px;
+  }
+
+  .detail.live {
+    color: var(--text);
+  }
+
+  .detail.live::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    margin-right: var(--space-1);
+    vertical-align: middle;
+  }
+
+  .line {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    min-width: 64px;
+  }
+
+  .line .num {
+    color: var(--text);
+  }
+
+  .line.dim,
+  .line.dim .num {
+    color: var(--text-dim);
+  }
+</style>
