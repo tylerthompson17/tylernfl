@@ -13,7 +13,7 @@ state; scores appear once nflverse marks a game final.
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 
-from common import normalize_team
+from common import EASTERN, normalize_team
 
 TUESDAY = 1
 WEDNESDAY = 2
@@ -85,6 +85,14 @@ def format_detail(game: dict) -> str:
     return f'{day} {hour}:{kickoff.minute:02d} {meridiem}'
 
 
+def kickoff_utc(game: dict) -> str | None:
+    """Kickoff as ISO 8601 UTC ("2026-09-18T00:15:00Z"). nflverse times are US Eastern."""
+    if not game.get('gametime'):
+        return None
+    local = datetime.strptime(f"{game['gameday']} {game['gametime']}", '%Y-%m-%d %H:%M').replace(tzinfo=EASTERN)
+    return local.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+
 def build_week_spans(games: list[dict]) -> list[WeekSpan]:
     by_week: dict[tuple[int, int], list[dict]] = {}
     for g in games:
@@ -139,6 +147,10 @@ def build_ticker(games: list[dict], today: date) -> dict:
                 'homeScore': g['home_score'],
                 'state': 'final' if g['away_score'] is not None and g['home_score'] is not None else 'pre',
                 'detail': format_detail(g),
+                'kickoff': kickoff_utc(g),
+                # ESPN event id as recorded by nflverse; the browser uses it to
+                # match live scores. No ESPN data is fetched here.
+                'espnId': g.get('espn') or None,
             }
             for g in week_games
         ],
@@ -154,6 +166,6 @@ def load_schedule_rows(today: date) -> list[dict]:
     schedules = nfl.load_schedules(seasons)
     columns = [
         'game_id', 'season', 'game_type', 'week', 'gameday', 'gametime',
-        'away_team', 'away_score', 'home_team', 'home_score', 'overtime',
+        'away_team', 'away_score', 'home_team', 'home_score', 'overtime', 'espn',
     ]
     return schedules.select(columns).drop_nulls(['gameday']).to_dicts()

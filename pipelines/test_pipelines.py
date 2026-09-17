@@ -6,9 +6,10 @@ Run from the repo root:
 
 import unittest
 from datetime import date
+from pathlib import Path
 
 from leaders import build_leaders
-from ticker import WeekSpan, build_ticker, format_detail, next_opener, select_week
+from ticker import WeekSpan, build_ticker, format_detail, kickoff_utc, next_opener, select_week
 
 d = date.fromisoformat
 
@@ -82,13 +83,37 @@ class FormatDetailTest(unittest.TestCase):
         self.assertEqual(format_detail(self.game(away_score=23, home_score=20, overtime=1)), 'Final/OT')
 
 
+class KickoffTest(unittest.TestCase):
+    def test_eastern_kickoff_to_utc_across_daylight_saving(self):
+        self.assertEqual(kickoff_utc({'gameday': '2026-09-17', 'gametime': '20:15'}), '2026-09-18T00:15:00Z')
+        self.assertEqual(kickoff_utc({'gameday': '2026-11-08', 'gametime': '13:00'}), '2026-11-08T18:00:00Z')
+
+    def test_unscheduled_kickoff(self):
+        self.assertIsNone(kickoff_utc({'gameday': '2027-01-16', 'gametime': None}))
+
+
+class NoEspnInPipelinesTest(unittest.TestCase):
+    def test_pipelines_never_fetch_espn(self):
+        # ESPN data is browser-only (the live ticker). Pipelines use nflverse.
+        for source in Path(__file__).resolve().parent.glob('*.py'):
+            if source.name == Path(__file__).name:
+                continue
+            self.assertNotIn('espn.com', source.read_text(encoding='utf-8').lower(), source.name)
+
+
 class BuildTickerTest(unittest.TestCase):
-    def row(self, game_id, gameday, gametime, away, home, away_score=None, home_score=None):
+    def row(self, game_id, gameday, gametime, away, home, away_score=None, home_score=None, espn=None):
         return {
             'game_id': game_id, 'season': 2026, 'game_type': 'REG', 'week': 2,
             'gameday': gameday, 'gametime': gametime, 'away_team': away, 'home_team': home,
-            'away_score': away_score, 'home_score': home_score, 'overtime': 0,
+            'away_score': away_score, 'home_score': home_score, 'overtime': 0, 'espn': espn,
         }
+
+    def test_kickoff_and_espn_id_fields(self):
+        rows = [self.row('2026_02_DET_BUF', '2026-09-17', '20:15', 'DET', 'BUF', espn='401872932')]
+        game = build_ticker(rows, d('2026-09-16'))['games'][0]
+        self.assertEqual(game['kickoff'], '2026-09-18T00:15:00Z')
+        self.assertEqual(game['espnId'], '401872932')
 
     def test_week_games_in_kickoff_order_with_rams_as_lar(self):
         rows = [

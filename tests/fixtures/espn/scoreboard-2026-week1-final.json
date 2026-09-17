@@ -1,0 +1,668 @@
+{
+  "season": {
+    "type": 2,
+    "year": 2026
+  },
+  "week": {
+    "number": 1
+  },
+  "events": [
+    {
+      "id": "401872656",
+      "date": "2026-09-10T00:20Z",
+      "shortName": "NE @ SEA",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "13",
+              "winner": true,
+              "team": {
+                "abbreviation": "SEA"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "10",
+              "winner": false,
+              "team": {
+                "abbreviation": "NE"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872657",
+      "date": "2026-09-11T00:35Z",
+      "shortName": "SF VS LAR",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "7",
+              "winner": false,
+              "team": {
+                "abbreviation": "LAR"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "27",
+              "winner": true,
+              "team": {
+                "abbreviation": "SF"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872925",
+      "date": "2026-09-13T17:00Z",
+      "shortName": "TB @ CIN",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "33",
+              "winner": true,
+              "team": {
+                "abbreviation": "CIN"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "27",
+              "winner": false,
+              "team": {
+                "abbreviation": "TB"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872923",
+      "date": "2026-09-13T17:00Z",
+      "shortName": "NO @ DET",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 5,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final/OT",
+          "shortDetail": "Final/OT",
+          "altDetail": "OT"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "31",
+              "winner": true,
+              "team": {
+                "abbreviation": "DET"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "30",
+              "winner": false,
+              "team": {
+                "abbreviation": "NO"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872924",
+      "date": "2026-09-13T17:00Z",
+      "shortName": "NYJ @ TEN",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "10",
+              "winner": false,
+              "team": {
+                "abbreviation": "TEN"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "23",
+              "winner": true,
+              "team": {
+                "abbreviation": "NYJ"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872659",
+      "date": "2026-09-13T17:00Z",
+      "shortName": "BAL @ IND",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "23",
+              "winner": false,
+              "team": {
+                "abbreviation": "IND"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "41",
+              "winner": true,
+              "team": {
+                "abbreviation": "BAL"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872658",
+      "date": "2026-09-13T17:00Z",
+      "shortName": "ATL @ PIT",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "20",
+              "winner": true,
+              "team": {
+                "abbreviation": "PIT"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "13",
+              "winner": false,
+              "team": {
+                "abbreviation": "ATL"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872661",
+      "date": "2026-09-13T17:00Z",
+      "shortName": "CHI @ CAR",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "37",
+              "winner": false,
+              "team": {
+                "abbreviation": "CAR"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "59",
+              "winner": true,
+              "team": {
+                "abbreviation": "CHI"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872922",
+      "date": "2026-09-13T17:00Z",
+      "shortName": "CLE @ JAX",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "34",
+              "winner": true,
+              "team": {
+                "abbreviation": "JAX"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "10",
+              "winner": false,
+              "team": {
+                "abbreviation": "CLE"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872660",
+      "date": "2026-09-13T17:00Z",
+      "shortName": "BUF @ HOU",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "31",
+              "winner": false,
+              "team": {
+                "abbreviation": "HOU"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "36",
+              "winner": true,
+              "team": {
+                "abbreviation": "BUF"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872928",
+      "date": "2026-09-13T20:25Z",
+      "shortName": "MIA @ LV",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "27",
+              "winner": true,
+              "team": {
+                "abbreviation": "LV"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "13",
+              "winner": false,
+              "team": {
+                "abbreviation": "MIA"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872927",
+      "date": "2026-09-13T20:25Z",
+      "shortName": "GB @ MIN",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "39",
+              "winner": true,
+              "team": {
+                "abbreviation": "MIN"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "22",
+              "winner": false,
+              "team": {
+                "abbreviation": "GB"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872929",
+      "date": "2026-09-13T20:25Z",
+      "shortName": "WSH @ PHI",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "24",
+              "winner": true,
+              "team": {
+                "abbreviation": "PHI"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "22",
+              "winner": false,
+              "team": {
+                "abbreviation": "WSH"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872926",
+      "date": "2026-09-13T20:25Z",
+      "shortName": "ARI @ LAC",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "14",
+              "winner": false,
+              "team": {
+                "abbreviation": "LAC"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "26",
+              "winner": true,
+              "team": {
+                "abbreviation": "ARI"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872930",
+      "date": "2026-09-14T00:20Z",
+      "shortName": "DAL @ NYG",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "28",
+              "winner": true,
+              "team": {
+                "abbreviation": "NYG"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "20",
+              "winner": false,
+              "team": {
+                "abbreviation": "DAL"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401872931",
+      "date": "2026-09-15T00:15Z",
+      "shortName": "DEN @ KC",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "31",
+              "winner": true,
+              "team": {
+                "abbreviation": "KC"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "10",
+              "winner": false,
+              "team": {
+                "abbreviation": "DEN"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

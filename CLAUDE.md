@@ -42,7 +42,12 @@ tylernfl/
 ## Data contract
 
 - Pipelines write JSON into `src/data/`, commit it, and the push triggers a rebuild. Pages read data at build time.
-- Exception (later): the live 4th down page fetches game state at runtime in the browser.
+- Browser-side fetches are allowed in exactly two places. Nothing else fetches data at runtime.
+  1. **Live ticker scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates ticker scores in place. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Turn it off entirely with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
+  2. **Live 4th down page** (later): fetches game state at runtime.
+- ESPN data is browser-only: never write it to `src/data/` and never use it in pipelines. Pipelines use nflverse (the `espnId` in `ticker.json` comes from nflverse schedules). Test fixtures in `tests/fixtures/espn/` are the only stored ESPN data.
+- Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text).
+- In-progress parsing (quarter, clock, halftime) is provisional until verified against the real capture from DET at BUF on 2026-09-17.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `leaders.json`, `on_this_day.json`, `teams.json`, `model_record.json`.
 - `teams.json` (abbr, name, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
@@ -94,6 +99,7 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 ## Quality bar
 
 - `npm run build` passes with no warnings you introduced.
+- `npm test` (live ticker, Node's built-in test runner) and `python -m unittest discover -s pipelines` pass.
 - Works under the `/tylernfl` base path (test with `npm run preview`).
 - Keyboard focus visible, color contrast passes WCAG AA, semantic HTML for tables.
 - Realistic mock data (real-looking names, numbers, and string lengths), no lorem ipsum.

@@ -33,8 +33,16 @@ export interface TickerGame {
    * is reserved for runtime game state fetched in the browser.
    */
   state: GameState;
-  /** Display string: "Final", "Final/OT", "Sun 1:00 PM", "Sat TBD", "Q3 4:12" */
+  /**
+   * Display string: "Final", "Final/OT", "Sun 1:00 PM", "Sat TBD". Kickoff
+   * times here are US Eastern; the browser replaces them with the visitor's
+   * local time from `kickoff`.
+   */
   detail: string;
+  /** Kickoff in ISO 8601 UTC, e.g. "2026-09-18T00:15:00Z". Null until scheduled. */
+  kickoff: string | null;
+  /** ESPN event id recorded by nflverse, used to match live scores. Null if unknown. */
+  espnId: string | null;
 }
 
 export interface TickerData {

@@ -71,7 +71,12 @@ function isActive(href: string): boolean {
   </head>
   <body>
     <div class="shell">
-      <div class="ticker" aria-label="Scores">
+      <div
+        class="ticker"
+        aria-label="Scores"
+        data-season={ticker.season}
+        data-week={ticker.week ?? undefined}
+      >
         {
           tickerGames.length > 0 ? (
             <div class="ticker-row">
@@ -159,6 +164,12 @@ function isActive(href: string): boolean {
         const open = shell?.classList.toggle('nav-open') ?? false;
         button.setAttribute('aria-expanded', String(open));
       });
+    </script>
+
+    <script>
+      import { initLiveTicker } from '../lib/live-ticker/client.ts';
+
+      initLiveTicker();
     </script>
 
     <script>

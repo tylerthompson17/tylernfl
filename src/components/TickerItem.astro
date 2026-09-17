@@ -3,6 +3,9 @@
  * One game slot in the score ticker. Upcoming games show kickoff time
  * with no scores; finals put the winner in bold, not color; live games
  * carry the quarter and clock on a yellow highlight background.
+ *
+ * The data attributes are hooks for src/lib/live-ticker/client.ts, which
+ * localizes kickoff times and applies live scores in the browser.
  */
 import type { TickerGame } from '../data/types';
 import { url } from '../utils/url';
@@ -13,21 +16,25 @@ interface Props {
 
 const { game } = Astro.props;
 
-const awayWon =
-  game.state === 'final' && game.awayScore != null && game.homeScore != null
-    ? game.awayScore > game.homeScore
-    : null;
+const decided = game.state === 'final' && game.awayScore != null && game.homeScore != null;
+const awayWon = decided && game.awayScore! > game.homeScore!;
+const homeWon = decided && game.homeScore! > game.awayScore!;
 ---
 
-<li class="game">
-  <span class:list={['detail', { live: game.state === 'live' }]}>{game.detail}</span>
-  <span class:list={['line', { won: awayWon === true }]}>
+<li
+  class="game"
+  data-state={game.state}
+  data-espn-id={game.espnId ?? undefined}
+  data-kickoff={game.kickoff ?? undefined}
+>
+  <span class:list={['detail', { live: game.state === 'live' }]} data-detail>{game.detail}</span>
+  <span class:list={['line', { won: awayWon }]} data-side="away">
     <a class="team" href={url(`teams/${game.away}`)}>{game.away}</a>
-    {game.awayScore != null && <span class="num">{game.awayScore}</span>}
+    <span class="num" data-score>{game.awayScore ?? ''}</span>
   </span>
-  <span class:list={['line', { won: awayWon === false }]}>
+  <span class:list={['line', { won: homeWon }]} data-side="home">
     <a class="team" href={url(`teams/${game.home}`)}>{game.home}</a>
-    {game.homeScore != null && <span class="num">{game.homeScore}</span>}
+    <span class="num" data-score>{game.homeScore ?? ''}</span>
   </span>
 </li>
 

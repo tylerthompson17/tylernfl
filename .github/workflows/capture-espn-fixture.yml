@@ -1,0 +1,53 @@
+name: Capture ESPN in-progress fixture
+
+# One-off: records real in-progress scoreboard responses during DET at BUF
+# (Thursday 2026-09-17, 8:15 PM Eastern) for the live ticker tests. Commits
+# only to tests/fixtures/espn/. Remove this workflow after the capture.
+
+on:
+  schedule:
+    # 23:30 UTC on September 17 is 7:30 PM Eastern, 45 minutes before kickoff.
+    # Scheduled runs can start late, and the script keeps watching until the
+    # game is final, so a delay still captures most of the game.
+    - cron: '30 23 17 9 *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: capture-espn-fixture
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Capture responses
+        # --until also makes the yearly cron repeat a no-op.
+        run: >
+          node scripts/capture-espn-fixture.ts
+          --season 2026 --week 2 --event 401872932
+          --until 2026-09-18T05:30:00Z
+
+      - name: Commit fixtures
+        run: |
+          git add tests/fixtures/espn
+          if git diff --cached --quiet; then
+            echo "Nothing captured."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Add ESPN in-progress fixtures from DET at BUF"
+          git pull --rebase origin main
+          git push origin HEAD:main
