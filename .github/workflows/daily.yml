@@ -1,0 +1,64 @@
+name: Update site data
+
+on:
+  schedule:
+    # 10:00 UTC is 6 AM Eastern (5 AM in winter): after Monday night games
+    # are final, before any kickoff, and before the Tuesday/Wednesday week
+    # switch matters to morning visitors.
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: update-site-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: pipelines/requirements.txt
+
+      - name: Install pipeline dependencies
+        run: pip install -r pipelines/requirements.txt
+
+      - name: Test pipelines
+        run: python -m unittest discover -s pipelines
+
+      - name: Build site data
+        run: python pipelines/run_daily.py
+
+      - name: Commit changed data
+        id: commit
+        run: |
+          if git diff --quiet -- src/data; then
+            echo "No data changes."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/data
+          git commit -m "Update site data for $(TZ=America/New_York date +%Y-%m-%d)"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # Pushes made with GITHUB_TOKEN do not trigger push workflows, so the
+      # deploy has to be started explicitly.
+      - name: Trigger deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main

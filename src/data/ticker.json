@@ -1,24 +1,152 @@
 {
-  "updated": "2026-09-13T22:30:00Z",
+  "updated": "2026-09-17T02:08:21Z",
   "season": 2026,
   "week": 2,
   "nextOpener": null,
   "games": [
-    { "id": "2026_02_DET_BUF", "away": "DET", "home": "BUF", "awayScore": 27, "homeScore": 31, "state": "final", "detail": "Final" },
-    { "id": "2026_02_PHI_TEN", "away": "PHI", "home": "TEN", "awayScore": 24, "homeScore": 10, "state": "final", "detail": "Final" },
-    { "id": "2026_02_PIT_NE", "away": "PIT", "home": "NE", "awayScore": 17, "homeScore": 14, "state": "final", "detail": "Final" },
-    { "id": "2026_02_MIN_CHI", "away": "MIN", "home": "CHI", "awayScore": 20, "homeScore": 23, "state": "final", "detail": "Final" },
-    { "id": "2026_02_CAR_ATL", "away": "CAR", "home": "ATL", "awayScore": 13, "homeScore": 26, "state": "final", "detail": "Final" },
-    { "id": "2026_02_JAX_HOU", "away": "JAX", "home": "HOU", "awayScore": 20, "homeScore": 27, "state": "final", "detail": "Final" },
-    { "id": "2026_02_NO_TB", "away": "NO", "home": "TB", "awayScore": 17, "homeScore": 24, "state": "final", "detail": "Final" },
-    { "id": "2026_02_WAS_ARI", "away": "WAS", "home": "ARI", "awayScore": 20, "homeScore": 23, "state": "final", "detail": "Final" },
-    { "id": "2026_02_BAL_CLE", "away": "BAL", "home": "CLE", "awayScore": 30, "homeScore": 13, "state": "final", "detail": "Final" },
-    { "id": "2026_02_CIN_MIA", "away": "CIN", "home": "MIA", "awayScore": 27, "homeScore": 21, "state": "final", "detail": "Final" },
-    { "id": "2026_02_SF_SEA", "away": "SF", "home": "SEA", "awayScore": 19, "homeScore": 16, "state": "final", "detail": "Final" },
-    { "id": "2026_02_DEN_IND", "away": "DEN", "home": "IND", "awayScore": 24, "homeScore": 27, "state": "live", "detail": "Q4 2:12" },
-    { "id": "2026_02_LV_LAR", "away": "LV", "home": "LAR", "awayScore": 10, "homeScore": 31, "state": "live", "detail": "Q3 8:45" },
-    { "id": "2026_02_GB_NYJ", "away": "GB", "home": "NYJ", "awayScore": null, "homeScore": null, "state": "pre", "detail": "Sun 8:20 PM" },
-    { "id": "2026_02_DAL_NYG", "away": "DAL", "home": "NYG", "awayScore": null, "homeScore": null, "state": "pre", "detail": "Mon 7:15 PM" },
-    { "id": "2026_02_KC_LAC", "away": "KC", "home": "LAC", "awayScore": null, "homeScore": null, "state": "pre", "detail": "Mon 10:15 PM" }
+    {
+      "id": "2026_02_DET_BUF",
+      "away": "DET",
+      "home": "BUF",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Thu 8:15 PM"
+    },
+    {
+      "id": "2026_02_CAR_ATL",
+      "away": "CAR",
+      "home": "ATL",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 1:00 PM"
+    },
+    {
+      "id": "2026_02_CIN_HOU",
+      "away": "CIN",
+      "home": "HOU",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 1:00 PM"
+    },
+    {
+      "id": "2026_02_CLE_TB",
+      "away": "CLE",
+      "home": "TB",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 1:00 PM"
+    },
+    {
+      "id": "2026_02_GB_NYJ",
+      "away": "GB",
+      "home": "NYJ",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 1:00 PM"
+    },
+    {
+      "id": "2026_02_MIN_CHI",
+      "away": "MIN",
+      "home": "CHI",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 1:00 PM"
+    },
+    {
+      "id": "2026_02_NO_BAL",
+      "away": "NO",
+      "home": "BAL",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 1:00 PM"
+    },
+    {
+      "id": "2026_02_PHI_TEN",
+      "away": "PHI",
+      "home": "TEN",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 1:00 PM"
+    },
+    {
+      "id": "2026_02_PIT_NE",
+      "away": "PIT",
+      "home": "NE",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 1:00 PM"
+    },
+    {
+      "id": "2026_02_JAX_DEN",
+      "away": "JAX",
+      "home": "DEN",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 4:05 PM"
+    },
+    {
+      "id": "2026_02_LV_LAC",
+      "away": "LV",
+      "home": "LAC",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 4:05 PM"
+    },
+    {
+      "id": "2026_02_MIA_SF",
+      "away": "MIA",
+      "home": "SF",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 4:25 PM"
+    },
+    {
+      "id": "2026_02_SEA_ARI",
+      "away": "SEA",
+      "home": "ARI",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 4:25 PM"
+    },
+    {
+      "id": "2026_02_WAS_DAL",
+      "away": "WAS",
+      "home": "DAL",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 4:25 PM"
+    },
+    {
+      "id": "2026_02_IND_KC",
+      "away": "IND",
+      "home": "KC",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Sun 8:20 PM"
+    },
+    {
+      "id": "2026_02_NYG_LA",
+      "away": "NYG",
+      "home": "LAR",
+      "awayScore": null,
+      "homeScore": null,
+      "state": "pre",
+      "detail": "Mon 8:15 PM"
+    }
   ]
 }

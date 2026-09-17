@@ -28,9 +28,9 @@ tylernfl/
 │   ├── pages/              index, tools/, stats/, articles/, about, 404
 │   ├── content/articles/   MDX articles (content collection)
 │   └── data/               JSON consumed at build time (mock now, pipeline output later)
-├── pipelines/              Python jobs (stubs only for now)
+├── pipelines/              Python jobs: run_daily.py (ticker, leaders), build_teams.py
 ├── models/                 exported model files (empty for now)
-└── .github/workflows/      deploy.yml (now), daily.yml + weekly.yml (later)
+└── .github/workflows/      deploy.yml, daily.yml (weekly.yml later)
 ```
 
 ## GitHub Pages rules
@@ -46,6 +46,8 @@ tylernfl/
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `leaders.json`, `on_this_day.json`, `teams.json`, `model_record.json`.
 - `teams.json` (abbr, name, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
+- `ticker.json` and `leaders.json` are real data written by `pipelines/run_daily.py` (nflreadpy), run daily by `.github/workflows/daily.yml`. nflverse calls the Rams `LA`; pipelines normalize it to `LAR`.
+- `model_record.json` stays a placeholder until the 4th down model exists. `on_this_day.json` is still mock data.
 
 ## Design direction
 

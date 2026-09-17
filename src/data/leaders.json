@@ -1,17 +1,42 @@
 {
   "season": 2026,
-  "throughWeek": 2,
+  "throughWeek": 1,
   "categories": [
     {
       "key": "pass_yds",
       "label": "Passing yards",
       "valueLabel": "Yds",
       "rows": [
-        { "rank": 1, "player": "Josh Allen", "team": "BUF", "value": 641 },
-        { "rank": 2, "player": "Jared Goff", "team": "DET", "value": 634 },
-        { "rank": 3, "player": "Patrick Mahomes", "team": "KC", "value": 612 },
-        { "rank": 4, "player": "Joe Burrow", "team": "CIN", "value": 598 },
-        { "rank": 5, "player": "C.J. Stroud", "team": "HOU", "value": 571 }
+        {
+          "rank": 1,
+          "player": "Tyler Shough",
+          "team": "NO",
+          "value": 410
+        },
+        {
+          "rank": 2,
+          "player": "Jordan Love",
+          "team": "GB",
+          "value": 387
+        },
+        {
+          "rank": 3,
+          "player": "Bryce Young",
+          "team": "CAR",
+          "value": 361
+        },
+        {
+          "rank": 4,
+          "player": "Josh Allen",
+          "team": "BUF",
+          "value": 334
+        },
+        {
+          "rank": 5,
+          "player": "Lamar Jackson",
+          "team": "BAL",
+          "value": 324
+        }
       ]
     },
     {
@@ -19,11 +44,36 @@
       "label": "Rushing yards",
       "valueLabel": "Yds",
       "rows": [
-        { "rank": 1, "player": "Bijan Robinson", "team": "ATL", "value": 248 },
-        { "rank": 2, "player": "Jahmyr Gibbs", "team": "DET", "value": 231 },
-        { "rank": 3, "player": "Saquon Barkley", "team": "PHI", "value": 224 },
-        { "rank": 4, "player": "Jonathan Taylor", "team": "IND", "value": 209 },
-        { "rank": 5, "player": "De'Von Achane", "team": "MIA", "value": 197 }
+        {
+          "rank": 1,
+          "player": "Kenneth Walker III",
+          "team": "KC",
+          "value": 173
+        },
+        {
+          "rank": 2,
+          "player": "Jahmyr Gibbs",
+          "team": "DET",
+          "value": 156
+        },
+        {
+          "rank": 3,
+          "player": "Derrick Henry",
+          "team": "BAL",
+          "value": 144
+        },
+        {
+          "rank": 4,
+          "player": "D'Andre Swift",
+          "team": "CHI",
+          "value": 124
+        },
+        {
+          "rank": 5,
+          "player": "Ashton Jeanty",
+          "team": "LV",
+          "value": 102
+        }
       ]
     },
     {
@@ -31,11 +81,36 @@
       "label": "Receiving yards",
       "valueLabel": "Yds",
       "rows": [
-        { "rank": 1, "player": "Ja'Marr Chase", "team": "CIN", "value": 274 },
-        { "rank": 2, "player": "Justin Jefferson", "team": "MIN", "value": 262 },
-        { "rank": 3, "player": "CeeDee Lamb", "team": "DAL", "value": 241 },
-        { "rank": 4, "player": "Amon-Ra St. Brown", "team": "DET", "value": 228 },
-        { "rank": 5, "player": "Nico Collins", "team": "HOU", "value": 219 }
+        {
+          "rank": 1,
+          "player": "Chris Olave",
+          "team": "NO",
+          "value": 182
+        },
+        {
+          "rank": 2,
+          "player": "Zay Flowers",
+          "team": "BAL",
+          "value": 150
+        },
+        {
+          "rank": 3,
+          "player": "Christian Watson",
+          "team": "GB",
+          "value": 147
+        },
+        {
+          "rank": 4,
+          "player": "Jalen Coker",
+          "team": "CAR",
+          "value": 138
+        },
+        {
+          "rank": 5,
+          "player": "Dalton Kincaid",
+          "team": "BUF",
+          "value": 130
+        }
       ]
     }
   ]

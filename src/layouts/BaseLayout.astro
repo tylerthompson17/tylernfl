@@ -9,6 +9,16 @@ import type { TickerData, GameState, OnThisDayData } from '../data/types';
 
 const ticker = tickerData as TickerData;
 
+// nflverse numbers postseason rounds as weeks 19 to 22.
+const postseasonRounds: Record<number, string> = {
+  19: 'Wild card',
+  20: 'Divisional',
+  21: 'Conference',
+  22: 'Super Bowl',
+};
+const weekLabel =
+  ticker.week == null ? null : (postseasonRounds[ticker.week] ?? `Week ${ticker.week}`);
+
 // Finished games first, then in progress, then upcoming.
 const stateOrder: Record<GameState, number> = { final: 0, live: 1, pre: 2 };
 const tickerGames = [...ticker.games].sort((a, b) => stateOrder[a.state] - stateOrder[b.state]);
@@ -65,7 +75,7 @@ function isActive(href: string): boolean {
         {
           tickerGames.length > 0 ? (
             <div class="ticker-row">
-              {ticker.week != null && <span class="ticker-week">Week {ticker.week}</span>}
+              {weekLabel && <span class="ticker-week">{weekLabel}</span>}
               <div class="ticker-viewport">
                 <div class="ticker-marquee">
                   <ul class="ticker-track">

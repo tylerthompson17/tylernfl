@@ -28,9 +28,12 @@ export interface TickerGame {
   /** null until kickoff */
   awayScore: number | null;
   homeScore: number | null;
-  /** Game status */
+  /**
+   * Game status. The daily pipeline writes only "pre" and "final"; "live"
+   * is reserved for runtime game state fetched in the browser.
+   */
   state: GameState;
-  /** Display string: "Final", "Sun 1:00 PM", "Q3 4:12" */
+  /** Display string: "Final", "Final/OT", "Sun 1:00 PM", "Sat TBD", "Q3 4:12" */
   detail: string;
 }
 
@@ -39,9 +42,9 @@ export interface TickerData {
   updated: string;
   season: number;
   /**
-   * NFL week on display, chosen by the pipeline when it runs: on Tuesday
-   * the week that just ended, from Wednesday on the upcoming week.
-   * Null in the offseason.
+   * NFL week on display, chosen by pipelines/ticker.py when it runs: on
+   * Tuesday the week that just ended, from Wednesday on the upcoming week.
+   * Postseason weeks are 19 to 22. Null in the offseason.
    */
   week: number | null;
   /**
