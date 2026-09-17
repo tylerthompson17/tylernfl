@@ -113,3 +113,10 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
 5. Responsive pass
 6. Loading, empty, and hover states
 7. (Later) daily/weekly workflows and Python pipeline stubs
+
+## Articles
+
+- Articles are MDX in src/content/articles/, using an Astro content collection.
+- Frontmatter: title, date, description, tags, draft (boolean).
+- Drafts render in dev only, never in production builds.
+- Site components (StatTable, charts) must be importable in MDX.
