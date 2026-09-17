@@ -78,11 +78,18 @@ function isActive(href: string): boolean {
           tickerGames.length > 0 ? (
             <div class="ticker-row">
               {ticker.week != null && <span class="ticker-week">Week {ticker.week}</span>}
-              <ul class="ticker-track">
-                {tickerGames.map((game) => (
-                  <TickerItem game={game} />
-                ))}
-              </ul>
+              <div class="ticker-viewport">
+                <div class="ticker-marquee">
+                  <ul class="ticker-track">
+                    {tickerGames.map((game) => (
+                      <TickerItem game={game} />
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <button class="ticker-toggle" type="button" hidden>
+                Pause
+              </button>
             </div>
           ) : (
             <p class="ticker-empty">{openerText}</p>
@@ -166,6 +173,62 @@ function isActive(href: string): boolean {
         button.setAttribute('aria-expanded', String(open));
       });
     </script>
+
+    <script>
+      // Score ticker carousel. Only runs when the games are wider than the
+      // strip and the visitor has not asked for reduced motion; otherwise
+      // the static, hand-scrollable strip stays in place.
+      const PIXELS_PER_SECOND = 40;
+
+      function initTicker(
+        ticker: HTMLElement,
+        viewport: HTMLElement,
+        marquee: HTMLElement,
+        track: HTMLElement,
+        toggle: HTMLButtonElement
+      ) {
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let clone: HTMLElement | null = null;
+
+        function update() {
+          const shouldRun = !reducedMotion.matches && track.offsetWidth > viewport.clientWidth;
+
+          if (shouldRun && !clone) {
+            // Second copy makes the loop seamless. Hidden from screen
+            // readers and the tab order so each game is announced once.
+            clone = track.cloneNode(true) as HTMLElement;
+            clone.setAttribute('aria-hidden', 'true');
+            clone.inert = true;
+            marquee.append(clone);
+          } else if (!shouldRun && clone) {
+            clone.remove();
+            clone = null;
+          }
+
+          ticker.classList.toggle('is-running', shouldRun);
+          toggle.hidden = !shouldRun;
+          marquee.style.setProperty('--ticker-duration', `${track.offsetWidth / PIXELS_PER_SECOND}s`);
+        }
+
+        toggle.addEventListener('click', () => {
+          const paused = ticker.classList.toggle('is-paused');
+          toggle.textContent = paused ? 'Play' : 'Pause';
+        });
+
+        new ResizeObserver(update).observe(viewport);
+        reducedMotion.addEventListener('change', update);
+        update();
+      }
+
+      const ticker = document.querySelector<HTMLElement>('.ticker');
+      const viewport = ticker?.querySelector<HTMLElement>('.ticker-viewport');
+      const marquee = ticker?.querySelector<HTMLElement>('.ticker-marquee');
+      const track = ticker?.querySelector<HTMLElement>('.ticker-track');
+      const toggle = ticker?.querySelector<HTMLButtonElement>('.ticker-toggle');
+      if (ticker && viewport && marquee && track && toggle) {
+        initTicker(ticker, viewport, marquee, track, toggle);
+      }
+    </script>
   </body>
 </html>
 
@@ -195,21 +258,17 @@ function isActive(href: string): boolean {
   /* Ticker: a white strip of boxed game slots */
   .ticker {
     grid-area: ticker;
-    overflow-x: auto;
     background: var(--panel);
     border: 1px solid var(--rule);
   }
 
   .ticker-row {
     display: flex;
-    width: max-content;
   }
 
-  /* Week label stays put while the strip scrolls */
+  /* Week label sits outside the moving strip, so it never scrolls away */
   .ticker-week {
-    position: sticky;
-    left: 0;
-    z-index: 1;
+    flex: none;
     display: flex;
     align-items: center;
     padding: var(--header-pad);
@@ -220,11 +279,62 @@ function isActive(href: string): boolean {
     white-space: nowrap;
   }
 
+  /* Static by default: the strip scrolls by hand. The script below
+     switches to a looping carousel when the games overflow. */
+  .ticker-viewport {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+  }
+
+  .ticker-marquee {
+    display: flex;
+    width: max-content;
+  }
+
   .ticker-track {
     display: flex;
     list-style: none;
     padding: 0;
     width: max-content;
+  }
+
+  /* Carousel: two copies of the track slide left by one copy's width,
+     then loop seamlessly. Pauses on hover, keyboard focus, or the button. */
+  .ticker.is-running .ticker-viewport {
+    overflow: hidden;
+  }
+
+  .ticker.is-running .ticker-marquee {
+    animation: ticker-scroll var(--ticker-duration, 60s) linear infinite;
+  }
+
+  .ticker.is-running .ticker-viewport:hover .ticker-marquee,
+  .ticker.is-running .ticker-viewport:focus-within .ticker-marquee,
+  .ticker.is-paused .ticker-marquee {
+    animation-play-state: paused;
+  }
+
+  @keyframes ticker-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .ticker-toggle {
+    flex: none;
+    padding: 0 var(--space-3);
+    border-left: 1px solid var(--rule);
+    color: var(--link);
+    font-size: 12px;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker.is-running .ticker-marquee {
+      animation: none;
+    }
   }
 
   .ticker-empty {
