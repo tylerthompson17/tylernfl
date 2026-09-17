@@ -12,6 +12,7 @@ const ticker = tickerData as TickerData;
 const onThisDay = onThisDayData as OnThisDayData;
 const modelRecord = modelRecordData as ModelRecordData;
 
+const hasRecord = modelRecord.wins + modelRecord.losses + modelRecord.pushes > 0;
 const record =
   modelRecord.pushes > 0
     ? `${modelRecord.wins}-${modelRecord.losses}-${modelRecord.pushes}`
@@ -56,9 +57,17 @@ function isActive(href: string): boolean {
   <body>
     <div class="shell">
       <div class="ticker" aria-label="Scores">
-        <ul class="ticker-track">
-          {ticker.games.map((game) => <TickerItem game={game} />)}
-        </ul>
+        {
+          ticker.games.length > 0 ? (
+            <ul class="ticker-track">
+              {ticker.games.map((game) => (
+                <TickerItem game={game} />
+              ))}
+            </ul>
+          ) : (
+            <p class="ticker-empty">No games today.</p>
+          )
+        }
       </div>
 
       <header class="header">
@@ -93,20 +102,34 @@ function isActive(href: string): boolean {
 
       <aside class="rail" aria-label="Extras">
         <Panel title="4th down model record">
-          <p class="record num">{record}</p>
-          <p class="record-sub">{modelRecord.season} season, graded calls, updated {recordUpdated}</p>
+          {
+            hasRecord ? (
+              <>
+                <p class="record num">{record}</p>
+                <p class="record-sub">
+                  {modelRecord.season} season, graded calls, updated {recordUpdated}
+                </p>
+              </>
+            ) : (
+              <p class="placeholder-note">No graded calls yet. The record starts with week 1.</p>
+            )
+          }
         </Panel>
         <Panel title="On this day">
-          <ul class="otd">
-            {
-              onThisDay.items.map((item) => (
-                <li>
-                  <span class="otd-year num">{item.year}</span>
-                  <span>{item.text}</span>
-                </li>
-              ))
-            }
-          </ul>
+          {
+            onThisDay.items.length > 0 ? (
+              <ul class="otd">
+                {onThisDay.items.map((item) => (
+                  <li>
+                    <span class="otd-year num">{item.year}</span>
+                    <span>{item.text}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="placeholder-note">Nothing on record for today.</p>
+            )
+          }
         </Panel>
       </aside>
 
@@ -164,6 +187,11 @@ function isActive(href: string): boolean {
     width: max-content;
   }
 
+  .ticker-empty {
+    padding: var(--space-2) var(--space-3);
+    color: var(--text-dim);
+  }
+
   /* Header: slate bar, like a panel header for the whole site */
   .header {
     grid-area: header;
@@ -194,10 +222,13 @@ function isActive(href: string): boolean {
 
   .search {
     margin-left: auto;
+    flex-shrink: 1;
+    min-width: 0;
   }
 
   .search input {
     width: 260px;
+    max-width: 100%;
     padding: var(--space-1) var(--space-2);
     background: var(--panel);
     border: 1px solid var(--rule);
@@ -226,6 +257,10 @@ function isActive(href: string): boolean {
   .nav a {
     display: block;
     padding: var(--space-1) var(--space-3);
+  }
+
+  .nav a:hover {
+    background: var(--bg);
   }
 
   .nav a[aria-current='page'] {

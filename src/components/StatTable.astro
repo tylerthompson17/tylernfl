@@ -20,11 +20,15 @@ interface Props {
   rows: Record<string, string | number | null>[];
   /** Screen reader description of the table */
   caption: string;
+  /** Shown instead of the table when there are no rows */
+  emptyText?: string;
 }
 
-const { columns, rows, caption } = Astro.props;
+const { columns, rows, caption, emptyText = 'No data yet.' } = Astro.props;
 ---
 
+{rows.length === 0 && <p class="empty">{emptyText}</p>}
+{rows.length > 0 && (
 <div class="scroll" tabindex="0">
   <table>
     <caption class="visually-hidden">{caption}</caption>
@@ -54,10 +58,15 @@ const { columns, rows, caption } = Astro.props;
     </tbody>
   </table>
 </div>
+)}
 
 <style>
   .scroll {
     overflow-x: auto;
+  }
+
+  .empty {
+    color: var(--text-dim);
   }
 
   table {

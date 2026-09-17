@@ -34,18 +34,22 @@ const lines = leaders.categories.flatMap((category) =>
   </h1>
   <div class="content-grid">
     <Panel title={`${leaders.season} season, through week ${leaders.throughWeek}`}>
-      <ul class="lines">
-        {
-          lines.map((line) => (
-            <li>
-              <span>{line.label}</span>
-              <span class="num">
-                {line.value} (#{line.rank})
-              </span>
-            </li>
-          ))
-        }
-      </ul>
+      {
+        lines.length > 0 ? (
+          <ul class="lines">
+            {lines.map((line) => (
+              <li>
+                <span>{line.label}</span>
+                <span class="num">
+                  {line.value} (#{line.rank})
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="placeholder-note">Not in the current leaderboards.</p>
+        )
+      }
     </Panel>
     <Panel title="Player stats">
       <p class="placeholder-note">

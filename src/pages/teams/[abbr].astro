@@ -43,17 +43,14 @@ const columns = [
     {team.name}
   </h1>
   <div class="content-grid">
-    {
-      appearances.length > 0 && (
-        <Panel title={`${leaders.season} league leaderboard appearances`}>
-          <StatTable
-            columns={columns}
-            rows={appearances}
-            caption={`${team.name} appearances in league leaderboards`}
-          />
-        </Panel>
-      )
-    }
+    <Panel title={`${leaders.season} league leaderboard appearances`}>
+      <StatTable
+        columns={columns}
+        rows={appearances}
+        caption={`${team.name} appearances in league leaderboards`}
+        emptyText={`No ${team.name} players in the current leaderboards.`}
+      />
+    </Panel>
     <Panel title="Team stats">
       <p class="placeholder-note">
         Season stats, results, and ratings for the {team.name} land here when the data pipelines

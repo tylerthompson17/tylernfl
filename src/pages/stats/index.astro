@@ -24,15 +24,22 @@ function columnsFor(valueLabel: string) {
   </p>
   <div class="content-grid stats-grid">
     {
-      leaders.categories.map((category) => (
-        <Panel title={category.label}>
-          <StatTable
-            columns={columnsFor(category.valueLabel)}
-            rows={category.rows}
-            caption={`${category.label} leaders`}
-          />
+      leaders.categories.length > 0 ? (
+        leaders.categories.map((category) => (
+          <Panel title={category.label}>
+            <StatTable
+              columns={columnsFor(category.valueLabel)}
+              rows={category.rows}
+              caption={`${category.label} leaders`}
+              emptyText="No games played yet. Leaders appear after week 1."
+            />
+          </Panel>
+        ))
+      ) : (
+        <Panel title="Stat leaders">
+          <p class="placeholder-note">No games played yet. Leaders appear after week 1.</p>
         </Panel>
-      ))
+      )
     }
   </div>
 </BaseLayout>

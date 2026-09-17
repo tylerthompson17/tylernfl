@@ -36,7 +36,18 @@ const leaderColumns = [
       <p><a href={url('tools/4th-down')}>Open the calculator</a></p>
     </Panel>
     <Panel title="Receiving yards leaders">
-      {receiving && <StatTable columns={leaderColumns} rows={receiving.rows} caption="Receiving yards leaders" />}
+      {
+        receiving ? (
+          <StatTable
+            columns={leaderColumns}
+            rows={receiving.rows}
+            caption="Receiving yards leaders"
+            emptyText="No games played yet. Leaders appear after week 1."
+          />
+        ) : (
+          <p class="placeholder-note">No games played yet. Leaders appear after week 1.</p>
+        )
+      }
       <p class="table-foot">
         Through week {leaders.throughWeek}. <a href={url('stats')}>All stat leaders</a>
       </p>
