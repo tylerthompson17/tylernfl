@@ -6,9 +6,26 @@ import TickerItem from '../components/TickerItem.astro';
 import tickerData from '../data/ticker.json';
 import onThisDayData from '../data/on_this_day.json';
 import modelRecordData from '../data/model_record.json';
-import type { TickerData, OnThisDayData, ModelRecordData } from '../data/types';
+import type { TickerData, GameState, OnThisDayData, ModelRecordData } from '../data/types';
 
 const ticker = tickerData as TickerData;
+
+// Finished games first, then in progress, then upcoming.
+const stateOrder: Record<GameState, number> = { final: 0, live: 1, pre: 2 };
+const tickerGames = [...ticker.games].sort((a, b) => stateOrder[a.state] - stateOrder[b.state]);
+
+// Offseason: the ticker's only empty state.
+let openerText = 'Offseason.';
+if (ticker.nextOpener) {
+  const [y, m, d] = ticker.nextOpener.split('-').map(Number);
+  const opener = new Date(y!, m! - 1, d!).toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+  openerText = `Offseason. Next season opens ${opener}.`;
+}
 const onThisDay = onThisDayData as OnThisDayData;
 const modelRecord = modelRecordData as ModelRecordData;
 
@@ -58,14 +75,17 @@ function isActive(href: string): boolean {
     <div class="shell">
       <div class="ticker" aria-label="Scores">
         {
-          ticker.games.length > 0 ? (
-            <ul class="ticker-track">
-              {ticker.games.map((game) => (
-                <TickerItem game={game} />
-              ))}
-            </ul>
+          tickerGames.length > 0 ? (
+            <div class="ticker-row">
+              {ticker.week != null && <span class="ticker-week">Week {ticker.week}</span>}
+              <ul class="ticker-track">
+                {tickerGames.map((game) => (
+                  <TickerItem game={game} />
+                ))}
+              </ul>
+            </div>
           ) : (
-            <p class="ticker-empty">No games today.</p>
+            <p class="ticker-empty">{openerText}</p>
           )
         }
       </div>
@@ -178,6 +198,26 @@ function isActive(href: string): boolean {
     overflow-x: auto;
     background: var(--panel);
     border: 1px solid var(--rule);
+  }
+
+  .ticker-row {
+    display: flex;
+    width: max-content;
+  }
+
+  /* Week label stays put while the strip scrolls */
+  .ticker-week {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    padding: var(--header-pad);
+    background: var(--header);
+    color: var(--header-text);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    white-space: nowrap;
   }
 
   .ticker-track {

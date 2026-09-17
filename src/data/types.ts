@@ -16,7 +16,7 @@ export interface Team {
 }
 export type TeamsData = Team[];
 
-/** ticker.json */
+/** ticker.json: one full NFL week of games. */
 export type GameState = 'pre' | 'live' | 'final';
 
 export interface TickerGame {
@@ -28,6 +28,7 @@ export interface TickerGame {
   /** null until kickoff */
   awayScore: number | null;
   homeScore: number | null;
+  /** Game status */
   state: GameState;
   /** Display string: "Final", "Sun 1:00 PM", "Q3 4:12" */
   detail: string;
@@ -36,6 +37,18 @@ export interface TickerGame {
 export interface TickerData {
   /** ISO timestamp of the last pipeline run */
   updated: string;
+  season: number;
+  /**
+   * NFL week on display, chosen by the pipeline when it runs: on Tuesday
+   * the week that just ended, from Wednesday on the upcoming week.
+   * Null in the offseason.
+   */
+  week: number | null;
+  /**
+   * Offseason only (games empty): date of next season's opening game,
+   * "YYYY-MM-DD". Null during the season.
+   */
+  nextOpener: string | null;
   games: TickerGame[];
 }
 
