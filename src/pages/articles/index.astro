@@ -1,15 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
 import { url } from '../../utils/url';
+import { getArticles } from '../../utils/articles';
 
-const articles = (await getCollection('articles')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const articles = await getArticles();
 
 function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
 }
 ---
 
@@ -20,7 +23,10 @@ function formatDate(date: Date): string {
       articles.length > 0 ? (
         articles.map((article) => (
           <Panel>
-            <p class="date num">{formatDate(article.data.pubDate)}</p>
+            <p class="date num">
+              {formatDate(article.data.date)}
+              {article.data.draft && <span class="draft">Draft</span>}
+            </p>
             <h2 class="title">
               <a href={url(`articles/${article.id}`)}>{article.data.title}</a>
             </h2>
@@ -42,13 +48,20 @@ function formatDate(date: Date): string {
     font-size: 12px;
   }
 
+  .draft {
+    margin-left: var(--space-2);
+    padding: 0 var(--space-1);
+    background: var(--highlight);
+    color: var(--text);
+  }
+
   .title {
     font-size: 18px;
     margin-top: var(--space-1);
   }
 
   .desc {
-    margin-top: var(--space-2);
+    margin-top: var(--space-1);
     color: var(--text-dim);
     max-width: 70ch;
   }

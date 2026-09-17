@@ -86,6 +86,12 @@ th,
   margin-bottom: var(--space-3);
 }
 
+/* Components embedded in MDX articles (field strips, stat tables) */
+.prose > figure,
+.prose > div {
+  margin-bottom: var(--space-3);
+}
+
 .prose h2 {
   font-size: 18px;
   margin-top: var(--space-4);

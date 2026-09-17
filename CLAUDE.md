@@ -26,7 +26,7 @@ tylernfl/
 │   ├── layouts/            BaseLayout (ticker, header, 3-column shell)
 │   ├── components/         Panel, StatTable, StatCard, TickerItem, TeamChip, ...
 │   ├── pages/              index, tools/, stats/, articles/, about, 404
-│   ├── content/articles/   Markdown articles (content collection)
+│   ├── content/articles/   MDX articles (content collection)
 │   └── data/               JSON consumed at build time (mock now, pipeline output later)
 ├── pipelines/              Python jobs (stubs only for now)
 ├── models/                 exported model files (empty for now)

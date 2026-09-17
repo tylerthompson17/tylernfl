@@ -1,20 +1,17 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Panel from '../components/Panel.astro';
 import StatTable from '../components/StatTable.astro';
 import FieldStrip from '../components/FieldStrip.astro';
 import { url } from '../utils/url';
+import { getArticles } from '../utils/articles';
 import leadersData from '../data/leaders.json';
 import type { LeadersData } from '../data/types';
 
 const leaders = leadersData as LeadersData;
 const receiving = leaders.categories.find((c) => c.key === 'rec_yds');
 
-const articles = (await getCollection('articles')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
-const latest = articles[0];
+const latest = (await getArticles())[0];
 
 const leaderColumns = [
   { key: 'rank', label: 'Rk', kind: 'number' as const },
