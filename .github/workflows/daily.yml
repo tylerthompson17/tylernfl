@@ -55,6 +55,24 @@ jobs:
           git push origin HEAD:main
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
+      # GitHub disables scheduled workflows after 60 days without repository
+      # activity, which the offseason would otherwise hit. An empty commit
+      # once the last commit is 30 days old keeps this job alive.
+      - name: Keep-alive commit
+        if: steps.commit.outputs.changed == 'false'
+        run: |
+          last_commit=$(git log -1 --format=%ct)
+          age_days=$(( ($(date +%s) - last_commit) / 86400 ))
+          if (( age_days < 30 )); then
+            echo "Last commit is $age_days days old; no keep-alive needed."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit --allow-empty -m "Keep daily data workflow active"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
       # Pushes made with GITHUB_TOKEN do not trigger push workflows, so the
       # deploy has to be started explicitly.
       - name: Trigger deploy
