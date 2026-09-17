@@ -87,9 +87,6 @@ function isActive(href: string): boolean {
                   </ul>
                 </div>
               </div>
-              <button class="ticker-toggle" type="button" hidden>
-                Pause
-              </button>
             </div>
           ) : (
             <p class="ticker-empty">{openerText}</p>
@@ -176,22 +173,24 @@ function isActive(href: string): boolean {
 
     <script>
       // Score ticker carousel. Only runs when the games are wider than the
-      // strip and the visitor has not asked for reduced motion; otherwise
-      // the static, hand-scrollable strip stays in place.
+      // strip, the device can hover (hover and keyboard focus are the only
+      // ways to pause it), and the visitor has not asked for reduced motion.
+      // Otherwise the static, hand-scrollable strip stays in place.
       const PIXELS_PER_SECOND = 40;
 
       function initTicker(
         ticker: HTMLElement,
         viewport: HTMLElement,
         marquee: HTMLElement,
-        track: HTMLElement,
-        toggle: HTMLButtonElement
+        track: HTMLElement
       ) {
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const canHover = window.matchMedia('(hover: hover)');
         let clone: HTMLElement | null = null;
 
         function update() {
-          const shouldRun = !reducedMotion.matches && track.offsetWidth > viewport.clientWidth;
+          const shouldRun =
+            canHover.matches && !reducedMotion.matches && track.offsetWidth > viewport.clientWidth;
 
           if (shouldRun && !clone) {
             // Second copy makes the loop seamless. Hidden from screen
@@ -206,17 +205,12 @@ function isActive(href: string): boolean {
           }
 
           ticker.classList.toggle('is-running', shouldRun);
-          toggle.hidden = !shouldRun;
           marquee.style.setProperty('--ticker-duration', `${track.offsetWidth / PIXELS_PER_SECOND}s`);
         }
 
-        toggle.addEventListener('click', () => {
-          const paused = ticker.classList.toggle('is-paused');
-          toggle.textContent = paused ? 'Play' : 'Pause';
-        });
-
         new ResizeObserver(update).observe(viewport);
         reducedMotion.addEventListener('change', update);
+        canHover.addEventListener('change', update);
         update();
       }
 
@@ -224,9 +218,8 @@ function isActive(href: string): boolean {
       const viewport = ticker?.querySelector<HTMLElement>('.ticker-viewport');
       const marquee = ticker?.querySelector<HTMLElement>('.ticker-marquee');
       const track = ticker?.querySelector<HTMLElement>('.ticker-track');
-      const toggle = ticker?.querySelector<HTMLButtonElement>('.ticker-toggle');
-      if (ticker && viewport && marquee && track && toggle) {
-        initTicker(ticker, viewport, marquee, track, toggle);
+      if (ticker && viewport && marquee && track) {
+        initTicker(ticker, viewport, marquee, track);
       }
     </script>
   </body>
@@ -300,7 +293,8 @@ function isActive(href: string): boolean {
   }
 
   /* Carousel: two copies of the track slide left by one copy's width,
-     then loop seamlessly. Pauses on hover, keyboard focus, or the button. */
+     then loop seamlessly. Pauses on hover and on keyboard focus, which
+     are the pause mechanisms, so it only runs on devices that can hover. */
   .ticker.is-running .ticker-viewport {
     overflow: hidden;
   }
@@ -310,8 +304,7 @@ function isActive(href: string): boolean {
   }
 
   .ticker.is-running .ticker-viewport:hover .ticker-marquee,
-  .ticker.is-running .ticker-viewport:focus-within .ticker-marquee,
-  .ticker.is-paused .ticker-marquee {
+  .ticker.is-running .ticker-viewport:focus-within .ticker-marquee {
     animation-play-state: paused;
   }
 
@@ -319,16 +312,6 @@ function isActive(href: string): boolean {
     to {
       transform: translateX(-50%);
     }
-  }
-
-  .ticker-toggle {
-    flex: none;
-    padding: 0 var(--space-3);
-    border-left: 1px solid var(--rule);
-    color: var(--link);
-    font-size: 12px;
-    text-decoration: underline;
-    text-underline-offset: 2px;
   }
 
   @media (prefers-reduced-motion: reduce) {

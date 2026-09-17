@@ -70,7 +70,10 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 | `--win` | `#1E7A4C` | positive values |
 | `--loss` | `#B3363B` | negative values |
 
-- Radius 0, no shadows, no gradients, no motion.
+- Radius 0, no shadows, no gradients.
+- No motion, with one exception: the score ticker is a looping carousel.
+  It pauses on hover and keyboard focus, and stays a static, swipeable strip
+  on touch devices, for reduced motion, and when the week's games fit.
 - Body text 13px, tables 12px, line-height 1.35. Headers in Barlow Condensed, bold.
 - Links are blue and underlined. Player and team names are always links.
 - Yellow is only ever a background (announcement strip, highlighted row),
