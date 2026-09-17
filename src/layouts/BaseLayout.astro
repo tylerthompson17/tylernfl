@@ -5,8 +5,7 @@ import Panel from '../components/Panel.astro';
 import TickerItem from '../components/TickerItem.astro';
 import tickerData from '../data/ticker.json';
 import onThisDayData from '../data/on_this_day.json';
-import modelRecordData from '../data/model_record.json';
-import type { TickerData, GameState, OnThisDayData, ModelRecordData } from '../data/types';
+import type { TickerData, GameState, OnThisDayData } from '../data/types';
 
 const ticker = tickerData as TickerData;
 
@@ -27,17 +26,6 @@ if (ticker.nextOpener) {
   openerText = `Offseason. Next season opens ${opener}.`;
 }
 const onThisDay = onThisDayData as OnThisDayData;
-const modelRecord = modelRecordData as ModelRecordData;
-
-const hasRecord = modelRecord.wins + modelRecord.losses + modelRecord.pushes > 0;
-const record =
-  modelRecord.pushes > 0
-    ? `${modelRecord.wins}-${modelRecord.losses}-${modelRecord.pushes}`
-    : `${modelRecord.wins}-${modelRecord.losses}`;
-const recordUpdated = new Date(modelRecord.updated).toLocaleDateString('en-US', {
-  month: 'short',
-  day: 'numeric',
-});
 
 interface Props {
   title: string;
@@ -126,18 +114,10 @@ function isActive(href: string): boolean {
 
       <aside class="rail" aria-label="Extras">
         <Panel title="4th down model record">
-          {
-            hasRecord ? (
-              <>
-                <p class="record num">{record}</p>
-                <p class="record-sub">
-                  {modelRecord.season} season, graded calls, updated {recordUpdated}
-                </p>
-              </>
-            ) : (
-              <p class="placeholder-note">No graded calls yet. The record starts with week 1.</p>
-            )
-          }
+          <p class="coming-soon">Coming soon</p>
+          <p class="placeholder-note">
+            Once the 4th down model is live, its record on graded calls will show here.
+          </p>
         </Panel>
         <Panel title="On this day">
           {
@@ -415,18 +395,12 @@ function isActive(href: string): boolean {
     gap: var(--space-3);
   }
 
-  /* Model record */
-  .record {
+  /* Model record placeholder */
+  .coming-soon {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 26px;
-    line-height: 1.1;
-  }
-
-  .record-sub {
-    margin-top: var(--space-1);
-    color: var(--text-dim);
-    font-size: 12px;
+    font-size: 18px;
+    line-height: 1.2;
   }
 
   /* On this day list: dotted dividers between items */
