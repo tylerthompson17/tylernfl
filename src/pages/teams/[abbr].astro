@@ -17,15 +17,7 @@ import {
   teamStats,
 } from '../../utils/team-stats';
 import { url } from '../../utils/url';
-import {
-  INJURY_NOTE,
-  MOVES_NOTE,
-  injuriesFor,
-  injuryRows,
-  moveRows,
-  movesFor,
-  transactions,
-} from '../../utils/transactions';
+import { INJURY_NOTE, MOVES_NOTE, SNAPS_NOTE, transactions, wireItems } from '../../utils/transactions';
 
 export function getStaticPaths() {
   return (teamsData as TeamsData).map((team) => ({
@@ -82,19 +74,13 @@ const statColumns = [
   { key: 'defSample', label: 'Sample', kind: 'number' as const, group: 'Defense' },
 ];
 
-const teamMoves = moveRows(movesFor(team.abbr), team.abbr);
-const teamInjuries = injuryRows(injuriesFor(team.abbr));
-const teamMoveColumns = [
+const teamWire = wireItems(team.abbr);
+const wireColumns = [
   { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
   { key: 'position', label: 'Pos' },
-  { key: 'move', label: 'Move' },
-];
-const teamInjuryColumns = [
-  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
-  { key: 'position', label: 'Pos' },
-  { key: 'injury', label: 'Injury' },
-  { key: 'practice', label: 'Practice' },
-  { key: 'status', label: 'Game status' },
+  { key: 'snaps', label: 'Snaps', kind: 'number' as const },
+  { key: 'categoryLabel', label: 'Type' },
+  { key: 'news', label: 'News' },
 ];
 
 // This team's appearances in the current leaderboards.
@@ -160,7 +146,13 @@ const appearanceColumns = [
         </Panel>
       )
     }
-    <Panel title="Roster moves and injuries">
+    <Panel
+      title={
+        transactions.week === null
+          ? 'Transactions and injuries'
+          : `Week ${transactions.week} transactions and injuries`
+      }
+    >
       {
         transactions.week === null ? (
           <p class="placeholder-note">
@@ -168,36 +160,18 @@ const appearanceColumns = [
           </p>
         ) : (
           <>
-            <section class="group">
-              <h3 class="group-title">
-                {transactions.comparedToWeek === null
-                  ? 'Roster moves'
-                  : `Moves, week ${transactions.comparedToWeek} to week ${transactions.movesWeek}`}
-              </h3>
-              <StatTable
-                columns={teamMoveColumns}
-                rows={teamMoves}
-                caption={`${team.name} roster moves`}
-                emptyText={
-                  transactions.comparedToWeek === null
-                    ? 'No roster moves yet. Moves appear from week 2.'
-                    : `No ${team.name} roster moves this week.`
-                }
-              />
-              <p class="table-foot">{MOVES_NOTE}</p>
-            </section>
-            <section class="group">
-              <h3 class="group-title">Week {transactions.week} injury report</h3>
-              <StatTable
-                columns={teamInjuryColumns}
-                rows={teamInjuries}
-                caption={`${team.name} week ${transactions.week} injury report`}
-                emptyText={`No ${team.name} injury report yet for week ${transactions.week}.`}
-              />
-              <p class="table-foot">{INJURY_NOTE}</p>
-            </section>
+            <StatTable
+              columns={wireColumns}
+              rows={teamWire}
+              caption={`${team.name} transactions and injury report`}
+              emptyText={`No ${team.name} roster moves or injury report entries this week.`}
+            />
+            <p class="table-foot">{SNAPS_NOTE}</p>
+            <p class="table-foot">{MOVES_NOTE} {INJURY_NOTE}</p>
             <p class="table-foot">
-              <a href={url('transactions')}>All moves and injuries</a>
+              <a href={`${url('transactions')}?team=${team.abbr}`}>
+                {team.name} on the full wire
+              </a>
             </p>
           </>
         )

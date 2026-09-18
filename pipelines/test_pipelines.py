@@ -14,7 +14,7 @@ from leaders import build_leaders
 from pbp_cache import is_fresh
 from rosters import age_on, build_rosters, unknown_statuses
 from team_stats import build_team_stats, rank
-from transactions import build_transactions
+from transactions import build_transactions, snap_shares
 from ticker import WeekSpan, build_ticker, format_detail, kickoff_utc, next_opener, select_week
 
 d = date.fromisoformat
@@ -710,6 +710,59 @@ class BuildTransactionsTest(unittest.TestCase):
             weekly('c', 'Hurt Player', 1, 'WAS', 'ACT'), weekly('c', 'Hurt Player', 2, 'WAS', 'RES'),
         ]
         self.assertEqual([m['player'] for m in self.moves(rows)], ['Hurt Player', 'Cut Player', 'Squad Signing'])
+
+    def test_snap_share_uses_the_last_8_games_across_seasons(self):
+        rows = [{'season': 2025, 'week': w, 'pfr_player_id': 'AllenJo', 'offense_pct': 0.0, 'defense_pct': 0.0}
+                for w in range(1, 11)]
+        rows += [{'season': 2025, 'week': w, 'pfr_player_id': 'AllenJo', 'offense_pct': 1.0, 'defense_pct': 0.0}
+                 for w in range(11, 18)]
+        rows += [{'season': 2026, 'week': 1, 'pfr_player_id': 'AllenJo', 'offense_pct': 0.5, 'defense_pct': None},
+                 {'season': 2026, 'week': 1, 'pfr_player_id': 'Unknown', 'offense_pct': 1.0, 'defense_pct': 0.0}]
+        # Last 8 games: seven at 100% and one at 50%. Older benchings drop out.
+        self.assertEqual(snap_shares(rows, {'AllenJo': 'g-allen'}), {'g-allen': 0.9375})
+
+    def test_items_get_categories_and_starters_rank_first(self):
+        rows = [
+            weekly('a', 'Depth Player', 1, 'ARI', 'ACT'), weekly('a', 'Depth Player', 2, 'ARI', 'RES'),
+            weekly('b', 'Star Player', 1, 'WAS', 'ACT'), weekly('b', 'Star Player', 2, 'WAS', 'RES'),
+            weekly('c', 'Squad Player', 2, 'ARI', 'DEV'),
+            weekly('d', 'Back Player', 1, 'KC', 'RES'), weekly('d', 'Back Player', 2, 'KC', 'ACT'),
+        ]
+        injuries = [injury('Star Out', 'DET', status='Out'), injury('Star Practicing', 'KC')]
+        shares = {'b': 0.9, 'a': 0.2, 'id-Star Out': 1.0, 'id-Star Practicing': 0.99}
+        data = build_transactions(rows, injuries, 2026, 2, 'now', shares)
+        items = sorted(data['moves'] + data['injuries'], key=lambda i: i['priority'])
+        self.assertEqual(
+            [(i['player'], i['category'], i['snapShare']) for i in items],
+            [
+                ('Star Out', 'game-status', 1.0),
+                ('Star Player', 'reserve', 0.9),
+                ('Depth Player', 'reserve', 0.2),
+                ('Back Player', 'activated', None),
+                # Routine items: below all news, starters first.
+                ('Star Practicing', 'practice-report', 0.99),
+                ('Squad Player', 'practice-squad', None),
+            ],
+        )
+        self.assertEqual([i['starter'] for i in items], [True, True, False, False, True, False])
+        self.assertEqual(data['categories'][0], {'key': 'game-status', 'label': 'Game status'})
+
+    def test_a_starter_at_full_practice_never_outranks_a_game_status(self):
+        injuries = [injury('Starter Full', 'BUF', practice='Full Participation in Practice'),
+                    injury('Backup Questionable', 'BUF', status='Questionable'),
+                    injury('Starter Out Of Practice', 'BUF', practice='Did Not Participate In Practice')]
+        shares = {'id-Starter Full': 0.9, 'id-Backup Questionable': 0.3, 'id-Starter Out Of Practice': 0.9}
+        data = build_transactions([], injuries, 2026, 2, 'now', shares)
+        self.assertEqual(
+            [i['player'] for i in sorted(data['injuries'], key=lambda i: i['priority'])],
+            ['Backup Questionable', 'Starter Out Of Practice', 'Starter Full'],
+        )
+
+    def test_game_statuses_rank_out_then_doubtful_then_questionable(self):
+        injuries = [injury('Q', 'BUF', status='Questionable'), injury('D', 'BUF', status='Doubtful'),
+                    injury('O', 'BUF', status='Out')]
+        data = build_transactions([], injuries, 2026, 2, 'now', {})
+        self.assertEqual([i['player'] for i in sorted(data['injuries'], key=lambda i: i['priority'])], ['O', 'D', 'Q'])
 
     def test_first_week_has_nothing_to_compare(self):
         data = build_transactions([weekly('a', 'Anyone', 1, 'BUF', 'ACT')], [], 2026, 1, 'now')

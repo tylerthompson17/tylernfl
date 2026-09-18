@@ -265,7 +265,21 @@ export interface LeaderboardData {
 /** transactions.json: roster moves and the injury report, written daily by pipelines/transactions.py. */
 export type MoveType = 'signed' | 'joined' | 'released' | 'retired' | 'left' | 'status';
 
-export interface RosterMove {
+/** Filter category on the wire, e.g. "game-status", "reserve", "practice-squad". */
+export type WireCategory = string;
+
+/** Fields every wire item carries, for ranking and filtering. */
+export interface WireRanking {
+  category: WireCategory;
+  /** Average offense or defense snap share over his last 8 games; null without snaps */
+  snapShare: number | null;
+  /** snapShare of 50% or more */
+  starter: boolean;
+  /** Lower is bigger news: starters first, then by category */
+  priority: number;
+}
+
+export interface RosterMove extends WireRanking {
   /** nflverse gsis id, matching RosterPlayer.gsisId */
   playerId: string;
   player: string;
@@ -281,7 +295,7 @@ export interface RosterMove {
   note: string;
 }
 
-export interface InjuryEntry {
+export interface InjuryEntry extends WireRanking {
   playerId: string;
   player: string;
   team: string;
@@ -302,6 +316,8 @@ export interface TransactionsData {
   comparedToWeek: number | null;
   /** ISO timestamp of the run that last changed this file */
   updated: string;
+  /** Wire filter categories in priority order */
+  categories: { key: WireCategory; label: string }[];
   /** Biggest news first, practice squad moves last */
   moves: RosterMove[];
   /** Out, then Doubtful, then Questionable, then practice only */

@@ -65,6 +65,13 @@ tylernfl/
   and only an explicit status row counts as leaving: a missing row means nothing (byes
   have no snapshot, and in 2025, 97% of vanished players came back on the same team).
   Game-day inactives and active roster / practice squad moves are not moves.
+- Each move and injury entry carries a category (for the wire's type filter), a snap share
+  (last 8 games of offense or defense snaps, this season and last, from `load_snap_counts`
+  mapped to gsis ids through `load_players`), a starter flag (50% or more) and a priority:
+  news (game statuses, real moves) before routine items (practice squad, practice reports),
+  starters first within each. The home page shows the top of the news; `/transactions` is
+  the full wire, filterable by team, type and starters, with the filter kept in the URL
+  (`?team=BUF&type=reserve&starters=1`).
 - Rosters are one file per team so an unchanged team is not rewritten. Player URL
   slugs are written by the pipeline, not derived by the site, because players who
   share a name need a team suffix. `player_slug` in `pipelines/common.py` and

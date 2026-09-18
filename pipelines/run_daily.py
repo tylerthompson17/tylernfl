@@ -27,7 +27,12 @@ from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
 from leaders import build_leaders  # noqa: E402
 from rosters import build_rosters, load_roster_rows, unknown_statuses  # noqa: E402
 from ticker import build_ticker, load_schedule_rows  # noqa: E402
-from transactions import build_transactions, load_injury_rows, load_weekly_roster_rows  # noqa: E402
+from transactions import (  # noqa: E402
+    build_transactions,
+    load_injury_rows,
+    load_snap_shares,
+    load_weekly_roster_rows,
+)
 
 
 def roster_season(today: date) -> int:
@@ -68,6 +73,7 @@ def main() -> None:
             ticker['season'],
             ticker['week'],
             updated,
+            load_snap_shares(ticker['season']),
         )
     print(f"transactions: week {transactions['movesWeek']} vs {transactions['comparedToWeek']}, "
           f"{len(transactions['moves'])} moves, {len(transactions['injuries'])} on the injury report")

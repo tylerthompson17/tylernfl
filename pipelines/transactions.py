@@ -22,6 +22,20 @@ shows. Game statuses (Out, Doubtful, Questionable) arrive with each team's
 last report before its game, so early in the week most players carry only
 their practice participation.
 
+Every item also gets a snap share, a news category and a priority, so the
+site can put the news a fan cares about first and filter the full wire:
+- Snap share is a player's average share of offensive or defensive snaps
+  over his last SNAP_GAMES games, this season and last (load_snap_counts),
+  so a starter hurt before week 1 still reads as one. At STARTER_SHARE or
+  more he counts as a starter.
+- Priority puts news (game statuses and real moves) ahead of routine items
+  (practice squad moves and practice reports), so a starter at full
+  practice never outranks a Questionable tag. Within each, starters come
+  first, then the category order: game statuses (Out, Doubtful,
+  Questionable), reserve placements, team changes, activations, signings,
+  releases; then practice squad moves and practice reports (did not
+  practice, limited, full).
+
 Status groups follow the nflverse roster status dictionary; see rosters.py.
 """
 
@@ -49,6 +63,31 @@ PRACTICE_LABELS = {
     'Limited Participation in Practice': 'Limited',
     'Did Not Participate In Practice': 'Did not practice',
 }
+
+SNAP_GAMES = 8
+STARTER_SHARE = 0.5
+
+# Filter categories for the wire, in priority order. Game statuses sort
+# Out, Doubtful, Questionable within their category.
+CATEGORIES = [
+    ('game-status', 'Game status'),
+    ('reserve', 'Reserve list'),
+    ('team-change', 'Team changes'),
+    ('activated', 'Activations'),
+    ('signed', 'Signings'),
+    ('released', 'Releases'),
+    ('retired', 'Retirements'),
+    ('practice-squad', 'Practice squad'),
+    ('practice-report', 'Practice report'),
+]
+CATEGORY_ORDER = {key: i for i, (key, _) in enumerate(CATEGORIES)}
+# Routine items sit below all news; within each, starters come first.
+ROUTINE = {'practice-squad', 'practice-report'}
+ROUTINE_OFFSET = 200
+NON_STARTER_OFFSET = 100
+PRACTICE_ORDER = {'Did not practice': 0, 'Limited': 1, 'Full': 2}
+
+SNAP_COLUMNS = ['season', 'week', 'pfr_player_id', 'offense_pct', 'defense_pct']
 
 WEEKLY_COLUMNS = ['week', 'team', 'status', 'full_name', 'gsis_id', 'position', 'depth_chart_position']
 INJURY_COLUMNS = [
@@ -88,6 +127,51 @@ def exit_note(before: str, after: str) -> tuple[str, str]:
     if before == PRACTICE_SQUAD or after in PRACTICE_SQUAD_EXITS:
         return 'released', 'Released from practice squad'
     return 'released', 'Released'
+
+
+def snap_shares(snap_rows: list[dict], pfr_to_gsis: dict[str, str]) -> dict[str, float]:
+    """gsis id -> average offense or defense snap share over the last SNAP_GAMES games."""
+    games: dict[str, list[tuple[int, int, float]]] = {}
+    for r in snap_rows:
+        gsis = pfr_to_gsis.get(r['pfr_player_id'])
+        if gsis is None:
+            continue
+        share = max(r['offense_pct'] or 0.0, r['defense_pct'] or 0.0)
+        games.setdefault(gsis, []).append((r['season'], r['week'], share))
+    return {
+        gsis: sum(g[2] for g in recent) / len(recent)
+        for gsis, played in games.items()
+        for recent in [sorted(played)[-SNAP_GAMES:]]
+    }
+
+
+def move_category(move: dict) -> str:
+    if move['practiceSquad']:
+        return 'practice-squad'
+    if move['type'] == 'status':
+        return 'activated' if move['note'].startswith(('Activated', 'Reinstated')) else 'reserve'
+    return {'joined': 'team-change', 'signed': 'signed', 'released': 'released',
+            'retired': 'retired', 'left': 'released'}[move['type']]
+
+
+def rank_items(items: list[dict], shares: dict[str, float]) -> None:
+    """Add snapShare, starter and priority to moves and injury entries, in place."""
+    for item in items:
+        share = shares.get(item['playerId'])
+        item['snapShare'] = None if share is None else round(share, 2)
+        starter = share is not None and share >= STARTER_SHARE
+        item['starter'] = starter
+        within = (
+            PRACTICE_ORDER.get(item.get('practice'), len(PRACTICE_ORDER))
+            if item['category'] == 'practice-report'
+            else GAME_STATUS_ORDER.get(item.get('status'), 0)
+        )
+        item['priority'] = (
+            (ROUTINE_OFFSET if item['category'] in ROUTINE else 0)
+            + (0 if starter else NON_STARTER_OFFSET)
+            + CATEGORY_ORDER[item['category']] * 10
+            + within
+        )
 
 
 def diff_rosters(rows: list[dict]) -> tuple[int | None, int | None, list[dict]]:
@@ -171,7 +255,12 @@ def build_injuries(rows: list[dict], week: int | None) -> list[dict]:
 
 
 def build_transactions(
-    weekly_rows: list[dict], injury_rows: list[dict], season: int, ticker_week: int | None, updated: str
+    weekly_rows: list[dict],
+    injury_rows: list[dict],
+    season: int,
+    ticker_week: int | None,
+    updated: str,
+    shares: dict[str, float] | None = None,
 ) -> dict:
     """Pure function to the TransactionsData shape in src/data/types.ts.
 
@@ -179,18 +268,26 @@ def build_transactions(
     picks the injury report and switches the whole file off in the
     offseason, when last season's final moves would read as news.
     """
+    categories = [{'key': key, 'label': label} for key, label in CATEGORIES]
     if ticker_week is None:
         return {'season': season, 'week': None, 'movesWeek': None, 'comparedToWeek': None,
-                'updated': updated, 'moves': [], 'injuries': []}
+                'updated': updated, 'categories': categories, 'moves': [], 'injuries': []}
     moves_week, compared_to, moves = diff_rosters(weekly_rows)
+    injuries = build_injuries(injury_rows, ticker_week)
+    for move in moves:
+        move['category'] = move_category(move)
+    for entry in injuries:
+        entry['category'] = 'game-status' if entry['status'] in GAME_STATUS_ORDER else 'practice-report'
+    rank_items(moves + injuries, shares or {})
     return {
         'season': season,
         'week': ticker_week,
         'movesWeek': moves_week,
         'comparedToWeek': compared_to,
         'updated': updated,
+        'categories': categories,
         'moves': moves,
-        'injuries': build_injuries(injury_rows, ticker_week),
+        'injuries': injuries,
     }
 
 
@@ -214,3 +311,25 @@ def load_injury_rows(season: int) -> list[dict]:
     import nflreadpy as nfl
 
     return _load(nfl.load_injuries, season, INJURY_COLUMNS)
+
+
+def load_snap_shares(season: int) -> dict[str, float]:
+    """Snap shares from this season and last, keyed by gsis id.
+
+    Snap counts are keyed by Pro Football Reference id; nflverse's player
+    table maps those to gsis ids for every player, rostered or not.
+    """
+    import nflreadpy as nfl
+    import polars as pl
+
+    rows = []
+    for year in (season - 1, season):
+        try:
+            frame = nfl.load_snap_counts(year)
+        except ConnectionError as error:
+            if missing_season(error):
+                continue
+            raise
+        rows += frame.filter(pl.col('game_type') == 'REG').select(SNAP_COLUMNS).to_dicts()
+    players = nfl.load_players().select('pfr_id', 'gsis_id').drop_nulls()
+    return snap_shares(rows, dict(zip(players['pfr_id'], players['gsis_id'])))

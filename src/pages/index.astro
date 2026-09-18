@@ -6,7 +6,7 @@ import FieldStrip from '../components/FieldStrip.astro';
 import { url } from '../utils/url';
 import { getArticles } from '../utils/articles';
 import leadersData from '../data/leaders.json';
-import { moveRows, statusSummary, transactions } from '../utils/transactions';
+import { headlineItems, statusSummary, transactions } from '../utils/transactions';
 import type { LeadersData } from '../data/types';
 
 const leaders = leadersData as LeadersData;
@@ -14,14 +14,14 @@ const receiving = leaders.categories.find((c) => c.key === 'rec_yds');
 
 const latest = (await getArticles())[0];
 
-// Biggest news first: the pipeline sorts practice squad churn last.
-const HOME_MOVES = 8;
-const topMoves = moveRows(transactions.moves.slice(0, HOME_MOVES));
+// Game statuses and real moves, starters first; practice squad churn and
+// practice reports stay on the full wire.
+const headlines = headlineItems(8);
 const injurySummary = statusSummary(transactions.injuries);
-const moveColumns = [
+const headlineColumns = [
   { key: 'team', label: 'Team', kind: 'team' as const },
   { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
-  { key: 'move', label: 'Move' },
+  { key: 'news', label: 'News' },
 ];
 
 const leaderColumns = [
@@ -61,7 +61,7 @@ const leaderColumns = [
         <a href={url(receiving ? `stats/${receiving.board}` : 'stats')}>Full receiving leaderboard</a>
       </p>
     </Panel>
-    <Panel title="Roster moves">
+    <Panel title="Transactions and injuries">
       {
         transactions.week === null ? (
           <p class="placeholder-note">
@@ -70,16 +70,15 @@ const leaderColumns = [
         ) : (
           <>
             <StatTable
-              columns={moveColumns}
-              rows={topMoves}
-              caption="Latest roster moves"
-              emptyText="No roster moves yet. Moves appear from week 2."
+              columns={headlineColumns}
+              rows={headlines.items}
+              caption="Top transactions and game statuses"
+              emptyText="No game statuses or roster moves yet this week."
             />
             <p class="table-foot">
-              {transactions.moves.length > HOME_MOVES &&
-                `${transactions.moves.length - HOME_MOVES} more this week. `}
-              Week {transactions.week} injury report: {injurySummary ?? 'no game statuses yet'}.{' '}
-              <a href={url('transactions')}>All moves and injuries</a>
+              Starters first. Week {transactions.week} game statuses:{' '}
+              {injurySummary ?? 'none yet'}. {headlines.rest} more on the{' '}
+              <a href={url('transactions')}>full wire</a>, filterable by team and type.
             </p>
           </>
         )
