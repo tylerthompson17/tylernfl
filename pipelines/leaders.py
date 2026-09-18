@@ -4,7 +4,7 @@ Regular season totals, top 5 per category. Before the first regular season
 week of a new season has stats, the previous season's final leaders stay up.
 """
 
-from common import normalize_team
+from common import load_with_fallback, missing_season, normalize_team
 
 CATEGORIES = [
     ('pass_yds', 'Passing yards', 'passing_yards'),
@@ -66,17 +66,14 @@ def load_regular_season_rows(season: int) -> list[dict]:
     try:
         stats = nfl.load_player_stats(season, summary_level='week')
     except ConnectionError as error:
-        # The file for a season does not exist until its first games are
-        # played. nflreadpy reports that as a 404 ConnectionError; any other
-        # failure must stop the run rather than publish last season's data.
-        if '404' in str(error):
+        # A season has no file until its first games are played, so the
+        # previous season's leaders stay up. Any other failure must stop the
+        # run rather than publish stale data as if it were current.
+        if missing_season(error):
             return []
         raise
     return stats.filter(pl.col('season_type') == 'REG').select(columns).to_dicts()
 
 
 def load_leaders_input(current_season: int) -> tuple[list[dict], int]:
-    rows = load_regular_season_rows(current_season)
-    if rows:
-        return rows, current_season
-    return load_regular_season_rows(current_season - 1), current_season - 1
+    return load_with_fallback(load_regular_season_rows, current_season)

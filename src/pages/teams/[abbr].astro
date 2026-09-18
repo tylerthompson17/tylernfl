@@ -5,7 +5,9 @@ import TeamChip from '../../components/TeamChip.astro';
 import StatTable from '../../components/StatTable.astro';
 import teamsData from '../../data/teams.json';
 import leadersData from '../../data/leaders.json';
-import type { TeamsData, LeadersData } from '../../data/types';
+import type { RosterPlayer, TeamsData, LeadersData } from '../../data/types';
+import { groupPlayers, PRACTICE_SQUAD, rosterFor } from '../../utils/rosters';
+import { formatExperience, formatHeight } from '../../utils/format';
 
 export function getStaticPaths() {
   return (teamsData as TeamsData).map((team) => ({
@@ -16,6 +18,39 @@ export function getStaticPaths() {
 
 const { team } = Astro.props;
 const leaders = leadersData as LeadersData;
+
+const roster = rosterFor(team.abbr);
+const active = roster?.players.filter((p) => p.status !== PRACTICE_SQUAD) ?? [];
+const practiceSquad = roster?.players.filter((p) => p.status === PRACTICE_SQUAD) ?? [];
+
+function toRow(player: RosterPlayer) {
+  return {
+    number: player.number,
+    name: player.name,
+    slug: player.slug,
+    position: player.position,
+    status: player.statusLabel,
+    height: formatHeight(player.heightInches),
+    weight: player.weight,
+    age: player.age,
+    experience: formatExperience(player.experience),
+    college: player.college,
+  };
+}
+
+const rosterColumns = [
+  { key: 'number', label: 'No.', kind: 'number' as const },
+  { key: 'name', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
+  { key: 'position', label: 'Pos' },
+  { key: 'status', label: 'Status' },
+  { key: 'height', label: 'Ht', kind: 'number' as const },
+  { key: 'weight', label: 'Wt', kind: 'number' as const },
+  { key: 'age', label: 'Age', kind: 'number' as const },
+  { key: 'experience', label: 'Exp', kind: 'number' as const },
+  { key: 'college', label: 'College' },
+];
+// Everyone on the practice squad shares a status, so the column is dropped.
+const practiceColumns = rosterColumns.filter((col) => col.key !== 'status');
 
 // This team's appearances in the current leaderboards.
 const appearances = leaders.categories.flatMap((category) =>
@@ -29,7 +64,7 @@ const appearances = leaders.categories.flatMap((category) =>
     }))
 );
 
-const columns = [
+const appearanceColumns = [
   { key: 'category', label: 'Category' },
   { key: 'player', label: 'Player', kind: 'player' as const },
   { key: 'rank', label: 'Rk', kind: 'number' as const },
@@ -43,9 +78,46 @@ const columns = [
     {team.name}
   </h1>
   <div class="content-grid">
+    <Panel title="Roster">
+      {
+        roster && active.length > 0 ? (
+          <>
+            {groupPlayers(roster, active).map((group) => (
+              <section class="group">
+                <h3 class="group-title">{group.label}</h3>
+                <StatTable
+                  columns={rosterColumns}
+                  rows={group.players.map(toRow)}
+                  caption={`${team.name} ${group.label.toLowerCase()} roster`}
+                />
+              </section>
+            ))}
+            <p class="table-foot">
+              {active.length} players, from the week {roster.week} roster. Heights in feet and
+              inches, Exp in completed seasons.
+            </p>
+          </>
+        ) : (
+          <p class="placeholder-note">
+            No roster published yet. Rosters appear once nflverse posts them for the season.
+          </p>
+        )
+      }
+    </Panel>
+    {
+      practiceSquad.length > 0 && roster && (
+        <Panel title="Practice squad">
+          <StatTable
+            columns={practiceColumns}
+            rows={practiceSquad.map(toRow)}
+            caption={`${team.name} practice squad`}
+          />
+        </Panel>
+      )
+    }
     <Panel title={`${leaders.season} league leaderboard appearances`}>
       <StatTable
-        columns={columns}
+        columns={appearanceColumns}
         rows={appearances}
         caption={`${team.name} appearances in league leaderboards`}
         emptyText={`No ${team.name} players in the current leaderboards.`}
@@ -65,5 +137,19 @@ const columns = [
     display: flex;
     align-items: center;
     gap: var(--space-2);
+  }
+
+  .group + .group {
+    margin-top: var(--space-4);
+  }
+
+  .group-title {
+    font-size: 15px;
+    margin-bottom: var(--space-2);
+  }
+
+  .table-foot {
+    margin-top: var(--space-3);
+    color: var(--text-dim);
   }
 </style>

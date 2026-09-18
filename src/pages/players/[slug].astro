@@ -4,59 +4,110 @@ import Panel from '../../components/Panel.astro';
 import TeamChip from '../../components/TeamChip.astro';
 import leadersData from '../../data/leaders.json';
 import type { LeadersData } from '../../data/types';
-import { playerSlug } from '../../utils/slug';
+import { leaderLines, playerPages, type PlayerPage } from '../../utils/players';
+import { formatExperience, formatHeight } from '../../utils/format';
+import { url } from '../../utils/url';
 
 export function getStaticPaths() {
-  const leaders = leadersData as LeadersData;
-  const players = new Map<string, { player: string; team: string }>();
-  for (const category of leaders.categories) {
-    for (const row of category.rows) {
-      players.set(playerSlug(row.player), { player: row.player, team: row.team });
-    }
-  }
-  return [...players.entries()].map(([slug, props]) => ({ params: { slug }, props }));
+  return [...playerPages.entries()].map(([slug, pages]) => ({
+    params: { slug },
+    props: { pages },
+  }));
 }
 
-const { player, team } = Astro.props;
+const { pages } = Astro.props as { pages: PlayerPage[] };
 const leaders = leadersData as LeadersData;
 
-const lines = leaders.categories.flatMap((category) =>
-  category.rows
-    .filter((row) => row.player === player)
-    .map((row) => ({ label: category.label, rank: row.rank, value: row.value }))
-);
+// More than one player answers to this slug, so the page points at each of
+// them rather than silently picking one.
+const shared = pages.length > 1;
+const page = pages[0]!;
+const roster = page.roster;
+const lines = shared ? [] : leaderLines(page);
+
+const facts = roster
+  ? [
+      { label: 'Position', value: roster.position },
+      { label: 'Number', value: roster.number === null ? null : `#${roster.number}` },
+      { label: 'Status', value: roster.statusLabel },
+      { label: 'Height', value: formatHeight(roster.heightInches) },
+      { label: 'Weight', value: roster.weight === null ? null : `${roster.weight} lb` },
+      { label: 'Age', value: roster.age === null ? null : String(roster.age) },
+      { label: 'Experience', value: formatExperience(roster.experience) },
+      { label: 'College', value: roster.college },
+    ].filter((fact) => fact.value !== null)
+  : [];
 ---
 
-<BaseLayout title={player}>
-  <h1 class="page-title player-heading">
-    {player}
-    <TeamChip abbr={team} size="sm" />
-  </h1>
-  <div class="content-grid">
-    <Panel title={`${leaders.season} season, through week ${leaders.throughWeek}`}>
-      {
-        lines.length > 0 ? (
-          <ul class="lines">
-            {lines.map((line) => (
-              <li>
-                <span>{line.label}</span>
-                <span class="num">
-                  {line.value} (#{line.rank})
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p class="placeholder-note">Not in the current leaderboards.</p>
-        )
-      }
-    </Panel>
-    <Panel title="Player stats">
-      <p class="placeholder-note">
-        Full season and career stats land here when the data pipelines run.
-      </p>
-    </Panel>
-  </div>
+<BaseLayout title={page.name}>
+  {
+    shared ? (
+      <>
+        <h1 class="page-title">{page.name}</h1>
+        <div class="content-grid">
+          <Panel title="More than one player by this name">
+            <ul class="choices">
+              {pages.map((choice) => (
+                <li>
+                  <a href={url(`players/${choice.slug}`)}>{choice.name}</a>
+                  <span class="choice-detail">
+                    {choice.roster?.position}
+                    <TeamChip abbr={choice.team} size="sm" />
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        </div>
+      </>
+    ) : (
+      <>
+        <h1 class="page-title player-heading">
+          {page.name}
+          <TeamChip abbr={page.team} size="sm" />
+        </h1>
+        <div class="content-grid">
+          <Panel title="Player">
+            {facts.length > 0 ? (
+              <dl class="facts">
+                {facts.map((fact) => (
+                  <div class="fact">
+                    <dt>{fact.label}</dt>
+                    <dd class="num">{fact.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : (
+              <p class="placeholder-note">
+                Not on a current roster. Only leaderboard totals are on record.
+              </p>
+            )}
+          </Panel>
+          <Panel title={`${leaders.season} season, through week ${leaders.throughWeek}`}>
+            {lines.length > 0 ? (
+              <ul class="lines">
+                {lines.map((line) => (
+                  <li>
+                    <span>{line.label}</span>
+                    <span class="num">
+                      {line.value} {line.valueLabel} (#{line.rank})
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="placeholder-note">Not in the current leaderboards.</p>
+            )}
+          </Panel>
+          <Panel title="Player stats">
+            <p class="placeholder-note">
+              Full season and career stats land here when the data pipelines run.
+            </p>
+          </Panel>
+        </div>
+      </>
+    )
+  }
 </BaseLayout>
 
 <style>
@@ -66,21 +117,55 @@ const lines = leaders.categories.flatMap((category) =>
     gap: var(--space-2);
   }
 
-  .lines {
+  /* Boxes carry their own borders and share them through negative
+     margins, so a short last row stretches to the edge instead of leaving
+     a strip of the container color showing. */
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .fact {
+    flex: 1 1 110px;
+    border: 1px solid var(--rule);
+    margin: 0 -1px -1px 0;
+    padding: var(--space-2);
+  }
+
+  .fact dt {
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  .fact dd {
+    font-weight: 700;
+  }
+
+  .lines,
+  .choices {
     list-style: none;
     padding: 0;
   }
 
-  .lines li {
+  .lines li,
+  .choices li {
     display: flex;
     justify-content: space-between;
     gap: var(--space-3);
-    max-width: 320px;
+    max-width: 360px;
   }
 
-  .lines li + li {
+  .lines li + li,
+  .choices li + li {
     margin-top: var(--space-1);
     padding-top: var(--space-1);
     border-top: 1px dotted var(--rule-soft);
+  }
+
+  .choice-detail {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--text-dim);
   }
 </style>

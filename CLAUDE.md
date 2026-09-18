@@ -49,9 +49,16 @@ tylernfl/
 - Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text).
 - In-progress parsing (quarter, clock, halftime) is provisional until verified against the real capture from DET at BUF on 2026-09-17.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
-- Files: `ticker.json`, `leaders.json`, `on_this_day.json`, `teams.json`, `model_record.json`.
+- Files: `ticker.json`, `leaders.json`, `rosters/{TEAM}.json`, `on_this_day.json`,
+  `teams.json`, `model_record.json`.
 - `teams.json` (abbr, name, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
-- `ticker.json` and `leaders.json` are real data written by `pipelines/run_daily.py` (nflreadpy), run daily by `.github/workflows/daily.yml`. nflverse calls the Rams `LA`; pipelines normalize it to `LAR`.
+- `ticker.json`, `leaders.json` and `rosters/` are real data written by
+  `pipelines/run_daily.py` (nflreadpy), run daily by `.github/workflows/daily.yml`.
+  nflverse calls the Rams `LA`; pipelines normalize it to `LAR`.
+- Rosters are one file per team so an unchanged team is not rewritten. Player URL
+  slugs are written by the pipeline, not derived by the site, because players who
+  share a name need a team suffix. `player_slug` in `pipelines/common.py` and
+  `playerSlug` in `src/utils/slug.ts` must produce the same strings.
 - `model_record.json` stays a placeholder until the 4th down model exists. `on_this_day.json` is still mock data.
 
 ## Design direction

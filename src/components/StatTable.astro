@@ -13,6 +13,12 @@ export interface StatTableColumn {
   key: string;
   label: string;
   kind?: 'text' | 'number' | 'team' | 'player';
+  /**
+   * For a player column: the row key holding a written slug, as rosters
+   * carry for players who share a name. Without it the slug is derived
+   * from the name, which is right for data that has no slug of its own.
+   */
+  slugKey?: string;
 }
 
 interface Props {
@@ -46,7 +52,15 @@ const { columns, rows, caption, emptyText = 'No data yet.' } = Astro.props;
                 {col.kind === 'team' && row[col.key] != null ? (
                   <TeamChip abbr={String(row[col.key])} size="sm" />
                 ) : col.kind === 'player' && row[col.key] != null ? (
-                  <a href={url(`players/${playerSlug(String(row[col.key]))}`)}>{row[col.key]}</a>
+                  <a
+                    href={url(
+                      `players/${
+                        (col.slugKey && row[col.slugKey]) ?? playerSlug(String(row[col.key]))
+                      }`
+                    )}
+                  >
+                    {row[col.key]}
+                  </a>
                 ) : (
                   row[col.key]
                 )}

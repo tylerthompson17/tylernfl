@@ -42,7 +42,9 @@ jobs:
       - name: Commit changed data
         id: commit
         run: |
-          if git diff --quiet -- src/data; then
+          # status, not diff: a data file the pipeline adds for the first
+          # time is untracked, and git diff does not see untracked files.
+          if [ -z "$(git status --porcelain -- src/data)" ]; then
             echo "No data changes."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
