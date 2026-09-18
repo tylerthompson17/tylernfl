@@ -6,6 +6,7 @@
       "key": "pass_yds",
       "label": "Passing yards",
       "valueLabel": "Yds",
+      "board": "passing",
       "rows": [
         {
           "rank": 1,
@@ -43,6 +44,7 @@
       "key": "rush_yds",
       "label": "Rushing yards",
       "valueLabel": "Yds",
+      "board": "rushing",
       "rows": [
         {
           "rank": 1,
@@ -80,6 +82,7 @@
       "key": "rec_yds",
       "label": "Receiving yards",
       "valueLabel": "Yds",
+      "board": "receiving",
       "rows": [
         {
           "rank": 1,

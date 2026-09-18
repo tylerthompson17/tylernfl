@@ -98,6 +98,49 @@ th,
   margin-bottom: var(--space-2);
 }
 
+/* Data tables: boxed units with 1px borders on every cell, compact
+   padding, 12px type, right-aligned tabular numbers. Wide tables scroll
+   inside their panel, never the page. Shared by StatTable and
+   Leaderboard. */
+.stat-table-scroll {
+  overflow-x: auto;
+}
+
+.stat-table {
+  width: 100%;
+  font-size: 12px;
+}
+
+.stat-table th,
+.stat-table td {
+  border: 1px solid var(--rule);
+  padding: var(--cell-pad);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.stat-table th {
+  background: var(--bg);
+  font-weight: 700;
+}
+
+.stat-table .number {
+  text-align: right;
+}
+
+.stat-table th.group {
+  text-align: center;
+}
+
+/* Highlighted row on hover: yellow as background only */
+.stat-table tbody tr:hover {
+  background: var(--highlight);
+}
+
+.stat-table-empty {
+  color: var(--text-dim);
+}
+
 /* Screen reader only */
 .visually-hidden {
   position: absolute;

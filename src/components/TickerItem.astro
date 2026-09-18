@@ -5,7 +5,9 @@
  * carry the quarter and clock on a yellow highlight background.
  *
  * The data attributes are hooks for src/lib/live-ticker/client.ts, which
- * localizes kickoff times and applies live scores in the browser.
+ * localizes kickoff times and applies live scores in the browser. A live
+ * score that changes gets a brief first-down yellow highlight behind the
+ * number, the site's one bit of motion besides the carousel itself.
  */
 import type { TickerGame } from '../data/types';
 import { url } from '../utils/url';
@@ -76,6 +78,28 @@ const homeWon = decided && game.homeScore! > game.awayScore!;
 
   .line.won {
     font-weight: 700;
+  }
+
+  /* Room for the highlight without shifting the digits. */
+  .num {
+    padding: 0 var(--space-1);
+    margin-right: calc(-1 * var(--space-1));
+  }
+
+  /* Yellow as a background only, fading out over a moment. The global
+     reduced motion rule cuts it to nothing. */
+  .num.score-changed {
+    animation: score-changed 2s ease-out;
+  }
+
+  @keyframes score-changed {
+    from {
+      background: var(--highlight);
+    }
+
+    to {
+      background: transparent;
+    }
   }
 
   /* Scoreboard chrome: team links keep text color, underline on hover

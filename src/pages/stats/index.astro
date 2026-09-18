@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
 import StatTable from '../../components/StatTable.astro';
+import StatsNav from '../../components/StatsNav.astro';
 import leadersData from '../../data/leaders.json';
 import { url } from '../../utils/url';
 import type { LeadersData } from '../../data/types';
@@ -20,9 +21,10 @@ function columnsFor(valueLabel: string) {
 
 <BaseLayout title="Stat leaders">
   <h1 class="page-title">Stat leaders</h1>
+  <StatsNav current="index" />
   <p class="page-intro">
-    {leaders.season} season, through week {leaders.throughWeek}. Team offense and defense ranks
-    are on <a href={url('stats/teams')}>Team stats</a>.
+    {leaders.season} season, through week {leaders.throughWeek}. Top 5 in each category; the
+    full leaderboards sort by any column and switch to per game.
   </p>
   <div class="content-grid stats-grid">
     {
@@ -35,6 +37,11 @@ function columnsFor(valueLabel: string) {
               caption={`${category.label} leaders`}
               emptyText="No games played yet. Leaders appear after week 1."
             />
+            <p class="table-foot">
+              <a href={url(`stats/${category.board}`)}>
+                Full {category.board} leaderboard
+              </a>
+            </p>
           </Panel>
         ))
       ) : (
@@ -47,6 +54,10 @@ function columnsFor(valueLabel: string) {
 </BaseLayout>
 
 <style>
+  .table-foot {
+    margin-top: var(--space-2);
+  }
+
   .page-intro {
     color: var(--text-dim);
     margin-bottom: var(--space-4);

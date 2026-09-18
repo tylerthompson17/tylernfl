@@ -9,6 +9,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from common import player_slug
+from leaderboards import BOARDS, build_leaderboards
 from leaders import build_leaders
 from pbp_cache import is_fresh
 from rosters import age_on, build_rosters, unknown_statuses
@@ -171,6 +172,111 @@ class BuildLeadersTest(unittest.TestCase):
         leaders = build_leaders([], 2026)
         self.assertEqual(leaders['throughWeek'], 0)
         self.assertTrue(all(c['rows'] == [] for c in leaders['categories']))
+
+
+def stat_row(player_id, name, team, week, **stats):
+    """One player's week. Unlisted stats are zero, like nflverse rows."""
+    from leaderboards import STAT_COLUMNS
+
+    row = {c: 0 for c in STAT_COLUMNS}
+    row.update(
+        player_id=player_id,
+        player_display_name=name,
+        position='QB',
+        team=team,
+        week=week,
+        game_id=f'2026_{week:02d}_{team}',
+        fg_long=None,
+    )
+    row.update(stats)
+    return row
+
+
+class BuildLeaderboardsTest(unittest.TestCase):
+    def board(self, rows, key):
+        return build_leaderboards(rows, 2026)[key]
+
+    def test_totals_rates_and_ranking_by_the_primary_column(self):
+        rows = [
+            stat_row('a', 'Josh Allen', 'BUF', 1, completions=20, attempts=30, passing_yards=280),
+            stat_row('a', 'Josh Allen', 'BUF', 2, completions=25, attempts=35, passing_yards=300),
+            stat_row('b', 'Jared Goff', 'DET', 1, completions=30, attempts=40, passing_yards=320),
+            stat_row('b', 'Jared Goff', 'DET', 2, completions=20, attempts=30, passing_yards=260),
+            stat_row('c', 'Joe Burrow', 'CIN', 1, completions=10, attempts=20, passing_yards=100),
+        ]
+        passing = self.board(rows, 'passing')
+        self.assertEqual([(r['rank'], r['player']) for r in passing['rows']],
+                         [(1, 'Jared Goff'), (1, 'Josh Allen'), (3, 'Joe Burrow')])
+        allen = next(r for r in passing['rows'] if r['player'] == 'Josh Allen')
+        self.assertEqual(allen['values']['games'], 2)
+        self.assertEqual(allen['values']['cmp_pct'], 0.692)
+        self.assertEqual(allen['values']['pass_ypa'], 8.9)
+        self.assertEqual(passing['primary'], 'passing_yards')
+
+    def test_qualifying_scales_with_team_games(self):
+        rows = [
+            # BUF has played 2 games: the bar is 28 attempts.
+            stat_row('a', 'Josh Allen', 'BUF', 1, attempts=30),
+            stat_row('a', 'Josh Allen', 'BUF', 2, attempts=30),
+            stat_row('m', 'Mitch Trubisky', 'BUF', 2, attempts=20),
+            # CIN has played 1 game: the bar is 14.
+            stat_row('c', 'Joe Burrow', 'CIN', 1, attempts=14),
+        ]
+        qualified = {r['player']: (r['qualified'], r['teamGames']) for r in self.board(rows, 'passing')['rows']}
+        self.assertEqual(qualified, {
+            'Josh Allen': (True, 2),
+            'Mitch Trubisky': (False, 2),
+            'Joe Burrow': (True, 1),
+        })
+
+    def test_players_only_appear_on_boards_they_have_volume_in(self):
+        rows = [stat_row('a', 'Josh Allen', 'BUF', 1, attempts=30, carries=6, rushing_yards=40)]
+        boards = build_leaderboards(rows, 2026)
+        self.assertEqual(len(boards['passing']['rows']), 1)
+        self.assertEqual(len(boards['rushing']['rows']), 1)
+        self.assertEqual(boards['receiving']['rows'], [])
+
+    def test_rates_with_no_denominator_are_null(self):
+        rows = [stat_row('r', 'Khalil Shakir', 'BUF', 1, targets=3, receptions=0)]
+        receiving = self.board(rows, 'receiving')['rows'][0]['values']
+        self.assertEqual((receiving['catch_pct'], receiving['rec_ypr']), (0.0, None))
+
+    def test_bests_take_the_max_and_half_sacks_survive(self):
+        rows = [
+            stat_row('k', 'Tyler Bass', 'BUF', 1, fg_made=2, fg_att=2, fg_long=48),
+            stat_row('k', 'Tyler Bass', 'BUF', 2, fg_made=1, fg_att=2, fg_long=None),
+            stat_row('d', 'Greg Rousseau', 'BUF', 1, def_sacks=1.5),
+            stat_row('d', 'Greg Rousseau', 'BUF', 2, def_sacks=0.5),
+        ]
+        kicking = self.board(rows, 'kicking')['rows'][0]['values']
+        self.assertEqual((kicking['fg_long'], kicking['fg_pct']), (48, 0.75))
+        self.assertEqual(self.board(rows, 'defense')['rows'][0]['values']['def_sacks'], 2.0)
+
+    def test_traded_player_shows_current_team_and_rams_are_lar(self):
+        rows = [
+            stat_row('a', 'Davante Adams', 'LV', 1, targets=8),
+            stat_row('a', 'Davante Adams', 'LA', 2, targets=9),
+        ]
+        self.assertEqual(self.board(rows, 'receiving')['rows'][0]['team'], 'LAR')
+
+    def test_columns_say_which_values_divide_per_game(self):
+        passing = self.board([], 'passing')
+        per_game = {c['key']: c['perGame'] for c in passing['columns']}
+        self.assertEqual(
+            (per_game['passing_yards'], per_game['cmp_pct'], per_game['games']), (True, False, False)
+        )
+        longest = next(c for c in self.board([], 'kicking')['columns'] if c['key'] == 'fg_long')
+        self.assertFalse(longest['perGame'])
+
+    def test_every_board_has_a_qualifier_on_one_of_its_columns(self):
+        for board in BOARDS:
+            self.assertIn(board.qualifier.column, {c.key for c in board.columns}, board.key)
+            self.assertIn(board.primary, {c.key for c in board.columns}, board.key)
+
+    def test_leaders_link_to_their_board(self):
+        leaders = build_leaders([], 2026)
+        self.assertEqual([c['board'] for c in leaders['categories']], ['passing', 'rushing', 'receiving'])
+        self.assertTrue(set(c['board'] for c in leaders['categories']) <= {b.key for b in BOARDS})
 
 
 class PlayerSlugTest(unittest.TestCase):

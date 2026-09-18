@@ -79,6 +79,8 @@ export interface LeaderCategory {
   label: string;
   /** Column header for the value, e.g. "Yds" */
   valueLabel: string;
+  /** Key of the full leaderboard this is the top of, e.g. "receiving" */
+  board: string;
   rows: LeaderRow[];
 }
 
@@ -202,4 +204,60 @@ export interface TeamStatsData {
   updated: string;
   metrics: TeamStatMetric[];
   teams: TeamStatLine[];
+}
+
+/** stats/{board}.json: full player leaderboards, written daily by pipelines/leaderboards.py. */
+export type BoardFormat = 'integer' | 'decimal1' | 'percent1';
+
+export interface BoardColumn {
+  /** Key into BoardRow.values */
+  key: string;
+  /** Column header, e.g. "Y/A" */
+  label: string;
+  /** Full name, e.g. "Yards per carry" */
+  title: string;
+  format: BoardFormat;
+  /** Counting stat that the per game view divides by games played. */
+  perGame: boolean;
+  /** A ratio of two other columns; sorting by it ranks qualified players only. */
+  rate: boolean;
+  /** Direction a first click sorts in, and which way rank 1 points. */
+  better: 'high' | 'low';
+}
+
+export interface BoardRow {
+  /** Rank by the board's primary column, totals, all players */
+  rank: number;
+  /** nflverse gsis id, matching RosterPlayer.gsisId */
+  playerId: string;
+  player: string;
+  /** Team abbr matching teams.json */
+  team: string;
+  position: string | null;
+  /** Games the player's current team has played */
+  teamGames: number;
+  /** Meets the board's qualifier */
+  qualified: boolean;
+  /** Keyed by BoardColumn.key; null where a rate has no denominator */
+  values: Record<string, number | null>;
+}
+
+export interface LeaderboardData {
+  /** URL key under /stats, e.g. "rushing" */
+  key: string;
+  label: string;
+  season: number;
+  throughWeek: number;
+  /** Column the board ranks by by default */
+  primary: string;
+  qualifier: {
+    /** Column the bar is measured in */
+    column: string;
+    perTeamGame: number;
+    /** Sentence for the page, e.g. "At least 6 carries per team game." */
+    text: string;
+  };
+  columns: BoardColumn[];
+  /** Ranked by the primary column */
+  rows: BoardRow[];
 }

@@ -49,12 +49,16 @@ tylernfl/
 - Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text).
 - In-progress parsing (quarter, clock, halftime) is provisional until verified against the real capture from DET at BUF on 2026-09-17.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
-- Files: `ticker.json`, `leaders.json`, `rosters/{TEAM}.json`, `team_stats.json`,
-  `on_this_day.json`, `teams.json`, `model_record.json`.
+- Files: `ticker.json`, `leaders.json`, `stats/{board}.json`, `rosters/{TEAM}.json`,
+  `team_stats.json`, `on_this_day.json`, `teams.json`, `model_record.json`.
 - `teams.json` (abbr, name, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
-- `ticker.json`, `leaders.json` and `rosters/` are real data written by
+- `ticker.json`, `leaders.json`, `stats/` and `rosters/` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run daily by `.github/workflows/daily.yml`.
   nflverse calls the Rams `LA`; pipelines normalize it to `LAR`.
+- `stats/{board}.json` holds the full player leaderboards (passing, rushing, receiving,
+  defense, kicking). The pipeline decides values, ranks and who qualifies; the site only
+  sorts and switches totals / per game in the browser. Qualifying bars are per team game
+  and are this site's choice, set in `pipelines/leaderboards.py`.
 - Rosters are one file per team so an unchanged team is not rewritten. Player URL
   slugs are written by the pipeline, not derived by the site, because players who
   share a name need a team suffix. `player_slug` in `pipelines/common.py` and
@@ -93,9 +97,15 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 | `--loss` | `#B3363B` | negative values |
 
 - Radius 0, no shadows, no gradients.
-- No motion, with one exception: the score ticker is a looping carousel.
-  It pauses on hover and keyboard focus, and stays a static, swipeable strip
-  on touch devices, for reduced motion, and when the week's games fit.
+- No motion, with two exceptions, both in the score ticker:
+  - The ticker is a looping carousel. It pauses on hover and keyboard focus,
+    and stays a static, swipeable strip on touch devices, for reduced motion,
+    and when the week's games fit.
+  - When a live score changes, the new number gets a brief yellow background
+    that fades out (2s). Off under reduced motion.
+- Live games are pinned between the week label and the carousel, capped at
+  half the ticker's width (scrolling by hand past that). Below 760px the
+  ticker is one swipeable strip with live games first.
 - Body text 13px, tables 12px, line-height 1.35. Headers in Barlow Condensed, bold.
 - Links are blue and underlined. Player and team names are always links.
 - Yellow is only ever a background (announcement strip, highlighted row),

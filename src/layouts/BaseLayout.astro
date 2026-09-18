@@ -19,9 +19,13 @@ const postseasonRounds: Record<number, string> = {
 const weekLabel =
   ticker.week == null ? null : (postseasonRounds[ticker.week] ?? `Week ${ticker.week}`);
 
-// Finished games first, then in progress, then upcoming.
+// Live games are pinned ahead of the strip, which runs finished games,
+// then upcoming. The daily data never marks a game live, so in practice the
+// browser pins games as they kick off (src/lib/live-ticker/client.ts).
 const stateOrder: Record<GameState, number> = { final: 0, live: 1, pre: 2 };
 const tickerGames = [...ticker.games].sort((a, b) => stateOrder[a.state] - stateOrder[b.state]);
+const pinnedGames = tickerGames.filter((game) => game.state === 'live');
+const stripGames = tickerGames.filter((game) => game.state !== 'live');
 
 // Offseason: the ticker's only empty state.
 let openerText = 'Offseason.';
@@ -81,10 +85,20 @@ function isActive(href: string): boolean {
           tickerGames.length > 0 ? (
             <div class="ticker-row">
               {weekLabel && <span class="ticker-week">{weekLabel}</span>}
+              <ul
+                class="ticker-pinned"
+                data-pinned
+                aria-label="Live now"
+                hidden={pinnedGames.length === 0}
+              >
+                {pinnedGames.map((game) => (
+                  <TickerItem game={game} />
+                ))}
+              </ul>
               <div class="ticker-viewport">
                 <div class="ticker-marquee">
                   <ul class="ticker-track">
-                    {tickerGames.map((game) => (
+                    {stripGames.map((game) => (
                       <TickerItem game={game} />
                     ))}
                   </ul>
@@ -209,6 +223,14 @@ function isActive(href: string): boolean {
           marquee.style.setProperty('--ticker-duration', `${track.offsetWidth / PIXELS_PER_SECOND}s`);
         }
 
+        // Games move in and out of the strip as they are pinned live and
+        // finish; rebuild the decorative copy so it matches.
+        new MutationObserver(() => {
+          clone?.remove();
+          clone = null;
+          update();
+        }).observe(track, { childList: true });
+
         new ResizeObserver(update).observe(viewport);
         reducedMotion.addEventListener('change', update);
         canHover.addEventListener('change', update);
@@ -271,6 +293,23 @@ function isActive(href: string): boolean {
     font-family: var(--font-heading);
     font-weight: 700;
     white-space: nowrap;
+  }
+
+  /* Live games, pinned between the week label and the strip so they
+     never scroll away. A busy Sunday can have ten at once, so past half
+     the ticker's width the pinned group scrolls by hand. */
+  .ticker-pinned {
+    flex: none;
+    display: flex;
+    max-width: 50%;
+    overflow-x: auto;
+    list-style: none;
+    padding: 0;
+    border-right: 1px solid var(--header);
+  }
+
+  .ticker-pinned[hidden] {
+    display: none;
   }
 
   /* Static by default: the strip scrolls by hand. The script below
@@ -471,6 +510,30 @@ function isActive(href: string): boolean {
 
   /* Nav collapses behind a menu button */
   @media (max-width: 760px) {
+    /* Too narrow to pin: the whole row becomes one hand-scrolled strip
+       with live games first. The strip then never overflows its own
+       viewport, so the carousel stays off. */
+    .ticker-row {
+      overflow-x: auto;
+    }
+
+    /* The row scrolls as a whole here; the week label stays put. */
+    .ticker-week {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+    }
+
+    .ticker-pinned {
+      max-width: none;
+      overflow-x: visible;
+    }
+
+    .ticker-viewport {
+      flex: none;
+      overflow-x: visible;
+    }
+
     .shell {
       grid-template-columns: minmax(0, 1fr);
       grid-template-rows: auto auto auto 1fr auto auto;

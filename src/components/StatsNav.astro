@@ -1,0 +1,75 @@
+---
+/**
+ * Links between the stats pages: the leaders summary, each full player
+ * leaderboard, and team stats.
+ */
+import { leaderboards } from '../utils/leaderboards';
+import { url } from '../utils/url';
+
+interface Props {
+  /** Board key, "index" or "teams" */
+  current: string;
+}
+
+const { current } = Astro.props;
+const links = [
+  { key: 'index', label: 'Leaders', href: url('stats') },
+  ...leaderboards.map((board) => ({
+    key: board.key,
+    label: board.label,
+    href: url(`stats/${board.key}`),
+  })),
+  { key: 'teams', label: 'Teams', href: url('stats/teams') },
+];
+---
+
+<nav class="stats-nav" aria-label="Stats pages">
+  <ul>
+    {
+      links.map((link) => (
+        <li>
+          <a href={link.href} aria-current={link.key === current ? 'page' : undefined}>
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .stats-nav {
+    margin-bottom: var(--space-3);
+  }
+
+  /* One strip that scrolls sideways on narrow screens, like the tables,
+     rather than wrapping into ragged rows. */
+  ul {
+    display: flex;
+    overflow-x: auto;
+    list-style: none;
+    padding: 0;
+    border: 1px solid var(--rule);
+    background: var(--panel);
+  }
+
+  li {
+    flex: none;
+  }
+
+  li + li {
+    border-left: 1px solid var(--rule);
+  }
+
+  a {
+    display: block;
+    padding: var(--space-1) var(--space-3);
+  }
+
+  a[aria-current='page'] {
+    background: var(--header);
+    color: var(--header-text);
+    font-weight: 700;
+    text-decoration: none;
+  }
+</style>

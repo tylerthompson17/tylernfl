@@ -8,9 +8,13 @@
  *    dead-end.
  *  - A player in the leaderboards who is on no current roster still gets a
  *    page, so a leaderboard link never 404s.
+ *
+ * Full leaderboard rows carry the nflverse gsis id, which rosters carry
+ * too, so those link to the exact roster page even when a name is shared.
  */
 import leadersData from '../data/leaders.json';
 import type { LeadersData, RosterPlayer } from '../data/types';
+import { leaderboards } from './leaderboards';
 import { rosterPlayers } from './rosters';
 import { playerSlug } from './slug';
 
@@ -53,16 +57,29 @@ function buildPages(): Map<string, PlayerPage[]> {
     }
   }
 
-  for (const category of leaders.categories) {
-    for (const row of category.rows) {
-      const slug = playerSlug(row.player);
-      if (!pages.has(slug)) {
-        add(slug, { name: row.player, team: row.team, slug, roster: null });
-      }
+  const offRoster = [
+    ...leaders.categories.flatMap((category) => category.rows),
+    ...leaderboards.flatMap((board) => board.rows.filter((row) => !rosterSlugs.has(row.playerId))),
+  ];
+  for (const row of offRoster) {
+    const slug = playerSlug(row.player);
+    if (!pages.has(slug)) {
+      add(slug, { name: row.player, team: row.team, slug, roster: null });
     }
   }
 
   return pages;
+}
+
+const rosterSlugs = new Map(
+  rosterPlayers
+    .filter(({ player }) => player.gsisId !== null)
+    .map(({ player }) => [player.gsisId!, player.slug])
+);
+
+/** Page slug for a player known by gsis id and name: the roster's when there is one. */
+export function slugForPlayer(playerId: string, name: string): string {
+  return rosterSlugs.get(playerId) ?? playerSlug(name);
 }
 
 /** One entry per URL; more than one page in a value means a shared name. */

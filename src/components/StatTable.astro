@@ -1,9 +1,8 @@
 ---
 /**
- * Semantic data table as a boxed unit: 1px borders on every cell,
- * compact padding, 12px type, right-aligned tabular numbers. Team
- * columns render a TeamChip. Wide tables scroll horizontally inside
- * their panel, never the page.
+ * Semantic data table as a boxed unit. Team columns render a TeamChip,
+ * player columns a link. Styles are the shared .stat-table rules in
+ * global.css.
  */
 import TeamChip from './TeamChip.astro';
 import { url } from '../utils/url';
@@ -47,10 +46,10 @@ for (const col of columns) {
 const grouped = runs.some((run) => run.group !== undefined);
 ---
 
-{rows.length === 0 && <p class="empty">{emptyText}</p>}
+{rows.length === 0 && <p class="stat-table-empty">{emptyText}</p>}
 {rows.length > 0 && (
-<div class="scroll" tabindex="0">
-  <table>
+<div class="stat-table-scroll" tabindex="0">
+  <table class="stat-table">
     <caption class="visually-hidden">{caption}</caption>
     {grouped && runs.map((run) => <colgroup span={run.columns.length} />)}
     <thead>
@@ -115,53 +114,3 @@ const grouped = runs.some((run) => run.group !== undefined);
 </div>
 )}
 
-<style>
-  .scroll {
-    overflow-x: auto;
-  }
-
-  .empty {
-    color: var(--text-dim);
-  }
-
-  table {
-    width: 100%;
-    font-size: 12px;
-  }
-
-  th,
-  td {
-    border: 1px solid var(--rule);
-    padding: var(--cell-pad);
-    text-align: left;
-    white-space: nowrap;
-  }
-
-  th {
-    background: var(--bg);
-    font-weight: 700;
-  }
-
-  th.number,
-  td.number {
-    text-align: right;
-  }
-
-  th.group {
-    text-align: center;
-  }
-
-  /* Highlighted row on hover: yellow as background only */
-  tbody tr:hover {
-    background: var(--highlight);
-  }
-
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-</style>

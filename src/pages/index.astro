@@ -46,7 +46,8 @@ const leaderColumns = [
         )
       }
       <p class="table-foot">
-        Through week {leaders.throughWeek}. <a href={url('stats')}>All stat leaders</a>
+        Through week {leaders.throughWeek}.{' '}
+        <a href={url(receiving ? `stats/${receiving.board}` : 'stats')}>Full receiving leaderboard</a>
       </p>
     </Panel>
     <Panel title="Latest article">

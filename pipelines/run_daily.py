@@ -1,4 +1,4 @@
-"""Daily site data job: writes ticker.json, leaders.json and rosters/ into src/data/.
+"""Daily site data job: writes ticker.json, leaders.json, stats/ and rosters/ into src/data/.
 
 Run from the repo root:
     pip install -r pipelines/requirements.txt
@@ -22,7 +22,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
-from leaders import build_leaders, load_leaders_input  # noqa: E402
+from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
+from leaders import build_leaders  # noqa: E402
 from rosters import build_rosters, load_roster_rows, unknown_statuses  # noqa: E402
 from ticker import build_ticker, load_schedule_rows  # noqa: E402
 
@@ -43,14 +44,16 @@ def main() -> None:
     updated = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
 
     ticker = build_ticker(load_schedule_rows(today), today)
-    leader_rows, leaders_year = load_leaders_input(stats_season(today))
-    leaders = build_leaders(leader_rows, leaders_year)
+    player_rows, stats_year = load_with_fallback(load_player_week_rows, stats_season(today))
+    leaders = build_leaders(player_rows, stats_year)
+    boards = build_leaderboards(player_rows, stats_year)
     roster_rows, rosters_year = load_with_fallback(load_roster_rows, roster_season(today))
     rosters = build_rosters(roster_rows, rosters_year, today, updated)
 
     week = f"week {ticker['week']}" if ticker['week'] else f"offseason, opener {ticker['nextOpener']}"
     print(f"{today}: ticker {ticker['season']} {week}, {len(ticker['games'])} games")
     print(f"leaders: {leaders['season']} through week {leaders['throughWeek']}")
+    print('boards: ' + ', '.join(f"{key} {len(board['rows'])}" for key, board in boards.items()))
     players = sum(len(r['players']) for r in rosters.values())
     print(f"rosters: {rosters_year} week {next(iter(rosters.values()))['week'] if rosters else 0}, "
           f"{len(rosters)} teams, {players} players")
@@ -59,6 +62,7 @@ def main() -> None:
         print(f"rosters: WARNING unknown status codes left off rosters: {', '.join(sorted(unknown))}")
 
     files = [('ticker.json', ticker, ('updated',)), ('leaders.json', leaders, ())]
+    files += [(f'stats/{key}.json', board, ()) for key, board in boards.items()]
     files += [(f'rosters/{team}.json', roster, ('updated',)) for team, roster in sorted(rosters.items())]
 
     if args.dry_run:

@@ -1,0 +1,166 @@
+---
+/**
+ * A full player leaderboard. Renders the complete table ranked by the
+ * board's primary column, so it works with no JavaScript; the script then
+ * adds sortable headers and the totals / per game switch (see
+ * src/lib/leaderboard/dom.ts). Styles are the shared .stat-table rules.
+ */
+import TeamChip from './TeamChip.astro';
+import type { LeaderboardData } from '../data/types';
+import { formatCell } from '../lib/leaderboard/arrange';
+import { slugForPlayer } from '../utils/players';
+import { url } from '../utils/url';
+
+interface Props {
+  board: LeaderboardData;
+}
+
+const { board } = Astro.props;
+const primary = board.columns.find((column) => column.key === board.primary)!;
+const config = JSON.stringify({
+  columns: board.columns,
+  primary: board.primary,
+  qualifierText: board.qualifier.text,
+});
+---
+
+<div class="leaderboard" data-leaderboard>
+  <script type="application/json" data-board-config set:html={config} />
+  <div class="controls" data-board-controls hidden>
+    <div class="switch" role="group" aria-label="Show">
+      <button type="button" data-mode="totals" aria-pressed="true">Totals</button>
+      <button type="button" data-mode="perGame" aria-pressed="false">Per game</button>
+    </div>
+  </div>
+  <p class="status" data-board-status aria-live="polite">
+    Sorted by {primary.title.toLowerCase()}, totals. All players.
+  </p>
+  {
+    board.rows.length === 0 ? (
+      <p class="stat-table-empty">No games played yet. Leaders appear after week 1.</p>
+    ) : (
+      <div class="stat-table-scroll" tabindex="0">
+        <table class="stat-table">
+          <caption class="visually-hidden">
+            {board.label} leaderboard, {board.season} regular season
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col" class="number">Rk</th>
+              <th scope="col">Player</th>
+              <th scope="col">Team</th>
+              <th scope="col">Pos</th>
+              {board.columns.map((column) => (
+                <th
+                  scope="col"
+                  class="number"
+                  title={column.title}
+                  data-sort={column.key}
+                  aria-sort={column.key === board.primary ? 'descending' : undefined}
+                >
+                  {column.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {board.rows.map((row) => (
+              <tr data-qualified={row.qualified ? '1' : '0'}>
+                <td class="number" data-rank>
+                  {row.rank}
+                </td>
+                <td>
+                  <a href={url(`players/${slugForPlayer(row.playerId, row.player)}`)}>
+                    {row.player}
+                  </a>
+                </td>
+                <td>
+                  <TeamChip abbr={row.team} size="sm" />
+                </td>
+                <td>{row.position}</td>
+                {board.columns.map((column) => (
+                  <td class="number" data-col={column.key} data-v={row.values[column.key] ?? ''}>
+                    {formatCell(row.values[column.key] ?? null, column, 'totals')}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+  <p class="foot">
+    Rate columns ({
+      board.columns
+        .filter((column) => column.rate)
+        .map((column) => column.label)
+        .join(', ') || 'none on this board'
+    }) and the per game view rank qualified players only. {board.qualifier.text}
+  </p>
+</div>
+
+<script>
+  import { initLeaderboards } from '../lib/leaderboard/dom';
+  initLeaderboards();
+</script>
+
+<style>
+  .controls {
+    margin-bottom: var(--space-2);
+  }
+
+  .switch {
+    display: inline-flex;
+    border: 1px solid var(--rule);
+  }
+
+  .switch button {
+    padding: var(--space-1) var(--space-3);
+    background: var(--panel);
+  }
+
+  .switch button + button {
+    border-left: 1px solid var(--rule);
+  }
+
+  .switch button[aria-pressed='true'] {
+    background: var(--header);
+    color: var(--header-text);
+    font-weight: 700;
+  }
+
+  .status,
+  .foot {
+    color: var(--text-dim);
+  }
+
+  .status {
+    margin-bottom: var(--space-2);
+  }
+
+  .foot {
+    margin-top: var(--space-3);
+  }
+
+  /* Sort buttons read as header text; the arrow marks the active column. */
+  .leaderboard :global(.sort-button) {
+    font-weight: 700;
+    padding: 0;
+    width: 100%;
+    text-align: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+    text-underline-offset: 2px;
+  }
+
+  .leaderboard :global(th[aria-sort='descending'] .sort-button)::after {
+    content: ' \25BC';
+    font-size: 9px;
+  }
+
+  .leaderboard :global(th[aria-sort='ascending'] .sort-button)::after {
+    content: ' \25B2';
+    font-size: 9px;
+  }
+</style>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import Leaderboard from '../../components/Leaderboard.astro';
+import StatsNav from '../../components/StatsNav.astro';
+import { leaderboards } from '../../utils/leaderboards';
+import type { LeaderboardData } from '../../data/types';
+
+export function getStaticPaths() {
+  return leaderboards.map((board) => ({ params: { category: board.key }, props: { board } }));
+}
+
+const { board } = Astro.props as { board: LeaderboardData };
+---
+
+<BaseLayout title={`${board.label} leaderboard`}>
+  <h1 class="page-title">{board.label} leaderboard</h1>
+  <StatsNav current={board.key} />
+  <p class="page-intro">
+    {board.season} regular season, through week {board.throughWeek}. {board.rows.length} players.
+  </p>
+  <div class="content-grid">
+    <Panel title={board.label}>
+      <Leaderboard board={board} />
+    </Panel>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-intro {
+    color: var(--text-dim);
+    margin-bottom: var(--space-4);
+    font-variant-numeric: tabular-nums;
+  }
+</style>
