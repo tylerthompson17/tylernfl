@@ -40,6 +40,10 @@ if (ticker.nextOpener) {
   openerText = `Offseason. Next season opens ${opener}.`;
 }
 const onThisDay = onThisDayData as OnThisDayData;
+const onThisDayDate = new Date(2000, onThisDay.month - 1, onThisDay.day).toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+});
 
 interface Props {
   title: string;
@@ -149,21 +153,30 @@ function isActive(href: string): boolean {
             Once the 4th down model is live, its record on graded calls will show here.
           </p>
         </Panel>
-        <Panel title="On this day">
+        <Panel title={`On this day, ${onThisDayDate}`}>
           {
             onThisDay.items.length > 0 ? (
               <ul class="otd">
                 {onThisDay.items.map((item) => (
                   <li>
                     <span class="otd-year num">{item.year}</span>
-                    <span>{item.text}</span>
+                    <span>
+                      {item.parts.map((part) =>
+                        part.team ? <a href={url(`teams/${part.team}`)}>{part.text}</a> : part.text
+                      )}
+                    </span>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p class="placeholder-note">Nothing on record for today.</p>
+              <p class="placeholder-note">
+                {onThisDay.gamesOnDate === 0
+                  ? 'No NFL games on this date since 1999.'
+                  : 'No standout games on this date since 1999.'}
+              </p>
             )
           }
+          <p class="otd-source">Games since 1999, from nflverse schedules.</p>
         </Panel>
       </aside>
 
@@ -480,6 +493,12 @@ function isActive(href: string): boolean {
     margin-top: var(--space-2);
     padding-top: var(--space-2);
     border-top: 1px dotted var(--rule-soft);
+  }
+
+  .otd-source {
+    margin-top: var(--space-2);
+    font-size: 12px;
+    color: var(--text-dim);
   }
 
   .otd-year {

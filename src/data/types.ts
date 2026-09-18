@@ -91,14 +91,29 @@ export interface LeadersData {
 }
 
 /** on_this_day.json */
+/** on_this_day.json: written daily by pipelines/on_this_day.py from nflverse schedules. */
+export interface OnThisDayPart {
+  text: string;
+  /** Present when this part is a team name: the current team abbr to link to */
+  team?: string;
+}
+
 export interface OnThisDayItem {
   year: number;
+  /** nflverse game id */
+  gameId: string;
+  /** The whole sentence */
   text: string;
+  /** The same sentence split so team names can be links */
+  parts: OnThisDayPart[];
 }
 
 export interface OnThisDayData {
   month: number;
   day: number;
+  /** Games played on this date since 1999; 0 means none at all, not none notable */
+  gamesOnDate: number;
+  /** Up to 3, one per season, newest first */
   items: OnThisDayItem[];
 }
 

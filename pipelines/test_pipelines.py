@@ -11,6 +11,7 @@ from pathlib import Path
 from common import player_slug
 from leaderboards import BOARDS, build_leaderboards
 from leaders import build_leaders
+from on_this_day import build_on_this_day, roman
 from pbp_cache import is_fresh
 from rosters import age_on, build_rosters, unknown_statuses
 from team_stats import build_team_stats, last_complete_week, rank
@@ -278,6 +279,90 @@ class BuildLeaderboardsTest(unittest.TestCase):
         leaders = build_leaders([], 2026)
         self.assertEqual([c['board'] for c in leaders['categories']], ['passing', 'rushing', 'receiving'])
         self.assertTrue(set(c['board'] for c in leaders['categories']) <= {b.key for b in BOARDS})
+
+
+TEAMS = [
+    {'team_abbr': a, 'team_nick': n, 'team_conf': c}
+    for a, n, c in [
+        ('NYG', 'Giants', 'NFC'), ('NE', 'Patriots', 'AFC'), ('MIA', 'Dolphins', 'AFC'),
+        ('BAL', 'Ravens', 'AFC'), ('OAK', 'Raiders', 'AFC'), ('WAS', 'Commanders', 'NFC'),
+        ('SEA', 'Seahawks', 'NFC'), ('ARI', 'Cardinals', 'NFC'), ('BUF', 'Bills', 'AFC'),
+        ('KC', 'Chiefs', 'AFC'),
+    ]
+]
+
+
+def game(season, day, away, a, home, h, game_type='REG', overtime=0, spread=0.0, roof='outdoors', temp=60):
+    return {
+        'game_id': f'{season}_{away}_{home}', 'season': season, 'game_type': game_type,
+        'gameday': day, 'away_team': away, 'away_score': a,
+        'home_team': home, 'home_score': h, 'overtime': overtime, 'spread_line': spread,
+        'roof': roof, 'temp': temp,
+    }
+
+
+class OnThisDayTest(unittest.TestCase):
+    today = d('2026-02-03')
+
+    def build(self, games):
+        return build_on_this_day(games, TEAMS, self.today)
+
+    def texts(self, games):
+        return [(i['year'], i['text']) for i in self.build(games)['items']]
+
+    def test_super_bowl_upset_reads_from_the_row(self):
+        # spread_line is the home margin: +12.5 means NE (home) favored by 12.5.
+        sb = game(2007, '2008-02-03', 'NYG', 17, 'NE', 14, game_type='SB', spread=12.5)
+        self.assertEqual(self.texts([sb]), [(2008, 'The Giants beat the Patriots 17-14 in Super Bowl XLII as 12.5-point underdogs.')])
+
+    def test_team_names_are_link_parts_and_relocated_teams_link_to_today(self):
+        item = self.build([game(2007, '2008-02-03', 'OAK', 0, 'NE', 30, spread=3.0)])['items'][0]
+        self.assertEqual(item['parts'], [
+            {'text': 'The '}, {'text': 'Patriots', 'team': 'NE'},
+            {'text': ' shut out the '}, {'text': 'Raiders', 'team': 'LV'},
+            {'text': ' 30-0.'},
+        ])
+
+    def test_washington_is_named_by_city_in_every_era(self):
+        item = self.build([game(2005, '2006-02-03', 'WAS', 35, 'BUF', 34, overtime=1)])['items'][0]
+        self.assertEqual(item['text'], 'Washington beat the Bills 35-34 in overtime.')
+
+    def test_ties_cold_and_conference_games(self):
+        tie = game(2016, '2017-02-03', 'SEA', 6, 'ARI', 6, overtime=1)
+        cold = game(2010, '2011-02-03', 'MIA', 10, 'BUF', 3, temp=5)
+        con = game(2012, '2013-02-03', 'BAL', 28, 'NE', 13, game_type='CON', spread=7.5)
+        self.assertEqual(self.texts([tie, cold, con]), [
+            (2017, 'The Seahawks and the Cardinals tied 6-6 in overtime.'),
+            (2013, 'The Ravens beat the Patriots 28-13 in the AFC championship game as 7.5-point underdogs.'),
+            (2011, 'The Dolphins beat the Bills 10-3 at 5 degrees.'),
+        ])
+
+    def test_ordinary_games_are_left_out_and_a_dome_is_never_cold(self):
+        dull = game(2015, '2016-02-03', 'KC', 20, 'BUF', 17, spread=-3.0)
+        dome = game(2014, '2015-02-03', 'KC', 20, 'NE', 17, roof='dome', temp=0)
+        data = self.build([dull, dome])
+        self.assertEqual((data['items'], data['gamesOnDate']), ([], 2))
+
+    def test_at_most_three_one_per_season_newest_first(self):
+        games = [
+            game(2020, '2021-02-03', 'KC', 50, 'BUF', 10),
+            game(2020, '2021-02-03', 'MIA', 45, 'NE', 0),
+            game(2018, '2019-02-03', 'KC', 40, 'BUF', 7),
+            game(2016, '2017-02-03', 'KC', 38, 'BUF', 3),
+            game(2012, '2013-02-03', 'KC', 36, 'BUF', 5),
+        ]
+        self.assertEqual([i['year'] for i in self.build(games)['items']], [2021, 2019, 2017])
+
+    def test_only_other_years_and_played_games_count(self):
+        games = [
+            game(2025, '2026-02-03', 'KC', 60, 'BUF', 0),     # today: not over yet
+            {**game(2026, '2027-02-03', 'KC', 1, 'BUF', 0), 'away_score': None},
+            game(2013, '2014-02-04', 'KC', 60, 'BUF', 0),     # a different date
+        ]
+        self.assertEqual(self.build(games), {'month': 2, 'day': 3, 'gamesOnDate': 0, 'items': []})
+
+    def test_roman_numerals(self):
+        self.assertEqual([roman(n) for n in (1, 42, 49, 58, 60)], ['I', 'XLII', 'XLIX', 'LVIII', 'LX'])
 
 
 class PlayerSlugTest(unittest.TestCase):

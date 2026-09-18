@@ -54,7 +54,7 @@ tylernfl/
 - Files: `ticker.json`, `leaders.json`, `stats/{board}.json`, `rosters/{TEAM}.json`,
   `transactions.json`, `team_stats.json`, `on_this_day.json`, `teams.json`, `model_record.json`.
 - `teams.json` (abbr, name, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
-- `ticker.json`, `leaders.json`, `stats/`, `rosters/` and `transactions.json` are real data written by
+- `ticker.json`, `leaders.json`, `stats/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run daily by `.github/workflows/daily.yml`.
   nflverse calls the Rams `LA`; pipelines normalize it to `LAR`.
 - `stats/{board}.json` holds the full player leaderboards (passing, rushing, receiving,
@@ -86,7 +86,13 @@ tylernfl/
   good, the current season refreshes after 12 hours. CI persists the cache with
   `actions/cache`. Anything that needs pbp (including the 4th down model) should load
   it through this module rather than calling `nflreadpy.load_pbp` directly.
-- `model_record.json` stays a placeholder until the 4th down model exists. `on_this_day.json` is still mock data.
+- `on_this_day.json` is real data written daily by `pipelines/on_this_day.py`: up to 3 notable games
+  played on today's date (one per season, newest first), picked and worded only from nflverse schedule
+  fields (score, round, overtime, closing spread, temperature). It covers games since 1999 and nothing
+  else, so no hand-written history. Washington is named by city in every season, and relocated teams
+  link to today's franchise page.
+- `model_record.json` stays a placeholder until the 4th down model exists. It is the only
+  placeholder data left on the site.
 
 ## Design direction
 

@@ -1,18 +1,79 @@
 {
   "month": 9,
-  "day": 16,
+  "day": 18,
+  "gamesOnDate": 63,
   "items": [
     {
-      "year": 2001,
-      "text": "The NFL's first Sunday after September 11 passes with no games, the league having postponed the full week 2 slate."
+      "year": 2022,
+      "gameId": "2022_02_MIA_BAL",
+      "text": "The Dolphins beat the Ravens 42-38 with 80 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Dolphins",
+          "team": "MIA"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Ravens",
+          "team": "BAL"
+        },
+        {
+          "text": " 42-38 with 80 combined points."
+        }
+      ]
     },
     {
-      "year": 1973,
-      "text": "O.J. Simpson opens the season with 250 rushing yards against the Patriots, a single game record at the time."
+      "year": 2014,
+      "gameId": "2014_03_TB_ATL",
+      "text": "The Falcons beat the Buccaneers 56-14 with 70 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Falcons",
+          "team": "ATL"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Buccaneers",
+          "team": "TB"
+        },
+        {
+          "text": " 56-14 with 70 combined points."
+        }
+      ]
     },
     {
-      "year": 2018,
-      "text": "Ryan Fitzpatrick throws for 400 yards in back to back weeks, leading the Buccaneers past the Eagles."
+      "year": 2011,
+      "gameId": "2011_02_KC_DET",
+      "text": "The Lions beat the Chiefs 48-3.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Lions",
+          "team": "DET"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Chiefs",
+          "team": "KC"
+        },
+        {
+          "text": " 48-3."
+        }
+      ]
     }
   ]
 }
