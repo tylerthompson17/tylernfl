@@ -97,20 +97,47 @@ export function matchesScore(last: LastScore, awayScore: number | null, homeScor
   return last.awayScore === awayScore && last.homeScore === homeScore;
 }
 
-/** "Josh Allen 1 Yd Rush (Tyler Bass Kick)" -> "Josh Allen 1 Yd Rush". */
+/**
+ * "Josh Allen 1 Yd Rush (Tyler Bass Kick)" -> "Josh Allen 1 Yd Rush". ESPN
+ * sometimes ends the text with a period after the parenthetical.
+ */
 export function shortPlayText(text: string): string {
-  return text.replace(/\s*\([^()]*\)\s*$/, '').trim() || text;
+  return text.replace(/\s*\([^()]*\)\.?\s*$/, '').trim() || text.trim();
 }
 
 /**
- * The visible line and its fuller tooltip, labeled with the ticker's own
- * team abbreviation (ESPN's can differ, e.g. WSH for WAS).
+ * First name to an initial, ESPN play-by-play style: "Josh Allen" ->
+ * "J.Allen", "Amon-Ra St. Brown" -> "A.St. Brown". Names that already
+ * start with initials ("T.J. Watt") and single names are left alone.
+ */
+export function abbreviateName(name: string): string {
+  const [first, ...rest] = name.trim().split(/\s+/);
+  if (!first || rest.length === 0 || /^(?:\p{L}\.)+$/u.test(first)) return name.trim();
+  return `${first[0]}.${rest.join(' ')}`;
+}
+
+/**
+ * Abbreviate the scorer and, on a passing touchdown, the passer. ESPN's
+ * scoring text is "<name> <n> Yd <play>" or "... pass from <name>"; text in
+ * any other shape is returned unchanged rather than guessed at.
+ */
+export function abbreviateNames(text: string): string {
+  const match = text.match(/^(.+?) (\d+ Yd .*)$/);
+  if (!match) return text;
+  const play = match[2]!.replace(/\bpass from (.+)$/, (_, passer: string) => `pass from ${abbreviateName(passer)}`);
+  return `${abbreviateName(match[1]!)} ${play}`;
+}
+
+/**
+ * The visible line (conversion dropped, first names as initials to fit a
+ * narrow slot) and its tooltip with ESPN's full text, labeled with the
+ * ticker's own team abbreviation (ESPN's can differ, e.g. WSH for WAS).
  */
 export function describeLastScore(last: LastScore, team: string): { line: string; title: string } {
   const when =
     last.period === null ? '' : `${last.period > 4 ? 'OT' : `Q${last.period}`}${last.clock ? ` ${last.clock}` : ''}, `;
   return {
-    line: `${team} ${last.kind}: ${shortPlayText(last.text)}`,
+    line: `${team} ${last.kind}: ${abbreviateNames(shortPlayText(last.text))}`,
     title: `${when}${team}: ${last.text}`,
   };
 }

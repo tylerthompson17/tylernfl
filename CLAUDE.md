@@ -106,8 +106,9 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 - Live games are pinned between the week label and the carousel, capped at
   half the ticker's width (scrolling by hand past that). Below 760px the
   ticker is one swipeable strip with live games first.
-- A pinned game has a third line saying who scored last ("BUF TD: Josh Allen
-  1 Yd Rush"), cut with an ellipsis, full play in the tooltip. It holds its
+- A pinned game has a third line saying who scored last ("BUF TD: J.Allen
+  1 Yd Rush", first names as initials), cut with an ellipsis, full play in
+  the tooltip. It holds its
   space from kickoff to final ("No scoring yet" at 0 to 0) so the ticker's
   height does not jump on each score.
 - Body text 13px, tables 12px, line-height 1.35. Headers in Barlow Condensed, bold.

@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
 import {
+  abbreviateNames,
   describeLastScore,
   matchesScore,
   parseLastScore,
@@ -64,10 +65,15 @@ test('the line matches only once the summary has caught up with the ticker', () 
 
 test('the visible line drops the conversion; the tooltip keeps everything', () => {
   assert.equal(shortPlayText('Josh Allen 1 Yd Rush (Tyler Bass Kick)'), 'Josh Allen 1 Yd Rush');
-  assert.equal(shortPlayText('Andy Borregales 50 Yd Field Goal'), 'Andy Borregales 50 Yd Field Goal');
+  assert.equal(shortPlayText('Andy Borregales 50 Yd Field Goal '), 'Andy Borregales 50 Yd Field Goal');
+  // Seen in week 1: a period after the parenthetical.
+  assert.equal(
+    shortPlayText('Brenton Strange 5 Yd pass from Deshaun Watson (Andre Szmyt Kick).'),
+    'Brenton Strange 5 Yd pass from Deshaun Watson'
+  );
   const last = parseLastScore(fixture('summary-401872932-q1.json'))!;
   assert.deepEqual(describeLastScore(last, 'BUF'), {
-    line: 'BUF TD: Joshua Palmer 43 Yd pass from Josh Allen',
+    line: 'BUF TD: J.Palmer 43 Yd pass from J.Allen',
     title: 'Q1 3:42, BUF: Joshua Palmer 43 Yd pass from Josh Allen (Tyler Bass Kick)',
   });
 });
@@ -77,4 +83,26 @@ test('summary requests are plain GETs keyed by event id', () => {
     summaryUrl('401872932'),
     'https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=401872932'
   );
+});
+
+test('first names become initials, ESPN style', () => {
+  // Every name shape in week 1's 142 scoring plays.
+  const cases: [string, string][] = [
+    ['Josh Allen 1 Yd Rush', 'J.Allen 1 Yd Rush'],
+    ['Andy Borregales 50 Yd Field Goal', 'A.Borregales 50 Yd Field Goal'],
+    ['Amon-Ra St. Brown 12 Yd pass from Jared Goff', 'A.St. Brown 12 Yd pass from J.Goff'],
+    ['Nico Collins 20 Yd pass from C.J. Stroud', 'N.Collins 20 Yd pass from C.J. Stroud'],
+    ['T.J. Watt 35 Yd Interception Return', 'T.J. Watt 35 Yd Interception Return'],
+    ["D'Andre Swift 3 Yd Rush", 'D.Swift 3 Yd Rush'],
+    ["Ka'imi Fairbairn 44 Yd Field Goal", 'K.Fairbairn 44 Yd Field Goal'],
+    ['Kenneth Walker III 7 Yd Rush', 'K.Walker III 7 Yd Rush'],
+    ['Demetrius Knight Jr. 27 Yd Fumble Return', 'D.Knight Jr. 27 Yd Fumble Return'],
+    ['Jaxon Smith-Njigba 9 Yd pass from Sam Darnold', 'J.Smith-Njigba 9 Yd pass from S.Darnold'],
+  ];
+  for (const [text, expected] of cases) assert.equal(abbreviateNames(text), expected);
+});
+
+test('text in an unexpected shape is left as ESPN wrote it', () => {
+  assert.equal(abbreviateNames('Team Safety'), 'Team Safety');
+  assert.equal(abbreviateNames('Two-Point Conversion'), 'Two-Point Conversion');
 });
