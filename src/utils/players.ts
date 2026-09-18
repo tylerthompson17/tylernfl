@@ -9,16 +9,20 @@
  *  - A player in the leaderboards who is on no current roster still gets a
  *    page, so a leaderboard link never 404s.
  *
+ * The same holds for players named in roster moves and injury reports.
+ *
  * Full leaderboard rows carry the nflverse gsis id, which rosters carry
  * too, so those link to the exact roster page even when a name is shared.
  */
 import leadersData from '../data/leaders.json';
-import type { LeadersData, RosterPlayer } from '../data/types';
+import transactionsData from '../data/transactions.json';
+import type { LeadersData, RosterPlayer, TransactionsData } from '../data/types';
 import { leaderboards } from './leaderboards';
 import { rosterPlayers } from './rosters';
 import { playerSlug } from './slug';
 
 const leaders = leadersData as LeadersData;
+const transactions = transactionsData as TransactionsData;
 
 export interface PlayerPage {
   name: string;
@@ -60,6 +64,8 @@ function buildPages(): Map<string, PlayerPage[]> {
   const offRoster = [
     ...leaders.categories.flatMap((category) => category.rows),
     ...leaderboards.flatMap((board) => board.rows.filter((row) => !rosterSlugs.has(row.playerId))),
+    // Released and retired players named in roster moves or injury reports.
+    ...[...transactions.moves, ...transactions.injuries].filter((row) => !rosterSlugs.has(row.playerId)),
   ];
   for (const row of offRoster) {
     const slug = playerSlug(row.player);

@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Panel from '../components/Panel.astro';
+import StatTable from '../components/StatTable.astro';
+import {
+  INJURY_NOTE,
+  MOVES_NOTE,
+  injuryRows,
+  moveRows,
+  statusSummary,
+  transactions,
+} from '../utils/transactions';
+
+const offseason = transactions.week === null;
+const summary = statusSummary(transactions.injuries);
+
+const moveColumns = [
+  { key: 'team', label: 'Team', kind: 'team' as const },
+  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
+  { key: 'position', label: 'Pos' },
+  { key: 'move', label: 'Move' },
+];
+const injuryColumns = [
+  { key: 'team', label: 'Team', kind: 'team' as const },
+  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
+  { key: 'position', label: 'Pos' },
+  { key: 'injury', label: 'Injury' },
+  { key: 'practice', label: 'Practice' },
+  { key: 'status', label: 'Game status' },
+];
+---
+
+<BaseLayout title="Roster moves and injuries">
+  <h1 class="page-title">Roster moves and injuries</h1>
+  {
+    offseason ? (
+      <div class="content-grid">
+        <Panel title="Offseason">
+          <p class="placeholder-note">
+            Roster moves and injury reports return in week 1 of the regular season.
+          </p>
+        </Panel>
+      </div>
+    ) : (
+      <div class="content-grid">
+        <Panel
+          title={
+            transactions.comparedToWeek === null
+              ? 'Roster moves'
+              : `Roster moves, week ${transactions.comparedToWeek} to week ${transactions.movesWeek}`
+          }
+        >
+          <StatTable
+            columns={moveColumns}
+            rows={moveRows(transactions.moves)}
+            caption="Roster moves this week"
+            emptyText={
+              transactions.comparedToWeek === null
+                ? 'No roster moves yet. Moves appear from week 2, comparing each week with the one before.'
+                : 'No roster moves this week.'
+            }
+          />
+          <p class="table-foot">{MOVES_NOTE}</p>
+        </Panel>
+        <Panel title={`Week ${transactions.week} injury report`}>
+          {summary && <p class="summary">Game statuses so far: {summary}.</p>}
+          <StatTable
+            columns={injuryColumns}
+            rows={injuryRows(transactions.injuries)}
+            caption={`Week ${transactions.week} injury report`}
+            emptyText={`No injury report yet for week ${transactions.week}. Teams file them from Wednesday.`}
+          />
+          <p class="table-foot">{INJURY_NOTE}</p>
+        </Panel>
+      </div>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .summary {
+    margin-bottom: var(--space-2);
+  }
+
+  .table-foot {
+    margin-top: var(--space-3);
+    color: var(--text-dim);
+  }
+</style>

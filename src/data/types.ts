@@ -261,3 +261,49 @@ export interface LeaderboardData {
   /** Ranked by the primary column */
   rows: BoardRow[];
 }
+
+/** transactions.json: roster moves and the injury report, written daily by pipelines/transactions.py. */
+export type MoveType = 'signed' | 'joined' | 'released' | 'retired' | 'left' | 'status';
+
+export interface RosterMove {
+  /** nflverse gsis id, matching RosterPlayer.gsisId */
+  playerId: string;
+  player: string;
+  position: string | null;
+  /** Team the move belongs to: the new team for signings and team changes */
+  team: string;
+  /** Previous team, for team changes only */
+  fromTeam: string | null;
+  type: MoveType;
+  /** Involves a practice squad (these sort last) */
+  practiceSquad: boolean;
+  /** Plain words, e.g. "Placed on reserve list", "Joined from ATL" */
+  note: string;
+}
+
+export interface InjuryEntry {
+  playerId: string;
+  player: string;
+  team: string;
+  position: string | null;
+  /** Game status; null until the team's last report before its game */
+  status: 'Out' | 'Doubtful' | 'Questionable' | null;
+  injury: string | null;
+  /** "Full", "Limited", "Did not practice" */
+  practice: string | null;
+}
+
+export interface TransactionsData {
+  season: number;
+  /** Week the ticker shows, whose injury report this is; null in the offseason */
+  week: number | null;
+  /** Roster snapshot week the moves come from, and the week before it */
+  movesWeek: number | null;
+  comparedToWeek: number | null;
+  /** ISO timestamp of the run that last changed this file */
+  updated: string;
+  /** Biggest news first, practice squad moves last */
+  moves: RosterMove[];
+  /** Out, then Doubtful, then Questionable, then practice only */
+  injuries: InjuryEntry[];
+}

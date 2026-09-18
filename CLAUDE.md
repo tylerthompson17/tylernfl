@@ -50,15 +50,21 @@ tylernfl/
 - In-progress parsing (quarter, clock, halftime) is provisional until verified against the real capture from DET at BUF on 2026-09-17.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `leaders.json`, `stats/{board}.json`, `rosters/{TEAM}.json`,
-  `team_stats.json`, `on_this_day.json`, `teams.json`, `model_record.json`.
+  `transactions.json`, `team_stats.json`, `on_this_day.json`, `teams.json`, `model_record.json`.
 - `teams.json` (abbr, name, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
-- `ticker.json`, `leaders.json`, `stats/` and `rosters/` are real data written by
+- `ticker.json`, `leaders.json`, `stats/`, `rosters/` and `transactions.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run daily by `.github/workflows/daily.yml`.
   nflverse calls the Rams `LA`; pipelines normalize it to `LAR`.
 - `stats/{board}.json` holds the full player leaderboards (passing, rushing, receiving,
   defense, kicking). The pipeline decides values, ranks and who qualifies; the site only
   sorts and switches totals / per game in the browser. Qualifying bars are per team game
   and are this site's choice, set in `pipelines/leaderboards.py`.
+- `transactions.json` holds roster moves derived from weekly nflverse roster snapshots
+  (`load_rosters_weekly`) and the injury report (`load_injuries`) for the ticker's week;
+  empty in the offseason. Each player is compared with the last snapshot he appeared in,
+  and only an explicit status row counts as leaving: a missing row means nothing (byes
+  have no snapshot, and in 2025, 97% of vanished players came back on the same team).
+  Game-day inactives and active roster / practice squad moves are not moves.
 - Rosters are one file per team so an unchanged team is not rewritten. Player URL
   slugs are written by the pipeline, not derived by the site, because players who
   share a name need a team suffix. `player_slug` in `pipelines/common.py` and

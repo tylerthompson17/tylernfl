@@ -1,4 +1,5 @@
-"""Daily site data job: writes ticker.json, leaders.json, stats/ and rosters/ into src/data/.
+"""Daily site data job: writes ticker.json, leaders.json, stats/, rosters/ and
+transactions.json into src/data/.
 
 Run from the repo root:
     pip install -r pipelines/requirements.txt
@@ -26,6 +27,7 @@ from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
 from leaders import build_leaders  # noqa: E402
 from rosters import build_rosters, load_roster_rows, unknown_statuses  # noqa: E402
 from ticker import build_ticker, load_schedule_rows  # noqa: E402
+from transactions import build_transactions, load_injury_rows, load_weekly_roster_rows  # noqa: E402
 
 
 def roster_season(today: date) -> int:
@@ -57,12 +59,26 @@ def main() -> None:
     players = sum(len(r['players']) for r in rosters.values())
     print(f"rosters: {rosters_year} week {next(iter(rosters.values()))['week'] if rosters else 0}, "
           f"{len(rosters)} teams, {players} players")
+    if ticker['week'] is None:
+        transactions = build_transactions([], [], ticker['season'], None, updated)
+    else:
+        transactions = build_transactions(
+            load_weekly_roster_rows(ticker['season']),
+            load_injury_rows(ticker['season']),
+            ticker['season'],
+            ticker['week'],
+            updated,
+        )
+    print(f"transactions: week {transactions['movesWeek']} vs {transactions['comparedToWeek']}, "
+          f"{len(transactions['moves'])} moves, {len(transactions['injuries'])} on the injury report")
+
     unknown = unknown_statuses(roster_rows)
     if unknown:
         print(f"rosters: WARNING unknown status codes left off rosters: {', '.join(sorted(unknown))}")
 
     files = [('ticker.json', ticker, ('updated',)), ('leaders.json', leaders, ())]
     files += [(f'stats/{key}.json', board, ()) for key, board in boards.items()]
+    files.append(('transactions.json', transactions, ('updated',)))
     files += [(f'rosters/{team}.json', roster, ('updated',)) for team, roster in sorted(rosters.items())]
 
     if args.dry_run:

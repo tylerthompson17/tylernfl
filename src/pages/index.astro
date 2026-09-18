@@ -6,12 +6,23 @@ import FieldStrip from '../components/FieldStrip.astro';
 import { url } from '../utils/url';
 import { getArticles } from '../utils/articles';
 import leadersData from '../data/leaders.json';
+import { moveRows, statusSummary, transactions } from '../utils/transactions';
 import type { LeadersData } from '../data/types';
 
 const leaders = leadersData as LeadersData;
 const receiving = leaders.categories.find((c) => c.key === 'rec_yds');
 
 const latest = (await getArticles())[0];
+
+// Biggest news first: the pipeline sorts practice squad churn last.
+const HOME_MOVES = 8;
+const topMoves = moveRows(transactions.moves.slice(0, HOME_MOVES));
+const injurySummary = statusSummary(transactions.injuries);
+const moveColumns = [
+  { key: 'team', label: 'Team', kind: 'team' as const },
+  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
+  { key: 'move', label: 'Move' },
+];
 
 const leaderColumns = [
   { key: 'rank', label: 'Rk', kind: 'number' as const },
@@ -49,6 +60,30 @@ const leaderColumns = [
         Through week {leaders.throughWeek}.{' '}
         <a href={url(receiving ? `stats/${receiving.board}` : 'stats')}>Full receiving leaderboard</a>
       </p>
+    </Panel>
+    <Panel title="Roster moves">
+      {
+        transactions.week === null ? (
+          <p class="placeholder-note">
+            Offseason. Roster moves and injury reports return in week 1.
+          </p>
+        ) : (
+          <>
+            <StatTable
+              columns={moveColumns}
+              rows={topMoves}
+              caption="Latest roster moves"
+              emptyText="No roster moves yet. Moves appear from week 2."
+            />
+            <p class="table-foot">
+              {transactions.moves.length > HOME_MOVES &&
+                `${transactions.moves.length - HOME_MOVES} more this week. `}
+              Week {transactions.week} injury report: {injurySummary ?? 'no game statuses yet'}.{' '}
+              <a href={url('transactions')}>All moves and injuries</a>
+            </p>
+          </>
+        )
+      }
     </Panel>
     <Panel title="Latest article">
       {

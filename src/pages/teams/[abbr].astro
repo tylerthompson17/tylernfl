@@ -17,6 +17,15 @@ import {
   teamStats,
 } from '../../utils/team-stats';
 import { url } from '../../utils/url';
+import {
+  INJURY_NOTE,
+  MOVES_NOTE,
+  injuriesFor,
+  injuryRows,
+  moveRows,
+  movesFor,
+  transactions,
+} from '../../utils/transactions';
 
 export function getStaticPaths() {
   return (teamsData as TeamsData).map((team) => ({
@@ -71,6 +80,21 @@ const statColumns = [
   { key: 'defValue', label: 'Value', kind: 'number' as const, group: 'Defense' },
   { key: 'defRank', label: rankLabel(statSmallSample), kind: 'number' as const, group: 'Defense' },
   { key: 'defSample', label: 'Sample', kind: 'number' as const, group: 'Defense' },
+];
+
+const teamMoves = moveRows(movesFor(team.abbr), team.abbr);
+const teamInjuries = injuryRows(injuriesFor(team.abbr));
+const teamMoveColumns = [
+  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
+  { key: 'position', label: 'Pos' },
+  { key: 'move', label: 'Move' },
+];
+const teamInjuryColumns = [
+  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
+  { key: 'position', label: 'Pos' },
+  { key: 'injury', label: 'Injury' },
+  { key: 'practice', label: 'Practice' },
+  { key: 'status', label: 'Game status' },
 ];
 
 // This team's appearances in the current leaderboards.
@@ -136,6 +160,49 @@ const appearanceColumns = [
         </Panel>
       )
     }
+    <Panel title="Roster moves and injuries">
+      {
+        transactions.week === null ? (
+          <p class="placeholder-note">
+            Offseason. Roster moves and injury reports return in week 1.
+          </p>
+        ) : (
+          <>
+            <section class="group">
+              <h3 class="group-title">
+                {transactions.comparedToWeek === null
+                  ? 'Roster moves'
+                  : `Moves, week ${transactions.comparedToWeek} to week ${transactions.movesWeek}`}
+              </h3>
+              <StatTable
+                columns={teamMoveColumns}
+                rows={teamMoves}
+                caption={`${team.name} roster moves`}
+                emptyText={
+                  transactions.comparedToWeek === null
+                    ? 'No roster moves yet. Moves appear from week 2.'
+                    : `No ${team.name} roster moves this week.`
+                }
+              />
+              <p class="table-foot">{MOVES_NOTE}</p>
+            </section>
+            <section class="group">
+              <h3 class="group-title">Week {transactions.week} injury report</h3>
+              <StatTable
+                columns={teamInjuryColumns}
+                rows={teamInjuries}
+                caption={`${team.name} week ${transactions.week} injury report`}
+                emptyText={`No ${team.name} injury report yet for week ${transactions.week}.`}
+              />
+              <p class="table-foot">{INJURY_NOTE}</p>
+            </section>
+            <p class="table-foot">
+              <a href={url('transactions')}>All moves and injuries</a>
+            </p>
+          </>
+        )
+      }
+    </Panel>
     <Panel title={`${leaders.season} league leaderboard appearances`}>
       <StatTable
         columns={appearanceColumns}

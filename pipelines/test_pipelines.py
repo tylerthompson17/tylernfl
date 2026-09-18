@@ -14,6 +14,7 @@ from leaders import build_leaders
 from pbp_cache import is_fresh
 from rosters import age_on, build_rosters, unknown_statuses
 from team_stats import build_team_stats, rank
+from transactions import build_transactions
 from ticker import WeekSpan, build_ticker, format_detail, kickoff_utc, next_opener, select_week
 
 d = date.fromisoformat
@@ -607,6 +608,134 @@ class BuildTeamStatsTest(unittest.TestCase):
         )
         self.assertEqual(len(stats['metrics']), 8)
         self.assertEqual((stats['teams'], stats['throughWeek']), ([], 0))
+
+
+def weekly(player_id, name, week, team, status, position='WR'):
+    return {
+        'week': week, 'team': team, 'status': status, 'full_name': name,
+        'gsis_id': player_id, 'position': position, 'depth_chart_position': position,
+    }
+
+
+def injury(name, team, week=2, status=None, injury='Knee', practice='Limited Participation in Practice'):
+    return {
+        'week': week, 'team': team, 'gsis_id': f'id-{name}', 'full_name': name, 'position': 'WR',
+        'report_primary_injury': injury if status else None, 'practice_primary_injury': injury,
+        'report_status': status, 'practice_status': practice,
+    }
+
+
+class BuildTransactionsTest(unittest.TestCase):
+    def moves(self, rows):
+        return build_transactions(rows, [], 2026, 2, 'now')['moves']
+
+    def notes(self, rows):
+        return {(m['player'], m['team']): m['note'] for m in self.moves(rows)}
+
+    def test_game_day_inactives_and_practice_squad_call_ups_are_not_moves(self):
+        rows = [
+            weekly('a', 'Inactive Player', 1, 'BUF', 'INA'), weekly('a', 'Inactive Player', 2, 'BUF', 'ACT'),
+            weekly('b', 'Kyle Van Noy', 1, 'MIN', 'ACT'), weekly('b', 'Kyle Van Noy', 2, 'MIN', 'DEV'),
+            weekly('c', 'Called Up', 1, 'NYG', 'DEV'), weekly('c', 'Called Up', 2, 'NYG', 'ACT'),
+            weekly('d', 'Steady', 1, 'KC', 'ACT'), weekly('d', 'Steady', 2, 'KC', 'ACT'),
+        ]
+        self.assertEqual(self.moves(rows), [])
+
+    def test_signings_releases_and_reserve_placements(self):
+        rows = [
+            weekly('a', 'New Signing', 2, 'BUF', 'ACT'),
+            weekly('b', 'Squad Signing', 2, 'BUF', 'DEV'),
+            weekly('c', 'Cut Player', 1, 'BUF', 'ACT'), weekly('c', 'Cut Player', 2, 'BUF', 'CUT'),
+            weekly('d', 'Squad Cut', 1, 'BUF', 'DEV'), weekly('d', 'Squad Cut', 2, 'BUF', 'CUT'),
+            weekly('e', 'Hurt Player', 1, 'BUF', 'ACT'), weekly('e', 'Hurt Player', 2, 'BUF', 'RES'),
+            weekly('f', 'Back Player', 1, 'BUF', 'PUP'), weekly('f', 'Back Player', 2, 'BUF', 'ACT'),
+            weekly('h', 'Old Player', 1, 'BUF', 'ACT'), weekly('h', 'Old Player', 2, 'BUF', 'RET'),
+        ]
+        self.assertEqual(self.notes(rows), {
+            ('New Signing', 'BUF'): 'Signed',
+            ('Squad Signing', 'BUF'): 'Signed to practice squad',
+            ('Cut Player', 'BUF'): 'Released',
+            ('Squad Cut', 'BUF'): 'Released from practice squad',
+            ('Hurt Player', 'BUF'): 'Placed on reserve list',
+            ('Back Player', 'BUF'): 'Activated from PUP list',
+            ('Old Player', 'BUF'): 'Retired',
+        })
+
+    def test_team_changes_name_the_old_team_and_rams_are_lar(self):
+        rows = [
+            weekly('a', 'Traded Player', 1, 'DAL', 'ACT'), weekly('a', 'Traded Player', 2, 'LA', 'ACT'),
+            weekly('b', 'Claimed Player', 1, 'LA', 'DEV'), weekly('b', 'Claimed Player', 2, 'SEA', 'DEV'),
+            # Cut by one team in week 1, signed by another in week 2: a signing.
+            weekly('c', 'Resigned Player', 1, 'NYJ', 'CUT'), weekly('c', 'Resigned Player', 2, 'MIA', 'DEV'),
+        ]
+        moves = {m['player']: (m['team'], m['fromTeam'], m['note']) for m in self.moves(rows)}
+        self.assertEqual(moves, {
+            'Traded Player': ('LAR', 'DAL', 'Joined from DAL'),
+            'Claimed Player': ('SEA', 'LAR', 'Joined practice squad from LAR'),
+            'Resigned Player': ('MIA', None, 'Signed to practice squad'),
+        })
+
+    def test_missing_from_a_snapshot_is_not_leaving(self):
+        # In 2025, 97% of players who vanished from a week came back on the
+        # same team; most were byes.
+        rows = [
+            weekly('a', 'Reserve Player', 1, 'BUF', 'RES'),
+            weekly('b', 'Anyone', 1, 'KC', 'ACT'), weekly('b', 'Anyone', 2, 'KC', 'ACT'),
+        ]
+        self.assertEqual(self.moves(rows), [])
+
+    def test_a_bye_week_does_not_turn_a_roster_into_signings(self):
+        rows = [
+            # BUF is on bye in week 2: no snapshot. Week 3 compares with week 1.
+            weekly('a', 'Josh Allen', 1, 'BUF', 'ACT'), weekly('a', 'Josh Allen', 3, 'BUF', 'ACT'),
+            weekly('b', 'Hurt Player', 1, 'BUF', 'ACT'), weekly('b', 'Hurt Player', 3, 'BUF', 'RES'),
+            weekly('c', 'Other Team', 2, 'KC', 'ACT'), weekly('c', 'Other Team', 3, 'KC', 'ACT'),
+        ]
+        data = build_transactions(rows, [], 2026, 3, 'now')
+        self.assertEqual([(m['player'], m['note']) for m in data['moves']], [('Hurt Player', 'Placed on reserve list')])
+        self.assertEqual((data['movesWeek'], data['comparedToWeek']), (3, 2))
+
+    def test_players_already_gone_stay_quiet_and_unknown_statuses_are_skipped(self):
+        rows = [
+            weekly('a', 'Long Gone', 1, 'BUF', 'CUT'),
+            weekly('b', 'Still Retired', 1, 'BUF', 'RET'), weekly('b', 'Still Retired', 2, 'BUF', 'RET'),
+            weekly('c', 'Odd Code', 1, 'BUF', 'ACT'), weekly('c', 'Odd Code', 2, 'BUF', 'ZZZ'),
+        ]
+        self.assertEqual(self.moves(rows), [])
+
+    def test_bigger_news_sorts_first_and_practice_squad_churn_last(self):
+        rows = [
+            weekly('a', 'Squad Signing', 2, 'ARI', 'DEV'),
+            weekly('b', 'Cut Player', 1, 'ARI', 'ACT'), weekly('b', 'Cut Player', 2, 'ARI', 'CUT'),
+            weekly('c', 'Hurt Player', 1, 'WAS', 'ACT'), weekly('c', 'Hurt Player', 2, 'WAS', 'RES'),
+        ]
+        self.assertEqual([m['player'] for m in self.moves(rows)], ['Hurt Player', 'Cut Player', 'Squad Signing'])
+
+    def test_first_week_has_nothing_to_compare(self):
+        data = build_transactions([weekly('a', 'Anyone', 1, 'BUF', 'ACT')], [], 2026, 1, 'now')
+        self.assertEqual((data['movesWeek'], data['comparedToWeek'], data['moves']), (1, None, []))
+
+    def test_offseason_is_empty(self):
+        rows = [weekly('a', 'Anyone', 2, 'BUF', 'ACT')]
+        data = build_transactions(rows, [injury('X', 'BUF')], 2026, None, 'now')
+        self.assertEqual((data['week'], data['moves'], data['injuries']), (None, [], []))
+
+    def test_injury_report_for_the_ticker_week_sorted_by_game_status(self):
+        rows = [
+            injury('Practice Only', 'BUF'),
+            injury('Questionable Player', 'BUF', status='Questionable'),
+            injury('Out Player', 'LA', status='Out', injury='Hip', practice='Did Not Participate In Practice'),
+            injury('Last Week', 'BUF', week=1, status='Out'),
+        ]
+        injuries = build_transactions([], rows, 2026, 2, 'now')['injuries']
+        self.assertEqual(
+            [(i['player'], i['team'], i['status'], i['injury'], i['practice']) for i in injuries],
+            [
+                ('Out Player', 'LAR', 'Out', 'Hip', 'Did not practice'),
+                ('Questionable Player', 'BUF', 'Questionable', 'Knee', 'Limited'),
+                ('Practice Only', 'BUF', None, 'Knee', 'Limited'),
+            ],
+        )
 
 
 class RankTest(unittest.TestCase):
