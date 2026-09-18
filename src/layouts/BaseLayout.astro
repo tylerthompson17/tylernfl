@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { url } from '../utils/url';
+import { BUILD_ID } from '../utils/build';
 import Panel from '../components/Panel.astro';
 import TickerItem from '../components/TickerItem.astro';
 import tickerData from '../data/ticker.json';
@@ -40,6 +41,9 @@ if (ticker.nextOpener) {
   openerText = `Offseason. Next season opens ${opener}.`;
 }
 const onThisDay = onThisDayData as OnThisDayData;
+
+// Versioned per build so a deploy never pairs new pages with a cached index.
+const searchIndexUrl = `${url('search-index.js')}?v=${BUILD_ID}`;
 const onThisDayDate = new Date(2000, onThisDay.month - 1, onThisDay.day).toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric',
@@ -121,10 +125,26 @@ function isActive(href: string): boolean {
           Menu
         </button>
         <a class="wordmark" href={url()}>Tyler NFL</a>
-        <!-- Search is specced but not built yet. No form wrapper, so
-             pressing Enter does nothing instead of faking a submit. -->
+        <!-- Search runs in the browser over search-index.js, built with the
+             site. No form wrapper: without JavaScript the box stays disabled
+             rather than pretending to submit. -->
         <div class="search">
-          <input type="search" placeholder="Search players, teams, stats" aria-label="Search players, teams, stats (not available yet)" />
+          <input
+            type="search"
+            placeholder="Search players, teams, stats"
+            aria-label="Search players, teams and pages"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-controls="search-results"
+            autocomplete="off"
+            spellcheck="false"
+            disabled
+            data-search-input
+            data-index={searchIndexUrl}
+          />
+          <ul id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden data-search-results></ul>
+          <p class="visually-hidden" aria-live="polite" data-search-status></p>
         </div>
       </header>
 
@@ -192,6 +212,12 @@ function isActive(href: string): boolean {
         const open = shell?.classList.toggle('nav-open') ?? false;
         button.setAttribute('aria-expanded', String(open));
       });
+    </script>
+
+    <script>
+      import { initSearch } from '../lib/search/dom';
+
+      initSearch();
     </script>
 
     <script>
@@ -425,6 +451,64 @@ function isActive(href: string): boolean {
 
   .search input::placeholder {
     color: var(--text-dim);
+  }
+
+  /* Results drop below the box: one boxed list, the chosen row on the
+     first-down yellow background (background only, never text). */
+  .search {
+    position: relative;
+  }
+
+  .search-results {
+    position: absolute;
+    top: calc(100% + 2px);
+    right: 0;
+    z-index: 10;
+    width: max(100%, 320px);
+    max-width: calc(100vw - 2 * var(--space-3));
+    list-style: none;
+    padding: 0;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    color: var(--text);
+  }
+
+  .search-results[hidden] {
+    display: none;
+  }
+
+  .search-results :global(li) {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-1) var(--space-2);
+    cursor: pointer;
+  }
+
+  .search-results :global(li + li) {
+    border-top: 1px dotted var(--rule-soft);
+  }
+
+  .search-results :global(li[aria-selected='true']) {
+    background: var(--highlight);
+  }
+
+  .search-results :global(.search-label) {
+    font-weight: 700;
+  }
+
+  .search-results :global(.search-detail) {
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  .search-results :global(li[aria-selected='true'] .search-detail) {
+    color: var(--text);
+  }
+
+  .search-results :global(.search-empty) {
+    color: var(--text-dim);
+    cursor: default;
   }
 
   /* Left nav: white panel of links */

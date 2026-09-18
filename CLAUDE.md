@@ -45,6 +45,11 @@ tylernfl/
 - Browser-side fetches are allowed in exactly two places. Nothing else fetches data at runtime.
   1. **Live ticker scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates ticker scores in place. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Pinned live games also show who scored last: when a pinned game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (it is about 175 KB, of which the scoring plays are about 1 KB). Turn it all off with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
   2. **Live 4th down page** (later): fetches game state at runtime.
+- Header search is not a runtime data fetch: its index (`search-index.js`, from
+  `src/pages/search-index.js.ts`) is static build output, versioned per build, and the
+  search box loads it as a script the first time it is used (about 50 KB gzipped). It
+  covers every player page, every team and the site's pages; matching and ranking live
+  in `src/lib/search/match.ts`. Nothing else may use this as a way to load data.
 - ESPN data is browser-only: never write it to `src/data/` and never use it in pipelines. Pipelines use nflverse (the `espnId` in `ticker.json` comes from nflverse schedules). Test fixtures in `tests/fixtures/espn/` are the only stored ESPN data.
 - Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text).
 - In-progress parsing (quarter, clock, halftime, final) is verified against the real capture from DET at BUF on
