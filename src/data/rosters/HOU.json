@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "HOU",
   "week": 2,
-  "updated": "2026-09-17T19:59:07Z",
+  "updated": "2026-09-18T13:55:39Z",
   "groups": [
     {
       "key": "offense",
@@ -47,21 +47,6 @@
       "age": 27,
       "experience": 5,
       "college": "Stanford"
-    },
-    {
-      "gsisId": "00-0041156",
-      "name": "Mark Gronowski",
-      "slug": "mark-gronowski",
-      "number": 16,
-      "position": "QB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 74,
-      "weight": 235,
-      "age": 24,
-      "experience": 0,
-      "college": "Iowa; South Dakota"
     },
     {
       "gsisId": "00-0040211",
@@ -242,6 +227,21 @@
       "age": 26,
       "experience": 3,
       "college": "Iowa State"
+    },
+    {
+      "gsisId": "00-0039650",
+      "name": "Bryce Oliver",
+      "slug": "bryce-oliver",
+      "number": 80,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 215,
+      "age": 26,
+      "experience": 2,
+      "college": "Youngstown State; Kentucky"
     },
     {
       "gsisId": "00-0040130",
@@ -1010,8 +1010,8 @@
     },
     {
       "gsisId": "00-0036441",
-      "name": "Kenneth Murray",
-      "slug": "kenneth-murray",
+      "name": "Kenneth Murray, Jr.",
+      "slug": "kenneth-murray-jr",
       "number": 59,
       "position": "MLB",
       "group": "defense",

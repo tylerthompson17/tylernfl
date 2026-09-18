@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "GB",
   "week": 2,
-  "updated": "2026-09-18T00:03:30Z",
+  "updated": "2026-09-18T13:55:39Z",
   "groups": [
     {
       "key": "offense",
@@ -230,16 +230,16 @@
     },
     {
       "gsisId": "00-0040553",
-      "name": "Quincy Skinner",
-      "slug": "quincy-skinner",
+      "name": "Quincy Skinner Jr.",
+      "slug": "quincy-skinner-jr",
       "number": 39,
       "position": "WR",
       "group": "offense",
       "status": "DEV",
       "statusLabel": "Practice squad",
-      "heightInches": null,
+      "heightInches": 74,
       "weight": 205,
-      "age": null,
+      "age": 23,
       "experience": 1,
       "college": null
     },
@@ -497,6 +497,21 @@
       "age": 24,
       "experience": 0,
       "college": "Auburn; Tulsa"
+    },
+    {
+      "gsisId": "00-0038095",
+      "name": "Cordell Volson",
+      "slug": "cordell-volson",
+      "number": 73,
+      "position": "G",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 78,
+      "weight": 310,
+      "age": 28,
+      "experience": 4,
+      "college": "North Dakota State"
     },
     {
       "gsisId": "00-0040023",

@@ -2,7 +2,7 @@
   "key": "passing",
   "label": "Passing",
   "season": 2026,
-  "throughWeek": 1,
+  "throughWeek": 2,
   "primary": "passing_yards",
   "qualifier": {
     "column": "attempts",
@@ -95,6 +95,46 @@
   "rows": [
     {
       "rank": 1,
+      "playerId": "00-0034857",
+      "player": "Josh Allen",
+      "team": "BUF",
+      "position": "QB",
+      "teamGames": 2,
+      "qualified": true,
+      "values": {
+        "games": 2,
+        "completions": 40,
+        "attempts": 60,
+        "passing_yards": 582,
+        "passing_tds": 5,
+        "passing_interceptions": 0,
+        "sacks_suffered": 4,
+        "cmp_pct": 0.667,
+        "pass_ypa": 9.7
+      }
+    },
+    {
+      "rank": 2,
+      "playerId": "00-0033106",
+      "player": "Jared Goff",
+      "team": "DET",
+      "position": "QB",
+      "teamGames": 2,
+      "qualified": true,
+      "values": {
+        "games": 2,
+        "completions": 52,
+        "attempts": 77,
+        "passing_yards": 533,
+        "passing_tds": 6,
+        "passing_interceptions": 0,
+        "sacks_suffered": 5,
+        "cmp_pct": 0.675,
+        "pass_ypa": 6.9
+      }
+    },
+    {
+      "rank": 3,
       "playerId": "00-0040743",
       "player": "Tyler Shough",
       "team": "NO",
@@ -114,7 +154,7 @@
       }
     },
     {
-      "rank": 2,
+      "rank": 4,
       "playerId": "00-0036264",
       "player": "Jordan Love",
       "team": "GB",
@@ -134,7 +174,7 @@
       }
     },
     {
-      "rank": 3,
+      "rank": 5,
       "playerId": "00-0039150",
       "player": "Bryce Young",
       "team": "CAR",
@@ -154,27 +194,7 @@
       }
     },
     {
-      "rank": 4,
-      "playerId": "00-0034857",
-      "player": "Josh Allen",
-      "team": "BUF",
-      "position": "QB",
-      "teamGames": 1,
-      "qualified": true,
-      "values": {
-        "games": 1,
-        "completions": 20,
-        "attempts": 29,
-        "passing_yards": 334,
-        "passing_tds": 2,
-        "passing_interceptions": 0,
-        "sacks_suffered": 2,
-        "cmp_pct": 0.69,
-        "pass_ypa": 11.5
-      }
-    },
-    {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0034796",
       "player": "Lamar Jackson",
       "team": "BAL",
@@ -194,7 +214,7 @@
       }
     },
     {
-      "rank": 6,
+      "rank": 7,
       "playerId": "00-0033119",
       "player": "Jacoby Brissett",
       "team": "ARI",
@@ -214,7 +234,7 @@
       }
     },
     {
-      "rank": 7,
+      "rank": 8,
       "playerId": "00-0039163",
       "player": "C.J. Stroud",
       "team": "HOU",
@@ -234,7 +254,7 @@
       }
     },
     {
-      "rank": 8,
+      "rank": 9,
       "playerId": "00-0039918",
       "player": "Caleb Williams",
       "team": "CHI",
@@ -254,7 +274,7 @@
       }
     },
     {
-      "rank": 9,
+      "rank": 10,
       "playerId": "00-0036442",
       "player": "Joe Burrow",
       "team": "CIN",
@@ -274,7 +294,7 @@
       }
     },
     {
-      "rank": 10,
+      "rank": 11,
       "playerId": "00-0036971",
       "player": "Trevor Lawrence",
       "team": "JAX",
@@ -294,7 +314,7 @@
       }
     },
     {
-      "rank": 11,
+      "rank": 12,
       "playerId": "00-0040691",
       "player": "Jaxson Dart",
       "team": "NYG",
@@ -314,7 +334,7 @@
       }
     },
     {
-      "rank": 12,
+      "rank": 13,
       "playerId": "00-0023459",
       "player": "Aaron Rodgers",
       "team": "PIT",
@@ -334,7 +354,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0038128",
       "player": "Malik Willis",
       "team": "MIA",
@@ -354,7 +374,7 @@
       }
     },
     {
-      "rank": 14,
+      "rank": 15,
       "playerId": "00-0034855",
       "player": "Baker Mayfield",
       "team": "TB",
@@ -374,7 +394,7 @@
       }
     },
     {
-      "rank": 15,
+      "rank": 16,
       "playerId": "00-0030565",
       "player": "Geno Smith",
       "team": "NYJ",
@@ -394,7 +414,7 @@
       }
     },
     {
-      "rank": 16,
+      "rank": 17,
       "playerId": "00-0036355",
       "player": "Justin Herbert",
       "team": "LAC",
@@ -411,26 +431,6 @@
         "sacks_suffered": 3,
         "cmp_pct": 0.63,
         "pass_ypa": 7.7
-      }
-    },
-    {
-      "rank": 17,
-      "playerId": "00-0033106",
-      "player": "Jared Goff",
-      "team": "DET",
-      "position": "QB",
-      "teamGames": 1,
-      "qualified": true,
-      "values": {
-        "games": 1,
-        "completions": 26,
-        "attempts": 39,
-        "passing_yards": 206,
-        "passing_tds": 2,
-        "passing_interceptions": 0,
-        "sacks_suffered": 1,
-        "cmp_pct": 0.667,
-        "pass_ypa": 5.3
       }
     },
     {

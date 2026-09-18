@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "throughWeek": 1,
+  "throughWeek": 2,
   "categories": [
     {
       "key": "pass_yds",
@@ -10,33 +10,33 @@
       "rows": [
         {
           "rank": 1,
+          "player": "Josh Allen",
+          "team": "BUF",
+          "value": 582
+        },
+        {
+          "rank": 2,
+          "player": "Jared Goff",
+          "team": "DET",
+          "value": 533
+        },
+        {
+          "rank": 3,
           "player": "Tyler Shough",
           "team": "NO",
           "value": 410
         },
         {
-          "rank": 2,
+          "rank": 4,
           "player": "Jordan Love",
           "team": "GB",
           "value": 387
         },
         {
-          "rank": 3,
+          "rank": 5,
           "player": "Bryce Young",
           "team": "CAR",
           "value": 361
-        },
-        {
-          "rank": 4,
-          "player": "Josh Allen",
-          "team": "BUF",
-          "value": 334
-        },
-        {
-          "rank": 5,
-          "player": "Lamar Jackson",
-          "team": "BAL",
-          "value": 324
         }
       ]
     },
@@ -48,33 +48,33 @@
       "rows": [
         {
           "rank": 1,
+          "player": "Jahmyr Gibbs",
+          "team": "DET",
+          "value": 208
+        },
+        {
+          "rank": 2,
+          "player": "James Cook",
+          "team": "BUF",
+          "value": 192
+        },
+        {
+          "rank": 3,
           "player": "Kenneth Walker III",
           "team": "KC",
           "value": 173
         },
         {
-          "rank": 2,
-          "player": "Jahmyr Gibbs",
-          "team": "DET",
-          "value": 156
-        },
-        {
-          "rank": 3,
+          "rank": 4,
           "player": "Derrick Henry",
           "team": "BAL",
           "value": 144
         },
         {
-          "rank": 4,
+          "rank": 5,
           "player": "D'Andre Swift",
           "team": "CHI",
           "value": 124
-        },
-        {
-          "rank": 5,
-          "player": "Ashton Jeanty",
-          "team": "LV",
-          "value": 102
         }
       ]
     },
@@ -86,33 +86,33 @@
       "rows": [
         {
           "rank": 1,
+          "player": "Dalton Kincaid",
+          "team": "BUF",
+          "value": 225
+        },
+        {
+          "rank": 2,
+          "player": "Amon-Ra St. Brown",
+          "team": "DET",
+          "value": 209
+        },
+        {
+          "rank": 3,
           "player": "Chris Olave",
           "team": "NO",
           "value": 182
         },
         {
-          "rank": 2,
+          "rank": 4,
           "player": "Zay Flowers",
           "team": "BAL",
           "value": 150
         },
         {
-          "rank": 3,
+          "rank": 5,
           "player": "Christian Watson",
           "team": "GB",
           "value": 147
-        },
-        {
-          "rank": 4,
-          "player": "Jalen Coker",
-          "team": "CAR",
-          "value": 138
-        },
-        {
-          "rank": 5,
-          "player": "Dalton Kincaid",
-          "team": "BUF",
-          "value": 130
         }
       ]
     }
