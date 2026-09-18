@@ -305,6 +305,8 @@ export interface InjuryEntry extends WireRanking {
   injury: string | null;
   /** "Full", "Limited", "Did not practice" */
   practice: string | null;
+  /** The team's game this week is already final, so the status is history */
+  gamePlayed: boolean;
 }
 
 export interface TransactionsData {

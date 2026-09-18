@@ -25,6 +25,8 @@ export interface WireItem {
   categoryLabel: string;
   news: string;
   priority: number;
+  /** A game status for a game already played */
+  gamePlayed: boolean;
 }
 
 const PRACTICE_WORDS: Record<string, string> = {
@@ -35,7 +37,8 @@ const PRACTICE_WORDS: Record<string, string> = {
 
 function injuryNews(entry: InjuryEntry): string {
   const lead = entry.status ?? (entry.practice ? (PRACTICE_WORDS[entry.practice] ?? entry.practice) : 'Injury report');
-  return entry.injury ? `${lead}: ${entry.injury}` : lead;
+  const news = entry.injury ? `${lead}: ${entry.injury}` : lead;
+  return entry.status && entry.gamePlayed ? `${news} (game played)` : news;
 }
 
 function toItem(source: RosterMove | InjuryEntry, news: string, fromTeam: string | null): WireItem {
@@ -52,6 +55,7 @@ function toItem(source: RosterMove | InjuryEntry, news: string, fromTeam: string
     categoryLabel: categoryLabels.get(ranking.category) ?? ranking.category,
     news,
     priority: ranking.priority,
+    gamePlayed: 'gamePlayed' in source && source.gamePlayed && source.status !== null,
   };
 }
 
@@ -76,17 +80,24 @@ export function wireItems(team?: string): WireItem[] {
 /** Categories that are routine churn: kept on the wire, left off the home page. */
 const ROUTINE = new Set(['practice-squad', 'practice-report']);
 
-/** The top of the wire for the home page: game statuses and real moves, starters first. */
+/**
+ * The top of the wire for the home page: game statuses for games still to
+ * play and real moves, starters first.
+ */
 export function headlineItems(count: number): { items: WireItem[]; rest: number } {
   const all = wireItems();
-  const items = all.filter((item) => !ROUTINE.has(item.category)).slice(0, count);
+  const items = all.filter((item) => !ROUTINE.has(item.category) && !item.gamePlayed).slice(0, count);
   return { items, rest: all.length - items.length };
 }
 
-/** "2 out, 1 doubtful, 4 questionable", or null when no game statuses are in yet. */
+/**
+ * "2 out, 1 doubtful, 4 questionable" for games still to play, or null when
+ * none of those have statuses yet.
+ */
 export function statusSummary(entries: InjuryEntry[]): string | null {
+  const upcoming = entries.filter((entry) => !entry.gamePlayed);
   const counts = (['Out', 'Doubtful', 'Questionable'] as const)
-    .map((status) => [status, entries.filter((entry) => entry.status === status).length] as const)
+    .map((status) => [status, upcoming.filter((entry) => entry.status === status).length] as const)
     .filter(([, n]) => n > 0)
     .map(([status, n]) => `${n} ${status.toLowerCase()}`);
   return counts.length > 0 ? counts.join(', ') : null;

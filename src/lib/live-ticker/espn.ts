@@ -49,9 +49,13 @@ function score(value: unknown): number | null {
 }
 
 /**
- * PROVISIONAL: in-progress formatting is based on ESPN's documented status
- * names, not yet checked against a real in-progress response. Finalize and
- * test against tests/fixtures/espn/ once the Thursday capture exists.
+ * In-game detail text: "Q2 3:01", "Half", "End Q3", "OT 10:00".
+ *
+ * Checked against the DET at BUF capture (2026-09-17, tests/fixtures/espn/):
+ * in progress, halftime and final all parse as intended. Two branches have
+ * not been seen in a real response yet: ESPN reported the next quarter at
+ * 15:00 between quarters rather than STATUS_END_PERIOD, and that game did
+ * not reach overtime. Both fall back to safe text if ESPN differs.
  */
 export function inProgressDetail(status: Json): string {
   const type = isObject(status.type) ? status.type : {};

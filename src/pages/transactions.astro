@@ -33,8 +33,9 @@ const movesSpan =
     ) : (
       <>
         <p class="page-intro">
-          {transactions.season} week {transactions.week}. {movesSpan} Game statuses so far:{' '}
-          {summary ?? 'none yet'}.
+          {transactions.season} week {transactions.week}. {movesSpan} Game statuses for games still
+          to play: {summary ?? 'none yet'}. Statuses for games already played are marked and listed
+          with the routine items.
         </p>
         <div class="content-grid">
           <Panel title="The wire">

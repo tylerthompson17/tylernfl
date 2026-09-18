@@ -74,6 +74,7 @@ def main() -> None:
             ticker['week'],
             updated,
             load_snap_shares(ticker['season']),
+            {team for game in ticker['games'] if game['state'] == 'final' for team in (game['away'], game['home'])},
         )
     print(f"transactions: week {transactions['movesWeek']} vs {transactions['comparedToWeek']}, "
           f"{len(transactions['moves'])} moves, {len(transactions['injuries'])} on the injury report")

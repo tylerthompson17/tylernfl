@@ -13,10 +13,18 @@ point tries, and never count):
 - Third down conversion rate: nflverse's third_down_converted over
   converted plus failed. The flags sit on the play that settles the down,
   so a penalty that replays third down is not an extra attempt.
-- Red zone TD rate: of drives with a snap at or inside the opponent's
-  RED_ZONE_LINE, the share where the offense scored a touchdown. A drive is
-  (game_id, fixed_drive); the touchdown is a play with `touchdown` set and
-  `td_team` equal to the offense, so a pick six does not count.
+- Red zone TD rate: of drives that got inside the opponent's 20, the share
+  where the offense scored a touchdown. "Inside the 20" is nflverse's own
+  drive_inside20 flag rather than a definition of this site's; the 20-yard
+  line itself does not count. A drive is (game_id,
+  fixed_drive); the touchdown is a play with `touchdown` set and `td_team`
+  equal to the offense, so a pick six does not count. (Until 2026-09-18
+  this counted drives with a snap at or inside the 20, about 3% more
+  trips.)
+
+Only complete weeks count: a week is in once every one of its regular
+season games has a final score in the nflverse schedule, so a run on a
+Friday never shows "through week 2" with one game of it played.
 
 Offense is grouped by `posteam`, defense by `defteam`. Defensive ranks
 invert: 1 is the fewest EPA, conversions and touchdowns allowed.
@@ -25,11 +33,6 @@ invert: 1 is the fewest EPA, conversions and touchdowns allowed.
 from collections import defaultdict
 
 from common import normalize_team
-
-# yardline_100 is distance from the opponent's goal line. nflverse's own
-# drive_inside20 flag uses < 20; counting the 20 itself adds about 3% more
-# trips (2025: 1,797 trips at <= 20, 1,741 at < 20).
-RED_ZONE_LINE = 20
 
 # Both formats show three decimals of the stored value: signed3 as +0.155,
 # percent1 as 49.8%. Keep in step with formatStat in src/utils/format.ts.
@@ -44,7 +47,7 @@ METRICS = [
     ('off_third_down', 'Third down conversion rate', '3rd down', 'offense', 'percent1', 'high', 'attempts',
      'Third downs converted to a first down or touchdown.'),
     ('off_red_zone', 'Red zone TD rate', 'Red zone TD', 'offense', 'percent1', 'high', 'trips',
-     f"Drives with a snap at or inside the opponent's {RED_ZONE_LINE} that ended in a touchdown."),
+     "Share of drives reaching inside the opponent's 20 (nflverse's drive flag) that ended in a touchdown."),
     ('def_epa', 'EPA per play allowed', 'EPA/play', 'defense', 'signed3', 'low', 'plays',
      'Expected points added per opponent dropback or designed run.'),
     ('def_success', 'Success rate allowed', 'Success', 'defense', 'percent1', 'low', 'plays',
@@ -52,13 +55,13 @@ METRICS = [
     ('def_third_down', 'Third down conversion rate allowed', '3rd down', 'defense', 'percent1', 'low', 'attempts',
      'Opponent third downs converted to a first down or touchdown.'),
     ('def_red_zone', 'Red zone TD rate allowed', 'Red zone TD', 'defense', 'percent1', 'low', 'trips',
-     f'Opponent drives with a snap at or inside the {RED_ZONE_LINE} that ended in a touchdown.'),
+     "Share of opponent drives reaching inside the 20 (nflverse's drive flag) that ended in a touchdown."),
 ]
 
 PBP_COLUMNS = [
-    'game_id', 'week', 'posteam', 'defteam', 'down', 'yardline_100', 'pass', 'rush',
+    'game_id', 'week', 'posteam', 'defteam', 'down', 'pass', 'rush',
     'qb_kneel', 'qb_spike', 'epa', 'third_down_converted', 'third_down_failed',
-    'fixed_drive', 'touchdown', 'td_team',
+    'fixed_drive', 'drive_inside20', 'touchdown', 'td_team',
 ]
 
 
@@ -121,7 +124,7 @@ def build_team_stats(rows: list[dict], season: int, updated: str) -> dict:
             tallies[('def_third_down', dfn)].add(converted)
 
         drive = drives.setdefault((row['game_id'], row['fixed_drive']), [off, dfn, False, False])
-        if row['yardline_100'] is not None and row['yardline_100'] <= RED_ZONE_LINE:
+        if row['drive_inside20'] == 1:
             drive[2] = True
         if row['touchdown'] == 1 and row['td_team'] is not None and normalize_team(row['td_team']) == off:
             drive[3] = True
@@ -163,7 +166,24 @@ def build_team_stats(rows: list[dict], season: int, updated: str) -> dict:
     }
 
 
+def last_complete_week(schedule_rows: list[dict]) -> int:
+    """Latest regular season week with every game final, counting up from week 1 without gaps."""
+    weeks: dict[int, bool] = {}
+    for game in schedule_rows:
+        if game['game_type'] != 'REG':
+            continue
+        final = game['away_score'] is not None and game['home_score'] is not None
+        weeks[game['week']] = weeks.get(game['week'], True) and final
+    complete = 0
+    for week in sorted(weeks):
+        if week != complete + 1 or not weeks[week]:
+            break
+        complete = week
+    return complete
+
+
 def load_team_stats_rows(season: int, current_season: int) -> list[dict]:
+    import nflreadpy as nfl
     import polars as pl
 
     from pbp_cache import load_pbp
@@ -171,4 +191,10 @@ def load_team_stats_rows(season: int, current_season: int) -> list[dict]:
     pbp = load_pbp(season, current_season)
     if pbp is None:
         return []
-    return pbp.filter(pl.col('season_type') == 'REG').select(PBP_COLUMNS).to_dicts()
+    schedule = nfl.load_schedules(season).select('game_type', 'week', 'away_score', 'home_score').to_dicts()
+    through = last_complete_week(schedule)
+    return (
+        pbp.filter((pl.col('season_type') == 'REG') & (pl.col('week') <= through))
+        .select(PBP_COLUMNS)
+        .to_dicts()
+    )

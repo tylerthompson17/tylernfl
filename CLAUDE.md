@@ -47,7 +47,9 @@ tylernfl/
   2. **Live 4th down page** (later): fetches game state at runtime.
 - ESPN data is browser-only: never write it to `src/data/` and never use it in pipelines. Pipelines use nflverse (the `espnId` in `ticker.json` comes from nflverse schedules). Test fixtures in `tests/fixtures/espn/` are the only stored ESPN data.
 - Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text).
-- In-progress parsing (quarter, clock, halftime) is provisional until verified against the real capture from DET at BUF on 2026-09-17.
+- In-progress parsing (quarter, clock, halftime, final) is verified against the real capture from DET at BUF on
+  2026-09-17 (`tests/fixtures/espn/`). Not yet seen in a real response: an end of quarter status (ESPN showed the
+  next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `leaders.json`, `stats/{board}.json`, `rosters/{TEAM}.json`,
   `transactions.json`, `team_stats.json`, `on_this_day.json`, `teams.json`, `model_record.json`.

@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 1,
-  "updated": "2026-09-18T00:22:59Z",
+  "updated": "2026-09-18T17:34:02Z",
   "metrics": [
     {
       "key": "off_epa",
@@ -41,7 +41,7 @@
       "format": "percent1",
       "betterWhen": "high",
       "sample": "trips",
-      "description": "Drives with a snap at or inside the opponent's 20 that ended in a touchdown."
+      "description": "Share of drives reaching inside the opponent's 20 (nflverse's drive flag) that ended in a touchdown."
     },
     {
       "key": "def_epa",
@@ -81,7 +81,7 @@
       "format": "percent1",
       "betterWhen": "low",
       "sample": "trips",
-      "description": "Opponent drives with a snap at or inside the 20 that ended in a touchdown."
+      "description": "Share of opponent drives reaching inside the 20 (nflverse's drive flag) that ended in a touchdown."
     }
   ],
   "teams": [
@@ -218,7 +218,7 @@
         },
         "def_red_zone": {
           "value": 1.0,
-          "rank": 25,
+          "rank": 23,
           "n": 3
         }
       }
@@ -310,7 +310,7 @@
         },
         "def_red_zone": {
           "value": 1.0,
-          "rank": 25,
+          "rank": 23,
           "n": 4
         }
       }
@@ -356,7 +356,7 @@
         },
         "def_red_zone": {
           "value": 1.0,
-          "rank": 25,
+          "rank": 23,
           "n": 4
         }
       }
@@ -448,7 +448,7 @@
         },
         "def_red_zone": {
           "value": 1.0,
-          "rank": 25,
+          "rank": 23,
           "n": 2
         }
       }
@@ -493,9 +493,9 @@
           "n": 11
         },
         "def_red_zone": {
-          "value": 0.8,
-          "rank": 20,
-          "n": 5
+          "value": 1.0,
+          "rank": 23,
+          "n": 4
         }
       }
     },
@@ -566,7 +566,7 @@
         },
         "off_red_zone": {
           "value": 0.8,
-          "rank": 8,
+          "rank": 10,
           "n": 5
         },
         "def_epa": {
@@ -611,9 +611,9 @@
           "n": 12
         },
         "off_red_zone": {
-          "value": 0.2,
+          "value": 0.25,
           "rank": 29,
-          "n": 5
+          "n": 4
         },
         "def_epa": {
           "value": 0.055,
@@ -631,9 +631,9 @@
           "n": 15
         },
         "def_red_zone": {
-          "value": 0.8,
-          "rank": 20,
-          "n": 5
+          "value": 1.0,
+          "rank": 23,
+          "n": 4
         }
       }
     },
@@ -658,7 +658,7 @@
         },
         "off_red_zone": {
           "value": 0.8,
-          "rank": 8,
+          "rank": 10,
           "n": 5
         },
         "def_epa": {
@@ -1025,9 +1025,9 @@
           "n": 15
         },
         "off_red_zone": {
-          "value": 0.8,
-          "rank": 8,
-          "n": 5
+          "value": 1.0,
+          "rank": 1,
+          "n": 4
         },
         "def_epa": {
           "value": -0.181,
@@ -1045,9 +1045,9 @@
           "n": 12
         },
         "def_red_zone": {
-          "value": 0.2,
+          "value": 0.25,
           "rank": 3,
-          "n": 5
+          "n": 4
         }
       }
     },
@@ -1118,7 +1118,7 @@
         },
         "off_red_zone": {
           "value": 0.8,
-          "rank": 8,
+          "rank": 10,
           "n": 5
         },
         "def_epa": {
@@ -1163,9 +1163,9 @@
           "n": 11
         },
         "off_red_zone": {
-          "value": 0.8,
-          "rank": 8,
-          "n": 5
+          "value": 1.0,
+          "rank": 1,
+          "n": 4
         },
         "def_epa": {
           "value": 0.271,
@@ -1184,7 +1184,7 @@
         },
         "def_red_zone": {
           "value": 1.0,
-          "rank": 25,
+          "rank": 23,
           "n": 3
         }
       }
@@ -1230,7 +1230,7 @@
         },
         "def_red_zone": {
           "value": 1.0,
-          "rank": 25,
+          "rank": 23,
           "n": 1
         }
       }
@@ -1276,7 +1276,7 @@
         },
         "def_red_zone": {
           "value": 1.0,
-          "rank": 25,
+          "rank": 23,
           "n": 3
         }
       }

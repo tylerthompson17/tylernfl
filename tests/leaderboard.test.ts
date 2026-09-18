@@ -3,9 +3,11 @@ import { test } from 'node:test';
 
 import {
   arrange,
+  capArrangement,
   cellValue,
   defaultDirection,
   formatCell,
+  rowsForTopN,
   type ColumnSpec,
   type RowSpec,
 } from '../src/lib/leaderboard/arrange.ts';
@@ -73,4 +75,26 @@ test('cells format by column and view', () => {
   assert.equal(formatCell(4.8, ypc, 'totals'), '4.8');
   assert.equal(formatCell(0.692, pct, 'totals'), '69.2%');
   assert.equal(formatCell(null, pct, 'totals'), '-');
+});
+
+test('a capped board keeps the true top N for every column', () => {
+  const sacks: ColumnSpec = { key: 'sk', format: 'decimal1', perGame: true, rate: false, better: 'high' };
+  const ints: ColumnSpec = { key: 'int', format: 'integer', perGame: true, rate: false, better: 'high' };
+  // Ranked by sacks. The interception leader (index 3) is last by sacks.
+  const board = [
+    row({ games: 2, sk: 4, int: 0 }),
+    row({ games: 2, sk: 3, int: 0 }),
+    row({ games: 2, sk: 2, int: 1 }),
+    row({ games: 2, sk: 0, int: 3 }),
+  ];
+  const keep = rowsForTopN(board, [sacks, ints], 2);
+  assert.deepEqual(keep, [0, 1, 2, 3]);
+  const onlySacks = rowsForTopN(board, [sacks], 2);
+  assert.deepEqual(onlySacks, [0, 1]);
+});
+
+test('capping shows only the first N and blanks the rest', () => {
+  const capped = capArrangement(arrange(rows, yards, 'desc', 'totals'), 2);
+  assert.deepEqual(capped.shown, [true, true, false]);
+  assert.deepEqual(capped.ranks, [1, 2, null]);
 });

@@ -97,3 +97,34 @@ export function arrange(
   const hidden = rows.map((_, i) => i).filter((i) => !shown[i]);
   return { order: [...visible, ...hidden], ranks, shown };
 }
+
+const MODES: Mode[] = ['totals', 'perGame'];
+
+/**
+ * Rows a capped board must carry so that sorting by any column, in either
+ * view, still shows the true top `limit`: the union of each column's top
+ * `limit` in its default direction. Returned in the incoming order.
+ */
+export function rowsForTopN(rows: RowSpec[], columns: ColumnSpec[], limit: number): number[] {
+  const keep = new Set<number>();
+  for (const column of columns) {
+    for (const mode of MODES) {
+      const { order, shown } = arrange(rows, column, defaultDirection(column), mode);
+      for (const index of order.filter((i) => shown[i]).slice(0, limit)) keep.add(index);
+    }
+  }
+  return [...keep].sort((a, b) => a - b);
+}
+
+/** Cap an arrangement to its first `limit` shown rows. */
+export function capArrangement(arrangement: Arrangement, limit: number): Arrangement {
+  let count = 0;
+  const shown = arrangement.shown.map(() => false);
+  for (const index of arrangement.order) {
+    if (arrangement.shown[index] && count < limit) {
+      shown[index] = true;
+      count += 1;
+    }
+  }
+  return { ...arrangement, shown, ranks: arrangement.ranks.map((rank, i) => (shown[i] ? rank : null)) };
+}

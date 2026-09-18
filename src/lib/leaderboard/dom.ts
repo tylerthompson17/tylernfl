@@ -9,6 +9,7 @@
  */
 import {
   arrange,
+  capArrangement,
   cellValue,
   defaultDirection,
   formatCell,
@@ -27,6 +28,8 @@ interface BoardConfig {
   columns: BoardColumn[];
   primary: string;
   qualifierText: string;
+  /** Top N only; the page carries each column's top N, not every player */
+  limit: number | null;
 }
 
 interface LiveRow extends RowSpec {
@@ -79,8 +82,11 @@ function setUp(root: HTMLElement): void {
     button.setAttribute('aria-label', `Sort by ${column.title}`);
     th.replaceChildren(button);
     button.addEventListener('click', () => {
-      if (sortKey === column.key) direction = direction === 'desc' ? 'asc' : 'desc';
-      else {
+      // A capped board only holds each column's best, so it cannot show a
+      // true bottom N; reversing is for the full list.
+      if (sortKey === column.key) {
+        if (!config.limit) direction = direction === 'desc' ? 'asc' : 'desc';
+      } else {
         sortKey = column.key;
         direction = defaultDirection(column);
       }
@@ -97,7 +103,8 @@ function setUp(root: HTMLElement): void {
 
   function render(): void {
     const column = byKey.get(sortKey)!;
-    const { order, ranks, shown } = arrange(rows, column, direction, mode);
+    const arranged = arrange(rows, column, direction, mode);
+    const { order, ranks, shown } = config.limit ? capArrangement(arranged, config.limit) : arranged;
 
     const fragment = document.createDocumentFragment();
     for (const index of order) {
@@ -125,7 +132,8 @@ function setUp(root: HTMLElement): void {
     const who = qualifiedOnly(column, mode)
       ? `Qualified players only. ${config.qualifierText}`
       : 'All players.';
-    status.textContent = `Sorted by ${column.title.toLowerCase()}, ${view}. ${who}`;
+    const lead = config.limit ? `Top ${config.limit} by` : 'Sorted by';
+    status.textContent = `${lead} ${column.title.toLowerCase()}, ${view}. ${who}`;
   }
 
   root.querySelector<HTMLElement>('[data-board-controls]')!.hidden = false;

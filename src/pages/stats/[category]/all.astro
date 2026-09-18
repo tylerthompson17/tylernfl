@@ -1,0 +1,44 @@
+---
+/**
+ * The uncapped version of a board whose main page shows only a top N
+ * (LEADERBOARD_TOP_N in src/config.ts): every player, sortable both ways.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Panel from '../../../components/Panel.astro';
+import Leaderboard from '../../../components/Leaderboard.astro';
+import StatsNav from '../../../components/StatsNav.astro';
+import { leaderboards } from '../../../utils/leaderboards';
+import { LEADERBOARD_TOP_N } from '../../../config';
+import { url } from '../../../utils/url';
+import type { LeaderboardData } from '../../../data/types';
+
+export function getStaticPaths() {
+  return leaderboards
+    .filter((board) => LEADERBOARD_TOP_N[board.key] !== undefined)
+    .map((board) => ({ params: { category: board.key }, props: { board } }));
+}
+
+const { board } = Astro.props as { board: LeaderboardData };
+---
+
+<BaseLayout title={`${board.label} leaderboard, full list`}>
+  <h1 class="page-title">{board.label} leaderboard, full list</h1>
+  <StatsNav current={board.key} />
+  <p class="page-intro">
+    {board.season} regular season, through week {board.throughWeek}. All {board.rows.length} players.{' '}
+    <a href={url(`stats/${board.key}`)}>Back to the top {LEADERBOARD_TOP_N[board.key]}</a>
+  </p>
+  <div class="content-grid">
+    <Panel title={`${board.label}, all players`}>
+      <Leaderboard board={board} />
+    </Panel>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-intro {
+    color: var(--text-dim);
+    margin-bottom: var(--space-4);
+    font-variant-numeric: tabular-nums;
+  }
+</style>

@@ -10,3 +10,9 @@ export const LIVE_TICKER_ENABLED = true;
  * in the season a single game can swing a team 20 places.
  */
 export const SMALL_SAMPLE_GAMES = 4;
+
+/**
+ * Boards too long to list in full on their main page. Each shows the top N
+ * for whatever column it is sorted by, with a link to the full list.
+ */
+export const LEADERBOARD_TOP_N: Record<string, number> = { defense: 100 };

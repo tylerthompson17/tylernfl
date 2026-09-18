@@ -7,21 +7,39 @@
  */
 import TeamChip from './TeamChip.astro';
 import type { LeaderboardData } from '../data/types';
-import { formatCell } from '../lib/leaderboard/arrange';
+import { formatCell, rowsForTopN } from '../lib/leaderboard/arrange';
 import { slugForPlayer } from '../utils/players';
 import { url } from '../utils/url';
 
 interface Props {
   board: LeaderboardData;
+  /**
+   * Show only the top N for the current sort. The page then carries each
+   * column's true top N (see rowsForTopN), not the whole board.
+   */
+  limit?: number;
+  /** Link to the uncapped board, shown when limit is set */
+  fullListHref?: string;
 }
 
-const { board } = Astro.props;
+const { board, limit, fullListHref } = Astro.props;
 const primary = board.columns.find((column) => column.key === board.primary)!;
 const config = JSON.stringify({
   columns: board.columns,
   primary: board.primary,
   qualifierText: board.qualifier.text,
+  limit: limit ?? null,
 });
+
+// Rows arrive ranked by the primary column, so the first `limit` are the
+// default view; the rest are carried for other sorts and start hidden.
+const rows = limit
+  ? rowsForTopN(board.rows, board.columns, limit).map((index) => ({
+      row: board.rows[index]!,
+      hidden: index >= limit,
+    }))
+  : board.rows.map((row) => ({ row, hidden: false }));
+const lead = limit ? `Top ${limit} by` : 'Sorted by';
 ---
 
 <div class="leaderboard" data-leaderboard>
@@ -33,7 +51,7 @@ const config = JSON.stringify({
     </div>
   </div>
   <p class="status" data-board-status aria-live="polite">
-    Sorted by {primary.title.toLowerCase()}, totals. All players.
+    {lead} {primary.title.toLowerCase()}, totals. All players.
   </p>
   {
     board.rows.length === 0 ? (
@@ -64,8 +82,8 @@ const config = JSON.stringify({
             </tr>
           </thead>
           <tbody>
-            {board.rows.map((row) => (
-              <tr data-qualified={row.qualified ? '1' : '0'}>
+            {rows.map(({ row, hidden }) => (
+              <tr data-qualified={row.qualified ? '1' : '0'} hidden={hidden}>
                 <td class="number" data-rank>
                   {row.rank}
                 </td>
@@ -98,6 +116,14 @@ const config = JSON.stringify({
         .join(', ') || 'none on this board'
     }) and the per game view rank qualified players only. {board.qualifier.text}
   </p>
+  {
+    limit && fullListHref && (
+      <p class="foot">
+        Showing the top {limit} for each sort.{' '}
+        <a href={fullListHref}>Full list of all {board.rows.length} players</a>
+      </p>
+    )
+  }
 </div>
 
 <script>

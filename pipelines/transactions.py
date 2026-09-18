@@ -30,7 +30,9 @@ site can put the news a fan cares about first and filter the full wire:
   more he counts as a starter.
 - Priority puts news (game statuses and real moves) ahead of routine items
   (practice squad moves and practice reports), so a starter at full
-  practice never outranks a Questionable tag. Within each, starters come
+  practice never outranks a Questionable tag. Once a team's game for the
+  week is final, its game statuses are history: they are marked
+  gamePlayed and drop to the routine group. Within each, starters come
   first, then the category order: game statuses (Out, Doubtful,
   Questionable), reserve placements, team changes, activations, signings,
   releases; then practice squad moves and practice reports (did not
@@ -166,8 +168,9 @@ def rank_items(items: list[dict], shares: dict[str, float]) -> None:
             if item['category'] == 'practice-report'
             else GAME_STATUS_ORDER.get(item.get('status'), 0)
         )
+        routine = item['category'] in ROUTINE or item.get('gamePlayed', False)
         item['priority'] = (
-            (ROUTINE_OFFSET if item['category'] in ROUTINE else 0)
+            (ROUTINE_OFFSET if routine else 0)
             + (0 if starter else NON_STARTER_OFFSET)
             + CATEGORY_ORDER[item['category']] * 10
             + within
@@ -261,12 +264,14 @@ def build_transactions(
     ticker_week: int | None,
     updated: str,
     shares: dict[str, float] | None = None,
+    played_teams: set[str] | None = None,
 ) -> dict:
     """Pure function to the TransactionsData shape in src/data/types.ts.
 
     ticker_week is the week the ticker shows (None in the offseason), which
     picks the injury report and switches the whole file off in the
     offseason, when last season's final moves would read as news.
+    played_teams are the teams whose game that week is already final.
     """
     categories = [{'key': key, 'label': label} for key, label in CATEGORIES]
     if ticker_week is None:
@@ -278,6 +283,7 @@ def build_transactions(
         move['category'] = move_category(move)
     for entry in injuries:
         entry['category'] = 'game-status' if entry['status'] in GAME_STATUS_ORDER else 'practice-report'
+        entry['gamePlayed'] = entry['team'] in (played_teams or set())
     rank_items(moves + injuries, shares or {})
     return {
         'season': season,

@@ -13,7 +13,7 @@ from leaderboards import BOARDS, build_leaderboards
 from leaders import build_leaders
 from pbp_cache import is_fresh
 from rosters import age_on, build_rosters, unknown_statuses
-from team_stats import build_team_stats, rank
+from team_stats import build_team_stats, last_complete_week, rank
 from transactions import build_transactions, snap_shares
 from ticker import WeekSpan, build_ticker, format_detail, kickoff_utc, next_opener, select_week
 
@@ -494,6 +494,7 @@ def play(**kwargs):
         'third_down_converted': 0,
         'third_down_failed': 0,
         'fixed_drive': 1,
+        'drive_inside20': 0,
         'touchdown': 0,
         'td_team': None,
     }
@@ -549,23 +550,22 @@ class BuildTeamStatsTest(unittest.TestCase):
         self.assertEqual((third['value'], third['n']), (0.333, 3))
         self.assertEqual(team_values(stats, 'MIA')['def_third_down']['value'], 0.333)
 
-    def test_red_zone_trips_include_the_20_and_count_offensive_touchdowns(self):
+    def test_red_zone_trips_follow_the_nflverse_drive_flag(self):
         stats = self.build(
             [
-                # Drive 1: reaches exactly the 20, scores.
-                play(fixed_drive=1, yardline_100=35),
-                play(fixed_drive=1, yardline_100=20),
-                play(fixed_drive=1, yardline_100=4, touchdown=1, td_team='BUF'),
-                # Drive 2: reaches the 12, field goal.
-                play(fixed_drive=2, yardline_100=12),
-                # Drive 3: stalls at the 21, not a trip.
-                play(fixed_drive=3, yardline_100=21),
-                # Drive 4: 40 yard touchdown. The extra point at the 15 has no
-                # down, so this is still not a red zone trip.
+                # Drive 1: flagged inside the 20, scores.
+                play(fixed_drive=1, yardline_100=35, drive_inside20=1),
+                play(fixed_drive=1, yardline_100=4, drive_inside20=1, touchdown=1, td_team='BUF'),
+                # Drive 2: flagged, field goal.
+                play(fixed_drive=2, yardline_100=12, drive_inside20=1),
+                # Drive 3: stalls exactly at the 20. nflverse does not flag it,
+                # so it is not a trip.
+                play(fixed_drive=3, yardline_100=20, drive_inside20=0),
+                # Drive 4: 40 yard touchdown, never inside the 20.
                 play(fixed_drive=4, yardline_100=40, touchdown=1, td_team='BUF'),
                 play(fixed_drive=4, yardline_100=15, down=None),
-                # Drive 5: reaches the 8, then a pick six.
-                play(fixed_drive=5, yardline_100=8, touchdown=1, td_team='MIA'),
+                # Drive 5: flagged, then a pick six.
+                play(fixed_drive=5, yardline_100=8, drive_inside20=1, touchdown=1, td_team='MIA'),
             ]
         )
         red_zone = team_values(stats, 'BUF')['off_red_zone']
@@ -575,8 +575,10 @@ class BuildTeamStatsTest(unittest.TestCase):
     def test_drives_are_separate_per_game(self):
         stats = self.build(
             [
-                play(game_id='2026_01_MIA_BUF', fixed_drive=1, yardline_100=10, touchdown=1, td_team='BUF'),
-                play(game_id='2026_02_BUF_NYJ', week=2, defteam='NYJ', fixed_drive=1, yardline_100=10),
+                play(game_id='2026_01_MIA_BUF', fixed_drive=1, yardline_100=10, drive_inside20=1,
+                     touchdown=1, td_team='BUF'),
+                play(game_id='2026_02_BUF_NYJ', week=2, defteam='NYJ', fixed_drive=1, yardline_100=10,
+                     drive_inside20=1),
             ]
         )
         buf = next(t for t in stats['teams'] if t['abbr'] == 'BUF')
@@ -758,6 +760,18 @@ class BuildTransactionsTest(unittest.TestCase):
             ['Backup Questionable', 'Starter Out Of Practice', 'Starter Full'],
         )
 
+    def test_statuses_for_a_game_already_played_drop_below_the_news(self):
+        rows = [weekly('a', 'Backup Cut', 1, 'KC', 'ACT'), weekly('a', 'Backup Cut', 2, 'KC', 'CUT')]
+        injuries = [injury('Played Out', 'DET', status='Out'), injury('Upcoming Q', 'KC', status='Questionable')]
+        shares = {'id-Played Out': 1.0, 'id-Upcoming Q': 0.2}
+        data = build_transactions(rows, injuries, 2026, 2, 'now', shares, played_teams={'DET', 'BUF'})
+        items = sorted(data['moves'] + data['injuries'], key=lambda i: i['priority'])
+        # A starter ruled out of last night's game now trails a backup's release.
+        self.assertEqual([i['player'] for i in items], ['Upcoming Q', 'Backup Cut', 'Played Out'])
+        self.assertEqual({i['player']: i['gamePlayed'] for i in data['injuries']},
+                         {'Played Out': True, 'Upcoming Q': False})
+        self.assertEqual(items[-1]['category'], 'game-status')
+
     def test_game_statuses_rank_out_then_doubtful_then_questionable(self):
         injuries = [injury('Q', 'BUF', status='Questionable'), injury('D', 'BUF', status='Doubtful'),
                     injury('O', 'BUF', status='Out')]
@@ -789,6 +803,25 @@ class BuildTransactionsTest(unittest.TestCase):
                 ('Practice Only', 'BUF', None, 'Knee', 'Limited'),
             ],
         )
+
+
+class LastCompleteWeekTest(unittest.TestCase):
+    def game(self, week, final=True, game_type='REG'):
+        score = 20 if final else None
+        return {'game_type': game_type, 'week': week, 'away_score': score, 'home_score': score}
+
+    def test_a_week_counts_once_every_game_is_final(self):
+        # Thursday of week 2: one game played, fifteen to go.
+        rows = [self.game(1), self.game(1), self.game(2), self.game(2, final=False)]
+        self.assertEqual(last_complete_week(rows), 1)
+        self.assertEqual(last_complete_week(rows[:3]), 2)
+
+    def test_nothing_played_and_preseason_games(self):
+        self.assertEqual(last_complete_week([self.game(1, final=False)]), 0)
+        self.assertEqual(last_complete_week([self.game(1, game_type='PRE')]), 0)
+
+    def test_a_gap_stops_the_count(self):
+        self.assertEqual(last_complete_week([self.game(1), self.game(3)]), 1)
 
 
 class RankTest(unittest.TestCase):

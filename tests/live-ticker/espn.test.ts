@@ -19,6 +19,42 @@ describe('scoreboardParams', () => {
   });
 });
 
+describe('in-game statuses from the DET at BUF capture (2026-09-17)', () => {
+  const detAtBuf = (name: string) => parseScoreboard(fixture(name), 2026, 2)?.get('401872932');
+
+  test('full scoreboard response during the second quarter', () => {
+    assert.deepEqual(detAtBuf('scoreboard-2026-week2-in-progress.json'), {
+      state: 'live',
+      awayScore: 7,
+      homeScore: 21,
+      detail: 'Q2 3:01',
+    });
+  });
+
+  test('each status seen during the game', () => {
+    const seen: [string, string, number, number][] = [
+      ['event-401872932-in_progress-q2.json', 'Q2 3:01', 7, 21],
+      ['event-401872932-halftime-q2.json', 'Half', 10, 27],
+      // Between quarters ESPN reported the next quarter at 15:00, not an
+      // end of period status.
+      ['event-401872932-in_progress-q3.json', 'Q3 15:00', 10, 27],
+      ['event-401872932-in_progress-q4.json', 'Q4 15:00', 17, 34],
+    ];
+    for (const [name, detail, awayScore, homeScore] of seen) {
+      assert.deepEqual(detAtBuf(name), { state: 'live', awayScore, homeScore, detail }, name);
+    }
+  });
+
+  test('final', () => {
+    assert.deepEqual(detAtBuf('event-401872932-final-q4.json'), {
+      state: 'final',
+      awayScore: 31,
+      homeScore: 41,
+      detail: 'Final',
+    });
+  });
+});
+
 describe('parseScoreboard with real responses', () => {
   test('finished week: final scores and overtime', () => {
     const games = parseScoreboard(fixture('scoreboard-2026-week1-final.json'), 2026, 1);

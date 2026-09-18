@@ -12,4 +12,4 @@ Real responses from ESPN's public NFL scoreboard, used by `tests/live-ticker/` t
 | `summary-401872923-final-ot.json` | NO at DET, final in overtime, ending on a touchdown with a failed two point try. Trimmed the same way. |
 | `event-401872932-<status>-q<quarter>.json` | The DET at BUF event once per status seen during that game (in progress by quarter, halftime, end of quarter, final). |
 
-The in-progress files do not exist until the Thursday capture runs. Until then, in-progress parsing in `src/lib/live-ticker/espn.ts` is provisional and tested only against synthetic statuses.
+The Thursday capture ran on 2026-09-17 and in-progress parsing in `src/lib/live-ticker/espn.ts` is now tested against it (`tests/live-ticker/espn.test.ts`). It saw in progress, halftime and final, but no end of quarter status and no overtime, so those two branches are still tested only against synthetic statuses.
