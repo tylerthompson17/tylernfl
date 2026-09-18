@@ -60,7 +60,8 @@ tylernfl/
   `transactions.json`, `team_stats.json`, `on_this_day.json`, `teams.json`, `model_record.json`.
 - `teams.json` (abbr, name, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `leaders.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
-  `pipelines/run_daily.py` (nflreadpy), run daily by `.github/workflows/daily.yml`.
+  `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
+  at 6 AM Eastern and again Friday at 8 PM Eastern, after teams file Sunday game statuses.
   nflverse calls the Rams `LA`; pipelines normalize it to `LAR`.
 - `stats/{board}.json` holds the full player leaderboards (passing, rushing, receiving,
   defense, kicking). The pipeline decides values, ranks and who qualifies; the site only

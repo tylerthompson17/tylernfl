@@ -6,6 +6,11 @@ on:
     # are final, before any kickoff, and before the Tuesday/Wednesday week
     # switch matters to morning visitors.
     - cron: '0 10 * * *'
+    # Friday evening: most teams file Sunday game statuses (Out, Doubtful,
+    # Questionable) Friday afternoon, after the morning run. 00:00 UTC
+    # Saturday is 8 PM Friday Eastern (7 PM in winter); the pipeline works
+    # in Eastern time, so this run still counts as Friday.
+    - cron: '0 0 * * 6'
   workflow_dispatch:
 
 permissions:
