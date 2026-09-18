@@ -29,15 +29,10 @@ export interface PlayerPage {
   /** Team abbr matching teams.json */
   team: string;
   slug: string;
+  /** nflverse gsis id, for joining stats; null only for the rare player without one */
+  playerId: string | null;
   /** Null for a player in the leaderboards but on no current roster. */
   roster: RosterPlayer | null;
-}
-
-export interface LeaderLine {
-  label: string;
-  valueLabel: string;
-  rank: number;
-  value: number;
 }
 
 function buildPages(): Map<string, PlayerPage[]> {
@@ -49,7 +44,7 @@ function buildPages(): Map<string, PlayerPage[]> {
   };
 
   for (const { player, team } of rosterPlayers) {
-    add(player.slug, { name: player.name, team, slug: player.slug, roster: player });
+    add(player.slug, { name: player.name, team, slug: player.slug, playerId: player.gsisId, roster: player });
   }
 
   // A suffixed slug means the name is shared: collect its holders under the
@@ -57,20 +52,22 @@ function buildPages(): Map<string, PlayerPage[]> {
   for (const { player, team } of rosterPlayers) {
     const base = playerSlug(player.name);
     if (base !== player.slug) {
-      add(base, { name: player.name, team, slug: player.slug, roster: player });
+      add(base, { name: player.name, team, slug: player.slug, playerId: player.gsisId, roster: player });
     }
   }
 
-  const offRoster = [
-    ...leaders.categories.flatMap((category) => category.rows),
+  // Sources with a player id come first, so an off-roster page can still
+  // find the player's stats; leaders.json rows carry no id.
+  const offRoster: { player: string; team: string; playerId: string | null }[] = [
     ...leaderboards.flatMap((board) => board.rows.filter((row) => !rosterSlugs.has(row.playerId))),
     // Released and retired players named in roster moves or injury reports.
     ...[...transactions.moves, ...transactions.injuries].filter((row) => !rosterSlugs.has(row.playerId)),
+    ...leaders.categories.flatMap((category) => category.rows.map((row) => ({ ...row, playerId: null }))),
   ];
   for (const row of offRoster) {
     const slug = playerSlug(row.player);
     if (!pages.has(slug)) {
-      add(slug, { name: row.player, team: row.team, slug, roster: null });
+      add(slug, { name: row.player, team: row.team, slug, playerId: row.playerId, roster: null });
     }
   }
 
@@ -90,18 +87,3 @@ export function slugForPlayer(playerId: string, name: string): string {
 
 /** One entry per URL; more than one page in a value means a shared name. */
 export const playerPages: Map<string, PlayerPage[]> = buildPages();
-
-/** This player's current leaderboard appearances, empty when they have none. */
-export function leaderLines(page: PlayerPage): LeaderLine[] {
-  const slug = playerSlug(page.name);
-  return leaders.categories.flatMap((category) =>
-    category.rows
-      .filter((row) => playerSlug(row.player) === slug && row.team === page.team)
-      .map((row) => ({
-        label: category.label,
-        valueLabel: category.valueLabel,
-        rank: row.rank,
-        value: row.value,
-      }))
-  );
-}

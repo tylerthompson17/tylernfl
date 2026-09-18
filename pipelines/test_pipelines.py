@@ -9,6 +9,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from common import player_slug
+from game_logs import build_game_logs, game_result
 from leaderboards import BOARDS, build_leaderboards
 from leaders import build_leaders
 from on_this_day import build_on_this_day, roman
@@ -275,6 +276,17 @@ class BuildLeaderboardsTest(unittest.TestCase):
             self.assertIn(board.qualifier.column, {c.key for c in board.columns}, board.key)
             self.assertIn(board.primary, {c.key for c in board.columns}, board.key)
 
+    def test_rows_without_a_player_are_skipped(self):
+        rows = [
+            stat_row('a', 'Josh Allen', 'BUF', 1, attempts=30),
+            {**stat_row(None, None, 'BUF', 1, def_sacks=1.0), 'player_id': None},
+            {**stat_row(None, None, 'SEA', 2, def_sacks=2.0), 'player_id': None},
+        ]
+        boards = build_leaderboards(rows, 2026)
+        self.assertEqual(boards['defense']['rows'], [])
+        # The rows still count toward their team's games.
+        self.assertEqual(boards['passing']['rows'][0]['teamGames'], 1)
+
     def test_leaders_link_to_their_board(self):
         leaders = build_leaders([], 2026)
         self.assertEqual([c['board'] for c in leaders['categories']], ['passing', 'rushing', 'receiving'])
@@ -363,6 +375,56 @@ class OnThisDayTest(unittest.TestCase):
 
     def test_roman_numerals(self):
         self.assertEqual([roman(n) for n in (1, 42, 49, 58, 60)], ['I', 'XLII', 'XLIX', 'LVIII', 'LX'])
+
+
+class GameLogsTest(unittest.TestCase):
+    schedule = [
+        {'game_id': '2026_01_BUF', 'away_team': 'MIA', 'away_score': 14, 'home_team': 'BUF', 'home_score': 31},
+        {'game_id': '2026_02_BUF', 'away_team': 'BUF', 'away_score': 41, 'home_team': 'LA', 'home_score': 41},
+        {'game_id': '2026_03_BUF', 'away_team': 'BUF', 'away_score': None, 'home_team': 'NYJ', 'home_score': None},
+    ]
+
+    def row(self, week, team='BUF', opponent='MIA', **stats):
+        return {**stat_row('a', 'Josh Allen', team, week, **stats), 'opponent_team': opponent}
+
+    def test_results_from_the_players_side(self):
+        self.assertEqual(game_result('BUF', self.schedule[0]), 'W 31-14')
+        self.assertEqual(game_result('MIA', self.schedule[0]), 'L 14-31')
+        self.assertEqual(game_result('LAR', self.schedule[1]), 'T 41-41')
+        self.assertIsNone(game_result('BUF', self.schedule[2]))
+        self.assertIsNone(game_result('BUF', None))
+
+    def test_a_row_per_game_per_board_with_home_away_and_result(self):
+        rows = [
+            self.row(1, attempts=30, completions=20, passing_yards=250, carries=5, rushing_yards=40),
+            self.row(2, opponent='LA', attempts=25, completions=15, passing_yards=200),
+        ]
+        logs = build_game_logs(rows, self.schedule, 2026)
+        buf = logs['BUF']
+        passing = buf['players']['a']['boards']['passing']
+        cols = buf['columns']['passing']
+        self.assertEqual([g[:5] for g in passing], [[1, 'BUF', 'MIA', 1, 'W 31-14'], [2, 'BUF', 'LAR', 0, 'T 41-41']])
+        self.assertEqual(passing[0][5 + cols.index('cmp_pct')], 0.667)
+        # Rushing only in week 1.
+        self.assertEqual([g[0] for g in buf['players']['a']['boards']['rushing']], [1])
+        self.assertEqual(buf['fields'], ['week', 'team', 'opponent', 'home', 'result'])
+
+    def test_any_counted_stat_keeps_a_game_so_logs_add_up(self):
+        # A QB hit without a tackle or sack still counts for the defense log.
+        rows = [self.row(1, def_tackles_solo=3), self.row(2, opponent='LA', def_qb_hits=1)]
+        games = build_game_logs(rows, self.schedule, 2026)['BUF']['players']['a']['boards']['defense']
+        self.assertEqual([g[0] for g in games], [1, 2])
+
+    def test_traded_player_filed_under_new_team_with_each_games_team(self):
+        rows = [self.row(1, team='MIA', opponent='BUF', targets=5), self.row(2, team='BUF', opponent='LA', targets=4)]
+        logs = build_game_logs(rows, self.schedule, 2026)
+        self.assertEqual(list(logs), ['BUF'])
+        self.assertEqual([g[1:4] for g in logs['BUF']['players']['a']['boards']['receiving']],
+                         [['MIA', 'BUF', 0], ['BUF', 'LAR', 0]])
+
+    def test_players_without_stats_and_rows_without_a_player_are_left_out(self):
+        rows = [self.row(1), {**self.row(1, attempts=10), 'player_id': None}]
+        self.assertEqual(build_game_logs(rows, self.schedule, 2026), {})
 
 
 class PlayerSlugTest(unittest.TestCase):

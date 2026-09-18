@@ -1,0 +1,98 @@
+---
+/**
+ * One player's season on one leaderboard: his rank, then a game log with a
+ * season total row. Values format the way the leaderboard formats them.
+ * Styles are the shared .stat-table rules.
+ */
+import TeamChip from './TeamChip.astro';
+import { formatCell } from '../lib/leaderboard/arrange';
+import { ordinal, type BoardSeason } from '../utils/player-stats';
+import { url } from '../utils/url';
+
+interface Props {
+  data: BoardSeason;
+  /** The team the page is about; games for another team show which one */
+  team: string;
+}
+
+const { data, team } = Astro.props;
+const { board, season, games } = data;
+const columns = board.columns.filter((column) => column.key !== 'games');
+const primary = board.columns.find((column) => column.key === board.primary)!;
+const multipleTeams = games.some((game) => game.team !== team);
+---
+
+<p class="rank">
+  {data.tied ? 'Tied for ' : ''}{ordinal(data.rank)} of {board.rows.length} in {primary.title.toLowerCase()}
+  over {season.values.games} {season.values.games === 1 ? 'game' : 'games'}.{' '}
+  <a href={url(`stats/${board.key}`)}>{board.label} leaderboard</a>
+</p>
+<div class="stat-table-scroll" tabindex="0">
+  <table class="stat-table">
+    <caption class="visually-hidden">{board.label} game log</caption>
+    <thead>
+      <tr>
+        <th scope="col" class="number">Wk</th>
+        {multipleTeams && <th scope="col">Team</th>}
+        <th scope="col">Opp</th>
+        <th scope="col">Result</th>
+        {columns.map((column) => (
+          <th scope="col" class="number" title={column.title}>{column.label}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        games.map((game) => (
+          <tr>
+            <td class="number">{game.week}</td>
+            {multipleTeams && (
+              <td>
+                <TeamChip abbr={game.team} size="sm" />
+              </td>
+            )}
+            <td>
+              <span class="where">{game.home ? 'vs' : '@'}</span>
+              <TeamChip abbr={game.opponent} size="sm" />
+            </td>
+            <td class:list={{ win: game.result?.startsWith('W') }}>{game.result ?? '-'}</td>
+            {columns.map((column) => (
+              <td class="number">{formatCell(game.values[column.key] ?? null, column, 'totals')}</td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+    <tfoot>
+      <tr>
+        <th scope="row" colspan={multipleTeams ? 4 : 3}>Season</th>
+        {columns.map((column) => (
+          <td class="number">{formatCell(season.values[column.key] ?? null, column, 'totals')}</td>
+        ))}
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<style>
+  .rank {
+    margin-bottom: var(--space-2);
+  }
+
+  .where {
+    display: inline-block;
+    min-width: 1.6em;
+    color: var(--text-dim);
+  }
+
+  /* Winners in bold, not colored. */
+  .win {
+    font-weight: 700;
+  }
+
+  tfoot th,
+  tfoot td {
+    font-weight: 700;
+    background: var(--bg);
+  }
+</style>

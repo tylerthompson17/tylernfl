@@ -2,9 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
 import TeamChip from '../../components/TeamChip.astro';
-import leadersData from '../../data/leaders.json';
-import type { LeadersData } from '../../data/types';
-import { leaderLines, playerPages, type PlayerPage } from '../../utils/players';
+import GameLog from '../../components/GameLog.astro';
+import { leaderboards } from '../../utils/leaderboards';
+import { playerPages, type PlayerPage } from '../../utils/players';
+import { seasonsFor } from '../../utils/player-stats';
 import { formatExperience, formatHeight } from '../../utils/format';
 import { url } from '../../utils/url';
 
@@ -16,14 +17,15 @@ export function getStaticPaths() {
 }
 
 const { pages } = Astro.props as { pages: PlayerPage[] };
-const leaders = leadersData as LeadersData;
+const season = leaderboards[0]?.season;
+const throughWeek = leaderboards[0]?.throughWeek ?? 0;
 
 // More than one player answers to this slug, so the page points at each of
 // them rather than silently picking one.
 const shared = pages.length > 1;
 const page = pages[0]!;
 const roster = page.roster;
-const lines = shared ? [] : leaderLines(page);
+const seasons = shared ? [] : seasonsFor(page.playerId);
 
 const facts = roster
   ? [
@@ -83,27 +85,25 @@ const facts = roster
               </p>
             )}
           </Panel>
-          <Panel title={`${leaders.season} season, through week ${leaders.throughWeek}`}>
-            {lines.length > 0 ? (
-              <ul class="lines">
-                {lines.map((line) => (
-                  <li>
-                    <span>{line.label}</span>
-                    <span class="num">
-                      {line.value} {line.valueLabel} (#{line.rank})
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p class="placeholder-note">Not in the current leaderboards.</p>
-            )}
-          </Panel>
-          <Panel title="Player stats">
-            <p class="placeholder-note">
-              Full season and career stats land here when the data pipelines run.
-            </p>
-          </Panel>
+          {seasons.length > 0 ? (
+            seasons.map((data) => (
+              <Panel title={`${season} ${data.board.label.toLowerCase()}`}>
+                <GameLog data={data} team={page.team} />
+              </Panel>
+            ))
+          ) : (
+            <Panel title={`${season} season`}>
+              <p class="placeholder-note">
+                {throughWeek === 0
+                  ? 'No games played yet this season.'
+                  : `No passing, rushing, receiving, defensive or kicking stats through week ${throughWeek}.`}
+              </p>
+            </Panel>
+          )}
+          <p class="source">
+            {season} regular season through week {throughWeek}, from nflverse weekly stats. Earlier
+            seasons are not on the site yet.
+          </p>
         </div>
       </>
     )
@@ -141,13 +141,11 @@ const facts = roster
     font-weight: 700;
   }
 
-  .lines,
   .choices {
     list-style: none;
     padding: 0;
   }
 
-  .lines li,
   .choices li {
     display: flex;
     justify-content: space-between;
@@ -155,11 +153,15 @@ const facts = roster
     max-width: 360px;
   }
 
-  .lines li + li,
   .choices li + li {
     margin-top: var(--space-1);
     padding-top: var(--space-1);
     border-top: 1px dotted var(--rule-soft);
+  }
+
+  .source {
+    color: var(--text-dim);
+    font-size: 12px;
   }
 
   .choice-detail {

@@ -340,3 +340,29 @@ export interface TransactionsData {
   /** Out, then Doubtful, then Questionable, then practice only */
   injuries: InjuryEntry[];
 }
+
+/**
+ * players/{TEAM}.json: game logs for the players currently on a team, written
+ * daily by pipelines/game_logs.py. Season totals and ranks live in
+ * stats/{board}.json, keyed by the same player id.
+ */
+export type GameLogRow = [
+  week: number,
+  team: string,
+  opponent: string,
+  home: 0 | 1,
+  result: string | null,
+  ...values: (number | null)[],
+];
+
+export interface PlayerLogsData {
+  season: number;
+  throughWeek: number;
+  team: string;
+  /** Names of the first five entries of every row */
+  fields: ['week', 'team', 'opponent', 'home', 'result'];
+  /** Per board, the column keys the rest of each row holds, in order */
+  columns: Record<string, string[]>;
+  /** Keyed by nflverse gsis id */
+  players: Record<string, { name: string; boards: Record<string, GameLogRow[]> }>;
+}

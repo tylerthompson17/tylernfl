@@ -56,16 +56,21 @@ tylernfl/
   2026-09-17 (`tests/fixtures/espn/`). Not yet seen in a real response: an end of quarter status (ESPN showed the
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
-- Files: `ticker.json`, `leaders.json`, `stats/{board}.json`, `rosters/{TEAM}.json`,
+- Files: `ticker.json`, `leaders.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
   `transactions.json`, `team_stats.json`, `on_this_day.json`, `teams.json`, `model_record.json`.
 - `teams.json` (abbr, name, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
-- `ticker.json`, `leaders.json`, `stats/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
+- `ticker.json`, `leaders.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run daily by `.github/workflows/daily.yml`.
   nflverse calls the Rams `LA`; pipelines normalize it to `LAR`.
 - `stats/{board}.json` holds the full player leaderboards (passing, rushing, receiving,
   defense, kicking). The pipeline decides values, ranks and who qualifies; the site only
   sorts and switches totals / per game in the browser. Qualifying bars are per team game
   and are this site's choice, set in `pipelines/leaderboards.py`.
+- `players/{TEAM}.json` holds game logs for the players currently on each team, one row per
+  game per leaderboard, computed by the same `board_values` as `stats/`, so a log sums exactly
+  to the leaderboard row. Season totals and ranks are not repeated there; player pages read
+  them from `stats/{board}.json` by player id. Written compactly (one line) because a full
+  season is about 1 MB; every other data file stays indented.
 - `transactions.json` holds roster moves derived from weekly nflverse roster snapshots
   (`load_rosters_weekly`) and the injury report (`load_injuries`) for the ticker's week;
   empty in the offseason. Each player is compared with the last snapshot he appeared in,

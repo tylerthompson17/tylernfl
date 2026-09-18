@@ -71,10 +71,13 @@ def load_with_fallback(load: Callable[[int], list[dict]], season: int) -> tuple[
     return load(season - 1), season - 1
 
 
-def write_json_if_changed(name: str, data: dict, volatile_keys: tuple[str, ...] = ()) -> bool:
+def write_json_if_changed(
+    name: str, data: dict, volatile_keys: tuple[str, ...] = (), compact: bool = False
+) -> bool:
     """Write src/data/<name> unless only volatile keys (like a timestamp) changed.
 
-    `name` may include a subdirectory, e.g. "rosters/BUF.json".
+    `name` may include a subdirectory, e.g. "rosters/BUF.json". `compact` writes
+    one line with no spaces, for files too large to keep readable.
 
     Returns True when the file was written. Skipping timestamp-only changes
     keeps the daily job from committing and redeploying when nothing a
@@ -87,5 +90,8 @@ def write_json_if_changed(name: str, data: dict, volatile_keys: tuple[str, ...] 
         if strip(existing) == strip(data):
             return False
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    text = json.dumps(data, separators=(',', ':'), ensure_ascii=False) if compact else json.dumps(
+        data, indent=2, ensure_ascii=False
+    )
+    path.write_text(text + '\n', encoding='utf-8')
     return True

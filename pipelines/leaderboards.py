@@ -145,7 +145,7 @@ assert not RESERVED_KEYS & {b.key for b in BOARDS}, 'board key collides with a /
 # players showing the same number always tie.
 RATE_DECIMALS = {'percent1': 3, 'decimal1': 1}
 
-PLAYER_COLUMNS = ['player_id', 'player_display_name', 'position', 'team', 'week', 'game_id']
+PLAYER_COLUMNS = ['player_id', 'player_display_name', 'position', 'team', 'opponent_team', 'week', 'game_id']
 STAT_COLUMNS = sorted(
     {c.source or c.key for b in BOARDS for c in b.columns if c.rate is None and c.key != 'games'}
 )
@@ -157,26 +157,42 @@ def tie_rank(value, values: list, better: str) -> int:
     return 1 + sum(1 for v in values if v < value)
 
 
+def board_values(
+    board: Board, sums: dict, maxes: dict, games: int, include: tuple[str, ...] | None = None
+) -> dict | None:
+    """A board's values from summed stats, or None when none of `include` is above zero.
+
+    Shared by the leaderboards (a season of games) and player game logs (one
+    game), so the two always compute the same way. `include` defaults to the
+    board's volume columns; a game log passes every counting column, since a
+    game with only a QB hit still has to be in the log for it to add up.
+    """
+    values: dict[str, float | int | None] = {'games': games}
+    for col in board.columns:
+        if col.key == 'games' or col.rate:
+            continue
+        source = col.source or col.key
+        if col.agg == 'max':
+            present = [v for v in maxes[source] if v is not None]
+            values[col.key] = max(present) if present else None
+        else:
+            total = sums[source]
+            values[col.key] = int(total) if col.fmt == 'integer' else round(total, 1)
+    if not any((values.get(key) or 0) > 0 for key in (include or board.include)):
+        return None
+    for col in board.columns:
+        if col.rate:
+            num, den = values[col.rate[0]], values[col.rate[1]]
+            values[col.key] = round(num / den, RATE_DECIMALS[col.fmt]) if den else None
+    return values
+
+
 def build_board(board: Board, players: dict[str, dict], team_games: dict[str, int], season: int, through_week: int) -> dict:
     rows = []
     for p in players.values():
-        values: dict[str, float | int | None] = {'games': len(p['games'])}
-        for col in board.columns:
-            if col.key == 'games' or col.rate:
-                continue
-            source = col.source or col.key
-            if col.agg == 'max':
-                present = [v for v in p['max'][source] if v is not None]
-                values[col.key] = max(present) if present else None
-            else:
-                total = p['sum'][source]
-                values[col.key] = int(total) if col.fmt == 'integer' else round(total, 1)
-        if not any((values.get(key) or 0) > 0 for key in board.include):
+        values = board_values(board, p['sum'], p['max'], len(p['games']))
+        if values is None:
             continue
-        for col in board.columns:
-            if col.rate:
-                num, den = values[col.rate[0]], values[col.rate[1]]
-                values[col.key] = round(num / den, RATE_DECIMALS[col.fmt]) if den else None
 
         needed = board.qualifier.per_team_game * team_games.get(p['team'], 0)
         rows.append(
@@ -232,6 +248,10 @@ def build_leaderboards(rows: list[dict], season: int) -> dict[str, dict]:
     for r in sorted(rows, key=lambda r: r['week']):
         team = normalize_team(r['team'])
         team_game_ids.setdefault(team, set()).add(r['game_id'])
+        # nflverse has a few rows with no player (18 in 2025); they are not
+        # anyone's stats and would otherwise merge into one nameless player.
+        if r['player_id'] is None:
+            continue
         p = players.setdefault(
             r['player_id'],
             {

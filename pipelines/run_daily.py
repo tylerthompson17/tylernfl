@@ -1,5 +1,5 @@
-"""Daily site data job: writes ticker.json, leaders.json, stats/, rosters/,
-transactions.json and on_this_day.json into src/data/.
+"""Daily site data job: writes ticker.json, leaders.json, stats/, players/,
+rosters/, transactions.json and on_this_day.json into src/data/.
 
 Run from the repo root:
     pip install -r pipelines/requirements.txt
@@ -22,6 +22,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
+from game_logs import build_game_logs  # noqa: E402
 from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
 from leaders import build_leaders  # noqa: E402
 from on_this_day import build_on_this_day, load_on_this_day_input  # noqa: E402
@@ -50,10 +51,12 @@ def main() -> None:
 
     updated = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
 
-    ticker = build_ticker(load_schedule_rows(today), today)
+    schedule_rows = load_schedule_rows(today)
+    ticker = build_ticker(schedule_rows, today)
     player_rows, stats_year = load_with_fallback(load_player_week_rows, stats_season(today))
     leaders = build_leaders(player_rows, stats_year)
     boards = build_leaderboards(player_rows, stats_year)
+    game_logs = build_game_logs(player_rows, schedule_rows, stats_year)
     roster_rows, rosters_year = load_with_fallback(load_roster_rows, roster_season(today))
     rosters = build_rosters(roster_rows, rosters_year, today, updated)
 
@@ -88,12 +91,13 @@ def main() -> None:
 
     files = [('ticker.json', ticker, ('updated',)), ('leaders.json', leaders, ())]
     files += [(f'stats/{key}.json', board, ()) for key, board in boards.items()]
+    logs = [(f'players/{team}.json', data, ()) for team, data in sorted(game_logs.items())]
     files.append(('transactions.json', transactions, ('updated',)))
     files.append(('on_this_day.json', on_this_day, ()))
     files += [(f'rosters/{team}.json', roster, ('updated',)) for team, roster in sorted(rosters.items())]
 
     if args.dry_run:
-        print(json.dumps({name: data for name, data, _ in files}, indent=2))
+        print(json.dumps({name: data for name, data, _ in files + logs}, indent=2))
         return
 
     written = 0
@@ -101,7 +105,11 @@ def main() -> None:
         if write_json_if_changed(name, data, volatile):
             written += 1
             print(f'{name}: updated')
-    print(f'{written} of {len(files)} files updated')
+    # Game logs are the one large set of files; they are written compactly.
+    for name, data, volatile in logs:
+        if write_json_if_changed(name, data, volatile, compact=True):
+            written += 1
+    print(f'{written} of {len(files) + len(logs)} files updated')
 
 
 if __name__ == '__main__':
