@@ -1,15 +1,17 @@
 /**
  * Live ticker in the browser: shows kickoff times in the visitor's time zone,
  * and during game windows polls ESPN's scoreboard to update scores in place.
- * Live games move into the pinned group ahead of the scrolling strip, and a
- * changed score gets a brief highlight. The page is fully rendered from
- * ticker.json first, so any failure here leaves that data showing.
+ * Live games move into the pinned group ahead of the scrolling strip, a
+ * changed score gets a brief highlight, and a line under each pinned game
+ * says who scored last. The page is fully rendered from ticker.json first,
+ * so any failure here leaves that data showing.
  */
 
 import { LIVE_TICKER_ENABLED } from '../../config.ts';
 import { parseScoreboard, scoreboardUrl, type LiveGame } from './espn.ts';
 import { formatKickoff } from './kickoff.ts';
 import { scoreChanged, stripInsertIndex } from './pin.ts';
+import { describeLastScore, matchesScore, parseLastScore, summaryUrl } from './scoring.ts';
 import {
   POLL_INTERVAL_MS,
   REQUEST_TIMEOUT_MS,
@@ -100,19 +102,126 @@ function render(slot: HTMLElement, game: LiveGame): void {
   place(slot, game.state);
 }
 
-async function fetchScoreboard(season: number, week: number): Promise<Map<string, LiveGame>> {
+async function getJson(url: string): Promise<unknown> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   try {
     // A plain GET with no custom headers: ESPN rejects CORS preflight requests.
-    const response = await fetch(scoreboardUrl(season, week), { signal: controller.signal });
-    if (!response.ok) throw new Error(`Scoreboard request failed: ${response.status}`);
-    const games = parseScoreboard(await response.json(), season, week);
-    if (!games) throw new Error('Unexpected scoreboard response');
-    return games;
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) throw new Error(`ESPN request failed: ${response.status}`);
+    return await response.json();
   } finally {
     clearTimeout(timeout);
   }
+}
+
+async function fetchScoreboard(season: number, week: number): Promise<Map<string, LiveGame>> {
+  const games = parseScoreboard(await getJson(scoreboardUrl(season, week)), season, week);
+  if (!games) throw new Error('Unexpected scoreboard response');
+  return games;
+}
+
+// The summary can trail the scoreboard by a few seconds after a score, so a
+// mismatch is retried a few times before the line is left empty.
+const LAST_SCORE_RETRY_MS = [10_000, 20_000, 40_000];
+
+interface LastScoreState {
+  /** "away-home" score the line describes, or is being fetched for */
+  key: string;
+  attempt: number;
+  timer?: number;
+}
+
+/**
+ * The "who scored last" line under a pinned game. It blanks the moment the
+ * score changes, so it never describes an older score, and fills once
+ * ESPN's game summary lists a scoring play that matches the new score.
+ *
+ * The line keeps its space from kickoff to the final whistle ("No scoring
+ * yet" before the first score, blank while fetching), so the ticker only
+ * changes height when the pinned group appears or empties, not on every
+ * score.
+ */
+function lastScoreLine(eventId: string): HTMLElement | null {
+  return document.querySelector<HTMLElement>(
+    `.ticker [data-pinned] .game[data-espn-id="${CSS.escape(eventId)}"] [data-last-score]`
+  );
+}
+
+function showLastScore(line: HTMLElement | null, text: string, title?: string): void {
+  if (!line) return;
+  // A no-break space keeps the row's height while the line is blank.
+  line.querySelector('[data-last-score-text]')!.textContent = text || '\u00a0';
+  if (title) line.title = title;
+  else line.removeAttribute('title');
+  line.hidden = false;
+}
+
+/**
+ * Hide the line on every copy of a game. A game that just went final has
+ * already left the pinned group by the time this runs, so this cannot look
+ * only there.
+ */
+function hideLastScore(eventId: string): void {
+  for (const slot of slotsFor(eventId)) {
+    const line = slot.querySelector<HTMLElement>('[data-last-score]');
+    if (!line) continue;
+    line.hidden = true;
+    line.removeAttribute('title');
+    line.querySelector('[data-last-score-text]')!.textContent = '';
+  }
+}
+
+function createLastScoreTracker() {
+  const states = new Map<string, LastScoreState>();
+
+  async function load(eventId: string, game: LiveGame, state: LastScoreState): Promise<void> {
+    let last = null;
+    try {
+      last = parseLastScore(await getJson(summaryUrl(eventId)));
+    } catch {
+      // Network trouble: treated like a summary that has not caught up.
+    }
+    if (states.get(eventId) !== state) return;
+
+    const line = lastScoreLine(eventId);
+    if (last && line && matchesScore(last, game.awayScore, game.homeScore)) {
+      const slot = line.closest<HTMLElement>('.game')!;
+      const team = slot.querySelector(`[data-side="${last.side}"] .team`)?.textContent?.trim() ?? '';
+      const { line: text, title } = describeLastScore(last, team);
+      showLastScore(line, text, title);
+      return;
+    }
+    const delay = LAST_SCORE_RETRY_MS[state.attempt];
+    if (delay === undefined) return;
+    state.attempt += 1;
+    state.timer = window.setTimeout(() => void load(eventId, game, state), delay);
+  }
+
+  return {
+    /** Call after each poll for every game in the response. */
+    update(eventId: string, game: LiveGame): void {
+      const previous = states.get(eventId);
+      if (game.state !== 'live') {
+        if (previous) window.clearTimeout(previous.timer);
+        states.delete(eventId);
+        hideLastScore(eventId);
+        return;
+      }
+      const key = `${game.awayScore ?? 0}-${game.homeScore ?? 0}`;
+      if (previous?.key === key) return;
+      if (previous) window.clearTimeout(previous.timer);
+
+      const state: LastScoreState = { key, attempt: 0 };
+      states.set(eventId, state);
+      if (!game.awayScore && !game.homeScore) {
+        showLastScore(lastScoreLine(eventId), 'No scoring yet');
+        return;
+      }
+      showLastScore(lastScoreLine(eventId), '');
+      void load(eventId, game, state);
+    },
+  };
 }
 
 export function initLiveTicker(): void {
@@ -144,6 +253,7 @@ export function initLiveTicker(): void {
 
   let timer: number | undefined;
   let failures = 0;
+  const lastScores = createLastScoreTracker();
 
   const schedule = (delay: number) => {
     window.clearTimeout(timer);
@@ -167,6 +277,7 @@ export function initLiveTicker(): void {
         if (!current || !isAdvance(current.state, game.state)) continue;
         current.state = game.state;
         for (const slot of slotsFor(id)) render(slot, game);
+        lastScores.update(id, game);
       }
       failures = 0;
       schedule(POLL_INTERVAL_MS);

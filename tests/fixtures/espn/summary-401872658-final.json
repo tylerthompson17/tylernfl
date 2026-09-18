@@ -1,0 +1,187 @@
+{
+  "header": {
+    "competitions": [
+      {
+        "competitors": [
+          {
+            "homeAway": "home",
+            "team": {
+              "id": "23",
+              "abbreviation": "PIT"
+            }
+          },
+          {
+            "homeAway": "away",
+            "team": {
+              "id": "1",
+              "abbreviation": "ATL"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "scoringPlays": [
+    {
+      "type": {
+        "text": "Field Goal Good",
+        "abbreviation": "FG"
+      },
+      "scoringType": {
+        "abbreviation": "FG",
+        "displayName": "Field Goal"
+      },
+      "text": "Chris Boswell 43 Yd Field Goal",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+        "number": 1
+      },
+      "clock": {
+        "displayValue": "8:30"
+      },
+      "team": {
+        "id": "23",
+        "abbreviation": "PIT"
+      }
+    },
+    {
+      "type": {
+        "text": "Passing Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "Bijan Robinson 23 Yd pass from Cooper Rush (Nick Folk Kick)",
+      "awayScore": 7,
+      "homeScore": 3,
+      "period": {
+        "number": 1
+      },
+      "clock": {
+        "displayValue": "1:13"
+      },
+      "team": {
+        "id": "1",
+        "abbreviation": "ATL"
+      }
+    },
+    {
+      "type": {
+        "text": "Field Goal Good",
+        "abbreviation": "FG"
+      },
+      "scoringType": {
+        "abbreviation": "FG",
+        "displayName": "Field Goal"
+      },
+      "text": "Chris Boswell 28 Yd Field Goal",
+      "awayScore": 7,
+      "homeScore": 6,
+      "period": {
+        "number": 2
+      },
+      "clock": {
+        "displayValue": "12:28"
+      },
+      "team": {
+        "id": "23",
+        "abbreviation": "PIT"
+      }
+    },
+    {
+      "type": {
+        "text": "Passing Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "Pat Freiermuth 6 Yd pass from Aaron Rodgers (Chris Boswell Kick)",
+      "awayScore": 7,
+      "homeScore": 13,
+      "period": {
+        "number": 2
+      },
+      "clock": {
+        "displayValue": "10:39"
+      },
+      "team": {
+        "id": "23",
+        "abbreviation": "PIT"
+      }
+    },
+    {
+      "type": {
+        "text": "Field Goal Good",
+        "abbreviation": "FG"
+      },
+      "scoringType": {
+        "abbreviation": "FG",
+        "displayName": "Field Goal"
+      },
+      "text": "Nick Folk 51 Yd Field Goal",
+      "awayScore": 10,
+      "homeScore": 13,
+      "period": {
+        "number": 3
+      },
+      "clock": {
+        "displayValue": "1:50"
+      },
+      "team": {
+        "id": "1",
+        "abbreviation": "ATL"
+      }
+    },
+    {
+      "type": {
+        "text": "Interception Return Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "T.J. Watt 35 Yd Interception Return (Chris Boswell Kick)",
+      "awayScore": 10,
+      "homeScore": 20,
+      "period": {
+        "number": 4
+      },
+      "clock": {
+        "displayValue": "14:05"
+      },
+      "team": {
+        "id": "23",
+        "abbreviation": "PIT"
+      }
+    },
+    {
+      "type": {
+        "text": "Field Goal Good",
+        "abbreviation": "FG"
+      },
+      "scoringType": {
+        "abbreviation": "FG",
+        "displayName": "Field Goal"
+      },
+      "text": "Nick Folk 43 Yd Field Goal",
+      "awayScore": 13,
+      "homeScore": 20,
+      "period": {
+        "number": 4
+      },
+      "clock": {
+        "displayValue": "10:35"
+      },
+      "team": {
+        "id": "1",
+        "abbreviation": "ATL"
+      }
+    }
+  ]
+}

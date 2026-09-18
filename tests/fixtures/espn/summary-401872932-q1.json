@@ -1,0 +1,72 @@
+{
+  "header": {
+    "competitions": [
+      {
+        "competitors": [
+          {
+            "homeAway": "home",
+            "team": {
+              "id": "2",
+              "abbreviation": "BUF"
+            }
+          },
+          {
+            "homeAway": "away",
+            "team": {
+              "id": "8",
+              "abbreviation": "DET"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "scoringPlays": [
+    {
+      "type": {
+        "text": "Rushing Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "Josh Allen 1 Yd Rush (Tyler Bass Kick)",
+      "awayScore": 0,
+      "homeScore": 7,
+      "period": {
+        "number": 1
+      },
+      "clock": {
+        "displayValue": "9:09"
+      },
+      "team": {
+        "id": "2",
+        "abbreviation": "BUF"
+      }
+    },
+    {
+      "type": {
+        "text": "Passing Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "Joshua Palmer 43 Yd pass from Josh Allen (Tyler Bass Kick)",
+      "awayScore": 0,
+      "homeScore": 14,
+      "period": {
+        "number": 1
+      },
+      "clock": {
+        "displayValue": "3:42"
+      },
+      "team": {
+        "id": "2",
+        "abbreviation": "BUF"
+      }
+    }
+  ]
+}

@@ -1,0 +1,256 @@
+{
+  "header": {
+    "competitions": [
+      {
+        "competitors": [
+          {
+            "homeAway": "home",
+            "team": {
+              "id": "8",
+              "abbreviation": "DET"
+            }
+          },
+          {
+            "homeAway": "away",
+            "team": {
+              "id": "18",
+              "abbreviation": "NO"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "scoringPlays": [
+    {
+      "type": {
+        "text": "Rushing Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "Jahmyr Gibbs 1 Yd Rush (Jake Bates Kick)",
+      "awayScore": 0,
+      "homeScore": 7,
+      "period": {
+        "number": 1
+      },
+      "clock": {
+        "displayValue": "3:39"
+      },
+      "team": {
+        "id": "8",
+        "abbreviation": "DET"
+      }
+    },
+    {
+      "type": {
+        "text": "Rushing Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "Jahmyr Gibbs 1 Yd Rush (Jake Bates Kick)",
+      "awayScore": 0,
+      "homeScore": 14,
+      "period": {
+        "number": 3
+      },
+      "clock": {
+        "displayValue": "11:14"
+      },
+      "team": {
+        "id": "8",
+        "abbreviation": "DET"
+      }
+    },
+    {
+      "type": {
+        "text": "Passing Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "Amon-Ra St. Brown 19 Yd pass from Jared Goff (Jake Bates Kick)",
+      "awayScore": 0,
+      "homeScore": 21,
+      "period": {
+        "number": 3
+      },
+      "clock": {
+        "displayValue": "8:54"
+      },
+      "team": {
+        "id": "8",
+        "abbreviation": "DET"
+      }
+    },
+    {
+      "type": {
+        "text": "Rushing Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "Kendre Miller 8 Yd Rush (Daniel Carlson Kick)",
+      "awayScore": 7,
+      "homeScore": 21,
+      "period": {
+        "number": 3
+      },
+      "clock": {
+        "displayValue": "4:27"
+      },
+      "team": {
+        "id": "18",
+        "abbreviation": "NO"
+      }
+    },
+    {
+      "type": {
+        "text": "Passing Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "Devaughn Vele 1 Yd pass from Tyler Shough (Daniel Carlson Kick)",
+      "awayScore": 14,
+      "homeScore": 21,
+      "period": {
+        "number": 3
+      },
+      "clock": {
+        "displayValue": "0:28"
+      },
+      "team": {
+        "id": "18",
+        "abbreviation": "NO"
+      }
+    },
+    {
+      "type": {
+        "text": "Field Goal Good",
+        "abbreviation": "FG"
+      },
+      "scoringType": {
+        "abbreviation": "FG",
+        "displayName": "Field Goal"
+      },
+      "text": "Daniel Carlson 28 Yd Field Goal",
+      "awayScore": 17,
+      "homeScore": 21,
+      "period": {
+        "number": 4
+      },
+      "clock": {
+        "displayValue": "7:41"
+      },
+      "team": {
+        "id": "18",
+        "abbreviation": "NO"
+      }
+    },
+    {
+      "type": {
+        "text": "Field Goal Good",
+        "abbreviation": "FG"
+      },
+      "scoringType": {
+        "abbreviation": "FG",
+        "displayName": "Field Goal"
+      },
+      "text": "Jake Bates 23 Yd Field Goal",
+      "awayScore": 17,
+      "homeScore": 24,
+      "period": {
+        "number": 4
+      },
+      "clock": {
+        "displayValue": "2:32"
+      },
+      "team": {
+        "id": "8",
+        "abbreviation": "DET"
+      }
+    },
+    {
+      "type": {
+        "text": "Passing Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "Juwan Johnson 9 Yd pass from Tyler Shough (Daniel Carlson Kick)",
+      "awayScore": 24,
+      "homeScore": 24,
+      "period": {
+        "number": 4
+      },
+      "clock": {
+        "displayValue": "1:07"
+      },
+      "team": {
+        "id": "18",
+        "abbreviation": "NO"
+      }
+    },
+    {
+      "type": {
+        "text": "Passing Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "Amon-Ra St. Brown 4 Yd pass from Jared Goff (Jake Bates Kick)",
+      "awayScore": 24,
+      "homeScore": 31,
+      "period": {
+        "number": 5
+      },
+      "clock": {
+        "displayValue": "5:04"
+      },
+      "team": {
+        "id": "8",
+        "abbreviation": "DET"
+      }
+    },
+    {
+      "type": {
+        "text": "Passing Touchdown",
+        "abbreviation": "TD"
+      },
+      "scoringType": {
+        "abbreviation": "TD",
+        "displayName": "Touchdown"
+      },
+      "text": "Noah Fant 8 Yd pass from Tyler Shough (Two-Point Pass Conversion Failed)",
+      "awayScore": 30,
+      "homeScore": 31,
+      "period": {
+        "number": 5
+      },
+      "clock": {
+        "displayValue": "1:34"
+      },
+      "team": {
+        "id": "18",
+        "abbreviation": "NO"
+      }
+    }
+  ]
+}

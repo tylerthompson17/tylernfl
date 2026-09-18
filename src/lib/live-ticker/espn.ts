@@ -7,6 +7,8 @@
  * anything unexpected yields null and the ticker keeps its ticker.json data.
  */
 
+import { isObject, type Json } from './json.ts';
+
 export const SCOREBOARD_URL = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
 
 export type LiveState = 'pre' | 'live' | 'final';
@@ -40,10 +42,6 @@ export function scoreboardParams(season: number, week: number): { dates: string;
 export function scoreboardUrl(season: number, week: number): string {
   return `${SCOREBOARD_URL}?${new URLSearchParams(scoreboardParams(season, week))}`;
 }
-
-type Json = Record<string, unknown>;
-
-const isObject = (value: unknown): value is Json => typeof value === 'object' && value !== null;
 
 function score(value: unknown): number | null {
   const n = typeof value === 'string' ? Number.parseInt(value, 10) : typeof value === 'number' ? value : NaN;

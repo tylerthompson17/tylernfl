@@ -7,7 +7,9 @@
  * The data attributes are hooks for src/lib/live-ticker/client.ts, which
  * localizes kickoff times and applies live scores in the browser. A live
  * score that changes gets a brief first-down yellow highlight behind the
- * number, the site's one bit of motion besides the carousel itself.
+ * number, the site's one bit of motion besides the carousel itself. While
+ * a game is pinned live, the last line says who scored last; it stays
+ * hidden otherwise.
  */
 import type { TickerGame } from '../data/types';
 import { url } from '../utils/url';
@@ -38,6 +40,9 @@ const homeWon = decided && game.homeScore! > game.awayScore!;
     <a class="team" href={url(`teams/${game.home}`)}>{game.home}</a>
     <span class="num" data-score>{game.homeScore ?? ''}</span>
   </span>
+  <span class="last-score" data-last-score hidden>
+    <span class="visually-hidden">Last score: </span><span data-last-score-text></span>
+  </span>
 </li>
 
 <style>
@@ -45,7 +50,8 @@ const homeWon = decided && game.homeScore! > game.awayScore!;
     display: grid;
     grid-template-areas:
       'detail away'
-      'detail home';
+      'detail home'
+      'last last';
     column-gap: var(--space-3);
     padding: var(--space-1) var(--space-3);
     border-right: 1px solid var(--rule);
@@ -78,6 +84,27 @@ const homeWon = decided && game.homeScore! > game.awayScore!;
 
   .line.won {
     font-weight: 700;
+  }
+
+  /* Who scored last, under a pinned live game. Sized by the slot rather
+     than the text (inline-size containment), cut with an ellipsis; the
+     full play is in the tooltip and read in full by screen readers. */
+  .last-score {
+    grid-area: last;
+    contain: inline-size;
+    margin-top: 2px;
+    padding-top: 2px;
+    border-top: 1px dotted var(--rule-soft);
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .last-score[hidden] {
+    display: none;
   }
 
   /* Room for the highlight without shifting the digits. */

@@ -43,7 +43,7 @@ tylernfl/
 
 - Pipelines write JSON into `src/data/`, commit it, and the push triggers a rebuild. Pages read data at build time.
 - Browser-side fetches are allowed in exactly two places. Nothing else fetches data at runtime.
-  1. **Live ticker scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates ticker scores in place. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Turn it off entirely with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
+  1. **Live ticker scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates ticker scores in place. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Pinned live games also show who scored last: when a pinned game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (it is about 175 KB, of which the scoring plays are about 1 KB). Turn it all off with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
   2. **Live 4th down page** (later): fetches game state at runtime.
 - ESPN data is browser-only: never write it to `src/data/` and never use it in pipelines. Pipelines use nflverse (the `espnId` in `ticker.json` comes from nflverse schedules). Test fixtures in `tests/fixtures/espn/` are the only stored ESPN data.
 - Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text).
@@ -106,6 +106,10 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 - Live games are pinned between the week label and the carousel, capped at
   half the ticker's width (scrolling by hand past that). Below 760px the
   ticker is one swipeable strip with live games first.
+- A pinned game has a third line saying who scored last ("BUF TD: Josh Allen
+  1 Yd Rush"), cut with an ellipsis, full play in the tooltip. It holds its
+  space from kickoff to final ("No scoring yet" at 0 to 0) so the ticker's
+  height does not jump on each score.
 - Body text 13px, tables 12px, line-height 1.35. Headers in Barlow Condensed, bold.
 - Links are blue and underlined. Player and team names are always links.
 - Yellow is only ever a background (announcement strip, highlighted row),
