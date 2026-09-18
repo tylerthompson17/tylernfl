@@ -7,8 +7,10 @@ Options:
     --today YYYY-MM-DD   pretend it is this US Eastern date (for testing)
     --dry-run            print the output instead of writing files
 
-model_record.json and on_this_day.json are not produced here: the model
-record waits on the 4th down model, which is Tyler's to build.
+team_stats.json comes from the weekly job (run_weekly.py), which needs the
+much larger play-by-play download. model_record.json and on_this_day.json
+are not produced here: the model record waits on the 4th down model, which
+is Tyler's to build.
 """
 
 import argparse
@@ -19,16 +21,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from common import load_with_fallback, today_eastern, write_json_if_changed  # noqa: E402
+from common import load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
 from leaders import build_leaders, load_leaders_input  # noqa: E402
 from rosters import build_rosters, load_roster_rows, unknown_statuses  # noqa: E402
 from ticker import build_ticker, load_schedule_rows  # noqa: E402
-
-
-def leaders_season(today: date) -> int:
-    # A season runs September into February. Early September, before the new
-    # season has any stats, load_leaders_input falls back to last season.
-    return today.year if today.month >= 9 else today.year - 1
 
 
 def roster_season(today: date) -> int:
@@ -47,7 +43,7 @@ def main() -> None:
     updated = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
 
     ticker = build_ticker(load_schedule_rows(today), today)
-    leader_rows, leaders_year = load_leaders_input(leaders_season(today))
+    leader_rows, leaders_year = load_leaders_input(stats_season(today))
     leaders = build_leaders(leader_rows, leaders_year)
     roster_rows, rosters_year = load_with_fallback(load_roster_rows, roster_season(today))
     rosters = build_rosters(roster_rows, rosters_year, today, updated)

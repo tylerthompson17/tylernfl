@@ -14,3 +14,15 @@ export function formatExperience(years: number | null): string | null {
   if (years === null) return null;
   return years === 0 ? 'R' : String(years);
 }
+
+/**
+ * A stat value in the format its data file names. Negative numbers use a
+ * true minus sign so signed columns line up. Null reads as a dash.
+ */
+export function formatStat(value: number | null, format: 'signed3' | 'percent1'): string {
+  if (value === null) return '-';
+  if (format === 'percent1') return `${(value * 100).toFixed(1)}%`;
+  const fixed = Math.abs(value).toFixed(3);
+  if (Number(fixed) === 0) return fixed;
+  return `${value > 0 ? '+' : '\u2212'}${fixed}`;
+}

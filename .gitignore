@@ -22,3 +22,6 @@ npm-debug.log*
 
 # jetbrains
 .idea/
+
+# play-by-play download cache (persisted in CI by actions/cache)
+pipelines/.cache/

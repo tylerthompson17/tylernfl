@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import StatTable from '../../components/StatTable.astro';
+import {
+  isSmallSample,
+  leagueColumns,
+  leagueRows,
+  metricsFor,
+  SMALL_SAMPLE_NOTE,
+  teamStats,
+} from '../../utils/team-stats';
+
+const hasGames = teamStats.teams.length > 0;
+const fewestGames = Math.min(...teamStats.teams.map((team) => team.games));
+const smallSample = hasGames && isSmallSample(fewestGames);
+
+const sides = [
+  { side: 'offense' as const, title: 'Offense', caption: 'Team offense' },
+  { side: 'defense' as const, title: 'Defense', caption: 'Team defense, measured by what opponents did' },
+];
+---
+
+<BaseLayout title="Team stats">
+  <h1 class="page-title">Team stats</h1>
+  {
+    hasGames ? (
+      <p class="page-intro">
+        {teamStats.season} regular season, through week {teamStats.throughWeek}. Sorted by EPA
+        per play. Updated Wednesday mornings.
+      </p>
+    ) : null
+  }
+  <div class="content-grid">
+    {
+      hasGames ? (
+        sides.map(({ side, title, caption }) => (
+          <Panel title={title}>
+            <StatTable
+              columns={leagueColumns(side, smallSample)}
+              rows={leagueRows(side)}
+              caption={caption}
+            />
+            {smallSample && <p class="table-foot">{SMALL_SAMPLE_NOTE}</p>}
+          </Panel>
+        ))
+      ) : (
+        <Panel title="Team stats">
+          <p class="placeholder-note">No games played yet. Team stats appear after week 1.</p>
+        </Panel>
+      )
+    }
+    <Panel title="How these are counted">
+      <dl class="definitions">
+        {
+          metricsFor('offense').map((metric) => (
+            <div>
+              <dt>{metric.label}</dt>
+              <dd>{metric.description}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="table-foot">
+        Defense columns are the same measures for opposing offenses, so on defense the lowest value
+        ranks first. Regular season only, from nflverse play-by-play.
+      </p>
+    </Panel>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-intro {
+    color: var(--text-dim);
+    margin-bottom: var(--space-4);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .table-foot {
+    margin-top: var(--space-3);
+    color: var(--text-dim);
+  }
+
+  .definitions div + div {
+    margin-top: var(--space-1);
+    padding-top: var(--space-1);
+    border-top: 1px dotted var(--rule-soft);
+  }
+
+  .definitions dt {
+    font-weight: 700;
+  }
+</style>

@@ -49,8 +49,8 @@ tylernfl/
 - Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text).
 - In-progress parsing (quarter, clock, halftime) is provisional until verified against the real capture from DET at BUF on 2026-09-17.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
-- Files: `ticker.json`, `leaders.json`, `rosters/{TEAM}.json`, `on_this_day.json`,
-  `teams.json`, `model_record.json`.
+- Files: `ticker.json`, `leaders.json`, `rosters/{TEAM}.json`, `team_stats.json`,
+  `on_this_day.json`, `teams.json`, `model_record.json`.
 - `teams.json` (abbr, name, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `leaders.json` and `rosters/` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run daily by `.github/workflows/daily.yml`.
@@ -59,6 +59,14 @@ tylernfl/
   slugs are written by the pipeline, not derived by the site, because players who
   share a name need a team suffix. `player_slug` in `pipelines/common.py` and
   `playerSlug` in `src/utils/slug.ts` must produce the same strings.
+- `team_stats.json` is written by `pipelines/run_weekly.py`, run Wednesday mornings by
+  `.github/workflows/weekly.yml`, from nflverse play-by-play. Definitions live in the
+  `pipelines/team_stats.py` docstring. Values are rounded to the displayed precision
+  before ranking, so equal displayed values share a rank.
+- Play-by-play goes through `pipelines/pbp_cache.py`: completed seasons are cached for
+  good, the current season refreshes after 12 hours. CI persists the cache with
+  `actions/cache`. Anything that needs pbp (including the 4th down model) should load
+  it through this module rather than calling `nflreadpy.load_pbp` directly.
 - `model_record.json` stays a placeholder until the 4th down model exists. `on_this_day.json` is still mock data.
 
 ## Design direction

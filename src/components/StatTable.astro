@@ -19,6 +19,11 @@ export interface StatTableColumn {
    * from the name, which is right for data that has no slug of its own.
    */
   slugKey?: string;
+  /**
+   * Over-header shared by adjacent columns, e.g. "EPA/play" above a value
+   * and a rank column. Columns without one span both header rows.
+   */
+  group?: string;
 }
 
 interface Props {
@@ -31,6 +36,15 @@ interface Props {
 }
 
 const { columns, rows, caption, emptyText = 'No data yet.' } = Astro.props;
+
+// Adjacent columns with the same group share one over-header cell.
+const runs: { group: string | undefined; columns: StatTableColumn[] }[] = [];
+for (const col of columns) {
+  const last = runs.at(-1);
+  if (last && col.group !== undefined && last.group === col.group) last.columns.push(col);
+  else runs.push({ group: col.group, columns: [col] });
+}
+const grouped = runs.some((run) => run.group !== undefined);
 ---
 
 {rows.length === 0 && <p class="empty">{emptyText}</p>}
@@ -38,10 +52,37 @@ const { columns, rows, caption, emptyText = 'No data yet.' } = Astro.props;
 <div class="scroll" tabindex="0">
   <table>
     <caption class="visually-hidden">{caption}</caption>
+    {grouped && runs.map((run) => <colgroup span={run.columns.length} />)}
     <thead>
-      <tr>
-        {columns.map((col) => <th scope="col" class={col.kind ?? 'text'}>{col.label}</th>)}
-      </tr>
+      {
+        grouped ? (
+          <>
+            <tr>
+              {runs.map((run) =>
+                run.group === undefined ? (
+                  <th scope="col" rowspan="2" class={run.columns[0]!.kind ?? 'text'}>
+                    {run.columns[0]!.label}
+                  </th>
+                ) : (
+                  <th scope="colgroup" colspan={run.columns.length} class="group">
+                    {run.group}
+                  </th>
+                )
+              )}
+            </tr>
+            <tr>
+              {runs
+                .filter((run) => run.group !== undefined)
+                .flatMap((run) => run.columns)
+                .map((col) => <th scope="col" class={col.kind ?? 'text'}>{col.label}</th>)}
+            </tr>
+          </>
+        ) : (
+          <tr>
+            {columns.map((col) => <th scope="col" class={col.kind ?? 'text'}>{col.label}</th>)}
+          </tr>
+        )
+      }
     </thead>
     <tbody>
       {
@@ -104,6 +145,10 @@ const { columns, rows, caption, emptyText = 'No data yet.' } = Astro.props;
   th.number,
   td.number {
     text-align: right;
+  }
+
+  th.group {
+    text-align: center;
   }
 
   /* Highlighted row on hover: yellow as background only */

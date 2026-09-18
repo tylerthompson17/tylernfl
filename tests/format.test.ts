@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { playerSlug } from '../src/utils/slug.ts';
-import { formatExperience, formatHeight } from '../src/utils/format.ts';
+import { formatExperience, formatHeight, formatStat } from '../src/utils/format.ts';
 
 test('periods and apostrophes vanish rather than splitting the name', () => {
   assert.equal(playerSlug('C.J. Stroud'), 'cj-stroud');
@@ -29,4 +29,15 @@ test('a rookie season reads as R', () => {
   assert.equal(formatExperience(0), 'R');
   assert.equal(formatExperience(9), '9');
   assert.equal(formatExperience(null), null);
+});
+
+test('stat values format by type', () => {
+  // Pipelines store exactly three decimals, which format without drift.
+  assert.equal(formatStat(0.155, 'signed3'), '+0.155');
+  assert.equal(formatStat(0.105, 'signed3'), '+0.105');
+  assert.equal(formatStat(-0.041, 'signed3'), '\u22120.041');
+  assert.equal(formatStat(0, 'signed3'), '0.000');
+  assert.equal(formatStat(0.498, 'percent1'), '49.8%');
+  assert.equal(formatStat(0.575, 'percent1'), '57.5%');
+  assert.equal(formatStat(null, 'percent1'), '-');
 });

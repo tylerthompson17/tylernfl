@@ -8,6 +8,15 @@ import leadersData from '../../data/leaders.json';
 import type { RosterPlayer, TeamsData, LeadersData } from '../../data/types';
 import { groupPlayers, PRACTICE_SQUAD, rosterFor } from '../../utils/rosters';
 import { formatExperience, formatHeight } from '../../utils/format';
+import {
+  isSmallSample,
+  rankLabel,
+  SMALL_SAMPLE_NOTE,
+  teamLine,
+  teamPanelRows,
+  teamStats,
+} from '../../utils/team-stats';
+import { url } from '../../utils/url';
 
 export function getStaticPaths() {
   return (teamsData as TeamsData).map((team) => ({
@@ -51,6 +60,18 @@ const rosterColumns = [
 ];
 // Everyone on the practice squad shares a status, so the column is dropped.
 const practiceColumns = rosterColumns.filter((col) => col.key !== 'status');
+
+const statLine = teamLine(team.abbr);
+const statSmallSample = statLine !== undefined && isSmallSample(statLine.games);
+const statColumns = [
+  { key: 'measure', label: 'Measure' },
+  { key: 'offValue', label: 'Value', kind: 'number' as const, group: 'Offense' },
+  { key: 'offRank', label: rankLabel(statSmallSample), kind: 'number' as const, group: 'Offense' },
+  { key: 'offSample', label: 'Sample', kind: 'number' as const, group: 'Offense' },
+  { key: 'defValue', label: 'Value', kind: 'number' as const, group: 'Defense' },
+  { key: 'defRank', label: rankLabel(statSmallSample), kind: 'number' as const, group: 'Defense' },
+  { key: 'defSample', label: 'Sample', kind: 'number' as const, group: 'Defense' },
+];
 
 // This team's appearances in the current leaderboards.
 const appearances = leaders.categories.flatMap((category) =>
@@ -123,11 +144,26 @@ const appearanceColumns = [
         emptyText={`No ${team.name} players in the current leaderboards.`}
       />
     </Panel>
-    <Panel title="Team stats">
-      <p class="placeholder-note">
-        Season stats, results, and ratings for the {team.name} land here when the data pipelines
-        run.
-      </p>
+    <Panel title={`${teamStats.season} team stats`}>
+      {
+        statLine ? (
+          <>
+            <StatTable
+              columns={statColumns}
+              rows={teamPanelRows(statLine)}
+              caption={`${team.name} offense and defense, with league ranks`}
+            />
+            <p class="table-foot">
+              Through week {teamStats.throughWeek}, {statLine.games}{' '}
+              {statLine.games === 1 ? 'game' : 'games'}. Ranks are out of 32; on defense the
+              lowest value allowed ranks first. <a href={url('stats/teams')}>All team stats</a>
+            </p>
+            {statSmallSample && <p class="table-foot">{SMALL_SAMPLE_NOTE}</p>}
+          </>
+        ) : (
+          <p class="placeholder-note">No games played yet. Team stats appear after week 1.</p>
+        )
+      }
     </Panel>
   </div>
 </BaseLayout>

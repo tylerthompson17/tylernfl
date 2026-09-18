@@ -156,3 +156,50 @@ export interface TeamRoster {
   /** Sorted by group, then position, then jersey number. */
   players: RosterPlayer[];
 }
+
+/** team_stats.json: written weekly by pipelines/run_weekly.py from nflverse play-by-play. */
+export type StatFormat = 'signed3' | 'percent1';
+
+export interface TeamStatMetric {
+  /** Stable key, e.g. "off_epa" */
+  key: string;
+  /** Full name, e.g. "Red zone TD rate allowed" */
+  label: string;
+  /** Column header, e.g. "Red zone TD" */
+  short: string;
+  side: 'offense' | 'defense';
+  format: StatFormat;
+  /** Rank 1 goes to the highest value, or the lowest for defense. */
+  betterWhen: 'high' | 'low';
+  /** What `n` counts: "plays", "attempts" or "trips". */
+  sample: string;
+  /** One sentence definition shown on the team stats page. */
+  description: string;
+}
+
+export interface TeamStatValue {
+  /** Rate or per play value; null when the team has no sample yet. */
+  value: number | null;
+  /** 1 to 32, ties shared; null when value is null. */
+  rank: number | null;
+  /** Plays, attempts or trips behind the value. */
+  n: number;
+}
+
+export interface TeamStatLine {
+  /** Team abbr matching teams.json */
+  abbr: string;
+  games: number;
+  /** Keyed by TeamStatMetric.key */
+  values: Record<string, TeamStatValue>;
+}
+
+export interface TeamStatsData {
+  season: number;
+  /** Last regular season week included, 0 before any games */
+  throughWeek: number;
+  /** ISO timestamp of the run that last changed the numbers */
+  updated: string;
+  metrics: TeamStatMetric[];
+  teams: TeamStatLine[];
+}

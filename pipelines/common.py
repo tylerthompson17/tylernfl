@@ -25,6 +25,13 @@ def today_eastern() -> date:
     return datetime.now(EASTERN).date()
 
 
+def stats_season(today: date) -> int:
+    """The season whose stats are current. A season runs September into
+    February; early September, before the new season has any stats, loaders
+    fall back to the previous one."""
+    return today.year if today.month >= 9 else today.year - 1
+
+
 def player_slug(name: str) -> str:
     """URL slug for a player name.
 

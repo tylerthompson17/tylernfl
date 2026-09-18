@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
 import StatTable from '../../components/StatTable.astro';
 import leadersData from '../../data/leaders.json';
+import { url } from '../../utils/url';
 import type { LeadersData } from '../../data/types';
 
 const leaders = leadersData as LeadersData;
@@ -20,7 +21,8 @@ function columnsFor(valueLabel: string) {
 <BaseLayout title="Stat leaders">
   <h1 class="page-title">Stat leaders</h1>
   <p class="page-intro">
-    {leaders.season} season, through week {leaders.throughWeek}.
+    {leaders.season} season, through week {leaders.throughWeek}. Team offense and defense ranks
+    are on <a href={url('stats/teams')}>Team stats</a>.
   </p>
   <div class="content-grid stats-grid">
     {

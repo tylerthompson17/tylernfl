@@ -5,12 +5,14 @@ Run from the repo root:
 """
 
 import unittest
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from common import player_slug
 from leaders import build_leaders
+from pbp_cache import is_fresh
 from rosters import age_on, build_rosters, unknown_statuses
+from team_stats import build_team_stats, rank
 from ticker import WeekSpan, build_ticker, format_detail, kickoff_utc, next_opener, select_week
 
 d = date.fromisoformat
@@ -366,6 +368,161 @@ class BuildRostersTest(unittest.TestCase):
 
     def test_no_rosters_published_yet(self):
         self.assertEqual(self.build([]), {})
+
+
+def play(**kwargs):
+    """One regular season snap. Defaults: BUF has the ball against MIA at midfield, no EPA play."""
+    row = {
+        'game_id': '2026_01_MIA_BUF',
+        'week': 1,
+        'posteam': 'BUF',
+        'defteam': 'MIA',
+        'down': 1,
+        'yardline_100': 50,
+        'pass': 0,
+        'rush': 0,
+        'qb_kneel': 0,
+        'qb_spike': 0,
+        'epa': None,
+        'third_down_converted': 0,
+        'third_down_failed': 0,
+        'fixed_drive': 1,
+        'touchdown': 0,
+        'td_team': None,
+    }
+    row.update(kwargs)
+    return row
+
+
+def team_values(stats, team):
+    return next(t for t in stats['teams'] if t['abbr'] == team)['values']
+
+
+class BuildTeamStatsTest(unittest.TestCase):
+    def build(self, rows):
+        return build_team_stats(rows, 2026, '2026-09-23T10:00:00Z')
+
+    def test_epa_and_success_count_dropbacks_and_runs_only(self):
+        stats = self.build(
+            [
+                play(**{'pass': 1}, epa=0.6),
+                play(rush=1, epa=-0.2),
+                # Not counted: a kneel, a spike, a snap with no EPA, a punt.
+                play(rush=1, qb_kneel=1, epa=-1.0),
+                play(**{'pass': 1}, qb_spike=1, epa=-1.0),
+                play(**{'pass': 1}, epa=None),
+                play(epa=-3.0),
+                # Extra points and two point tries have no down.
+                play(down=None, **{'pass': 1}, epa=5.0),
+            ]
+        )
+        buf, mia = team_values(stats, 'BUF'), team_values(stats, 'MIA')
+        self.assertEqual(buf['off_epa'], {'value': 0.2, 'rank': 1, 'n': 2})
+        self.assertEqual(buf['off_success']['value'], 0.5)
+        # The same plays are MIA's defense.
+        self.assertEqual(mia['def_epa']['value'], 0.2)
+        self.assertEqual(mia['def_success']['n'], 2)
+
+    def test_success_needs_positive_epa(self):
+        stats = self.build([play(rush=1, epa=0.0), play(rush=1, epa=0.01)])
+        self.assertEqual(team_values(stats, 'BUF')['off_success']['value'], 0.5)
+
+    def test_third_downs_use_the_settling_play(self):
+        stats = self.build(
+            [
+                play(down=3, third_down_converted=1),
+                play(down=3, third_down_failed=1),
+                play(down=3, third_down_failed=1),
+                # A penalty that replays third down settles nothing.
+                play(down=3),
+                play(down=4, third_down_converted=1),
+            ]
+        )
+        third = team_values(stats, 'BUF')['off_third_down']
+        self.assertEqual((third['value'], third['n']), (0.333, 3))
+        self.assertEqual(team_values(stats, 'MIA')['def_third_down']['value'], 0.333)
+
+    def test_red_zone_trips_include_the_20_and_count_offensive_touchdowns(self):
+        stats = self.build(
+            [
+                # Drive 1: reaches exactly the 20, scores.
+                play(fixed_drive=1, yardline_100=35),
+                play(fixed_drive=1, yardline_100=20),
+                play(fixed_drive=1, yardline_100=4, touchdown=1, td_team='BUF'),
+                # Drive 2: reaches the 12, field goal.
+                play(fixed_drive=2, yardline_100=12),
+                # Drive 3: stalls at the 21, not a trip.
+                play(fixed_drive=3, yardline_100=21),
+                # Drive 4: 40 yard touchdown. The extra point at the 15 has no
+                # down, so this is still not a red zone trip.
+                play(fixed_drive=4, yardline_100=40, touchdown=1, td_team='BUF'),
+                play(fixed_drive=4, yardline_100=15, down=None),
+                # Drive 5: reaches the 8, then a pick six.
+                play(fixed_drive=5, yardline_100=8, touchdown=1, td_team='MIA'),
+            ]
+        )
+        red_zone = team_values(stats, 'BUF')['off_red_zone']
+        self.assertEqual((red_zone['value'], red_zone['n']), (0.333, 3))
+        self.assertEqual(team_values(stats, 'MIA')['def_red_zone']['value'], 0.333)
+
+    def test_drives_are_separate_per_game(self):
+        stats = self.build(
+            [
+                play(game_id='2026_01_MIA_BUF', fixed_drive=1, yardline_100=10, touchdown=1, td_team='BUF'),
+                play(game_id='2026_02_BUF_NYJ', week=2, defteam='NYJ', fixed_drive=1, yardline_100=10),
+            ]
+        )
+        buf = next(t for t in stats['teams'] if t['abbr'] == 'BUF')
+        self.assertEqual(buf['games'], 2)
+        self.assertEqual(buf['values']['off_red_zone']['n'], 2)
+        self.assertEqual(stats['throughWeek'], 2)
+
+    def test_defense_ranks_invert_and_teams_without_a_sample_are_unranked(self):
+        stats = self.build(
+            [
+                play(posteam='BUF', defteam='MIA', rush=1, epa=0.3),
+                play(game_id='g2', posteam='KC', defteam='LA', rush=1, epa=-0.1),
+                play(game_id='g2', posteam='LA', defteam='KC', rush=1, epa=0.1),
+            ]
+        )
+        off = {t['abbr']: t['values']['off_epa']['rank'] for t in stats['teams']}
+        dfn = {t['abbr']: t['values']['def_epa']['rank'] for t in stats['teams']}
+        # LA is normalized to LAR. MIA never had the ball.
+        self.assertEqual(off, {'BUF': 1, 'KC': 3, 'LAR': 2, 'MIA': None})
+        # Allowing the least EPA ranks first.
+        self.assertEqual(dfn, {'BUF': None, 'KC': 2, 'LAR': 1, 'MIA': 3})
+        self.assertIsNone(team_values(stats, 'MIA')['off_epa']['value'])
+
+    def test_metrics_carry_their_display_metadata(self):
+        stats = self.build([])
+        self.assertEqual(
+            [(m['key'], m['side'], m['betterWhen']) for m in stats['metrics']][:1],
+            [('off_epa', 'offense', 'high')],
+        )
+        self.assertEqual(len(stats['metrics']), 8)
+        self.assertEqual((stats['teams'], stats['throughWeek']), ([], 0))
+
+
+class RankTest(unittest.TestCase):
+    def test_ties_share_a_rank(self):
+        self.assertEqual(rank({'A': 0.5, 'B': 0.4, 'C': 0.4, 'D': 0.1}, 'high'), {'A': 1, 'B': 2, 'C': 2, 'D': 4})
+
+    def test_low_is_better(self):
+        self.assertEqual(rank({'A': 0.5, 'B': -0.2, 'C': None}, 'low'), {'A': 2, 'B': 1, 'C': None})
+
+
+class PbpCacheTest(unittest.TestCase):
+    now = datetime(2026, 9, 23, 10, 0, tzinfo=timezone.utc)
+
+    def test_completed_seasons_are_kept_for_good(self):
+        self.assertTrue(is_fresh(2025, 2026, self.now - timedelta(days=300), self.now))
+
+    def test_current_season_refreshes_after_12_hours(self):
+        self.assertTrue(is_fresh(2026, 2026, self.now - timedelta(hours=11), self.now))
+        self.assertFalse(is_fresh(2026, 2026, self.now - timedelta(hours=13), self.now))
+
+    def test_nothing_cached(self):
+        self.assertFalse(is_fresh(2025, 2026, None, self.now))
 
 
 if __name__ == '__main__':
