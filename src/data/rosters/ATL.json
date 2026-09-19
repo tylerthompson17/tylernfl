@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "ATL",
   "week": 2,
-  "updated": "2026-09-17T19:59:07Z",
+  "updated": "2026-09-19T13:30:49Z",
   "groups": [
     {
       "key": "offense",
@@ -109,6 +109,21 @@
       "college": "Alabama"
     },
     {
+      "gsisId": "00-0036906",
+      "name": "Khalil Herbert",
+      "slug": "khalil-herbert",
+      "number": 25,
+      "position": "RB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 69,
+      "weight": 212,
+      "age": 28,
+      "experience": 5,
+      "college": "Virginia Tech"
+    },
+    {
       "gsisId": "00-0041191",
       "name": "Cash Jones",
       "slug": "cash-jones",
@@ -122,21 +137,6 @@
       "age": 26,
       "experience": 0,
       "college": "Georgia"
-    },
-    {
-      "gsisId": "00-0036906",
-      "name": "Khalil Herbert",
-      "slug": "khalil-herbert",
-      "number": 40,
-      "position": "RB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 69,
-      "weight": 212,
-      "age": 28,
-      "experience": 5,
-      "college": "Virginia Tech"
     },
     {
       "gsisId": "00-0036984",
@@ -847,7 +847,7 @@
       "gsisId": "00-0037826",
       "name": "Drake Jackson",
       "slug": "drake-jackson",
-      "number": 93,
+      "number": 91,
       "position": "OLB",
       "group": "defense",
       "status": "DEV",

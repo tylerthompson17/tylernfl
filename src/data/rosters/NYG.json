@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYG",
   "week": 2,
-  "updated": "2026-09-18T13:55:39Z",
+  "updated": "2026-09-19T13:30:49Z",
   "groups": [
     {
       "key": "offense",
@@ -910,8 +910,8 @@
       "number": 21,
       "position": "CB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 73,
       "weight": 193,
       "age": 27,
@@ -1037,6 +1037,21 @@
       "age": 24,
       "experience": 0,
       "college": "North Carolina; Washington; Long Beach City College"
+    },
+    {
+      "gsisId": "00-0040471",
+      "name": "Nikko Reed",
+      "slug": "nikko-reed",
+      "number": 46,
+      "position": "CB",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 70,
+      "weight": 180,
+      "age": 23,
+      "experience": 1,
+      "college": "Oregon; Colorado"
     },
     {
       "gsisId": "00-0036998",

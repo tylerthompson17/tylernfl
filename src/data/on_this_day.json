@@ -1,36 +1,60 @@
 {
   "month": 9,
-  "day": 18,
-  "gamesOnDate": 63,
+  "day": 19,
+  "gamesOnDate": 67,
   "items": [
     {
       "year": 2022,
-      "gameId": "2022_02_MIA_BAL",
-      "text": "The Dolphins beat the Ravens 42-38 with 80 combined points.",
+      "gameId": "2022_02_TEN_BUF",
+      "text": "The Bills beat the Titans 41-7.",
       "parts": [
         {
           "text": "The "
+        },
+        {
+          "text": "Bills",
+          "team": "BUF"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Titans",
+          "team": "TEN"
+        },
+        {
+          "text": " 41-7."
+        }
+      ]
+    },
+    {
+      "year": 2021,
+      "gameId": "2021_02_BUF_MIA",
+      "text": "The Bills shut out the Dolphins 35-0.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Bills",
+          "team": "BUF"
+        },
+        {
+          "text": " shut out the "
         },
         {
           "text": "Dolphins",
           "team": "MIA"
         },
         {
-          "text": " beat the "
-        },
-        {
-          "text": "Ravens",
-          "team": "BAL"
-        },
-        {
-          "text": " 42-38 with 80 combined points."
+          "text": " 35-0."
         }
       ]
     },
     {
-      "year": 2014,
-      "gameId": "2014_03_TB_ATL",
-      "text": "The Falcons beat the Buccaneers 56-14 with 70 combined points.",
+      "year": 2010,
+      "gameId": "2010_02_ARI_ATL",
+      "text": "The Falcons beat the Cardinals 41-7.",
       "parts": [
         {
           "text": "The "
@@ -43,35 +67,11 @@
           "text": " beat the "
         },
         {
-          "text": "Buccaneers",
-          "team": "TB"
+          "text": "Cardinals",
+          "team": "ARI"
         },
         {
-          "text": " 56-14 with 70 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2011,
-      "gameId": "2011_02_KC_DET",
-      "text": "The Lions beat the Chiefs 48-3.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Lions",
-          "team": "DET"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Chiefs",
-          "team": "KC"
-        },
-        {
-          "text": " 48-3."
+          "text": " 41-7."
         }
       ]
     }
