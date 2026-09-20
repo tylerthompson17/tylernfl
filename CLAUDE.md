@@ -6,6 +6,10 @@ Personal NFL analytics site: public tools (4th down model first), stat leaders, 
 
 - Claude Code owns: site scaffolding, layout, components, styling, data plumbing, GitHub Actions.
 - Tyler owns: all statistical modeling (win probability, 4th down logic, team ratings). Do not write model logic. Leave clearly marked stubs and interfaces instead.
+- Round number thresholds the sport already treats as milestones (300 passing
+  yards, a 100 yard game) are not modelling; they are the site's editorial
+  choice, like the leaderboard qualifiers. Scoring one kind of game against
+  another is modelling and is Tyler's.
 
 ## Stack
 
@@ -104,6 +108,17 @@ tylernfl/
   link to today's franchise page.
 - `model_record.json` stays a placeholder until the 4th down model exists. It is the only
   placeholder data left on the site.
+- The home page's notable performances panel is derived at build time from the
+  `players/{TEAM}.json` game logs, not from a data file of its own. The week it
+  shows is the latest one any game is logged for, which is not the ticker's
+  week: from Wednesday the ticker looks ahead to games not played yet.
+  `src/lib/performances/notable.ts` holds the rule and the bars, kept apart
+  from the panel that renders it. Today the rule is one row per category: the
+  week's leader in each board's headline stat, if it clears the bar. The
+  intended replacement is a single list ranked across categories, which needs
+  a way to score a passing day against a pass rushing day; that is Tyler's to
+  write, and it should return the same `Performance[]` so the panel does not
+  change.
 
 ## Design direction
 

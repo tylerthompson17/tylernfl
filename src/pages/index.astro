@@ -7,6 +7,7 @@ import { url } from '../utils/url';
 import { getArticles } from '../utils/articles';
 import leadersData from '../data/leaders.json';
 import { headlineItems, statusSummary, transactions } from '../utils/transactions';
+import { notable } from '../utils/performances';
 import type { LeadersData } from '../data/types';
 
 const leaders = leadersData as LeadersData;
@@ -23,6 +24,19 @@ const headlineColumns = [
   { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
   { key: 'news', label: 'News' },
 ];
+
+// One row per category: the week's leader in each, kept only if it cleared
+// the bar in src/lib/performances/notable.ts. Each line names its own stat,
+// so there is no category column to keep in step with it.
+const notableColumns = [
+  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
+  { key: 'team', label: 'Team', kind: 'team' as const },
+  { key: 'line', label: 'Game' },
+];
+
+// Week 1 is 32 teams; later weeks are 28 to 30 with byes. Well short of that
+// means the week is still being played.
+const weekPartlyIn = notable.week !== null && notable.teams < 24;
 
 const leaderColumns = [
   { key: 'rank', label: 'Rk', kind: 'number' as const },
@@ -79,6 +93,35 @@ const leaderColumns = [
               Starters first. Game statuses for week {transactions.week} games still to play:{' '}
               {injurySummary ?? 'none yet'}. {headlines.rest} more on the{' '}
               <a href={url('transactions')}>full wire</a>, filterable by team and type.
+            </p>
+          </>
+        )
+      }
+    </Panel>
+    <Panel title="Notable performances">
+      {
+        notable.week === null ? (
+          <p class="placeholder-note">
+            No games played yet. Performances appear after week 1.
+          </p>
+        ) : (
+          <>
+            <StatTable
+              columns={notableColumns}
+              rows={notable.rows}
+              caption="Notable performances this week"
+              emptyText="No game cleared the bar this week yet."
+            />
+            <p class="table-foot">
+              The best of week {notable.week} in each category, where the game was big enough to
+              count.{' '}
+              {weekPartlyIn && (
+                <>
+                  {notable.teams === 1 ? 'One team has' : `${notable.teams} teams have`} played so
+                  far; the rest of the week lands as games finish.{' '}
+                </>
+              )}
+              <a href={url('stats')}>Full leaderboards</a>
             </p>
           </>
         )
