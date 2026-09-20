@@ -1,10 +1,14 @@
 /**
  * Live ticker in the browser: shows kickoff times in the visitor's time zone,
  * and during game windows polls ESPN's scoreboard to update scores in place.
- * Live games move into the pinned group ahead of the scrolling strip, a
- * changed score gets a brief highlight, and a line under each pinned game
- * says who scored last. The page is fully rendered from ticker.json first,
- * so any failure here leaves that data showing.
+ * One poll feeds every game on the page: the ticker slots, and the boxes on
+ * the scoreboard page, which carry the same data hooks.
+ * Live games move into the pinned group ahead of the strip of finished and
+ * upcoming games, a changed score gets a brief highlight, and a line under
+ * each pinned game says who scored last. The pinned group takes the width
+ * it needs, so on a full Sunday slate the strip is squeezed out and the
+ * ticker is only the games in progress. The page is fully rendered from
+ * ticker.json first, so any failure here leaves that data showing.
  */
 
 import { LIVE_TICKER_ENABLED } from '../../config.ts';
@@ -24,16 +28,29 @@ import {
 // Longest delay setTimeout supports.
 const MAX_TIMEOUT_MS = 2 ** 31 - 1;
 
-/** Every rendered copy of a game (the carousel duplicates the track). */
+/**
+ * Every rendered copy of a game: its ticker slot, the carousel's copy of
+ * that slot, and its box on the scoreboard page.
+ */
 function slotsFor(espnId: string): NodeListOf<HTMLElement> {
-  return document.querySelectorAll<HTMLElement>(`.ticker .game[data-espn-id="${CSS.escape(espnId)}"]`);
+  return document.querySelectorAll<HTMLElement>(`[data-game][data-espn-id="${CSS.escape(espnId)}"]`);
 }
 
+/**
+ * Eastern times written at build time, rewritten in the visitor's zone: the
+ * kickoff in each upcoming ticker slot, and each kickoff heading on the
+ * scoreboard page. Scoreboard boxes have no kickoff of their own; the
+ * heading above them carries it.
+ */
 export function localizeKickoffs(): void {
   for (const slot of document.querySelectorAll<HTMLElement>('.ticker .game[data-state="pre"][data-kickoff]')) {
     const text = formatKickoff(slot.dataset.kickoff!);
     const detail = slot.querySelector('[data-detail]');
     if (text && detail) detail.textContent = text;
+  }
+  for (const heading of document.querySelectorAll<HTMLElement>('[data-slot-label][data-kickoff]')) {
+    const text = formatKickoff(heading.dataset.kickoff!);
+    if (text) heading.textContent = text;
   }
 }
 
@@ -52,19 +69,28 @@ function setScore(line: Element | null, value: number | null, live: boolean): vo
   }
 }
 
-/** The strip the carousel scrolls, not its decorative copy. */
+/** The strip of finished and upcoming games, not its decorative copy. */
 function strip(): HTMLElement | null {
   return document.querySelector<HTMLElement>('.ticker .ticker-track:not([aria-hidden="true"])');
 }
 
+/** The pinned list the browser moves games into, not its decorative copy. */
+function pinnedList(): HTMLElement | null {
+  return document.querySelector<HTMLElement>('.ticker [data-pinned]:not([aria-hidden="true"])');
+}
+
 /**
- * Pin a live game ahead of the scrolling strip, or return a finished one
- * to the strip after the other finals. Only the real slot moves; the
- * carousel rebuilds its copy when the strip changes.
+ * Pin a live game ahead of the strip, or return a finished one to the
+ * strip after the other finals. Only the real slot moves; each group
+ * rebuilds its carousel copy when its games change.
+ *
+ * An empty group is hidden so it takes no width: with no live games the
+ * strip has the whole row, which is how the page is built.
  */
 function place(slot: HTMLElement, state: LiveGame['state']): void {
-  if (slot.closest('[aria-hidden="true"]')) return;
-  const pinned = document.querySelector<HTMLElement>('.ticker [data-pinned]');
+  // Scoreboard boxes stay in kickoff order; only ticker slots move.
+  if (!slot.closest('.ticker') || slot.closest('[aria-hidden="true"]')) return;
+  const pinned = pinnedList();
   const track = strip();
   if (!pinned || !track) return;
 
@@ -75,7 +101,8 @@ function place(slot: HTMLElement, state: LiveGame['state']): void {
     const index = stripInsertIndex(others.map((el) => el.dataset.state as LiveGame['state']));
     track.insertBefore(slot, others[index] ?? null);
   }
-  pinned.hidden = pinned.children.length === 0;
+  const group = pinned.closest<HTMLElement>('.ticker-group');
+  if (group) group.hidden = pinned.children.length === 0;
 }
 
 function render(slot: HTMLElement, game: LiveGame): void {
@@ -141,26 +168,26 @@ interface LastScoreState {
  * yet" before the first score, blank while fetching), so the ticker only
  * changes height when the pinned group appears or empties, not on every
  * score.
+ *
+ * Both showing and hiding write to every copy of the game: a full slate of
+ * live games overflows the row, and the pinned group then runs a carousel
+ * whose second copy would otherwise describe an older score.
  */
-function lastScoreLine(eventId: string): HTMLElement | null {
-  return document.querySelector<HTMLElement>(
-    `.ticker [data-pinned] .game[data-espn-id="${CSS.escape(eventId)}"] [data-last-score]`
-  );
-}
-
-function showLastScore(line: HTMLElement | null, text: string, title?: string): void {
-  if (!line) return;
-  // A no-break space keeps the row's height while the line is blank.
-  line.querySelector('[data-last-score-text]')!.textContent = text || '\u00a0';
-  if (title) line.title = title;
-  else line.removeAttribute('title');
-  line.hidden = false;
+function showLastScore(eventId: string, text: string, title?: string): void {
+  for (const slot of slotsFor(eventId)) {
+    const line = slot.querySelector<HTMLElement>('[data-last-score]');
+    if (!line) continue;
+    // A no-break space keeps the row's height while the line is blank.
+    line.querySelector('[data-last-score-text]')!.textContent = text || '\u00a0';
+    if (title) line.title = title;
+    else line.removeAttribute('title');
+    line.hidden = false;
+  }
 }
 
 /**
- * Hide the line on every copy of a game. A game that just went final has
- * already left the pinned group by the time this runs, so this cannot look
- * only there.
+ * A game that just went final has already left the pinned group by the time
+ * this runs, so this cannot look only there.
  */
 function hideLastScore(eventId: string): void {
   for (const slot of slotsFor(eventId)) {
@@ -184,12 +211,11 @@ function createLastScoreTracker() {
     }
     if (states.get(eventId) !== state) return;
 
-    const line = lastScoreLine(eventId);
-    if (last && line && matchesScore(last, game.awayScore, game.homeScore)) {
-      const slot = line.closest<HTMLElement>('.game')!;
-      const team = slot.querySelector(`[data-side="${last.side}"] .team`)?.textContent?.trim() ?? '';
+    if (last && matchesScore(last, game.awayScore, game.homeScore)) {
+      const slot = slotsFor(eventId)[0];
+      const team = slot?.querySelector<HTMLElement>(`[data-side="${last.side}"]`)?.dataset.team ?? '';
       const { line: text, title } = describeLastScore(last, team);
-      showLastScore(line, text, title);
+      showLastScore(eventId, text, title);
       return;
     }
     const delay = LAST_SCORE_RETRY_MS[state.attempt];
@@ -215,10 +241,10 @@ function createLastScoreTracker() {
       const state: LastScoreState = { key, attempt: 0 };
       states.set(eventId, state);
       if (!game.awayScore && !game.homeScore) {
-        showLastScore(lastScoreLine(eventId), 'No scoring yet');
+        showLastScore(eventId, 'No scoring yet');
         return;
       }
-      showLastScore(lastScoreLine(eventId), '');
+      showLastScore(eventId, '');
       void load(eventId, game, state);
     },
   };
@@ -240,6 +266,8 @@ export function initLiveTicker(): void {
     (event.target as HTMLElement).classList.remove(SCORE_CHANGED);
   });
 
+  // The ticker carries every game of the week on every page, so it is the
+  // schedule even when the scoreboard page is the thing being watched.
   const games = new Map<string, ScheduledGame>();
   for (const slot of ticker.querySelectorAll<HTMLElement>('.game[data-espn-id]')) {
     const id = slot.dataset.espnId!;

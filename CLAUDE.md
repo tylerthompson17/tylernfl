@@ -25,7 +25,7 @@ tylernfl/
 │   ├── styles/global.css
 │   ├── layouts/            BaseLayout (ticker, header, 3-column shell)
 │   ├── components/         Panel, StatTable, StatCard, TickerItem, TeamChip, ...
-│   ├── pages/              index, tools/, stats/, articles/, about, 404
+│   ├── pages/              index, scores, tools/, stats/, articles/, about, 404
 │   ├── content/articles/   MDX articles (content collection)
 │   └── data/               JSON consumed at build time (mock now, pipeline output later)
 ├── pipelines/              Python jobs: run_daily.py (ticker, leaders), build_teams.py
@@ -43,7 +43,7 @@ tylernfl/
 
 - Pipelines write JSON into `src/data/`, commit it, and the push triggers a rebuild. Pages read data at build time.
 - Browser-side fetches are allowed in exactly two places. Nothing else fetches data at runtime.
-  1. **Live ticker scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates ticker scores in place. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Pinned live games also show who scored last: when a pinned game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (it is about 175 KB, of which the scoring plays are about 1 KB). Turn it all off with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
+  1. **Live scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates scores in place. One poll feeds every game on the page: the ticker slots and, on `/scores`, the boxes, which carry the same `data-game` hooks. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Live games also show who scored last: when a live game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (it is about 175 KB, of which the scoring plays are about 1 KB), and it is one fetch per scoring play however many places render the line. Turn it all off with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
   2. **Live 4th down page** (later): fetches game state at runtime.
 - Header search is not a runtime data fetch: its index (`search-index.js`, from
   `src/pages/search-index.js.ts`) is static build output, versioned per build, and the
@@ -51,7 +51,7 @@ tylernfl/
   covers every player page, every team and the site's pages; matching and ranking live
   in `src/lib/search/match.ts`. Nothing else may use this as a way to load data.
 - ESPN data is browser-only: never write it to `src/data/` and never use it in pipelines. Pipelines use nflverse (the `espnId` in `ticker.json` comes from nflverse schedules). Test fixtures in `tests/fixtures/espn/` are the only stored ESPN data.
-- Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text).
+- Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text). That covers the ticker's upcoming slots and the `/scores` kickoff headings.
 - In-progress parsing (quarter, clock, halftime, final) is verified against the real capture from DET at BUF on
   2026-09-17 (`tests/fixtures/espn/`). Not yet seen in a real response: an end of quarter status (ESPN showed the
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
@@ -130,14 +130,21 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 
 - Radius 0, no shadows, no gradients.
 - No motion, with two exceptions, both in the score ticker:
-  - The ticker is a looping carousel. It pauses on hover and keyboard focus,
-    and stays a static, swipeable strip on touch devices, for reduced motion,
-    and when the week's games fit.
+  - A ticker group is a looping carousel. It pauses on hover and keyboard
+    focus, and stays a static, swipeable strip on touch devices, for reduced
+    motion, and when its games fit.
   - When a live score changes, the new number gets a brief yellow background
     that fades out (2s). Off under reduced motion.
-- Live games are pinned between the week label and the carousel, capped at
-  half the ticker's width (scrolling by hand past that). Below 760px the
-  ticker is one swipeable strip with live games first.
+- The ticker row is the week label, then two groups of games: live games,
+  then the strip of finished and upcoming ones. Live games take the width
+  they need, up to the whole row; the strip gets the remainder and is
+  dropped once that is under one game slot (160px, `showsStrip` in
+  `src/lib/live-ticker/pin.ts`). So a full Sunday slate makes the ticker
+  only the games in progress, and the strip returns as games end. An empty
+  group is hidden, which is how the page is built: no game is live at build
+  time, so the strip starts with the whole row. Either group loops as a
+  carousel when its own games overflow its share. Below 760px neither group
+  gets a share: the row is one swipeable strip with live games first.
 - A pinned game has a third line saying who scored last ("BUF TD: J.Allen
   1 Yd Rush", first names as initials), cut with an ellipsis, full play in
   the tooltip. It holds its
@@ -148,6 +155,23 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 - Yellow is only ever a background (announcement strip, highlighted row),
   never text, since it fails contrast on white.
 - Winners in bold, not colored.
+
+### Scoreboard page
+
+`/scores` is the week's full slate, the view a strip cannot give: every game
+at once, grouped into kickoff slots, from the same `ticker.json`. It is
+linked from the ticker's week label.
+
+- A slot is an exact shared kickoff instant, so the grouping is identical in
+  every time zone and only its heading changes. Headings are built in Eastern
+  and rewritten in the visitor's zone, like the ticker's kickoff times.
+- A game is a box: status bar, a row per team (chip, name link, score),
+  winner in bold. A scheduled game has no status bar at all, since the slot
+  heading above already carries the time; the bar appears with the clock at
+  kickoff and stays for the final.
+- Boxes stay in kickoff order. Unlike the ticker, live games are not moved to
+  the front: the value here is a stable week, and a slate kicking off together
+  already groups them.
 
 ### Panel structure
 

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { scoreChanged, stripInsertIndex } from '../../src/lib/live-ticker/pin.ts';
+import { scoreChanged, showsStrip, stripInsertIndex } from '../../src/lib/live-ticker/pin.ts';
 
 test('a game going final rejoins the strip after the other finals', () => {
   assert.equal(stripInsertIndex(['final', 'final', 'pre', 'pre']), 2);
@@ -19,4 +19,19 @@ test('filling an empty score or repeating it is not a change', () => {
   assert.equal(scoreChanged('', 7), false);
   assert.equal(scoreChanged('14', 14), false);
   assert.equal(scoreChanged('14', null), false);
+});
+
+test('the strip keeps its place while a readable game still fits', () => {
+  assert.equal(showsStrip(900, 12), true);
+  assert.equal(showsStrip(160, 12), true);
+});
+
+test('a full slate of live games squeezes the strip out', () => {
+  assert.equal(showsStrip(159, 12), false);
+  assert.equal(showsStrip(0, 12), false);
+  assert.equal(showsStrip(-40, 12), false);
+});
+
+test('an empty strip takes no width', () => {
+  assert.equal(showsStrip(900, 0), false);
 });

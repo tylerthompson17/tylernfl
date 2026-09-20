@@ -7,18 +7,11 @@ import TickerItem from '../components/TickerItem.astro';
 import tickerData from '../data/ticker.json';
 import onThisDayData from '../data/on_this_day.json';
 import type { TickerData, GameState, OnThisDayData } from '../data/types';
+import { weekLabel } from '../utils/week';
 
 const ticker = tickerData as TickerData;
 
-// nflverse numbers postseason rounds as weeks 19 to 22.
-const postseasonRounds: Record<number, string> = {
-  19: 'Wild card',
-  20: 'Divisional',
-  21: 'Conference',
-  22: 'Super Bowl',
-};
-const weekLabel =
-  ticker.week == null ? null : (postseasonRounds[ticker.week] ?? `Week ${ticker.week}`);
+const week = weekLabel(ticker.week);
 
 // Live games are pinned ahead of the strip, which runs finished games,
 // then upcoming. The daily data never marks a game live, so in practice the
@@ -92,21 +85,26 @@ function isActive(href: string): boolean {
       >
         {
           tickerGames.length > 0 ? (
-            <div class="ticker-row">
-              {weekLabel && <span class="ticker-week">{weekLabel}</span>}
-              <ul
-                class="ticker-pinned"
-                data-pinned
-                aria-label="Live now"
-                hidden={pinnedGames.length === 0}
-              >
-                {pinnedGames.map((game) => (
-                  <TickerItem game={game} />
-                ))}
-              </ul>
-              <div class="ticker-viewport">
+            <div class="ticker-row" data-row>
+              {
+                week && (
+                  <a class="ticker-week" data-week href={url('scores')}>
+                    {week}
+                  </a>
+                )
+              }
+              <div class="ticker-group ticker-live" data-live hidden={pinnedGames.length === 0}>
                 <div class="ticker-marquee">
-                  <ul class="ticker-track">
+                  <ul class="ticker-list ticker-pinned" data-pinned aria-label="Live now">
+                    {pinnedGames.map((game) => (
+                      <TickerItem game={game} />
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div class="ticker-group ticker-rest" data-rest hidden={stripGames.length === 0}>
+                <div class="ticker-marquee">
+                  <ul class="ticker-list ticker-track" aria-label="This week">
                     {stripGames.map((game) => (
                       <TickerItem game={game} />
                     ))}
@@ -227,63 +225,98 @@ function isActive(href: string): boolean {
     </script>
 
     <script>
-      // Score ticker carousel. Only runs when the games are wider than the
-      // strip, the device can hover (hover and keyboard focus are the only
+      // Score ticker layout. The row is two groups of games: the live ones,
+      // which take the width they need, and the rest of the week, which gets
+      // the remainder and is dropped when that is under one game slot. Either
+      // group loops as a carousel when its games are wider than its share of
+      // the row, the device can hover (hover and keyboard focus are the only
       // ways to pause it), and the visitor has not asked for reduced motion.
-      // Otherwise the static, hand-scrollable strip stays in place.
-      const PIXELS_PER_SECOND = 36;
+      // Otherwise the group stays a static, hand-scrollable strip.
+      import { showsStrip } from '../lib/live-ticker/pin.ts';
 
-      function initTicker(
-        ticker: HTMLElement,
-        viewport: HTMLElement,
-        marquee: HTMLElement,
-        track: HTMLElement
-      ) {
+      const PIXELS_PER_SECOND = 36;
+      // Matches the ticker's stacked layout below, where the whole row is one
+      // hand-scrolled strip and neither group is given a share of the width.
+      const STACKED = '(max-width: 760px)';
+
+      interface Group {
+        group: HTMLElement;
+        marquee: HTMLElement;
+        track: HTMLElement;
+        clone: HTMLElement | null;
+      }
+
+      function readGroup(row: HTMLElement, selector: string): Group | null {
+        const group = row.querySelector<HTMLElement>(selector);
+        const marquee = group?.querySelector<HTMLElement>('.ticker-marquee');
+        const track = group?.querySelector<HTMLElement>('.ticker-list');
+        if (!group || !marquee || !track) return null;
+        return { group, marquee, track, clone: null };
+      }
+
+      function initTicker(row: HTMLElement, live: Group, rest: Group) {
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
         const canHover = window.matchMedia('(hover: hover)');
-        let clone: HTMLElement | null = null;
+        const stacked = window.matchMedia(STACKED);
 
-        function update() {
+        function run(g: Group) {
           const shouldRun =
-            canHover.matches && !reducedMotion.matches && track.offsetWidth > viewport.clientWidth;
+            canHover.matches &&
+            !reducedMotion.matches &&
+            !g.group.hidden &&
+            g.track.offsetWidth > g.group.clientWidth;
 
-          if (shouldRun && !clone) {
+          if (shouldRun && !g.clone) {
             // Second copy makes the loop seamless. Hidden from screen
             // readers and the tab order so each game is announced once.
-            clone = track.cloneNode(true) as HTMLElement;
-            clone.setAttribute('aria-hidden', 'true');
-            clone.inert = true;
-            marquee.append(clone);
-          } else if (!shouldRun && clone) {
-            clone.remove();
-            clone = null;
+            g.clone = g.track.cloneNode(true) as HTMLElement;
+            g.clone.setAttribute('aria-hidden', 'true');
+            g.clone.inert = true;
+            g.marquee.append(g.clone);
+          } else if (!shouldRun && g.clone) {
+            g.clone.remove();
+            g.clone = null;
           }
 
-          ticker.classList.toggle('is-running', shouldRun);
-          marquee.style.setProperty('--ticker-duration', `${track.offsetWidth / PIXELS_PER_SECOND}s`);
+          g.group.classList.toggle('is-running', shouldRun);
+          g.marquee.style.setProperty('--ticker-duration', `${g.track.offsetWidth / PIXELS_PER_SECOND}s`);
         }
 
-        // Games move in and out of the strip as they are pinned live and
-        // finish; rebuild the decorative copy so it matches.
-        new MutationObserver(() => {
-          clone?.remove();
-          clone = null;
-          update();
-        }).observe(track, { childList: true });
+        function update() {
+          const week = row.querySelector<HTMLElement>('[data-week]');
+          const used = (week?.offsetWidth ?? 0) + (live.group.hidden ? 0 : live.group.offsetWidth);
+          // Hiding the strip gives its width back to nobody: the live group
+          // never grows, and when it is already shrunk the strip had nothing
+          // to give. So this measurement cannot feed back into itself.
+          rest.group.hidden = stacked.matches
+            ? rest.track.children.length === 0
+            : !showsStrip(row.clientWidth - used, rest.track.children.length);
 
-        new ResizeObserver(update).observe(viewport);
+          run(live);
+          run(rest);
+        }
+
+        // Games move between the groups as they kick off and finish; rebuild
+        // the decorative copies so they match.
+        for (const g of [live, rest]) {
+          new MutationObserver(() => {
+            g.clone?.remove();
+            g.clone = null;
+            update();
+          }).observe(g.track, { childList: true });
+        }
+
+        new ResizeObserver(update).observe(row);
         reducedMotion.addEventListener('change', update);
         canHover.addEventListener('change', update);
+        stacked.addEventListener('change', update);
         update();
       }
 
-      const ticker = document.querySelector<HTMLElement>('.ticker');
-      const viewport = ticker?.querySelector<HTMLElement>('.ticker-viewport');
-      const marquee = ticker?.querySelector<HTMLElement>('.ticker-marquee');
-      const track = ticker?.querySelector<HTMLElement>('.ticker-track');
-      if (ticker && viewport && marquee && track) {
-        initTicker(ticker, viewport, marquee, track);
-      }
+      const row = document.querySelector<HTMLElement>('.ticker [data-row]');
+      const live = row && readGroup(row, '[data-live]');
+      const rest = row && readGroup(row, '[data-rest]');
+      if (row && live && rest) initTicker(row, live, rest);
     </script>
   </body>
 </html>
@@ -322,7 +355,10 @@ function isActive(href: string): boolean {
     display: flex;
   }
 
-  /* Week label sits outside the moving strip, so it never scrolls away */
+  /* Week label sits outside the moving strip, so it never scrolls away.
+     It links to the full slate; like the team links in a game slot it
+     keeps the bar's color and underlines on hover, since blue underlined
+     text on the slate bar would not read as a header. */
   .ticker-week {
     flex: none;
     display: flex;
@@ -333,31 +369,46 @@ function isActive(href: string): boolean {
     font-family: var(--font-heading);
     font-weight: 700;
     white-space: nowrap;
+    text-decoration: none;
   }
 
-  /* Live games, pinned between the week label and the strip so they
-     never scroll away. A busy Sunday can have ten at once, so past half
-     the ticker's width the pinned group scrolls by hand. */
-  .ticker-pinned {
-    flex: none;
-    display: flex;
-    max-width: 50%;
+  .ticker-week:hover {
+    text-decoration: underline;
+  }
+
+  /* The global blue focus ring is about 2:1 against the slate bars, under
+     the 3:1 a focus indicator needs. Links sitting on slate take a white
+     ring instead. */
+  .ticker-week:focus-visible,
+  .wordmark:focus-visible {
+    outline-color: var(--header-text);
+  }
+
+  /* The row holds two groups of games: live ones first, then the rest of
+     the week. Each scrolls by hand by default; the script below turns one
+     into a looping carousel when its games overflow its share of the row. */
+  .ticker-group {
+    min-width: 0;
     overflow-x: auto;
-    list-style: none;
-    padding: 0;
-    border-right: 1px solid var(--header);
   }
 
-  .ticker-pinned[hidden] {
+  .ticker-group[hidden] {
     display: none;
   }
 
-  /* Static by default: the strip scrolls by hand. The script below
-     switches to a looping carousel when the games overflow. */
-  .ticker-viewport {
-    flex: 1;
-    min-width: 0;
-    overflow-x: auto;
+  /* Live games take the width they need, up to the whole row. They never
+     grow into empty space, and a full slate shrinks them (flex-basis 0
+     leaves the strip nothing to give back), so on a busy Sunday the live
+     games are the row. */
+  .ticker-live {
+    flex: 0 1 auto;
+    border-right: 1px solid var(--header);
+  }
+
+  /* The rest of the week gets what is left. The script hides it once that
+     is narrower than a game slot. */
+  .ticker-rest {
+    flex: 1 1 0;
   }
 
   .ticker-marquee {
@@ -365,26 +416,26 @@ function isActive(href: string): boolean {
     width: max-content;
   }
 
-  .ticker-track {
+  .ticker-list {
     display: flex;
     list-style: none;
     padding: 0;
     width: max-content;
   }
 
-  /* Carousel: two copies of the track slide left by one copy's width,
+  /* Carousel: two copies of the list slide left by one copy's width,
      then loop seamlessly. Pauses on hover and on keyboard focus, which
      are the pause mechanisms, so it only runs on devices that can hover. */
-  .ticker.is-running .ticker-viewport {
+  .ticker-group.is-running {
     overflow: hidden;
   }
 
-  .ticker.is-running .ticker-marquee {
+  .ticker-group.is-running .ticker-marquee {
     animation: ticker-scroll var(--ticker-duration, 60s) linear infinite;
   }
 
-  .ticker.is-running .ticker-viewport:hover .ticker-marquee,
-  .ticker.is-running .ticker-viewport:focus-within .ticker-marquee {
+  .ticker-group.is-running:hover .ticker-marquee,
+  .ticker-group.is-running:focus-within .ticker-marquee {
     animation-play-state: paused;
   }
 
@@ -395,7 +446,7 @@ function isActive(href: string): boolean {
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ticker.is-running .ticker-marquee {
+    .ticker-group.is-running .ticker-marquee {
       animation: none;
     }
   }
@@ -628,12 +679,7 @@ function isActive(href: string): boolean {
       z-index: 1;
     }
 
-    .ticker-pinned {
-      max-width: none;
-      overflow-x: visible;
-    }
-
-    .ticker-viewport {
+    .ticker-group {
       flex: none;
       overflow-x: visible;
     }

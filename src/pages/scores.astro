@@ -1,0 +1,81 @@
+---
+/**
+ * The week's full slate, the view the ticker cannot give: every game at
+ * once, in kickoff order, instead of a strip that scrolls. It reads the
+ * same ticker.json the ticker does and carries the same data hooks, so
+ * the live ticker module updates both from one poll.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Panel from '../components/Panel.astro';
+import ScoreBox from '../components/ScoreBox.astro';
+import tickerData from '../data/ticker.json';
+import type { TickerData } from '../data/types';
+import { scoreSlots } from '../lib/scores/slots';
+import { weekLabel } from '../utils/week';
+
+const ticker = tickerData as TickerData;
+const slots = scoreSlots(ticker.games);
+const week = weekLabel(ticker.week);
+const title = week ? `Scores, ${ticker.season} ${week.toLowerCase()}` : 'Scores';
+---
+
+<BaseLayout title="Scores">
+  <h1 class="page-title">{title}</h1>
+  {
+    slots.length === 0 ? (
+      <div class="content-grid">
+        <Panel title="Offseason">
+          <p class="placeholder-note">Scores return with the first game of the season.</p>
+        </Panel>
+      </div>
+    ) : (
+      <>
+        <p class="page-intro">
+          Kickoff times are in your time zone. Scores update while games are being played.
+        </p>
+        <div class="content-grid">
+          {slots.map((slot) => (
+            <Panel flush>
+              <h2 class="slot-title" data-slot-label data-kickoff={slot.kickoff ?? undefined}>
+                {slot.label}
+              </h2>
+              <div class="boxes">
+                {slot.games.map((game) => (
+                  <ScoreBox game={game} />
+                ))}
+              </div>
+            </Panel>
+          ))}
+        </div>
+      </>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .page-intro {
+    color: var(--text-dim);
+    margin-bottom: var(--space-4);
+  }
+
+  /* The slot's kickoff, as a panel header bar. It sits inside the flush
+     panel body rather than in Panel's own title so the browser can
+     rewrite it into the visitor's time zone. */
+  .slot-title {
+    font-size: 15px;
+    padding: var(--header-pad);
+    background: var(--header);
+    color: var(--header-text);
+  }
+
+  .boxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-3);
+    padding: var(--space-3);
+  }
+
+  .placeholder-note {
+    color: var(--text-dim);
+  }
+</style>

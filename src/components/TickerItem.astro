@@ -5,7 +5,8 @@
  * carry the quarter and clock on a yellow highlight background.
  *
  * The data attributes are hooks for src/lib/live-ticker/client.ts, which
- * localizes kickoff times and applies live scores in the browser. A live
+ * localizes kickoff times and applies live scores in the browser. The
+ * scoreboard page's boxes carry the same ones, so one poll updates both. A live
  * score that changes gets a brief first-down yellow highlight behind the
  * number, the site's one bit of motion besides the carousel itself. While
  * a game is pinned live, the last line says who scored last; it stays
@@ -27,16 +28,17 @@ const homeWon = decided && game.homeScore! > game.awayScore!;
 
 <li
   class="game"
+  data-game
   data-state={game.state}
   data-espn-id={game.espnId ?? undefined}
   data-kickoff={game.kickoff ?? undefined}
 >
   <span class:list={['detail', { live: game.state === 'live' }]} data-detail>{game.detail}</span>
-  <span class:list={['line', { won: awayWon }]} data-side="away">
+  <span class:list={['line', { won: awayWon }]} data-side="away" data-team={game.away}>
     <a class="team" href={url(`teams/${game.away}`)}>{game.away}</a>
     <span class="num" data-score>{game.awayScore ?? ''}</span>
   </span>
-  <span class:list={['line', { won: homeWon }]} data-side="home">
+  <span class:list={['line', { won: homeWon }]} data-side="home" data-team={game.home}>
     <a class="team" href={url(`teams/${game.home}`)}>{game.home}</a>
     <span class="num" data-score>{game.homeScore ?? ''}</span>
   </span>

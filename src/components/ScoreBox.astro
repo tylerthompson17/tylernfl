@@ -1,0 +1,155 @@
+---
+/**
+ * One game on the scoreboard page: a boxed unit with the status on top,
+ * a row per team, and a line for who scored last while the game is live.
+ *
+ * The data attributes are the same hooks the ticker slots carry, so
+ * src/lib/live-ticker/client.ts updates both from one poll. There is no
+ * data-kickoff here on purpose: the slot heading above the box already
+ * carries the time, so a scheduled game has no status bar at all rather
+ * than repeating it. The bar appears when the game kicks off, or if ESPN
+ * reports something else (postponed, say).
+ */
+import teamsData from '../data/teams.json';
+import TeamChip from './TeamChip.astro';
+import type { TeamsData, TickerGame } from '../data/types';
+import { url } from '../utils/url';
+
+interface Props {
+  game: TickerGame;
+}
+
+const { game } = Astro.props;
+
+const teams = teamsData as TeamsData;
+const nameOf = (abbr: string) => teams.find((t) => t.abbr === abbr)?.name ?? abbr;
+
+const decided = game.state === 'final' && game.awayScore != null && game.homeScore != null;
+const sides = [
+  { key: 'away' as const, abbr: game.away, score: game.awayScore, won: decided && game.awayScore! > game.homeScore! },
+  { key: 'home' as const, abbr: game.home, score: game.homeScore, won: decided && game.homeScore! > game.awayScore! },
+];
+---
+
+<article class="box" data-game data-state={game.state} data-espn-id={game.espnId ?? undefined}>
+  <p class="status">
+    <span
+      class:list={['detail', { live: game.state === 'live' }]}
+      data-detail>{game.state === 'pre' ? '' : game.detail}</span
+    >
+  </p>
+
+  {
+    sides.map((side) => (
+      <div class:list={['row', { won: side.won }]} data-side={side.key} data-team={side.abbr}>
+        <TeamChip abbr={side.abbr} size="sm" />
+        <a class="name" href={url(`teams/${side.abbr}`)}>{nameOf(side.abbr)}</a>
+        <span class="num" data-score>{side.score ?? ''}</span>
+      </div>
+    ))
+  }
+
+  <p class="last-score" data-last-score hidden>
+    <span class="visually-hidden">Last score: </span><span data-last-score-text></span>
+  </p>
+</article>
+
+<style>
+  .box {
+    border: 1px solid var(--rule);
+  }
+
+  /* Status bar. The kickoff time is in the slot heading above, so a
+     scheduled game has nothing to say here and the bar is not drawn at
+     all; it appears with the clock at kickoff and stays for the final.
+     Keyed on the text being empty rather than on the state, so a status
+     the browser fills in later (postponed, say) still shows. */
+  .status {
+    display: flex;
+    min-height: 22px;
+    align-items: center;
+    padding: var(--space-1) var(--space-2);
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--font-heading);
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .status:has([data-detail]:empty) {
+    display: none;
+  }
+
+  .detail.live {
+    background: var(--highlight);
+    color: var(--text);
+    padding: 0 var(--space-1);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .row + .row {
+    border-top: 1px dotted var(--rule-soft);
+  }
+
+  .name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  /* Winners in bold, not colored. */
+  .row.won .name,
+  .row.won .num {
+    font-weight: 700;
+  }
+
+  .num {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    padding: 0 var(--space-1);
+  }
+
+  /* Room for the highlight without shifting the digits, same as the ticker. */
+  .num.score-changed {
+    animation: score-changed 2s ease-out;
+  }
+
+  @keyframes score-changed {
+    from {
+      background: var(--highlight);
+    }
+
+    to {
+      background: transparent;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .num.score-changed {
+      animation: none;
+    }
+  }
+
+  /* Who scored last, shown from kickoff to the final whistle. Cut with an
+     ellipsis; the full play is in the tooltip. */
+  .last-score {
+    contain: inline-size;
+    padding: var(--space-1) var(--space-2);
+    border-top: 1px solid var(--rule);
+    font-size: 11px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .last-score[hidden] {
+    display: none;
+  }
+</style>

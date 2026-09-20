@@ -67,6 +67,7 @@ async function pageEntries(): Promise<SearchEntry[]> {
   });
   const articles = await getArticles();
   return [
+    page('Scores', 'scores', 'scoreboard schedule games slate results week kickoff'),
     page('Stat leaders', 'stats', 'stats leaders top', 'Stats'),
     ...leaderboards.map((board) =>
       page(`${board.label} leaderboard`, `stats/${board.key}`, 'stats leaders', 'Stats')
