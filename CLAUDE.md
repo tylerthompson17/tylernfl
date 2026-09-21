@@ -225,6 +225,14 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
 5. Responsive pass
 6. Loading, empty, and hover states
 7. (Later) daily/weekly workflows and Python pipeline stubs
+8. Charts: a charts content collection with SVGs drawn by scripts in `pipelines/charts/`
+   through a shared style module, a `/charts` gallery with tag filtering and a page per
+   chart, and a featured chart on the home page (an auto-generated one when none is
+   featured). Plan first.
+9. Curated posts: hand-added X and Bluesky posts as native quote cards with the author
+   credited and the original linked, no embeds, no third-party scripts, never any post
+   images, and a `/curated` page where the note carries as much weight as the quote.
+   Plan first.
 
 ## Articles
 
