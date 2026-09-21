@@ -200,6 +200,67 @@ def label_end(ax, x, y, text: str, color: str, dx_px: int = 6, team: str | None 
     )
 
 
+def callout(ax, x, y, lines: list[str], label_y: float | None = None, offset_px: int = 40) -> None:
+    """Mark a moment on a line: a dot at (x, y) and a small boxed label
+    tied to it by a thin leader. The first line is set in the heading face,
+    any others in body text, all in one box.
+
+    With label_y (a fraction of the axes' height, 0 bottom to 1 top) the
+    label sits at that height: in the top half its top edge is there, in
+    the bottom half its bottom edge. Without it, the label sits offset_px
+    from the point, on the side away from the axes' middle. Near either end
+    the label lines up with the point instead of centering on it, so it
+    stays on the chart.
+    """
+    from matplotlib.offsetbox import AnnotationBbox, TextArea, VPacker
+
+    ax.figure.draw_without_rendering()
+    fx, fy = ax.transAxes.inverted().transform(ax.transData.transform((x, y)))
+    align = callout_align(fx)
+    heading_props = dict(family=FONT_HEADING, weight='bold', fontsize=SMALL_PX, color=TEXT)
+    body_props = dict(fontsize=SMALL_PX, color=TEXT)
+    rows = [TextArea(lines[0], textprops=heading_props)]
+    rows += [TextArea(line, textprops=body_props) for line in lines[1:]]
+    # Always left-aligned inside the box: matplotlib measures text in a
+    # wider stand-in for Barlow, so centered or right-aligned lines would
+    # drift apart once the page draws them. Left edges line up regardless.
+    box = VPacker(children=rows, align='left', pad=0, sep=2)
+
+    if label_y is None:
+        below = fy > 0.5
+        xybox, boxcoords = (0, -offset_px if below else offset_px), 'offset points'
+    else:
+        below = label_y > 0.5
+        xybox, boxcoords = (x, label_y), ('data', 'axes fraction')
+
+    ax.plot([x], [y], marker='o', markersize=5, color=HEADER, zorder=5, clip_on=False)
+    label = AnnotationBbox(
+        box, (x, y), xybox=xybox, boxcoords=boxcoords,
+        box_alignment=(align, 1.0 if below else 0.0),
+        frameon=True, pad=0.35, annotation_clip=False,
+        bboxprops=dict(boxstyle='square', facecolor=PANEL, edgecolor=RULE, linewidth=1),
+        # The leader meets the box straight above or below the point.
+        arrowprops=dict(arrowstyle='-', color=TEXT_DIM, linewidth=1, shrinkA=0, shrinkB=0,
+                        relpos=(align, 1.0 if not below else 0.0)),
+    )
+    label.set_zorder(6)
+    ax.add_artist(label)
+
+
+def callout_align(fx: float) -> float:
+    """Where a callout's box sits against its point, as a fraction of the
+    box's width from its left edge: centered, except near the chart's ends,
+    where it lines up with the point so it does not run off the edge."""
+    return 1.0 if fx > 0.8 else 0.0 if fx < 0.2 else 0.5
+
+
+def callout_width_px(lines: list[str]) -> float:
+    """A generous estimate of a callout's width. matplotlib measures text in
+    a wider fallback font than the Barlow the page draws, and a label that
+    is planned too wide only costs a little room."""
+    return max(len(line) for line in lines) * 7 + 12
+
+
 def spread(positions: list[float], min_gap: float) -> list[float]:
     """Move positions apart until neighbours are at least min_gap apart,
     keeping their order. Only labels that collide move: each group of

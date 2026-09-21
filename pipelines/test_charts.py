@@ -202,6 +202,111 @@ class WinProbabilityTests(unittest.TestCase):
         self.assertEqual(auto.wp_note(game('A', 'B', 20, 20, overtime=1), []), 'A and B tied 20 to 20 in overtime.')
 
 
+def moment(play_id, qtr, remaining, before, after, **fields):
+    return {'play_id': play_id, 'qtr': qtr, 'game_seconds_remaining': remaining,
+            'home_wp': before, 'home_wp_post': after, **fields}
+
+
+class KeyPlayTests(unittest.TestCase):
+    def test_nflverse_quarters_are_floats_and_read_as_whole_quarters(self):
+        self.assertEqual(auto.clock_label(4.0, 130.0), 'Q4 2:10')
+        self.assertEqual(auto.clock_label(5.0, 313.0), 'OT 5:13')
+
+    def test_the_line_shows_each_play_where_it_happened(self):
+        plays = [moment(1, 1, 3600, 0.50, 0.52), moment(2, 2, 2400, 0.52, 0.80), moment(3, 4, 10, 0.80, None)]
+        points = auto.wp_points(plays, 20, 24)
+        self.assertEqual(points[0], (0.0, 0.50))
+        self.assertEqual(points[2], (20.0, 0.80))
+        self.assertEqual(points[3][1], 0.80)  # no after value: the before value stands
+
+    def test_biggest_swings_first_but_spread_across_the_game(self):
+        # play_id runs in game order, as in nflverse.
+        plays = [
+            moment(1, 1, 3000, 0.50, 0.65),   # minute 10, +15
+            moment(2, 3, 1538, 0.40, 0.62),   # minute 34, +22
+            moment(3, 4, 3, 0.40, 0.63),      # 4.8 minutes before the OT kick, +23
+            moment(4, 5, 313, 0.10, 0.63),    # OT, +53
+            moment(5, 5, 195, 0.83, 0.34),    # OT, 2 minutes later, -49
+        ]
+        picked = auto.key_plays(plays)
+        self.assertEqual([p['play_id'] for p in picked], [1, 2, 4])
+
+    def test_no_swing_is_no_label_and_the_cap_holds(self):
+        flat = [moment(i, 1, 3600 - i * 600, 0.5, 0.5) for i in range(1, 6)]
+        self.assertEqual(auto.key_plays(flat), [])
+        busy = [moment(i, 1, 3600 - i * 600, 0.5, 0.5 + i / 20) for i in range(1, 6)]
+        self.assertEqual(len(auto.key_plays(busy, gap=1)), 3)
+
+    def test_label_names_the_team_that_gained(self):
+        up = moment(1, 5, 313, 0.10, 0.63, play_type='field_goal', field_goal_result='made',
+                    kick_distance=31.0, kicker_player_name='H.Butker')
+        down = moment(2, 5, 195, 0.83, 0.34, play_type='field_goal', field_goal_result='made',
+                      kick_distance=38.0, kicker_player_name='S.Shrader')
+        self.assertEqual(auto.play_label(up, 'KC', 'IND'), ['OT 5:13, KC +53%', 'H.Butker 31 yd FG'])
+        self.assertEqual(auto.play_label(down, 'KC', 'IND'), ['OT 3:15, IND +49%', 'S.Shrader 38 yd FG'])
+
+
+class DescribePlayTests(unittest.TestCase):
+    def says(self, expected, **fields):
+        self.assertEqual(auto.describe_play(fields), expected)
+
+    def test_scoring_and_kicking(self):
+        self.says('H.Butker 31 yd FG', play_type='field_goal', field_goal_result='made', kick_distance=31.0, kicker_player_name='H.Butker')
+        self.says('J.Bates 52 yd FG missed', play_type='field_goal', field_goal_result='missed', kick_distance=52.0, kicker_player_name='J.Bates')
+        self.says('P.Mahomes to R.Rice, 31 yd TD', play_type='pass', touchdown=1.0, yards_gained=31.0,
+                  passer_player_name='P.Mahomes', receiver_player_name='R.Rice', complete_pass=1.0)
+        self.says('K.Walker 12 yd TD run', play_type='run', touchdown=1.0, yards_gained=12.0, rusher_player_name='K.Walker')
+        self.says('Return TD', play_type='kickoff', return_touchdown=1.0)
+        self.says('Safety', play_type='run', safety=1.0, rusher_player_name='J.Cook')
+
+    def test_turnovers_and_stops(self):
+        self.says('D.Jones intercepted by K.Fulton', play_type='pass', interception=1.0,
+                  passer_player_name='D.Jones', interception_player_name='K.Fulton')
+        self.says('Fumble lost, J.Cook', play_type='run', fumble_lost=1.0, fumbled_1_player_name='J.Cook',
+                  rusher_player_name='J.Cook')
+        self.says('J.Allen sacked', play_type='pass', sack=1.0, passer_player_name='J.Allen')
+        self.says('Stopped on 4th and 2', play_type='run', fourth_down_failed=1.0, ydstogo=2.0,
+                  rusher_player_name='J.Cook', yards_gained=1.0)
+
+    def test_ordinary_plays(self):
+        self.says('P.Mahomes to T.Thornton, 45 yds', play_type='pass', yards_gained=45.0,
+                  passer_player_name='P.Mahomes', receiver_player_name='T.Thornton', complete_pass=1.0)
+        self.says('P.Mahomes incomplete', play_type='pass', yards_gained=0.0, passer_player_name='P.Mahomes',
+                  receiver_player_name='K.Walker', complete_pass=0.0)
+        self.says('K.Walker 8 yd run', play_type='run', yards_gained=8.0, rusher_player_name='K.Walker')
+        self.says('Punt', play_type='punt')
+        self.says('Penalty, Defensive Pass Interference', play_type='no_play', penalty=1.0,
+                  penalty_type='Defensive Pass Interference')
+        self.says('Qb kneel', play_type='qb_kneel')
+
+
+class LabelBandTests(unittest.TestCase):
+    points = [(m, 0.5) for m in range(0, 61)]
+
+    def test_a_label_goes_where_the_line_leaves_room(self):
+        high = [(m, 0.9) for m in range(0, 61)]
+        low = [(m, 0.1) for m in range(0, 61)]
+        self.assertEqual(auto.label_bands([(10, 20)], high, 0.1), ['bottom'])
+        self.assertEqual(auto.label_bands([(10, 20)], low, 0.1), ['top'])
+
+    def test_labels_that_would_overlap_take_different_bands(self):
+        self.assertEqual(auto.label_bands([(10, 30), (20, 40)], self.points, 0.1), ['top', 'bottom'])
+        self.assertEqual(auto.label_bands([(10, 20), (40, 50)], self.points, 0.1), ['top', 'top'])
+
+    def test_a_blocked_span_such_as_a_logo_is_avoided(self):
+        self.assertEqual(auto.label_bands([(0, 10)], self.points, 0.1, {'top': [(0, 5)]}), ['bottom'])
+
+    def test_when_both_bands_are_held_the_roomier_one_wins(self):
+        high = [(m, 0.9) for m in range(0, 61)]
+        taken = {'top': [(0, 60)], 'bottom': [(0, 60)]}
+        self.assertEqual(auto.label_bands([(10, 20)], high, 0.1, taken), ['bottom'])
+
+    def test_callouts_line_up_with_their_point_near_the_ends(self):
+        self.assertEqual(style.callout_align(0.1), 0.0)
+        self.assertEqual(style.callout_align(0.5), 0.5)
+        self.assertEqual(style.callout_align(0.95), 1.0)
+
+
 def log_file(team, players, board='receiving', columns=('receptions', 'receiving_yards')):
     return {'season': 2026, 'team': team, 'columns': {board: list(columns)},
             'players': {pid: {'name': name, 'boards': {board: rows}} for pid, (name, rows) in players.items()}}
@@ -278,6 +383,16 @@ class RenderTests(unittest.TestCase):
         logos = [tag for tag in svg.split('<image')[1:]]
         self.assertTrue(all('transform' not in tag.split('>', 1)[0] for tag in logos), 'a logo is still flipped')
         self.assertNotIn('DejaVu', svg)
+
+    def test_a_callout_draws_one_boxed_label_with_both_lines(self):
+        fig, ax = style.figure()
+        ax.plot([0, 30, 60], [0.5, 0.8, 0.4])
+        ax.set_xlim(0, 60)
+        ax.set_ylim(0, 1)
+        style.callout(ax, 30, 0.8, ['Q3 0:00, KC +22%', 'P.Mahomes to T.Thornton, 45 yds'], label_y=0.03)
+        svg = style.svg_text(fig, 'callout-test')
+        self.assertIn('Q3 0:00, KC +22%', svg)
+        self.assertIn('P.Mahomes to T.Thornton, 45 yds', svg)
 
     def test_redrawing_the_same_chart_gives_the_same_file(self):
         self.assertEqual(self.draw(), self.draw())

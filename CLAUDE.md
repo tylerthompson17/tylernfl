@@ -122,7 +122,12 @@ tylernfl/
   day's closest game (smallest margin, ties to the later kickoff; from play-by-play
   through `pbp_cache.py`, skipped if nflverse has not published the game yet). Other
   days the date picks between offense vs defense EPA and a top 5 yards race (from
-  week 4), so a rerun gives the same chart. Win probability and EPA are nflfastR's
+  week 4), so a rerun gives the same chart. The WP chart labels up to 3 key plays: the
+  biggest single-play swings, at least 8 game minutes apart so labels spread across the
+  game, each saying when (game clock), who gained how much, and what happened (worded
+  from nflverse's play fields, not its play text). Labels sit in bands along the top or
+  bottom edge where the line leaves room, never over each other or a logo, with a
+  leader to the play. Win probability and EPA are nflfastR's
   published values, not a model of this site's, and the chart's source line says so;
   when Tyler's win probability model exists, the WP template should use it. It is
   shown only when none of Tyler's charts is featured, labeled "Auto chart", and never
@@ -228,6 +233,9 @@ linked from the ticker's week label.
   line, dot or text. Series colors are `style.SERIES`, all 3:1 or better on white.
   Label lines at their ends (`style.label_ends`, which keeps labels apart) rather than
   with a legend or color alone. Team logos (`style.team_logo`) stand in for team labels.
+  Mark a moment with `style.callout` (a dot, a boxed two-line label, a leader). Text in
+  a chart box is left-aligned: matplotlib measures in a wider stand-in for Barlow, so
+  centered or right-aligned lines drift once the page draws them.
 - `/charts` is Tyler's charts only: newest first, 12 to a page, a static page per tag
   (`/charts/tag/<tag>/`, no script), and a page per chart with its note, date, author,
   source and tags. Chart names cannot be all digits or `tag` (those URLs are taken).

@@ -93,8 +93,10 @@ def elapsed_minutes(quarter: int, remaining: float) -> float:
     return ((3600 - remaining) if quarter <= 4 else (3600 + 600 - remaining)) / 60
 
 
-def clock_label(quarter: int, remaining: float) -> str:
-    """The game clock as a viewer saw it: "Q4 2:10", "OT 5:03"."""
+def clock_label(quarter: float, remaining: float) -> str:
+    """The game clock as a viewer saw it: "Q4 2:10", "OT 5:03". nflverse
+    stores the quarter as a float, so it is made whole first (4.0 -> Q4)."""
+    quarter = int(quarter)
     left = int(remaining - (4 - quarter) * 900) if quarter <= 4 else int(remaining)
     return f"{'OT' if quarter > 4 else f'Q{quarter}'} {left // 60}:{left % 60:02d}"
 
@@ -105,12 +107,21 @@ def wp_plays(plays: list[dict]) -> list[dict]:
     return sorted(usable, key=lambda p: p['play_id'])
 
 
+def wp_after(play: dict) -> float:
+    """Home win probability once the play is over. nflfastR's home_wp is
+    before the snap; home_wp_post is after, missing on a few rows."""
+    after = play.get('home_wp_post')
+    return play['home_wp'] if after is None else after
+
+
 def wp_points(plays: list[dict], away_score: int, home_score: int) -> list[tuple[float, float]]:
     """(minutes elapsed, home win probability) through the game, from
-    wp_plays(), ending on the result."""
-    points = [(elapsed_minutes(p['qtr'], p['game_seconds_remaining']), p['home_wp']) for p in plays]
+    wp_plays(), ending on the result. Each point is the probability after
+    that play, so a swing shows at the play that caused it, where its label
+    points, rather than at the next snap."""
+    points = [(elapsed_minutes(p['qtr'], p['game_seconds_remaining']), wp_after(p)) for p in plays]
     if points:
-        points.insert(0, (0.0, points[0][1]))
+        points.insert(0, (0.0, plays[0]['home_wp']))
     end = points[-1][0] if points else 60.0
     result = 1.0 if home_score > away_score else 0.0 if away_score > home_score else 0.5
     points.append((max(end, 60.0), result))
@@ -145,6 +156,121 @@ def wp_note(game: dict, plays: list[dict]) -> str:
         return f'{result} {winner} was favored the whole way, never below {percent}%.'
     when = clock_label(play['qtr'], play['game_seconds_remaining'])
     return f"{result} {winner}'s chance fell as low as {percent}%, at {when}."
+
+
+# ---------------------------------------------------------------- key plays
+
+# The swings worth a label: a few, spread across the game. A close finish
+# puts its biggest swings together (IND at KC had five of its six biggest
+# in overtime), and labels stacked in one corner read worse than a missing
+# one. The winner's lowest point is in the note either way.
+KEY_PLAYS = 3
+KEY_PLAY_GAP_MINUTES = 8
+
+
+def swing(play: dict) -> float:
+    """How far the play moved the home team's win probability."""
+    return wp_after(play) - play['home_wp']
+
+
+def key_plays(plays: list[dict], limit: int = KEY_PLAYS, gap: float = KEY_PLAY_GAP_MINUTES) -> list[dict]:
+    """The biggest swings, largest first, each at least `gap` game minutes
+    from any already picked. Returned in game order, for drawing."""
+    picked: list[dict] = []
+    for play in sorted(plays, key=lambda p: (-abs(swing(p)), p['play_id'])):
+        if len(picked) == limit or abs(swing(play)) == 0:
+            break
+        at = elapsed_minutes(play['qtr'], play['game_seconds_remaining'])
+        if all(abs(at - elapsed_minutes(p['qtr'], p['game_seconds_remaining'])) >= gap for p in picked):
+            picked.append(play)
+    return sorted(picked, key=lambda p: p['play_id'])
+
+
+def _yards(value) -> int:
+    return int(value or 0)
+
+
+def describe_play(play: dict) -> str:
+    """What happened, in a few words, from nflverse's play fields rather
+    than its play text, which runs long. Names come as nflverse writes
+    them ("H.Butker"), the same style as the ticker."""
+    passer, receiver = play.get('passer_player_name'), play.get('receiver_player_name')
+    rusher, kicker = play.get('rusher_player_name'), play.get('kicker_player_name')
+    kind = play.get('play_type')
+    yards = _yards(play.get('yards_gained'))
+
+    if play.get('interception'):
+        catcher = play.get('interception_player_name')
+        return f'{passer} intercepted by {catcher}' if passer and catcher else 'Interception'
+    if play.get('fumble_lost'):
+        fumbler = play.get('fumbled_1_player_name')
+        return f'Fumble lost, {fumbler}' if fumbler else 'Fumble lost'
+    if play.get('safety'):
+        return 'Safety'
+    if kind == 'field_goal':
+        distance = _yards(play.get('kick_distance'))
+        result = {'made': 'FG', 'missed': 'FG missed', 'blocked': 'FG blocked'}.get(play.get('field_goal_result'), 'FG')
+        return f'{kicker} {distance} yd {result}' if kicker else f'{distance} yd {result}'
+    if play.get('return_touchdown'):
+        return 'Return TD'
+    if play.get('sack'):
+        return f'{passer} sacked' if passer else 'Sack'
+    if play.get('fourth_down_failed'):
+        return f"Stopped on 4th and {_yards(play.get('ydstogo'))}"
+
+    touchdown = ' TD' if play.get('touchdown') else ''
+    if kind == 'pass' and passer:
+        if receiver and play.get('complete_pass', 1):
+            return f'{passer} to {receiver}, {yards} yd{touchdown or "s"}'
+        return f'{passer} incomplete'
+    if kind == 'run' and rusher:
+        return f'{rusher} {yards} yd{touchdown} run'
+    if kind == 'punt':
+        return 'Punt blocked' if play.get('punt_blocked') else 'Punt'
+    if kind == 'kickoff':
+        return 'Kickoff'
+    if kind == 'extra_point':
+        return 'Extra point' if play.get('extra_point_result') == 'good' else 'Extra point missed'
+    if play.get('two_point_attempt'):
+        return 'Two-point try good' if play.get('two_point_conv_result') == 'success' else 'Two-point try failed'
+    if play.get('penalty') and play.get('penalty_type'):
+        return f"Penalty, {play['penalty_type']}"
+    return (kind or 'Play').replace('_', ' ').capitalize()
+
+
+def label_bands(spans: list[tuple[float, float]], points: list[tuple[float, float]], height: float,
+                blocked: dict[str, list[tuple[float, float]]] | None = None) -> list[str]:
+    """For each label, 'top' or 'bottom': the band along that edge of the
+    chart it sits in, clear of the line and of the other labels.
+
+    spans are each label's left and right edge in game minutes, in game
+    order. height is a label's height as a fraction of the axes. A band is
+    clear when the line stays out of it across the label's whole width;
+    between two clear bands (or two blocked ones) the one with more room
+    wins. A band another label already holds there is taken only if both
+    are held. blocked adds spans already taken in a band, such as a logo.
+    """
+    taken = {'top': list((blocked or {}).get('top', [])), 'bottom': list((blocked or {}).get('bottom', []))}
+    bands = []
+    for x0, x1 in spans:
+        values = [wp for x, wp in points if x0 <= x <= x1] or [0.5]
+        # Room between the line and each band's inner edge (margin 0.03).
+        room = {'top': (0.97 - height) - max(values), 'bottom': min(values) - (0.03 + height)}
+        free = [band for band in ('top', 'bottom') if not any(a < x1 and x0 < b for a, b in taken[band])]
+        choices = free or ['top', 'bottom']
+        band = max(choices, key=lambda b: (room[b] > 0, room[b]))
+        taken[band].append((x0, x1))
+        bands.append(band)
+    return bands
+
+
+def play_label(play: dict, home: str, away: str) -> list[str]:
+    """The callout's two lines: when and who gained how much, then what
+    happened. "OT 5:13, KC +53%" / "H.Butker 31 yd FG"."""
+    change = swing(play)
+    team = home if change > 0 else away
+    when = clock_label(play['qtr'], play['game_seconds_remaining'])
+    return [f'{when}, {team} +{round(abs(change) * 100)}%', describe_play(play)]
 
 
 def short_name(name: str) -> str:
@@ -215,7 +341,7 @@ def epa_note(team_stats: dict) -> str:
 # ---------------------------------------------------------------- drawing
 
 
-def draw_wp(game: dict, points: list[tuple[float, float]]):
+def draw_wp(game: dict, points: list[tuple[float, float]], moments: list[dict] = ()):
     fig, ax = style.figure()
     away, home = game['away_team'], game['home_team']
     xs, ys = zip(*points)
@@ -235,7 +361,34 @@ def draw_wp(game: dict, points: list[tuple[float, float]]):
     # Home wins at the top, away at the bottom: each logo at its own end.
     style.team_logo(ax, home, 0.03, 0.9, size_px=30, xycoords='axes fraction')
     style.team_logo(ax, away, 0.03, 0.1, size_px=30, xycoords='axes fraction')
+
+    place_callouts(ax, points, [
+        (elapsed_minutes(play['qtr'], play['game_seconds_remaining']), wp_after(play), play_label(play, home, away))
+        for play in moments
+    ])
     return fig
+
+
+def place_callouts(ax, points: list[tuple[float, float]], moments: list[tuple[float, float, list[str]]]) -> None:
+    """Callouts in the bands along the top and bottom edges, each where the
+    line leaves room, with a leader down or up to its play. The logos at
+    the left end of each band are kept clear."""
+    fig = ax.figure
+    fig.draw_without_rendering()
+    box = ax.get_window_extent()
+    x_min, x_max = ax.get_xlim()
+    per_px = (x_max - x_min) / box.width
+    height = (2 * (style.SMALL_PX + 4) + 8) / box.height
+
+    spans = []
+    for x, _, lines in moments:
+        width = style.callout_width_px(lines) * per_px
+        align = style.callout_align((x - x_min) / (x_max - x_min))
+        spans.append((x - width * align, x + width * (1 - align)))
+    logo = (x_min, x_min + 0.08 * (x_max - x_min))
+    bands = label_bands(spans, points, height, {'top': [logo], 'bottom': [logo]})
+    for (x, y, lines), band in zip(moments, bands):
+        style.callout(ax, x, y, lines, label_y=0.97 if band == 'top' else 0.03)
 
 
 def draw_race(label: str, last_week: int, series: list[tuple[str, str, list[int]]]):
@@ -287,6 +440,18 @@ def draw_epa(team_stats: dict):
 
 # ---------------------------------------------------------------- the job
 
+# Play-by-play fields the WP chart reads: the win probability before and
+# after each play, and what describe_play() needs to say what happened.
+PLAY_COLUMNS = [
+    'play_id', 'qtr', 'game_seconds_remaining', 'home_wp', 'home_wp_post',
+    'play_type', 'yards_gained', 'touchdown', 'return_touchdown', 'safety', 'sack',
+    'interception', 'interception_player_name', 'fumble_lost', 'fumbled_1_player_name',
+    'complete_pass', 'passer_player_name', 'receiver_player_name', 'rusher_player_name',
+    'field_goal_result', 'kick_distance', 'kicker_player_name', 'extra_point_result',
+    'two_point_attempt', 'two_point_conv_result', 'punt_blocked', 'fourth_down_failed',
+    'ydstogo', 'penalty', 'penalty_type',
+]
+
 
 def _read(name: str):
     path = DATA_DIR / name
@@ -322,7 +487,7 @@ def _wp_chart(game: dict, current_season: int):
 
     plays = (
         pbp.filter(pl.col('game_id') == game['game_id'])
-        .select('play_id', 'qtr', 'game_seconds_remaining', 'home_wp')
+        .select([column for column in PLAY_COLUMNS if column in pbp.columns])
         .to_dicts()
     )
     plays = wp_plays(plays)
@@ -337,7 +502,7 @@ def _wp_chart(game: dict, current_season: int):
         'asOf': f'{day:%a}, {day:%b} {day.day}',
         'source': 'nflverse play-by-play, win probability from the nflfastR model',
     }
-    return meta, draw_wp(game, points), 'auto'
+    return meta, draw_wp(game, points, key_plays(plays)), 'auto'
 
 
 def _epa_chart(team_stats: dict):
