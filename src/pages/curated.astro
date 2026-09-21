@@ -1,0 +1,53 @@
+---
+/**
+ * Curated posts: X and Bluesky posts Tyler has picked, newest first, each
+ * as a quote card beside his note. Built from hand-typed fields only; the
+ * page loads nothing from either platform.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Panel from '../components/Panel.astro';
+import CuratedPost from '../components/CuratedPost.astro';
+import { entriesOf } from '../utils/collections';
+
+const posts = (await entriesOf('curated', 'src/content/curated')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.author.localeCompare(b.data.author)
+);
+---
+
+<BaseLayout title="Curated posts" description="Posts from X and Bluesky worth a second look, each with a note on why.">
+  <h1 class="page-title">Curated posts</h1>
+  {
+    posts.length === 0 ? (
+      <div class="content-grid">
+        <Panel title="No posts yet">
+          <p class="placeholder-note">Posts worth a second look will be collected here, each with a note on why.</p>
+        </Panel>
+      </div>
+    ) : (
+      <>
+        <p class="page-intro">
+          Posts from X and Bluesky worth a second look, newest first, each with a note on why. Every post links
+          to the original.
+        </p>
+        <div class="content-grid">
+          {posts.map((post) => (
+            <Panel>
+              <CuratedPost post={post} />
+            </Panel>
+          ))}
+        </div>
+      </>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .page-intro {
+    color: var(--text-dim);
+    margin-bottom: var(--space-4);
+  }
+
+  .placeholder-note {
+    color: var(--text-dim);
+  }
+</style>

@@ -1,0 +1,126 @@
+---
+/**
+ * One curated post: the post as a quote card beside Tyler's note, as two
+ * boxed units of equal width and the same text size, so the note carries
+ * as much weight as the quote. Stacked, post first, on narrow screens.
+ *
+ * Built only from the entry's fields: no embed, no script, no avatar, no
+ * image. The text is plain text with its line breaks kept; links in it are
+ * not made clickable. The only links out are the author's profile and the
+ * original post.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { PLATFORM_NAMES, bareHandle, profileUrl } from '../lib/curated/posts';
+
+interface Props {
+  post: CollectionEntry<'curated'>;
+}
+
+const { url, platform, author, handle, date, text, note, added } = Astro.props.post.data;
+const platformName = PLATFORM_NAMES[platform];
+const bare = bareHandle(handle);
+
+const format = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<article class="curated">
+  <h2 class="visually-hidden">{author} on {platformName}, {format(date)}</h2>
+  <figure class="box post">
+    <blockquote cite={url}>
+      <p class="text">{text.trim()}</p>
+    </blockquote>
+    <figcaption>
+      <span class="author">{author}</span>
+      <a href={profileUrl(platform, handle)}>@{bare}</a>
+      <span class="when">
+        <time datetime={iso(date)}>{format(date)}</time> on {platformName}.
+      </span>
+      <a href={url}>View the post on {platformName}</a>
+    </figcaption>
+  </figure>
+  <div class="box note">
+    <p class="label">Note</p>
+    <p class="note-text">{note}</p>
+    {
+      added && (
+        <p class="added">
+          Copied <time datetime={iso(added)}>{format(added)}</time>. The original may have changed since.
+        </p>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .curated {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .box {
+    border: 1px solid var(--rule);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  /* Same size for both: neither the quote nor the note is set larger. */
+  .text,
+  .note-text {
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .text {
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+  }
+
+  blockquote {
+    margin: 0;
+    padding-left: var(--space-3);
+    border-left: 3px solid var(--header);
+  }
+
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-2);
+    border-top: 1px dotted var(--rule-soft);
+    font-size: 12px;
+  }
+
+  .author {
+    font-weight: 700;
+  }
+
+  .when {
+    color: var(--text-dim);
+  }
+
+  .label {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .added {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    border-top: 1px dotted var(--rule-soft);
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  @media (max-width: 760px) {
+    .curated {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

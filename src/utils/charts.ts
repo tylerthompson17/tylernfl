@@ -6,7 +6,8 @@
  */
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { getCollection, type CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { entriesOf } from './collections';
 import teamsData from '../data/teams.json';
 import type { AutoChartData, TeamsData } from '../data/types';
 import { chartProblems, labelSvg, resolveLogos, tagSlug } from '../lib/charts/collection';
@@ -34,7 +35,7 @@ function scriptsInMine(): Set<string> {
  * checks run over every entry, drafts included, since drafts render in dev.
  */
 export async function getCharts(): Promise<Chart[]> {
-  const all = await getCollection('charts');
+  const all = await entriesOf('charts', 'src/content/charts');
   const problems = chartProblems(
     all.map((entry) => ({ slug: entry.id, featured: entry.data.featured, draft: entry.data.draft, script: entry.data.script })),
     new Set(svgBySlug.keys()),

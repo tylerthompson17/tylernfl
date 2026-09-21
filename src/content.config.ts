@@ -1,5 +1,28 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { postProblems } from './lib/curated/posts';
+import { existsSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+
+/**
+ * The glob loader for a folder of Markdown entries that may be empty. An
+ * empty folder is skipped rather than globbed, since the glob loader warns
+ * on every build when it finds nothing. See src/utils/collections.ts.
+ */
+function entries(base: string) {
+  const loader = glob({ pattern: '*.md', base });
+  return {
+    name: 'entries',
+    load: async (context: Parameters<typeof loader.load>[0]) => {
+      const dir = join(process.cwd(), base);
+      if (!existsSync(dir) || !readdirSync(dir).some((name) => name.endsWith('.md'))) {
+        context.store.clear();
+        return;
+      }
+      return loader.load(context);
+    },
+  };
+}
 
 const articles = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/articles' }),
@@ -17,7 +40,7 @@ const articles = defineCollection({
 // the scripts live in pipelines/charts/mine/, which is Tyler's. The home
 // page's auto chart is not part of this collection.
 const charts = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/charts' }),
+  loader: entries('./src/content/charts'),
   schema: z
     .object({
       title: z.string(),
@@ -35,4 +58,30 @@ const charts = defineCollection({
     .strict(),
 });
 
-export const collections = { articles, charts };
+// Curated posts: X and Bluesky posts added by hand, shown as quote cards
+// on /curated. There is no image field, and the schema is strict, so one
+// cannot be added: a post's media is never stored or shown.
+const curated = defineCollection({
+  loader: entries('./src/content/curated'),
+  schema: z
+    .object({
+      url: z.string().url(),
+      platform: z.enum(['x', 'bluesky']),
+      author: z.string().min(1),
+      handle: z.string().min(1),
+      /** When the post was made; the page sorts by this. */
+      date: z.coerce.date(),
+      /** The post's words, copied by hand. Line breaks are kept. */
+      text: z.string(),
+      /** Why it is here. Shown with as much weight as the post. */
+      note: z.string().min(1),
+      /** When it was copied, since the original can be edited or deleted. */
+      added: z.coerce.date().optional(),
+    })
+    .strict()
+    .superRefine((post, ctx) => {
+      for (const message of postProblems(post)) ctx.addIssue({ code: z.ZodIssueCode.custom, message });
+    }),
+});
+
+export const collections = { articles, charts, curated };

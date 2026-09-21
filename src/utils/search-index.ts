@@ -83,6 +83,7 @@ async function pageEntries(): Promise<SearchEntry[]> {
     page('4th down calculator', 'tools/4th-down', 'fourth down go for it punt field goal', 'Tools'),
     page('Tools', 'tools', 'calculators'),
     page('Articles', 'articles', 'writing'),
+    page('Curated posts', 'curated', 'curated posts x twitter bluesky quotes'),
     ...articles.map((article) =>
       page(article.data.title, `articles/${article.id}`, article.data.tags.join(' '), 'Article')
     ),

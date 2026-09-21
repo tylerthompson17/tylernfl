@@ -34,9 +34,10 @@ tylernfl/
 │   ├── styles/global.css
 │   ├── layouts/            BaseLayout (ticker, header, 3-column shell)
 │   ├── components/         Panel, StatTable, StatCard, TickerItem, TeamChip, ...
-│   ├── pages/              index, scores, tools/, stats/, articles/, about, 404
+│   ├── pages/              index, scores, charts/, curated, tools/, stats/, articles/, about, 404
 │   ├── content/articles/   MDX articles (content collection)
 │   ├── content/charts/     Tyler's charts: <slug>.md entry next to <slug>.svg
+│   ├── content/curated/    curated X and Bluesky posts, one .md each, added by hand
 │   └── data/               JSON consumed at build time (mock now, pipeline output later)
 ├── public/logos/           team logos for charts (pipelines/build_logos.py)
 ├── pipelines/              Python jobs: run_daily.py (ticker, leaders), build_teams.py
@@ -235,6 +236,45 @@ linked from the ticker's week label.
   chart with its date, else the auto chart labeled "Auto chart" with what its data
   covers, else an empty state.
 
+### Curated posts
+
+`/curated` lists X and Bluesky posts Tyler picked, newest first by the post's date, each
+as a quote card beside his note. Entries are added by hand, one file each in
+`src/content/curated/`:
+
+```md
+---
+url: https://bsky.app/profile/handle.bsky.social/post/3lxyz...
+platform: bluesky        # or x
+author: Their Name
+handle: handle.bsky.social
+date: 2026-09-20         # when it was posted
+text: |
+  The post's words, line breaks kept.
+note: Why it is here.
+added: 2026-09-21        # optional: when it was copied
+---
+```
+
+- No embeds and no third-party scripts, ever. The card is built only from those fields;
+  the page fetches nothing from either platform. Its only links out are the author's
+  profile and the original post. Links inside the text stay plain text.
+- Never store or show a post's images or video. There is no image field and the schema
+  is strict, so one cannot be added; text that links to either platform's media hosts
+  fails the build. No avatars either.
+- The build also fails when the url is not a single post, is from another platform, or
+  names a different account than `handle` (a Bluesky link by DID is not compared).
+  The rules live in `src/lib/curated/posts.ts`.
+- The note carries as much weight as the post: two boxed units of equal width and the
+  same text size, side by side, stacked (post first) below 760px. The platform is named
+  in words, never with a logo. The text is a copy, so `added` shows when it was taken.
+- Curated is in the nav (Tyler's call; it was going to be an Articles page link).
+- An empty collection (curated before the first post, charts if the example is deleted
+  first) builds without Astro's two empty-collection warnings: `entries()` in
+  `src/content.config.ts` skips an empty folder and `entriesOf()` in
+  `src/utils/collections.ts` skips `getCollection`. Use both for any collection that
+  can be empty.
+
 ### Panel structure
 
 - Panels sit on the gray page with a 12px gap and a 1px `--rule` border.
@@ -279,7 +319,7 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
 9. Curated posts: hand-added X and Bluesky posts as native quote cards with the author
    credited and the original linked, no embeds, no third-party scripts, never any post
    images, and a `/curated` page where the note carries as much weight as the quote.
-   Linked from the nav (Tyler changed this from an Articles page link).
+   Done; see Curated posts under Design direction.
 
 ## Articles
 
