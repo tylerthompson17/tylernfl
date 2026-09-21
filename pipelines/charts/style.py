@@ -263,10 +263,7 @@ def inline_svg(svg: str, slug: str) -> str:
     svg = re.sub(r'<metadata>.*?</metadata>\s*', '', svg, flags=re.S)
 
     # Logos: the embedded picture becomes a reference the site resolves.
-    svg = re.sub(
-        r'(<g id="logo-([A-Z]{2,3})-\d+">\s*<image\b[^>]*?xlink:href=")data:image/[^"]+"',
-        r'\1logo:\2"', svg,
-    )
+    svg = re.sub(r'(<g id="logo-([A-Z]{2,3})-\d+">\s*)(<image\b[^>]*>)', _logo_reference, svg)
 
     # Scale to the container: keep the viewBox, drop the fixed size.
     svg = re.sub(r'(<svg\b[^>]*?)\s+width="[^"]*"', r'\1', svg, count=1)
@@ -287,6 +284,31 @@ def inline_svg(svg: str, slug: str) -> str:
     # matplotlib's "*{ ... }" rule would apply to the whole page inline.
     svg = re.sub(r'(<style[^>]*>)\s*\*\s*\{', rf'\1.chart-{prefix} *{{', svg)
     return svg.strip() + '\n'
+
+
+def _logo_reference(match: re.Match) -> str:
+    """One logo's <image>: its embedded picture replaced by "logo:<TEAM>".
+
+    matplotlib stores an embedded picture upside down and turns it right
+    way up with transform="scale(1 -1) translate(0 -h)". The logo file the
+    site serves is the right way up, so that flip has to go too, or every
+    logo shows upside down. With the flip, an image at y is drawn with its
+    top edge at -y; without it, it is simply placed there.
+    """
+    group, team, tag = match.groups()
+    tag = re.sub(r'xlink:href="data:image/[^"]+"', f'xlink:href="logo:{team}"', tag)
+    flip = re.search(r'\s+transform="scale\(1 -1\) translate\(0 -([\d.]+)\)"', tag)
+    y = re.search(r'\by="(-?[\d.]+)"', tag)
+    if flip and y:
+        tag = tag.replace(flip.group(0), '')
+        tag = tag.replace(y.group(0), f'y="{_number(-float(y.group(1)))}"')
+    return group + tag
+
+
+def _number(value: float) -> str:
+    """A coordinate as matplotlib writes it: no trailing .0, no -0."""
+    text = f'{value:.6f}'.rstrip('0').rstrip('.')
+    return '0' if text in ('-0', '') else text
 
 
 def _site_stack(match: re.Match) -> str:

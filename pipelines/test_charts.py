@@ -44,7 +44,7 @@ SAMPLE_SVG = '''<?xml version="1.0" encoding="utf-8" standalone="no"?>
   <path clip-path="url(#p1a2b)"/>
   <use xlink:href="#m9f" x="1"/>
   <g id="logo-BUF-1">
-   <image xlink:href="data:image/png;base64,iVBORw0KGgo=" id="image5" width="24" height="24"/>
+   <image xlink:href="data:image/png;base64,iVBORw0KGgo=" id="image5" transform="scale(1 -1) translate(0 -24)" x="344" y="-183" width="24" height="24"/>
   </g>
   <text style="font-size: 12px; font-family: 'Barlow', 'DejaVu Sans', 'Arial', sans-serif; fill: #5b6570">1</text>
   <text style="font-weight: 700; font-family: 'Barlow Condensed'; fill: #1a56b5">BUF</text>
@@ -83,6 +83,15 @@ class InlineSvgTests(unittest.TestCase):
     def test_logos_become_references_and_nothing_is_embedded(self):
         self.assertIn('xlink:href="logo:BUF"', self.svg)
         self.assertNotIn('base64', self.svg)
+
+    def test_logos_lose_the_flip_that_only_embedded_pictures_need(self):
+        # matplotlib stores embedded pictures upside down and flips them
+        # back; the logo file is already the right way up. Same place on
+        # the page: top edge at 183, 24 tall.
+        image = self.svg[self.svg.index('<image'):].split('>', 1)[0]
+        self.assertNotIn('transform', image)
+        self.assertIn('x="344" y="183"', image)
+        self.assertIn('width="24" height="24"', image)
 
     def test_fonts_use_the_site_stacks(self):
         self.assertIn(f"font-family: {style.TOKENS['font-body']}", self.svg)
@@ -266,6 +275,8 @@ class RenderTests(unittest.TestCase):
         self.assertTrue(svg.startswith('<svg class="chart-svg chart-render-test"'))
         self.assertEqual(svg.count('href="logo:BUF"'), 3)
         self.assertNotIn('base64', svg)
+        logos = [tag for tag in svg.split('<image')[1:]]
+        self.assertTrue(all('transform' not in tag.split('>', 1)[0] for tag in logos), 'a logo is still flipped')
         self.assertNotIn('DejaVu', svg)
 
     def test_redrawing_the_same_chart_gives_the_same_file(self):
