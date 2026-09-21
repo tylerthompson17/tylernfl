@@ -1,0 +1,58 @@
+---
+/** Tyler's charts with one tag, newest first, 12 to a page. */
+import type { GetStaticPaths, Page } from 'astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ChartList from '../../../../components/ChartList.astro';
+import { tagSlug } from '../../../../lib/charts/collection';
+import { CHARTS_PER_PAGE, chartTags, getCharts, type Chart, type ChartTag } from '../../../../utils/charts';
+import { url } from '../../../../utils/url';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const charts = await getCharts();
+  return chartTags(charts).flatMap((tag) =>
+    paginate(
+      charts.filter((chart) => chart.data.tags.some((t) => tagSlug(t) === tag.slug)),
+      { params: { tag: tag.slug }, pageSize: CHARTS_PER_PAGE, props: { tag } }
+    )
+  );
+}) satisfies GetStaticPaths;
+
+interface Props {
+  page: Page<Chart>;
+  tag: ChartTag;
+}
+
+const { page, tag } = Astro.props;
+---
+
+<BaseLayout title={`Charts tagged ${tag.label}`}>
+  <h1 class="page-title">Charts tagged {tag.label}</h1>
+  <p class="back">
+    {tag.count === 1 ? '1 chart' : `${tag.count} charts`}. <a href={url('charts')}>All charts</a>
+  </p>
+  <ChartList charts={page.data} />
+  {
+    (page.url.prev || page.url.next) && (
+      <nav class="pager" aria-label="Chart pages">
+        {page.url.prev && <a href={page.url.prev}>Newer charts</a>}
+        <span class="num">
+          Page {page.currentPage} of {page.lastPage}
+        </span>
+        {page.url.next && <a href={page.url.next}>Older charts</a>}
+      </nav>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .back {
+    color: var(--text-dim);
+    margin-bottom: var(--space-3);
+  }
+
+  .pager {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+</style>

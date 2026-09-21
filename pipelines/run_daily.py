@@ -1,5 +1,6 @@
 """Daily site data job: writes ticker.json, leaders.json, stats/, players/,
-rosters/, transactions.json and on_this_day.json into src/data/.
+rosters/, transactions.json and on_this_day.json into src/data/, then draws
+the home page's auto chart (charts/auto.svg and charts/auto.json) from them.
 
 Run from the repo root:
     pip install -r pipelines/requirements.txt
@@ -22,6 +23,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
+from charts.auto import build_auto_chart, write_auto_chart  # noqa: E402
 from game_logs import build_game_logs  # noqa: E402
 from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
 from leaders import build_leaders  # noqa: E402
@@ -110,6 +112,15 @@ def main() -> None:
         if write_json_if_changed(name, data, volatile, compact=True):
             written += 1
     print(f'{written} of {len(files) + len(logs)} files updated')
+
+    # Drawn last: it reads the files just written (leaders, game logs) and
+    # team_stats.json from the weekly job.
+    chart = build_auto_chart(today, schedule_rows, stats_season(today))
+    if chart is None:
+        print('auto chart: nothing to draw, keeping the last one')
+    else:
+        changed = write_auto_chart(chart)
+        print(f"auto chart: {chart[0]['template']}, {'updated' if changed else 'unchanged'}")
 
 
 if __name__ == '__main__':

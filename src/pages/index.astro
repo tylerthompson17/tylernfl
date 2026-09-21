@@ -8,6 +8,8 @@ import { getArticles } from '../utils/articles';
 import leadersData from '../data/leaders.json';
 import { headlineItems, statusSummary, transactions } from '../utils/transactions';
 import { notable } from '../utils/performances';
+import ChartFigure from '../components/ChartFigure.astro';
+import { formatChartDate, getAutoChart, getFeaturedChart, svgFor } from '../utils/charts';
 import type { LeadersData } from '../data/types';
 
 const leaders = leadersData as LeadersData;
@@ -38,6 +40,10 @@ const notableColumns = [
 // means the week is still being played.
 const weekPartlyIn = notable.week !== null && notable.teams < 24;
 
+// Tyler's featured chart, or the daily auto chart when none is featured.
+const featured = await getFeaturedChart();
+const auto = featured ? null : getAutoChart();
+
 const leaderColumns = [
   { key: 'rank', label: 'Rk', kind: 'number' as const },
   { key: 'player', label: 'Player', kind: 'player' as const },
@@ -57,6 +63,33 @@ const leaderColumns = [
       </p>
       <p><a href={url('tools/4th-down')}>Open the calculator</a></p>
     </Panel>
+    {
+      featured ? (
+        <Panel title={featured.data.title} titleId="home-chart-title" class="lead">
+          <ChartFigure svg={svgFor(featured)} titleId="home-chart-title" note={featured.data.note} id="home-chart">
+            <p class="chart-meta">
+              <span class="num">{formatChartDate(featured.data.date)}</span>, {featured.data.author}.{' '}
+              Source: {featured.data.source}.{' '}
+              <a href={url(`charts/${featured.id}`)}>Chart page</a>{' '}
+              <a href={url('charts')}>All charts</a>
+            </p>
+          </ChartFigure>
+        </Panel>
+      ) : auto ? (
+        <Panel title={auto.data.title} titleId="home-chart-title" class="lead">
+          <ChartFigure svg={auto.svg} titleId="home-chart-title" note={auto.data.note} id="home-chart">
+            <p class="chart-meta">
+              <span class="auto-label">Auto chart</span> {auto.data.asOf}. Source: {auto.data.source}.{' '}
+              <a href={url('charts')}>All charts</a>
+            </p>
+          </ChartFigure>
+        </Panel>
+      ) : (
+        <Panel title="Charts" class="lead">
+          <p class="placeholder-note">No chart yet. One is drawn each morning once games are played.</p>
+        </Panel>
+      )
+    }
     <Panel title="Receiving yards leaders">
       {
         receiving ? (
@@ -168,6 +201,26 @@ const leaderColumns = [
     border-top: 1px dotted var(--rule-soft);
     color: var(--text-dim);
     font-size: 12px;
+  }
+
+  .chart-meta {
+    margin-top: var(--space-1);
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  .chart-meta a {
+    margin-right: var(--space-2);
+  }
+
+  /* Says plainly that no one picked this chart: the pipeline drew it. */
+  .auto-label {
+    margin-right: var(--space-1);
+    padding: 0 var(--space-1);
+    border: 1px solid var(--rule);
+    color: var(--text);
+    font-family: var(--font-heading);
+    font-weight: 700;
   }
 
   .article-title {

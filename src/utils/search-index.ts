@@ -7,6 +7,7 @@ import teamsData from '../data/teams.json';
 import type { TeamsData } from '../data/types';
 import type { SearchEntry } from '../lib/search/match';
 import { getArticles } from './articles';
+import { getCharts } from './charts';
 import { leaderboards } from './leaderboards';
 import { playerPages } from './players';
 import { url } from './url';
@@ -66,6 +67,7 @@ async function pageEntries(): Promise<SearchEntry[]> {
     weight: 0,
   });
   const articles = await getArticles();
+  const charts = await getCharts();
   return [
     page('Scores', 'scores', 'scoreboard schedule games slate results week kickoff'),
     page('Stat leaders', 'stats', 'stats leaders top', 'Stats'),
@@ -73,6 +75,10 @@ async function pageEntries(): Promise<SearchEntry[]> {
       page(`${board.label} leaderboard`, `stats/${board.key}`, 'stats leaders', 'Stats')
     ),
     page('Team stats', 'stats/teams', 'epa success rate third down red zone offense defense', 'Stats'),
+    page('Charts', 'charts', 'chart graph gallery visual'),
+    ...charts.map((chart) =>
+      page(chart.data.title, `charts/${chart.id}`, `chart ${chart.data.tags.join(' ')}`, 'Chart')
+    ),
     page('Transactions and injuries', 'transactions', 'injury report roster moves wire signings releases'),
     page('4th down calculator', 'tools/4th-down', 'fourth down go for it punt field goal', 'Tools'),
     page('Tools', 'tools', 'calculators'),

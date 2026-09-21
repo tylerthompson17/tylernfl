@@ -1,0 +1,96 @@
+---
+/** One of Tyler's charts on its own page: the chart, its note and source. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import ChartFigure from '../../components/ChartFigure.astro';
+import { tagSlug } from '../../lib/charts/collection';
+import { formatChartDate, getCharts, svgFor, type Chart } from '../../utils/charts';
+import { url } from '../../utils/url';
+
+export async function getStaticPaths() {
+  return (await getCharts()).map((chart) => ({ params: { slug: chart.id }, props: { chart } }));
+}
+
+interface Props {
+  chart: Chart;
+}
+
+const { chart } = Astro.props;
+const { title, date, author, tags, source, note, draft } = chart.data;
+---
+
+<BaseLayout title={title} description={note}>
+  <h1 class="page-title" id="chart-title">
+    {title}
+    {draft && <span class="draft">Draft</span>}
+  </h1>
+  <div class="content-grid">
+    <Panel>
+      <ChartFigure svg={svgFor(chart)} titleId="chart-title" note={note} id="chart">
+        <dl class="facts">
+          <div>
+            <dt>Date</dt>
+            <dd class="num">{formatChartDate(date)}</dd>
+          </div>
+          <div>
+            <dt>By</dt>
+            <dd>{author}</dd>
+          </div>
+          <div>
+            <dt>Source</dt>
+            <dd>{source}</dd>
+          </div>
+          {tags.length > 0 && (
+            <div>
+              <dt>Tags</dt>
+              <dd class="tags">
+                {tags.map((tag) => (
+                  <a href={url(`charts/tag/${tagSlug(tag)}`)}>{tag}</a>
+                ))}
+              </dd>
+            </div>
+          )}
+        </dl>
+      </ChartFigure>
+    </Panel>
+  </div>
+  <p class="back"><a href={url('charts')}>All charts</a></p>
+</BaseLayout>
+
+<style>
+  .draft {
+    margin-left: var(--space-2);
+    padding: 0 var(--space-1);
+    background: var(--highlight);
+    font-size: 13px;
+    vertical-align: middle;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--space-1) var(--space-3);
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px dotted var(--rule-soft);
+    font-size: 12px;
+  }
+
+  .facts > div {
+    display: contents;
+  }
+
+  dt {
+    color: var(--text-dim);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .back {
+    margin-top: var(--space-3);
+  }
+</style>

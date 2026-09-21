@@ -366,3 +366,17 @@ export interface PlayerLogsData {
   /** Keyed by nflverse gsis id */
   players: Record<string, { name: string; boards: Record<string, GameLogRow[]> }>;
 }
+
+/**
+ * charts/auto.json: the home page's auto chart, drawn daily by
+ * pipelines/charts/auto.py next to charts/auto.svg. Shown only when none
+ * of Tyler's charts is featured, and never in the /charts gallery.
+ */
+export interface AutoChartData {
+  template: 'epa' | 'wp' | 'race';
+  title: string;
+  note: string;
+  /** What the data covers, e.g. "2026 season, through week 2" or "Sun, Sep 20" */
+  asOf: string;
+  source: string;
+}

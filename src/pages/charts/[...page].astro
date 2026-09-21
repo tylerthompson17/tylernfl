@@ -1,0 +1,87 @@
+---
+/**
+ * The chart gallery: Tyler's charts only, newest first, 12 to a page
+ * (/charts/, /charts/2/). The home page's auto chart is never listed here.
+ */
+import type { GetStaticPaths, Page } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import ChartList from '../../components/ChartList.astro';
+import { CHARTS_PER_PAGE, chartTags, getCharts, type Chart } from '../../utils/charts';
+import { url } from '../../utils/url';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const charts = await getCharts();
+  return paginate(charts, { pageSize: CHARTS_PER_PAGE, props: { tags: chartTags(charts) } });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  page: Page<Chart>;
+  tags: ReturnType<typeof chartTags>;
+}
+
+const { page, tags } = Astro.props;
+---
+
+<BaseLayout title={page.currentPage > 1 ? `Charts, page ${page.currentPage}` : 'Charts'}>
+  <h1 class="page-title">Charts</h1>
+  {
+    page.total === 0 ? (
+      <div class="content-grid">
+        <Panel title="No charts yet">
+          <p class="placeholder-note">The first chart is being drawn.</p>
+        </Panel>
+      </div>
+    ) : (
+      <>
+        {tags.length > 0 && (
+          <nav class="tag-bar" aria-label="Chart tags">
+            <span class="tag-label">Tags:</span>
+            {tags.map((tag) => (
+              <a href={url(`charts/tag/${tag.slug}`)}>
+                {tag.label} <span class="count num">({tag.count})</span>
+              </a>
+            ))}
+          </nav>
+        )}
+        <ChartList charts={page.data} />
+        {(page.url.prev || page.url.next) && (
+          <nav class="pager" aria-label="Chart pages">
+            {page.url.prev && <a href={page.url.prev}>Newer charts</a>}
+            <span class="num">
+              Page {page.currentPage} of {page.lastPage}
+            </span>
+            {page.url.next && <a href={page.url.next}>Older charts</a>}
+          </nav>
+        )}
+      </>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .tag-bar,
+  .pager {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .tag-bar {
+    margin-bottom: var(--space-3);
+  }
+
+  .tag-label,
+  .count {
+    color: var(--text-dim);
+  }
+
+  .pager {
+    margin-top: var(--space-3);
+  }
+
+  .placeholder-note {
+    color: var(--text-dim);
+  }
+</style>

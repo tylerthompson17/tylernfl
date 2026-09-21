@@ -1,0 +1,72 @@
+---
+/**
+ * A chart placed inline, with its note underneath. Inline rather than an
+ * <img> so the chart's text is drawn in the site's own fonts and its logos
+ * load from the site (see pipelines/charts/style.py).
+ *
+ * The title is the parent's heading, found by `titleId`; the SVG is named
+ * by it and described by the note, so a screen reader hears the chart as
+ * one image with a takeaway.
+ */
+import { chartSvg } from '../utils/charts';
+
+interface Props {
+  svg: string;
+  /** id of the heading that titles the chart */
+  titleId: string;
+  note: string;
+  /** Unique on the page; used for the note's id */
+  id: string;
+  size?: 'full' | 'thumb';
+}
+
+const { svg, titleId, note, id, size = 'full' } = Astro.props;
+const noteId = `${id}-note`;
+---
+
+<figure class:list={['chart', size]}>
+  {/* Focusable so the chart can be scrolled with the keyboard when it is
+      wider than a phone screen, as the site's tables are. */}
+  <div class="frame" tabindex={size === 'full' ? 0 : undefined} set:html={chartSvg(svg, titleId, noteId)} />
+  <figcaption>
+    <p class="note" id={noteId}>{note}</p>
+    <slot />
+  </figcaption>
+</figure>
+
+<style>
+  .frame {
+    border: 1px solid var(--rule);
+  }
+
+  .frame :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Chart text scales with the chart. Below 600px wide the labels would
+     drop under 10px, so a full-size chart stops shrinking there and its
+     frame scrolls sideways instead, like a wide table. Thumbnails keep
+     shrinking: they are a preview, and link to the full chart. */
+  .full .frame {
+    overflow-x: auto;
+  }
+
+  .full .frame :global(svg) {
+    min-width: 600px;
+  }
+
+  figcaption {
+    margin-top: var(--space-2);
+  }
+
+  .note {
+    max-width: 70ch;
+  }
+
+  .thumb .note {
+    color: var(--text);
+    font-size: 12px;
+  }
+</style>

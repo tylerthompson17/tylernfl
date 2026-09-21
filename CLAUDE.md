@@ -6,6 +6,11 @@ Personal NFL analytics site: public tools (4th down model first), stat leaders, 
 
 - Claude Code owns: site scaffolding, layout, components, styling, data plumbing, GitHub Actions.
 - Tyler owns: all statistical modeling (win probability, 4th down logic, team ratings). Do not write model logic. Leave clearly marked stubs and interfaces instead.
+- Tyler owns `pipelines/charts/mine/`, like the modeling code: his chart scripts. Do not
+  write, edit or delete anything in that folder. Claude Code wrote its README and
+  `example_template.py` once, when the folder was created, and does not touch them
+  again. Build what those scripts import (`pipelines/charts/style.py`) and the pages
+  that show their charts, and change `style.py` without breaking what it offers.
 - Round number thresholds the sport already treats as milestones (300 passing
   yards, a 100 yard game) are not modelling; they are the site's editorial
   choice, like the leaderboard qualifiers. Scoring one kind of game against
@@ -31,8 +36,12 @@ tylernfl/
 │   ├── components/         Panel, StatTable, StatCard, TickerItem, TeamChip, ...
 │   ├── pages/              index, scores, tools/, stats/, articles/, about, 404
 │   ├── content/articles/   MDX articles (content collection)
+│   ├── content/charts/     Tyler's charts: <slug>.md entry next to <slug>.svg
 │   └── data/               JSON consumed at build time (mock now, pipeline output later)
+├── public/logos/           team logos for charts (pipelines/build_logos.py)
 ├── pipelines/              Python jobs: run_daily.py (ticker, leaders), build_teams.py
+│   └── charts/             style.py (shared chart style), auto.py (auto chart), build.py
+│       └── mine/           Tyler's chart scripts (his; do not edit)
 ├── models/                 exported model files (empty for now)
 └── .github/workflows/      deploy.yml, daily.yml (weekly.yml later)
 ```
@@ -106,6 +115,23 @@ tylernfl/
   fields (score, round, overtime, closing spread, temperature). It covers games since 1999 and nothing
   else, so no hand-written history. Washington is named by city in every season, and relocated teams
   link to today's franchise page.
+- `charts/auto.json` and `charts/auto.svg` are the home page's auto chart, drawn by
+  `pipelines/charts/auto.py` at the end of `run_daily.py` from the files it just wrote
+  and `team_stats.json`. The morning after a game day it is win probability of that
+  day's closest game (smallest margin, ties to the later kickoff; from play-by-play
+  through `pbp_cache.py`, skipped if nflverse has not published the game yet). Other
+  days the date picks between offense vs defense EPA and a top 5 yards race (from
+  week 4), so a rerun gives the same chart. Win probability and EPA are nflfastR's
+  published values, not a model of this site's, and the chart's source line says so;
+  when Tyler's win probability model exists, the WP template should use it. It is
+  shown only when none of Tyler's charts is featured, labeled "Auto chart", and never
+  appears in the `/charts` gallery.
+- Team logos in `public/logos/<ABBR>.png` come from nflverse team data
+  (`team_logo_squared`, hosted by nflverse), fetched by `pipelines/build_logos.py`, run
+  by hand after a rebrand. Never ESPN's column. nflverse's Wikipedia links were stale
+  when this was set up (dead thumbnail widths, and KC and LAR renamed). Charts do not
+  embed logos: `style.py` writes `href="logo:BUF"` and the site resolves it under the
+  base path (`resolveLogos` in `src/lib/charts/collection.ts`).
 - `model_record.json` stays a placeholder until the 4th down model exists. It is the only
   placeholder data left on the site.
 - The home page's notable performances panel is derived at build time from the
@@ -188,6 +214,27 @@ linked from the ticker's week label.
   the front: the value here is a stable week, and a slate kicking off together
   already groups them.
 
+### Charts
+
+- Every chart is drawn through `pipelines/charts/style.py`, which reads colors and fonts
+  from `tokens.css`. Charts go on the page inline, not as `<img>`, so their text is set
+  in the site's self-hosted fonts and their logos load from the site. `style.save()`
+  makes the SVG safe to inline: ids prefixed with the slug, matplotlib's global style
+  rule scoped to the chart, no fixed size, no creation date (redraws are byte-identical).
+- Each chart is one image to a screen reader: `role="img"`, named by its title and
+  described by its note.
+- No title inside a chart; the page shows it. Yellow only as a background band, never a
+  line, dot or text. Series colors are `style.SERIES`, all 3:1 or better on white.
+  Label lines at their ends (`style.label_ends`, which keeps labels apart) rather than
+  with a legend or color alone. Team logos (`style.team_logo`) stand in for team labels.
+- `/charts` is Tyler's charts only: newest first, 12 to a page, a static page per tag
+  (`/charts/tag/<tag>/`, no script), and a page per chart with its note, date, author,
+  source and tags. Chart names cannot be all digits or `tag` (those URLs are taken).
+  The build fails on an entry with no SVG, a script not in `mine/`, or two featured.
+- The home page's chart panel is full width under the 4th down panel: Tyler's featured
+  chart with its date, else the auto chart labeled "Auto chart" with what its data
+  covers, else an empty state.
+
 ### Panel structure
 
 - Panels sit on the gray page with a 12px gap and a 1px `--rule` border.
@@ -228,11 +275,11 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
 8. Charts: a charts content collection with SVGs drawn by scripts in `pipelines/charts/`
    through a shared style module, a `/charts` gallery with tag filtering and a page per
    chart, and a featured chart on the home page (an auto-generated one when none is
-   featured). Plan first.
+   featured). Done; see Charts under Design direction.
 9. Curated posts: hand-added X and Bluesky posts as native quote cards with the author
    credited and the original linked, no embeds, no third-party scripts, never any post
    images, and a `/curated` page where the note carries as much weight as the quote.
-   Plan first.
+   Linked from the nav (Tyler changed this from an Articles page link).
 
 ## Articles
 

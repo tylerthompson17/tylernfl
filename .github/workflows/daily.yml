@@ -24,6 +24,8 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
+    env:
+      PBP_CACHE_DIR: ${{ github.workspace }}/pipelines/.cache/pbp
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -40,6 +42,17 @@ jobs:
 
       - name: Test pipelines
         run: python -m unittest discover -s pipelines
+
+      # The auto chart's win probability template reads play-by-play the
+      # morning after a game day. Same cache as weekly.yml (entries are
+      # immutable: each run saves under its run id, the next restores the
+      # newest by prefix), so the two jobs share one download.
+      - name: Restore play-by-play cache
+        uses: actions/cache@v6
+        with:
+          path: pipelines/.cache/pbp
+          key: pbp-${{ github.run_id }}
+          restore-keys: pbp-
 
       - name: Build site data
         run: python pipelines/run_daily.py

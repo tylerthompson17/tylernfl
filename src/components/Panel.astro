@@ -9,13 +9,15 @@ interface Props {
   flush?: boolean;
   /** Extra class for grid placement by the parent page */
   class?: string;
+  /** id for the title, for content that names itself by it (a chart) */
+  titleId?: string;
 }
 
-const { title, flush = false, class: className } = Astro.props;
+const { title, flush = false, class: className, titleId } = Astro.props;
 ---
 
 <section class:list={['panel', className]}>
-  {title && <h2 class="panel-title">{title}</h2>}
+  {title && <h2 class="panel-title" id={titleId}>{title}</h2>}
   <div class:list={['panel-body', { flush }]}>
     <slot />
   </div>
