@@ -207,7 +207,7 @@ def moment(play_id, qtr, remaining, before, after, **fields):
             'home_wp': before, 'home_wp_post': after, **fields}
 
 
-class KeyPlayTests(unittest.TestCase):
+class WinProbabilityLineTests(unittest.TestCase):
     def test_nflverse_quarters_are_floats_and_read_as_whole_quarters(self):
         self.assertEqual(auto.clock_label(4.0, 130.0), 'Q4 2:10')
         self.assertEqual(auto.clock_label(5.0, 313.0), 'OT 5:13')
@@ -362,6 +362,65 @@ class RenderTests(unittest.TestCase):
             style.save(fig, 'same', Path(tmp))
             self.assertEqual(path.stat().st_mtime_ns, first)
 
+
+
+@unittest.skipUnless(HAS_MATPLOTLIB, 'matplotlib not installed')
+class ArchiveTests(unittest.TestCase):
+    """Every auto chart is kept under its own slug for the gallery."""
+
+    def chart(self, slug, day, note='A note.'):
+        fig, ax = style.figure()
+        ax.plot([1, 2])
+        meta = {'template': 'epa', 'title': 'Offense and defense, EPA per play', 'note': note,
+                'asOf': '2026 season, through week 2', 'source': 'nflverse', 'date': day, 'tags': ['Auto', 'EPA']}
+        return meta, fig, slug, None
+
+    def write(self, chart, tmp):
+        import common
+        from unittest import mock
+        with mock.patch.object(common, 'DATA_DIR', tmp), mock.patch.object(auto, 'DATA_DIR', tmp):
+            return auto.write_auto_chart(chart)
+
+    def read(self, tmp, name):
+        import json
+        return json.loads((tmp / 'charts' / name).read_text())
+
+    def test_each_chart_is_kept_and_auto_json_names_the_latest(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            self.assertTrue(self.write(self.chart('auto-2026-week-1-offense-defense-epa', '2026-09-15'), tmp))
+            self.assertTrue(self.write(self.chart('auto-2026-week-2-offense-defense-epa', '2026-09-22'), tmp))
+            archive = sorted(p.name for p in (tmp / 'charts' / 'archive').iterdir())
+            self.assertEqual(archive, ['auto-2026-week-1-offense-defense-epa.json', 'auto-2026-week-1-offense-defense-epa.svg',
+                                       'auto-2026-week-2-offense-defense-epa.json', 'auto-2026-week-2-offense-defense-epa.svg'])
+            self.assertEqual(self.read(tmp, 'auto.json'), {'slug': 'auto-2026-week-2-offense-defense-epa'})
+
+    @unittest.skipUnless(importlib.util.find_spec('polars'), 'polars not installed')
+    def test_a_rams_game_is_drawn_as_lar(self):
+        from unittest import mock
+        game = {'game_id': '2026_02_DET_LA', 'season': 2026, 'week': 2, 'gameday': '2026-09-21',
+                'away_team': 'DET', 'home_team': 'LA', 'away_score': 20, 'home_score': 23}
+        seen = {}
+        def draw(g, points, plays):
+            seen.update(g)
+            return None, None
+        plays = [moment(1, 1, 3600, 0.5, 0.55, game_id=game['game_id'])]
+        import polars as pl
+        with mock.patch('pbp_cache.load_pbp', return_value=pl.DataFrame(plays)), mock.patch.object(auto, 'draw_wp', draw):
+            meta, _, slug, _ = auto._wp_chart(game, 2026)
+        self.assertEqual(seen['home_team'], 'LAR')
+        self.assertEqual(meta['title'], 'Win probability, DET at LAR')
+        self.assertEqual(slug, 'auto-2026-week-2-det-at-lar-win-probability')
+
+    def test_a_redraw_keeps_the_first_date_and_a_rerun_changes_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            slug = 'auto-2026-week-2-offense-defense-epa'
+            self.write(self.chart(slug, '2026-09-22'), tmp)
+            self.assertFalse(self.write(self.chart(slug, '2026-09-22'), tmp))
+            self.assertTrue(self.write(self.chart(slug, '2026-09-24', note='Corrected.'), tmp))
+            entry = self.read(tmp, f'archive/{slug}.json')
+            self.assertEqual((entry['date'], entry['note']), ('2026-09-22', 'Corrected.'))
 
 
 class HoverTests(unittest.TestCase):

@@ -78,6 +78,7 @@ const leaderColumns = [
           <ChartFigure svg={auto.svg} titleId="home-chart-title" note={auto.data.note} id="home-chart" hover={auto.hover}>
             <p class="chart-meta">
               <span class="auto-label">Auto chart</span> {auto.data.asOf}. Source: {auto.data.source}.{' '}
+              <a href={url(`charts/${auto.id}`)}>Chart page</a>{' '}
               <a href={url('charts')}>All charts</a>
             </p>
           </ChartFigure>

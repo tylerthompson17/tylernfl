@@ -73,3 +73,10 @@ test('the chart is one image named by its title and described by its note', () =
     '<svg role="img" aria-labelledby="t" aria-describedby="n" focusable="false" class="chart-svg" viewBox="0 0 720 405"><g/></svg>'
   );
 });
+
+test("a chart of Tyler's cannot take a kept auto chart's name", () => {
+  const slug = 'auto-2026-week-2-ind-at-kc-win-probability';
+  const problems = chartProblems([entry(slug)], new Set([slug]), new Set([`${slug.replace(/-/g, '_')}.py`]), new Set([slug]));
+  assert.equal(problems.length, 1);
+  assert.match(problems[0]!, /a kept auto chart already has it/);
+});

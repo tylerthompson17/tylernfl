@@ -135,7 +135,7 @@ tylernfl/
   fields (score, round, overtime, closing spread, temperature). It covers games since 1999 and nothing
   else, so no hand-written history. Washington is named by city in every season, and relocated teams
   link to today's franchise page.
-- `charts/auto.json` and `charts/auto.svg` are the home page's auto chart, drawn by
+- The auto chart is drawn by
   `pipelines/charts/auto.py` at the end of `run_daily.py` from the files it just wrote
   and `team_stats.json`. The morning after a game day it is win probability of that
   day's closest game (smallest margin, ties to the later kickoff; from play-by-play
@@ -145,9 +145,16 @@ tylernfl/
   play callouts were tried and removed); the hover readout names each play. Win
   probability and EPA are nflfastR's
   published values, not a model of this site's, and the chart's source line says so;
-  when Tyler's win probability model exists, the WP template should use it. It is
-  shown only when none of Tyler's charts is featured, labeled "Auto chart", and never
-  appears in the `/charts` gallery.
+  when Tyler's win probability model exists, the WP template should use it.
+- Every auto chart is kept: `charts/archive/<slug>.{json,svg,hover.json}`, one set per
+  chart, and `charts/auto.json` names today's (`{"slug": ...}`). The slug says what the
+  chart covers (`auto-2026-week-2-ind-at-kc-win-probability`,
+  `auto-2026-week-2-offense-defense-epa`, `auto-2026-week-5-rushing-yards-race`), so a
+  rerun, or another day drawing the same week's EPA or race, redraws that entry rather
+  than adding a near copy; a redrawn entry keeps the date it was first drawn (a WP
+  chart's date is its game's). The home page shows today's only when none of Tyler's
+  charts is featured, labeled "Auto chart". The 2026 WP charts before this was added
+  were backfilled by hand; nothing earlier was kept.
 - Team logos in `public/logos/<ABBR>.png` come from nflverse team data
   (`team_logo_squared`, hosted by nflverse), fetched by `pipelines/build_logos.py`, run
   by hand after a rebrand. Never ESPN's column. nflverse's Wikipedia links were stale
@@ -303,10 +310,13 @@ linked from the ticker's week label.
   who is favored after it, what happened, the swing when at least 1%; marker rows and
   unnamed stoppages left out, timeouts named), plus kickoff and the result; the EPA
   scatter, each team's values and ranks; the yards race, each week's totals.
-- `/charts` is Tyler's charts only: newest first, 12 to a page, a static page per tag
+- `/charts` lists Tyler's charts and every kept auto chart together: newest first, 12 to a page, a static page per tag
   (`/charts/tag/<tag>/`, no script), and a page per chart with its note, date, author,
   source and tags. Chart names cannot be all digits or `tag` (those URLs are taken).
-  The build fails on an entry with no SVG, a script not in `mine/`, or two featured.
+  The build fails on an entry with no SVG, a script not in `mine/`, two featured, or a
+  name a kept auto chart already has. Auto charts are bylined "Auto chart" and tagged
+  Auto plus their kind (Win probability, EPA, Yards race), so `/charts/tag/auto/` is
+  all of them. Only Tyler's can be featured.
 - The home page's chart panel is full width under the 4th down panel: Tyler's featured
   chart with its date, else the auto chart labeled "Auto chart" with what its data
   covers, else an empty state.

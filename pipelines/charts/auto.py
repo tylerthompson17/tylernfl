@@ -1,8 +1,12 @@
 """The auto chart: drawn daily by run_daily.py for the home page's chart
-panel, shown only when no chart of Tyler's is marked featured. It never
-appears in the /charts gallery, which is Tyler's charts only.
+panel, shown only when no chart of Tyler's is marked featured. Every one
+drawn is kept and listed in the /charts gallery beside Tyler's, tagged Auto.
 
-Writes src/data/charts/auto.svg and src/data/charts/auto.json.
+Writes src/data/charts/archive/<slug>.{json,svg,hover.json}, one set per
+chart, and src/data/charts/auto.json, which names today's. A chart's slug
+says what it covers (auto-2026-week-2-ind-at-kc-win-probability), so a rerun,
+or another day drawing the same template from the same week's data,
+redraws that entry instead of adding a near copy.
 
 Which template runs:
 
@@ -481,7 +485,7 @@ def build_auto_chart(today: date, schedule_rows: list[dict], current_season: int
     receiving = _read('stats/receiving.json') or {}
     template = pick_other(other_templates(team_stats, receiving.get('throughWeek') or 0), today)
     if template == 'epa':
-        return _epa_chart(team_stats)
+        return _epa_chart(team_stats, today)
     if template == 'race':
         return _race_chart(today)
     return None
@@ -489,6 +493,9 @@ def build_auto_chart(today: date, schedule_rows: list[dict], current_season: int
 
 def _wp_chart(game: dict, current_season: int):
     from pbp_cache import load_pbp
+
+    # nflverse schedules call the Rams LA; the site's logos and pages say LAR.
+    game = {**game, 'away_team': normalize_team(game['away_team']), 'home_team': normalize_team(game['home_team'])}
 
     pbp = load_pbp(game['season'], current_season)
     if pbp is None:
@@ -511,21 +518,26 @@ def _wp_chart(game: dict, current_season: int):
         'note': wp_note(game, plays),
         'asOf': f'{day:%a}, {day:%b} {day.day}',
         'source': 'nflverse play-by-play, win probability from the nflfastR model',
+        'date': game['gameday'],
+        'tags': ['Auto', 'Win probability'],
     }
     fig, hover = draw_wp(game, points, plays)
-    return meta, fig, 'auto', hover
+    slug = f"auto-{game['season']}-week-{game['week']}-{game['away_team']}-at-{game['home_team']}-win-probability"
+    return meta, fig, slug.lower(), hover
 
 
-def _epa_chart(team_stats: dict):
+def _epa_chart(team_stats: dict, today: date):
     meta = {
         'template': 'epa',
         'title': 'Offense and defense, EPA per play',
         'note': epa_note(team_stats),
         'asOf': f"{team_stats['season']} season, through week {team_stats['throughWeek']}",
         'source': 'nflverse play-by-play, EPA from the nflfastR model',
+        'date': today.isoformat(),
+        'tags': ['Auto', 'EPA'],
     }
     fig, hover = draw_epa(team_stats)
-    return meta, fig, 'auto', hover
+    return meta, fig, f"auto-{team_stats['season']}-week-{team_stats['throughWeek']}-offense-defense-epa", hover
 
 
 def _race_chart(today: date):
@@ -541,20 +553,34 @@ def _race_chart(today: date):
         'note': race_note(label, series),
         'asOf': f'{season} season, through week {last}',
         'source': 'nflverse weekly player stats',
+        'date': today.isoformat(),
+        'tags': ['Auto', 'Yards race'],
     }
     fig, hover = draw_race(label, last, series)
-    return meta, fig, 'auto', hover
+    return meta, fig, f'auto-{season}-week-{last}-{board}-yards-race', hover
 
 
 def write_auto_chart(chart) -> bool:
-    """Write src/data/charts/auto.{json,svg,hover.json}. True when any changed."""
+    """Write the chart to src/data/charts/archive/ and point
+    src/data/charts/auto.json at it. True when any file changed.
+
+    A redrawn entry keeps the date it was first drawn on, so the gallery's
+    order does not shift when the same week's chart comes round again.
+    """
     from common import write_json_if_changed
 
     if chart is None:
         return False
     meta, fig, slug, hover = chart
-    files = [DATA_DIR / 'charts' / f'auto{ext}' for ext in ('.svg', '.hover.json')]
+    archive = DATA_DIR / 'charts' / 'archive'
+    files = [archive / f'{slug}{ext}' for ext in ('.svg', '.hover.json')]
     before = [f.read_text() if f.exists() else None for f in files]
-    style.save(fig, slug, DATA_DIR / 'charts', hover=hover)
+    style.save(fig, slug, archive, hover=hover)
     after = [f.read_text() if f.exists() else None for f in files]
-    return write_json_if_changed('charts/auto.json', meta) or before != after
+
+    entry = archive / f'{slug}.json'
+    if entry.exists():
+        meta = {**meta, 'date': json.loads(entry.read_text())['date']}
+    changed = write_json_if_changed(f'charts/archive/{slug}.json', meta)
+    changed = write_json_if_changed('charts/auto.json', {'slug': slug}) or changed
+    return changed or before != after

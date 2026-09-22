@@ -28,10 +28,14 @@ export function reservedSlug(slug: string): boolean {
 export function chartProblems(
   entries: ChartCheck[],
   svgSlugs: Set<string>,
-  scripts: Set<string>
+  scripts: Set<string>,
+  autoSlugs: Set<string> = new Set()
 ): string[] {
   const problems: string[] = [];
   for (const entry of entries) {
+    if (autoSlugs.has(entry.slug)) {
+      problems.push(`"${entry.slug}" cannot be a chart name: a kept auto chart already has it. Rename ${entry.slug}.md and its SVG.`);
+    }
     if (reservedSlug(entry.slug)) {
       problems.push(`"${entry.slug}" cannot be a chart name: it is taken by the gallery's own pages.`);
     }

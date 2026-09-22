@@ -333,17 +333,30 @@ export interface PlayerLogsData {
 }
 
 /**
- * charts/auto.json: the home page's auto chart, drawn daily by
- * pipelines/charts/auto.py next to charts/auto.svg. Shown only when none
- * of Tyler's charts is featured, and never in the /charts gallery.
+ * charts/auto.json: which kept auto chart is today's. The home page shows
+ * it when none of Tyler's charts is featured.
  */
 export interface AutoChartData {
+  /** Names charts/archive/<slug>.json, .svg and .hover.json */
+  slug: string;
+}
+
+/**
+ * charts/archive/<slug>.json: one auto chart, drawn by
+ * pipelines/charts/auto.py beside <slug>.svg (and <slug>.hover.json).
+ * Every one is kept and listed in the /charts gallery.
+ */
+export interface ArchivedAutoChart {
   template: 'epa' | 'wp' | 'race';
   title: string;
   note: string;
   /** What the data covers, e.g. "2026 season, through week 2" or "Sun, Sep 20" */
   asOf: string;
   source: string;
+  /** YYYY-MM-DD: the game's date for win probability, else the day first drawn */
+  date: string;
+  /** Always starts with "Auto" */
+  tags: string[];
 }
 
 /**

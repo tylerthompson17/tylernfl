@@ -2,7 +2,8 @@
 rosters/, transactions.json, on_this_day.json, standings.json,
 schedule.json and playoff_odds.json into
 src/data/, then draws
-the home page's auto chart (charts/auto.svg and charts/auto.json) from them.
+the home page's auto chart (charts/auto.json and its entry in charts/archive/)
+from them.
 
 Run from the repo root:
     pip install -r pipelines/requirements.txt
