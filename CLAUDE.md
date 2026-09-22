@@ -52,6 +52,12 @@ tylernfl/
 - `astro.config.mjs`: `site: 'https://tylerthompson17.github.io'`, `base: '/tylernfl'`.
 - Every internal link and asset path must respect the base path (use `import.meta.env.BASE_URL` or a small `url()` helper). Hardcoded `/stats` style links will break in production.
 - Deploy with the official `withastro/action` on push to `main`.
+- CSS is inlined into every page (`build.inlineStylesheets: 'always'`, about 3 KB gzipped
+  per page). GitHub Pages lets browsers and its CDN keep a page for 10 minutes
+  (`max-age=600`) and each deploy replaces the whole site, so a page cached before a
+  deploy used to ask for the previous build's stylesheet, get a 404, and load unstyled.
+  Keep it inlined. Scripts are still separate files: a page cached across a deploy can load
+  without its ticker, carousel and search until reloaded (it still looks right).
 
 ## Data contract
 
