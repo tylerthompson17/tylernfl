@@ -520,6 +520,7 @@ def _wp_chart(game: dict, current_season: int):
         'source': 'nflverse play-by-play, win probability from the nflfastR model',
         'date': game['gameday'],
         'tags': ['Auto', 'Win probability'],
+        'teams': [game['away_team'], game['home_team']],
     }
     fig, hover = draw_wp(game, points, plays)
     slug = f"auto-{game['season']}-week-{game['week']}-{game['away_team']}-at-{game['home_team']}-win-probability"

@@ -61,6 +61,7 @@ function autoCharts(): Chart[] {
       date: new Date(`${entry.date}T00:00:00Z`),
       author: AUTO_AUTHOR,
       tags: entry.tags,
+      teams: entry.teams ?? [],
       source: entry.source,
       note: entry.note,
       featured: false,
@@ -93,7 +94,11 @@ export async function getCharts(): Promise<Chart[]> {
   if (problems.length > 0) throw new Error(`Charts collection:\n- ${problems.join('\n- ')}`);
 
   const mine: Chart[] = all.map(({ id, data: { script: _, ...data } }) => ({ id, data, auto: false }));
-  return [...mine, ...autoCharts()]
+  const charts = [...mine, ...autoCharts()];
+  const unknown = charts.flatMap((chart) => chart.data.teams.filter((team) => !teams.has(team)).map((team) => `${chart.id} names ${team}`));
+  if (unknown.length > 0) throw new Error(`Charts name teams that do not exist:\n- ${unknown.join('\n- ')}`);
+
+  return charts
     .filter((chart) => import.meta.env.DEV || !chart.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title));
 }

@@ -53,6 +53,8 @@ const charts = defineCollection({
       featured: z.boolean().default(false),
       /** Filename of the script in pipelines/charts/mine/ that draws it. */
       script: z.string().regex(/^[\w-]+\.py$/),
+      /** Teams the chart is about, as abbreviations; their logos go on its gallery card. */
+      teams: z.array(z.string()).default([]),
       draft: z.boolean().default(false),
     })
     .strict(),

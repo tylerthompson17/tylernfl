@@ -1,7 +1,10 @@
 ---
 /**
  * Charts (Tyler's and the kept auto charts) as a grid of cards, newest first: the /charts gallery and
- * each tag's page. Each card links to the chart's own page.
+ * each tag's page. Each card links to the chart's own page. A chart about
+ * particular teams shows their logos beside its title, since the ones drawn
+ * inside the chart are too small to read at thumbnail size. The title
+ * already names the teams, so the logos are decorative.
  */
 import Panel from './Panel.astro';
 import ChartFigure from './ChartFigure.astro';
@@ -24,9 +27,18 @@ const { charts } = Astro.props;
           {formatChartDate(chart.data.date)}, {chart.data.author}
           {chart.data.draft && <span class="draft">Draft</span>}
         </p>
-        <h2 class="title" id={`${chart.id}-title`}>
-          <a href={url(`charts/${chart.id}`)}>{chart.data.title}</a>
-        </h2>
+        <div class="heading">
+          {chart.data.teams.length > 0 && (
+            <span class="logos">
+              {chart.data.teams.map((team) => (
+                <img src={url(`logos/${team}.png`)} alt="" width="24" height="24" loading="lazy" decoding="async" />
+              ))}
+            </span>
+          )}
+          <h2 class="title" id={`${chart.id}-title`}>
+            <a href={url(`charts/${chart.id}`)}>{chart.data.title}</a>
+          </h2>
+        </div>
         <ChartFigure svg={svgFor(chart)} titleId={`${chart.id}-title`} note={chart.data.note} id={chart.id} size="thumb">
           {chart.data.tags.length > 0 && (
             <p class="tags">
@@ -61,9 +73,28 @@ const { charts } = Astro.props;
     color: var(--text);
   }
 
+  .heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: var(--space-1) 0 var(--space-2);
+  }
+
+  .logos {
+    display: flex;
+    flex: none;
+    gap: var(--space-1);
+  }
+
+  .logos img {
+    display: block;
+    width: 24px;
+    height: 24px;
+  }
+
   .title {
     font-size: 16px;
-    margin: var(--space-1) 0 var(--space-2);
+    margin: 0;
   }
 
   .tags {

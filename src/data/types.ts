@@ -357,6 +357,8 @@ export interface ArchivedAutoChart {
   date: string;
   /** Always starts with "Auto" */
   tags: string[];
+  /** The teams a chart is about, away then home, shown as logos on its gallery card */
+  teams?: string[];
 }
 
 /**

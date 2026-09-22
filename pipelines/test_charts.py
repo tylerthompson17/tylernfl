@@ -410,6 +410,7 @@ class ArchiveTests(unittest.TestCase):
             meta, _, slug, _ = auto._wp_chart(game, 2026)
         self.assertEqual(seen['home_team'], 'LAR')
         self.assertEqual(meta['title'], 'Win probability, DET at LAR')
+        self.assertEqual(meta['teams'], ['DET', 'LAR'])
         self.assertEqual(slug, 'auto-2026-week-2-det-at-lar-win-probability')
 
     def test_a_redraw_keeps_the_first_date_and_a_rerun_changes_nothing(self):
