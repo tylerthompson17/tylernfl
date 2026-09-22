@@ -1,0 +1,186 @@
+---
+/**
+ * The frame every team page shares: the team's name, a header strip
+ * (record, division place, point differential, next game) and the tabs.
+ * Each tab is its own static page, so every tab has a URL and nothing
+ * needs a script. Playoff odds join the strip once they exist.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TeamChip from '../TeamChip.astro';
+import type { Team } from '../../data/types';
+import { easternDate, headerFacts } from '../../utils/teams';
+import { url } from '../../utils/url';
+
+export type TeamTab = 'overview' | 'schedule' | 'roster' | 'stats' | 'transactions';
+
+interface Props {
+  team: Team;
+  tab: TeamTab;
+}
+
+const { team, tab } = Astro.props;
+const facts = headerFacts(team.abbr);
+
+const tabs: { key: TeamTab; label: string; path: string }[] = [
+  { key: 'overview', label: 'Overview', path: `teams/${team.abbr}` },
+  { key: 'schedule', label: 'Schedule', path: `teams/${team.abbr}/schedule` },
+  { key: 'roster', label: 'Roster', path: `teams/${team.abbr}/roster` },
+  { key: 'stats', label: 'Stats', path: `teams/${team.abbr}/stats` },
+  { key: 'transactions', label: 'Transactions', path: `teams/${team.abbr}/transactions` },
+];
+const current = tabs.find((t) => t.key === tab)!;
+const title = tab === 'overview' ? team.name : `${team.name} ${current.label.toLowerCase()}`;
+const next = facts.next;
+---
+
+<BaseLayout title={title} description={`${team.name}: record, schedule, roster, stats and transactions.`}>
+  <h1 class="page-title team-heading">
+    <TeamChip abbr={team.abbr} />
+    {team.name}
+  </h1>
+
+  <dl class="strip">
+    <div>
+      <dt>{facts.lastSeason ? 'Last season' : 'Record'}</dt>
+      <dd class="num">{facts.record ?? '0-0'}</dd>
+    </div>
+    <div>
+      <dt>Division</dt>
+      <dd>{facts.place ?? team.division}</dd>
+    </div>
+    <div>
+      <dt>Point differential</dt>
+      <dd class="num">{facts.diff ?? '0'}</dd>
+    </div>
+    <div class="next">
+      <dt>Next game</dt>
+      <dd>
+        {
+          next ? (
+            <>
+              <span>
+                {next.game.type === 'REG' ? `Week ${next.game.week}` : 'Playoffs'}:{' '}
+                {next.home || next.game.neutral ? 'vs' : 'at'}{' '}
+                <a href={url(`teams/${next.opponent}`)}>{next.opponent}</a>,{' '}
+                <span data-local-kickoff="datetime" data-kickoff={next.game.kickoff ?? undefined}>
+                  {easternDate(next.game.kickoff, 'datetime')}
+                </span>
+              </span>
+              {facts.nextLine && <span class="line">{facts.nextLine}</span>}
+            </>
+          ) : (
+            'Season over'
+          )
+        }
+      </dd>
+    </div>
+  </dl>
+
+  <nav class="tabs" aria-label={`${team.name} pages`}>
+    <ul>
+      {
+        tabs.map((t) => (
+          <li>
+            <a href={url(t.path)} aria-current={t.key === tab ? 'page' : undefined}>
+              {t.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <slot />
+</BaseLayout>
+
+<style>
+  .team-heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  /* Header strip: the season at a glance, boxed like a panel row. */
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(3, auto) minmax(0, 1fr);
+    margin: 0 0 var(--space-3);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+  }
+
+  .strip > div {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .strip > div + div {
+    border-left: 1px solid var(--rule);
+  }
+
+  dt {
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  dd {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .next dd {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    align-items: baseline;
+    font-size: 15px;
+  }
+
+  .line {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* Tabs: links in a row on the slate bar; the open one is white. */
+  .tabs ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-3);
+    border-bottom: 2px solid var(--header);
+  }
+
+  .tabs a {
+    display: block;
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--link);
+  }
+
+  .tabs a[aria-current='page'] {
+    background: var(--header);
+    color: var(--header-text);
+    text-decoration: none;
+  }
+
+  .tabs a[aria-current='page']:focus-visible {
+    outline-color: var(--header-text);
+  }
+
+  @media (max-width: 760px) {
+    .strip {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .strip > .next {
+      grid-column: 1 / -1;
+      border-left: 0;
+      border-top: 1px solid var(--rule);
+    }
+  }
+</style>

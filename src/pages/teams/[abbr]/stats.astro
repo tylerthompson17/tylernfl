@@ -1,0 +1,107 @@
+---
+/**
+ * A team's stats: offense and defense with league ranks, then each
+ * leaderboard's rows for this team's players (season totals, the board's
+ * own columns), then its players on the EPA lists.
+ */
+import TeamHub from '../../../components/team/TeamHub.astro';
+import Panel from '../../../components/Panel.astro';
+import StatTable from '../../../components/StatTable.astro';
+import TeamStatsPanel from '../../../components/team/TeamStatsPanel.astro';
+import teamsData from '../../../data/teams.json';
+import type { Team, TeamsData } from '../../../data/types';
+import { formatCell } from '../../../lib/leaderboard/arrange';
+import { formatStat } from '../../../utils/format';
+import { leaderboards } from '../../../utils/leaderboards';
+import { playerEpa } from '../../../utils/overview';
+import { slugForPlayer } from '../../../utils/players';
+import { url } from '../../../utils/url';
+
+export function getStaticPaths() {
+  return (teamsData as TeamsData).map((team) => ({ params: { abbr: team.abbr }, props: { team } }));
+}
+
+const { team } = Astro.props as { team: Team };
+
+const boards = leaderboards.map((board) => {
+  const primary = board.columns.find((c) => c.key === board.primary)!;
+  const rows = board.rows
+    .filter((row) => row.team === team.abbr)
+    .sort((a, b) => (b.values[primary.key] ?? 0) - (a.values[primary.key] ?? 0) || a.player.localeCompare(b.player))
+    .map((row) => ({
+      player: row.player,
+      slug: slugForPlayer(row.playerId, row.player),
+      rank: row.rank,
+      ...Object.fromEntries(board.columns.map((c) => [c.key, formatCell(row.values[c.key] ?? null, c, 'totals')])),
+    }));
+  const columns = [
+    { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
+    ...board.columns.map((c) => ({ key: c.key, label: c.label, kind: 'number' as const })),
+    { key: 'rank', label: 'NFL rank', kind: 'number' as const },
+  ];
+  return { board, rows, columns, primary };
+});
+
+const epa = playerEpa.categories.map((category) => ({
+  category,
+  rows: category.rows
+    .filter((row) => row.team === team.abbr)
+    .map((row) => ({
+      player: row.player,
+      slug: slugForPlayer(row.playerId, row.player),
+      value: formatStat(row.value, 'signed3'),
+      plays: row.plays,
+      rank: row.rank,
+    })),
+}));
+---
+
+<TeamHub team={team} tab="stats">
+  <div class="content-grid">
+    <TeamStatsPanel team={team} />
+    {
+      boards.map(({ board, rows, columns, primary }) => (
+        <Panel title={board.label}>
+          <StatTable
+            columns={columns}
+            rows={rows}
+            caption={`${team.name} ${board.label.toLowerCase()}`}
+            emptyText={`No ${team.name} players on the ${board.label.toLowerCase()} leaderboard yet.`}
+          />
+          <p class="table-foot">
+            Season totals through week {board.throughWeek}, most {primary.title.toLowerCase()} first. NFL rank is by{' '}
+            {primary.title.toLowerCase()}. <a href={url(`stats/${board.key}`)}>Full {board.label.toLowerCase()} leaderboard</a>
+          </p>
+        </Panel>
+      ))
+    }
+    {
+      epa.map(({ category, rows }) => (
+        <Panel title={category.label}>
+          <StatTable
+            columns={[
+              { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
+              { key: 'value', label: category.valueLabel, kind: 'number' as const },
+              { key: 'plays', label: category.playsLabel, kind: 'number' as const },
+              { key: 'rank', label: 'NFL rank', kind: 'number' as const },
+            ]}
+            rows={rows}
+            caption={`${team.name} ${category.label.toLowerCase()}`}
+            emptyText={`No ${team.name} player qualifies yet. ${category.qualifier.text}`}
+          />
+          <p class="table-foot">
+            Through week {playerEpa.throughWeek}; updated Wednesdays. {category.qualifier.text} EPA is nflfastR's.
+          </p>
+        </Panel>
+      ))
+    }
+  </div>
+</TeamHub>
+
+<style>
+  .table-foot {
+    margin-top: var(--space-2);
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+</style>

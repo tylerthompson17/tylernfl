@@ -1,0 +1,49 @@
+---
+/** A team's offense and defense from team_stats.json, with league ranks. */
+import Panel from '../Panel.astro';
+import StatTable from '../StatTable.astro';
+import type { Team } from '../../data/types';
+import { isSmallSample, rankLabel, SMALL_SAMPLE_NOTE, teamLine, teamPanelRows, teamStats } from '../../utils/team-stats';
+import { url } from '../../utils/url';
+
+interface Props {
+  team: Team;
+}
+
+const { team } = Astro.props;
+const statLine = teamLine(team.abbr);
+const small = statLine !== undefined && isSmallSample(statLine.games);
+const columns = [
+  { key: 'measure', label: 'Measure' },
+  { key: 'offValue', label: 'Value', kind: 'number' as const, group: 'Offense' },
+  { key: 'offRank', label: rankLabel(small), kind: 'number' as const, group: 'Offense' },
+  { key: 'offSample', label: 'Sample', kind: 'number' as const, group: 'Offense' },
+  { key: 'defValue', label: 'Value', kind: 'number' as const, group: 'Defense' },
+  { key: 'defRank', label: rankLabel(small), kind: 'number' as const, group: 'Defense' },
+  { key: 'defSample', label: 'Sample', kind: 'number' as const, group: 'Defense' },
+];
+---
+
+<Panel title={`${teamStats.season} team stats`}>
+  {
+    statLine ? (
+      <>
+        <StatTable columns={columns} rows={teamPanelRows(statLine)} caption={`${team.name} offense and defense, with league ranks`} />
+        <p class="table-foot">
+          Through week {teamStats.throughWeek}, {statLine.games} {statLine.games === 1 ? 'game' : 'games'}. Ranks are out
+          of 32; on defense the lowest value allowed ranks first. <a href={url('stats/teams')}>All team stats</a>
+        </p>
+        {small && <p class="table-foot">{SMALL_SAMPLE_NOTE}</p>}
+      </>
+    ) : (
+      <p class="placeholder-note">No games played yet. Team stats appear after week 1.</p>
+    )
+  }
+</Panel>
+
+<style>
+  .table-foot {
+    margin-top: var(--space-3);
+    color: var(--text-dim);
+  }
+</style>

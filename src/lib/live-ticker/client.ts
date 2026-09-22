@@ -14,7 +14,7 @@
 
 import { LIVE_TICKER_ENABLED } from '../../config.ts';
 import { parseScoreboard, scoreboardUrl, type LiveGame } from './espn.ts';
-import { formatKickoff } from './kickoff.ts';
+import { formatKickoff, formatKickoffDate } from './kickoff.ts';
 import { scoreChanged, stripInsertIndex } from './pin.ts';
 import { describeLastScore, matchesScore, parseLastScore, summaryUrl } from './scoring.ts';
 import {
@@ -41,7 +41,8 @@ function slotsFor(espnId: string): NodeListOf<HTMLElement> {
 /**
  * Eastern times written at build time, rewritten in the visitor's zone: the
  * kickoff in each upcoming game that carries one (ticker slots, the rail's
- * schedule), and each kickoff heading on the scoreboard page. Scoreboard
+ * schedule), each kickoff heading on the scoreboard page, and dates on
+ * team pages. Scoreboard
  * boxes have no kickoff of their own; the heading above them carries it.
  */
 export function localizeKickoffs(): void {
@@ -53,6 +54,13 @@ export function localizeKickoffs(): void {
   for (const heading of document.querySelectorAll<HTMLElement>('[data-slot-label][data-kickoff]')) {
     const text = formatKickoff(heading.dataset.kickoff!);
     if (text) heading.textContent = text;
+  }
+  // Dates on team pages (schedules, the next game): data-local-kickoff is
+  // "date" or "datetime", data-kickoff the UTC kickoff.
+  for (const el of document.querySelectorAll<HTMLElement>('[data-local-kickoff][data-kickoff]')) {
+    const style = el.dataset.localKickoff === 'date' ? 'date' : 'datetime';
+    const text = formatKickoffDate(el.dataset.kickoff!, style);
+    if (text) el.textContent = text;
   }
 }
 

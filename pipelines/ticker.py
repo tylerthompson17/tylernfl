@@ -167,5 +167,7 @@ def load_schedule_rows(today: date) -> list[dict]:
     columns = [
         'game_id', 'season', 'game_type', 'week', 'gameday', 'gametime',
         'away_team', 'away_score', 'home_team', 'home_score', 'overtime', 'espn',
+        # For schedule.json and playoff odds; the ticker ignores them.
+        'div_game', 'location', 'spread_line', 'away_moneyline', 'home_moneyline',
     ]
     return schedules.select(columns).drop_nulls(['gameday']).to_dicts()

@@ -13,9 +13,11 @@ import { formatPct, formatSigned, formatRecord } from '../utils/standings';
 interface Props {
   teams: TeamStanding[];
   caption: string;
+  /** A team whose row is highlighted, on its own team page */
+  highlight?: string;
 }
 
-const { teams, caption } = Astro.props;
+const { teams, caption, highlight } = Astro.props;
 const names = new Map((teamsData as TeamsData).map((t) => [t.abbr, t.name]));
 ---
 
@@ -40,7 +42,7 @@ const names = new Map((teamsData as TeamsData).map((t) => [t.abbr, t.name]));
     <tbody>
       {
         teams.map((t) => (
-          <tr>
+          <tr class:list={{ mine: t.team === highlight }} aria-current={t.team === highlight ? 'true' : undefined}>
             <th scope="row" class="team-cell">
               <TeamChip abbr={t.team} size="sm" />
               <a href={url(`teams/${t.team}`)}>{names.get(t.team) ?? t.team}</a>
@@ -70,12 +72,28 @@ const names = new Map((teamsData as TeamsData).map((t) => [t.abbr, t.name]));
     font-weight: 400;
   }
 
+  /* The page's own team: first-down yellow, as a background only. */
+  .mine td,
+  .mine th {
+    background: var(--highlight);
+  }
+
   .up {
     color: var(--win);
   }
 
   .down {
     color: var(--loss);
+  }
+
+  /* On yellow (this team's row, or any row under the pointer) the win
+     green falls under 4.5:1, so the numbers go to body text; the sign
+     still says which way. */
+  .mine .up,
+  .mine .down,
+  tr:hover .up,
+  tr:hover .down {
+    color: var(--text);
   }
 
   abbr {

@@ -1,0 +1,123 @@
+---
+/**
+ * A team's season from schedule.json. "full" (the Schedule tab): week,
+ * date, opponent, result or kickoff, the line, and the record after each
+ * game, with the bye week in its place. "compact" (the Overview): week,
+ * opponent, and the result or date. Dates are written in Eastern at build
+ * time and rewritten in the visitor's zone.
+ */
+import TeamChip from '../TeamChip.astro';
+import type { Team } from '../../data/types';
+import { lineText, resultText, type TeamGame } from '../../lib/teams/hub';
+import { easternDate, schedule, seasonOf } from '../../utils/teams';
+
+interface Props {
+  team: Team;
+  variant: 'full' | 'compact';
+}
+
+const { team, variant } = Astro.props;
+const games = seasonOf(team.abbr);
+const full = variant === 'full';
+
+const ROUNDS: Record<string, string> = { WC: 'Wild card', DIV: 'Divisional', CON: 'Conference', SB: 'Super Bowl' };
+
+type Row = { kind: 'game'; g: TeamGame } | { kind: 'bye'; week: number };
+const rows: Row[] = games.map((g) => ({ kind: 'game', g }));
+if (full) {
+  // The regular season week with no game is the bye.
+  const weeks = new Set(games.filter((g) => g.game.type === 'REG').map((g) => g.game.week));
+  const last = Math.max(0, ...weeks);
+  for (let week = 1; week < last; week++) {
+    if (weeks.has(week)) continue;
+    const at = rows.findIndex((r) => r.kind === 'game' && r.g.game.week > week);
+    rows.splice(at === -1 ? rows.length : at, 0, { kind: 'bye', week });
+  }
+}
+---
+
+{
+  games.length === 0 ? (
+    <p class="placeholder-note">The {schedule.season} schedule is not published yet.</p>
+  ) : (
+    <div class="stat-table-scroll" tabindex="0">
+      <table class="stat-table schedule">
+        <caption class="visually-hidden">{team.name} {schedule.season} schedule and results</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="number">Wk</th>
+            {full && <th scope="col">Date</th>}
+            <th scope="col">Opponent</th>
+            <th scope="col">{full ? 'Result' : 'Result or date'}</th>
+            {full && <th scope="col">Line</th>}
+            {full && <th scope="col" class="number">Record</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) =>
+            row.kind === 'bye' ? (
+              <tr class="bye">
+                <td class="number">{row.week}</td>
+                <td colspan={full ? 5 : 2}>Bye</td>
+              </tr>
+            ) : (
+              <tr class:list={{ won: row.g.result === 'W' }}>
+                <td class="number">{row.g.game.type === 'REG' ? row.g.game.week : ROUNDS[row.g.game.type]}</td>
+                {full && (
+                  <td>
+                    <span data-local-kickoff={row.g.result ? 'date' : 'datetime'} data-kickoff={row.g.game.kickoff ?? undefined}>
+                      {easternDate(row.g.game.kickoff, row.g.result ? 'date' : 'datetime')}
+                    </span>
+                  </td>
+                )}
+                <td class="opponent">
+                  <span class="where">{row.g.home || row.g.game.neutral ? 'vs' : 'at'}</span>
+                  <TeamChip abbr={row.g.opponent} size="sm" />
+                </td>
+                <td>
+                  {row.g.result ? (
+                    <span class="result">{resultText(row.g)}</span>
+                  ) : full ? (
+                    ''
+                  ) : (
+                    <span data-local-kickoff="date" data-kickoff={row.g.game.kickoff ?? undefined}>
+                      {easternDate(row.g.game.kickoff, 'date')}
+                    </span>
+                  )}
+                </td>
+                {full && <td>{lineText(row.g.game) ?? ''}</td>}
+                {full && <td class="number">{row.g.recordAfter ?? ''}</td>}
+              </tr>
+            )
+          )}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+<style>
+  .opponent {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .where {
+    min-width: 1.5em;
+    color: var(--text-dim);
+  }
+
+  /* Winners in bold, not colored. */
+  .won .result {
+    font-weight: 700;
+  }
+
+  .bye td {
+    color: var(--text-dim);
+  }
+
+  .placeholder-note {
+    color: var(--text-dim);
+  }
+</style>

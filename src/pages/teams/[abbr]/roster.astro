@@ -1,0 +1,17 @@
+---
+/** A team's roster and practice squad. */
+import TeamHub from '../../../components/team/TeamHub.astro';
+import TeamRoster from '../../../components/team/TeamRoster.astro';
+import teamsData from '../../../data/teams.json';
+import type { Team, TeamsData } from '../../../data/types';
+
+export function getStaticPaths() {
+  return (teamsData as TeamsData).map((team) => ({ params: { abbr: team.abbr }, props: { team } }));
+}
+
+const { team } = Astro.props as { team: Team };
+---
+
+<TeamHub team={team} tab="roster">
+  <div class="content-grid"><TeamRoster team={team} /></div>
+</TeamHub>

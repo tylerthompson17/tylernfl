@@ -71,7 +71,7 @@ tylernfl/
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `teams.json`, and the auto chart in `charts/`.
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `teams.json`, and the auto chart in `charts/`.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
@@ -165,6 +165,12 @@ tylernfl/
   nflseedR cannot resolve two of those weeks (2022 week 13, 2023 week 8: it stops with
   "infinite loop"); the port falls back to a coin toss there. Change the tiebreakers
   only with the fixtures still passing.
+- `schedule.json` is written daily by `pipelines/schedule.py`: every game of the ticker's
+  season (regular season and playoffs) with kickoff, scores, overtime, divisional and
+  neutral flags, and nflverse's lines as published (`spreadLine` is points the home team
+  is favored by, negative when the road team is; moneylines are American odds). Lines
+  appear about a week before a game and stay as they closed. Team pages and playoff odds
+  read it.
 - There is no placeholder data left. The 4th down model record panel and
   `model_record.json` were removed until the model exists; restore them from git history
   (commit "Replace the rail's model record placeholder") when it does.
@@ -288,6 +294,27 @@ linked from the ticker's week label.
   `/standings`. Before a season's first game it is titled with last season's final
   seeding, since that is what `standings.json` holds then.
 
+### Team pages
+
+- Each team is a hub of five static pages sharing one frame (`TeamHub.astro`): Overview
+  `/teams/BUF/`, Schedule, Roster, Stats, Transactions. The tabs are links with
+  `aria-current`, no script, so every tab has its own URL.
+- Header strip on every tab: record (or last season's, labeled, before week 1), division
+  place ("1st in AFC East"), point differential, and the next game (week, vs or at,
+  opponent, kickoff in the visitor's zone, the line when posted: "BUF by 7"). Playoff odds
+  join it with step 14.
+- Overview: the division's standings with this team's row highlighted, a compact schedule
+  and results, team leaders (the team's best in each stat leaders category with its NFL
+  rank), team stats with ranks, and the top of the week's moves and injuries.
+- Schedule: every game with date, opponent, result or kickoff, line and the record after
+  it, with the bye week in its place. Stats: team stats, then every leaderboard's rows for
+  this team's players, then its players on the EPA lists. Roster and Transactions are the
+  panels the old single team page had.
+- Dates on team pages are written in Eastern at build and rewritten in the visitor's zone
+  through `data-local-kickoff` ("date" or "datetime") with `data-kickoff`.
+- A highlighted (yellow) row sets win/loss colored numbers in body text, since the win
+  green is under 4.5:1 on yellow; the sign still carries it. Hovered standings rows too.
+
 ### Stat leaders page
 
 - `/stats` shows the top 5 in eight categories in equal panels (as many to a row as fit
@@ -397,9 +424,8 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
     weekly job, `leaders.json` retired (done; see Stat leaders page).
 12. Right rail: the model record placeholder removed, this week's games and the playoff
     picture added (done; see Right rail).
-13. Team hubs: header strip (record, division place, differential, playoff odds, next
-    game) and static tab pages (Overview, Schedule, Roster, Stats, Transactions). Adds
-    `schedule.json` (whole season, with lines) to the daily job.
+13. Team hubs with a header strip and five static tabs, and `schedule.json` in the daily
+    job (done; see Team pages). Playoff odds join the strip in step 14.
 14. Playoff odds: `playoff_odds.json` daily, 10,000 simulations with these tiebreakers.
     Game probabilities come in through one pluggable function; the default reads the
     moneylines with the bookmaker's margin removed. Games with no line yet count as 50/50,

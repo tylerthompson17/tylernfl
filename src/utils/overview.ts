@@ -136,3 +136,49 @@ export function leadersFor(key: string): Leaders | undefined {
 export function boardSeason(): number | null {
   return leaderboards[0]?.season ?? null;
 }
+
+export interface TeamLeader {
+  category: string;
+  player: string;
+  slug: string;
+  value: string;
+  /** League rank among everyone on the list, equal values sharing it */
+  rank: number;
+}
+
+/**
+ * A team's best player in each of the eight categories, with his league
+ * rank. Counting stats need more than zero; the EPA lists are qualified
+ * players only, so a team may have no one there early in the season.
+ */
+export function teamLeaders(team: string): TeamLeader[] {
+  const out: TeamLeader[] = [];
+  for (const spec of BOARD_PANELS) {
+    const data = board(spec.board);
+    if (!data) continue;
+    const column = data.columns.find((c) => c.key === spec.column)!;
+    const value = (row: BoardRow) => row.values[spec.column] ?? 0;
+    const mine = data.rows.filter((row) => row.team === team && value(row) > 0);
+    if (mine.length === 0) continue;
+    const best = mine.reduce((a, b) => (value(b) > value(a) || (value(b) === value(a) && b.player < a.player) ? b : a));
+    out.push({
+      category: spec.label,
+      player: best.player,
+      slug: slugForPlayer(best.playerId, best.player),
+      value: formatCell(value(best), column, 'totals'),
+      rank: 1 + data.rows.filter((row) => value(row) > value(best)).length,
+    });
+  }
+  for (const category of playerEpa.categories) {
+    const best = category.rows.find((row) => row.team === team);
+    if (!best) continue;
+    out.push({
+      category: category.label,
+      player: best.player,
+      slug: slugForPlayer(best.playerId, best.player),
+      value: formatStat(best.value, 'signed3'),
+      rank: best.rank,
+    });
+  }
+  return out;
+}

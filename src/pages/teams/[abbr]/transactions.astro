@@ -1,0 +1,17 @@
+---
+/** A team's roster moves and injury report for the week. */
+import TeamHub from '../../../components/team/TeamHub.astro';
+import TeamWire from '../../../components/team/TeamWire.astro';
+import teamsData from '../../../data/teams.json';
+import type { Team, TeamsData } from '../../../data/types';
+
+export function getStaticPaths() {
+  return (teamsData as TeamsData).map((team) => ({ params: { abbr: team.abbr }, props: { team } }));
+}
+
+const { team } = Astro.props as { team: Team };
+---
+
+<TeamHub team={team} tab="transactions">
+  <div class="content-grid"><TeamWire team={team} /></div>
+</TeamHub>

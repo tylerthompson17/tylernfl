@@ -1,0 +1,90 @@
+---
+/** A team's roster by position group, then its practice squad. */
+import Panel from '../Panel.astro';
+import StatTable from '../StatTable.astro';
+import type { RosterPlayer, Team } from '../../data/types';
+import { formatExperience, formatHeight } from '../../utils/format';
+import { groupPlayers, PRACTICE_SQUAD, rosterFor } from '../../utils/rosters';
+
+interface Props {
+  team: Team;
+}
+
+const { team } = Astro.props;
+const roster = rosterFor(team.abbr);
+const active = roster?.players.filter((p) => p.status !== PRACTICE_SQUAD) ?? [];
+const practiceSquad = roster?.players.filter((p) => p.status === PRACTICE_SQUAD) ?? [];
+
+function toRow(player: RosterPlayer) {
+  return {
+    number: player.number,
+    name: player.name,
+    slug: player.slug,
+    position: player.position,
+    status: player.statusLabel,
+    height: formatHeight(player.heightInches),
+    weight: player.weight,
+    age: player.age,
+    experience: formatExperience(player.experience),
+    college: player.college,
+  };
+}
+
+const rosterColumns = [
+  { key: 'number', label: 'No.', kind: 'number' as const },
+  { key: 'name', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
+  { key: 'position', label: 'Pos' },
+  { key: 'status', label: 'Status' },
+  { key: 'height', label: 'Ht', kind: 'number' as const },
+  { key: 'weight', label: 'Wt', kind: 'number' as const },
+  { key: 'age', label: 'Age', kind: 'number' as const },
+  { key: 'experience', label: 'Exp', kind: 'number' as const },
+  { key: 'college', label: 'College' },
+];
+// Everyone on the practice squad shares a status, so the column is dropped.
+const practiceColumns = rosterColumns.filter((col) => col.key !== 'status');
+---
+
+<Panel title="Roster">
+  {
+    roster && active.length > 0 ? (
+      <>
+        {groupPlayers(roster, active).map((group) => (
+          <section class="group">
+            <h3 class="group-title">{group.label}</h3>
+            <StatTable columns={rosterColumns} rows={group.players.map(toRow)} caption={`${team.name} ${group.label.toLowerCase()} roster`} />
+          </section>
+        ))}
+        <p class="table-foot">
+          {active.length} players, from the week {roster.week} roster. Heights in feet and inches, Exp in
+          completed seasons.
+        </p>
+      </>
+    ) : (
+      <p class="placeholder-note">No roster published yet. Rosters appear once nflverse posts them for the season.</p>
+    )
+  }
+</Panel>
+{
+  practiceSquad.length > 0 && roster && (
+    <Panel title="Practice squad">
+      <StatTable columns={practiceColumns} rows={practiceSquad.map(toRow)} caption={`${team.name} practice squad`} />
+    </Panel>
+  )
+}
+
+<style>
+  .group + .group {
+    margin-top: var(--space-4);
+  }
+
+  .group-title {
+    font-size: 15px;
+    margin-bottom: var(--space-2);
+  }
+
+  .table-foot {
+    margin-top: var(--space-3);
+    color: var(--text-dim);
+  }
+</style>

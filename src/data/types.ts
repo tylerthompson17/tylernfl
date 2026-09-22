@@ -428,3 +428,36 @@ export interface PlayerEpaData {
   updated: string;
   categories: PlayerEpaCategory[];
 }
+
+/**
+ * schedule.json: every game of one season, written daily by
+ * pipelines/schedule.py from the nflverse schedule. Lines appear about a
+ * week before a game.
+ */
+export interface ScheduleGame {
+  /** nflverse game id, e.g. "2026_03_SEA_WAS" */
+  id: string;
+  /** 1 to 18, then 19 to 22 for the playoff rounds */
+  week: number;
+  type: 'REG' | 'WC' | 'DIV' | 'CON' | 'SB';
+  /** ISO 8601 UTC, null until scheduled */
+  kickoff: string | null;
+  away: string;
+  home: string;
+  awayScore: number | null;
+  homeScore: number | null;
+  overtime: boolean;
+  divisional: boolean;
+  neutral: boolean;
+  /** Points the home team is favored by; negative when the road team is */
+  spreadLine: number | null;
+  /** American odds */
+  awayMoneyline: number | null;
+  homeMoneyline: number | null;
+}
+
+export interface ScheduleData {
+  season: number;
+  updated: string;
+  games: ScheduleGame[];
+}
