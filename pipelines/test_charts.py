@@ -124,19 +124,69 @@ def game(away, home, away_score, home_score, gametime='13:00', day='2026-09-20',
             'away_team': away, 'home_team': home, 'away_score': away_score, 'home_score': home_score, **extra}
 
 
+def wp_play(qtr, remaining, wp):
+    """A play carrying a win probability, for the picking tests. The
+    hover tests below use their own play(), which also carries an id."""
+    return {'qtr': qtr, 'game_seconds_remaining': remaining, 'home_wp': wp, 'home_wp_post': wp}
+
+
+def decided_late(wp=0.99):
+    """A game put away early: wild in the first half, over by the fourth."""
+    return [wp_play(1, 3000, 0.5), wp_play(2, 2000, 0.1), wp_play(2, 1900, 0.8), wp_play(4, 200, wp), wp_play(4, 60, wp)]
+
+
+def close_late():
+    """A game still on a knife edge at the end."""
+    return [wp_play(1, 3000, 0.5), wp_play(4, 240, 0.52), wp_play(4, 120, 0.48), wp_play(4, 20, 0.5)]
+
+
 class PickingTests(unittest.TestCase):
-    def test_closest_game_is_the_smallest_margin_on_that_day(self):
-        rows = [game('DET', 'BUF', 31, 41), game('IND', 'KC', 30, 33), game('SEA', 'ARI', 31, 7),
-                game('NYG', 'LAR', 20, 21, day='2026-09-21')]
-        self.assertEqual(auto.closest_game(rows, date(2026, 9, 20))['home_team'], 'KC')
+    def test_finals_on_takes_that_day_s_finished_games(self):
+        rows = [game('A', 'B', 20, 17), game('C', 'D', None, None), game('E', 'F', 10, 13, day='2026-09-19')]
+        self.assertEqual([r['away_team'] for r in auto.finals_on(rows, date(2026, 9, 20))], ['A'])
+        self.assertEqual(auto.finals_on(rows, date(2026, 9, 18)), [])
 
-    def test_equal_margins_go_to_the_later_kickoff(self):
-        rows = [game('A', 'B', 20, 17, '13:00'), game('C', 'D', 24, 21, '20:20'), game('E', 'F', 10, 13, '16:25')]
-        self.assertEqual(auto.closest_game(rows, date(2026, 9, 20))['away_team'], 'C')
+    def test_late_doubt_reads_the_end_of_the_game_only(self):
+        # The three plays inside five minutes: 52%, 48% and even.
+        self.assertAlmostEqual(auto.late_doubt(close_late()), (0.96 + 0.96 + 1.0) / 3)
+        self.assertLess(auto.late_doubt(decided_late()), 0.05)
 
-    def test_no_final_game_that_day_means_no_game(self):
-        rows = [game('A', 'B', None, None), game('C', 'D', 20, 17, day='2026-09-19')]
-        self.assertIsNone(auto.closest_game(rows, date(2026, 9, 20)))
+    def test_all_of_overtime_counts_as_late(self):
+        # Overtime's clock counts down from 10:00 again, so its plays are
+        # late whatever game_seconds_remaining says.
+        self.assertEqual(auto.late_doubt([wp_play(5, 600, 0.5)]), 1.0)
+
+    def test_collapse_is_the_lead_handed_back(self):
+        blown = [wp_play(3, 1200, 0.95), wp_play(4, 300, 0.4), wp_play(4, 10, 0.2)]
+        self.assertAlmostEqual(auto.collapse(blown), 0.9)
+        # The road team can be the one that lets it go.
+        self.assertAlmostEqual(auto.collapse([wp_play(3, 1200, 0.05), wp_play(4, 10, 0.6)]), 0.9)
+
+    def test_a_lead_that_was_never_handed_back_is_no_collapse(self):
+        self.assertEqual(auto.collapse([wp_play(1, 3000, 0.55), wp_play(2, 1800, 0.8), wp_play(4, 10, 0.99)]), 0.0)
+
+    def test_the_best_game_is_the_one_still_in_doubt_late(self):
+        games = [(game('A', 'B', 20, 17, '13:00'), decided_late()),
+                 (game('C', 'D', 41, 10, '16:25'), close_late())]
+        picked, _ = auto.best_game(games, auto.GAME_SCORE(games))
+        self.assertEqual(picked['away_team'], 'C')
+
+    def test_a_blown_lead_beats_a_quiet_close_game(self):
+        quiet = [wp_play(1, 3000, 0.6), wp_play(3, 1200, 0.72), wp_play(4, 200, 0.62), wp_play(4, 10, 0.58)]
+        choke = [wp_play(1, 3000, 0.5), wp_play(3, 1200, 0.93), wp_play(4, 200, 0.5), wp_play(4, 10, 0.45)]
+        games = [(game('A', 'B', 20, 17, '13:00'), quiet), (game('C', 'D', 24, 21, '16:25'), choke)]
+        picked, _ = auto.best_game(games, auto.GAME_SCORE(games))
+        self.assertEqual(picked['away_team'], 'C')
+
+    def test_equal_games_go_to_the_later_kickoff(self):
+        games = [(game('A', 'B', 20, 17, '13:00'), close_late()),
+                 (game('C', 'D', 24, 21, '20:20'), close_late()),
+                 (game('E', 'F', 10, 13, '16:25'), close_late())]
+        picked, _ = auto.best_game(games, auto.GAME_SCORE(games))
+        self.assertEqual(picked['away_team'], 'C')
+
+    def test_no_candidates_means_no_game(self):
+        self.assertIsNone(auto.best_game([], {}))
 
     def test_other_templates_need_enough_data(self):
         stats = {'teams': [{'values': {'off_epa': {'value': 0.1}}}]}

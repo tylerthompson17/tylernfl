@@ -10,10 +10,11 @@ redraws that entry instead of adding a near copy.
 
 Which template runs:
 
-- The morning after a game day, win probability of that day's closest game
-  (smallest final margin; ties go to the later kickoff). It is timely, and
-  only possible then. Skipped if nflverse has not published that game's
-  play-by-play yet.
+- The morning after a game day, win probability of that day's best game:
+  the one that stayed closest late and blew the biggest lead, scored by
+  GAME_SCORE. It is timely, and only possible then. Games nflverse has
+  not published play-by-play for yet are not candidates, and a day with
+  none of them falls through to the templates below.
 - Any other day, the date picks between the others that have enough data:
   offense vs defense EPA for every team (from team_stats.json), and a top 5
   race in passing, rushing or receiving yards (from the game logs, from
@@ -29,6 +30,7 @@ switch to it.
 
 import json
 from datetime import date, datetime, timedelta
+from typing import Callable
 
 from common import DATA_DIR, normalize_team
 
@@ -43,27 +45,106 @@ RACE_BOARDS = [
 
 
 # ---------------------------------------------------------------- picking
+#
+# Which of a day's finals the win probability chart draws. Margin alone
+# read the scoreboard and nothing else: on September 13 it ranked GB at
+# MIN 10th of that day's 13 games, a 17-point final in which a team gave
+# back a 91% lead. The score reads the shape of the game instead, from nflfastR's
+# published win probability: how close it stayed when it mattered, and
+# the biggest lead anyone handed back.
+
+# "Late" is the last five minutes of regulation. Overtime is late all the
+# way through, whatever its clock says.
+LATE_SECONDS = 300
+
+# The two halves of the score. Closeness leads: a game still in doubt at
+# the end is the one worth replaying, and a collapse that ends in a
+# comfortable win is a smaller story than one that does not.
+LATE_WEIGHT = 0.6
+COLLAPSE_WEIGHT = 0.4
 
 
-def closest_game(schedule_rows: list[dict], day: date) -> dict | None:
-    """The final game on `day` with the smallest margin; ties go to the
-    later kickoff, the one people stayed up for."""
-    finals = [
+def finals_on(schedule_rows: list[dict], day: date) -> list[dict]:
+    """The games played on `day` that have a final score."""
+    return [
         row for row in schedule_rows
         if row.get('gameday') == day.isoformat()
         and row.get('away_score') is not None and row.get('home_score') is not None
     ]
-    if not finals:
-        return None
-    return min(
-        finals,
-        key=lambda r: (abs(r['away_score'] - r['home_score']), _minus_time(r.get('gametime'))),
-    )
 
 
-def _minus_time(gametime: str | None) -> int:
+def kickoff_minutes(gametime: str | None) -> int:
+    """Kickoff as minutes past midnight, for ordering a day's games."""
     hours, _, minutes = (gametime or '00:00').partition(':')
-    return -(int(hours) * 60 + int(minutes or 0))
+    return int(hours) * 60 + int(minutes or 0)
+
+
+def doubt(wp: float) -> float:
+    """1 where the game is a coin flip, 0 where it is decided."""
+    return 1 - 2 * abs(wp - 0.5)
+
+
+def late_doubt(plays: list[dict]) -> float:
+    """How much the game was still in doubt late: the mean doubt over the
+    plays in the last LATE_SECONDS of regulation and all of overtime. A
+    game put away by the fourth quarter scores near 0 however wild the
+    first three were."""
+    late = [p for p in plays if p['qtr'] > 4 or p['game_seconds_remaining'] <= LATE_SECONDS]
+    return sum(doubt(wp_after(p)) for p in late) / len(late) if late else 0.0
+
+
+def collapse(plays: list[dict]) -> float:
+    """The biggest lead blown: how likely a team was to win before giving
+    it all the way back to even or worse, stretched so 50% is 0 and 100%
+    is 1. A team that reached 95% and was level again later scores 0.90;
+    a game where no lead was ever handed back scores 0. Either team can
+    be the one that let it go.
+
+    Measuring the fall itself instead would score every game the same:
+    the losing team always ends at 0, having kicked off at about 50%.
+    """
+    worst = 0.0
+    home = [wp_after(p) for p in plays]
+    for series in (home, [1 - wp for wp in home]):
+        peak = 0.0
+        for wp in series:
+            peak = max(peak, wp)
+            if wp <= 0.5:
+                worst = max(worst, 2 * (peak - 0.5))
+    return worst
+
+
+def drama(plays: list[dict]) -> float:
+    """How worth watching one game was, 0 to 1."""
+    return LATE_WEIGHT * late_doubt(plays) + COLLAPSE_WEIGHT * collapse(plays)
+
+
+def late_drama(games: list[tuple[dict, list[dict]]]) -> dict[str, float]:
+    """The default GAME_SCORE: a score per game_id, over (schedule row,
+    its win probability plays) pairs."""
+    return {row['game_id']: drama(plays) for row, plays in games}
+
+
+# How a day's games are ranked: a function from the day's finals, each
+# with its plays, to a score per game_id. The highest is drawn, and
+# GAME_SCORE names the one in use. late_drama reads nflfastR's published
+# win probability, the same numbers the chart itself draws, the way
+# playoff_odds reads published betting lines; the weights above are a
+# starting point, not a finding. A game rating of Tyler's replaces it,
+# taking the same pairs and returning the same thing.
+GAME_SCORE: Callable[[list[tuple[dict, list[dict]]]], dict[str, float]] = late_drama
+
+
+def best_game(games: list[tuple[dict, list[dict]]],
+              scores: dict[str, float]) -> tuple[dict, list[dict]] | None:
+    """The day's highest scoring game with its plays. Ties go to the later
+    kickoff, the one people stayed up for."""
+    if not games:
+        return None
+    return max(
+        games,
+        key=lambda g: (scores.get(g[0]['game_id'], 0.0), kickoff_minutes(g[0].get('gametime'))),
+    )
 
 
 def other_templates(team_stats: dict | None, through_week: int) -> list[str]:
@@ -457,7 +538,7 @@ def draw_epa(team_stats: dict):
 # Play-by-play fields the WP chart reads: the win probability before and
 # after each play, and what describe_play() needs to say what happened.
 PLAY_COLUMNS = [
-    'play_id', 'qtr', 'game_seconds_remaining', 'home_wp', 'home_wp_post',
+    'game_id', 'play_id', 'qtr', 'game_seconds_remaining', 'home_wp', 'home_wp_post',
     'play_type', 'yards_gained', 'touchdown', 'return_touchdown', 'safety', 'sack',
     'interception', 'interception_player_name', 'fumble_lost', 'fumbled_1_player_name',
     'complete_pass', 'passer_player_name', 'receiver_player_name', 'rusher_player_name',
@@ -472,14 +553,41 @@ def _read(name: str):
     return json.loads(path.read_text()) if path.exists() else None
 
 
+def wp_candidates(schedule_rows: list[dict], day: date,
+                  current_season: int) -> list[tuple[dict, list[dict]]]:
+    """The day's finals that nflverse has play-by-play for, each with its
+    win probability plays. Empty when the day had no games, or when the
+    plays have not caught up: they arrive overnight, so a night game can
+    be final in the schedule hours before nflverse publishes it."""
+    finals = finals_on(schedule_rows, day)
+    if not finals:
+        return []
+
+    from pbp_cache import load_pbp
+
+    # Every game on one day is from one season.
+    pbp = load_pbp(finals[0]['season'], current_season)
+    if pbp is None:
+        return []
+    import polars as pl
+
+    columns = [column for column in PLAY_COLUMNS if column in pbp.columns]
+    rows = pbp.filter(pl.col('game_id').is_in([row['game_id'] for row in finals])).select(columns)
+    by_game: dict[str, list[dict]] = {}
+    for play in rows.to_dicts():
+        by_game.setdefault(play['game_id'], []).append(play)
+
+    candidates = ((row, wp_plays(by_game.get(row['game_id'], []))) for row in finals)
+    return [(row, plays) for row, plays in candidates if plays]
+
+
 def build_auto_chart(today: date, schedule_rows: list[dict], current_season: int):
     """(meta, figure, slug, hover) for today's auto chart, or None when there is
     nothing to draw. Reads the data files run_daily.py has just written."""
-    game = closest_game(schedule_rows, today - timedelta(days=1))
-    if game:
-        chart = _wp_chart(game, current_season)
-        if chart:
-            return chart
+    candidates = wp_candidates(schedule_rows, today - timedelta(days=1), current_season)
+    if candidates:
+        game, plays = best_game(candidates, GAME_SCORE(candidates))
+        return _wp_chart(game, plays)
 
     team_stats = _read('team_stats.json')
     receiving = _read('stats/receiving.json') or {}
@@ -491,25 +599,9 @@ def build_auto_chart(today: date, schedule_rows: list[dict], current_season: int
     return None
 
 
-def _wp_chart(game: dict, current_season: int):
-    from pbp_cache import load_pbp
-
+def _wp_chart(game: dict, plays: list[dict]):
     # nflverse schedules call the Rams LA; the site's logos and pages say LAR.
     game = {**game, 'away_team': normalize_team(game['away_team']), 'home_team': normalize_team(game['home_team'])}
-
-    pbp = load_pbp(game['season'], current_season)
-    if pbp is None:
-        return None
-    import polars as pl
-
-    plays = (
-        pbp.filter(pl.col('game_id') == game['game_id'])
-        .select([column for column in PLAY_COLUMNS if column in pbp.columns])
-        .to_dicts()
-    )
-    plays = wp_plays(plays)
-    if not plays:
-        return None
     points = wp_points(plays, game['away_score'], game['home_score'])
     day = datetime.fromisoformat(game['gameday'])
     meta = {

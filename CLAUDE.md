@@ -138,9 +138,17 @@ tylernfl/
 - The auto chart is drawn by
   `pipelines/charts/auto.py` at the end of `run_daily.py` from the files it just wrote
   and `team_stats.json`. The morning after a game day it is win probability of that
-  day's closest game (smallest margin, ties to the later kickoff; from play-by-play
-  through `pbp_cache.py`, skipped if nflverse has not published the game yet). Other
-  days the date picks between offense vs defense EPA and a top 5 yards race (from
+  day's best game (from play-by-play through `pbp_cache.py`; a game nflverse has not
+  published yet is not a candidate, and a day with none of them falls through to the
+  other templates). Which game is a pluggable input, like the playoff odds' game
+  probabilities: `GAME_SCORE` in `auto.py`, a function from the day's finals with
+  their plays to a score per game. The default, `late_drama`, reads nflfastR's
+  published win probability: 60% how close the game stayed in the last five minutes
+  and all of overtime, 40% the biggest lead handed back to even (`LATE_WEIGHT`,
+  `COLLAPSE_WEIGHT`). Ties go to the later kickoff. Those weights are a starting
+  point, not a finding; a game rating of Tyler's replaces the function, returning the
+  same thing. Margin alone was the first rule and picked dull three-point games over
+  blown leads. Other days the date picks between offense vs defense EPA and a top 5 yards race (from
   week 4), so a rerun gives the same chart. The WP chart marks no plays on the line (key
   play callouts were tried and removed); the hover readout names each play. Win
   probability and EPA are nflfastR's
