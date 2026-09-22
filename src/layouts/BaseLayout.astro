@@ -234,9 +234,12 @@ function isActive(href: string): boolean {
       // the row, the device can hover (hover and keyboard focus are the only
       // ways to pause it), and the visitor has not asked for reduced motion.
       // Otherwise the group stays a static, hand-scrollable strip.
-      import { showsStrip } from '../lib/live-ticker/pin.ts';
+      //
+      // The carousel steps: it rests on a game, then slides one game's width,
+      // so it always stops with whole games showing. A continuous scroll had
+      // the leftmost game half under the week label nearly all the time.
+      import { CAROUSEL_MOVE_MS, CAROUSEL_REST_MS, carouselOffset, showsStrip } from '../lib/live-ticker/pin.ts';
 
-      const PIXELS_PER_SECOND = 36;
       // Matches the ticker's stacked layout below, where the whole row is one
       // hand-scrolled strip and neither group is given a share of the width.
       const STACKED = '(max-width: 760px)';
@@ -246,6 +249,10 @@ function isActive(href: string): boolean {
         marquee: HTMLElement;
         track: HTMLElement;
         clone: HTMLElement | null;
+        /** Games moved past since the loop last began. */
+        steps: number;
+        timer: number | undefined;
+        paused: boolean;
       }
 
       function readGroup(row: HTMLElement, selector: string): Group | null {
@@ -253,7 +260,43 @@ function isActive(href: string): boolean {
         const marquee = group?.querySelector<HTMLElement>('.ticker-marquee');
         const track = group?.querySelector<HTMLElement>('.ticker-list');
         if (!group || !marquee || !track) return null;
-        return { group, marquee, track, clone: null };
+        const g: Group = { group, marquee, track, clone: null, steps: 0, timer: undefined, paused: false };
+        // Hover and keyboard focus hold the carousel where it is.
+        group.addEventListener('mouseenter', () => (g.paused = true));
+        group.addEventListener('mouseleave', () => (g.paused = group.contains(document.activeElement)));
+        group.addEventListener('focusin', () => (g.paused = true));
+        group.addEventListener('focusout', (event) => {
+          g.paused = group.contains(event.relatedTarget as Node | null) || group.matches(':hover');
+        });
+        return g;
+      }
+
+      function place(g: Group, animate: boolean) {
+        const widths = [...g.track.children].map((slot) => slot.getBoundingClientRect().width);
+        g.marquee.classList.toggle('is-moving', animate);
+        g.marquee.style.transform = `translateX(${-carouselOffset(widths, g.steps)}px)`;
+      }
+
+      function step(g: Group) {
+        if (g.paused || document.hidden) return;
+        g.steps += 1;
+        place(g, true);
+        // After a whole copy has gone by, the copy behind it is in exactly
+        // the starting place: jump back to the start without moving.
+        if (g.steps >= g.track.children.length) {
+          window.setTimeout(() => {
+            g.steps = 0;
+            place(g, false);
+          }, CAROUSEL_MOVE_MS);
+        }
+      }
+
+      function stop(g: Group) {
+        window.clearInterval(g.timer);
+        g.timer = undefined;
+        g.steps = 0;
+        g.marquee.classList.remove('is-moving');
+        g.marquee.style.transform = '';
       }
 
       function initTicker(row: HTMLElement, live: Group, rest: Group) {
@@ -281,7 +324,10 @@ function isActive(href: string): boolean {
           }
 
           g.group.classList.toggle('is-running', shouldRun);
-          g.marquee.style.setProperty('--ticker-duration', `${g.track.offsetWidth / PIXELS_PER_SECOND}s`);
+          if (!shouldRun) stop(g);
+          else if (g.timer === undefined) {
+            g.timer = window.setInterval(() => step(g), CAROUSEL_REST_MS + CAROUSEL_MOVE_MS);
+          }
         }
 
         function update() {
@@ -304,6 +350,7 @@ function isActive(href: string): boolean {
           new MutationObserver(() => {
             g.clone?.remove();
             g.clone = null;
+            stop(g);
             update();
           }).observe(g.track, { childList: true });
         }
@@ -425,31 +472,22 @@ function isActive(href: string): boolean {
     width: max-content;
   }
 
-  /* Carousel: two copies of the list slide left by one copy's width,
-     then loop seamlessly. Pauses on hover and on keyboard focus, which
-     are the pause mechanisms, so it only runs on devices that can hover. */
+  /* Carousel: two copies of the list, moved one game at a time by the
+     script below, which rests on each game and loops seamlessly. Hover
+     and keyboard focus hold it, which are the pause mechanisms, so it only
+     runs on devices that can hover. The move is 400ms; the script keeps
+     the timing (CAROUSEL_MOVE_MS in src/lib/live-ticker/pin.ts). */
   .ticker-group.is-running {
     overflow: hidden;
   }
 
-  .ticker-group.is-running .ticker-marquee {
-    animation: ticker-scroll var(--ticker-duration, 60s) linear infinite;
-  }
-
-  .ticker-group.is-running:hover .ticker-marquee,
-  .ticker-group.is-running:focus-within .ticker-marquee {
-    animation-play-state: paused;
-  }
-
-  @keyframes ticker-scroll {
-    to {
-      transform: translateX(-50%);
-    }
+  .ticker-marquee.is-moving {
+    transition: transform 400ms ease-in-out;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ticker-group.is-running .ticker-marquee {
-      animation: none;
+    .ticker-marquee.is-moving {
+      transition: none;
     }
   }
 

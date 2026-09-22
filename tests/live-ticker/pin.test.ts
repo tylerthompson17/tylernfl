@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { scoreChanged, showsStrip, stripInsertIndex } from '../../src/lib/live-ticker/pin.ts';
+import { carouselOffset, scoreChanged, showsStrip, stripInsertIndex } from '../../src/lib/live-ticker/pin.ts';
 
 test('a game going final rejoins the strip after the other finals', () => {
   assert.equal(stripInsertIndex(['final', 'final', 'pre', 'pre']), 2);
@@ -34,4 +34,13 @@ test('a full slate of live games squeezes the strip out', () => {
 
 test('an empty strip takes no width', () => {
   assert.equal(showsStrip(900, 0), false);
+});
+
+test('the carousel rests on slot edges, measured as the slots are now', () => {
+  assert.equal(carouselOffset([122, 130, 118], 0), 0);
+  assert.equal(carouselOffset([122, 130, 118], 2), 252);
+  assert.equal(carouselOffset([122, 130, 118], 3), 370);
+  assert.equal(carouselOffset([122, 130, 118], 9), 370);
+  // A live score going to two digits widens its slot; the next rest follows.
+  assert.equal(carouselOffset([122, 136, 118], 2), 258);
 });

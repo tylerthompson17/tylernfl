@@ -51,3 +51,21 @@ export const MIN_STRIP_PX = 160;
 export function showsStrip(available: number, stripGames: number): boolean {
   return stripGames > 0 && available >= MIN_STRIP_PX;
 }
+
+/** The carousel rests this long on each game, then takes this long to move. */
+export const CAROUSEL_REST_MS = 3000;
+export const CAROUSEL_MOVE_MS = 400;
+
+/**
+ * How far the carousel has moved after `steps` steps: the widths of the
+ * first `steps` slots, measured now. The carousel moves one whole game at
+ * a time, so it always rests on a slot's edge and the leftmost game starts
+ * right at the week label, never half under it. Measuring each time rather
+ * than adding up as it goes keeps it on an edge when a live score changes
+ * a slot's width.
+ */
+export function carouselOffset(widths: number[], steps: number): number {
+  let offset = 0;
+  for (let i = 0; i < steps && i < widths.length; i++) offset += widths[i]!;
+  return offset;
+}
