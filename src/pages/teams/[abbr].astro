@@ -4,8 +4,8 @@ import Panel from '../../components/Panel.astro';
 import TeamChip from '../../components/TeamChip.astro';
 import StatTable from '../../components/StatTable.astro';
 import teamsData from '../../data/teams.json';
-import leadersData from '../../data/leaders.json';
-import type { RosterPlayer, TeamsData, LeadersData } from '../../data/types';
+import type { RosterPlayer, TeamsData } from '../../data/types';
+import { boardSeason, overviewPanels } from '../../utils/overview';
 import { groupPlayers, PRACTICE_SQUAD, rosterFor } from '../../utils/rosters';
 import { formatExperience, formatHeight } from '../../utils/format';
 import {
@@ -27,7 +27,6 @@ export function getStaticPaths() {
 }
 
 const { team } = Astro.props;
-const leaders = leadersData as LeadersData;
 
 const roster = rosterFor(team.abbr);
 const active = roster?.players.filter((p) => p.status !== PRACTICE_SQUAD) ?? [];
@@ -83,13 +82,14 @@ const wireColumns = [
   { key: 'news', label: 'News' },
 ];
 
-// This team's appearances in the current leaderboards.
-const appearances = leaders.categories.flatMap((category) =>
-  category.rows
+// This team's players in the top 5 of the stat leaders' eight lists.
+const appearances = overviewPanels().flatMap((panel) =>
+  panel.rows
     .filter((row) => row.team === team.abbr)
     .map((row) => ({
-      category: category.label,
+      category: panel.label,
       player: row.player,
+      slug: row.slug,
       rank: row.rank,
       value: row.value,
     }))
@@ -97,7 +97,7 @@ const appearances = leaders.categories.flatMap((category) =>
 
 const appearanceColumns = [
   { key: 'category', label: 'Category' },
-  { key: 'player', label: 'Player', kind: 'player' as const },
+  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
   { key: 'rank', label: 'Rk', kind: 'number' as const },
   { key: 'value', label: 'Value', kind: 'number' as const },
 ];
@@ -177,12 +177,12 @@ const appearanceColumns = [
         )
       }
     </Panel>
-    <Panel title={`${leaders.season} league leaderboard appearances`}>
+    <Panel title={boardSeason() ? `Among the ${boardSeason()} stat leaders` : 'Among the stat leaders'}>
       <StatTable
         columns={appearanceColumns}
         rows={appearances}
         caption={`${team.name} appearances in league leaderboards`}
-        emptyText={`No ${team.name} players in the current leaderboards.`}
+        emptyText={`No ${team.name} players in the top 5 of any stat leaders list yet.`}
       />
     </Panel>
     <Panel title={`${teamStats.season} team stats`}>

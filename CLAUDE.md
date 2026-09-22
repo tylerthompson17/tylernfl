@@ -40,7 +40,7 @@ tylernfl/
 │   ├── content/curated/    curated X and Bluesky posts, one .md each, added by hand
 │   └── data/               JSON consumed at build time (mock now, pipeline output later)
 ├── public/logos/           team logos for charts (pipelines/build_logos.py)
-├── pipelines/              Python jobs: run_daily.py (ticker, leaders), build_teams.py
+├── pipelines/              Python jobs: run_daily.py (ticker, boards, standings), run_weekly.py, build_teams.py
 │   └── charts/             style.py (shared chart style), auto.py (auto chart), build.py
 │       └── mine/           Tyler's chart scripts (his; do not edit)
 ├── models/                 exported model files (empty for now)
@@ -70,10 +70,10 @@ tylernfl/
   2026-09-17 (`tests/fixtures/espn/`). Not yet seen in a real response: an end of quarter status (ESPN showed the
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
-- Files: `ticker.json`, `leaders.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `on_this_day.json`, `standings.json`, `teams.json`, `model_record.json`.
+- Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `teams.json`, `model_record.json`.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
-- `ticker.json`, `leaders.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
+- `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
   at 6 AM Eastern and again Friday at 8 PM Eastern, after teams file Sunday game statuses.
   nflverse calls the Rams `LA`; pipelines normalize it to `LAR`.
@@ -107,6 +107,19 @@ tylernfl/
   `.github/workflows/weekly.yml`, from nflverse play-by-play. Definitions live in the
   `pipelines/team_stats.py` docstring. Values are rounded to the displayed precision
   before ranking, so equal displayed values share a rank.
+- `player_epa.json` is written weekly by `pipelines/player_epa.py`, next to
+  `team_stats.json` and from the same play-by-play: EPA per dropback (nflfastR's `qb_epa`
+  over passes, sacks and scrambles, by the `id` player) and rush EPA per carry (`epa` on
+  designed runs). Every qualified player, ranked on the value rounded to 3 places;
+  qualifiers match the boards (14 dropbacks, 6 carries per team game). Names and current
+  teams come from the passing and rushing boards by gsis id. Definitions are in its
+  docstring.
+- A week counts in the weekly files only once every game in it is final in the schedule
+  and present in the play-by-play (`last_complete_week` in `team_stats.py`): nflverse adds
+  a Monday night game to play-by-play overnight, after the schedule shows it final.
+- There is no `leaders.json` any more. Every top 5 on the site (the stats overview, the
+  home page's receiving panel, a team's stat leader appearances) comes from the boards and
+  `player_epa.json` through `src/utils/overview.ts`, whose rows carry player ids.
 - Play-by-play goes through `pipelines/pbp_cache.py`: completed seasons are cached for
   good, the current season refreshes after 12 hours. CI persists the cache with
   `actions/cache`. Anything that needs pbp (including the 4th down model) should load
@@ -261,6 +274,16 @@ linked from the ticker's week label.
   chart with its date, else the auto chart labeled "Auto chart" with what its data
   covers, else an empty state.
 
+### Stat leaders page
+
+- `/stats` shows the top 5 in eight categories in equal panels (as many to a row as fit
+  at 300px): passing, rushing and receiving yards, sacks, interceptions, field goals made,
+  EPA per dropback and rush EPA per carry. Equal values share a rank; when the last place
+  shown is shared by more players than fit, the rest are counted ("31 more tied at 1")
+  rather than listed. Counting stats list only players above zero. Each panel says what
+  it is through; the EPA panels also say who qualifies and that they update Wednesdays.
+  The rule is `topOf` in `src/lib/stats/top.ts`.
+
 ### Standings page
 
 - `/standings`: the eight divisions (W, L, T, Pct, PF, PA, Diff, Div, Conf, Strk), each
@@ -356,10 +379,8 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
    Done; see Curated posts under Design direction.
 10. Ticker steps one game at a time (done); standings and tiebreakers validated against
     nflseedR, and the `/standings` page (done).
-11. Stats overview: top 5 in passing, rushing and receiving yards, sacks, INT, FG made,
-    EPA per dropback and rush EPA, in equal panels. The first six come from the boards at
-    build time; EPA from a new `player_epa.json` in the weekly job. Retire `leaders.json`
-    (the home panel reads the boards too).
+11. Stats overview: top 5 in eight categories in equal panels, `player_epa.json` in the
+    weekly job, `leaders.json` retired (done; see Stat leaders page).
 12. Right rail: remove the 4th down model record panel and delete `model_record.json`
     (restore from git when the model exists); add this week's schedule (`ticker.json`)
     and each conference's playoff picture (`standings.json`).

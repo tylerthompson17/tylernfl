@@ -1,4 +1,5 @@
-"""Weekly site data job: writes team_stats.json into src/data/.
+"""Weekly site data job: writes team_stats.json and player_epa.json into
+src/data/, both from play-by-play.
 
 Runs Wednesday morning from .github/workflows/weekly.yml, once Monday night
 games are final in nflverse play-by-play. Team stats only change after
@@ -22,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
 from pbp_cache import CACHE_DIR  # noqa: E402
+from player_epa import build_player_epa, load_player_epa_plays  # noqa: E402
 from team_stats import build_team_stats, load_team_stats_rows  # noqa: E402
 
 
@@ -40,12 +42,18 @@ def main() -> None:
     print(f"{today}: team stats {season} through week {team_stats['throughWeek']}, "
           f"{len(team_stats['teams'])} teams, {len(rows)} plays (cache: {CACHE_DIR})")
 
+    # Same season as team stats, so the two never disagree about the week.
+    plays, through = load_player_epa_plays(season, current)
+    player_epa = build_player_epa(plays, season, through, updated)
+    print('player EPA: ' + ', '.join(f"{c['key']} {len(c['rows'])} qualified" for c in player_epa['categories']))
+
     if args.dry_run:
-        print(json.dumps(team_stats, indent=2))
+        print(json.dumps({'team_stats': team_stats, 'player_epa': player_epa}, indent=2))
         return
 
-    changed = write_json_if_changed('team_stats.json', team_stats, ('updated',))
-    print(f"team_stats.json: {'updated' if changed else 'unchanged'}")
+    for name, data in (('team_stats.json', team_stats), ('player_epa.json', player_epa)):
+        changed = write_json_if_changed(name, data, ('updated',))
+        print(f"{name}: {'updated' if changed else 'unchanged'}")
 
 
 if __name__ == '__main__':

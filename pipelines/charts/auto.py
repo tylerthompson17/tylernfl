@@ -468,8 +468,8 @@ def build_auto_chart(today: date, schedule_rows: list[dict], current_season: int
             return chart
 
     team_stats = _read('team_stats.json')
-    leaders = _read('leaders.json') or {}
-    template = pick_other(other_templates(team_stats, leaders.get('throughWeek') or 0), today)
+    receiving = _read('stats/receiving.json') or {}
+    template = pick_other(other_templates(team_stats, receiving.get('throughWeek') or 0), today)
     if template == 'epa':
         return _epa_chart(team_stats)
     if template == 'race':

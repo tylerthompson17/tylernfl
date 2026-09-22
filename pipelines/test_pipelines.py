@@ -11,7 +11,6 @@ from pathlib import Path
 from common import player_slug
 from game_logs import build_game_logs, game_result
 from leaderboards import BOARDS, build_leaderboards
-from leaders import build_leaders
 from on_this_day import build_on_this_day, roman
 from pbp_cache import is_fresh
 from rosters import age_on, build_rosters, unknown_statuses
@@ -144,39 +143,6 @@ class BuildTickerTest(unittest.TestCase):
         self.assertIsNone(ticker['nextOpener'])
 
 
-class BuildLeadersTest(unittest.TestCase):
-    def row(self, pid, name, team, week, pass_yds=0, rush_yds=0, rec_yds=0):
-        return {
-            'player_id': pid, 'player_display_name': name, 'team': team, 'week': week,
-            'passing_yards': pass_yds, 'rushing_yards': rush_yds, 'receiving_yards': rec_yds,
-        }
-
-    def test_totals_ties_latest_team_and_rams_abbreviation(self):
-        rows = [
-            self.row('a', 'Matthew Stafford', 'LA', 1, pass_yds=300),
-            self.row('a', 'Matthew Stafford', 'LA', 2, pass_yds=250),
-            self.row('b', 'Jared Goff', 'DET', 1, pass_yds=275),
-            self.row('b', 'Jared Goff', 'DET', 2, pass_yds=275),
-            self.row('c', 'Joe Flacco', 'CLE', 1, pass_yds=200),
-            self.row('c', 'Joe Flacco', 'CIN', 2, pass_yds=350),
-            self.row('d', 'Derrick Henry', 'BAL', 2, rush_yds=None),
-        ]
-        leaders = build_leaders(rows, 2026)
-        self.assertEqual(leaders['throughWeek'], 2)
-        passing = leaders['categories'][0]['rows']
-        self.assertEqual(
-            [(r['rank'], r['player'], r['team'], r['value']) for r in passing],
-            [(1, 'Jared Goff', 'DET', 550), (1, 'Joe Flacco', 'CIN', 550), (1, 'Matthew Stafford', 'LAR', 550)],
-        )
-        # Players with no yards in a category are left out of it.
-        self.assertEqual(leaders['categories'][1]['rows'], [])
-
-    def test_no_stats_yet(self):
-        leaders = build_leaders([], 2026)
-        self.assertEqual(leaders['throughWeek'], 0)
-        self.assertTrue(all(c['rows'] == [] for c in leaders['categories']))
-
-
 def stat_row(player_id, name, team, week, **stats):
     """One player's week. Unlisted stats are zero, like nflverse rows."""
     from leaderboards import STAT_COLUMNS
@@ -286,11 +252,6 @@ class BuildLeaderboardsTest(unittest.TestCase):
         self.assertEqual(boards['defense']['rows'], [])
         # The rows still count toward their team's games.
         self.assertEqual(boards['passing']['rows'][0]['teamGames'], 1)
-
-    def test_leaders_link_to_their_board(self):
-        leaders = build_leaders([], 2026)
-        self.assertEqual([c['board'] for c in leaders['categories']], ['passing', 'rushing', 'receiving'])
-        self.assertTrue(set(c['board'] for c in leaders['categories']) <= {b.key for b in BOARDS})
 
 
 TEAMS = [
@@ -969,6 +930,11 @@ class LastCompleteWeekTest(unittest.TestCase):
 
     def test_a_gap_stops_the_count(self):
         self.assertEqual(last_complete_week([self.game(1), self.game(3)]), 1)
+
+    def test_a_final_game_missing_from_play_by_play_holds_its_week_back(self):
+        rows = [dict(self.game(1), game_id='g1'), dict(self.game(2), game_id='g2a'), dict(self.game(2), game_id='g2b')]
+        self.assertEqual(last_complete_week(rows, {'g1', 'g2a', 'g2b'}), 2)
+        self.assertEqual(last_complete_week(rows, {'g1', 'g2a'}), 1)
 
 
 class RankTest(unittest.TestCase):

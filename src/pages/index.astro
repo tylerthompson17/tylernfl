@@ -5,15 +5,13 @@ import StatTable from '../components/StatTable.astro';
 import FieldStrip from '../components/FieldStrip.astro';
 import { url } from '../utils/url';
 import { getArticles } from '../utils/articles';
-import leadersData from '../data/leaders.json';
 import { headlineItems, statusSummary, transactions } from '../utils/transactions';
 import { notable } from '../utils/performances';
+import { leadersFor } from '../utils/overview';
 import ChartFigure from '../components/ChartFigure.astro';
 import { formatChartDate, getAutoChart, getFeaturedChart, svgFor } from '../utils/charts';
-import type { LeadersData } from '../data/types';
 
-const leaders = leadersData as LeadersData;
-const receiving = leaders.categories.find((c) => c.key === 'rec_yds');
+const receiving = leadersFor('receiving');
 
 const latest = (await getArticles())[0];
 
@@ -46,7 +44,7 @@ const auto = featured ? null : getAutoChart();
 
 const leaderColumns = [
   { key: 'rank', label: 'Rk', kind: 'number' as const },
-  { key: 'player', label: 'Player', kind: 'player' as const },
+  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
   { key: 'team', label: 'Team', kind: 'team' as const },
   { key: 'value', label: receiving?.valueLabel ?? 'Yds', kind: 'number' as const },
 ];
@@ -104,8 +102,8 @@ const leaderColumns = [
         )
       }
       <p class="table-foot">
-        Through week {leaders.throughWeek}.{' '}
-        <a href={url(receiving ? `stats/${receiving.board}` : 'stats')}>Full receiving leaderboard</a>
+        {receiving?.through ?? 'No games played yet.'}{' '}
+        <a href={url(receiving?.link?.href ?? 'stats')}>Full receiving leaderboard</a>
       </p>
     </Panel>
     <Panel title="Transactions and injuries">

@@ -23,8 +23,10 @@ point tries, and never count):
   trips.)
 
 Only complete weeks count: a week is in once every one of its regular
-season games has a final score in the nflverse schedule, so a run on a
-Friday never shows "through week 2" with one game of it played.
+season games has a final score in the nflverse schedule and is in the
+play-by-play, so a run on a Friday never shows "through week 2" with one
+game of it played, and a run the morning after Monday night never counts
+a game the play-by-play does not have yet.
 
 Offense is grouped by `posteam`, defense by `defteam`. Defensive ranks
 invert: 1 is the fewest EPA, conversions and touchdowns allowed.
@@ -166,13 +168,21 @@ def build_team_stats(rows: list[dict], season: int, updated: str) -> dict:
     }
 
 
-def last_complete_week(schedule_rows: list[dict]) -> int:
-    """Latest regular season week with every game final, counting up from week 1 without gaps."""
+def last_complete_week(schedule_rows: list[dict], in_pbp: set[str] | None = None) -> int:
+    """Latest regular season week with every game final, counting up from week 1 without gaps.
+
+    With in_pbp (the game ids play-by-play has), a game also has to be in
+    the play-by-play. The schedule shows a Monday night game final that
+    night; nflverse's play-by-play gets it overnight, and a week counted
+    before then would be missing a game.
+    """
     weeks: dict[int, bool] = {}
     for game in schedule_rows:
         if game['game_type'] != 'REG':
             continue
         final = game['away_score'] is not None and game['home_score'] is not None
+        if in_pbp is not None:
+            final = final and game['game_id'] in in_pbp
         weeks[game['week']] = weeks.get(game['week'], True) and final
     complete = 0
     for week in sorted(weeks):
@@ -191,8 +201,8 @@ def load_team_stats_rows(season: int, current_season: int) -> list[dict]:
     pbp = load_pbp(season, current_season)
     if pbp is None:
         return []
-    schedule = nfl.load_schedules(season).select('game_type', 'week', 'away_score', 'home_score').to_dicts()
-    through = last_complete_week(schedule)
+    schedule = nfl.load_schedules(season).select('game_id', 'game_type', 'week', 'away_score', 'home_score').to_dicts()
+    through = last_complete_week(schedule, set(pbp['game_id'].unique().to_list()))
     return (
         pbp.filter((pl.col('season_type') == 'REG') & (pl.col('week') <= through))
         .select(PBP_COLUMNS)

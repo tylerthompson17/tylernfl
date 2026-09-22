@@ -14,14 +14,14 @@
  * Full leaderboard rows carry the nflverse gsis id, which rosters carry
  * too, so those link to the exact roster page even when a name is shared.
  */
-import leadersData from '../data/leaders.json';
+import playerEpaData from '../data/player_epa.json';
 import transactionsData from '../data/transactions.json';
-import type { LeadersData, RosterPlayer, TransactionsData } from '../data/types';
+import type { PlayerEpaData, RosterPlayer, TransactionsData } from '../data/types';
 import { leaderboards } from './leaderboards';
 import { rosterPlayers } from './rosters';
 import { playerSlug } from './slug';
 
-const leaders = leadersData as LeadersData;
+const playerEpa = playerEpaData as PlayerEpaData;
 const transactions = transactionsData as TransactionsData;
 
 export interface PlayerPage {
@@ -56,13 +56,14 @@ function buildPages(): Map<string, PlayerPage[]> {
     }
   }
 
-  // Sources with a player id come first, so an off-roster page can still
-  // find the player's stats; leaders.json rows carry no id.
+  // Every source carries a player id, so an off-roster page can still find
+  // the player's stats.
   const offRoster: { player: string; team: string; playerId: string | null }[] = [
     ...leaderboards.flatMap((board) => board.rows.filter((row) => !rosterSlugs.has(row.playerId))),
+    // The EPA lists, so every name on the stat leaders page has a page.
+    ...playerEpa.categories.flatMap((category) => category.rows.filter((row) => !rosterSlugs.has(row.playerId))),
     // Released and retired players named in roster moves or injury reports.
     ...[...transactions.moves, ...transactions.injuries].filter((row) => !rosterSlugs.has(row.playerId)),
-    ...leaders.categories.flatMap((category) => category.rows.map((row) => ({ ...row, playerId: null }))),
   ];
   for (const row of offRoster) {
     const slug = playerSlug(row.player);

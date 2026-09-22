@@ -66,33 +66,6 @@ export interface TickerData {
   games: TickerGame[];
 }
 
-/** leaders.json */
-export interface LeaderRow {
-  rank: number;
-  player: string;
-  /** Team abbr matching teams.json */
-  team: string;
-  value: number;
-}
-
-export interface LeaderCategory {
-  /** Stable key, e.g. "pass_yds" */
-  key: string;
-  /** Display label, e.g. "Passing yards" */
-  label: string;
-  /** Column header for the value, e.g. "Yds" */
-  valueLabel: string;
-  /** Key of the full leaderboard this is the top of, e.g. "receiving" */
-  board: string;
-  rows: LeaderRow[];
-}
-
-export interface LeadersData {
-  season: number;
-  throughWeek: number;
-  categories: LeaderCategory[];
-}
-
 /** on_this_day.json */
 /** on_this_day.json: written daily by pipelines/on_this_day.py from nflverse schedules. */
 export interface OnThisDayPart {
@@ -432,4 +405,37 @@ export interface StandingsData {
   updated: string;
   /** By conference, division, then division rank */
   teams: TeamStanding[];
+}
+
+/**
+ * player_epa.json: EPA per dropback and rush EPA per carry, written weekly by
+ * pipelines/player_epa.py from nflverse play-by-play (nflfastR's EPA). Every
+ * qualified player, ranked; equal shown values share a rank.
+ */
+export interface PlayerEpaRow {
+  rank: number;
+  playerId: string;
+  player: string;
+  team: string;
+  /** Per play, 3 decimals */
+  value: number;
+  /** Dropbacks or carries */
+  plays: number;
+  teamGames: number;
+}
+
+export interface PlayerEpaCategory {
+  key: 'epa_per_dropback' | 'rush_epa';
+  label: string;
+  valueLabel: string;
+  playsLabel: string;
+  qualifier: { column: 'dropbacks' | 'carries'; perTeamGame: number; text: string };
+  rows: PlayerEpaRow[];
+}
+
+export interface PlayerEpaData {
+  season: number;
+  throughWeek: number;
+  updated: string;
+  categories: PlayerEpaCategory[];
 }

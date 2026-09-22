@@ -1,4 +1,4 @@
-"""Daily site data job: writes ticker.json, leaders.json, stats/, players/,
+"""Daily site data job: writes ticker.json, stats/, players/,
 rosters/, transactions.json, on_this_day.json and standings.json into
 src/data/, then draws
 the home page's auto chart (charts/auto.svg and charts/auto.json) from them.
@@ -27,7 +27,6 @@ from common import load_with_fallback, stats_season, today_eastern, write_json_i
 from charts.auto import build_auto_chart, write_auto_chart  # noqa: E402
 from game_logs import build_game_logs  # noqa: E402
 from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
-from leaders import build_leaders  # noqa: E402
 from on_this_day import build_on_this_day, load_on_this_day_input  # noqa: E402
 from rosters import build_rosters, load_roster_rows, unknown_statuses  # noqa: E402
 from standings import build_standings  # noqa: E402
@@ -58,7 +57,6 @@ def main() -> None:
     schedule_rows = load_schedule_rows(today)
     ticker = build_ticker(schedule_rows, today)
     player_rows, stats_year = load_with_fallback(load_player_week_rows, stats_season(today))
-    leaders = build_leaders(player_rows, stats_year)
     boards = build_leaderboards(player_rows, stats_year)
     game_logs = build_game_logs(player_rows, schedule_rows, stats_year)
     roster_rows, rosters_year = load_with_fallback(load_roster_rows, roster_season(today))
@@ -66,7 +64,6 @@ def main() -> None:
 
     week = f"week {ticker['week']}" if ticker['week'] else f"offseason, opener {ticker['nextOpener']}"
     print(f"{today}: ticker {ticker['season']} {week}, {len(ticker['games'])} games")
-    print(f"leaders: {leaders['season']} through week {leaders['throughWeek']}")
     print('boards: ' + ', '.join(f"{key} {len(board['rows'])}" for key, board in boards.items()))
     players = sum(len(r['players']) for r in rosters.values())
     print(f"rosters: {rosters_year} week {next(iter(rosters.values()))['week'] if rosters else 0}, "
@@ -87,8 +84,8 @@ def main() -> None:
           f"{len(transactions['moves'])} moves, {len(transactions['injuries'])} on the injury report")
 
     standings = build_standings(schedule_rows, stats_season(today), updated)
-    leaders_line = [t['team'] for t in standings['teams'] if t['conferenceRank'] == 1]
-    print(f"standings: {standings['season']} through week {standings['throughWeek']}, top seeds {', '.join(leaders_line)}")
+    top_seeds = [t['team'] for t in standings['teams'] if t['conferenceRank'] == 1]
+    print(f"standings: {standings['season']} through week {standings['throughWeek']}, top seeds {', '.join(top_seeds)}")
 
     on_this_day = build_on_this_day(*load_on_this_day_input(), today)
     print(f"on this day: {today:%m-%d}, {len(on_this_day['items'])} of {on_this_day['gamesOnDate']} games")
@@ -97,7 +94,7 @@ def main() -> None:
     if unknown:
         print(f"rosters: WARNING unknown status codes left off rosters: {', '.join(sorted(unknown))}")
 
-    files = [('ticker.json', ticker, ('updated',)), ('leaders.json', leaders, ())]
+    files = [('ticker.json', ticker, ('updated',))]
     files += [(f'stats/{key}.json', board, ()) for key, board in boards.items()]
     logs = [(f'players/{team}.json', data, ()) for team, data in sorted(game_logs.items())]
     files.append(('transactions.json', transactions, ('updated',)))
@@ -120,7 +117,7 @@ def main() -> None:
             written += 1
     print(f'{written} of {len(files) + len(logs)} files updated')
 
-    # Drawn last: it reads the files just written (leaders, game logs) and
+    # Drawn last: it reads the files just written (boards, game logs) and
     # team_stats.json from the weekly job.
     chart = build_auto_chart(today, schedule_rows, stats_season(today))
     if chart is None:
