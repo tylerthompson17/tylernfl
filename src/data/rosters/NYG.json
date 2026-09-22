@@ -1,8 +1,8 @@
 {
   "season": 2026,
   "team": "NYG",
-  "week": 2,
-  "updated": "2026-09-21T16:02:19Z",
+  "week": 3,
+  "updated": "2026-09-22T14:16:57Z",
   "groups": [
     {
       "key": "offense",
@@ -280,8 +280,8 @@
       "number": 87,
       "position": "WR",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 69,
       "weight": 190,
       "age": 30,
@@ -835,8 +835,8 @@
       "number": 54,
       "position": "ILB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 245,
       "age": 28,
@@ -979,6 +979,21 @@
       "college": "LSU; Oklahoma State"
     },
     {
+      "gsisId": "00-0040471",
+      "name": "Nikko Reed",
+      "slug": "nikko-reed",
+      "number": 35,
+      "position": "CB",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 70,
+      "weight": 180,
+      "age": 23,
+      "experience": 1,
+      "college": "Oregon; Colorado"
+    },
+    {
       "gsisId": "00-0039620",
       "name": "Rico Payton",
       "slug": "rico-payton",
@@ -1037,21 +1052,6 @@
       "age": 24,
       "experience": 0,
       "college": "North Carolina; Washington; Long Beach City College"
-    },
-    {
-      "gsisId": "00-0040471",
-      "name": "Nikko Reed",
-      "slug": "nikko-reed",
-      "number": 46,
-      "position": "CB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 70,
-      "weight": 180,
-      "age": 23,
-      "experience": 1,
-      "college": "Oregon; Colorado"
     },
     {
       "gsisId": "00-0036998",
