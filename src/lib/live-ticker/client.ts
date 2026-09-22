@@ -1,9 +1,8 @@
 /**
  * Live ticker in the browser: shows kickoff times in the visitor's time zone,
  * and during game windows polls ESPN's scoreboard to update scores in place.
- * One poll feeds every game on the page: the ticker slots, the rail's
- * schedule, and the boxes on the scoreboard page, which all carry the same
- * data hooks.
+ * One poll feeds every game on the page: the ticker slots, and the boxes on
+ * the scoreboard page, which carry the same data hooks.
  * Live games move into the pinned group ahead of the strip of finished and
  * upcoming games, a changed score gets a brief highlight, and a line under
  * each pinned game says who scored last. The pinned group takes the width
@@ -31,8 +30,7 @@ const MAX_TIMEOUT_MS = 2 ** 31 - 1;
 
 /**
  * Every rendered copy of a game: its ticker slot, the carousel's copy of
- * that slot, its row in the rail's schedule, and its box on the scoreboard
- * page.
+ * that slot, and its box on the scoreboard page.
  */
 function slotsFor(espnId: string): NodeListOf<HTMLElement> {
   return document.querySelectorAll<HTMLElement>(`[data-game][data-espn-id="${CSS.escape(espnId)}"]`);
@@ -40,9 +38,8 @@ function slotsFor(espnId: string): NodeListOf<HTMLElement> {
 
 /**
  * Eastern times written at build time, rewritten in the visitor's zone: the
- * kickoff in each upcoming game that carries one (ticker slots, the rail's
- * schedule), each kickoff heading on the scoreboard page, and dates on
- * team pages. Scoreboard
+ * kickoff in each upcoming game that carries one (ticker slots), each
+ * kickoff heading on the scoreboard page, and dates on team pages. Scoreboard
  * boxes have no kickoff of their own; the heading above them carries it.
  */
 export function localizeKickoffs(): void {

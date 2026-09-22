@@ -57,7 +57,7 @@ tylernfl/
 
 - Pipelines write JSON into `src/data/`, commit it, and the push triggers a rebuild. Pages read data at build time.
 - Browser-side fetches are allowed in exactly two places. Nothing else fetches data at runtime.
-  1. **Live scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates scores in place. One poll feeds every game on the page: the ticker slots, the rail's schedule and, on `/scores`, the boxes, which all carry the same `data-game` hooks. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Live games also show who scored last: when a live game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (it is about 175 KB, of which the scoring plays are about 1 KB), and it is one fetch per scoring play however many places render the line. Turn it all off with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
+  1. **Live scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates scores in place. One poll feeds every game on the page: the ticker slots and, on `/scores`, the boxes, which carry the same `data-game` hooks. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Live games also show who scored last: when a live game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (it is about 175 KB, of which the scoring plays are about 1 KB), and it is one fetch per scoring play however many places render the line. Turn it all off with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
   2. **Live 4th down page** (later): fetches game state at runtime.
 - Header search is not a runtime data fetch: its index (`search-index.js`, from
   `src/pages/search-index.js.ts`) is static build output, versioned per build, and the
@@ -65,7 +65,7 @@ tylernfl/
   covers every player page, every team and the site's pages; matching and ranking live
   in `src/lib/search/match.ts`. Nothing else may use this as a way to load data.
 - ESPN data is browser-only: never write it to `src/data/` and never use it in pipelines. Pipelines use nflverse (the `espnId` in `ticker.json` comes from nflverse schedules). Test fixtures in `tests/fixtures/espn/` are the only stored ESPN data.
-- Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text). That covers the ticker's upcoming slots, the rail's schedule and the `/scores` kickoff headings.
+- Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text). That covers the ticker's upcoming slots, the `/scores` kickoff headings, and dates on team pages.
 - In-progress parsing (quarter, clock, halftime, final) is verified against the real capture from DET at BUF on
   2026-09-17 (`tests/fixtures/espn/`). Not yet seen in a real response: an end of quarter status (ESPN showed the
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
@@ -226,12 +226,12 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 
 - Radius 0, no shadows, no gradients.
 - No motion, with two exceptions, both in the score ticker:
-  - A ticker group is a looping carousel. It steps: it rests on a game for
-    3 seconds, then slides one game's width in 0.4s, so it always stops with
-    whole games showing and the leftmost game never sits under the week
-    label (a continuous scroll had one half hidden nearly all the time). It
-    pauses on hover and keyboard focus, and stays a static, swipeable strip
-    on touch devices, for reduced motion, and when its games fit.
+  - A ticker group is a looping carousel, a slow continuous glide. It pauses
+    on hover and keyboard focus, and stays a static, swipeable strip on touch
+    devices, for reduced motion, and when its games fit. A 12px gap and a thin
+    rule after the week label mark where games glide out of view, so they never
+    disappear under the label itself. (A version that stepped one game at a
+    time was tried and dropped: the start-stop slide read worse.)
   - When a live score changes, the new number gets a brief yellow background
     that fades out (2s). Off under reduced motion.
 - The ticker row is the week label, then two groups of games: live games,
@@ -298,40 +298,15 @@ linked from the ticker's week label.
 
 ### Right rail
 
-- On every page, top to bottom: this week's games, the playoff picture, on this day.
-- This week's games (`RailSchedule.astro`, from `ticker.json`): one row per game in
-  kickoff order, with the kickoff in the visitor's zone, the clock with the yellow chip,
-  or the final with the winner in bold. Rows carry the ticker's `data-game` hooks, so live
-  scores update them from the same poll. Team links follow the ticker's scoreboard
-  exception (text color, underline on hover).
-- Playoff picture (`PlayoffPicture.astro`, from `standings.json`): each conference's
-  seeds 1 to 7 and the next two in the hunt, side by side, a rule under 7, links to
-  `/standings`. Before a season's first game it is titled with last season's final
-  seeding, since that is what `standings.json` holds then.
-
-### Team pages
-
-- Each team is a hub of five static pages sharing one frame (`TeamHub.astro`): Overview
-  `/teams/BUF/`, Schedule, Roster, Stats, Transactions. The tabs are links with
-  `aria-current`, no script, so every tab has its own URL.
-- Header strip on every tab: record (or last season's, labeled, before week 1), division
-  place ("1st in AFC East"), point differential, and the next game (week, vs or at,
-  opponent, kickoff in the visitor's zone, the line when posted: "BUF by 7"), and the
-  playoff chance labelled "based on betting lines" once the season has started.
-- Overview: the division's standings with this team's row highlighted, playoff odds
-  (playoffs, division, top seed, projected wins, each seed, and the full label), a compact schedule
-  and results, team leaders (the team's best in each stat leaders category with its NFL
-  rank), team stats with ranks, and the top of the week's moves and injuries.
-- Schedule: every game with date, opponent, result or kickoff, line and the record after
-  it, with the bye week in its place. Stats: team stats, then every leaderboard's rows for
-  this team's players, then its players on the EPA lists. Roster and Transactions are the
-  panels the old single team page had.
-- Chances never read 0% or 100%: a simulation cannot prove a team in or out, so the ends
-  are "<1%" and ">99%" (`formatChance` in `src/lib/teams/odds.ts`).
-- Dates on team pages are written in Eastern at build and rewritten in the visitor's zone
-  through `data-local-kickoff` ("date" or "datetime") with `data-kickoff`.
-- A highlighted (yellow) row sets win/loss colored numbers in body text, since the win
-  green is under 4.5:1 on yellow; the sign still carries it. Hovered standings rows too.
+- On every page, top to bottom: the playoff picture, then on this day. Kept light: the rail
+  is secondary, so no solid color blocks there.
+- There is no games list in the rail: the ticker right above shows the same games (one was
+  tried and removed as a duplicate that made the rail heavy).
+- Playoff picture (`PlayoffPicture.astro`, from `standings.json`): each conference's seeds 1
+  to 7 as tight rows of plain team links and records, AFC and NFC side by side, then the
+  next two teams "in the hunt" on one line, linking to `/standings`. Before a season's first
+  game it is titled with last season's final seeding, since that is what `standings.json`
+  holds then.
 
 ### Stat leaders page
 
@@ -440,8 +415,8 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
     nflseedR, and the `/standings` page (done).
 11. Stats overview: top 5 in eight categories in equal panels, `player_epa.json` in the
     weekly job, `leaders.json` retired (done; see Stat leaders page).
-12. Right rail: the model record placeholder removed, this week's games and the playoff
-    picture added (done; see Right rail).
+12. Right rail: the model record placeholder removed, a compact playoff picture added (done;
+    see Right rail).
 13. Team hubs with a header strip and five static tabs, and `schedule.json` in the daily
     job (done; see Team pages). Playoff odds join the strip in step 14.
 14. Playoff odds: `playoff_odds.json` daily, 10,000 simulations with the standings'
