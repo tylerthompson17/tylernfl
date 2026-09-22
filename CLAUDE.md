@@ -71,8 +71,8 @@ tylernfl/
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `leaders.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `on_this_day.json`, `teams.json`, `model_record.json`.
-- `teams.json` (abbr, name, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
+  `transactions.json`, `team_stats.json`, `on_this_day.json`, `standings.json`, `teams.json`, `model_record.json`.
+- `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `leaders.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
   at 6 AM Eastern and again Friday at 8 PM Eastern, after teams file Sunday game statuses.
@@ -138,6 +138,20 @@ tylernfl/
   when this was set up (dead thumbnail widths, and KC and LAR renamed). Charts do not
   embed logos: `style.py` writes `href="logo:BUF"` and the site resolves it under the
   base path (`resolveLogos` in `src/lib/charts/collection.ts`).
+- `standings.json` is written daily by `pipelines/standings.py` from completed regular
+  season games: records, division and conference ranks, and for each team the tiebreak
+  step that placed it. Before a season's first game it holds last season's final
+  standings. The tiebreakers are a literal port of nflseedR's `nfl_standings` (2.0.2) at
+  its default depth (through strength of schedule, then coin toss), including its
+  grouping and which teams each step re-ranks. Where nflseedR draws a coin toss at
+  random, the port orders by abbreviation and records `coin_toss`.
+- The port is checked against nflseedR itself: `tests/fixtures/standings/generate.R`
+  (run by hand in R, never on the site or in CI) saves nflseedR's standings after every
+  week from 4 to 18 of 2022 to 2024, and `pipelines/test_standings.py` must match every
+  record, division rank, conference rank and tiebreak step, skipping only coin tosses.
+  nflseedR cannot resolve two of those weeks (2022 week 13, 2023 week 8: it stops with
+  "infinite loop"); the port falls back to a coin toss there. Change the tiebreakers
+  only with the fixtures still passing.
 - `model_record.json` stays a placeholder until the 4th down model exists. It is the only
   placeholder data left on the site.
 - The home page's notable performances panel is derived at build time from the
@@ -247,6 +261,15 @@ linked from the ticker's week label.
   chart with its date, else the auto chart labeled "Auto chart" with what its data
   covers, else an empty state.
 
+### Standings page
+
+- `/standings`: the eight divisions (W, L, T, Pct, PF, PA, Diff, Div, Conf, Strk), each
+  with a note wherever teams on the same record were ordered by a tiebreaker ("NE and
+  NYJ are both 1-1; NE is ahead on strength of victory"), then each conference's seeds
+  1 to 16 with a heavier rule under 7 and the step that placed each team. Seeds 1 to 4
+  are division leaders, whatever their record. Pct is written the NFL way (.667, 1.000).
+- Standings is in the nav, first after Home.
+
 ### Curated posts
 
 `/curated` lists X and Bluesky posts Tyler picked, newest first by the post's date, each
@@ -331,6 +354,23 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
    credited and the original linked, no embeds, no third-party scripts, never any post
    images, and a `/curated` page where the note carries as much weight as the quote.
    Done; see Curated posts under Design direction.
+10. Ticker steps one game at a time (done); standings and tiebreakers validated against
+    nflseedR, and the `/standings` page (done).
+11. Stats overview: top 5 in passing, rushing and receiving yards, sacks, INT, FG made,
+    EPA per dropback and rush EPA, in equal panels. The first six come from the boards at
+    build time; EPA from a new `player_epa.json` in the weekly job. Retire `leaders.json`
+    (the home panel reads the boards too).
+12. Right rail: remove the 4th down model record panel and delete `model_record.json`
+    (restore from git when the model exists); add this week's schedule (`ticker.json`)
+    and each conference's playoff picture (`standings.json`).
+13. Team hubs: header strip (record, division place, differential, playoff odds, next
+    game) and static tab pages (Overview, Schedule, Roster, Stats, Transactions). Adds
+    `schedule.json` (whole season, with lines) to the daily job.
+14. Playoff odds: `playoff_odds.json` daily, 10,000 simulations with these tiebreakers.
+    Game probabilities come in through one pluggable function; the default reads the
+    moneylines with the bookmaker's margin removed. Games with no line yet count as 50/50,
+    and the odds say so: "Based on betting lines for next week's games; later games are
+    even odds." No team rating model: that is Tyler's.
 
 ## Articles
 

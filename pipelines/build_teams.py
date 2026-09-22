@@ -1,8 +1,9 @@
 """Generate src/data/teams.json from nflverse team data.
 
 Fetches teams_colors_logos.csv from the nflverse-data release and writes
-the subset the site needs: abbreviation, full name, and the two primary
-brand colors. Defunct relocation-era abbreviations are dropped. The site
+the subset the site needs: abbreviation, full name, conference and
+division ("AFC East", used by standings), and the two primary brand
+colors. Defunct relocation-era abbreviations are dropped. The site
 standardizes on LAR for the Rams, so the LA alias (nflverse play-by-play
 convention) is dropped too; pipelines that ingest play-by-play data must
 normalize LA to LAR before writing site data.
@@ -58,6 +59,8 @@ def main() -> None:
             {
                 'abbr': row['team_abbr'],
                 'name': row['team_name'],
+                'conference': row['team_conf'],
+                'division': row['team_division'],
                 'primary': row['team_color'].lower(),
                 'secondary': row['team_color2'].lower(),
             }

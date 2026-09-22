@@ -10,6 +10,9 @@
 export interface Team {
   abbr: string;
   name: string;
+  conference: 'AFC' | 'NFC';
+  /** e.g. "AFC East" */
+  division: string;
   /** Hex color, e.g. "#97233f" */
   primary: string;
   secondary: string;
@@ -379,4 +382,54 @@ export interface AutoChartData {
   /** What the data covers, e.g. "2026 season, through week 2" or "Sun, Sep 20" */
   asOf: string;
   source: string;
+}
+
+/**
+ * standings.json: written daily by pipelines/standings.py from completed
+ * regular season games, with NFL tiebreakers (a port of nflseedR's,
+ * checked against it). Before a season's first game, last season's final.
+ */
+export type TiebreakStep =
+  | 'head_to_head'
+  | 'head_to_head_sweep'
+  | 'division_record'
+  | 'common_games'
+  | 'conference_record'
+  | 'strength_of_victory'
+  | 'strength_of_schedule'
+  | 'division_order'
+  | 'coin_toss';
+
+export interface TeamStanding {
+  team: string;
+  conference: 'AFC' | 'NFC';
+  division: string;
+  wins: number;
+  losses: number;
+  ties: number;
+  /** Ties count as half a win; 3 decimals */
+  pct: number;
+  pointsFor: number;
+  pointsAgainst: number;
+  diff: number;
+  divisionRecord: [wins: number, losses: number, ties: number];
+  conferenceRecord: [wins: number, losses: number, ties: number];
+  /** "W3", "L1", "T1"; null before a first game */
+  streak: string | null;
+  /** 1 to 4 */
+  divisionRank: number;
+  /** 1 to 16: 1-4 division winners, 5-7 wild cards, then the rest */
+  conferenceRank: number;
+  /** The step that separated this team from teams tied with it, if any */
+  divisionTiebreak: TiebreakStep | null;
+  conferenceTiebreak: TiebreakStep | null;
+}
+
+export interface StandingsData {
+  season: number;
+  /** Last week with a completed game; 0 before any */
+  throughWeek: number;
+  updated: string;
+  /** By conference, division, then division rank */
+  teams: TeamStanding[];
 }

@@ -1,0 +1,84 @@
+---
+/**
+ * One division (or any set of teams) as a standings table: team, W, L, T,
+ * Pct, PF, PA, Diff, Div, Conf, Strk. Uses the shared .stat-table rules.
+ * Differential is signed with a true minus and colored win or loss.
+ */
+import TeamChip from './TeamChip.astro';
+import teamsData from '../data/teams.json';
+import type { TeamStanding, TeamsData } from '../data/types';
+import { url } from '../utils/url';
+import { formatPct, formatSigned, formatRecord } from '../utils/standings';
+
+interface Props {
+  teams: TeamStanding[];
+  caption: string;
+}
+
+const { teams, caption } = Astro.props;
+const names = new Map((teamsData as TeamsData).map((t) => [t.abbr, t.name]));
+---
+
+<div class="stat-table-scroll" tabindex="0">
+  <table class="stat-table standings">
+    <caption class="visually-hidden">{caption}</caption>
+    <thead>
+      <tr>
+        <th scope="col">Team</th>
+        <th scope="col" class="number"><abbr title="Wins">W</abbr></th>
+        <th scope="col" class="number"><abbr title="Losses">L</abbr></th>
+        <th scope="col" class="number"><abbr title="Ties">T</abbr></th>
+        <th scope="col" class="number"><abbr title="Win percentage, ties as half a win">Pct</abbr></th>
+        <th scope="col" class="number"><abbr title="Points for">PF</abbr></th>
+        <th scope="col" class="number"><abbr title="Points against">PA</abbr></th>
+        <th scope="col" class="number"><abbr title="Point differential">Diff</abbr></th>
+        <th scope="col" class="number"><abbr title="Division record">Div</abbr></th>
+        <th scope="col" class="number"><abbr title="Conference record">Conf</abbr></th>
+        <th scope="col"><abbr title="Streak">Strk</abbr></th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        teams.map((t) => (
+          <tr>
+            <th scope="row" class="team-cell">
+              <TeamChip abbr={t.team} size="sm" />
+              <a href={url(`teams/${t.team}`)}>{names.get(t.team) ?? t.team}</a>
+            </th>
+            <td class="number">{t.wins}</td>
+            <td class="number">{t.losses}</td>
+            <td class="number">{t.ties}</td>
+            <td class="number">{formatPct(t.pct)}</td>
+            <td class="number">{t.pointsFor}</td>
+            <td class="number">{t.pointsAgainst}</td>
+            <td class:list={['number', { up: t.diff > 0, down: t.diff < 0 }]}>{formatSigned(t.diff)}</td>
+            <td class="number">{formatRecord(t.divisionRecord)}</td>
+            <td class="number">{formatRecord(t.conferenceRecord)}</td>
+            <td>{t.streak ?? ''}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .team-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 400;
+  }
+
+  .up {
+    color: var(--win);
+  }
+
+  .down {
+    color: var(--loss);
+  }
+
+  abbr {
+    text-decoration: none;
+  }
+</style>

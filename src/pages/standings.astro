@@ -1,0 +1,155 @@
+---
+/**
+ * League standings: each division, then each conference's seeding, with
+ * NFL tiebreakers applied (pipelines/standings.py) and a note wherever one
+ * decided an order.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Panel from '../components/Panel.astro';
+import StandingsTable from '../components/StandingsTable.astro';
+import TeamChip from '../components/TeamChip.astro';
+import teamsData from '../data/teams.json';
+import type { TeamsData } from '../data/types';
+import { STEP_WORDS, record, tieNotes } from '../lib/standings/ties';
+import { divisionsOf, formatPct, seedsOf, standings } from '../utils/standings';
+import { url } from '../utils/url';
+
+const names = new Map((teamsData as TeamsData).map((t) => [t.abbr, t.name]));
+const conferences = ['AFC', 'NFC'] as const;
+const early = standings.throughWeek > 0 && standings.throughWeek < 4;
+const intro =
+  standings.throughWeek === 0
+    ? `${standings.season} season, before the first game.`
+    : `${standings.season} season, through week ${standings.throughWeek}.`;
+---
+
+<BaseLayout title="Standings" description="NFL standings by division, with playoff seeding and the tiebreakers that decided it.">
+  <h1 class="page-title">Standings</h1>
+  <p class="page-intro">
+    {intro} Teams on the same record are ordered by the NFL's tiebreakers, and a note under each
+    table says which one decided it.
+    {early && ' This early, many records are level, so strength of victory and coin tosses settle more than usual.'}
+  </p>
+
+  {
+    conferences.map((conference) => (
+      <section class="conference" aria-labelledby={`${conference}-heading`}>
+        <h2 class="conference-title" id={`${conference}-heading`}>{conference}</h2>
+        <div class="division-grid">
+          {divisionsOf(conference).map((division) => {
+            const notes = tieNotes(division.teams, 'divisionTiebreak');
+            return (
+              <Panel title={division.name}>
+                <StandingsTable teams={division.teams} caption={`${division.name} standings`} />
+                {notes.length > 0 && (
+                  <ul class="notes">
+                    {notes.map((note) => <li>{note}</li>)}
+                  </ul>
+                )}
+              </Panel>
+            );
+          })}
+        </div>
+
+        <Panel title={`${conference} playoff seeding`}>
+          <div class="stat-table-scroll" tabindex="0">
+            <table class="stat-table seeds">
+              <caption class="visually-hidden">{conference} playoff seeding, 1 to 16</caption>
+              <thead>
+                <tr>
+                  <th scope="col" class="number">Seed</th>
+                  <th scope="col">Team</th>
+                  <th scope="col" class="number">Record</th>
+                  <th scope="col" class="number">Pct</th>
+                  <th scope="col">Place</th>
+                  <th scope="col">Tiebreak</th>
+                </tr>
+              </thead>
+              <tbody>
+                {seedsOf(conference).map((t) => (
+                  <tr class:list={{ cutoff: t.conferenceRank === 7 }}>
+                    <td class="number">{t.conferenceRank}</td>
+                    <th scope="row" class="team-cell">
+                      <TeamChip abbr={t.team} size="sm" />
+                      <a href={url(`teams/${t.team}`)}>{names.get(t.team) ?? t.team}</a>
+                    </th>
+                    <td class="number">{record(t)}</td>
+                    <td class="number">{formatPct(t.pct)}</td>
+                    <td>
+                      {t.conferenceRank <= 4 ? 'Division leader' : t.conferenceRank <= 7 ? 'Wild card' : 'Out'}
+                    </td>
+                    <td>{t.conferenceTiebreak ? STEP_WORDS[t.conferenceTiebreak] : ''}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="table-foot">
+            Seeds 1 to 4 lead their divisions; 5 to 7 are wild cards. The line under seed 7 is the
+            playoff cut. Tiebreak names the step that placed a team ahead of others on its record.
+          </p>
+        </Panel>
+      </section>
+    ))
+  }
+</BaseLayout>
+
+<style>
+  .page-intro {
+    color: var(--text-dim);
+    margin-bottom: var(--space-4);
+    max-width: 80ch;
+  }
+
+  .conference + .conference {
+    margin-top: var(--space-5);
+  }
+
+  .conference-title {
+    font-size: 20px;
+    margin-bottom: var(--space-3);
+  }
+
+  .division-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(540px, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .notes {
+    margin: var(--space-2) 0 0;
+    padding: var(--space-2) 0 0;
+    list-style: none;
+    border-top: 1px dotted var(--rule-soft);
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  .team-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 400;
+  }
+
+  /* The playoff cut: a heavier rule under seed 7. */
+  .seeds .cutoff td,
+  .seeds .cutoff th {
+    border-bottom: 2px solid var(--header);
+  }
+
+  .table-foot {
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px dotted var(--rule-soft);
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  @media (max-width: 760px) {
+    .division-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

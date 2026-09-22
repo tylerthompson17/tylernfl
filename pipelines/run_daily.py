@@ -1,5 +1,6 @@
 """Daily site data job: writes ticker.json, leaders.json, stats/, players/,
-rosters/, transactions.json and on_this_day.json into src/data/, then draws
+rosters/, transactions.json, on_this_day.json and standings.json into
+src/data/, then draws
 the home page's auto chart (charts/auto.svg and charts/auto.json) from them.
 
 Run from the repo root:
@@ -29,6 +30,7 @@ from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
 from leaders import build_leaders  # noqa: E402
 from on_this_day import build_on_this_day, load_on_this_day_input  # noqa: E402
 from rosters import build_rosters, load_roster_rows, unknown_statuses  # noqa: E402
+from standings import build_standings  # noqa: E402
 from ticker import build_ticker, load_schedule_rows  # noqa: E402
 from transactions import (  # noqa: E402
     build_transactions,
@@ -84,6 +86,10 @@ def main() -> None:
     print(f"transactions: week {transactions['movesWeek']} vs {transactions['comparedToWeek']}, "
           f"{len(transactions['moves'])} moves, {len(transactions['injuries'])} on the injury report")
 
+    standings = build_standings(schedule_rows, stats_season(today), updated)
+    leaders_line = [t['team'] for t in standings['teams'] if t['conferenceRank'] == 1]
+    print(f"standings: {standings['season']} through week {standings['throughWeek']}, top seeds {', '.join(leaders_line)}")
+
     on_this_day = build_on_this_day(*load_on_this_day_input(), today)
     print(f"on this day: {today:%m-%d}, {len(on_this_day['items'])} of {on_this_day['gamesOnDate']} games")
 
@@ -96,6 +102,7 @@ def main() -> None:
     logs = [(f'players/{team}.json', data, ()) for team, data in sorted(game_logs.items())]
     files.append(('transactions.json', transactions, ('updated',)))
     files.append(('on_this_day.json', on_this_day, ()))
+    files.append(('standings.json', standings, ('updated',)))
     files += [(f'rosters/{team}.json', roster, ('updated',)) for team, roster in sorted(rosters.items())]
 
     if args.dry_run:
