@@ -318,7 +318,7 @@ linked from the ticker's week label.
   Auto plus their kind (Win probability, EPA, Yards race), so `/charts/tag/auto/` is
   all of them. Only Tyler's can be featured.
 - A gallery card shows the logos of the teams a chart is about beside its title (the
-  ones inside the chart are too small at thumbnail size): `teams` in an auto chart's
+  ones inside the chart are too small at thumbnail size), each linking to its team page: `teams` in an auto chart's
   entry (away, home on WP charts), or optional `teams: [BUF, KC]` in one of Tyler's.
   The build fails on an abbreviation that is not a team.
 - The home page's chart panel is full width under the 4th down panel: Tyler's featured

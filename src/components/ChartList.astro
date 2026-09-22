@@ -3,20 +3,23 @@
  * Charts (Tyler's and the kept auto charts) as a grid of cards, newest first: the /charts gallery and
  * each tag's page. Each card links to the chart's own page. A chart about
  * particular teams shows their logos beside its title, since the ones drawn
- * inside the chart are too small to read at thumbnail size. The title
- * already names the teams, so the logos are decorative.
+ * inside the chart are too small to read at thumbnail size. Each logo
+ * links to its team's page and is named by the team for screen readers.
  */
 import Panel from './Panel.astro';
 import ChartFigure from './ChartFigure.astro';
 import { formatChartDate, svgFor, type Chart } from '../utils/charts';
 import { tagSlug } from '../lib/charts/collection';
 import { url } from '../utils/url';
+import teamsData from '../data/teams.json';
+import type { TeamsData } from '../data/types';
 
 interface Props {
   charts: Chart[];
 }
 
 const { charts } = Astro.props;
+const teamName = new Map((teamsData as TeamsData).map((team) => [team.abbr, team.name]));
 ---
 
 <div class="chart-grid">
@@ -31,7 +34,9 @@ const { charts } = Astro.props;
           {chart.data.teams.length > 0 && (
             <span class="logos">
               {chart.data.teams.map((team) => (
-                <img src={url(`logos/${team}.png`)} alt="" width="24" height="24" loading="lazy" decoding="async" />
+                <a href={url(`teams/${team}`)} title={teamName.get(team)}>
+                  <img src={url(`logos/${team}.png`)} alt={teamName.get(team) ?? team} width="24" height="24" loading="lazy" decoding="async" />
+                </a>
               ))}
             </span>
           )}
@@ -84,6 +89,10 @@ const { charts } = Astro.props;
     display: flex;
     flex: none;
     gap: var(--space-1);
+  }
+
+  .logos a {
+    display: block;
   }
 
   .logos img {
