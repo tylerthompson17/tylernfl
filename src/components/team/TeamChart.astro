@@ -1,0 +1,79 @@
+---
+/**
+ * The newest chart about one team, drawn inline on its overview page.
+ *
+ * Charts name the teams they are about (an auto chart's two, or `teams:`
+ * in one of Tyler's), which is what /charts/team/<ABBR>/ lists. This is
+ * the top of that list, so the morning after a team's game its win
+ * probability chart is on the team's own page, not only in the gallery.
+ */
+import Panel from '../Panel.astro';
+import ChartFigure from '../ChartFigure.astro';
+import type { Team } from '../../data/types';
+import { AUTO_AUTHOR, formatChartDate, getCharts, hoverFor, svgFor } from '../../utils/charts';
+import { url } from '../../utils/url';
+
+interface Props {
+  team: Team;
+}
+
+const { team } = Astro.props;
+const charts = (await getCharts()).filter((chart) => chart.data.teams.includes(team.abbr));
+const chart = charts[0];
+const auto = chart?.data.author === AUTO_AUTHOR;
+const titleId = 'team-chart-title';
+---
+
+{
+  chart ? (
+    <Panel title={chart.data.title} titleId={titleId}>
+      <ChartFigure svg={svgFor(chart)} titleId={titleId} note={chart.data.note} id="team-chart" hover={hoverFor(chart)}>
+        <p class="chart-meta">
+          {auto && <span class="auto-label">{AUTO_AUTHOR}</span>}
+          <span class="num">{formatChartDate(chart.data.date)}</span>
+          {auto ? '. ' : `, ${chart.data.author}. `}
+          Source: {chart.data.source}.{' '}
+          <a href={url(`charts/${chart.id}`)}>Chart page</a>{' '}
+          {charts.length > 1 ? (
+            <a href={url(`charts/team/${team.abbr}`)}>All {charts.length} charts about the {team.name}</a>
+          ) : (
+            <a href={url('charts')}>All charts</a>
+          )}
+        </p>
+      </ChartFigure>
+    </Panel>
+  ) : (
+    <Panel title="Charts">
+      <p class="placeholder-note">
+        No charts about the {team.name} yet. One appears when a game of theirs is the best of a
+        day's slate, or when Tyler draws one. <a href={url('charts')}>All charts</a>
+      </p>
+    </Panel>
+  )
+}
+
+<style>
+  .chart-meta {
+    margin-top: var(--space-1);
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  .chart-meta a {
+    margin-right: var(--space-2);
+  }
+
+  /* Says plainly that no one picked this chart: the pipeline drew it. */
+  .auto-label {
+    margin-right: var(--space-1);
+    padding: 0 var(--space-1);
+    border: 1px solid var(--rule);
+    color: var(--text);
+    font-family: var(--font-heading);
+    font-weight: 700;
+  }
+
+  .placeholder-note {
+    color: var(--text-dim);
+  }
+</style>

@@ -334,6 +334,13 @@ linked from the ticker's week label.
 - The home page's chart panel is full width under the 4th down panel: Tyler's featured
   chart with its date, else the auto chart labeled "Auto chart" with what its data
   covers, else an empty state.
+- A team's own page shows its newest chart, full width on the overview under the playoff
+  odds and drawn inline with its hover readout (`TeamChart.astro`), so the morning after
+  one of its games is the day's pick, that win probability chart is on the team page and
+  not only in the gallery. The caption links to the chart's page and, once a team has
+  more than one, to its full list (`/charts/team/<ABBR>/`), which stays where the
+  gallery's logo filter row points. A team with no charts gets an empty state: three
+  auto charts a week cover six of the league's 32 teams.
 
 ### Right rail
 
