@@ -294,6 +294,18 @@ linked from the ticker's week label.
   Mark a moment with `style.callout` (a dot, a boxed two-line label, a leader). Text in
   a chart box is left-aligned: matplotlib measures in a wider stand-in for Barlow, so
   centered or right-aligned lines drift once the page draws them.
+- A full-size chart can be read point by point: hover, drag, or focus it and use the arrow
+  keys, Home and End. A guide line (along x) and a dot mark the point, a boxed readout shows
+  its lines, and each readout is announced to screen readers. The data comes from
+  `style.save(..., hover={...})`, written as `<slug>.hover.json` beside the SVG: the plot
+  area in viewBox units, the axis ranges, and the points. The page embeds it (no fetch);
+  `src/lib/charts/hover.ts` does the math and `hover-dom.ts` the wiring. Nothing animates.
+  On touch, a drag reads the chart only where the whole chart fits; where the frame scrolls
+  sideways (phones), a drag scrolls and a tap reads. Thumbnails have no hover.
+- The auto chart's templates all carry hover data: win probability, every play (clock,
+  who is favored after it, what happened, the swing when at least 1%; marker rows and
+  unnamed stoppages left out, timeouts named), plus kickoff and the result; the EPA
+  scatter, each team's values and ranks; the yards race, each week's totals.
 - `/charts` is Tyler's charts only: newest first, 12 to a page, a static page per tag
   (`/charts/tag/<tag>/`, no script), and a page per chart with its note, date, author,
   source and tags. Chart names cannot be all digits or `tag` (those URLs are taken).

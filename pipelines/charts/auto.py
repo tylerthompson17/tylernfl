@@ -26,7 +26,7 @@ switch to it.
 import json
 from datetime import date, datetime, timedelta
 
-from common import DATA_DIR
+from common import DATA_DIR, normalize_team
 
 from charts import style
 
@@ -235,6 +235,9 @@ def describe_play(play: dict) -> str:
         return 'Two-point try good' if play.get('two_point_conv_result') == 'success' else 'Two-point try failed'
     if play.get('penalty') and play.get('penalty_type'):
         return f"Penalty, {play['penalty_type']}"
+    if play.get('timeout'):
+        team = play.get('timeout_team')
+        return f'Timeout, {normalize_team(team)}' if team else 'Timeout'
     return (kind or 'Play').replace('_', ' ').capitalize()
 
 
@@ -332,16 +335,104 @@ def epa_note(team_stats: dict) -> str:
     mean_def = sum(t['values']['def_epa']['value'] for t in teams) / len(teams)
     both = [t for t in teams if t['values']['off_epa']['value'] > mean_off and t['values']['def_epa']['value'] < mean_def]
     return (
-        f"{best_off['abbr']} has the best offense by EPA per play ({best_off['values']['off_epa']['value']:+.3f}) "
-        f"and {best_def['abbr']} the best defense ({best_def['values']['def_epa']['value']:+.3f}). "
+        f"{best_off['abbr']} has the best offense by EPA per play ({signed3(best_off['values']['off_epa']['value'])}) "
+        f"and {best_def['abbr']} the best defense ({signed3(best_def['values']['def_epa']['value'])}). "
         f"{len(both)} of {len(teams)} teams are above average on both sides."
     )
+
+
+# ---------------------------------------------------------------- hover
+#
+# What the page shows under the pointer (style.save's hover). Built from
+# the same numbers the chart draws, so the readout and the line agree.
+
+
+def signed3(value: float) -> str:
+    """+0.118 / −0.378: three places with a true minus, as the site writes
+    signed stats (formatStat in src/utils/format.ts)."""
+    return f'{value:+.3f}'.replace('-', '\u2212')
+
+
+def _chance(home: str, away: str, home_wp: float) -> str:
+    """"KC 64%": whoever is favored, and by how much. "Even" at 50%."""
+    pct = round(max(home_wp, 1 - home_wp) * 100)
+    if pct == 50:
+        return 'Even'
+    return f'{home if home_wp > 0.5 else away} {pct}%'
+
+
+def wp_hover(game: dict, plays: list[dict], ax) -> dict:
+    """Every play: the clock, who is favored after it, what happened, and
+    the swing when it is at least 1%. Then the kickoff and the result."""
+    home, away = game['home_team'], game['away_team']
+    points = []
+    if plays:
+        points.append({'x': 0.0, 'y': plays[0]['home_wp'],
+                       'lines': [f"Kickoff · {_chance(home, away, plays[0]['home_wp'])}"]})
+    for play in plays:
+        # nflverse's marker rows (game start, end of a quarter) are in the
+        # line but are not plays: nothing to read out.
+        if not play.get('play_type'):
+            continue
+        what = describe_play(play)
+        if what == 'No play':
+            continue  # a stoppage nflverse does not name
+        after = wp_after(play)
+        lines = [f"{clock_label(play['qtr'], play['game_seconds_remaining'])} · {_chance(home, away, after)}", what]
+        change = swing(play)
+        if abs(change) >= 0.005:
+            lines.append(f"{home if change > 0 else away} +{round(abs(change) * 100)}% on the play")
+        points.append({'x': elapsed_minutes(play['qtr'], play['game_seconds_remaining']), 'y': after, 'lines': lines})
+    a, h = game['away_score'], game['home_score']
+    end = max(60.0, points[-1]['x'] if points else 60.0)
+    overtime = ' in overtime' if game.get('overtime') else ''
+    if a == h:
+        final = f'Final · {away} and {home} tied {a} to {h}{overtime}'
+    else:
+        winner, loser, w, l = (home, away, h, a) if h > a else (away, home, a, h)
+        final = f'Final · {winner} beat {loser} {w} to {l}{overtime}'
+    points.append({'x': end, 'y': 1.0 if h > a else 0.0 if a > h else 0.5, 'lines': [final]})
+    return {'ax': ax, 'mode': 'x', 'points': points}
+
+
+def _team_names() -> dict[str, str]:
+    path = DATA_DIR / 'teams.json'
+    return {t['abbr']: t['name'] for t in json.loads(path.read_text())} if path.exists() else {}
+
+
+def ordinal(n: int) -> str:
+    suffix = 'th' if 11 <= n % 100 <= 13 else {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')
+    return f'{n}{suffix}'
+
+
+def epa_hover(team_stats: dict, ax) -> dict:
+    names = _team_names()
+    points = []
+    for t in team_stats['teams']:
+        off, deff = t['values']['off_epa'], t['values']['def_epa']
+        if off['value'] is None:
+            continue
+        points.append({'x': off['value'], 'y': deff['value'], 'lines': [
+            names.get(t['abbr'], t['abbr']),
+            f"Offense {signed3(off['value'])} EPA per play, {ordinal(off['rank'])} of 32",
+            f"Defense {signed3(deff['value'])} allowed, {ordinal(deff['rank'])} of 32",
+        ]})
+    return {'ax': ax, 'mode': 'nearest', 'points': points}
+
+
+def race_hover(label: str, last_week: int, series: list[tuple[str, str, list[int]]], ax) -> dict:
+    points = []
+    for week in range(1, last_week + 1):
+        standing = sorted(((values[week - 1], name) for name, _, values in series), key=lambda r: (-r[0], r[1]))
+        points.append({'x': week, 'y': None, 'lines': [f'Week {week}, {label.lower()} so far'] +
+                       [f'{short_name(name)} {total:,}' for total, name in standing]})
+    return {'ax': ax, 'mode': 'x', 'points': points}
 
 
 # ---------------------------------------------------------------- drawing
 
 
-def draw_wp(game: dict, points: list[tuple[float, float]], moments: list[dict] = ()):
+def draw_wp(game: dict, points: list[tuple[float, float]], moments: list[dict] = (), plays: list[dict] = ()):
     fig, ax = style.figure()
     away, home = game['away_team'], game['home_team']
     xs, ys = zip(*points)
@@ -366,7 +457,7 @@ def draw_wp(game: dict, points: list[tuple[float, float]], moments: list[dict] =
         (elapsed_minutes(play['qtr'], play['game_seconds_remaining']), wp_after(play), play_label(play, home, away))
         for play in moments
     ])
-    return fig
+    return fig, wp_hover(game, list(plays), ax)
 
 
 def place_callouts(ax, points: list[tuple[float, float]], moments: list[tuple[float, float, list[str]]]) -> None:
@@ -408,7 +499,7 @@ def draw_race(label: str, last_week: int, series: list[tuple[str, str, list[int]
     ])
     ax.yaxis.set_major_formatter(lambda v, _: f'{v:,.0f}')
     ax.spines['left'].set_visible(False)
-    return fig
+    return fig, race_hover(label, last_week, series, ax)
 
 
 def draw_epa(team_stats: dict):
@@ -435,7 +526,7 @@ def draw_epa(team_stats: dict):
     corner = dict(fontsize=style.SMALL_PX, color=style.TEXT_DIM, transform=ax.transAxes)
     style.heading(ax, 'Good on both sides', xy=(0.99, 0.98), ha='right', va='top', **corner)
     style.heading(ax, 'Struggling on both', xy=(0.01, 0.02), ha='left', va='bottom', **corner)
-    return fig
+    return fig, epa_hover(team_stats, ax)
 
 
 # ---------------------------------------------------------------- the job
@@ -449,7 +540,7 @@ PLAY_COLUMNS = [
     'complete_pass', 'passer_player_name', 'receiver_player_name', 'rusher_player_name',
     'field_goal_result', 'kick_distance', 'kicker_player_name', 'extra_point_result',
     'two_point_attempt', 'two_point_conv_result', 'punt_blocked', 'fourth_down_failed',
-    'ydstogo', 'penalty', 'penalty_type',
+    'ydstogo', 'penalty', 'penalty_type', 'timeout', 'timeout_team',
 ]
 
 
@@ -459,7 +550,7 @@ def _read(name: str):
 
 
 def build_auto_chart(today: date, schedule_rows: list[dict], current_season: int):
-    """(meta, figure, slug) for today's auto chart, or None when there is
+    """(meta, figure, slug, hover) for today's auto chart, or None when there is
     nothing to draw. Reads the data files run_daily.py has just written."""
     game = closest_game(schedule_rows, today - timedelta(days=1))
     if game:
@@ -502,7 +593,8 @@ def _wp_chart(game: dict, current_season: int):
         'asOf': f'{day:%a}, {day:%b} {day.day}',
         'source': 'nflverse play-by-play, win probability from the nflfastR model',
     }
-    return meta, draw_wp(game, points, key_plays(plays)), 'auto'
+    fig, hover = draw_wp(game, points, key_plays(plays), plays)
+    return meta, fig, 'auto', hover
 
 
 def _epa_chart(team_stats: dict):
@@ -513,7 +605,8 @@ def _epa_chart(team_stats: dict):
         'asOf': f"{team_stats['season']} season, through week {team_stats['throughWeek']}",
         'source': 'nflverse play-by-play, EPA from the nflfastR model',
     }
-    return meta, draw_epa(team_stats), 'auto'
+    fig, hover = draw_epa(team_stats)
+    return meta, fig, 'auto', hover
 
 
 def _race_chart(today: date):
@@ -530,17 +623,19 @@ def _race_chart(today: date):
         'asOf': f'{season} season, through week {last}',
         'source': 'nflverse weekly player stats',
     }
-    return meta, draw_race(label, last, series), 'auto'
+    fig, hover = draw_race(label, last, series)
+    return meta, fig, 'auto', hover
 
 
 def write_auto_chart(chart) -> bool:
-    """Write src/data/charts/auto.{json,svg}. True when either changed."""
+    """Write src/data/charts/auto.{json,svg,hover.json}. True when any changed."""
     from common import write_json_if_changed
 
     if chart is None:
         return False
-    meta, fig, slug = chart
-    before = (DATA_DIR / 'charts' / 'auto.svg').read_text() if (DATA_DIR / 'charts' / 'auto.svg').exists() else None
-    style.save(fig, slug, DATA_DIR / 'charts')
-    svg_changed = (DATA_DIR / 'charts' / 'auto.svg').read_text() != before
-    return write_json_if_changed('charts/auto.json', meta) or svg_changed
+    meta, fig, slug, hover = chart
+    files = [DATA_DIR / 'charts' / f'auto{ext}' for ext in ('.svg', '.hover.json')]
+    before = [f.read_text() if f.exists() else None for f in files]
+    style.save(fig, slug, DATA_DIR / 'charts', hover=hover)
+    after = [f.read_text() if f.exists() else None for f in files]
+    return write_json_if_changed('charts/auto.json', meta) or before != after

@@ -409,5 +409,66 @@ class RenderTests(unittest.TestCase):
             self.assertEqual(path.stat().st_mtime_ns, first)
 
 
+
+class HoverTests(unittest.TestCase):
+    def test_marker_rows_and_unnamed_stoppages_are_left_out_timeouts_named(self):
+        plays = [
+            {'play_id': 1, 'qtr': 1, 'game_seconds_remaining': 3600, 'home_wp': 0.55, 'home_wp_post': 0.55, 'play_type': None},
+            {'play_id': 2, 'qtr': 1, 'game_seconds_remaining': 3600, 'home_wp': 0.55, 'home_wp_post': 0.56, 'play_type': 'kickoff'},
+            {'play_id': 3, 'qtr': 1, 'game_seconds_remaining': 3000, 'home_wp': 0.56, 'home_wp_post': 0.56, 'play_type': 'no_play',
+             'timeout': 1.0, 'timeout_team': 'LA'},
+            {'play_id': 4, 'qtr': 1, 'game_seconds_remaining': 2990, 'home_wp': 0.56, 'home_wp_post': 0.56, 'play_type': 'no_play'},
+            {'play_id': 5, 'qtr': 4, 'game_seconds_remaining': 130, 'home_wp': 0.40, 'home_wp_post': 0.62, 'play_type': 'pass',
+             'passer_player_name': 'P.Mahomes', 'receiver_player_name': 'T.Thornton', 'yards_gained': 45.0, 'complete_pass': 1.0},
+        ]
+        game = {'away_team': 'IND', 'home_team': 'KC', 'away_score': 30, 'home_score': 33, 'overtime': 1}
+        points = auto.wp_hover(game, plays, ax=None)['points']
+        self.assertEqual([p['lines'] for p in points], [
+            ['Kickoff · KC 55%'],
+            ['Q1 15:00 · KC 56%', 'Kickoff', 'KC +1% on the play'],
+            ['Q1 5:00 · KC 56%', 'Timeout, LAR'],
+            ['Q4 2:10 · KC 62%', 'P.Mahomes to T.Thornton, 45 yds', 'KC +22% on the play'],
+            ['Final · KC beat IND 33 to 30 in overtime'],
+        ])
+        self.assertEqual(points[-1]['y'], 1.0)
+
+    def test_even_odds_read_as_even(self):
+        self.assertEqual(auto._chance('KC', 'IND', 0.503), 'Even')
+        self.assertEqual(auto._chance('KC', 'IND', 0.38), 'IND 62%')
+
+    def test_signed_values_use_a_true_minus(self):
+        self.assertEqual(auto.signed3(-0.378), '−0.378')
+        self.assertEqual(auto.signed3(0.118), '+0.118')
+
+
+@unittest.skipUnless(HAS_MATPLOTLIB, 'matplotlib not installed')
+class HoverGeometryTests(unittest.TestCase):
+    def test_the_plot_area_and_ranges_match_what_is_drawn(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            fig, ax = style.figure()
+            ax.plot([0, 60], [0, 1])
+            ax.set_xlim(0, 60)
+            ax.set_ylim(1, 0)  # inverted, as the EPA chart's is
+            style.save(fig, 'geo', Path(tmp), hover={'ax': ax, 'mode': 'x', 'points': [
+                {'x': 30, 'y': 0.5, 'lines': ['Middle']}]})
+            import json
+            data = json.loads((Path(tmp) / 'geo.hover.json').read_text())
+            self.assertEqual(data['xRange'], [0.0, 60.0])
+            self.assertEqual(data['yRange'], [1.0, 0.0])
+            plot = data['plot']
+            self.assertTrue(0 < plot['x'] < 100 and 0 <= plot['y'] < 50)
+            self.assertTrue(plot['x'] + plot['width'] <= style.WIDTH_PX)
+            self.assertTrue(plot['y'] + plot['height'] <= style.HEIGHT_PX)
+            self.assertEqual(data['points'], [{'x': 30.0, 'y': 0.5, 'lines': ['Middle']}])
+
+    def test_saving_without_hover_removes_an_old_hover_file(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / 'old.hover.json').write_text('{}')
+            fig, ax = style.figure()
+            ax.plot([1, 2])
+            style.save(fig, 'old', Path(tmp))
+            self.assertFalse((Path(tmp) / 'old.hover.json').exists())
+
+
 if __name__ == '__main__':
     unittest.main()

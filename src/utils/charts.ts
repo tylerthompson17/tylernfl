@@ -11,6 +11,7 @@ import { entriesOf } from './collections';
 import teamsData from '../data/teams.json';
 import type { AutoChartData, TeamsData } from '../data/types';
 import { chartProblems, labelSvg, resolveLogos, tagSlug } from '../lib/charts/collection';
+import type { ChartHover } from '../lib/charts/hover';
 import { url } from './url';
 
 export type Chart = CollectionEntry<'charts'>;
@@ -21,6 +22,13 @@ const svgBySlug = new Map(
 );
 
 const autoSvgs = import.meta.glob<string>('../data/charts/auto.svg', { query: '?raw', import: 'default', eager: true });
+
+// Hover data beside each SVG (<slug>.hover.json), when its script made some.
+const hovers = import.meta.glob<ChartHover>('../content/charts/*.hover.json', { import: 'default', eager: true });
+const hoverBySlug = new Map(
+  Object.entries(hovers).map(([path, data]) => [path.split('/').pop()!.replace(/\.hover\.json$/, ''), data])
+);
+const autoHovers = import.meta.glob<ChartHover>('../data/charts/auto.hover.json', { import: 'default', eager: true });
 const autoJson = import.meta.glob<AutoChartData>('../data/charts/auto.json', { import: 'default', eager: true });
 
 const teams = new Set((teamsData as TeamsData).map((team) => team.abbr));
@@ -70,11 +78,16 @@ export function svgFor(chart: Chart): string {
   return svgBySlug.get(chart.id)!;
 }
 
+/** A chart's hover data, or null if its script wrote none. */
+export function hoverFor(chart: Chart): ChartHover | null {
+  return hoverBySlug.get(chart.id) ?? null;
+}
+
 /** The daily auto chart, or null before the pipeline has drawn one. */
-export function getAutoChart(): { data: AutoChartData; svg: string } | null {
+export function getAutoChart(): { data: AutoChartData; svg: string; hover: ChartHover | null } | null {
   const data = Object.values(autoJson)[0];
   const svg = Object.values(autoSvgs)[0];
-  return data && svg ? { data, svg } : null;
+  return data && svg ? { data, svg, hover: Object.values(autoHovers)[0] ?? null } : null;
 }
 
 export function formatChartDate(date: Date): string {

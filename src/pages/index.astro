@@ -9,7 +9,7 @@ import { headlineItems, statusSummary, transactions } from '../utils/transaction
 import { notable } from '../utils/performances';
 import { leadersFor } from '../utils/overview';
 import ChartFigure from '../components/ChartFigure.astro';
-import { formatChartDate, getAutoChart, getFeaturedChart, svgFor } from '../utils/charts';
+import { formatChartDate, getAutoChart, getFeaturedChart, hoverFor, svgFor } from '../utils/charts';
 
 const receiving = leadersFor('receiving');
 
@@ -64,7 +64,7 @@ const leaderColumns = [
     {
       featured ? (
         <Panel title={featured.data.title} titleId="home-chart-title" class="lead">
-          <ChartFigure svg={svgFor(featured)} titleId="home-chart-title" note={featured.data.note} id="home-chart">
+          <ChartFigure svg={svgFor(featured)} titleId="home-chart-title" note={featured.data.note} id="home-chart" hover={hoverFor(featured)}>
             <p class="chart-meta">
               <span class="num">{formatChartDate(featured.data.date)}</span>, {featured.data.author}.{' '}
               Source: {featured.data.source}.{' '}
@@ -75,7 +75,7 @@ const leaderColumns = [
         </Panel>
       ) : auto ? (
         <Panel title={auto.data.title} titleId="home-chart-title" class="lead">
-          <ChartFigure svg={auto.svg} titleId="home-chart-title" note={auto.data.note} id="home-chart">
+          <ChartFigure svg={auto.svg} titleId="home-chart-title" note={auto.data.note} id="home-chart" hover={auto.hover}>
             <p class="chart-meta">
               <span class="auto-label">Auto chart</span> {auto.data.asOf}. Source: {auto.data.source}.{' '}
               <a href={url('charts')}>All charts</a>

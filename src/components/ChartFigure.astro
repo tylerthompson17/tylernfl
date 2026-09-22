@@ -7,7 +7,13 @@
  * The title is the parent's heading, found by `titleId`; the SVG is named
  * by it and described by the note, so a screen reader hears the chart as
  * one image with a takeaway.
+ *
+ * With hover data (from the pipeline's <slug>.hover.json), a full-size
+ * chart can be read point by point: hover, drag, or the arrow keys
+ * (src/lib/charts/hover-dom.ts). The data is written into the page, not
+ * fetched. Thumbnails stay plain; they link to the full chart.
  */
+import type { ChartHover } from '../lib/charts/hover';
 import { chartSvg } from '../utils/charts';
 
 interface Props {
@@ -18,25 +24,104 @@ interface Props {
   /** Unique on the page; used for the note's id */
   id: string;
   size?: 'full' | 'thumb';
+  hover?: ChartHover | null;
 }
 
-const { svg, titleId, note, id, size = 'full' } = Astro.props;
+const { svg, titleId, note, id, size = 'full', hover } = Astro.props;
 const noteId = `${id}-note`;
+const hintId = `${id}-hint`;
+const readable = size === 'full' && hover && hover.points.length > 0;
+// JSON in a script element: "<" escaped so no string in it can end the element.
+const hoverJson = readable ? JSON.stringify(hover).replace(/</g, '\\u003c') : '';
 ---
 
-<figure class:list={['chart', size]}>
+<figure class:list={['chart', size]} data-chart-hover={readable ? '' : undefined}>
   {/* Focusable so the chart can be scrolled with the keyboard when it is
-      wider than a phone screen, as the site's tables are. */}
-  <div class="frame" tabindex={size === 'full' ? 0 : undefined} set:html={chartSvg(svg, titleId, noteId)} />
+      wider than a phone screen, as the site's tables are, and read with
+      the arrow keys when it has hover data. */}
+  <div
+    class="frame"
+    tabindex={size === 'full' ? 0 : undefined}
+    aria-describedby={readable ? hintId : undefined}
+    set:html={chartSvg(svg, titleId, noteId)}
+  />
+  {readable && <script type="application/json" data-chart-hover-data set:html={hoverJson} />}
   <figcaption>
     <p class="note" id={noteId}>{note}</p>
+    {readable && (
+      <p class="hint" id={hintId}>
+        Hover or drag across the chart, or focus it and use the arrow keys, to read each point.
+      </p>
+    )}
     <slot />
   </figcaption>
 </figure>
 
+<script>
+  import { initChartHover } from '../lib/charts/hover-dom';
+
+  initChartHover();
+</script>
+
 <style>
   .frame {
+    position: relative;
     border: 1px solid var(--rule);
+  }
+
+  .hint {
+    margin-top: var(--space-1);
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  /* The hover readout, built by hover-dom.ts. Laid over the chart and
+     never in the way of the pointer. Nothing animates. */
+  .frame :global(.hover-layer) {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .frame :global(.hover-layer[hidden]),
+  .frame :global(.hover-guide[hidden]),
+  .frame :global(.hover-dot[hidden]) {
+    display: none;
+  }
+
+  .frame :global(.hover-guide) {
+    position: absolute;
+    width: 0;
+    border-left: 1px solid var(--text-dim);
+  }
+
+  .frame :global(.hover-dot) {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    margin: -5.5px 0 0 -5.5px;
+    /* A round data mark, like the chart's own; a panel-colored ring, not a
+       shadow, keeps it clear of the line. */
+    border-radius: 50%;
+    border: 2px solid var(--panel);
+    background: var(--header);
+  }
+
+  .frame :global(.hover-readout) {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    max-width: 260px;
+    padding: var(--space-1) var(--space-2);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .frame :global(.hover-readout strong) {
+    font-family: var(--font-heading);
   }
 
   .frame :global(svg) {

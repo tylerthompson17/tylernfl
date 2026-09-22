@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
 import ChartFigure from '../../components/ChartFigure.astro';
 import { tagSlug } from '../../lib/charts/collection';
-import { formatChartDate, getCharts, svgFor, type Chart } from '../../utils/charts';
+import { formatChartDate, getCharts, hoverFor, svgFor, type Chart } from '../../utils/charts';
 import { url } from '../../utils/url';
 
 export async function getStaticPaths() {
@@ -26,7 +26,7 @@ const { title, date, author, tags, source, note, draft } = chart.data;
   </h1>
   <div class="content-grid">
     <Panel>
-      <ChartFigure svg={svgFor(chart)} titleId="chart-title" note={note} id="chart">
+      <ChartFigure svg={svgFor(chart)} titleId="chart-title" note={note} id="chart" hover={hoverFor(chart)}>
         <dl class="facts">
           <div>
             <dt>Date</dt>

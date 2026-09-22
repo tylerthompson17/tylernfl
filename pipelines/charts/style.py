@@ -10,6 +10,19 @@ the site's tokens stay the single source of truth. Use it like this:
     style.label_end(ax, weeks[-1], yards[-1], 'J.Chase', style.SERIES[0])
     style.save(fig, 'chase-yards-by-week')
 
+To make a chart readable point by point on the page (hover, drag, arrow
+keys), give save() the points and what to say at each:
+
+    style.save(fig, 'chase-yards-by-week', hover={
+        'ax': ax,
+        'mode': 'x',          # or 'nearest' for a scatter
+        'points': [{'x': week, 'y': total, 'lines': [f'Week {week}', f'{total:,} yds']}
+                   for week, total in zip(weeks, yards)],
+    })
+
+The first line is the bold headline. It writes <slug>.hover.json beside the
+SVG with the points and where the plot area sits; the site does the rest.
+
 save() writes src/content/charts/<slug>.svg. The pages put that SVG inline,
 so a few things are done to it on the way out:
 
@@ -41,6 +54,7 @@ Design rules the helpers follow, and your own drawing should too:
 """
 
 import io
+import json
 import re
 from pathlib import Path
 
@@ -381,16 +395,65 @@ def _site_stack(match: re.Match) -> str:
     return match.group(0)
 
 
-def save(fig, slug: str, directory: Path = CONTENT_DIR) -> Path:
-    """Write the figure to <directory>/<slug>.svg, only if it changed."""
-    import matplotlib.pyplot as plt
+def hover_geometry(fig, ax) -> dict:
+    """Where the axes' plot area sits in the SVG, in its viewBox units (1 point
+    = 1 pixel), and the data range along each edge, so the page can turn a
+    pointer position into data. Read after the figure has been laid out."""
+    fig.draw_without_rendering()
+    box = ax.get_window_extent()
+    height = fig.bbox.height
+    return {
+        'plot': {
+            'x': round(box.x0, 2),
+            'y': round(height - box.y1, 2),
+            'width': round(box.width, 2),
+            'height': round(box.height, 2),
+        },
+        # Left to right, and bottom to top as drawn: an inverted axis
+        # simply has its range running the other way.
+        'xRange': [float(v) for v in ax.get_xlim()],
+        'yRange': [float(v) for v in ax.get_ylim()],
+    }
 
-    path = directory / f'{slug}.svg'
-    text = svg_text(fig, slug)
-    plt.close(fig)
+
+def _write_if_changed(path: Path, text: str) -> None:
     if not path.exists() or path.read_text() != text:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text)
         shown = path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
         print(f'{shown}: updated')
+
+
+def save(fig, slug: str, directory: Path = CONTENT_DIR, hover: dict | None = None) -> Path:
+    """Write the figure to <directory>/<slug>.svg, only if it changed.
+
+    hover makes the chart readable point by point on the page (pointer,
+    touch, and arrow keys): {'ax': ax, 'mode': 'x' or 'nearest', 'points':
+    [{'x': ..., 'y': ... or None, 'lines': ['first line', ...]}, ...]}.
+    'x' snaps to the point nearest the pointer along x (a line over time);
+    'nearest' to the nearest point in both directions (a scatter). The
+    first line is set bold, like a callout. It is written beside the SVG as
+    <slug>.hover.json.
+    """
+    import matplotlib.pyplot as plt
+
+    path = directory / f'{slug}.svg'
+    text = svg_text(fig, slug)
+    geometry = hover_geometry(fig, hover['ax']) if hover else None
+    plt.close(fig)
+    _write_if_changed(path, text)
+    hover_path = directory / f'{slug}.hover.json'
+    if hover:
+        data = {
+            **geometry,
+            'mode': hover.get('mode', 'x'),
+            'points': [
+                {'x': round(float(p['x']), 4), 'y': None if p.get('y') is None else round(float(p['y']), 4),
+                 'lines': list(p['lines'])}
+                for p in hover['points']
+            ],
+        }
+        _write_if_changed(hover_path, json.dumps(data, indent=1, ensure_ascii=False) + '\n')
+    elif hover_path.exists():
+        hover_path.unlink()
     return path
