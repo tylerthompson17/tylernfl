@@ -3,12 +3,14 @@
  * The frame every team page shares: the team's name, a header strip
  * (record, division place, point differential, next game) and the tabs.
  * Each tab is its own static page, so every tab has a URL and nothing
- * needs a script. Playoff odds join the strip once they exist.
+ * needs a script. Playoff odds show once the season's first game is
+ * played, labelled with where they come from.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TeamChip from '../TeamChip.astro';
 import type { Team } from '../../data/types';
-import { easternDate, headerFacts } from '../../utils/teams';
+import { easternDate, headerFacts, oddsOf } from '../../utils/teams';
+import { formatChance } from '../../lib/teams/odds';
 import { url } from '../../utils/url';
 
 export type TeamTab = 'overview' | 'schedule' | 'roster' | 'stats' | 'transactions';
@@ -31,6 +33,7 @@ const tabs: { key: TeamTab; label: string; path: string }[] = [
 const current = tabs.find((t) => t.key === tab)!;
 const title = tab === 'overview' ? team.name : `${team.name} ${current.label.toLowerCase()}`;
 const next = facts.next;
+const odds = oddsOf(team.abbr);
 ---
 
 <BaseLayout title={title} description={`${team.name}: record, schedule, roster, stats and transactions.`}>
@@ -52,6 +55,17 @@ const next = facts.next;
       <dt>Point differential</dt>
       <dd class="num">{facts.diff ?? '0'}</dd>
     </div>
+    {
+      odds && (
+        <div>
+          <dt>Playoff odds</dt>
+          <dd class="num">
+            {formatChance(odds.playoffs)}
+            <span class="line">based on betting lines</span>
+          </dd>
+        </div>
+      )
+    }
     <div class="next">
       <dt>Next game</dt>
       <dd>
@@ -102,15 +116,20 @@ const next = facts.next;
 
   /* Header strip: the season at a glance, boxed like a panel row. */
   .strip {
-    display: grid;
-    grid-template-columns: repeat(3, auto) minmax(0, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     margin: 0 0 var(--space-3);
     background: var(--panel);
     border: 1px solid var(--rule);
   }
 
   .strip > div {
+    flex: none;
     padding: var(--space-2) var(--space-3);
+  }
+
+  .strip > .next {
+    flex: 1 1 240px;
   }
 
   .strip > div + div {
@@ -173,14 +192,23 @@ const next = facts.next;
   }
 
   @media (max-width: 760px) {
-    .strip {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* Two facts to a row, the next game across the bottom. */
+    .strip > div {
+      flex: 1 1 40%;
+    }
+
+    .strip > div:nth-child(odd) {
+      border-left: 0;
+    }
+
+    .strip > div:nth-child(n + 3),
+    .strip > .next {
+      border-top: 1px solid var(--rule);
     }
 
     .strip > .next {
-      grid-column: 1 / -1;
+      flex-basis: 100%;
       border-left: 0;
-      border-top: 1px solid var(--rule);
     }
   }
 </style>

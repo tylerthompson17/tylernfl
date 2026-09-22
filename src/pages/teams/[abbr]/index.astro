@@ -7,6 +7,7 @@ import TeamSchedule from '../../../components/team/TeamSchedule.astro';
 import TeamStatsPanel from '../../../components/team/TeamStatsPanel.astro';
 import TeamLeaders from '../../../components/team/TeamLeaders.astro';
 import TeamWire from '../../../components/team/TeamWire.astro';
+import TeamOdds from '../../../components/team/TeamOdds.astro';
 import teamsData from '../../../data/teams.json';
 import type { Team, TeamsData } from '../../../data/types';
 import { tieNotes } from '../../../lib/standings/ties';
@@ -33,6 +34,7 @@ const notes = tieNotes(division, 'divisionTiebreak');
         <a href={url('standings')}>League standings</a>
       </p>
     </Panel>
+    <div class="wide"><TeamOdds team={team} /></div>
     <Panel title={`${schedule.season} schedule and results`}>
       <TeamSchedule team={team} variant="compact" />
       <p class="table-foot"><a href={url(`teams/${team.abbr}/schedule`)}>Full schedule, with lines</a></p>

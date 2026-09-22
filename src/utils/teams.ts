@@ -3,13 +3,20 @@
  * its line in standings.json.
  */
 import scheduleData from '../data/schedule.json';
-import type { ScheduleData, TeamStanding } from '../data/types';
+import oddsData from '../data/playoff_odds.json';
+import type { PlayoffOddsData, ScheduleData, TeamOdds, TeamStanding } from '../data/types';
 import { formatKickoffDate } from '../lib/live-ticker/kickoff';
 import { lineText, nextGame, ordinal, teamGames, type TeamGame } from '../lib/teams/hub';
 import { standings, formatSigned } from './standings';
 import { record } from '../lib/standings/ties';
 
 export const schedule = scheduleData as ScheduleData;
+export const playoffOdds = oddsData as PlayoffOddsData;
+
+/** A team's playoff odds, or undefined before the season's first game. */
+export function oddsOf(team: string): TeamOdds | undefined {
+  return playoffOdds.teams.find((t) => t.team === team);
+}
 
 export function seasonOf(team: string): TeamGame[] {
   return teamGames(schedule.games, team);

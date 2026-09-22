@@ -71,7 +71,7 @@ tylernfl/
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `teams.json`, and the auto chart in `charts/`.
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `teams.json`, and the auto chart in `charts/`.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
@@ -171,6 +171,21 @@ tylernfl/
   is favored by, negative when the road team is; moneylines are American odds). Lines
   appear about a week before a game and stay as they closed. Team pages and playoff odds
   read it.
+- `playoff_odds.json` is written daily by `pipelines/playoff_odds.py`: 10,000 simulations
+  of the rest of the regular season, each seeded with the standings' tiebreakers (the
+  same `standings.compute`), about 10 seconds. Per team: chance of the playoffs, the
+  division, the top seed, each seed 1 to 7, and average wins. Random draws are seeded
+  from a hash of the inputs, so unchanged inputs write an identical file. Empty before a
+  season's first game. Simulated games never tie.
+- Game probabilities are a pluggable input: `GAME_PROBABILITIES` in `playoff_odds.py`, a
+  function from unplayed games to each one's home win chance. The default reads
+  nflverse's moneylines, margin removed by scaling the two implied probabilities to sum
+  to 1; a game with no line is even odds. Lines exist only about a week ahead, so most
+  games are even odds, and every place the odds show says "based on betting lines". No
+  team rating model: Tyler's replaces the default, returning the same thing.
+- `pipelines/test_playoff_odds.py` checks the simulator against a known season: 2024
+  from week 12, every remaining game given its real result for certain, must give every
+  chance as exactly 0 or 1 and reproduce the real final seeding and wins.
 - There is no placeholder data left. The 4th down model record panel and
   `model_record.json` were removed until the model exists; restore them from git history
   (commit "Replace the rail's model record placeholder") when it does.
@@ -301,15 +316,18 @@ linked from the ticker's week label.
   `aria-current`, no script, so every tab has its own URL.
 - Header strip on every tab: record (or last season's, labeled, before week 1), division
   place ("1st in AFC East"), point differential, and the next game (week, vs or at,
-  opponent, kickoff in the visitor's zone, the line when posted: "BUF by 7"). Playoff odds
-  join it with step 14.
-- Overview: the division's standings with this team's row highlighted, a compact schedule
+  opponent, kickoff in the visitor's zone, the line when posted: "BUF by 7"), and the
+  playoff chance labelled "based on betting lines" once the season has started.
+- Overview: the division's standings with this team's row highlighted, playoff odds
+  (playoffs, division, top seed, projected wins, each seed, and the full label), a compact schedule
   and results, team leaders (the team's best in each stat leaders category with its NFL
   rank), team stats with ranks, and the top of the week's moves and injuries.
 - Schedule: every game with date, opponent, result or kickoff, line and the record after
   it, with the bye week in its place. Stats: team stats, then every leaderboard's rows for
   this team's players, then its players on the EPA lists. Roster and Transactions are the
   panels the old single team page had.
+- Chances never read 0% or 100%: a simulation cannot prove a team in or out, so the ends
+  are "<1%" and ">99%" (`formatChance` in `src/lib/teams/odds.ts`).
 - Dates on team pages are written in Eastern at build and rewritten in the visitor's zone
   through `data-local-kickoff` ("date" or "datetime") with `data-kickoff`.
 - A highlighted (yellow) row sets win/loss colored numbers in body text, since the win
@@ -426,11 +444,9 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
     picture added (done; see Right rail).
 13. Team hubs with a header strip and five static tabs, and `schedule.json` in the daily
     job (done; see Team pages). Playoff odds join the strip in step 14.
-14. Playoff odds: `playoff_odds.json` daily, 10,000 simulations with these tiebreakers.
-    Game probabilities come in through one pluggable function; the default reads the
-    moneylines with the bookmaker's margin removed. Games with no line yet count as 50/50,
-    and the odds say so: "Based on betting lines for next week's games; later games are
-    even odds." No team rating model: that is Tyler's.
+14. Playoff odds: `playoff_odds.json` daily, 10,000 simulations with the standings'
+    tiebreakers, moneyline game probabilities through a pluggable function, shown on team
+    pages (done; see the data contract and Team pages).
 
 ## Articles
 

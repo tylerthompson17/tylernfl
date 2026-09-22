@@ -1,6 +1,6 @@
 """Daily site data job: writes ticker.json, stats/, players/,
-rosters/, transactions.json, on_this_day.json, standings.json and
-schedule.json into
+rosters/, transactions.json, on_this_day.json, standings.json,
+schedule.json and playoff_odds.json into
 src/data/, then draws
 the home page's auto chart (charts/auto.svg and charts/auto.json) from them.
 
@@ -29,6 +29,7 @@ from game_logs import build_game_logs  # noqa: E402
 from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
 from on_this_day import build_on_this_day, load_on_this_day_input  # noqa: E402
 from rosters import build_rosters, load_roster_rows, unknown_statuses  # noqa: E402
+from playoff_odds import build_playoff_odds  # noqa: E402
 from schedule import build_schedule  # noqa: E402
 from standings import build_standings  # noqa: E402
 from ticker import build_ticker, load_schedule_rows  # noqa: E402
@@ -88,6 +89,9 @@ def main() -> None:
     # The ticker's season: in the offseason, the coming one once published.
     schedule = build_schedule(schedule_rows, ticker['season'], updated)
     print(f"schedule: {schedule['season']}, {len(schedule['games'])} games")
+    odds = build_playoff_odds(schedule_rows, schedule['season'], updated)
+    print(f"playoff odds: {odds['simulations']} simulations, {odds['pricedGames']} of "
+          f"{odds['remainingGames']} remaining games priced by betting lines")
     top_seeds = [t['team'] for t in standings['teams'] if t['conferenceRank'] == 1]
     print(f"standings: {standings['season']} through week {standings['throughWeek']}, top seeds {', '.join(top_seeds)}")
 
@@ -105,6 +109,7 @@ def main() -> None:
     files.append(('on_this_day.json', on_this_day, ()))
     files.append(('standings.json', standings, ('updated',)))
     files.append(('schedule.json', schedule, ('updated',)))
+    files.append(('playoff_odds.json', odds, ('updated',)))
     files += [(f'rosters/{team}.json', roster, ('updated',)) for team, roster in sorted(rosters.items())]
 
     if args.dry_run:
