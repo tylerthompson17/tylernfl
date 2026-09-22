@@ -1,0 +1,47 @@
+---
+/**
+ * The logos of the teams a chart is about, each linking to its team page
+ * and named by the team for screen readers. Used beside a chart's title on
+ * its gallery card and on its own page.
+ */
+import teamsData from '../data/teams.json';
+import type { TeamsData } from '../data/types';
+import { url } from '../utils/url';
+
+interface Props {
+  teams: string[];
+  /** Logo size in px */
+  size?: 24 | 32;
+}
+
+const { teams, size = 24 } = Astro.props;
+const teamName = new Map((teamsData as TeamsData).map((team) => [team.abbr, team.name]));
+---
+
+{
+  teams.length > 0 && (
+    <span class="logos">
+      {teams.map((team) => (
+        <a href={url(`teams/${team}`)} title={teamName.get(team)}>
+          <img src={url(`logos/${team}.png`)} alt={teamName.get(team) ?? team} width={size} height={size} loading="lazy" decoding="async" />
+        </a>
+      ))}
+    </span>
+  )
+}
+
+<style>
+  .logos {
+    display: flex;
+    flex: none;
+    gap: var(--space-1);
+  }
+
+  a {
+    display: block;
+  }
+
+  img {
+    display: block;
+  }
+</style>

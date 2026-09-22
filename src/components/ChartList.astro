@@ -1,25 +1,22 @@
 ---
 /**
- * Charts (Tyler's and the kept auto charts) as a grid of cards, newest first: the /charts gallery and
- * each tag's page. Each card links to the chart's own page. A chart about
+ * Charts (Tyler's and the kept auto charts) as a grid of cards, newest
+ * first: the /charts gallery and each tag's and team's page. Each card links to the chart's own page. A chart about
  * particular teams shows their logos beside its title, since the ones drawn
- * inside the chart are too small to read at thumbnail size. Each logo
- * links to its team's page and is named by the team for screen readers.
+ * inside the chart are too small to read at thumbnail size.
  */
 import Panel from './Panel.astro';
 import ChartFigure from './ChartFigure.astro';
 import { formatChartDate, svgFor, type Chart } from '../utils/charts';
 import { tagSlug } from '../lib/charts/collection';
 import { url } from '../utils/url';
-import teamsData from '../data/teams.json';
-import type { TeamsData } from '../data/types';
+import TeamLogos from './TeamLogos.astro';
 
 interface Props {
   charts: Chart[];
 }
 
 const { charts } = Astro.props;
-const teamName = new Map((teamsData as TeamsData).map((team) => [team.abbr, team.name]));
 ---
 
 <div class="chart-grid">
@@ -31,15 +28,7 @@ const teamName = new Map((teamsData as TeamsData).map((team) => [team.abbr, team
           {chart.data.draft && <span class="draft">Draft</span>}
         </p>
         <div class="heading">
-          {chart.data.teams.length > 0 && (
-            <span class="logos">
-              {chart.data.teams.map((team) => (
-                <a href={url(`teams/${team}`)} title={teamName.get(team)}>
-                  <img src={url(`logos/${team}.png`)} alt={teamName.get(team) ?? team} width="24" height="24" loading="lazy" decoding="async" />
-                </a>
-              ))}
-            </span>
-          )}
+          <TeamLogos teams={chart.data.teams} />
           <h2 class="title" id={`${chart.id}-title`}>
             <a href={url(`charts/${chart.id}`)}>{chart.data.title}</a>
           </h2>
@@ -83,22 +72,6 @@ const teamName = new Map((teamsData as TeamsData).map((team) => [team.abbr, team
     align-items: center;
     gap: var(--space-2);
     margin: var(--space-1) 0 var(--space-2);
-  }
-
-  .logos {
-    display: flex;
-    flex: none;
-    gap: var(--space-1);
-  }
-
-  .logos a {
-    display: block;
-  }
-
-  .logos img {
-    display: block;
-    width: 24px;
-    height: 24px;
   }
 
   .title {

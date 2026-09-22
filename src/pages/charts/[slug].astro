@@ -3,6 +3,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
 import ChartFigure from '../../components/ChartFigure.astro';
+import TeamLogos from '../../components/TeamLogos.astro';
 import { tagSlug } from '../../lib/charts/collection';
 import { formatChartDate, getCharts, hoverFor, svgFor, type Chart } from '../../utils/charts';
 import { url } from '../../utils/url';
@@ -16,14 +17,17 @@ interface Props {
 }
 
 const { chart } = Astro.props;
-const { title, date, author, tags, source, note, draft } = chart.data;
+const { title, date, author, tags, teams, source, note, draft } = chart.data;
 ---
 
 <BaseLayout title={title} description={note}>
-  <h1 class="page-title" id="chart-title">
-    {title}
-    {draft && <span class="draft">Draft</span>}
-  </h1>
+  <div class="heading">
+    <TeamLogos teams={teams} size={32} />
+    <h1 class="page-title" id="chart-title">
+      {title}
+      {draft && <span class="draft">Draft</span>}
+    </h1>
+  </div>
   <div class="content-grid">
     <Panel>
       <ChartFigure svg={svgFor(chart)} titleId="chart-title" note={note} id="chart" hover={hoverFor(chart)}>
@@ -58,6 +62,17 @@ const { title, date, author, tags, source, note, draft } = chart.data;
 </BaseLayout>
 
 <style>
+  .heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .heading .page-title {
+    margin-bottom: 0;
+  }
+
   .draft {
     margin-left: var(--space-2);
     padding: 0 var(--space-1);
