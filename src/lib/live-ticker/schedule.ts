@@ -47,3 +47,24 @@ const STATE_RANK = { pre: 0, live: 1, final: 2 } as const;
 export function isAdvance(current: ScheduledGame['state'], next: ScheduledGame['state']): boolean {
   return STATE_RANK[next] >= STATE_RANK[current];
 }
+
+// Long enough to reach the next daily data run from any kickoff, with room
+// for GitHub starting that run hours late (it has).
+const CATCH_UP_MS = 48 * 60 * 60_000;
+
+/**
+ * Whether a game's live window has closed with ticker.json still showing
+ * it unfinished: it kicked off within the last 48 hours, is past its
+ * window, and is not final. The page then makes one scoreboard request on
+ * load to pick up the result, since ticker.json only catches up at the
+ * next daily run (6 AM Eastern, after a Monday night game ends near
+ * midnight). One request, not polling.
+ */
+export function needsCatchUp(games: ScheduledGame[], now: Date): boolean {
+  const t = now.getTime();
+  return games.some((game) => {
+    if (game.state === 'final' || !game.kickoff) return false;
+    const kickoff = game.kickoff.getTime();
+    return t > kickoff + GAME_LENGTH_MS && t - kickoff <= CATCH_UP_MS;
+  });
+}

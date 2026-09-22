@@ -31,7 +31,7 @@ const notes = tieNotes(division, 'divisionTiebreak');
       <p class="table-foot">
         {notes.join(' ')}
         {standings.season < schedule.season ? `${standings.season} final standings. ` : `Through week ${standings.throughWeek}. `}
-        <a href={url('standings')}>League standings</a>
+        <a href={url(team.conference === 'NFC' ? 'standings/nfc' : 'standings')}>{team.conference} standings</a>
       </p>
     </Panel>
     <div class="wide"><TeamOdds team={team} /></div>

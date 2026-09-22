@@ -1,21 +1,35 @@
 ---
 /**
- * League standings: each division, then each conference's seeding, with
- * NFL tiebreakers applied (pipelines/standings.py) and a note wherever one
- * decided an order.
+ * League standings, one conference to a tab: /standings/ is the AFC,
+ * /standings/nfc/ the NFC. Each has its four divisions and its seeding,
+ * with NFL tiebreakers applied (pipelines/standings.py) and a note wherever
+ * one decided an order. The tabs are links, like the team pages'.
  */
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Panel from '../components/Panel.astro';
-import StandingsTable from '../components/StandingsTable.astro';
-import TeamChip from '../components/TeamChip.astro';
-import teamsData from '../data/teams.json';
-import type { TeamsData } from '../data/types';
-import { STEP_WORDS, record, tieNotes } from '../lib/standings/ties';
-import { divisionsOf, formatPct, seedsOf, standings } from '../utils/standings';
-import { url } from '../utils/url';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import StandingsTable from '../../components/StandingsTable.astro';
+import Tabs from '../../components/Tabs.astro';
+import TeamChip from '../../components/TeamChip.astro';
+import teamsData from '../../data/teams.json';
+import type { TeamsData } from '../../data/types';
+import { STEP_WORDS, record, tieNotes } from '../../lib/standings/ties';
+import { divisionsOf, formatPct, seedsOf, standings } from '../../utils/standings';
+import { url } from '../../utils/url';
 
+export function getStaticPaths() {
+  return [
+    { params: { conf: undefined }, props: { conference: 'AFC' as const } },
+    { params: { conf: 'nfc' }, props: { conference: 'NFC' as const } },
+  ];
+}
+
+const { conference } = Astro.props as { conference: 'AFC' | 'NFC' };
 const names = new Map((teamsData as TeamsData).map((t) => [t.abbr, t.name]));
-const conferences = ['AFC', 'NFC'] as const;
+const conferences = [conference];
+const tabs = [
+  { key: 'AFC', label: 'AFC', path: 'standings' },
+  { key: 'NFC', label: 'NFC', path: 'standings/nfc' },
+];
 const early = standings.throughWeek > 0 && standings.throughWeek < 4;
 const intro =
   standings.throughWeek === 0
@@ -23,18 +37,23 @@ const intro =
     : `${standings.season} season, through week ${standings.throughWeek}.`;
 ---
 
-<BaseLayout title="Standings" description="NFL standings by division, with playoff seeding and the tiebreakers that decided it.">
+<BaseLayout
+  title={conference === 'AFC' ? 'Standings' : 'NFC standings'}
+  description={`${conference} standings by division, with playoff seeding and the tiebreakers that decided it.`}
+>
   <h1 class="page-title">Standings</h1>
   <p class="page-intro">
     {intro} Teams on the same record are ordered by the NFL's tiebreakers, and a note under each
     table says which one decided it.
     {early && ' This early, many records are level, so strength of victory and coin tosses settle more than usual.'}
   </p>
+  <Tabs label="Conferences" tabs={tabs} current={conference} />
 
   {
     conferences.map((conference) => (
       <section class="conference" aria-labelledby={`${conference}-heading`}>
-        <h2 class="conference-title" id={`${conference}-heading`}>{conference}</h2>
+        {/* The open tab already says which conference; the heading stays for screen readers. */}
+        <h2 class="visually-hidden" id={`${conference}-heading`}>{conference}</h2>
         <div class="division-grid">
           {divisionsOf(conference).map((division) => {
             const notes = tieNotes(division.teams, 'divisionTiebreak');

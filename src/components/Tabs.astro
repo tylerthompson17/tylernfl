@@ -1,0 +1,60 @@
+---
+/**
+ * A row of tabs that are plain links, each to its own static page: the
+ * open one carries aria-current and sits on the slate bar. No script, so
+ * every tab has a URL. Used by team pages and the standings.
+ */
+import { url } from '../utils/url';
+
+interface Props {
+  /** What the tabs are, for screen readers: "Buffalo Bills pages" */
+  label: string;
+  tabs: { key: string; label: string; path: string }[];
+  current: string;
+}
+
+const { label, tabs, current } = Astro.props;
+---
+
+<nav class="tabs" aria-label={label}>
+  <ul>
+    {
+      tabs.map((t) => (
+        <li>
+          <a href={url(t.path)} aria-current={t.key === current ? 'page' : undefined}>
+            {t.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-3);
+    border-bottom: 2px solid var(--header);
+  }
+
+  a {
+    display: block;
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--link);
+  }
+
+  a[aria-current='page'] {
+    background: var(--header);
+    color: var(--header-text);
+    text-decoration: none;
+  }
+
+  a[aria-current='page']:focus-visible {
+    outline-color: var(--header-text);
+  }
+</style>

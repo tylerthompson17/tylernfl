@@ -20,6 +20,7 @@ import {
   POLL_INTERVAL_MS,
   REQUEST_TIMEOUT_MS,
   isAdvance,
+  needsCatchUp,
   pollWindow,
   retryDelay,
   type ScheduledGame,
@@ -295,25 +296,45 @@ export function initLiveTicker(): void {
     timer = window.setTimeout(tick, Math.min(Math.max(delay, 0), MAX_TIMEOUT_MS));
   };
 
+  async function applyScoreboard() {
+    const live = await fetchScoreboard(season, week);
+    for (const [id, game] of live) {
+      const current = games.get(id);
+      if (!current || !isAdvance(current.state, game.state)) continue;
+      current.state = game.state;
+      for (const slot of slotsFor(id)) render(slot, game);
+      lastScores.update(id, game);
+    }
+  }
+
+  // A game whose live window closed before ticker.json caught up gets one
+  // request on load (with a couple of retries if it fails), not polling.
+  let caughtUp = false;
+  const MAX_CATCH_UP_TRIES = 3;
+
   async function tick() {
     if (document.hidden) return;
 
     const now = new Date();
     const window_ = pollWindow([...games.values()], now);
     if (!window_.active) {
+      if (!caughtUp && needsCatchUp([...games.values()], now)) {
+        try {
+          await applyScoreboard();
+          caughtUp = true;
+          failures = 0;
+        } catch {
+          failures += 1;
+          if (failures >= MAX_CATCH_UP_TRIES) caughtUp = true;
+          else return schedule(retryDelay(failures));
+        }
+      }
       if (window_.nextStart) schedule(window_.nextStart.getTime() - now.getTime());
       return;
     }
 
     try {
-      const live = await fetchScoreboard(season, week);
-      for (const [id, game] of live) {
-        const current = games.get(id);
-        if (!current || !isAdvance(current.state, game.state)) continue;
-        current.state = game.state;
-        for (const slot of slotsFor(id)) render(slot, game);
-        lastScores.update(id, game);
-      }
+      await applyScoreboard();
       failures = 0;
       schedule(POLL_INTERVAL_MS);
     } catch {

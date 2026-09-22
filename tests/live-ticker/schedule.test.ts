@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 
-import { isAdvance, pollWindow, retryDelay } from '../../src/lib/live-ticker/schedule.ts';
+import { isAdvance, needsCatchUp, pollWindow, retryDelay } from '../../src/lib/live-ticker/schedule.ts';
 
 const thursday = new Date('2026-09-18T00:15:00Z');
 const sunday = new Date('2026-09-20T17:00:00Z');
@@ -58,5 +58,23 @@ describe('isAdvance', () => {
     assert.equal(isAdvance('live', 'live'), true);
     assert.equal(isAdvance('final', 'live'), false);
     assert.equal(isAdvance('live', 'pre'), false);
+  });
+});
+
+describe('needsCatchUp', () => {
+  const kickoff = new Date('2026-09-22T00:15:00Z'); // Monday 8:15 PM Eastern
+  const hours = (n: number) => new Date(kickoff.getTime() + n * 60 * 60_000);
+  const mnf = (state: 'pre' | 'live' | 'final') => [{ kickoff, state }];
+
+  test('a game past its live window that ticker.json still shows unfinished', () => {
+    assert.equal(needsCatchUp(mnf('pre'), hours(4.6)), true);
+    assert.equal(needsCatchUp(mnf('live'), hours(10)), true);
+  });
+
+  test('not while the live window is open, not once final, not days later', () => {
+    assert.equal(needsCatchUp(mnf('pre'), hours(2)), false);
+    assert.equal(needsCatchUp(mnf('final'), hours(6)), false);
+    assert.equal(needsCatchUp(mnf('pre'), hours(49)), false);
+    assert.equal(needsCatchUp([{ kickoff: null, state: 'pre' }], hours(6)), false);
   });
 });

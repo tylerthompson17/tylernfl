@@ -8,6 +8,7 @@
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TeamChip from '../TeamChip.astro';
+import Tabs from '../Tabs.astro';
 import type { Team } from '../../data/types';
 import { easternDate, headerFacts, oddsOf } from '../../utils/teams';
 import { formatChance } from '../../lib/teams/odds';
@@ -90,19 +91,7 @@ const odds = oddsOf(team.abbr);
     </div>
   </dl>
 
-  <nav class="tabs" aria-label={`${team.name} pages`}>
-    <ul>
-      {
-        tabs.map((t) => (
-          <li>
-            <a href={url(t.path)} aria-current={t.key === tab ? 'page' : undefined}>
-              {t.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </nav>
+  <Tabs label={`${team.name} pages`} tabs={tabs} current={tab} />
 
   <slot />
 </BaseLayout>
@@ -161,34 +150,6 @@ const odds = oddsOf(team.abbr);
     font-weight: 400;
     font-size: 12px;
     color: var(--text-dim);
-  }
-
-  /* Tabs: links in a row on the slate bar; the open one is white. */
-  .tabs ul {
-    display: flex;
-    flex-wrap: wrap;
-    list-style: none;
-    padding: 0;
-    margin: 0 0 var(--space-3);
-    border-bottom: 2px solid var(--header);
-  }
-
-  .tabs a {
-    display: block;
-    padding: var(--space-1) var(--space-3);
-    font-family: var(--font-heading);
-    font-weight: 700;
-    color: var(--link);
-  }
-
-  .tabs a[aria-current='page'] {
-    background: var(--header);
-    color: var(--header-text);
-    text-decoration: none;
-  }
-
-  .tabs a[aria-current='page']:focus-visible {
-    outline-color: var(--header-text);
   }
 
   @media (max-width: 760px) {

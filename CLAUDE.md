@@ -63,7 +63,7 @@ tylernfl/
 
 - Pipelines write JSON into `src/data/`, commit it, and the push triggers a rebuild. Pages read data at build time.
 - Browser-side fetches are allowed in exactly two places. Nothing else fetches data at runtime.
-  1. **Live scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates scores in place. One poll feeds every game on the page: the ticker slots and, on `/scores`, the boxes, which carry the same `data-game` hooks. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Live games also show who scored last: when a live game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (it is about 175 KB, of which the scoring plays are about 1 KB), and it is one fetch per scoring play however many places render the line. Turn it all off with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
+  1. **Live scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates scores in place. One poll feeds every game on the page: the ticker slots and, on `/scores`, the boxes, which carry the same `data-game` hooks. After a game's window closes, ticker.json still shows it unfinished until the next daily run (a Monday night game ends near midnight; the run is at 6 AM and has started hours late), so a page loaded with a game that kicked off within the last 48 hours, past its window and not final in ticker.json, makes one scoreboard request on load to pick up the result (up to 3 tries on failure; `needsCatchUp` in `schedule.ts`). One request, never polling. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Live games also show who scored last: when a live game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (it is about 175 KB, of which the scoring plays are about 1 KB), and it is one fetch per scoring play however many places render the line. Turn it all off with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
   2. **Live 4th down page** (later): fetches game state at runtime.
 - Header search is not a runtime data fetch: its index (`search-index.js`, from
   `src/pages/search-index.js.ts`) is static build output, versioned per build, and the
@@ -337,9 +337,12 @@ linked from the ticker's week label.
 
 ### Standings page
 
-- `/standings`: the eight divisions (W, L, T, Pct, PF, PA, Diff, Div, Conf, Strk), each
+- Standings has a tab per conference, links like the team pages' (`Tabs.astro`, shared):
+  `/standings/` is the AFC, `/standings/nfc/` the NFC. Team pages link to their own
+  conference's tab.
+- Each tab: the conference's four divisions (W, L, T, Pct, PF, PA, Diff, Div, Conf, Strk), each
   with a note wherever teams on the same record were ordered by a tiebreaker ("NE and
-  NYJ are both 1-1; NE is ahead on strength of victory"), then each conference's seeds
+  NYJ are both 1-1; NE is ahead on strength of victory"), then the conference's seeds
   1 to 16 with a heavier rule under 7 and the step that placed each team. Seeds 1 to 4
   are division leaders, whatever their record. Pct is written the NFL way (.667, 1.000).
 - Standings is in the nav, first after Home.
