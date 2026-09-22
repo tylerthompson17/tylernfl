@@ -298,15 +298,14 @@ linked from the ticker's week label.
 
 ### Right rail
 
-- On every page, top to bottom: the playoff picture, then on this day. Kept light: the rail
-  is secondary, so no solid color blocks there.
+- On every page, top to bottom: the playoff picture, then on this day.
 - There is no games list in the rail: the ticker right above shows the same games (one was
   tried and removed as a duplicate that made the rail heavy).
 - Playoff picture (`PlayoffPicture.astro`, from `standings.json`): each conference's seeds 1
-  to 7 as tight rows of plain team links and records, AFC and NFC side by side, then the
-  next two teams "in the hunt" on one line, linking to `/standings`. Before a season's first
-  game it is titled with last season's final seeding, since that is what `standings.json`
-  holds then.
+  to 7 and the next two in the hunt, side by side, team chips with records, a rule under 7,
+  the hunt dimmed, linking to `/standings`. (A plain-text version without chips was tried
+  and Tyler preferred the chips.) Before a season's first game it is titled with last
+  season's final seeding, since that is what `standings.json` holds then.
 
 ### Stat leaders page
 
@@ -415,8 +414,8 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
     nflseedR, and the `/standings` page (done).
 11. Stats overview: top 5 in eight categories in equal panels, `player_epa.json` in the
     weekly job, `leaders.json` retired (done; see Stat leaders page).
-12. Right rail: the model record placeholder removed, a compact playoff picture added (done;
-    see Right rail).
+12. Right rail: the model record placeholder removed, the playoff picture added (done; see
+    Right rail).
 13. Team hubs with a header strip and five static tabs, and `schedule.json` in the daily
     job (done; see Team pages). Playoff odds join the strip in step 14.
 14. Playoff odds: `playoff_odds.json` daily, 10,000 simulations with the standings'

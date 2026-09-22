@@ -1,11 +1,9 @@
 ---
 /**
- * The playoff picture for the right rail, from standings.json (NFL
- * tiebreakers applied): each conference's seeds 1 to 7 as tight rows of
- * plain team links and records, then the next two in the hunt on one line.
- * Plain text rather than team color chips, so the rail stays light. Before
- * a season's first game, standings.json holds last season's final
- * standings, and the title says so.
+ * The playoff picture for the right rail: each conference's seeds 1 to 7
+ * and the next two in the hunt, from standings.json (NFL tiebreakers
+ * applied). Before a season's first game, standings.json holds last
+ * season's final standings, and the title says so.
  */
 import tickerData from '../data/ticker.json';
 import type { TickerData } from '../data/types';
@@ -13,59 +11,46 @@ import { record } from '../lib/standings/ties';
 import { seedsOf, standings } from '../utils/standings';
 import { url } from '../utils/url';
 import Panel from './Panel.astro';
+import TeamChip from './TeamChip.astro';
 
 const ticker = tickerData as TickerData;
 const lastSeason = standings.season < ticker.season;
 const title = lastSeason ? `${standings.season} final seeding` : 'Playoff picture';
-const conferences = (['AFC', 'NFC'] as const).map((conference) => {
-  const seeds = seedsOf(conference);
-  return { conference, in: seeds.slice(0, 7), hunt: seeds.slice(7, 9) };
-});
+const conferences = (['AFC', 'NFC'] as const).map((conference) => ({ conference, teams: seedsOf(conference).slice(0, 9) }));
 ---
 
 <Panel title={title}>
   <div class="conferences">
     {
-      conferences.map(({ conference, in: seeded, hunt }) => (
-        <div>
-          <table class="seeds">
-            <caption>{conference}</caption>
-            <thead class="visually-hidden">
-              <tr>
-                <th scope="col">Seed</th>
-                <th scope="col">Team</th>
-                <th scope="col">Record</th>
+      conferences.map(({ conference, teams }) => (
+        <table class="seeds">
+          <caption>{conference}</caption>
+          <thead class="visually-hidden">
+            <tr>
+              <th scope="col">Seed</th>
+              <th scope="col">Team</th>
+              <th scope="col">Record</th>
+            </tr>
+          </thead>
+          <tbody>
+            {teams.map((t) => (
+              <tr class:list={{ hunt: t.conferenceRank > 7, cut: t.conferenceRank === 7 }}>
+                <td class="seed num">{t.conferenceRank}</td>
+                <th scope="row"><TeamChip abbr={t.team} size="sm" /></th>
+                <td class="num">{record(t)}</td>
               </tr>
-            </thead>
-            <tbody>
-              {seeded.map((t) => (
-                <tr>
-                  <td class="seed num">{t.conferenceRank}</td>
-                  <th scope="row">
-                    <a href={url(`teams/${t.team}`)}>{t.team}</a>
-                  </th>
-                  <td class="num">{record(t)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {!lastSeason && hunt.length > 0 && (
-            <p class="hunt">
-              In the hunt:{' '}
-              {hunt.map((t, i) => (
-                <>
-                  {i > 0 && ', '}
-                  <a href={url(`teams/${t.team}`)}>{t.team}</a>
-                </>
-              ))}
-            </p>
-          )}
-        </div>
+            ))}
+          </tbody>
+        </table>
       ))
     }
   </div>
   <p class="foot">
-    {lastSeason ? 'Last season, as it finished.' : `Through week ${standings.throughWeek}. Seeds 1 to 4 lead their divisions.`}{' '}
+    {
+      lastSeason
+        ? 'Last season, as it finished.'
+        : `Through week ${standings.throughWeek}. Seeds 1 to 4 lead their divisions; below the line, in the hunt.`
+    }{' '}
     <a href={url('standings')}>Full standings</a>
   </p>
 </Panel>
@@ -74,46 +59,45 @@ const conferences = (['AFC', 'NFC'] as const).map((conference) => {
   .conferences {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
 
   .seeds {
     width: 100%;
     font-size: 12px;
-    line-height: 1.35;
   }
 
   caption {
     text-align: left;
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 13px;
+    padding-bottom: var(--space-1);
   }
 
   td,
   th {
-    padding: 1px 0;
+    padding: 2px 4px;
     text-align: left;
     font-weight: 400;
   }
 
-  tbody tr + tr td,
-  tbody tr + tr th {
-    border-top: 1px dotted var(--rule-soft);
-  }
-
   .seed {
-    width: 1.5em;
     color: var(--text-dim);
+    width: 1.5em;
+    text-align: right;
   }
 
   td.num:last-child {
     text-align: right;
   }
 
-  .hunt {
-    margin-top: var(--space-1);
-    font-size: 12px;
+  /* The playoff cut under seed 7; the two below are in the hunt. */
+  .cut td,
+  .cut th {
+    border-bottom: 2px solid var(--header);
+  }
+
+  .hunt td {
     color: var(--text-dim);
   }
 
