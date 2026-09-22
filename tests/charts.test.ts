@@ -39,6 +39,7 @@ test('two featured charts fail, but a featured draft does not count', () => {
 test('page numbers and "tag" are not chart names', () => {
   assert.equal(reservedSlug('2'), true);
   assert.equal(reservedSlug('tag'), true);
+  assert.equal(reservedSlug('team'), true);
   assert.equal(reservedSlug('week-2'), false);
   assert.match(chartProblems([entry('3')], new Set(['3']), new Set(['3.py']))[0]!, /"3" cannot be a chart name/);
 });

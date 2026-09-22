@@ -163,4 +163,22 @@ export function chartTags(charts: Chart[]): ChartTag[] {
   return [...tags.values()].sort((a, b) => a.label.localeCompare(b.label));
 }
 
+export interface ChartTeam {
+  abbr: string;
+  name: string;
+  count: number;
+}
+
+/** Every team a chart is about, by abbreviation, with how many charts name it. */
+export function chartTeams(charts: Chart[]): ChartTeam[] {
+  const counts = new Map<string, number>();
+  for (const chart of charts) {
+    for (const abbr of new Set(chart.data.teams)) counts.set(abbr, (counts.get(abbr) ?? 0) + 1);
+  }
+  const names = new Map((teamsData as TeamsData).map((team) => [team.abbr, team.name]));
+  return [...counts]
+    .map(([abbr, count]) => ({ abbr, name: names.get(abbr) ?? abbr, count }))
+    .sort((a, b) => a.abbr.localeCompare(b.abbr));
+}
+
 export const CHARTS_PER_PAGE = 12;

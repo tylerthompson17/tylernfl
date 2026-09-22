@@ -1,0 +1,63 @@
+---
+/** Charts about one team, newest first, 12 to a page. */
+import type { GetStaticPaths, Page } from 'astro';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ChartList from '../../../../components/ChartList.astro';
+import { CHARTS_PER_PAGE, chartTeams, getCharts, type Chart, type ChartTeam } from '../../../../utils/charts';
+import { url } from '../../../../utils/url';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const charts = await getCharts();
+  return chartTeams(charts).flatMap((team) =>
+    paginate(
+      charts.filter((chart) => chart.data.teams.includes(team.abbr)),
+      { params: { team: team.abbr }, pageSize: CHARTS_PER_PAGE, props: { team } }
+    )
+  );
+}) satisfies GetStaticPaths;
+
+interface Props {
+  page: Page<Chart>;
+  team: ChartTeam;
+}
+
+const { page, team } = Astro.props;
+---
+
+<BaseLayout title={`Charts about the ${team.name}`}>
+  <h1 class="page-title">Charts about the {team.name}</h1>
+  <p class="back">
+    {team.count === 1 ? '1 chart' : `${team.count} charts`}.{' '}
+    <a href={url(`teams/${team.abbr}`)}>{team.name} team page</a>{' '}
+    <a href={url('charts')}>All charts</a>
+  </p>
+  <ChartList charts={page.data} />
+  {
+    (page.url.prev || page.url.next) && (
+      <nav class="pager" aria-label="Chart pages">
+        {page.url.prev && <a href={page.url.prev}>Newer charts</a>}
+        <span class="num">
+          Page {page.currentPage} of {page.lastPage}
+        </span>
+        {page.url.next && <a href={page.url.next}>Older charts</a>}
+      </nav>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .back {
+    color: var(--text-dim);
+    margin-bottom: var(--space-3);
+  }
+
+  .back a + a {
+    margin-left: var(--space-2);
+  }
+
+  .pager {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+</style>

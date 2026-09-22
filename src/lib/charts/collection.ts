@@ -14,10 +14,11 @@ export interface ChartCheck {
 
 /**
  * Slugs that would collide with other routes under /charts: page numbers
- * belong to the gallery's pagination, and "tag" to the tag pages.
+ * belong to the gallery's pagination, "tag" to the tag pages and "team" to
+ * the team pages.
  */
 export function reservedSlug(slug: string): boolean {
-  return /^\d+$/.test(slug) || slug === 'tag';
+  return /^\d+$/.test(slug) || slug === 'tag' || slug === 'team';
 }
 
 /**

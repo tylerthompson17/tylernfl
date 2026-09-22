@@ -2,25 +2,28 @@
 /**
  * The chart gallery: Tyler's charts and every kept auto chart, newest
  * first, 12 to a page (/charts/, /charts/2/). Auto charts are tagged Auto.
+ * Filters are links to static pages, one per tag (/charts/tag/auto/) and
+ * one per team a chart is about (/charts/team/KC/); no script.
  */
 import type { GetStaticPaths, Page } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
 import ChartList from '../../components/ChartList.astro';
-import { CHARTS_PER_PAGE, chartTags, getCharts, type Chart } from '../../utils/charts';
+import { CHARTS_PER_PAGE, chartTags, chartTeams, getCharts, type Chart } from '../../utils/charts';
 import { url } from '../../utils/url';
 
 export const getStaticPaths = (async ({ paginate }) => {
   const charts = await getCharts();
-  return paginate(charts, { pageSize: CHARTS_PER_PAGE, props: { tags: chartTags(charts) } });
+  return paginate(charts, { pageSize: CHARTS_PER_PAGE, props: { tags: chartTags(charts), teams: chartTeams(charts) } });
 }) satisfies GetStaticPaths;
 
 interface Props {
   page: Page<Chart>;
   tags: ReturnType<typeof chartTags>;
+  teams: ReturnType<typeof chartTeams>;
 }
 
-const { page, tags } = Astro.props;
+const { page, tags, teams } = Astro.props;
 ---
 
 <BaseLayout title={page.currentPage > 1 ? `Charts, page ${page.currentPage}` : 'Charts'}>
@@ -40,6 +43,16 @@ const { page, tags } = Astro.props;
             {tags.map((tag) => (
               <a href={url(`charts/tag/${tag.slug}`)}>
                 {tag.label} <span class="count num">({tag.count})</span>
+              </a>
+            ))}
+          </nav>
+        )}
+        {teams.length > 0 && (
+          <nav class="tag-bar" aria-label="Chart teams">
+            <span class="tag-label">Teams:</span>
+            {teams.map((team) => (
+              <a href={url(`charts/team/${team.abbr}`)} title={team.name}>
+                {team.abbr} <span class="count num">({team.count})</span>
               </a>
             ))}
           </nav>

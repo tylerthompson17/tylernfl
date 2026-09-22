@@ -311,8 +311,9 @@ linked from the ticker's week label.
   unnamed stoppages left out, timeouts named), plus kickoff and the result; the EPA
   scatter, each team's values and ranks; the yards race, each week's totals.
 - `/charts` lists Tyler's charts and every kept auto chart together: newest first, 12 to a page, a static page per tag
-  (`/charts/tag/<tag>/`, no script), and a page per chart with its note, date, author,
-  source and tags. Chart names cannot be all digits or `tag` (those URLs are taken).
+  (`/charts/tag/<tag>/`) and per team a chart is about (`/charts/team/<ABBR>/`), linked
+  from filter rows above the cards (no script), and a page per chart with its note, date, author,
+  source and tags. Chart names cannot be all digits, `tag` or `team` (those URLs are taken).
   The build fails on an entry with no SVG, a script not in `mine/`, two featured, or a
   name a kept auto chart already has. Auto charts are bylined "Auto chart" and tagged
   Auto plus their kind (Win probability, EPA, Yards race), so `/charts/tag/auto/` is
