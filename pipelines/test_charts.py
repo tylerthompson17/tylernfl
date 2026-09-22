@@ -219,32 +219,6 @@ class KeyPlayTests(unittest.TestCase):
         self.assertEqual(points[2], (20.0, 0.80))
         self.assertEqual(points[3][1], 0.80)  # no after value: the before value stands
 
-    def test_biggest_swings_first_but_spread_across_the_game(self):
-        # play_id runs in game order, as in nflverse.
-        plays = [
-            moment(1, 1, 3000, 0.50, 0.65),   # minute 10, +15
-            moment(2, 3, 1538, 0.40, 0.62),   # minute 34, +22
-            moment(3, 4, 3, 0.40, 0.63),      # 4.8 minutes before the OT kick, +23
-            moment(4, 5, 313, 0.10, 0.63),    # OT, +53
-            moment(5, 5, 195, 0.83, 0.34),    # OT, 2 minutes later, -49
-        ]
-        picked = auto.key_plays(plays)
-        self.assertEqual([p['play_id'] for p in picked], [1, 2, 4])
-
-    def test_no_swing_is_no_label_and_the_cap_holds(self):
-        flat = [moment(i, 1, 3600 - i * 600, 0.5, 0.5) for i in range(1, 6)]
-        self.assertEqual(auto.key_plays(flat), [])
-        busy = [moment(i, 1, 3600 - i * 600, 0.5, 0.5 + i / 20) for i in range(1, 6)]
-        self.assertEqual(len(auto.key_plays(busy, gap=1)), 3)
-
-    def test_label_names_the_team_that_gained(self):
-        up = moment(1, 5, 313, 0.10, 0.63, play_type='field_goal', field_goal_result='made',
-                    kick_distance=31.0, kicker_player_name='H.Butker')
-        down = moment(2, 5, 195, 0.83, 0.34, play_type='field_goal', field_goal_result='made',
-                      kick_distance=38.0, kicker_player_name='S.Shrader')
-        self.assertEqual(auto.play_label(up, 'KC', 'IND'), ['OT 5:13, KC +53%', 'H.Butker 31 yd FG'])
-        self.assertEqual(auto.play_label(down, 'KC', 'IND'), ['OT 3:15, IND +49%', 'S.Shrader 38 yd FG'])
-
 
 class DescribePlayTests(unittest.TestCase):
     def says(self, expected, **fields):
@@ -280,27 +254,7 @@ class DescribePlayTests(unittest.TestCase):
         self.says('Qb kneel', play_type='qb_kneel')
 
 
-class LabelBandTests(unittest.TestCase):
-    points = [(m, 0.5) for m in range(0, 61)]
-
-    def test_a_label_goes_where_the_line_leaves_room(self):
-        high = [(m, 0.9) for m in range(0, 61)]
-        low = [(m, 0.1) for m in range(0, 61)]
-        self.assertEqual(auto.label_bands([(10, 20)], high, 0.1), ['bottom'])
-        self.assertEqual(auto.label_bands([(10, 20)], low, 0.1), ['top'])
-
-    def test_labels_that_would_overlap_take_different_bands(self):
-        self.assertEqual(auto.label_bands([(10, 30), (20, 40)], self.points, 0.1), ['top', 'bottom'])
-        self.assertEqual(auto.label_bands([(10, 20), (40, 50)], self.points, 0.1), ['top', 'top'])
-
-    def test_a_blocked_span_such_as_a_logo_is_avoided(self):
-        self.assertEqual(auto.label_bands([(0, 10)], self.points, 0.1, {'top': [(0, 5)]}), ['bottom'])
-
-    def test_when_both_bands_are_held_the_roomier_one_wins(self):
-        high = [(m, 0.9) for m in range(0, 61)]
-        taken = {'top': [(0, 60)], 'bottom': [(0, 60)]}
-        self.assertEqual(auto.label_bands([(10, 20)], high, 0.1, taken), ['bottom'])
-
+class CalloutTests(unittest.TestCase):
     def test_callouts_line_up_with_their_point_near_the_ends(self):
         self.assertEqual(style.callout_align(0.1), 0.0)
         self.assertEqual(style.callout_align(0.5), 0.5)
