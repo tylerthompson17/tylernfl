@@ -57,7 +57,7 @@ tylernfl/
 
 - Pipelines write JSON into `src/data/`, commit it, and the push triggers a rebuild. Pages read data at build time.
 - Browser-side fetches are allowed in exactly two places. Nothing else fetches data at runtime.
-  1. **Live scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates scores in place. One poll feeds every game on the page: the ticker slots and, on `/scores`, the boxes, which carry the same `data-game` hooks. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Live games also show who scored last: when a live game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (it is about 175 KB, of which the scoring plays are about 1 KB), and it is one fetch per scoring play however many places render the line. Turn it all off with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
+  1. **Live scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates scores in place. One poll feeds every game on the page: the ticker slots, the rail's schedule and, on `/scores`, the boxes, which all carry the same `data-game` hooks. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Live games also show who scored last: when a live game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (it is about 175 KB, of which the scoring plays are about 1 KB), and it is one fetch per scoring play however many places render the line. Turn it all off with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
   2. **Live 4th down page** (later): fetches game state at runtime.
 - Header search is not a runtime data fetch: its index (`search-index.js`, from
   `src/pages/search-index.js.ts`) is static build output, versioned per build, and the
@@ -65,13 +65,13 @@ tylernfl/
   covers every player page, every team and the site's pages; matching and ranking live
   in `src/lib/search/match.ts`. Nothing else may use this as a way to load data.
 - ESPN data is browser-only: never write it to `src/data/` and never use it in pipelines. Pipelines use nflverse (the `espnId` in `ticker.json` comes from nflverse schedules). Test fixtures in `tests/fixtures/espn/` are the only stored ESPN data.
-- Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text). That covers the ticker's upcoming slots and the `/scores` kickoff headings.
+- Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text). That covers the ticker's upcoming slots, the rail's schedule and the `/scores` kickoff headings.
 - In-progress parsing (quarter, clock, halftime, final) is verified against the real capture from DET at BUF on
   2026-09-17 (`tests/fixtures/espn/`). Not yet seen in a real response: an end of quarter status (ESPN showed the
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `teams.json`, `model_record.json`.
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `teams.json`, and the auto chart in `charts/`.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
@@ -165,8 +165,9 @@ tylernfl/
   nflseedR cannot resolve two of those weeks (2022 week 13, 2023 week 8: it stops with
   "infinite loop"); the port falls back to a coin toss there. Change the tiebreakers
   only with the fixtures still passing.
-- `model_record.json` stays a placeholder until the 4th down model exists. It is the only
-  placeholder data left on the site.
+- There is no placeholder data left. The 4th down model record panel and
+  `model_record.json` were removed until the model exists; restore them from git history
+  (commit "Replace the rail's model record placeholder") when it does.
 - The home page's notable performances panel is derived at build time from the
   `players/{TEAM}.json` game logs, not from a data file of its own. The week it
   shows is the latest one any game is logged for, which is not the ticker's
@@ -273,6 +274,19 @@ linked from the ticker's week label.
 - The home page's chart panel is full width under the 4th down panel: Tyler's featured
   chart with its date, else the auto chart labeled "Auto chart" with what its data
   covers, else an empty state.
+
+### Right rail
+
+- On every page, top to bottom: this week's games, the playoff picture, on this day.
+- This week's games (`RailSchedule.astro`, from `ticker.json`): one row per game in
+  kickoff order, with the kickoff in the visitor's zone, the clock with the yellow chip,
+  or the final with the winner in bold. Rows carry the ticker's `data-game` hooks, so live
+  scores update them from the same poll. Team links follow the ticker's scoreboard
+  exception (text color, underline on hover).
+- Playoff picture (`PlayoffPicture.astro`, from `standings.json`): each conference's
+  seeds 1 to 7 and the next two in the hunt, side by side, a rule under 7, links to
+  `/standings`. Before a season's first game it is titled with last season's final
+  seeding, since that is what `standings.json` holds then.
 
 ### Stat leaders page
 
@@ -381,9 +395,8 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
     nflseedR, and the `/standings` page (done).
 11. Stats overview: top 5 in eight categories in equal panels, `player_epa.json` in the
     weekly job, `leaders.json` retired (done; see Stat leaders page).
-12. Right rail: remove the 4th down model record panel and delete `model_record.json`
-    (restore from git when the model exists); add this week's schedule (`ticker.json`)
-    and each conference's playoff picture (`standings.json`).
+12. Right rail: the model record placeholder removed, this week's games and the playoff
+    picture added (done; see Right rail).
 13. Team hubs: header strip (record, division place, differential, playoff odds, next
     game) and static tab pages (Overview, Schedule, Roster, Stats, Transactions). Adds
     `schedule.json` (whole season, with lines) to the daily job.

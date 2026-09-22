@@ -1,0 +1,111 @@
+---
+/**
+ * The playoff picture for the right rail: each conference's seeds 1 to 7
+ * and the next two in the hunt, from standings.json (NFL tiebreakers
+ * applied). Before a season's first game, standings.json holds last
+ * season's final standings, and the title says so.
+ */
+import tickerData from '../data/ticker.json';
+import type { TickerData } from '../data/types';
+import { record } from '../lib/standings/ties';
+import { seedsOf, standings } from '../utils/standings';
+import { url } from '../utils/url';
+import Panel from './Panel.astro';
+import TeamChip from './TeamChip.astro';
+
+const ticker = tickerData as TickerData;
+const lastSeason = standings.season < ticker.season;
+const title = lastSeason ? `${standings.season} final seeding` : 'Playoff picture';
+const conferences = (['AFC', 'NFC'] as const).map((conference) => ({ conference, teams: seedsOf(conference).slice(0, 9) }));
+---
+
+<Panel title={title}>
+  <div class="conferences">
+    {
+      conferences.map(({ conference, teams }) => (
+        <table class="seeds">
+          <caption>{conference}</caption>
+          <thead class="visually-hidden">
+            <tr>
+              <th scope="col">Seed</th>
+              <th scope="col">Team</th>
+              <th scope="col">Record</th>
+            </tr>
+          </thead>
+          <tbody>
+            {teams.map((t) => (
+              <tr class:list={{ hunt: t.conferenceRank > 7, cut: t.conferenceRank === 7 }}>
+                <td class="seed num">{t.conferenceRank}</td>
+                <th scope="row"><TeamChip abbr={t.team} size="sm" /></th>
+                <td class="num">{record(t)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ))
+    }
+  </div>
+  <p class="foot">
+    {
+      lastSeason
+        ? 'Last season, as it finished.'
+        : `Through week ${standings.throughWeek}. Seeds 1 to 4 lead their divisions; below the line, in the hunt.`
+    }{' '}
+    <a href={url('standings')}>Full standings</a>
+  </p>
+</Panel>
+
+<style>
+  .conferences {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .seeds {
+    width: 100%;
+    font-size: 12px;
+  }
+
+  caption {
+    text-align: left;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    padding-bottom: var(--space-1);
+  }
+
+  td,
+  th {
+    padding: 2px 4px;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  .seed {
+    color: var(--text-dim);
+    width: 1.5em;
+    text-align: right;
+  }
+
+  td.num:last-child {
+    text-align: right;
+  }
+
+  /* The playoff cut under seed 7; the two below are in the hunt. */
+  .cut td,
+  .cut th {
+    border-bottom: 2px solid var(--header);
+  }
+
+  .hunt td {
+    color: var(--text-dim);
+  }
+
+  .foot {
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px dotted var(--rule-soft);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+</style>

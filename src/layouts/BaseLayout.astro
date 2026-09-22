@@ -4,6 +4,8 @@ import { url } from '../utils/url';
 import { BUILD_ID } from '../utils/build';
 import Panel from '../components/Panel.astro';
 import TickerItem from '../components/TickerItem.astro';
+import RailSchedule from '../components/RailSchedule.astro';
+import PlayoffPicture from '../components/PlayoffPicture.astro';
 import tickerData from '../data/ticker.json';
 import onThisDayData from '../data/on_this_day.json';
 import type { TickerData, GameState, OnThisDayData } from '../data/types';
@@ -168,12 +170,8 @@ function isActive(href: string): boolean {
       </main>
 
       <aside class="rail" aria-label="Extras">
-        <Panel title="4th down model record">
-          <p class="coming-soon">Coming soon</p>
-          <p class="placeholder-note">
-            Once the 4th down model is live, its record on graded calls will show here.
-          </p>
-        </Panel>
+        <RailSchedule />
+        <PlayoffPicture />
         <Panel title={`On this day, ${onThisDayDate}`}>
           {
             onThisDay.items.length > 0 ? (
@@ -643,14 +641,6 @@ function isActive(href: string): boolean {
     display: grid;
     align-content: start;
     gap: var(--space-3);
-  }
-
-  /* Model record placeholder */
-  .coming-soon {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 1.2;
   }
 
   /* On this day list: dotted dividers between items */

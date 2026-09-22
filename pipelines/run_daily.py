@@ -11,8 +11,7 @@ Options:
     --dry-run            print the output instead of writing files
 
 team_stats.json comes from the weekly job (run_weekly.py), which needs the
-much larger play-by-play download. model_record.json is not produced here:
-it waits on the 4th down model, which is Tyler's to build.
+much larger play-by-play download.
 """
 
 import argparse
