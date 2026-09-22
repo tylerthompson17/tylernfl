@@ -1,14 +1,16 @@
 ---
-/** Charts with one tag, newest first, 12 to a page. */
+/** Gallery charts with one tag, newest first, 12 to a page. A game
+ * chart that was not a day's pick is not listed here, the same as in the
+ * gallery itself; its team's page has it. */
 import type { GetStaticPaths, Page } from 'astro';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import ChartList from '../../../../components/ChartList.astro';
 import { tagSlug } from '../../../../lib/charts/collection';
-import { CHARTS_PER_PAGE, chartTags, getCharts, type Chart, type ChartTag } from '../../../../utils/charts';
+import { CHARTS_PER_PAGE, chartTags, getGalleryCharts, type Chart, type ChartTag } from '../../../../utils/charts';
 import { url } from '../../../../utils/url';
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const charts = await getCharts();
+  const charts = await getGalleryCharts();
   return chartTags(charts).flatMap((tag) =>
     paginate(
       charts.filter((chart) => chart.data.tags.some((t) => tagSlug(t) === tag.slug)),

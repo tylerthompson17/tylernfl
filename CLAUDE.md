@@ -135,12 +135,19 @@ tylernfl/
   fields (score, round, overtime, closing spread, temperature). It covers games since 1999 and nothing
   else, so no hand-written history. Washington is named by city in every season, and relocated teams
   link to today's franchise page.
-- The auto chart is drawn by
-  `pipelines/charts/auto.py` at the end of `run_daily.py` from the files it just wrote
-  and `team_stats.json`. The morning after a game day it is win probability of that
-  day's best game (from play-by-play through `pbp_cache.py`; a game nflverse has not
-  published yet is not a candidate, and a day with none of them falls through to the
-  other templates). Which game is a pluggable input, like the playoff odds' game
+- Every final of the season gets a win probability chart, drawn by
+  `pipelines/charts/auto.py` at the end of `run_daily.py` (from play-by-play through
+  `pbp_cache.py`). The archive is filled in rather than appended to: each run draws the
+  games it has no chart for, so a missed run catches up on its own and a new season
+  fills in from its first run. A game already drawn is never redrawn, so a change to how
+  charts are drawn reaches only new ones; delete an entry's three files to have it drawn
+  again. A game nflverse has not published play-by-play for yet waits for the next run.
+- One of them is the day's pick (`"pick": true` in its entry): the chart auto.json names,
+  the home page shows and `/charts` lists. Everything else is kept for the pages of the
+  teams that played it. The pick is chosen from the day's files the same way as before,
+  from the files `run_daily.py` just wrote and `team_stats.json`. The morning after a
+  game day it is the best of that day's games; a day with none falls through to the
+  other templates. Which game is a pluggable input, like the playoff odds' game
   probabilities: `GAME_SCORE` in `auto.py`, a function from the day's finals with
   their plays to a score per game. The default, `late_drama`, reads nflfastR's
   published win probability: 60% how close the game stayed in the last five minutes
@@ -318,10 +325,14 @@ linked from the ticker's week label.
   who is favored after it, what happened, the swing when at least 1%; marker rows and
   unnamed stoppages left out, timeouts named), plus kickoff and the result; the EPA
   scatter, each team's values and ranks; the yards race, each week's totals.
-- `/charts` lists Tyler's charts and every kept auto chart together: newest first, 12 to a page, a static page per tag
-  (`/charts/tag/<tag>/`) and per team a chart is about (`/charts/team/<ABBR>/`), linked
-  from filter rows above the cards (teams as logos with a count; no script), and a page per chart with its note, date, author,
-  source and tags. Chart names cannot be all digits, `tag` or `team` (those URLs are taken).
+- `/charts` lists Tyler's charts and the auto chart each day was given: newest first, 12
+  to a page, a static page per tag (`/charts/tag/<tag>/`) and per team a chart is about
+  (`/charts/team/<ABBR>/`), linked from filter rows above the cards (teams as logos with
+  a count; no script), and a page per chart with its note, date, author, source and tags.
+  Every game's chart has its own page and is listed on its teams' pages, but only a pick
+  reaches the gallery and the tag pages, which a season of games would bury; the team
+  rows count all of them, since that is what a team's page lists. `getGalleryCharts()`
+  in `src/utils/charts.ts` is the picks, `getCharts()` everything. Chart names cannot be all digits, `tag` or `team` (those URLs are taken).
   The build fails on an entry with no SVG, a script not in `mine/`, two featured, or a
   name a kept auto chart already has. Auto charts are bylined "Auto chart" and tagged
   Auto plus their kind (Win probability, EPA, Yards race), so `/charts/tag/auto/` is
@@ -335,12 +346,11 @@ linked from the ticker's week label.
   chart with its date, else the auto chart labeled "Auto chart" with what its data
   covers, else an empty state.
 - A team's own page shows its newest chart, full width on the overview under the playoff
-  odds and drawn inline with its hover readout (`TeamChart.astro`), so the morning after
-  one of its games is the day's pick, that win probability chart is on the team page and
-  not only in the gallery. The caption links to the chart's page and, once a team has
-  more than one, to its full list (`/charts/team/<ABBR>/`), which stays where the
-  gallery's logo filter row points. A team with no charts gets an empty state: three
-  auto charts a week cover six of the league's 32 teams.
+  odds and drawn inline with its hover readout (`TeamChart.astro`): the morning after a
+  game, that game's win probability chart is on both teams' pages, whether or not it was
+  the day's pick. The caption links to the chart's page and, once a team has more than
+  one, to its full list (`/charts/team/<ABBR>/`), which is where the gallery's logo
+  filter row points. A team with no charts yet gets an empty state.
 
 ### Right rail
 

@@ -25,7 +25,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
-from charts.auto import build_auto_chart, write_auto_chart  # noqa: E402
+from charts.auto import build_auto_charts, write_charts  # noqa: E402
 from game_logs import build_game_logs  # noqa: E402
 from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
 from on_this_day import build_on_this_day, load_on_this_day_input  # noqa: E402
@@ -128,14 +128,13 @@ def main() -> None:
             written += 1
     print(f'{written} of {len(files) + len(logs)} files updated')
 
-    # Drawn last: it reads the files just written (boards, game logs) and
-    # team_stats.json from the weekly job.
-    chart = build_auto_chart(today, schedule_rows, stats_season(today))
-    if chart is None:
-        print('auto chart: nothing to draw, keeping the last one')
-    else:
-        changed = write_auto_chart(chart)
-        print(f"auto chart: {chart[0]['template']}, {'updated' if changed else 'unchanged'}")
+    # Drawn last: they read the files just written (boards, game logs) and
+    # team_stats.json from the weekly job. Every game the archive has no
+    # win probability chart for is drawn, so a missed run catches up.
+    charts, pick = build_auto_charts(today, schedule_rows, stats_season(today))
+    drawn, chart_changes = write_charts(charts, pick)
+    print(f'auto charts: {drawn} drawn, {chart_changes} changed')
+    print(f"today's chart: {pick or 'nothing to draw, keeping the last one'}")
 
 
 if __name__ == '__main__':

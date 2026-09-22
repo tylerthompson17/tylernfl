@@ -120,7 +120,7 @@ class SpreadTests(unittest.TestCase):
 
 
 def game(away, home, away_score, home_score, gametime='13:00', day='2026-09-20', **extra):
-    return {'game_id': f'2026_02_{away}_{home}', 'season': 2026, 'gameday': day, 'gametime': gametime,
+    return {'game_id': f'2026_02_{away}_{home}', 'season': 2026, 'week': 2, 'gameday': day, 'gametime': gametime,
             'away_team': away, 'home_team': home, 'away_score': away_score, 'home_score': home_score, **extra}
 
 
@@ -422,14 +422,15 @@ class ArchiveTests(unittest.TestCase):
         fig, ax = style.figure()
         ax.plot([1, 2])
         meta = {'template': 'epa', 'title': 'Offense and defense, EPA per play', 'note': note,
-                'asOf': '2026 season, through week 2', 'source': 'nflverse', 'date': day, 'tags': ['Auto', 'EPA']}
+                'asOf': '2026 season, through week 2', 'source': 'nflverse', 'date': day,
+                'tags': ['Auto', 'EPA'], 'pick': True}
         return meta, fig, slug, None
 
     def write(self, chart, tmp):
         import common
         from unittest import mock
         with mock.patch.object(common, 'DATA_DIR', tmp), mock.patch.object(auto, 'DATA_DIR', tmp):
-            return auto.write_auto_chart(chart)
+            return auto.write_charts([chart], chart[2])[1] > 0
 
     def read(self, tmp, name):
         import json
@@ -445,7 +446,6 @@ class ArchiveTests(unittest.TestCase):
                                        'auto-2026-week-2-offense-defense-epa.json', 'auto-2026-week-2-offense-defense-epa.svg'])
             self.assertEqual(self.read(tmp, 'auto.json'), {'slug': 'auto-2026-week-2-offense-defense-epa'})
 
-    @unittest.skipUnless(importlib.util.find_spec('polars'), 'polars not installed')
     def test_a_rams_game_is_drawn_as_lar(self):
         from unittest import mock
         game = {'game_id': '2026_02_DET_LA', 'season': 2026, 'week': 2, 'gameday': '2026-09-21',
@@ -454,14 +454,13 @@ class ArchiveTests(unittest.TestCase):
         def draw(g, points, plays):
             seen.update(g)
             return None, None
-        plays = [moment(1, 1, 3600, 0.5, 0.55, game_id=game['game_id'])]
-        import polars as pl
-        with mock.patch('pbp_cache.load_pbp', return_value=pl.DataFrame(plays)), mock.patch.object(auto, 'draw_wp', draw):
-            meta, _, slug, _ = auto._wp_chart(game, 2026)
+        with mock.patch.object(auto, 'draw_wp', draw):
+            meta, _, slug, _ = auto._wp_chart(game, [moment(1, 1, 3600, 0.5, 0.55)])
         self.assertEqual(seen['home_team'], 'LAR')
         self.assertEqual(meta['title'], 'Win probability, DET at LAR')
         self.assertEqual(meta['teams'], ['DET', 'LAR'])
         self.assertEqual(slug, 'auto-2026-week-2-det-at-lar-win-probability')
+        self.assertEqual(auto.wp_slug(game), slug)
 
     def test_a_redraw_keeps_the_first_date_and_a_rerun_changes_nothing(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -472,6 +471,61 @@ class ArchiveTests(unittest.TestCase):
             self.assertTrue(self.write(self.chart(slug, '2026-09-24', note='Corrected.'), tmp))
             entry = self.read(tmp, f'archive/{slug}.json')
             self.assertEqual((entry['date'], entry['note']), ('2026-09-22', 'Corrected.'))
+
+
+@unittest.skipUnless(importlib.util.find_spec('polars'), 'polars not installed')
+class EveryGameTests(unittest.TestCase):
+    """Every final gets a win probability chart; one a day is the pick."""
+
+    # A thriller, a game decided early, a blowout, and the next day's game.
+    GAMES = [
+        (game('IND', 'KC', 30, 33, '20:20'), [(1, 1, 3600, 0.5, 0.5), (2, 4, 60, 0.48, 0.52)]),
+        (game('GB', 'NYJ', 20, 17, '13:00'), [(1, 1, 3600, 0.5, 0.5), (2, 4, 60, 0.95, 0.97)]),
+        (game('CAR', 'ATL', 34, 3, '13:00'), [(1, 1, 3600, 0.5, 0.6), (2, 4, 60, 0.99, 0.99)]),
+        (game('NYG', 'LAR', 6, 28, day='2026-09-21'), [(1, 1, 3600, 0.5, 0.6), (2, 4, 60, 0.98, 0.99)]),
+    ]
+
+    def build(self, tmp, today=date(2026, 9, 21)):
+        from unittest import mock
+        import polars as pl
+        plays = [moment(pid, qtr, left, before, after, game_id=g['game_id'])
+                 for g, moments in self.GAMES for pid, qtr, left, before, after in moments]
+        with mock.patch('pbp_cache.load_pbp', return_value=pl.DataFrame(plays)), \
+             mock.patch.object(auto, 'draw_wp', lambda *a: (None, None)), \
+             mock.patch.object(auto, 'DATA_DIR', tmp):
+            charts, pick = auto.build_auto_charts(today, [g for g, _ in self.GAMES], 2026)
+            return [(slug, meta['pick']) for meta, _, slug, _ in charts], pick
+
+    def test_every_final_is_drawn_and_the_best_of_yesterday_is_the_pick(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            drawn, pick = self.build(Path(tmp))
+        # Kickoff order, the afternoon games before the night game.
+        self.assertEqual([slug for slug, _ in drawn], [
+            'auto-2026-week-2-gb-at-nyj-win-probability',
+            'auto-2026-week-2-car-at-atl-win-probability',
+            'auto-2026-week-2-ind-at-kc-win-probability',
+            'auto-2026-week-2-nyg-at-lar-win-probability',
+        ])
+        # Yesterday's thriller is today's chart; every other game is kept
+        # for its teams' pages only.
+        self.assertEqual(pick, 'auto-2026-week-2-ind-at-kc-win-probability')
+        self.assertEqual([slug for slug, is_pick in drawn if is_pick], [pick])
+
+    def test_a_game_already_in_the_archive_is_not_drawn_again(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            archive = tmp / 'charts' / 'archive'
+            archive.mkdir(parents=True)
+            for name in ('auto-2026-week-2-ind-at-kc-win-probability', 'auto-2026-week-2-car-at-atl-win-probability'):
+                (archive / f'{name}.json').write_text('{}')
+                (archive / f'{name}.hover.json').write_text('{}')
+            drawn, pick = self.build(tmp)
+        self.assertEqual([slug for slug, _ in drawn], [
+            'auto-2026-week-2-gb-at-nyj-win-probability',
+            'auto-2026-week-2-nyg-at-lar-win-probability',
+        ])
+        # Still today's chart, drawn or not: auto.json points at it either way.
+        self.assertEqual(pick, 'auto-2026-week-2-ind-at-kc-win-probability')
 
 
 class HoverTests(unittest.TestCase):

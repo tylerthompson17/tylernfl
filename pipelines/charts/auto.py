@@ -8,10 +8,17 @@ says what it covers (auto-2026-week-2-ind-at-kc-win-probability), so a rerun,
 or another day drawing the same template from the same week's data,
 redraws that entry instead of adding a near copy.
 
-Which template runs:
+Every final of the season gets a win probability chart. The archive is
+filled in, not appended to: each run draws the games it has no chart for,
+so a missed day catches up on its own and a new season fills in from its
+first run. A game already drawn is never redrawn (delete its files to
+have it drawn again). The site shows them on the team pages of the teams
+that played; only the day's pick, below, reaches the gallery.
 
-- The morning after a game day, win probability of that day's best game:
-  the one that stayed closest late and blew the biggest lead, scored by
+Which chart is today's, the one auto.json names and the home page shows:
+
+- The morning after a game day, the best of that day's games: the one
+  that stayed closest late and blew the biggest lead, scored by
   GAME_SCORE. It is timely, and only possible then. Games nflverse has
   not published play-by-play for yet are not candidates, and a day with
   none of them falls through to the templates below.
@@ -553,20 +560,18 @@ def _read(name: str):
     return json.loads(path.read_text()) if path.exists() else None
 
 
-def wp_candidates(schedule_rows: list[dict], day: date,
-                  current_season: int) -> list[tuple[dict, list[dict]]]:
-    """The day's finals that nflverse has play-by-play for, each with its
-    win probability plays. Empty when the day had no games, or when the
+def wp_plays_for(finals: list[dict], season: int,
+                 current_season: int) -> list[tuple[dict, list[dict]]]:
+    """Each of those finals that nflverse has play-by-play for, with its
+    win probability plays, in the order given. A game is left out when the
     plays have not caught up: they arrive overnight, so a night game can
     be final in the schedule hours before nflverse publishes it."""
-    finals = finals_on(schedule_rows, day)
     if not finals:
         return []
 
     from pbp_cache import load_pbp
 
-    # Every game on one day is from one season.
-    pbp = load_pbp(finals[0]['season'], current_season)
+    pbp = load_pbp(season, current_season)
     if pbp is None:
         return []
     import polars as pl
@@ -581,14 +586,67 @@ def wp_candidates(schedule_rows: list[dict], day: date,
     return [(row, plays) for row, plays in candidates if plays]
 
 
-def build_auto_chart(today: date, schedule_rows: list[dict], current_season: int):
-    """(meta, figure, slug, hover) for today's auto chart, or None when there is
-    nothing to draw. Reads the data files run_daily.py has just written."""
-    candidates = wp_candidates(schedule_rows, today - timedelta(days=1), current_season)
-    if candidates:
-        game, plays = best_game(candidates, GAME_SCORE(candidates))
-        return _wp_chart(game, plays)
+def season_finals(schedule_rows: list[dict], season: int) -> list[dict]:
+    """Every finished game of one season, regular and post, in kickoff order."""
+    finals = [
+        row for row in schedule_rows
+        if row.get('season') == season
+        and row.get('away_score') is not None and row.get('home_score') is not None
+    ]
+    return sorted(finals, key=lambda row: (row.get('gameday') or '', kickoff_minutes(row.get('gametime'))))
 
+
+def drawn_slugs() -> set[str]:
+    """The charts already in the archive."""
+    archive = DATA_DIR / 'charts' / 'archive'
+    return {
+        path.name.removesuffix('.json') for path in archive.glob('*.json')
+        if not path.name.endswith('.hover.json')
+    } if archive.exists() else set()
+
+
+def build_auto_charts(today: date, schedule_rows: list[dict], current_season: int):
+    """(charts, slug of today's auto chart).
+
+    The charts come as a generator: each figure is drawn as it is written,
+    so only one is ever open. They are every game the archive is missing a
+    win probability chart for, plus, on a day with no games yesterday, the
+    EPA or race chart that stands in as today's.
+
+    Reads the data files run_daily.py has just written.
+    """
+    drawn = drawn_slugs()
+    yesterday = finals_on(schedule_rows, today - timedelta(days=1))
+    missing = [game for game in season_finals(schedule_rows, current_season) if wp_slug(game) not in drawn]
+
+    # One play-by-play load for both: yesterday's games decide today's
+    # pick, the missing ones get drawn, and most days they are the same.
+    # Kept in kickoff order, so a catch-up run draws the season in order.
+    wanted = {game['game_id']: game for game in [*yesterday, *missing]}
+    ordered = sorted(wanted.values(), key=lambda game: (game.get('gameday') or '', kickoff_minutes(game.get('gametime'))))
+    played = wp_plays_for(ordered, current_season, current_season)
+
+    pick, other = None, None
+    yesterday_ids = {game['game_id'] for game in yesterday}
+    candidates = [pair for pair in played if pair[0]['game_id'] in yesterday_ids]
+    if candidates:
+        pick = wp_slug(best_game(candidates, GAME_SCORE(candidates))[0])
+    else:
+        other = _other_chart(today)
+        pick = other[2] if other else None
+
+    def charts():
+        if other is not None:
+            yield other
+        for game, plays in played:
+            if wp_slug(game) not in drawn:
+                yield _wp_chart(game, plays, pick=wp_slug(game) == pick)
+
+    return charts(), pick
+
+
+def _other_chart(today: date):
+    """The chart for a day with no game the day before."""
     team_stats = _read('team_stats.json')
     receiving = _read('stats/receiving.json') or {}
     template = pick_other(other_templates(team_stats, receiving.get('throughWeek') or 0), today)
@@ -599,8 +657,14 @@ def build_auto_chart(today: date, schedule_rows: list[dict], current_season: int
     return None
 
 
-def _wp_chart(game: dict, plays: list[dict]):
-    # nflverse schedules call the Rams LA; the site's logos and pages say LAR.
+def wp_slug(game: dict) -> str:
+    """The archive name for a game's win probability chart. nflverse
+    schedules call the Rams LA; the site's logos and pages say LAR."""
+    away, home = normalize_team(game['away_team']), normalize_team(game['home_team'])
+    return f"auto-{game['season']}-week-{game['week']}-{away}-at-{home}-win-probability".lower()
+
+
+def _wp_chart(game: dict, plays: list[dict], pick: bool = True):
     game = {**game, 'away_team': normalize_team(game['away_team']), 'home_team': normalize_team(game['home_team'])}
     points = wp_points(plays, game['away_score'], game['home_score'])
     day = datetime.fromisoformat(game['gameday'])
@@ -613,10 +677,10 @@ def _wp_chart(game: dict, plays: list[dict]):
         'date': game['gameday'],
         'tags': ['Auto', 'Win probability'],
         'teams': [game['away_team'], game['home_team']],
+        'pick': pick,
     }
     fig, hover = draw_wp(game, points, plays)
-    slug = f"auto-{game['season']}-week-{game['week']}-{game['away_team']}-at-{game['home_team']}-win-probability"
-    return meta, fig, slug.lower(), hover
+    return meta, fig, wp_slug(game), hover
 
 
 def _epa_chart(team_stats: dict, today: date):
@@ -628,6 +692,7 @@ def _epa_chart(team_stats: dict, today: date):
         'source': 'nflverse play-by-play, EPA from the nflfastR model',
         'date': today.isoformat(),
         'tags': ['Auto', 'EPA'],
+        'pick': True,
     }
     fig, hover = draw_epa(team_stats)
     return meta, fig, f"auto-{team_stats['season']}-week-{team_stats['throughWeek']}-offense-defense-epa", hover
@@ -648,17 +713,20 @@ def _race_chart(today: date):
         'source': 'nflverse weekly player stats',
         'date': today.isoformat(),
         'tags': ['Auto', 'Yards race'],
+        'pick': True,
     }
     fig, hover = draw_race(label, last, series)
     return meta, fig, f'auto-{season}-week-{last}-{board}-yards-race', hover
 
 
 def write_auto_chart(chart) -> bool:
-    """Write the chart to src/data/charts/archive/ and point
-    src/data/charts/auto.json at it. True when any file changed.
+    """Write one chart to src/data/charts/archive/. True when any file
+    changed.
 
     A redrawn entry keeps the date it was first drawn on, so the gallery's
-    order does not shift when the same week's chart comes round again.
+    order does not shift when the same week's chart comes round again, and
+    it stays a pick if it ever was one: being the day's chart is part of
+    that day, not something a later run takes away.
     """
     from common import write_json_if_changed
 
@@ -673,7 +741,21 @@ def write_auto_chart(chart) -> bool:
 
     entry = archive / f'{slug}.json'
     if entry.exists():
-        meta = {**meta, 'date': json.loads(entry.read_text())['date']}
+        kept = json.loads(entry.read_text())
+        meta = {**meta, 'date': kept['date'], 'pick': meta.get('pick', False) or kept.get('pick', True)}
     changed = write_json_if_changed(f'charts/archive/{slug}.json', meta)
-    changed = write_json_if_changed('charts/auto.json', {'slug': slug}) or changed
     return changed or before != after
+
+
+def write_charts(charts, pick: str | None) -> tuple[int, int]:
+    """Write every chart and point src/data/charts/auto.json at today's.
+    (how many were written, how many changed anything on disk)."""
+    from common import write_json_if_changed
+
+    written = changed = 0
+    for chart in charts:
+        written += 1
+        changed += 1 if write_auto_chart(chart) else 0
+    if pick:
+        changed += 1 if write_json_if_changed('charts/auto.json', {'slug': pick}) else 0
+    return written, changed

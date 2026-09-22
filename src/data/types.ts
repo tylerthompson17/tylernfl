@@ -359,6 +359,12 @@ export interface ArchivedAutoChart {
   tags: string[];
   /** The teams a chart is about, away then home, shown as logos on its gallery card */
   teams?: string[];
+  /**
+   * This chart was a day's pick, the one the home page showed. Only picks
+   * are listed in the gallery; every other game's chart is reachable from
+   * the pages of the teams that played it. Missing counts as a pick.
+   */
+  pick?: boolean;
 }
 
 /**

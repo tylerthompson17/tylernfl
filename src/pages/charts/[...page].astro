@@ -1,7 +1,13 @@
 ---
 /**
- * The chart gallery: Tyler's charts and every kept auto chart, newest
- * first, 12 to a page (/charts/, /charts/2/). Auto charts are tagged Auto.
+ * The chart gallery: Tyler's charts and the auto chart each day was
+ * given, newest first, 12 to a page (/charts/, /charts/2/). Auto charts
+ * are tagged Auto.
+ *
+ * Every other game's win probability chart is kept but not listed here;
+ * a season of them would bury the rest. The team rows below count all of
+ * them, since that is what a team's page lists.
+ *
  * Filters are links to static pages, one per tag (/charts/tag/auto/) and
  * one per team a chart is about (/charts/team/KC/); no script.
  */
@@ -9,12 +15,15 @@ import type { GetStaticPaths, Page } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
 import ChartList from '../../components/ChartList.astro';
-import { CHARTS_PER_PAGE, chartTags, chartTeams, getCharts, type Chart } from '../../utils/charts';
+import { CHARTS_PER_PAGE, chartTags, chartTeams, getCharts, getGalleryCharts, type Chart } from '../../utils/charts';
 import { url } from '../../utils/url';
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const charts = await getCharts();
-  return paginate(charts, { pageSize: CHARTS_PER_PAGE, props: { tags: chartTags(charts), teams: chartTeams(charts) } });
+  const listed = await getGalleryCharts();
+  return paginate(listed, {
+    pageSize: CHARTS_PER_PAGE,
+    props: { tags: chartTags(listed), teams: chartTeams(await getCharts()) },
+  });
 }) satisfies GetStaticPaths;
 
 interface Props {

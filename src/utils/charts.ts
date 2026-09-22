@@ -16,12 +16,19 @@ import { chartProblems, labelSvg, resolveLogos, tagSlug } from '../lib/charts/co
 import type { ChartHover } from '../lib/charts/hover';
 import { url } from './url';
 
-/** A chart in the gallery: one of Tyler's, or a kept auto chart. */
+/** A chart on the site: one of Tyler's, or a kept auto chart. */
 export interface Chart {
   id: string;
   data: Omit<CollectionEntry<'charts'>['data'], 'script'>;
   /** Drawn by the daily job rather than by Tyler. */
   auto: boolean;
+  /**
+   * Listed in the gallery and its tag pages: Tyler's charts, and the auto
+   * chart each day was given. Every final gets a win probability chart,
+   * so the rest (most of them) are shown on the pages of the teams that
+   * played, not in a gallery they would bury.
+   */
+  gallery: boolean;
 }
 
 /** The byline on an auto chart, where Tyler's name goes on his. */
@@ -56,6 +63,7 @@ function autoCharts(): Chart[] {
   return [...archiveBySlug].map(([id, entry]) => ({
     id,
     auto: true,
+    gallery: entry.pick ?? true,
     data: {
       title: entry.title,
       date: new Date(`${entry.date}T00:00:00Z`),
@@ -93,7 +101,7 @@ export async function getCharts(): Promise<Chart[]> {
   );
   if (problems.length > 0) throw new Error(`Charts collection:\n- ${problems.join('\n- ')}`);
 
-  const mine: Chart[] = all.map(({ id, data: { script: _, ...data } }) => ({ id, data, auto: false }));
+  const mine: Chart[] = all.map(({ id, data: { script: _, ...data } }) => ({ id, data, auto: false, gallery: true }));
   const charts = [...mine, ...autoCharts()];
   const unknown = charts.flatMap((chart) => chart.data.teams.filter((team) => !teams.has(team)).map((team) => `${chart.id} names ${team}`));
   if (unknown.length > 0) throw new Error(`Charts name teams that do not exist:\n- ${unknown.join('\n- ')}`);
@@ -101,6 +109,15 @@ export async function getCharts(): Promise<Chart[]> {
   return charts
     .filter((chart) => import.meta.env.DEV || !chart.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.title.localeCompare(b.data.title));
+}
+
+/**
+ * The charts the gallery lists: Tyler's and the day's picks, newest first.
+ * The team pages and each chart's own page use getCharts() instead, which
+ * is every game.
+ */
+export async function getGalleryCharts(): Promise<Chart[]> {
+  return (await getCharts()).filter((chart) => chart.gallery);
 }
 
 /** The chart marked featured, if any is (and it is not a draft in production). */
