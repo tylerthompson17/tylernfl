@@ -51,8 +51,9 @@ const { page, tags, teams } = Astro.props;
           <nav class="tag-bar" aria-label="Chart teams">
             <span class="tag-label">Teams:</span>
             {teams.map((team) => (
-              <a href={url(`charts/team/${team.abbr}`)} title={team.name}>
-                {team.abbr} <span class="count num">({team.count})</span>
+              <a class="team" href={url(`charts/team/${team.abbr}`)} title={team.name}>
+                <img src={url(`logos/${team.abbr}.png`)} alt={team.name} width="24" height="24" />
+                <span class="count num">({team.count})</span>
               </a>
             ))}
           </nav>
@@ -83,6 +84,24 @@ const { page, tags, teams } = Astro.props;
 
   .tag-bar {
     margin-bottom: var(--space-3);
+  }
+
+  .team {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    text-decoration: none;
+  }
+
+  .team img {
+    display: block;
+    width: 24px;
+    height: 24px;
+  }
+
+  .tag-bar:has(.team) {
+    align-items: center;
+    gap: var(--space-2);
   }
 
   .tag-label,
