@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYG",
   "week": 3,
-  "updated": "2026-09-22T14:16:57Z",
+  "updated": "2026-09-23T14:29:13Z",
   "groups": [
     {
       "key": "offense",
@@ -280,8 +280,8 @@
       "number": 87,
       "position": "WR",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 69,
       "weight": 190,
       "age": 30,
@@ -392,6 +392,21 @@
       "age": 21,
       "experience": 0,
       "college": "Miami"
+    },
+    {
+      "gsisId": "00-0041144",
+      "name": "Ryan Schernecke",
+      "slug": "ryan-schernecke",
+      "number": 70,
+      "position": "T",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 80,
+      "weight": 330,
+      "age": 23,
+      "experience": 0,
+      "college": "Kutztown"
     },
     {
       "gsisId": "00-0040181",
@@ -544,21 +559,6 @@
       "college": "Minnesota"
     },
     {
-      "gsisId": "00-0039442",
-      "name": "Kingsley Eguakun",
-      "slug": "kingsley-eguakun",
-      "number": 67,
-      "position": "C",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 75,
-      "weight": 305,
-      "age": 25,
-      "experience": 2,
-      "college": "Florida"
-    },
-    {
       "gsisId": "00-0041234",
       "name": "Geno VanDeMark",
       "slug": "geno-vandemark",
@@ -587,6 +587,21 @@
       "age": 28,
       "experience": 5,
       "college": "Iowa"
+    },
+    {
+      "gsisId": "00-0039332",
+      "name": "C.J. Ravenell",
+      "slug": "cj-ravenell",
+      "number": 91,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 287,
+      "age": 26,
+      "experience": 2,
+      "college": "Missouri Western"
     },
     {
       "gsisId": "00-0040694",
@@ -835,8 +850,8 @@
       "number": 54,
       "position": "ILB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 75,
       "weight": 245,
       "age": 28,
@@ -1007,21 +1022,6 @@
       "age": 26,
       "experience": 2,
       "college": "Pittsburg State (KS); Southern Illinois"
-    },
-    {
-      "gsisId": "00-0039823",
-      "name": "Elijah Jones",
-      "slug": "elijah-jones",
-      "number": 37,
-      "position": "CB",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 184,
-      "age": 26,
-      "experience": 2,
-      "college": "Boston College"
     },
     {
       "gsisId": "00-0040243",

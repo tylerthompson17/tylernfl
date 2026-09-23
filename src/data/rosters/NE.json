@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NE",
   "week": 3,
-  "updated": "2026-09-22T14:16:57Z",
+  "updated": "2026-09-23T14:29:13Z",
   "groups": [
     {
       "key": "offense",
@@ -319,6 +319,21 @@
       "college": "Alabama"
     },
     {
+      "gsisId": "00-0037348",
+      "name": "Tanner Conner",
+      "slug": "tanner-conner",
+      "number": 48,
+      "position": "TE",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 223,
+      "age": 28,
+      "experience": 4,
+      "college": "Idaho State"
+    },
+    {
       "gsisId": "00-0041395",
       "name": "Eli Raridon",
       "slug": "eli-raridon",
@@ -535,8 +550,8 @@
       "number": 71,
       "position": "G",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 75,
       "weight": 350,
       "age": 28,
@@ -1180,8 +1195,8 @@
       "number": 19,
       "position": "P",
       "group": "specialists",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 74,
       "weight": 220,
       "age": 34,

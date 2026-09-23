@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "IND",
   "week": 3,
-  "updated": "2026-09-22T14:16:57Z",
+  "updated": "2026-09-23T14:29:13Z",
   "groups": [
     {
       "key": "offense",
@@ -124,21 +124,6 @@
       "college": "Mississippi State; Utah State"
     },
     {
-      "gsisId": "00-0041486",
-      "name": "Anderson Castle",
-      "slug": "anderson-castle",
-      "number": 42,
-      "position": "RB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 72,
-      "weight": 221,
-      "age": 24,
-      "experience": 0,
-      "college": "Duke; Appalachian State"
-    },
-    {
       "gsisId": "00-0038997",
       "name": "Josh Downs",
       "slug": "josh-downs",
@@ -257,6 +242,21 @@
       "age": 29,
       "experience": 7,
       "college": "Malone"
+    },
+    {
+      "gsisId": "00-0035535",
+      "name": "Darius Slayton",
+      "slug": "darius-slayton",
+      "number": 18,
+      "position": "WR",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 73,
+      "weight": 190,
+      "age": 29,
+      "experience": 7,
+      "college": "Auburn"
     },
     {
       "gsisId": "00-0041132",
@@ -449,7 +449,7 @@
       "statusLabel": "Active",
       "heightInches": 78,
       "weight": 305,
-      "age": 28,
+      "age": 29,
       "experience": 4,
       "college": "Central Michigan"
     },
@@ -625,8 +625,8 @@
       "number": 72,
       "position": "DE",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 77,
       "weight": 263,
       "age": 29,

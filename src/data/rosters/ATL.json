@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "ATL",
   "week": 3,
-  "updated": "2026-09-22T14:16:57Z",
+  "updated": "2026-09-23T14:29:13Z",
   "groups": [
     {
       "key": "offense",
@@ -427,7 +427,7 @@
       "gsisId": "00-0038592",
       "name": "Colby Sorsdal",
       "slug": "colby-sorsdal",
-      "number": 75,
+      "number": 74,
       "position": "T",
       "group": "offense",
       "status": "DEV",
@@ -610,8 +610,8 @@
       "number": 96,
       "position": "DE",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 77,
       "weight": 272,
       "age": 25,
@@ -632,21 +632,6 @@
       "age": 26,
       "experience": 4,
       "college": "San Diego State"
-    },
-    {
-      "gsisId": "00-0040056",
-      "name": "Jared Ivey",
-      "slug": "jared-ivey",
-      "number": 51,
-      "position": "DT",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 78,
-      "weight": 274,
-      "age": 24,
-      "experience": 1,
-      "college": "Mississippi; Georgia Tech"
     },
     {
       "gsisId": "00-0039859",
@@ -829,6 +814,21 @@
       "college": "Western Kentucky"
     },
     {
+      "gsisId": "00-0040056",
+      "name": "Jared Ivey",
+      "slug": "jared-ivey",
+      "number": 51,
+      "position": "OLB",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 78,
+      "weight": 274,
+      "age": 24,
+      "experience": 1,
+      "college": "Mississippi; Georgia Tech"
+    },
+    {
       "gsisId": "00-0031576",
       "name": "Za'Darius Smith",
       "slug": "zadarius-smith",
@@ -985,11 +985,11 @@
       "number": 24,
       "position": "CB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 73,
       "weight": 200,
-      "age": 27,
+      "age": 28,
       "experience": 6,
       "college": "Clemson"
     },

@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "CHI",
   "week": 3,
-  "updated": "2026-09-22T14:16:57Z",
+  "updated": "2026-09-23T14:29:13Z",
   "groups": [
     {
       "key": "offense",
@@ -467,21 +467,6 @@
       "age": 24,
       "experience": 2,
       "college": "University of British Columbia"
-    },
-    {
-      "gsisId": "00-0039624",
-      "name": "Kyle Hergel",
-      "slug": "kyle-hergel",
-      "number": 60,
-      "position": "G",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 74,
-      "weight": 315,
-      "age": 26,
-      "experience": 2,
-      "college": "Boston College; Texas State-San Marcos"
     },
     {
       "gsisId": "00-0032391",
@@ -1084,6 +1069,21 @@
       "college": "Duke"
     },
     {
+      "gsisId": "00-0036589",
+      "name": "Nick McCloud",
+      "slug": "nick-mccloud",
+      "number": 45,
+      "position": "CB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 190,
+      "age": 28,
+      "experience": 5,
+      "college": "Notre Dame"
+    },
+    {
       "gsisId": "00-0038136",
       "name": "Coby Bryant",
       "slug": "coby-bryant",
@@ -1234,19 +1234,19 @@
       "college": "Iowa"
     },
     {
-      "gsisId": "00-0041167",
-      "name": "Beau Gardner",
-      "slug": "beau-gardner",
-      "number": 45,
+      "gsisId": "00-0034067",
+      "name": "Scott Daly",
+      "slug": "scott-daly",
+      "number": 46,
       "position": "LS",
       "group": "specialists",
       "status": "ACT",
       "statusLabel": "Active",
-      "heightInches": 77,
-      "weight": 250,
-      "age": 24,
-      "experience": 0,
-      "college": "Georgia; UCLA"
+      "heightInches": 73,
+      "weight": 245,
+      "age": 32,
+      "experience": 8,
+      "college": "Notre Dame"
     }
   ]
 }

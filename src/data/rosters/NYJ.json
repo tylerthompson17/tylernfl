@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYJ",
   "week": 3,
-  "updated": "2026-09-22T14:16:57Z",
+  "updated": "2026-09-23T14:29:13Z",
   "groups": [
     {
       "key": "offense",
@@ -19,21 +19,6 @@
   ],
   "players": [
     {
-      "gsisId": "00-0038108",
-      "name": "Bailey Zappe",
-      "slug": "bailey-zappe",
-      "number": 4,
-      "position": "QB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 220,
-      "age": 27,
-      "experience": 4,
-      "college": "Western Kentucky; Houston Christian University"
-    },
-    {
       "gsisId": "00-0030565",
       "name": "Geno Smith",
       "slug": "geno-smith",
@@ -47,6 +32,21 @@
       "age": 35,
       "experience": 13,
       "college": "West Virginia"
+    },
+    {
+      "gsisId": "00-0039152",
+      "name": "Will Levis",
+      "slug": "will-levis",
+      "number": 8,
+      "position": "QB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 232,
+      "age": 27,
+      "experience": 3,
+      "college": "Kentucky; Penn State"
     },
     {
       "gsisId": "00-0041056",
@@ -814,6 +814,21 @@
       "college": "Auburn"
     },
     {
+      "gsisId": "00-0041410",
+      "name": "Jaden Keller",
+      "slug": "jaden-keller",
+      "number": 48,
+      "position": "ILB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 235,
+      "age": 23,
+      "experience": 0,
+      "college": "Virginia Tech"
+    },
+    {
       "gsisId": "00-0039347",
       "name": "Trevin Wallace",
       "slug": "trevin-wallace",
@@ -865,8 +880,8 @@
       "number": 50,
       "position": "MLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 245,
       "age": 32,
@@ -959,7 +974,7 @@
       "statusLabel": "Active",
       "heightInches": 76,
       "weight": 190,
-      "age": 27,
+      "age": 28,
       "experience": 5,
       "college": "Oregon State"
     },
