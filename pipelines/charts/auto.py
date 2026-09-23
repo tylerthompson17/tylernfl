@@ -262,10 +262,33 @@ def _yards(value) -> int:
     return int(value or 0)
 
 
-def describe_play(play: dict) -> str:
+def scoring_kind(play: dict) -> str | None:
+    """What the play scored, or None if it scored nothing. nflverse's `sp`
+    says a play scored; these fields say what it was."""
+    if not play.get('sp'):
+        return None
+    if play.get('touchdown') or play.get('return_touchdown'):
+        return 'Touchdown'
+    if play.get('field_goal_result') == 'made':
+        return 'Field goal'
+    if play.get('extra_point_result') == 'good':
+        return 'Extra point'
+    if play.get('two_point_conv_result') == 'success':
+        return 'Two-point conversion'
+    if play.get('safety'):
+        return 'Safety'
+    return 'Score'
+
+
+def describe_play(play: dict, scored: bool = False) -> str:
     """What happened, in a few words, from nflverse's play fields rather
     than its play text, which runs long. Names come as nflverse writes
-    them ("H.Butker"), the same style as the ticker."""
+    them ("H.Butker"), the same style as the ticker.
+
+    With `scored`, the readout's score line already names what was scored,
+    so the marker is left off here ("31 yds", not "31 yd TD") and a play
+    the type alone describes, an extra point or a safety, returns nothing.
+    """
     passer, receiver = play.get('passer_player_name'), play.get('receiver_player_name')
     rusher, kicker = play.get('rusher_player_name'), play.get('kicker_player_name')
     kind = play.get('play_type')
@@ -278,19 +301,21 @@ def describe_play(play: dict) -> str:
         fumbler = play.get('fumbled_1_player_name')
         return f'Fumble lost, {fumbler}' if fumbler else 'Fumble lost'
     if play.get('safety'):
-        return 'Safety'
+        return '' if scored else 'Safety'
     if kind == 'field_goal':
         distance = _yards(play.get('kick_distance'))
+        if scored:
+            return f'{kicker} from {distance}' if kicker else f'From {distance}'
         result = {'made': 'FG', 'missed': 'FG missed', 'blocked': 'FG blocked'}.get(play.get('field_goal_result'), 'FG')
         return f'{kicker} {distance} yd {result}' if kicker else f'{distance} yd {result}'
     if play.get('return_touchdown'):
-        return 'Return TD'
+        return 'On the return' if scored else 'Return TD'
     if play.get('sack'):
         return f'{passer} sacked' if passer else 'Sack'
     if play.get('fourth_down_failed'):
         return f"Stopped on 4th and {_yards(play.get('ydstogo'))}"
 
-    touchdown = ' TD' if play.get('touchdown') else ''
+    touchdown = '' if scored else (' TD' if play.get('touchdown') else '')
     if kind == 'pass' and passer:
         if receiver and play.get('complete_pass', 1):
             return f'{passer} to {receiver}, {yards} yd{touchdown or "s"}'
@@ -302,9 +327,13 @@ def describe_play(play: dict) -> str:
     if kind == 'kickoff':
         return 'Kickoff'
     if kind == 'extra_point':
-        return 'Extra point' if play.get('extra_point_result') == 'good' else 'Extra point missed'
+        if play.get('extra_point_result') == 'good':
+            return '' if scored else 'Extra point'
+        return 'Extra point missed'
     if play.get('two_point_attempt'):
-        return 'Two-point try good' if play.get('two_point_conv_result') == 'success' else 'Two-point try failed'
+        if play.get('two_point_conv_result') == 'success':
+            return '' if scored else 'Two-point try good'
+        return 'Two-point try failed'
     if play.get('penalty') and play.get('penalty_type'):
         return f"Penalty, {play['penalty_type']}"
     if play.get('timeout'):
@@ -398,9 +427,21 @@ def _chance(home: str, away: str, home_wp: float) -> str:
     return f'{home if home_wp > 0.5 else away} {pct}%'
 
 
+def score_line(game: dict, play: dict, kind: str | None) -> str | None:
+    """The score once the play is over, away first as the title reads it,
+    and what was scored when the play scored. A play nflverse has no
+    running score for has no line."""
+    away_score, home_score = play.get('total_away_score'), play.get('total_home_score')
+    if away_score is None or home_score is None:
+        return None
+    score = f"{game['away_team']} {int(away_score)}, {game['home_team']} {int(home_score)}"
+    return f'{kind} · {score}' if kind else score
+
+
 def wp_hover(game: dict, plays: list[dict], ax) -> dict:
-    """Every play: the clock, who is favored after it, what happened, and
-    the swing when it is at least 1%. Then the kickoff and the result."""
+    """Every play: the clock, who is favored after it, the score, what
+    happened, and the swing when it is at least 1%. Then the kickoff and
+    the result, which carry the score in their own words."""
     home, away = game['home_team'], game['away_team']
     points = []
     if plays:
@@ -411,11 +452,17 @@ def wp_hover(game: dict, plays: list[dict], ax) -> dict:
         # line but are not plays: nothing to read out.
         if not play.get('play_type'):
             continue
-        what = describe_play(play)
+        kind = scoring_kind(play)
+        what = describe_play(play, scored=kind is not None)
         if what == 'No play':
             continue  # a stoppage nflverse does not name
         after = wp_after(play)
-        lines = [f"{clock_label(play['qtr'], play['game_seconds_remaining'])} · {_chance(home, away, after)}", what]
+        lines = [f"{clock_label(play['qtr'], play['game_seconds_remaining'])} · {_chance(home, away, after)}"]
+        score = score_line(game, play, kind)
+        if score:
+            lines.append(score)
+        if what:
+            lines.append(what)
         change = swing(play)
         if abs(change) >= 0.005:
             lines.append(f"{home if change > 0 else away} +{round(abs(change) * 100)}% on the play")
@@ -546,6 +593,7 @@ def draw_epa(team_stats: dict):
 # after each play, and what describe_play() needs to say what happened.
 PLAY_COLUMNS = [
     'game_id', 'play_id', 'qtr', 'game_seconds_remaining', 'home_wp', 'home_wp_post',
+    'sp', 'total_away_score', 'total_home_score',
     'play_type', 'yards_gained', 'touchdown', 'return_touchdown', 'safety', 'sack',
     'interception', 'interception_player_name', 'fumble_lost', 'fumbled_1_player_name',
     'complete_pass', 'passer_player_name', 'receiver_player_name', 'rusher_player_name',
@@ -605,7 +653,7 @@ def drawn_slugs() -> set[str]:
     } if archive.exists() else set()
 
 
-def build_auto_charts(today: date, schedule_rows: list[dict], current_season: int):
+def build_auto_charts(today: date, schedule_rows: list[dict], current_season: int, redraw: bool = False):
     """(charts, slug of today's auto chart).
 
     The charts come as a generator: each figure is drawn as it is written,
@@ -613,9 +661,14 @@ def build_auto_charts(today: date, schedule_rows: list[dict], current_season: in
     win probability chart for, plus, on a day with no games yesterday, the
     EPA or race chart that stands in as today's.
 
+    `redraw` draws every game of the season again, for a change to how the
+    charts are drawn: run_daily.py --redraw-charts, or the redraw box on
+    the daily workflow. Each one keeps the date and the pick it already
+    had, so only the drawing changes.
+
     Reads the data files run_daily.py has just written.
     """
-    drawn = drawn_slugs()
+    drawn = set() if redraw else drawn_slugs()
     yesterday = finals_on(schedule_rows, today - timedelta(days=1))
     missing = [game for game in season_finals(schedule_rows, current_season) if wp_slug(game) not in drawn]
 

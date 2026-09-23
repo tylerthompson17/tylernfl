@@ -52,6 +52,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--today', type=date.fromisoformat, default=None)
     parser.add_argument('--dry-run', action='store_true')
+    parser.add_argument('--redraw-charts', action='store_true',
+                        help='draw every game again, after a change to how charts are drawn')
     args = parser.parse_args()
     today = args.today or today_eastern()
 
@@ -131,7 +133,7 @@ def main() -> None:
     # Drawn last: they read the files just written (boards, game logs) and
     # team_stats.json from the weekly job. Every game the archive has no
     # win probability chart for is drawn, so a missed run catches up.
-    charts, pick = build_auto_charts(today, schedule_rows, stats_season(today))
+    charts, pick = build_auto_charts(today, schedule_rows, stats_season(today), redraw=args.redraw_charts)
     drawn, chart_changes = write_charts(charts, pick)
     print(f'auto charts: {drawn} drawn, {chart_changes} changed')
     print(f"today's chart: {pick or 'nothing to draw, keeping the last one'}")

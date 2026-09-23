@@ -12,6 +12,11 @@ on:
     # in Eastern time, so this run still counts as Friday.
     - cron: '0 0 * * 6'
   workflow_dispatch:
+    inputs:
+      redraw:
+        description: 'Draw every chart again, after a change to how charts are drawn'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -55,7 +60,10 @@ jobs:
           restore-keys: pbp-
 
       - name: Build site data
-        run: python pipelines/run_daily.py
+        env:
+          # Empty on a scheduled run, where inputs are not set.
+          REDRAW: ${{ inputs.redraw && '--redraw-charts' || '' }}
+        run: python pipelines/run_daily.py $REDRAW
 
       - name: Commit changed data
         id: commit

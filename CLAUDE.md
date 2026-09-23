@@ -140,8 +140,9 @@ tylernfl/
   `pbp_cache.py`). The archive is filled in rather than appended to: each run draws the
   games it has no chart for, so a missed run catches up on its own and a new season
   fills in from its first run. A game already drawn is never redrawn, so a change to how
-  charts are drawn reaches only new ones; delete an entry's three files to have it drawn
-  again. A game nflverse has not published play-by-play for yet waits for the next run.
+  charts are drawn reaches only new ones: draw them all again with
+  `run_daily.py --redraw-charts`, or the redraw box on the daily workflow. A redrawn
+  chart keeps the date and the pick it already had, so only the drawing changes. A game nflverse has not published play-by-play for yet waits for the next run.
 - One of them is the day's pick (`"pick": true` in its entry): the chart auto.json names,
   the home page shows and `/charts` lists. Everything else is kept for the pages of the
   teams that played it. The pick is chosen from the day's files the same way as before,
@@ -322,9 +323,15 @@ linked from the ticker's week label.
   On touch, a drag reads the chart only where the whole chart fits; where the frame scrolls
   sideways (phones), a drag scrolls and a tap reads. Thumbnails have no hover.
 - The auto chart's templates all carry hover data: win probability, every play (clock,
-  who is favored after it, what happened, the swing when at least 1%; marker rows and
-  unnamed stoppages left out, timeouts named), plus kickoff and the result; the EPA
-  scatter, each team's values and ranks; the yards race, each week's totals.
+  who is favored after it, the score once the play is over, what happened, the swing when
+  at least 1%; marker rows and unnamed stoppages left out, timeouts named), plus kickoff
+  and the result; the EPA scatter, each team's values and ranks; the yards race, each
+  week's totals.
+- A play that scored says so on its score line ("Touchdown · NYG 0, LAR 6", from
+  nflverse's `sp`), and then does not repeat it: the play reads "M.Stafford to D.Adams,
+  31 yds", and an extra point or a safety, which the score line already tells in full,
+  has no play line at all. So a timeout right after a touchdown still shows the score,
+  which is what a reader wants from a point on the line.
 - `/charts` lists Tyler's charts and the auto chart each day was given: newest first, 12
   to a page, a static page per tag (`/charts/tag/<tag>/`) and per team a chart is about
   (`/charts/team/<ABBR>/`), linked from filter rows above the cards (teams as logos with

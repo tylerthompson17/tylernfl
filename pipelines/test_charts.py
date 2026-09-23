@@ -550,6 +550,51 @@ class HoverTests(unittest.TestCase):
         ])
         self.assertEqual(points[-1]['y'], 1.0)
 
+    def test_every_readout_carries_the_score(self):
+        plays = [
+            {'play_id': 1, 'qtr': 1, 'game_seconds_remaining': 3600, 'home_wp': 0.55, 'home_wp_post': 0.55,
+             'play_type': 'kickoff', 'total_away_score': 0, 'total_home_score': 0},
+            {'play_id': 2, 'qtr': 2, 'game_seconds_remaining': 1881, 'home_wp': 0.60, 'home_wp_post': 0.60,
+             'play_type': 'no_play', 'timeout': 1.0, 'timeout_team': 'KC',
+             'total_away_score': 3, 'total_home_score': 17},
+        ]
+        game = {'away_team': 'IND', 'home_team': 'KC', 'away_score': 30, 'home_score': 33}
+        points = auto.wp_hover(game, plays, ax=None)['points']
+        self.assertEqual(points[2]['lines'], ['Q2 1:21 · KC 60%', 'IND 3, KC 17', 'Timeout, KC'])
+
+    def test_a_scoring_play_says_what_it_scored_without_repeating_it(self):
+        def lines(**fields):
+            play = {'play_id': 1, 'qtr': 1, 'game_seconds_remaining': 2719, 'home_wp': 0.7, 'home_wp_post': 0.7,
+                    'sp': 1.0, 'total_away_score': 0, 'total_home_score': 6, **fields}
+            game = {'away_team': 'NYG', 'home_team': 'LAR', 'away_score': 6, 'home_score': 28}
+            return auto.wp_hover(game, [play], ax=None)['points'][1]['lines']
+
+        self.assertEqual(
+            lines(play_type='pass', passer_player_name='M.Stafford', receiver_player_name='D.Adams',
+                  yards_gained=31.0, complete_pass=1.0, touchdown=1.0),
+            ['Q1 0:19 · LAR 70%', 'Touchdown · NYG 0, LAR 6', 'M.Stafford to D.Adams, 31 yds'])
+        self.assertEqual(
+            lines(play_type='field_goal', kicker_player_name='H.Mevis', kick_distance=40.0, field_goal_result='made'),
+            ['Q1 0:19 · LAR 70%', 'Field goal · NYG 0, LAR 6', 'H.Mevis from 40'])
+        # An extra point is the whole story: the score line tells it.
+        self.assertEqual(
+            lines(play_type='extra_point', extra_point_result='good'),
+            ['Q1 0:19 · LAR 70%', 'Extra point · NYG 0, LAR 6'])
+
+    def test_a_play_that_scored_nothing_is_described_as_before(self):
+        play = {'play_id': 1, 'qtr': 4, 'game_seconds_remaining': 130, 'home_wp': 0.4, 'home_wp_post': 0.62,
+                'play_type': 'pass', 'passer_player_name': 'P.Mahomes', 'receiver_player_name': 'T.Thornton',
+                'yards_gained': 45.0, 'complete_pass': 1.0, 'total_away_score': 30, 'total_home_score': 26}
+        game = {'away_team': 'IND', 'home_team': 'KC', 'away_score': 30, 'home_score': 33}
+        self.assertEqual(auto.wp_hover(game, [play], ax=None)['points'][1]['lines'], [
+            'Q4 2:10 · KC 62%', 'IND 30, KC 26', 'P.Mahomes to T.Thornton, 45 yds', 'KC +22% on the play'])
+
+    def test_a_missed_kick_is_not_a_scoring_play(self):
+        missed = {'play_type': 'field_goal', 'field_goal_result': 'missed', 'kick_distance': 52.0,
+                  'kicker_player_name': 'H.Mevis'}
+        self.assertIsNone(auto.scoring_kind(missed))
+        self.assertEqual(auto.describe_play(missed), 'H.Mevis 52 yd FG missed')
+
     def test_even_odds_read_as_even(self):
         self.assertEqual(auto._chance('KC', 'IND', 0.503), 'Even')
         self.assertEqual(auto._chance('KC', 'IND', 0.38), 'IND 62%')
