@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "LAC",
   "week": 3,
-  "updated": "2026-09-23T14:29:13Z",
+  "updated": "2026-09-24T14:28:57Z",
   "groups": [
     {
       "key": "offense",
@@ -220,8 +220,8 @@
       "number": 13,
       "position": "WR",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 76,
       "weight": 207,
       "age": 31,
@@ -325,8 +325,8 @@
       "number": 83,
       "position": "TE",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 76,
       "weight": 246,
       "age": 30,
@@ -689,7 +689,7 @@
       "statusLabel": "Practice squad",
       "heightInches": 76,
       "weight": 317,
-      "age": 24,
+      "age": 25,
       "experience": 2,
       "college": "LSU"
     },
@@ -1157,6 +1157,21 @@
       "age": 37,
       "experience": 14,
       "college": "Auburn"
+    },
+    {
+      "gsisId": null,
+      "name": "Spencer Triplett",
+      "slug": "spencer-triplett",
+      "number": null,
+      "position": "LS",
+      "group": "specialists",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": null,
+      "weight": 240,
+      "age": null,
+      "experience": 0,
+      "college": null
     }
   ]
 }

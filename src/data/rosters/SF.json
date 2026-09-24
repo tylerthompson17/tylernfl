@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "SF",
   "week": 3,
-  "updated": "2026-09-22T14:16:57Z",
+  "updated": "2026-09-24T14:28:57Z",
   "groups": [
     {
       "key": "offense",
@@ -257,6 +257,21 @@
       "age": 24,
       "experience": 1,
       "college": "Mississippi; Louisville"
+    },
+    {
+      "gsisId": "00-0031236",
+      "name": "Brandin Cooks",
+      "slug": "brandin-cooks",
+      "number": 18,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 70,
+      "weight": 183,
+      "age": 32,
+      "experience": 12,
+      "college": "Oregon State"
     },
     {
       "gsisId": "00-0035719",
@@ -694,6 +709,21 @@
       "college": "Oklahoma"
     },
     {
+      "gsisId": "00-0038575",
+      "name": "Viliami Fehoko",
+      "slug": "viliami-fehoko",
+      "number": 61,
+      "position": "DE",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 263,
+      "age": 26,
+      "experience": 3,
+      "college": "San Jose State"
+    },
+    {
       "gsisId": "00-0037602",
       "name": "Sam Okuayinonu",
       "slug": "sam-okuayinonu",
@@ -814,6 +844,21 @@
       "college": "Texas A&M"
     },
     {
+      "gsisId": "00-0036695",
+      "name": "Naquan Jones",
+      "slug": "naquan-jones",
+      "number": 91,
+      "position": "DT",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 75,
+      "weight": 314,
+      "age": 28,
+      "experience": 5,
+      "college": "Michigan State"
+    },
+    {
       "gsisId": "00-0036942",
       "name": "Osa Odighizuwa",
       "slug": "osa-odighizuwa",
@@ -880,8 +925,8 @@
       "number": 99,
       "position": "DT",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 73,
       "weight": 316,
       "age": 24,

@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "CAR",
   "week": 3,
-  "updated": "2026-09-23T14:29:13Z",
+  "updated": "2026-09-24T14:28:57Z",
   "groups": [
     {
       "key": "offense",
@@ -85,8 +85,8 @@
       "number": 25,
       "position": "RB",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 72,
       "weight": 216,
       "age": 23,
@@ -874,6 +874,21 @@
       "college": ""
     },
     {
+      "gsisId": "00-0039637",
+      "name": "Maema Njongmeta",
+      "slug": "maema-njongmeta",
+      "number": 45,
+      "position": "ILB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 240,
+      "age": 25,
+      "experience": 2,
+      "college": "Wisconsin"
+    },
+    {
       "gsisId": "00-0041119",
       "name": "Jackson Kuwatch",
       "slug": "jackson-kuwatch",
@@ -1135,8 +1150,8 @@
       "number": 27,
       "position": "SS",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 76,
       "weight": 232,
       "age": 28,

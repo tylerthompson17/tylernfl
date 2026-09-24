@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "DET",
   "week": 3,
-  "updated": "2026-09-23T14:29:13Z",
+  "updated": "2026-09-24T14:28:57Z",
   "groups": [
     {
       "key": "offense",
@@ -535,8 +535,8 @@
       "number": 65,
       "position": "C",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 76,
       "weight": 305,
       "age": 25,
@@ -767,6 +767,21 @@
       "age": 26,
       "experience": 4,
       "college": "LSU"
+    },
+    {
+      "gsisId": "00-0035895",
+      "name": "Joe Bachie",
+      "slug": "joe-bachie",
+      "number": 35,
+      "position": "OLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 235,
+      "age": 28,
+      "experience": 6,
+      "college": "Michigan State"
     },
     {
       "gsisId": "00-0037289",
@@ -1024,21 +1039,6 @@
       "college": "Notre Dame; Oklahoma State"
     },
     {
-      "gsisId": "00-0032803",
-      "name": "Jalen Mills",
-      "slug": "jalen-mills",
-      "number": 13,
-      "position": "FS",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 72,
-      "weight": 191,
-      "age": 32,
-      "experience": 10,
-      "college": "LSU"
-    },
-    {
       "gsisId": "00-0041454",
       "name": "Aamaris Brown",
       "slug": "aamaris-brown",
@@ -1052,6 +1052,21 @@
       "age": 24,
       "experience": 0,
       "college": "UNLV; University of South Florida; Kansas State"
+    },
+    {
+      "gsisId": "00-0032803",
+      "name": "Jalen Mills",
+      "slug": "jalen-mills",
+      "number": 27,
+      "position": "FS",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 191,
+      "age": 32,
+      "experience": 10,
+      "college": "LSU"
     },
     {
       "gsisId": "00-0034377",
@@ -1087,7 +1102,7 @@
       "gsisId": "00-0040914",
       "name": "Bishop Fitzgerald",
       "slug": "bishop-fitzgerald",
-      "number": 38,
+      "number": 34,
       "position": "FS",
       "group": "defense",
       "status": "ACT",

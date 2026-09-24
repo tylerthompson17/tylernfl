@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NE",
   "week": 3,
-  "updated": "2026-09-23T14:29:13Z",
+  "updated": "2026-09-24T14:28:57Z",
   "groups": [
     {
       "key": "offense",
@@ -604,6 +604,21 @@
       "college": "Mississippi"
     },
     {
+      "gsisId": "00-0037638",
+      "name": "Benton Whitley",
+      "slug": "benton-whitley",
+      "number": 61,
+      "position": "DE",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 250,
+      "age": 27,
+      "experience": 4,
+      "college": "Holy Cross"
+    },
+    {
       "gsisId": "00-0036981",
       "name": "Christian Barmore",
       "slug": "christian-barmore",
@@ -760,8 +775,8 @@
       "number": 43,
       "position": "OLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 74,
       "weight": 252,
       "age": 27,
@@ -1060,8 +1075,8 @@
       "number": 24,
       "position": "FS",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 71,
       "weight": 200,
       "age": 25,

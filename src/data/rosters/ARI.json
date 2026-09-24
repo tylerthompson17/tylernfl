@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "ARI",
   "week": 3,
-  "updated": "2026-09-22T14:16:57Z",
+  "updated": "2026-09-24T14:28:57Z",
   "groups": [
     {
       "key": "offense",
@@ -664,6 +664,21 @@
       "college": "Boston College"
     },
     {
+      "gsisId": "00-0040019",
+      "name": "Jay Toia",
+      "slug": "jay-toia",
+      "number": 93,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 342,
+      "age": 23,
+      "experience": 1,
+      "college": "UCLA; USC"
+    },
+    {
       "gsisId": "00-0041555",
       "name": "Kaleb Proctor",
       "slug": "kaleb-proctor",
@@ -925,8 +940,8 @@
       "number": 2,
       "position": "CB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 74,
       "weight": 200,
       "age": 23,
@@ -1000,8 +1015,8 @@
       "number": 24,
       "position": "CB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 70,
       "weight": 194,
       "age": 26,

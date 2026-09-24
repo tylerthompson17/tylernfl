@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "LAR",
   "week": 3,
-  "updated": "2026-09-23T14:29:13Z",
+  "updated": "2026-09-24T14:28:57Z",
   "groups": [
     {
       "key": "offense",
@@ -85,8 +85,8 @@
       "number": 20,
       "position": "RB",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 69,
       "weight": 198,
       "age": 27,
@@ -1037,6 +1037,21 @@
       "age": 23,
       "experience": 2,
       "college": "Miami"
+    },
+    {
+      "gsisId": "00-0040923",
+      "name": "Maximus Pulley",
+      "slug": "maximus-pulley",
+      "number": 36,
+      "position": "FS",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 71,
+      "weight": 200,
+      "age": 24,
+      "experience": 0,
+      "college": "Wofford; Western Kentucky"
     },
     {
       "gsisId": "00-0037841",

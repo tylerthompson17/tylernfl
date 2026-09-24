@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NO",
   "week": 3,
-  "updated": "2026-09-23T14:29:13Z",
+  "updated": "2026-09-24T14:28:57Z",
   "groups": [
     {
       "key": "offense",
@@ -445,8 +445,8 @@
       "number": 71,
       "position": "T",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 77,
       "weight": 315,
       "age": 22,
@@ -1232,6 +1232,21 @@
       "age": 26,
       "experience": 4,
       "college": "Tulane"
+    },
+    {
+      "gsisId": "00-0037412",
+      "name": "Cal Adomitis",
+      "slug": "cal-adomitis",
+      "number": 45,
+      "position": "LS",
+      "group": "specialists",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 74,
+      "weight": 250,
+      "age": 28,
+      "experience": 4,
+      "college": "Pittsburgh"
     },
     {
       "gsisId": "00-0033063",

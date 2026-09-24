@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "SEA",
   "week": 3,
-  "updated": "2026-09-22T14:16:57Z",
+  "updated": "2026-09-24T14:28:57Z",
   "groups": [
     {
       "key": "offense",
@@ -257,6 +257,21 @@
       "age": 28,
       "experience": 4,
       "college": "Weber State"
+    },
+    {
+      "gsisId": "00-0041542",
+      "name": "Malick Meiga",
+      "slug": "malick-meiga",
+      "number": 35,
+      "position": "WR",
+      "group": "offense",
+      "status": "EXE",
+      "statusLabel": "Commissioner exempt",
+      "heightInches": 76,
+      "weight": 201,
+      "age": 25,
+      "experience": 0,
+      "college": null
     },
     {
       "gsisId": "00-0039329",
@@ -535,8 +550,8 @@
       "number": 75,
       "position": "G",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 76,
       "weight": 335,
       "age": 25,
@@ -617,6 +632,21 @@
       "age": 24,
       "experience": 2,
       "college": "Texas"
+    },
+    {
+      "gsisId": "00-0040975",
+      "name": "Uso Seumalo",
+      "slug": "uso-seumalo",
+      "number": 92,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 340,
+      "age": 24,
+      "experience": 0,
+      "college": null
     },
     {
       "gsisId": "00-0038591",
@@ -1015,8 +1045,8 @@
       "number": 24,
       "position": "FS",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 73,
       "weight": 196,
       "age": 28,
