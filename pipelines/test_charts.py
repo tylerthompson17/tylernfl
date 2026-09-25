@@ -9,7 +9,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from build_logos import logo_urls
+from build_logos import LOGO_COLUMN, logo_urls
 from charts import auto, style
 
 HAS_MATPLOTLIB = importlib.util.find_spec('matplotlib') is not None
@@ -351,13 +351,29 @@ class RaceTests(unittest.TestCase):
 
 class LogoTests(unittest.TestCase):
     def test_logos_come_from_nflverse_with_the_rams_as_lar(self):
+        # Whichever column LOGO_COLUMN names: the rule under test is that
+        # nflverse's LA row becomes LAR and defunct teams are left out.
         teams = [
-            {'team_abbr': 'LA', 'team_logo_squared': 'https://example.test/LA.png'},
-            {'team_abbr': 'LAR', 'team_logo_squared': 'https://example.test/LAR.png'},
-            {'team_abbr': 'OAK', 'team_logo_squared': 'https://example.test/OAK.png'},
-            {'team_abbr': 'BUF', 'team_logo_squared': 'https://example.test/BUF.png'},
+            {'team_abbr': abbr, LOGO_COLUMN: f'https://example.test/{abbr}.png'}
+            for abbr in ('LA', 'LAR', 'OAK', 'BUF')
         ]
         self.assertEqual(logo_urls(teams), {'LAR': 'https://example.test/LA.png', 'BUF': 'https://example.test/BUF.png'})
+
+    def test_the_logo_column_is_one_with_transparent_ground(self):
+        # The squared logos are each logo on an opaque square of the team's
+        # colour, which reads as a tile on a chart, not a team.
+        self.assertNotEqual(LOGO_COLUMN, 'team_logo_squared')
+
+    @unittest.skipUnless(HAS_MATPLOTLIB, 'Pillow comes with matplotlib')
+    def test_no_logo_file_is_a_solid_block(self):
+        from PIL import Image
+
+        root = Path(__file__).resolve().parent.parent
+        opaque = []
+        for path in sorted((root / 'public' / 'logos').glob('*.png')):
+            if Image.open(path).convert('RGBA').getchannel('A').getextrema()[0] == 255:
+                opaque.append(path.stem)
+        self.assertEqual(opaque, [], 'logos with no transparent pixel: run build_logos.py')
 
     def test_every_team_has_a_logo_file(self):
         import json

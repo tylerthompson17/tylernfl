@@ -1,15 +1,25 @@
 """Download team logos for charts into public/logos/<ABBR>.png.
 
 Logos are taken from nflverse team data (load_teams), never typed in by
-hand, and never from ESPN: the data contract keeps ESPN out of pipelines,
-which rules out nflverse's team_logo_espn column.
+hand. The data contract keeps ESPN out of the pipelines, and that is about
+data: scores, stats, schedules and lines are nflverse's. A logo is artwork,
+not data, so the column it comes from is allowed to be ESPN's.
 
-LOGO_COLUMN picks the set. As of September 2026:
-- team_logo_squared is hosted by nflverse itself and complete: each logo
-  cropped onto a square of the team's color, 200 x 200.
-- team_logo_wikipedia is the full logo on transparent ground, but nflverse's
-  links point at thumbnail widths Wikimedia no longer serves, and two teams'
-  files (KC, LAR) have since been renamed. Not usable as is.
+LOGO_COLUMN picks the set. Checked again in September 2026:
+- team_logo_espn is the logo on transparent ground, 500 x 500, and every
+  team resolves. The one complete transparent set nflverse points at, and
+  what charts want: on a scatter, a square of colour hides the chart under
+  it and reads as a tile rather than a team.
+- team_logo_squared is hosted by nflverse itself and complete, but it is
+  each logo cropped onto a square of the team's colour, fully opaque. It
+  was the first choice here and is why the EPA chart was 32 blocks of
+  colour. Cutting the square away does not work: half the league's logos
+  are white where the fill would go, so the Bills' buffalo, the Cowboys'
+  star and the Lions all disappear with it.
+- team_logo_wikipedia is transparent too, but nflverse's links point at
+  thumbnail widths Wikimedia answers with 400, asking for a width it does
+  serve gets rate limited, and two teams' files (KC, LAR) have since been
+  renamed. Not usable as is.
 
 Charts do not embed the pictures. style.save() writes a reference
 ("logo:BUF") and the site points it at public/logos/BUF.png under its base
@@ -29,7 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import normalize_team  # noqa: E402
 
-LOGO_COLUMN = 'team_logo_squared'
+LOGO_COLUMN = 'team_logo_espn'
 OUT_DIR = Path(__file__).resolve().parent.parent / 'public' / 'logos'
 # Shown at about 24 px; 96 leaves room for high density screens.
 SIZE_PX = 96

@@ -70,7 +70,7 @@ tylernfl/
   search box loads it as a script the first time it is used (about 50 KB gzipped). It
   covers every player page, every team and the site's pages; matching and ranking live
   in `src/lib/search/match.ts`. Nothing else may use this as a way to load data.
-- ESPN data is browser-only: never write it to `src/data/` and never use it in pipelines. Pipelines use nflverse (the `espnId` in `ticker.json` comes from nflverse schedules). Test fixtures in `tests/fixtures/espn/` are the only stored ESPN data.
+- ESPN data is browser-only: never write it to `src/data/` and never use it in pipelines. Pipelines use nflverse (the `espnId` in `ticker.json` comes from nflverse schedules). Test fixtures in `tests/fixtures/espn/` are the only stored ESPN data. This is about data: scores, stats, schedules and lines. Team logo images are artwork, not data, and are the one thing pipelines may take from ESPN's column, through nflverse team data (see the logo bullet below).
 - Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text). That covers the ticker's upcoming slots, the `/scores` kickoff headings, and dates on team pages.
 - In-progress parsing (quarter, clock, halftime, final) is verified against the real capture from DET at BUF on
   2026-09-17 (`tests/fixtures/espn/`). Not yet seen in a real response: an end of quarter status (ESPN showed the
@@ -172,11 +172,16 @@ tylernfl/
   charts is featured, labeled "Auto chart". The 2026 WP charts before this was added
   were backfilled by hand; nothing earlier was kept.
 - Team logos in `public/logos/<ABBR>.png` come from nflverse team data
-  (`team_logo_squared`, hosted by nflverse), fetched by `pipelines/build_logos.py`, run
-  by hand after a rebrand. Never ESPN's column. nflverse's Wikipedia links were stale
-  when this was set up (dead thumbnail widths, and KC and LAR renamed). Charts do not
-  embed logos: `style.py` writes `href="logo:BUF"` and the site resolves it under the
-  base path (`resolveLogos` in `src/lib/charts/collection.ts`).
+  (`team_logo_espn`, the logo on transparent ground), fetched by
+  `pipelines/build_logos.py`, run by hand after a rebrand. `team_logo_squared` was used
+  first and is why the EPA chart was 32 blocks of colour: it is each logo cropped onto
+  an opaque square of the team's colour, which hides the chart under it. Cutting the
+  square away was tried and does not work, since half the league's logos are white where
+  the fill would go. nflverse's Wikipedia links are transparent but unusable: dead
+  thumbnail widths (400), rate limiting on widths that do work, and KC and LAR renamed.
+  Charts do not embed logos: `style.py` writes `href="logo:BUF"` and the site resolves
+  it under the base path (`resolveLogos` in `src/lib/charts/collection.ts`), so replacing
+  these files changes every chart at once and nothing needs redrawing.
 - `standings.json` is written daily by `pipelines/standings.py` from completed regular
   season games: records, division and conference ranks, and for each team the tiebreak
   step that placed it. Before a season's first game it holds last season's final
