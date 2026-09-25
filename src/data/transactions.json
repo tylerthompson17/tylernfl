@@ -3,7 +3,7 @@
   "week": 3,
   "movesWeek": 3,
   "comparedToWeek": 2,
-  "updated": "2026-09-24T14:28:57Z",
+  "updated": "2026-09-25T14:48:39Z",
   "categories": [
     {
       "key": "game-status",
@@ -174,6 +174,20 @@
       "player": "Kelvin Banks Jr.",
       "position": "T",
       "team": "NO",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.85,
+      "starter": true,
+      "priority": 10
+    },
+    {
+      "playerId": "00-0040691",
+      "player": "Jaxson Dart",
+      "position": "QB",
+      "team": "NYG",
       "fromTeam": null,
       "type": "status",
       "practiceSquad": false,
@@ -394,34 +408,6 @@
       "priority": 140
     },
     {
-      "playerId": "00-0041167",
-      "player": "Beau Gardner",
-      "position": "LS",
-      "team": "CHI",
-      "fromTeam": null,
-      "type": "released",
-      "practiceSquad": false,
-      "note": "Released",
-      "category": "released",
-      "snapShare": 0.0,
-      "starter": false,
-      "priority": 150
-    },
-    {
-      "playerId": "00-0035589",
-      "player": "Gary Jennings",
-      "position": "WR",
-      "team": "LAC",
-      "fromTeam": null,
-      "type": "released",
-      "practiceSquad": false,
-      "note": "Released",
-      "category": "released",
-      "snapShare": 0.0,
-      "starter": false,
-      "priority": 150
-    },
-    {
       "playerId": "00-0039720",
       "player": "Taki Taimani",
       "position": "NT",
@@ -446,6 +432,20 @@
       "note": "Released",
       "category": "released",
       "snapShare": 0.39,
+      "starter": false,
+      "priority": 150
+    },
+    {
+      "playerId": "00-0041339",
+      "player": "Deshawn McKnight",
+      "position": "DE",
+      "team": "TB",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": null,
       "starter": false,
       "priority": 150
     },
@@ -632,6 +632,20 @@
       "priority": 370
     },
     {
+      "playerId": "00-0040302",
+      "player": "A.J. Henning",
+      "position": "WR",
+      "team": "MIA",
+      "fromTeam": null,
+      "type": "signed",
+      "practiceSquad": true,
+      "note": "Signed to practice squad",
+      "category": "practice-squad",
+      "snapShare": null,
+      "starter": false,
+      "priority": 370
+    },
+    {
       "playerId": "00-0036755",
       "player": "Jaret Patterson",
       "position": "RB",
@@ -787,7 +801,7 @@
     },
     {
       "playerId": "00-0033393",
-      "player": "Kenny Moore",
+      "player": "Kenny Moore II",
       "position": "CB",
       "team": "PHI",
       "fromTeam": null,
@@ -798,6 +812,20 @@
       "snapShare": 0.76,
       "starter": true,
       "priority": 270
+    },
+    {
+      "playerId": "00-0036559",
+      "player": "Shaun Wade",
+      "position": "CB",
+      "team": "PHI",
+      "fromTeam": null,
+      "type": "signed",
+      "practiceSquad": true,
+      "note": "Signed to practice squad",
+      "category": "practice-squad",
+      "snapShare": null,
+      "starter": false,
+      "priority": 370
     },
     {
       "playerId": "00-0030061",
@@ -857,7 +885,7 @@
     },
     {
       "playerId": "00-0038575",
-      "player": "Viliami Fehoko",
+      "player": "Viliami Fehoko Jr.",
       "position": "DE",
       "team": "SF",
       "fromTeam": null,
@@ -910,6 +938,34 @@
       "snapShare": null,
       "starter": false,
       "priority": 370
+    },
+    {
+      "playerId": "00-0035298",
+      "player": "Scott Miller",
+      "position": "WR",
+      "team": "CHI",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": true,
+      "note": "Released from practice squad",
+      "category": "practice-squad",
+      "snapShare": 0.18,
+      "starter": false,
+      "priority": 370
+    },
+    {
+      "playerId": "00-0036087",
+      "player": "Myles Bryant",
+      "position": "CB",
+      "team": "CLE",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": true,
+      "note": "Released from practice squad",
+      "category": "practice-squad",
+      "snapShare": 0.6,
+      "starter": true,
+      "priority": 270
     },
     {
       "playerId": "00-0041486",
@@ -1010,6 +1066,20 @@
       "priority": 370
     },
     {
+      "playerId": "00-0040559",
+      "player": "Jakob Robinson",
+      "position": "CB",
+      "team": "SF",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": true,
+      "note": "Released from practice squad",
+      "category": "practice-squad",
+      "snapShare": null,
+      "starter": false,
+      "priority": 370
+    },
+    {
       "playerId": "00-0039277",
       "player": "Jimmy Ciarlo",
       "position": "ILB",
@@ -1034,8 +1104,64 @@
       "injury": "Hamstring",
       "practice": "Did not practice",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.44,
+      "starter": false,
+      "priority": 300
+    },
+    {
+      "playerId": "00-0037839",
+      "player": "Cobie Durant",
+      "team": "DAL",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Hamstring",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.7,
+      "starter": true,
+      "priority": 0
+    },
+    {
+      "playerId": "00-0038556",
+      "player": "DeMarvion Overshown",
+      "team": "DAL",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Hamstring",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.62,
+      "starter": true,
+      "priority": 0
+    },
+    {
+      "playerId": "00-0033877",
+      "player": "Malik Hooker",
+      "team": "DAL",
+      "position": "S",
+      "status": "Out",
+      "injury": "Forearm",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.7,
+      "starter": true,
+      "priority": 0
+    },
+    {
+      "playerId": "00-0035227",
+      "player": "P.J. Locke",
+      "team": "DAL",
+      "position": "S",
+      "status": "Out",
+      "injury": "Foot",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.4,
       "starter": false,
       "priority": 100
     },
@@ -1048,10 +1174,10 @@
       "injury": "Knee",
       "practice": "Did not practice",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.78,
       "starter": true,
-      "priority": 0
+      "priority": 200
     },
     {
       "playerId": "00-0039146",
@@ -1062,10 +1188,10 @@
       "injury": "Neck",
       "practice": "Did not practice",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.39,
       "starter": false,
-      "priority": 100
+      "priority": 300
     },
     {
       "playerId": "00-0040016",
@@ -1076,10 +1202,10 @@
       "injury": "Calf",
       "practice": "Did not practice",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.41,
       "starter": false,
-      "priority": 100
+      "priority": 300
     },
     {
       "playerId": "00-0037817",
@@ -1090,10 +1216,10 @@
       "injury": "Knee",
       "practice": "Did not practice",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.8,
       "starter": true,
-      "priority": 0
+      "priority": 200
     },
     {
       "playerId": "00-0040156",
@@ -1104,10 +1230,10 @@
       "injury": "Achilles",
       "practice": "Full",
       "category": "game-status",
-      "gamePlayed": false,
-      "snapShare": 0.8,
+      "gamePlayed": true,
+      "snapShare": 0.78,
       "starter": true,
-      "priority": 2
+      "priority": 202
     },
     {
       "playerId": "00-0040689",
@@ -1118,10 +1244,10 @@
       "injury": "Ankle",
       "practice": "Limited",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.12,
       "starter": false,
-      "priority": 102
+      "priority": 302
     },
     {
       "playerId": "00-0033109",
@@ -1132,10 +1258,10 @@
       "injury": "Knee",
       "practice": "Limited",
       "category": "game-status",
-      "gamePlayed": false,
-      "snapShare": 0.51,
+      "gamePlayed": true,
+      "snapShare": 0.52,
       "starter": true,
-      "priority": 2
+      "priority": 202
     },
     {
       "playerId": "00-0039864",
@@ -1144,12 +1270,12 @@
       "position": "S",
       "status": null,
       "injury": "Back",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.43,
       "starter": false,
-      "priority": 380
+      "priority": 381
     },
     {
       "playerId": "00-0039007",
@@ -1186,12 +1312,12 @@
       "position": "G",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.96,
       "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0033119",
@@ -1214,12 +1340,12 @@
       "position": "LB",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.38,
       "starter": false,
-      "priority": 380
+      "priority": 382
     },
     {
       "playerId": "00-0035144",
@@ -1228,12 +1354,12 @@
       "position": "LB",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.96,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0039807",
@@ -1242,12 +1368,12 @@
       "position": "CB",
       "status": null,
       "injury": "Toe",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.54,
       "starter": true,
-      "priority": 280
+      "priority": 281
     },
     {
       "playerId": "00-0036568",
@@ -1272,7 +1398,7 @@
       "injury": "Groin",
       "practice": "Did not practice",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.86,
       "starter": true,
       "priority": 280
@@ -1286,7 +1412,7 @@
       "injury": "Thumb",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.5,
       "starter": true,
       "priority": 282
@@ -1300,8 +1426,8 @@
       "injury": "Ankle",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.21,
+      "gamePlayed": true,
+      "snapShare": 0.23,
       "starter": false,
       "priority": 382
     },
@@ -1314,8 +1440,8 @@
       "injury": "Rib",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.82,
+      "gamePlayed": true,
+      "snapShare": 0.85,
       "starter": true,
       "priority": 282
     },
@@ -1328,7 +1454,7 @@
       "injury": "Hip",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.36,
       "starter": false,
       "priority": 382
@@ -1342,7 +1468,7 @@
       "injury": "Knee",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.92,
       "starter": true,
       "priority": 282
@@ -1356,8 +1482,8 @@
       "injury": "Shoulder",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.14,
+      "gamePlayed": true,
+      "snapShare": 0.17,
       "starter": false,
       "priority": 382
     },
@@ -1370,7 +1496,7 @@
       "injury": "Oblique",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.95,
       "starter": true,
       "priority": 282
@@ -1382,12 +1508,12 @@
       "position": "DT",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.44,
       "starter": false,
-      "priority": 380
+      "priority": 382
     },
     {
       "playerId": "00-0032398",
@@ -1410,12 +1536,12 @@
       "position": "G",
       "status": null,
       "injury": "Groin",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.94,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0040688",
@@ -1480,12 +1606,12 @@
       "position": "LB",
       "status": null,
       "injury": "Finger",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.58,
       "starter": true,
-      "priority": 280
+      "priority": 281
     },
     {
       "playerId": "00-0039064",
@@ -1508,12 +1634,12 @@
       "position": "LB",
       "status": null,
       "injury": "Quadricep",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.28,
       "starter": false,
-      "priority": 381
+      "priority": 382
     },
     {
       "playerId": "00-0041128",
@@ -1550,12 +1676,12 @@
       "position": "WR",
       "status": null,
       "injury": "Shoulder",
-      "practice": "Limited",
+      "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.8,
       "starter": true,
-      "priority": 281
+      "priority": 280
     },
     {
       "playerId": "00-0035230",
@@ -1564,12 +1690,12 @@
       "position": "DT",
       "status": null,
       "injury": "Hip",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.65,
       "starter": true,
-      "priority": 280
+      "priority": 281
     },
     {
       "playerId": "00-0039763",
@@ -1592,12 +1718,12 @@
       "position": "CB",
       "status": null,
       "injury": "Hamstring",
-      "practice": "Limited",
+      "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.19,
       "starter": false,
-      "priority": 381
+      "priority": 380
     },
     {
       "playerId": "00-0039901",
@@ -1690,12 +1816,12 @@
       "position": "TE",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.41,
       "starter": false,
-      "priority": 380
+      "priority": 382
     },
     {
       "playerId": "00-0037244",
@@ -1718,12 +1844,12 @@
       "position": "LB",
       "status": null,
       "injury": "Back",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.75,
       "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0039491",
@@ -1732,12 +1858,12 @@
       "position": "WR",
       "status": null,
       "injury": "Ankle",
-      "practice": "Limited",
+      "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.76,
       "starter": true,
-      "priority": 281
+      "priority": 280
     },
     {
       "playerId": "00-0035669",
@@ -1766,6 +1892,132 @@
       "snapShare": 0.7,
       "starter": true,
       "priority": 282
+    },
+    {
+      "playerId": "00-0039342",
+      "player": "Xavier Legette",
+      "team": "CAR",
+      "position": "WR",
+      "status": null,
+      "injury": "Knee",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.58,
+      "starter": true,
+      "priority": 280
+    },
+    {
+      "playerId": "00-0031203",
+      "player": "Cairo Santos",
+      "team": "CHI",
+      "position": "K",
+      "status": null,
+      "injury": "Hip",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.0,
+      "starter": false,
+      "priority": 380
+    },
+    {
+      "playerId": "00-0039918",
+      "player": "Caleb Williams",
+      "team": "CHI",
+      "position": "QB",
+      "status": null,
+      "injury": "Hamstring",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.98,
+      "starter": true,
+      "priority": 280
+    },
+    {
+      "playerId": "00-0031583",
+      "player": "Grady Jarrett",
+      "team": "CHI",
+      "position": "DT",
+      "status": null,
+      "injury": "Not injury related - resting player",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.71,
+      "starter": true,
+      "priority": 280
+    },
+    {
+      "playerId": "00-0040236",
+      "player": "Kyle Monangai",
+      "team": "CHI",
+      "position": "RB",
+      "status": null,
+      "injury": "Knee",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.42,
+      "starter": false,
+      "priority": 380
+    },
+    {
+      "playerId": "00-0038390",
+      "player": "Noah Sewell",
+      "team": "CHI",
+      "position": "LB",
+      "status": null,
+      "injury": "Achilles",
+      "practice": "Limited",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.36,
+      "starter": false,
+      "priority": 381
+    },
+    {
+      "playerId": "00-0040741",
+      "player": "Shemar Turner",
+      "team": "CHI",
+      "position": "DE",
+      "status": null,
+      "injury": "Knee",
+      "practice": "Limited",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.24,
+      "starter": false,
+      "priority": 381
+    },
+    {
+      "playerId": "00-0039071",
+      "player": "Tyrique Stevenson",
+      "team": "CHI",
+      "position": "CB",
+      "status": null,
+      "injury": "Hamstring",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.6,
+      "starter": true,
+      "priority": 280
+    },
+    {
+      "playerId": "00-0038416",
+      "player": "Tyson Bagent",
+      "team": "CHI",
+      "position": "QB",
+      "status": null,
+      "injury": "Concussion",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.09,
+      "starter": false,
+      "priority": 380
     },
     {
       "playerId": "00-0038619",
@@ -1801,7 +2053,7 @@
       "team": "CIN",
       "position": "DT",
       "status": null,
-      "injury": "Knee",
+      "injury": "Not injury related - resting player",
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
@@ -1830,12 +2082,12 @@
       "position": "DT",
       "status": null,
       "injury": "Groin",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.72,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0035680",
@@ -1848,6 +2100,20 @@
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.94,
+      "starter": true,
+      "priority": 281
+    },
+    {
+      "playerId": "00-0040784",
+      "player": "Quinshon Judkins",
+      "team": "CLE",
+      "position": "RB",
+      "status": null,
+      "injury": "Not injury related - personal matter",
+      "practice": "Limited",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.57,
       "starter": true,
       "priority": 281
     },
@@ -1886,40 +2152,12 @@
       "position": "T",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.97,
       "starter": true,
-      "priority": 281
-    },
-    {
-      "playerId": "00-0037839",
-      "player": "Cobie Durant",
-      "team": "DAL",
-      "position": "CB",
-      "status": null,
-      "injury": "Hamstring",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.7,
-      "starter": true,
-      "priority": 280
-    },
-    {
-      "playerId": "00-0038556",
-      "player": "DeMarvion Overshown",
-      "team": "DAL",
-      "position": "LB",
-      "status": null,
-      "injury": "Hamstring",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.62,
-      "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0037310",
@@ -1936,46 +2174,18 @@
       "priority": 382
     },
     {
-      "playerId": "00-0033877",
-      "player": "Malik Hooker",
-      "team": "DAL",
-      "position": "S",
-      "status": null,
-      "injury": "Forearm",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.7,
-      "starter": true,
-      "priority": 280
-    },
-    {
-      "playerId": "00-0035227",
-      "player": "P.J. Locke",
-      "team": "DAL",
-      "position": "S",
-      "status": null,
-      "injury": "Foot",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.4,
-      "starter": false,
-      "priority": 380
-    },
-    {
       "playerId": "00-0036158",
       "player": "J.K. Dobbins",
       "team": "DEN",
       "position": "RB",
       "status": null,
       "injury": "Hip",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.47,
       "starter": false,
-      "priority": 381
+      "priority": 382
     },
     {
       "playerId": "00-0041496",
@@ -2012,12 +2222,12 @@
       "position": "RB",
       "status": null,
       "injury": "Hamstring",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.59,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0040761",
@@ -2026,12 +2236,12 @@
       "position": "DE",
       "status": null,
       "injury": "Illness",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": null,
       "starter": false,
-      "priority": 381
+      "priority": 382
     },
     {
       "playerId": "00-0036624",
@@ -2040,12 +2250,12 @@
       "position": "DT",
       "status": null,
       "injury": "Not injury related - personal matter",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.77,
       "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0036272",
@@ -2140,7 +2350,7 @@
       "injury": "Elbow",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.88,
       "starter": true,
       "priority": 282
@@ -2154,8 +2364,8 @@
       "injury": "Hamstring",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.36,
+      "gamePlayed": true,
+      "snapShare": 0.31,
       "starter": false,
       "priority": 382
     },
@@ -2168,8 +2378,8 @@
       "injury": "Neck",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.17,
+      "gamePlayed": true,
+      "snapShare": 0.19,
       "starter": false,
       "priority": 382
     },
@@ -2182,8 +2392,8 @@
       "injury": "Teeth",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.88,
+      "gamePlayed": true,
+      "snapShare": 0.91,
       "starter": true,
       "priority": 282
     },
@@ -2196,8 +2406,8 @@
       "injury": "Hand",
       "practice": "Limited",
       "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.34,
+      "gamePlayed": true,
+      "snapShare": 0.3,
       "starter": false,
       "priority": 381
     },
@@ -2210,8 +2420,8 @@
       "injury": "Shoulder",
       "practice": "Limited",
       "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 1.0,
+      "gamePlayed": true,
+      "snapShare": 0.97,
       "starter": true,
       "priority": 281
     },
@@ -2278,12 +2488,12 @@
       "position": "DE",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.57,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0034355",
@@ -2292,12 +2502,12 @@
       "position": "S",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.52,
       "starter": true,
-      "priority": 281
+      "priority": 280
     },
     {
       "playerId": "00-0036554",
@@ -2334,12 +2544,12 @@
       "position": "T",
       "status": null,
       "injury": "Knee",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.99,
       "starter": true,
-      "priority": 280
+      "priority": 281
     },
     {
       "playerId": "00-0041465",
@@ -2404,10 +2614,24 @@
       "position": "CB",
       "status": null,
       "injury": "Groin",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.86,
+      "starter": true,
+      "priority": 281
+    },
+    {
+      "playerId": "00-0033952",
+      "player": "Grover Stewart",
+      "team": "IND",
+      "position": "DT",
+      "status": null,
+      "injury": "Not injury related - resting player",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.6,
       "starter": true,
       "priority": 280
     },
@@ -2418,12 +2642,12 @@
       "position": "RB",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.84,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0030279",
@@ -2432,12 +2656,12 @@
       "position": "WR",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.54,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0032951",
@@ -2480,6 +2704,20 @@
       "snapShare": 0.76,
       "starter": true,
       "priority": 282
+    },
+    {
+      "playerId": "00-0040326",
+      "player": "Branson Combs",
+      "team": "JAX",
+      "position": "LB",
+      "status": null,
+      "injury": "Not injury related - personal matter",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.12,
+      "starter": false,
+      "priority": 380
     },
     {
       "playerId": "00-0038616",
@@ -2600,12 +2838,12 @@
       "position": "DE",
       "status": null,
       "injury": "Quadricep",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.5,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0037208",
@@ -2768,12 +3006,12 @@
       "position": "G",
       "status": null,
       "injury": "Pectoral",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.98,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0033546",
@@ -2810,12 +3048,12 @@
       "position": "S",
       "status": null,
       "injury": "Finger",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.94,
       "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0036992",
@@ -2852,12 +3090,12 @@
       "position": "DE",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.69,
       "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0039915",
@@ -2880,12 +3118,12 @@
       "position": "T",
       "status": null,
       "injury": "Groin",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 1.0,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0041381",
@@ -2894,12 +3132,12 @@
       "position": "CB",
       "status": null,
       "injury": "Hamstring",
-      "practice": "Limited",
+      "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.02,
       "starter": false,
-      "priority": 381
+      "priority": 380
     },
     {
       "playerId": "00-0035688",
@@ -2936,12 +3174,12 @@
       "position": "T",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.97,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0036244",
@@ -2964,12 +3202,12 @@
       "position": "WR",
       "status": null,
       "injury": "Quadricep",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.24,
       "starter": false,
-      "priority": 380
+      "priority": 381
     },
     {
       "playerId": "00-0039834",
@@ -3034,12 +3272,12 @@
       "position": "TE",
       "status": null,
       "injury": "Ankle",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.55,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0038579",
@@ -3076,12 +3314,12 @@
       "position": "WR",
       "status": null,
       "injury": "Hamstring",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.1,
       "starter": false,
-      "priority": 381
+      "priority": 382
     },
     {
       "playerId": "00-0040641",
@@ -3090,12 +3328,12 @@
       "position": "CB",
       "status": null,
       "injury": "Foot",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.81,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0034275",
@@ -3104,12 +3342,12 @@
       "position": "DT",
       "status": null,
       "injury": "Shoulder",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.36,
       "starter": false,
-      "priority": 381
+      "priority": 382
     },
     {
       "playerId": "00-0040199",
@@ -3126,18 +3364,32 @@
       "priority": 382
     },
     {
+      "playerId": "00-0036479",
+      "player": "Kwity Paye",
+      "team": "LV",
+      "position": "DE",
+      "status": null,
+      "injury": "Illness",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.58,
+      "starter": true,
+      "priority": 280
+    },
+    {
       "playerId": "00-0037615",
       "player": "Nakobe Dean",
       "team": "LV",
       "position": "LB",
       "status": null,
       "injury": "Shoulder",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.79,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0037527",
@@ -3272,12 +3524,12 @@
       "position": "WR",
       "status": null,
       "injury": "Hip",
-      "practice": "Limited",
+      "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.1,
       "starter": false,
-      "priority": 381
+      "priority": 380
     },
     {
       "playerId": "00-0041579",
@@ -3314,12 +3566,12 @@
       "position": "RB",
       "status": null,
       "injury": "Knee",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.58,
       "starter": true,
-      "priority": 280
+      "priority": 281
     },
     {
       "playerId": "00-0041581",
@@ -3342,12 +3594,12 @@
       "position": "T",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.95,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0036425",
@@ -3370,12 +3622,12 @@
       "position": "LB",
       "status": null,
       "injury": "Ankle",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.0,
       "starter": false,
-      "priority": 380
+      "priority": 381
     },
     {
       "playerId": "00-0038778",
@@ -3398,12 +3650,12 @@
       "position": "C",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.0,
       "starter": false,
-      "priority": 381
+      "priority": 380
     },
     {
       "playerId": "00-0040173",
@@ -3412,12 +3664,12 @@
       "position": "DE",
       "status": null,
       "injury": "Oblique",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.32,
       "starter": false,
-      "priority": 381
+      "priority": 382
     },
     {
       "playerId": "00-0037205",
@@ -3468,12 +3720,12 @@
       "position": "DT",
       "status": null,
       "injury": "Not injury related - personal matter",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.54,
       "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0041103",
@@ -3482,12 +3734,12 @@
       "position": "T",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.0,
       "starter": false,
-      "priority": 381
+      "priority": 382
     },
     {
       "playerId": "00-0035678",
@@ -3510,12 +3762,12 @@
       "position": "TE",
       "status": null,
       "injury": "Thigh",
-      "practice": "Limited",
+      "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.37,
       "starter": false,
-      "priority": 381
+      "priority": 380
     },
     {
       "playerId": "00-0031330",
@@ -3580,12 +3832,12 @@
       "position": "LB",
       "status": null,
       "injury": "Calf",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.75,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0041390",
@@ -3594,6 +3846,20 @@
       "position": "DT",
       "status": null,
       "injury": "Toe",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.32,
+      "starter": false,
+      "priority": 380
+    },
+    {
+      "playerId": "00-0033860",
+      "player": "Davon Godchaux",
+      "team": "NO",
+      "position": "DT",
+      "status": null,
+      "injury": "Not injury related - resting player",
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
@@ -3622,12 +3888,26 @@
       "position": "S",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.84,
       "starter": true,
-      "priority": 281
+      "priority": 282
+    },
+    {
+      "playerId": "00-0038551",
+      "player": "Kendre Miller",
+      "team": "NO",
+      "position": "RB",
+      "status": null,
+      "injury": "Illness",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.25,
+      "starter": false,
+      "priority": 380
     },
     {
       "playerId": "00-0037250",
@@ -3650,12 +3930,12 @@
       "position": "DT",
       "status": null,
       "injury": "Hip",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.62,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0036973",
@@ -3678,12 +3958,12 @@
       "position": "T",
       "status": null,
       "injury": "Groin",
-      "practice": "Limited",
+      "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.92,
       "starter": true,
-      "priority": 281
+      "priority": 280
     },
     {
       "playerId": "00-0035713",
@@ -3776,12 +4056,12 @@
       "position": "WR",
       "status": null,
       "injury": "Shoulder",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.74,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0037259",
@@ -3836,6 +4116,20 @@
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.89,
+      "starter": true,
+      "priority": 281
+    },
+    {
+      "playerId": "00-0039890",
+      "player": "Adonai Mitchell",
+      "team": "NYJ",
+      "position": "WR",
+      "status": null,
+      "injury": "Finger",
+      "practice": "Limited",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.78,
       "starter": true,
       "priority": 281
     },
@@ -3924,6 +4218,132 @@
       "priority": 280
     },
     {
+      "playerId": "00-0040749",
+      "player": "Andrew Mukuba",
+      "team": "PHI",
+      "position": "S",
+      "status": null,
+      "injury": "Knee",
+      "practice": "Limited",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.97,
+      "starter": true,
+      "priority": 281
+    },
+    {
+      "playerId": "00-0034351",
+      "player": "Dallas Goedert",
+      "team": "PHI",
+      "position": "TE",
+      "status": null,
+      "injury": "Knee",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.79,
+      "starter": true,
+      "priority": 280
+    },
+    {
+      "playerId": "00-0036912",
+      "player": "DeVonta Smith",
+      "team": "PHI",
+      "position": "WR",
+      "status": null,
+      "injury": "Hamstring",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.76,
+      "starter": true,
+      "priority": 280
+    },
+    {
+      "playerId": "00-0038386",
+      "player": "Jalen Carter",
+      "team": "PHI",
+      "position": "DT",
+      "status": null,
+      "injury": "Wrist",
+      "practice": "Limited",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.85,
+      "starter": true,
+      "priority": 281
+    },
+    {
+      "playerId": "00-0036224",
+      "player": "Jonathan Greenard",
+      "team": "PHI",
+      "position": "LB",
+      "status": null,
+      "injury": "Pectoral",
+      "practice": "Limited",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.68,
+      "starter": true,
+      "priority": 281
+    },
+    {
+      "playerId": "00-0034844",
+      "player": "Saquon Barkley",
+      "team": "PHI",
+      "position": "RB",
+      "status": null,
+      "injury": "Neck",
+      "practice": "Limited",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.7,
+      "starter": true,
+      "priority": 281
+    },
+    {
+      "playerId": "00-0038555",
+      "player": "Tank Bigsby",
+      "team": "PHI",
+      "position": "RB",
+      "status": null,
+      "injury": "Abdomen",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.22,
+      "starter": false,
+      "priority": 380
+    },
+    {
+      "playerId": "00-0039001",
+      "player": "Tyler Steen",
+      "team": "PHI",
+      "position": "G",
+      "status": null,
+      "injury": "Shoulder",
+      "practice": "Full",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.92,
+      "starter": true,
+      "priority": 282
+    },
+    {
+      "playerId": "00-0039746",
+      "player": "Will Shipley",
+      "team": "PHI",
+      "position": "RB",
+      "status": null,
+      "injury": "Foot",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.19,
+      "starter": false,
+      "priority": 380
+    },
+    {
       "playerId": "00-0035286",
       "player": "Cole Holcomb",
       "team": "PIT",
@@ -3938,18 +4358,32 @@
       "priority": 380
     },
     {
+      "playerId": "00-0041396",
+      "player": "Gennings Dunker",
+      "team": "PIT",
+      "position": "G",
+      "status": null,
+      "injury": "Knee",
+      "practice": "Limited",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": null,
+      "starter": false,
+      "priority": 381
+    },
+    {
       "playerId": "00-0033055",
       "player": "Jalen Ramsey",
       "team": "PIT",
       "position": "CB",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.99,
       "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0035699",
@@ -3958,12 +4392,12 @@
       "position": "CB",
       "status": null,
       "injury": "Ankle",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.79,
       "starter": true,
-      "priority": 280
+      "priority": 281
     },
     {
       "playerId": "00-0037228",
@@ -4028,12 +4462,12 @@
       "position": "FB",
       "status": null,
       "injury": "Chest",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.12,
       "starter": false,
-      "priority": 381
+      "priority": 382
     },
     {
       "playerId": "00-0038694",
@@ -4042,12 +4476,12 @@
       "position": "DT",
       "status": null,
       "injury": "Concussion",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.16,
       "starter": false,
-      "priority": 380
+      "priority": 381
     },
     {
       "playerId": "00-0033908",
@@ -4056,12 +4490,12 @@
       "position": "WR",
       "status": null,
       "injury": "Back",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.75,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0036994",
@@ -4070,12 +4504,12 @@
       "position": "LB",
       "status": null,
       "injury": "Neck",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.95,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0039299",
@@ -4084,12 +4518,12 @@
       "position": "RB",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.12,
       "starter": false,
-      "priority": 381
+      "priority": 382
     },
     {
       "playerId": "00-0041512",
@@ -4104,6 +4538,20 @@
       "snapShare": 0.41,
       "starter": false,
       "priority": 381
+    },
+    {
+      "playerId": "00-0034974",
+      "player": "Julian Love",
+      "team": "SEA",
+      "position": "S",
+      "status": null,
+      "injury": "Calf",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.88,
+      "starter": true,
+      "priority": 280
     },
     {
       "playerId": "00-0040733",
@@ -4126,12 +4574,12 @@
       "position": "QB",
       "status": null,
       "injury": "Glute",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.87,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0038765",
@@ -4154,12 +4602,12 @@
       "position": "RB",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.76,
       "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0032775",
@@ -4182,12 +4630,12 @@
       "position": "LB",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.67,
       "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0041363",
@@ -4223,7 +4671,7 @@
       "team": "SF",
       "position": "DE",
       "status": null,
-      "injury": "Not injury related - resting player",
+      "injury": "Knee",
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
@@ -4252,12 +4700,26 @@
       "position": "T",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.83,
       "starter": true,
-      "priority": 280
+      "priority": 282
+    },
+    {
+      "playerId": "00-0032889",
+      "player": "A'Shawn Robinson",
+      "team": "TB",
+      "position": "DE",
+      "status": null,
+      "injury": "Not injury related - resting player",
+      "practice": "Limited",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.65,
+      "starter": true,
+      "priority": 281
     },
     {
       "playerId": "00-0035254",
@@ -4266,12 +4728,12 @@
       "position": "LB",
       "status": null,
       "injury": "Shin",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.41,
       "starter": false,
-      "priority": 380
+      "priority": 381
     },
     {
       "playerId": "00-0034855",
@@ -4358,6 +4820,20 @@
       "priority": 281
     },
     {
+      "playerId": "00-0038115",
+      "player": "Daniel Bellinger",
+      "team": "TEN",
+      "position": "TE",
+      "status": null,
+      "injury": "Illness",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.54,
+      "starter": true,
+      "priority": 280
+    },
+    {
       "playerId": "00-0040881",
       "player": "Fernando Carmona",
       "team": "TEN",
@@ -4386,18 +4862,46 @@
       "priority": 382
     },
     {
+      "playerId": "00-0040201",
+      "player": "Marcus Harris",
+      "team": "TEN",
+      "position": "CB",
+      "status": null,
+      "injury": "Shoulder",
+      "practice": "Full",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.73,
+      "starter": true,
+      "priority": 282
+    },
+    {
+      "playerId": "00-0040020",
+      "player": "Micah Robinson",
+      "team": "TEN",
+      "position": "CB",
+      "status": null,
+      "injury": "Groin",
+      "practice": "Limited",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.26,
+      "starter": false,
+      "priority": 381
+    },
+    {
       "playerId": "00-0033870",
       "player": "Solomon Thomas",
       "team": "TEN",
       "position": "DT",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.32,
       "starter": false,
-      "priority": 381
+      "priority": 380
     },
     {
       "playerId": "00-0035261",
@@ -4406,12 +4910,12 @@
       "position": "RB",
       "status": null,
       "injury": "Ankle",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.54,
       "starter": true,
-      "priority": 280
+      "priority": 281
     },
     {
       "playerId": "00-0039032",
@@ -4518,12 +5022,12 @@
       "position": "DT",
       "status": null,
       "injury": "Back",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.64,
       "starter": true,
-      "priority": 280
+      "priority": 281
     },
     {
       "playerId": "00-0039910",
@@ -4560,12 +5064,12 @@
       "position": "S",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.62,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0041096",
@@ -4574,12 +5078,12 @@
       "position": "RB",
       "status": null,
       "injury": "Hip",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.09,
       "starter": false,
-      "priority": 381
+      "priority": 382
     },
     {
       "playerId": "00-0037819",
@@ -4644,12 +5148,12 @@
       "position": "S",
       "status": null,
       "injury": "Hamstring",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.0,
       "starter": false,
-      "priority": 381
+      "priority": 382
     }
   ]
 }

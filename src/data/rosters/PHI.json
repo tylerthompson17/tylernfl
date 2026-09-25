@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "PHI",
   "week": 3,
-  "updated": "2026-09-24T14:28:57Z",
+  "updated": "2026-09-25T14:48:39Z",
   "groups": [
     {
       "key": "offense",
@@ -244,6 +244,21 @@
       "college": "Mississippi"
     },
     {
+      "gsisId": "00-0038496",
+      "name": "Xavier Gipson",
+      "slug": "xavier-gipson",
+      "number": 47,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 69,
+      "weight": 180,
+      "age": 25,
+      "experience": 3,
+      "college": "Stephen F. Austin State"
+    },
+    {
       "gsisId": "00-0040024",
       "name": "Darius Cooper",
       "slug": "darius-cooper",
@@ -274,21 +289,6 @@
       "college": "Utah"
     },
     {
-      "gsisId": "00-0038496",
-      "name": "Xavier Gipson",
-      "slug": "xavier-gipson",
-      "number": 86,
-      "position": "WR",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 69,
-      "weight": 180,
-      "age": 25,
-      "experience": 3,
-      "college": "Stephen F. Austin State"
-    },
-    {
       "gsisId": "00-0039236",
       "name": "Johnny Wilson",
       "slug": "johnny-wilson",
@@ -307,7 +307,7 @@
       "gsisId": "00-0036332",
       "name": "Josiah Deguara",
       "slug": "josiah-deguara",
-      "number": 46,
+      "number": 45,
       "position": "TE",
       "group": "offense",
       "status": "DEV",
@@ -950,8 +950,8 @@
     },
     {
       "gsisId": "00-0033393",
-      "name": "Kenny Moore",
-      "slug": "kenny-moore",
+      "name": "Kenny Moore II",
+      "slug": "kenny-moore-ii",
       "number": 23,
       "position": "CB",
       "group": "defense",
@@ -977,6 +977,21 @@
       "age": 25,
       "experience": 2,
       "college": "Toledo"
+    },
+    {
+      "gsisId": "00-0036559",
+      "name": "Shaun Wade",
+      "slug": "shaun-wade",
+      "number": 30,
+      "position": "CB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 195,
+      "age": 28,
+      "experience": 5,
+      "college": "Ohio State"
     },
     {
       "gsisId": "00-0032580",

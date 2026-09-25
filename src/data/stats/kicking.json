@@ -2,7 +2,7 @@
   "key": "kicking",
   "label": "Kicking",
   "season": 2026,
-  "throughWeek": 2,
+  "throughWeek": 3,
   "primary": "fg_made",
   "qualifier": {
     "column": "fg_att",
@@ -143,25 +143,44 @@
     },
     {
       "rank": 3,
+      "playerId": "00-0025565",
+      "player": "Nick Folk",
+      "team": "ATL",
+      "position": "K",
+      "teamGames": 3,
+      "qualified": true,
+      "values": {
+        "games": 3,
+        "fg_made": 5,
+        "fg_att": 8,
+        "fg_long": 51,
+        "pat_made": 4,
+        "pat_att": 4,
+        "fg_pct": 0.625,
+        "xp_pct": 1.0
+      }
+    },
+    {
+      "rank": 3,
       "playerId": "00-0040899",
       "player": "Trey Smack",
       "team": "GB",
       "position": "K",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "fg_made": 5,
-        "fg_att": 5,
+        "fg_att": 6,
         "fg_long": 59,
-        "pat_made": 3,
-        "pat_att": 4,
-        "fg_pct": 1.0,
-        "xp_pct": 0.75
+        "pat_made": 5,
+        "pat_att": 6,
+        "fg_pct": 0.833,
+        "xp_pct": 0.833
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0038428",
       "player": "Andre Szmyt",
       "team": "CLE",
@@ -180,7 +199,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0039409",
       "player": "Cam Little",
       "team": "JAX",
@@ -199,7 +218,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0038567",
       "player": "Chad Ryland",
       "team": "ARI",
@@ -218,7 +237,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0034161",
       "player": "Daniel Carlson",
       "team": "NO",
@@ -237,7 +256,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0034794",
       "player": "Jason Sanders",
       "team": "NYJ",
@@ -256,7 +275,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0036816",
       "player": "Riley Patterson",
       "team": "MIA",
@@ -275,7 +294,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0039576",
       "player": "Spencer Shrader",
       "team": "IND",
@@ -294,7 +313,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0039404",
       "player": "Will Reichard",
       "team": "MIN",
@@ -313,7 +332,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0040200",
       "player": "Andy Borregales",
       "team": "NE",
@@ -332,7 +351,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0037692",
       "player": "Brandon Aubrey",
       "team": "DAL",
@@ -351,7 +370,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0031136",
       "player": "Chris Boswell",
       "team": "PIT",
@@ -370,7 +389,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0041182",
       "player": "Drew Stevens",
       "team": "WAS",
@@ -389,7 +408,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0031492",
       "player": "Jason Myers",
       "team": "SEA",
@@ -408,7 +427,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0035192",
       "player": "Joey Slye",
       "team": "TEN",
@@ -427,7 +446,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0032726",
       "player": "Ka'imi Fairbairn",
       "team": "HOU",
@@ -446,7 +465,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0035269",
       "player": "Matt Gay",
       "team": "LV",
@@ -465,26 +484,7 @@
       }
     },
     {
-      "rank": 13,
-      "playerId": "00-0025565",
-      "player": "Nick Folk",
-      "team": "ATL",
-      "position": "K",
-      "teamGames": 2,
-      "qualified": true,
-      "values": {
-        "games": 2,
-        "fg_made": 3,
-        "fg_att": 6,
-        "fg_long": 51,
-        "pat_made": 1,
-        "pat_att": 1,
-        "fg_pct": 0.5,
-        "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0040279",
       "player": "Ryan Fitzgerald",
       "team": "CAR",
@@ -503,7 +503,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0036162",
       "player": "Tyler Bass",
       "team": "BUF",
@@ -522,7 +522,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0040074",
       "player": "Tyler Loop",
       "team": "BAL",
@@ -541,7 +541,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0032569",
       "player": "Wil Lutz",
       "team": "DEN",

@@ -2,7 +2,7 @@
   "key": "passing",
   "label": "Passing",
   "season": 2026,
-  "throughWeek": 2,
+  "throughWeek": 3,
   "primary": "passing_yards",
   "qualifier": {
     "column": "attempts",
@@ -95,6 +95,26 @@
   "rows": [
     {
       "rank": 1,
+      "playerId": "00-0036264",
+      "player": "Jordan Love",
+      "team": "GB",
+      "position": "QB",
+      "teamGames": 3,
+      "qualified": true,
+      "values": {
+        "games": 3,
+        "completions": 65,
+        "attempts": 124,
+        "passing_yards": 844,
+        "passing_tds": 6,
+        "passing_interceptions": 2,
+        "sacks_suffered": 8,
+        "cmp_pct": 0.524,
+        "pass_ypa": 6.8
+      }
+    },
+    {
+      "rank": 2,
       "playerId": "00-0040743",
       "player": "Tyler Shough",
       "team": "NO",
@@ -114,7 +134,7 @@
       }
     },
     {
-      "rank": 2,
+      "rank": 3,
       "playerId": "00-0039150",
       "player": "Bryce Young",
       "team": "CAR",
@@ -134,7 +154,7 @@
       }
     },
     {
-      "rank": 3,
+      "rank": 4,
       "playerId": "00-0039163",
       "player": "C.J. Stroud",
       "team": "HOU",
@@ -154,7 +174,7 @@
       }
     },
     {
-      "rank": 4,
+      "rank": 5,
       "playerId": "00-0034857",
       "player": "Josh Allen",
       "team": "BUF",
@@ -174,7 +194,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0033873",
       "player": "Patrick Mahomes",
       "team": "KC",
@@ -194,7 +214,7 @@
       }
     },
     {
-      "rank": 6,
+      "rank": 7,
       "playerId": "00-0034796",
       "player": "Lamar Jackson",
       "team": "BAL",
@@ -214,7 +234,7 @@
       }
     },
     {
-      "rank": 7,
+      "rank": 8,
       "playerId": "00-0033106",
       "player": "Jared Goff",
       "team": "DET",
@@ -231,26 +251,6 @@
         "sacks_suffered": 5,
         "cmp_pct": 0.675,
         "pass_ypa": 6.9
-      }
-    },
-    {
-      "rank": 8,
-      "playerId": "00-0036264",
-      "player": "Jordan Love",
-      "team": "GB",
-      "position": "QB",
-      "teamGames": 2,
-      "qualified": true,
-      "values": {
-        "games": 2,
-        "completions": 37,
-        "attempts": 71,
-        "passing_yards": 532,
-        "passing_tds": 4,
-        "passing_interceptions": 1,
-        "sacks_suffered": 7,
-        "cmp_pct": 0.521,
-        "pass_ypa": 7.5
       }
     },
     {
@@ -695,6 +695,26 @@
     },
     {
       "rank": 31,
+      "playerId": "00-0039917",
+      "player": "Michael Penix Jr.",
+      "team": "ATL",
+      "position": "QB",
+      "teamGames": 3,
+      "qualified": false,
+      "values": {
+        "games": 1,
+        "completions": 18,
+        "attempts": 25,
+        "passing_yards": 256,
+        "passing_tds": 1,
+        "passing_interceptions": 1,
+        "sacks_suffered": 0,
+        "cmp_pct": 0.72,
+        "pass_ypa": 10.2
+      }
+    },
+    {
+      "rank": 32,
       "playerId": "00-0040691",
       "player": "Jaxson Dart",
       "team": "NYG",
@@ -714,13 +734,13 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0033662",
       "player": "Cooper Rush",
       "team": "ATL",
       "position": "QB",
-      "teamGames": 2,
-      "qualified": true,
+      "teamGames": 3,
+      "qualified": false,
       "values": {
         "games": 2,
         "completions": 22,
@@ -734,7 +754,7 @@
       }
     },
     {
-      "rank": 33,
+      "rank": 34,
       "playerId": "00-0031503",
       "player": "Jameis Winston",
       "team": "NYG",
@@ -754,7 +774,7 @@
       }
     },
     {
-      "rank": 33,
+      "rank": 34,
       "playerId": "00-0032268",
       "player": "Marcus Mariota",
       "team": "WAS",
@@ -774,12 +794,12 @@
       }
     },
     {
-      "rank": 35,
+      "rank": 36,
       "playerId": "00-0041194",
       "player": "Jack Strand",
       "team": "ATL",
       "position": "QB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": false,
       "values": {
         "games": 1,
@@ -794,7 +814,7 @@
       }
     },
     {
-      "rank": 36,
+      "rank": 37,
       "playerId": "00-0038416",
       "player": "Tyson Bagent",
       "team": "CHI",
@@ -814,7 +834,7 @@
       }
     },
     {
-      "rank": 37,
+      "rank": 38,
       "playerId": "00-0035228",
       "player": "Kyler Murray",
       "team": "MIN",
@@ -834,7 +854,7 @@
       }
     },
     {
-      "rank": 38,
+      "rank": 39,
       "playerId": "00-0034869",
       "player": "Sam Darnold",
       "team": "SEA",
@@ -854,7 +874,7 @@
       }
     },
     {
-      "rank": 38,
+      "rank": 39,
       "playerId": "00-0039107",
       "player": "Stetson Bennett",
       "team": "LAR",
@@ -874,7 +894,7 @@
       }
     },
     {
-      "rank": 40,
+      "rank": 41,
       "playerId": "00-0041040",
       "player": "Antonio Williams",
       "team": "WAS",
@@ -894,7 +914,7 @@
       }
     },
     {
-      "rank": 40,
+      "rank": 41,
       "playerId": "00-0033729",
       "player": "Cameron Johnston",
       "team": "PIT",
@@ -914,7 +934,7 @@
       }
     },
     {
-      "rank": 40,
+      "rank": 41,
       "playerId": "00-0036626",
       "player": "Dyami Brown",
       "team": "WAS",
@@ -934,7 +954,7 @@
       }
     },
     {
-      "rank": 40,
+      "rank": 41,
       "playerId": "00-0040654",
       "player": "Kai Kroeger",
       "team": "HOU",
@@ -954,7 +974,7 @@
       }
     },
     {
-      "rank": 40,
+      "rank": 41,
       "playerId": "00-0038102",
       "player": "Kenny Pickett",
       "team": "CAR",
@@ -974,7 +994,7 @@
       }
     },
     {
-      "rank": 40,
+      "rank": 41,
       "playerId": "00-0034771",
       "player": "Mason Rudolph",
       "team": "PIT",

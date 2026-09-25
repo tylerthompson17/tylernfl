@@ -2,7 +2,7 @@
   "key": "defense",
   "label": "Defense",
   "season": 2026,
-  "throughWeek": 2,
+  "throughWeek": 3,
   "primary": "def_sacks",
   "qualifier": {
     "column": "games",
@@ -219,15 +219,15 @@
       "player": "Lukas Van Ness",
       "team": "GB",
       "position": "LB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 9,
-        "def_tackle_assists": 3,
+        "games": 3,
+        "def_tackles_solo": 10,
+        "def_tackle_assists": 6,
         "def_tackles_for_loss": 4,
         "def_sacks": 2.5,
-        "def_qb_hits": 5,
+        "def_qb_hits": 6,
         "def_interceptions": 0,
         "def_pass_defended": 0,
         "def_fumbles_forced": 0
@@ -239,12 +239,12 @@
       "player": "Za'Darius Smith",
       "team": "ATL",
       "position": "DE",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 3,
-        "def_tackle_assists": 1,
+        "def_tackle_assists": 2,
         "def_tackles_for_loss": 4,
         "def_sacks": 2.5,
         "def_qb_hits": 3,
@@ -319,13 +319,13 @@
       "player": "Edgerrin Cooper",
       "team": "GB",
       "position": "LB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 9,
-        "def_tackle_assists": 3,
-        "def_tackles_for_loss": 5,
+        "games": 3,
+        "def_tackles_solo": 11,
+        "def_tackle_assists": 7,
+        "def_tackles_for_loss": 6,
         "def_sacks": 2.0,
         "def_qb_hits": 2,
         "def_interceptions": 0,
@@ -555,6 +555,26 @@
     },
     {
       "rank": 21,
+      "playerId": "00-0037815",
+      "player": "Cameron Thomas",
+      "team": "ATL",
+      "position": "DE",
+      "teamGames": 3,
+      "qualified": true,
+      "values": {
+        "games": 3,
+        "def_tackles_solo": 4,
+        "def_tackle_assists": 3,
+        "def_tackles_for_loss": 1,
+        "def_sacks": 1.5,
+        "def_qb_hits": 7,
+        "def_interceptions": 0,
+        "def_pass_defended": 0,
+        "def_fumbles_forced": 1
+      }
+    },
+    {
+      "rank": 21,
       "playerId": "00-0036321",
       "player": "Chase Young",
       "team": "NO",
@@ -714,7 +734,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0032889",
       "player": "A'Shawn Robinson",
       "team": "TB",
@@ -734,7 +754,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040677",
       "player": "Abdul Carter",
       "team": "NYG",
@@ -754,7 +774,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0036624",
       "player": "Alim McNeill",
       "team": "DET",
@@ -774,7 +794,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0039840",
       "player": "Austin Booker",
       "team": "CHI",
@@ -794,7 +814,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0038133",
       "player": "Boye Mafe",
       "team": "CIN",
@@ -814,7 +834,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040326",
       "player": "Branson Combs",
       "team": "JAX",
@@ -834,7 +854,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0039137",
       "player": "Byron Young",
       "team": "LAR",
@@ -854,7 +874,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040865",
       "player": "Caleb Downs",
       "team": "DAL",
@@ -874,7 +894,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0035402",
       "player": "Carl Granderson",
       "team": "NO",
@@ -894,7 +914,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0036981",
       "player": "Christian Barmore",
       "team": "NE",
@@ -914,7 +934,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0036813",
       "player": "Christian Elliss",
       "team": "NE",
@@ -934,7 +954,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0031565",
       "player": "Danielle Hunter",
       "team": "HOU",
@@ -954,7 +974,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0038623",
       "player": "Dante Stills",
       "team": "ARI",
@@ -974,7 +994,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040158",
       "player": "David Walker",
       "team": "TB",
@@ -994,7 +1014,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0036480",
       "player": "Dayo Odeyingbo",
       "team": "CHI",
@@ -1014,7 +1034,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040710",
       "player": "Deone Walker",
       "team": "BUF",
@@ -1034,7 +1054,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0039047",
       "player": "Derick Hall",
       "team": "SEA",
@@ -1054,7 +1074,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0037244",
       "player": "Devin Lloyd",
       "team": "CAR",
@@ -1074,7 +1094,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0038922",
       "player": "Drake Thomas",
       "team": "SEA",
@@ -1094,7 +1114,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0035678",
       "player": "Dre'Mont Jones",
       "team": "NE",
@@ -1114,7 +1134,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040574",
       "player": "Elijah Ponder",
       "team": "NE",
@@ -1134,7 +1154,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0036901",
       "player": "Eric Stokes",
       "team": "LV",
@@ -1154,7 +1174,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0039006",
       "player": "Felix Anudike-Uzomah",
       "team": "KC",
@@ -1174,7 +1194,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0034302",
       "player": "Frankie Luvu",
       "team": "WAS",
@@ -1194,7 +1214,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0041569",
       "player": "Gabe Jacas",
       "team": "NE",
@@ -1214,7 +1234,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0036282",
       "player": "Grant Delpit",
       "team": "CLE",
@@ -1234,7 +1254,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0034163",
       "player": "Jacob Martin",
       "team": "TEN",
@@ -1254,7 +1274,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0031364",
       "player": "Jadeveon Clowney",
       "team": "HOU",
@@ -1274,7 +1294,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0038386",
       "player": "Jalen Carter",
       "team": "PHI",
@@ -1294,7 +1314,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0032387",
       "player": "Jarran Reed",
       "team": "SEA",
@@ -1314,7 +1334,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0036260",
       "player": "Javon Kinlaw",
       "team": "WAS",
@@ -1334,7 +1354,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0035643",
       "player": "Jeffery Simmons",
       "team": "TEN",
@@ -1354,7 +1374,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0035674",
       "player": "Jerry Tillery",
       "team": "IND",
@@ -1374,7 +1394,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040708",
       "player": "Jihaad Campbell",
       "team": "PHI",
@@ -1394,7 +1414,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0034805",
       "player": "John Franklin-Myers",
       "team": "TEN",
@@ -1414,7 +1434,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040137",
       "player": "Jordan Burch",
       "team": "ARI",
@@ -1434,7 +1454,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040171",
       "player": "Joshua Farmer",
       "team": "NE",
@@ -1454,7 +1474,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0041502",
       "player": "Josiah Trotter",
       "team": "TB",
@@ -1474,7 +1494,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0039431",
       "player": "Jowon Briggs",
       "team": "NYJ",
@@ -1494,7 +1514,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0036286",
       "player": "K'Lavon Chaisson",
       "team": "WAS",
@@ -1514,7 +1534,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0039148",
       "player": "Keion White",
       "team": "SF",
@@ -1534,7 +1554,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0034320",
       "player": "Kentavius Street",
       "team": "CHI",
@@ -1554,7 +1574,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0031040",
       "player": "Khalil Mack",
       "team": "LAC",
@@ -1574,7 +1594,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0039908",
       "player": "Kris Jenkins",
       "team": "CIN",
@@ -1594,7 +1614,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0039421",
       "player": "Levi Drake Rodriguez",
       "team": "MIN",
@@ -1614,7 +1634,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0038127",
       "player": "Logan Hall",
       "team": "HOU",
@@ -1634,7 +1654,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040688",
       "player": "Malaki Starks",
       "team": "BAL",
@@ -1654,7 +1674,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0035763",
       "player": "Malcolm Roach",
       "team": "DEN",
@@ -1674,7 +1694,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0041060",
       "player": "Malik Muhammad",
       "team": "CHI",
@@ -1694,7 +1714,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0032265",
       "player": "Mario Edwards",
       "team": "HOU",
@@ -1714,7 +1734,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040185",
       "player": "Marques Sigle",
       "team": "SF",
@@ -1734,7 +1754,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040722",
       "player": "Mike Green",
       "team": "BAL",
@@ -1754,7 +1774,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0035647",
       "player": "Montez Sweat",
       "team": "CHI",
@@ -1774,7 +1794,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040670",
       "player": "Nohl Williams",
       "team": "KC",
@@ -1794,7 +1814,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0039013",
       "player": "Nolan Smith",
       "team": "PHI",
@@ -1814,7 +1834,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0036940",
       "player": "Odafe Oweh",
       "team": "WAS",
@@ -1834,7 +1854,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0036927",
       "player": "Pete Werner",
       "team": "NO",
@@ -1854,7 +1874,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040136",
       "player": "Princely Umanmielen",
       "team": "CAR",
@@ -1874,7 +1894,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040168",
       "player": "Que Robinson",
       "team": "DEN",
@@ -1894,7 +1914,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0041501",
       "player": "R Mason Thomas",
       "team": "KC",
@@ -1914,7 +1934,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0038125",
       "player": "Roger McCreary",
       "team": "DET",
@@ -1934,7 +1954,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0041556",
       "player": "Romello Height",
       "team": "SF",
@@ -1954,7 +1974,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0038715",
       "player": "Ronnie Hickman Jr.",
       "team": "CLE",
@@ -1974,7 +1994,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0032759",
       "player": "Sheldon Rankins",
       "team": "HOU",
@@ -1994,7 +2014,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0040756",
       "player": "Shemar Stewart",
       "team": "CIN",
@@ -2014,7 +2034,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0041028",
       "player": "Sonny Styles",
       "team": "WAS",
@@ -2034,7 +2054,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0033935",
       "player": "Trey Hendrickson",
       "team": "BAL",
@@ -2054,7 +2074,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0038570",
       "player": "Ventrell Miller",
       "team": "JAX",
@@ -2074,7 +2094,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0041404",
       "player": "Wesley Bailey",
       "team": "LAR",
@@ -2094,7 +2114,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0039142",
       "player": "Will McDonald IV",
       "team": "NYJ",
@@ -2114,7 +2134,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0041544",
       "player": "Akheem Mesidor",
       "team": "LAC",
@@ -2134,7 +2154,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0034825",
       "player": "Arden Key",
       "team": "IND",
@@ -2154,7 +2174,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0040157",
       "player": "Barrett Carter",
       "team": "CIN",
@@ -2174,17 +2194,17 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0040010",
       "player": "Barryn Sorrell",
       "team": "GB",
       "position": "DE",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 5,
-        "def_tackle_assists": 3,
+        "games": 3,
+        "def_tackles_solo": 6,
+        "def_tackle_assists": 5,
         "def_tackles_for_loss": 0,
         "def_sacks": 0.5,
         "def_qb_hits": 1,
@@ -2194,17 +2214,17 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0041470",
       "player": "Brandon Cisse",
       "team": "GB",
       "position": "CB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 5,
-        "def_tackle_assists": 1,
+        "games": 3,
+        "def_tackles_solo": 9,
+        "def_tackle_assists": 4,
         "def_tackles_for_loss": 0,
         "def_sacks": 0.5,
         "def_qb_hits": 1,
@@ -2214,27 +2234,7 @@
       }
     },
     {
-      "rank": 102,
-      "playerId": "00-0037815",
-      "player": "Cameron Thomas",
-      "team": "ATL",
-      "position": "DE",
-      "teamGames": 2,
-      "qualified": true,
-      "values": {
-        "games": 2,
-        "def_tackles_solo": 3,
-        "def_tackle_assists": 2,
-        "def_tackles_for_loss": 0,
-        "def_sacks": 0.5,
-        "def_qb_hits": 3,
-        "def_interceptions": 0,
-        "def_pass_defended": 0,
-        "def_fumbles_forced": 1
-      }
-    },
-    {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0038553",
       "player": "Daiyan Henley",
       "team": "LAC",
@@ -2254,7 +2254,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0033546",
       "player": "Dalvin Tomlinson",
       "team": "LAC",
@@ -2274,17 +2274,17 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0040877",
       "player": "Dani Dennis-Sutton",
       "team": "GB",
       "position": "LB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 2,
-        "def_tackle_assists": 5,
+        "def_tackle_assists": 7,
         "def_tackles_for_loss": 0,
         "def_sacks": 0.5,
         "def_qb_hits": 2,
@@ -2294,7 +2294,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0040678",
       "player": "Derrick Harmon",
       "team": "PIT",
@@ -2314,7 +2314,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0040725",
       "player": "Donovan Ezeiruaku",
       "team": "DAL",
@@ -2334,7 +2334,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0034275",
       "player": "Foley Fatukasi",
       "team": "LV",
@@ -2354,7 +2354,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0034815",
       "player": "Fred Warner",
       "team": "SF",
@@ -2374,27 +2374,27 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0039070",
       "player": "Gervon Dexter Sr.",
       "team": "ATL",
       "position": "DT",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 1,
-        "def_tackle_assists": 4,
+        "games": 3,
+        "def_tackles_solo": 2,
+        "def_tackle_assists": 5,
         "def_tackles_for_loss": 0,
         "def_sacks": 0.5,
-        "def_qb_hits": 1,
+        "def_qb_hits": 3,
         "def_interceptions": 0,
         "def_pass_defended": 1,
         "def_fumbles_forced": 0
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0033952",
       "player": "Grover Stewart",
       "team": "IND",
@@ -2414,7 +2414,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0037596",
       "player": "Jack Gibbens",
       "team": "ARI",
@@ -2434,7 +2434,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0033093",
       "player": "Jonathan Bullard",
       "team": "DAL",
@@ -2454,17 +2454,17 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0037094",
       "player": "Jonathan Ford",
       "team": "GB",
       "position": "DT",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 1,
+        "games": 2,
         "def_tackles_solo": 3,
-        "def_tackle_assists": 1,
+        "def_tackle_assists": 2,
         "def_tackles_for_loss": 0,
         "def_sacks": 0.5,
         "def_qb_hits": 1,
@@ -2474,17 +2474,17 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0035133",
       "player": "Keisean Nixon",
       "team": "GB",
       "position": "DB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 9,
-        "def_tackle_assists": 3,
+        "games": 3,
+        "def_tackles_solo": 12,
+        "def_tackle_assists": 6,
         "def_tackles_for_loss": 1,
         "def_sacks": 0.5,
         "def_qb_hits": 2,
@@ -2494,7 +2494,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0039340",
       "player": "Laiatu Latu",
       "team": "IND",
@@ -2514,7 +2514,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0035933",
       "player": "Michael Hoecht",
       "team": "BUF",
@@ -2534,7 +2534,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0038546",
       "player": "Myles Murphy",
       "team": "CIN",
@@ -2554,7 +2554,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0034760",
       "player": "Nathan Shepherd",
       "team": "NO",
@@ -2574,7 +2574,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0041305",
       "player": "Sabastian Harsh",
       "team": "HOU",
@@ -2594,12 +2594,12 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0033945",
       "player": "Samson Ebukam",
       "team": "ATL",
       "position": "DE",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
         "games": 2,
@@ -2614,7 +2614,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0036338",
       "player": "Troy Dye",
       "team": "LAC",
@@ -2634,7 +2634,7 @@
       }
     },
     {
-      "rank": 102,
+      "rank": 103,
       "playerId": "00-0040152",
       "player": "Upton Stout",
       "team": "SF",
@@ -2699,7 +2699,7 @@
       "player": "A.J. Terrell",
       "team": "ATL",
       "position": "CB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
         "games": 2,
@@ -3359,8 +3359,8 @@
       "player": "Anthony Campbell",
       "team": "GB",
       "position": "DT",
-      "teamGames": 2,
-      "qualified": true,
+      "teamGames": 3,
+      "qualified": false,
       "values": {
         "games": 1,
         "def_tackles_solo": 1,
@@ -3679,12 +3679,12 @@
       "player": "Avieon Terrell",
       "team": "ATL",
       "position": "CB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 2,
-        "def_tackle_assists": 0,
+        "def_tackle_assists": 1,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -3879,12 +3879,52 @@
       "player": "Benjamin St-Juste",
       "team": "GB",
       "position": "CB",
-      "teamGames": 2,
-      "qualified": true,
+      "teamGames": 3,
+      "qualified": false,
       "values": {
         "games": 1,
         "def_tackles_solo": 1,
         "def_tackle_assists": 0,
+        "def_tackles_for_loss": 0,
+        "def_sacks": 0,
+        "def_qb_hits": 0,
+        "def_interceptions": 0,
+        "def_pass_defended": 0,
+        "def_fumbles_forced": 0
+      }
+    },
+    {
+      "rank": 129,
+      "playerId": "00-0040156",
+      "player": "Billy Bowman Jr.",
+      "team": "ATL",
+      "position": "CB",
+      "teamGames": 3,
+      "qualified": false,
+      "values": {
+        "games": 1,
+        "def_tackles_solo": 1,
+        "def_tackle_assists": 0,
+        "def_tackles_for_loss": 0,
+        "def_sacks": 0,
+        "def_qb_hits": 0,
+        "def_interceptions": 0,
+        "def_pass_defended": 2,
+        "def_fumbles_forced": 0
+      }
+    },
+    {
+      "rank": 129,
+      "playerId": "00-0037091",
+      "player": "Bo Melton",
+      "team": "GB",
+      "position": "WR",
+      "teamGames": 3,
+      "qualified": true,
+      "values": {
+        "games": 3,
+        "def_tackles_solo": 1,
+        "def_tackle_assists": 1,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -4039,17 +4079,17 @@
       "player": "Bralen Trice",
       "team": "ATL",
       "position": "LB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 1,
+        "games": 2,
         "def_tackles_solo": 1,
         "def_tackle_assists": 0,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
         "def_interceptions": 0,
-        "def_pass_defended": 0,
+        "def_pass_defended": 1,
         "def_fumbles_forced": 0
       }
     },
@@ -4059,15 +4099,15 @@
       "player": "Brandon Dorlus",
       "team": "ATL",
       "position": "DE",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 3,
         "def_tackle_assists": 1,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
-        "def_qb_hits": 1,
+        "def_qb_hits": 5,
         "def_interceptions": 0,
         "def_pass_defended": 0,
         "def_fumbles_forced": 0
@@ -4139,13 +4179,13 @@
       "player": "Brenton Cox Jr.",
       "team": "GB",
       "position": "DE",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 5,
-        "def_tackle_assists": 1,
-        "def_tackles_for_loss": 0,
+        "def_tackle_assists": 4,
+        "def_tackles_for_loss": 1,
         "def_sacks": 0,
         "def_qb_hits": 0,
         "def_interceptions": 0,
@@ -4399,17 +4439,17 @@
       "player": "C.J. Henderson",
       "team": "ATL",
       "position": "CB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 5,
+        "games": 3,
+        "def_tackles_solo": 13,
         "def_tackle_assists": 0,
         "def_tackles_for_loss": 1,
         "def_sacks": 0,
         "def_qb_hits": 0,
         "def_interceptions": 0,
-        "def_pass_defended": 2,
+        "def_pass_defended": 5,
         "def_fumbles_forced": 0
       }
     },
@@ -5019,8 +5059,8 @@
       "player": "Charlie Woerner",
       "team": "ATL",
       "position": "TE",
-      "teamGames": 2,
-      "qualified": true,
+      "teamGames": 3,
+      "qualified": false,
       "values": {
         "games": 1,
         "def_tackles_solo": 0,
@@ -5159,12 +5199,32 @@
       "player": "Chris Blair",
       "team": "ATL",
       "position": "WR",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 0,
+        "games": 3,
+        "def_tackles_solo": 2,
         "def_tackle_assists": 1,
+        "def_tackles_for_loss": 0,
+        "def_sacks": 0,
+        "def_qb_hits": 0,
+        "def_interceptions": 0,
+        "def_pass_defended": 0,
+        "def_fumbles_forced": 0
+      }
+    },
+    {
+      "rank": 129,
+      "playerId": "00-0038685",
+      "player": "Chris Brooks",
+      "team": "GB",
+      "position": "RB",
+      "teamGames": 3,
+      "qualified": true,
+      "values": {
+        "games": 3,
+        "def_tackles_solo": 1,
+        "def_tackle_assists": 0,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -5219,12 +5279,12 @@
       "player": "Chris McClellan",
       "team": "GB",
       "position": "DT",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 0,
-        "def_tackle_assists": 1,
+        "def_tackle_assists": 2,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -5319,11 +5379,11 @@
       "player": "Christian Harris",
       "team": "ATL",
       "position": "LB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 1,
-        "def_tackles_solo": 1,
+        "games": 2,
+        "def_tackles_solo": 2,
         "def_tackle_assists": 0,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
@@ -6319,8 +6379,8 @@
       "player": "DeMarcco Hellams",
       "team": "ATL",
       "position": "SAF",
-      "teamGames": 2,
-      "qualified": true,
+      "teamGames": 3,
+      "qualified": false,
       "values": {
         "games": 1,
         "def_tackles_solo": 1,
@@ -6919,12 +6979,12 @@
       "player": "Devonte Wyatt",
       "team": "GB",
       "position": "DT",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 3,
-        "def_tackle_assists": 1,
+        "games": 3,
+        "def_tackles_solo": 5,
+        "def_tackle_assists": 3,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -6979,17 +7039,17 @@
       "player": "Divine Deablo",
       "team": "ATL",
       "position": "LB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 4,
-        "def_tackle_assists": 5,
+        "games": 3,
+        "def_tackles_solo": 5,
+        "def_tackle_assists": 6,
         "def_tackles_for_loss": 1,
         "def_sacks": 0,
-        "def_qb_hits": 1,
+        "def_qb_hits": 2,
         "def_interceptions": 0,
-        "def_pass_defended": 0,
+        "def_pass_defended": 1,
         "def_fumbles_forced": 0
       }
     },
@@ -7139,11 +7199,11 @@
       "player": "Drake London",
       "team": "ATL",
       "position": "WR",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 1,
+        "games": 3,
+        "def_tackles_solo": 2,
         "def_tackle_assists": 1,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
@@ -7619,12 +7679,12 @@
       "player": "Evan Williams",
       "team": "GB",
       "position": "SAF",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 12,
-        "def_tackle_assists": 4,
+        "games": 3,
+        "def_tackles_solo": 16,
+        "def_tackle_assists": 10,
         "def_tackles_for_loss": 1,
         "def_sacks": 0,
         "def_qb_hits": 1,
@@ -7939,12 +7999,12 @@
       "player": "Harold Perkins Jr.",
       "team": "ATL",
       "position": "LB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 1,
-        "def_tackle_assists": 1,
+        "games": 3,
+        "def_tackles_solo": 3,
+        "def_tackle_assists": 3,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -8179,13 +8239,13 @@
       "player": "Isaiah McDuffie",
       "team": "GB",
       "position": "LB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 1,
-        "def_tackle_assists": 2,
-        "def_tackles_for_loss": 0,
+        "def_tackle_assists": 5,
+        "def_tackles_for_loss": 1,
         "def_sacks": 0,
         "def_qb_hits": 0,
         "def_interceptions": 0,
@@ -8299,10 +8359,10 @@
       "player": "J. Michael Sturdivant",
       "team": "GB",
       "position": "WR",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 1,
+        "games": 2,
         "def_tackles_solo": 0,
         "def_tackle_assists": 1,
         "def_tackles_for_loss": 0,
@@ -8739,10 +8799,10 @@
       "player": "Jake Bailey",
       "team": "ATL",
       "position": "P",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 0,
         "def_tackle_assists": 1,
         "def_tackles_for_loss": 0,
@@ -9159,8 +9219,8 @@
       "player": "Jared Ivey",
       "team": "ATL",
       "position": "LB",
-      "teamGames": 2,
-      "qualified": true,
+      "teamGames": 3,
+      "qualified": false,
       "values": {
         "games": 1,
         "def_tackles_solo": 0,
@@ -9299,13 +9359,13 @@
       "player": "Javon Bullard",
       "team": "GB",
       "position": "SAF",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 6,
-        "def_tackle_assists": 2,
-        "def_tackles_for_loss": 2,
+        "games": 3,
+        "def_tackles_solo": 8,
+        "def_tackle_assists": 6,
+        "def_tackles_for_loss": 3,
         "def_sacks": 0,
         "def_qb_hits": 0,
         "def_interceptions": 0,
@@ -9319,17 +9379,17 @@
       "player": "Javon Hargrave",
       "team": "GB",
       "position": "NT",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 1,
-        "def_tackles_solo": 1,
-        "def_tackle_assists": 0,
+        "games": 2,
+        "def_tackles_solo": 2,
+        "def_tackle_assists": 2,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
         "def_interceptions": 0,
-        "def_pass_defended": 0,
+        "def_pass_defended": 1,
         "def_fumbles_forced": 0
       }
     },
@@ -9759,17 +9819,17 @@
       "player": "Jessie Bates",
       "team": "ATL",
       "position": "FS",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 7,
-        "def_tackle_assists": 5,
+        "games": 3,
+        "def_tackles_solo": 8,
+        "def_tackle_assists": 8,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
         "def_interceptions": 0,
-        "def_pass_defended": 0,
+        "def_pass_defended": 1,
         "def_fumbles_forced": 0
       }
     },
@@ -10059,10 +10119,10 @@
       "player": "Jordan Love",
       "team": "GB",
       "position": "QB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 1,
         "def_tackle_assists": 0,
         "def_tackles_for_loss": 0,
@@ -10339,12 +10399,12 @@
       "player": "Josh Woods",
       "team": "ATL",
       "position": "LB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 1,
-        "def_tackle_assists": 1,
+        "def_tackle_assists": 2,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -10719,7 +10779,7 @@
       "player": "Kamal Hadden",
       "team": "GB",
       "position": "CB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
         "games": 2,
@@ -10839,12 +10899,12 @@
       "player": "Karl Brooks",
       "team": "GB",
       "position": "DT",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 0,
-        "def_tackle_assists": 4,
+        "games": 3,
+        "def_tackles_solo": 1,
+        "def_tackle_assists": 5,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -11039,13 +11099,13 @@
       "player": "Kendal Daniels",
       "team": "ATL",
       "position": "LB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 3,
-        "def_tackle_assists": 3,
-        "def_tackles_for_loss": 1,
+        "games": 3,
+        "def_tackles_solo": 5,
+        "def_tackle_assists": 4,
+        "def_tackles_for_loss": 2,
         "def_sacks": 0,
         "def_qb_hits": 0,
         "def_interceptions": 0,
@@ -11379,8 +11439,8 @@
       "player": "Kristian Welch",
       "team": "GB",
       "position": "LB",
-      "teamGames": 2,
-      "qualified": true,
+      "teamGames": 3,
+      "qualified": false,
       "values": {
         "games": 1,
         "def_tackles_solo": 1,
@@ -11439,10 +11499,10 @@
       "player": "Kyle Pitts",
       "team": "ATL",
       "position": "TE",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 0,
         "def_tackle_assists": 1,
         "def_tackles_for_loss": 0,
@@ -11539,12 +11599,12 @@
       "player": "LaCale London",
       "team": "ATL",
       "position": "DE",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 3,
-        "def_tackle_assists": 4,
+        "def_tackle_assists": 6,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -11739,15 +11799,15 @@
       "player": "Maason Smith",
       "team": "ATL",
       "position": "DT",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 0,
         "def_tackle_assists": 3,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
-        "def_qb_hits": 0,
+        "def_qb_hits": 1,
         "def_interceptions": 0,
         "def_pass_defended": 1,
         "def_fumbles_forced": 0
@@ -12199,8 +12259,8 @@
       "player": "Matthew Bergeron",
       "team": "ATL",
       "position": "OL",
-      "teamGames": 2,
-      "qualified": true,
+      "teamGames": 3,
+      "qualified": false,
       "values": {
         "games": 1,
         "def_tackles_solo": 1,
@@ -12339,8 +12399,8 @@
       "player": "Mike Ford",
       "team": "ATL",
       "position": "DB",
-      "teamGames": 2,
-      "qualified": true,
+      "teamGames": 3,
+      "qualified": false,
       "values": {
         "games": 1,
         "def_tackles_solo": 2,
@@ -12359,12 +12419,12 @@
       "player": "Mike Hughes",
       "team": "ATL",
       "position": "CB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 4,
-        "def_tackle_assists": 3,
+        "games": 3,
+        "def_tackles_solo": 10,
+        "def_tackle_assists": 4,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -12879,12 +12939,12 @@
       "player": "Nick Muse",
       "team": "ATL",
       "position": "TE",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 1,
-        "def_tackles_solo": 0,
-        "def_tackle_assists": 1,
+        "games": 2,
+        "def_tackles_solo": 2,
+        "def_tackle_assists": 3,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -12899,12 +12959,12 @@
       "player": "Nick Niemann",
       "team": "GB",
       "position": "LB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
+        "games": 3,
         "def_tackles_solo": 0,
-        "def_tackle_assists": 2,
+        "def_tackle_assists": 3,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -14559,11 +14619,11 @@
       "player": "Sydney Brown",
       "team": "ATL",
       "position": "SAF",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 6,
+        "games": 3,
+        "def_tackles_solo": 7,
         "def_tackle_assists": 4,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
@@ -15519,12 +15579,12 @@
       "player": "Ty'Ron Hopper",
       "team": "GB",
       "position": "LB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 1,
-        "def_tackles_solo": 0,
-        "def_tackle_assists": 2,
+        "games": 2,
+        "def_tackles_solo": 1,
+        "def_tackle_assists": 3,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
@@ -16079,17 +16139,17 @@
       "player": "Xavier McKinney",
       "team": "GB",
       "position": "SAF",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 5,
-        "def_tackle_assists": 2,
+        "games": 3,
+        "def_tackles_solo": 9,
+        "def_tackle_assists": 3,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
-        "def_interceptions": 0,
-        "def_pass_defended": 0,
+        "def_interceptions": 1,
+        "def_pass_defended": 1,
         "def_fumbles_forced": 0
       }
     },
@@ -16119,17 +16179,17 @@
       "player": "Xavier Watts",
       "team": "ATL",
       "position": "SAF",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 8,
-        "def_tackle_assists": 3,
+        "games": 3,
+        "def_tackles_solo": 11,
+        "def_tackle_assists": 5,
         "def_tackles_for_loss": 0,
         "def_sacks": 0,
         "def_qb_hits": 0,
-        "def_interceptions": 0,
-        "def_pass_defended": 0,
+        "def_interceptions": 1,
+        "def_pass_defended": 1,
         "def_fumbles_forced": 1
       }
     },
@@ -16159,8 +16219,8 @@
       "player": "Yasir Abdullah",
       "team": "ATL",
       "position": "LB",
-      "teamGames": 2,
-      "qualified": true,
+      "teamGames": 3,
+      "qualified": false,
       "values": {
         "games": 1,
         "def_tackles_solo": 2,
@@ -16199,8 +16259,8 @@
       "player": "Zach Bako-Bewele",
       "team": "GB",
       "position": "G",
-      "teamGames": 2,
-      "qualified": true,
+      "teamGames": 3,
+      "qualified": false,
       "values": {
         "games": 1,
         "def_tackles_solo": 1,
@@ -16219,13 +16279,13 @@
       "player": "Zach Harrison",
       "team": "ATL",
       "position": "DE",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 1,
+        "games": 2,
         "def_tackles_solo": 1,
         "def_tackle_assists": 1,
-        "def_tackles_for_loss": 0,
+        "def_tackles_for_loss": 1,
         "def_sacks": 0,
         "def_qb_hits": 0,
         "def_interceptions": 0,
@@ -16299,13 +16359,13 @@
       "player": "Zaire Franklin",
       "team": "GB",
       "position": "OLB",
-      "teamGames": 2,
+      "teamGames": 3,
       "qualified": true,
       "values": {
-        "games": 2,
-        "def_tackles_solo": 4,
-        "def_tackle_assists": 7,
-        "def_tackles_for_loss": 0,
+        "games": 3,
+        "def_tackles_solo": 7,
+        "def_tackle_assists": 14,
+        "def_tackles_for_loss": 1,
         "def_sacks": 0,
         "def_qb_hits": 1,
         "def_interceptions": 0,

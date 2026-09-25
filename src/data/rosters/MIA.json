@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "MIA",
   "week": 3,
-  "updated": "2026-09-24T14:28:57Z",
+  "updated": "2026-09-25T14:48:39Z",
   "groups": [
     {
       "key": "offense",
@@ -257,6 +257,21 @@
       "age": 26,
       "experience": 3,
       "college": "Furman"
+    },
+    {
+      "gsisId": "00-0040302",
+      "name": "A.J. Henning",
+      "slug": "aj-henning",
+      "number": 88,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 70,
+      "weight": 192,
+      "age": 25,
+      "experience": 1,
+      "college": "Northwestern; Michigan"
     },
     {
       "gsisId": "00-0036387",
@@ -1152,9 +1167,9 @@
       "group": "specialists",
       "status": "DEV",
       "statusLabel": "Practice squad",
-      "heightInches": 75,
+      "heightInches": null,
       "weight": 220,
-      "age": 23,
+      "age": null,
       "experience": 0,
       "college": null
     },
