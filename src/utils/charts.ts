@@ -14,6 +14,7 @@ import teamsData from '../data/teams.json';
 import type { ArchivedAutoChart, AutoChartData, TeamsData } from '../data/types';
 import { chartProblems, labelSvg, resolveLogos, tagSlug } from '../lib/charts/collection';
 import type { ChartHover } from '../lib/charts/hover';
+import { logoUrl } from './logos';
 import { url } from './url';
 
 /** A chart on the site: one of Tyler's, or a kept auto chart. */
@@ -132,7 +133,7 @@ export async function getFeaturedChart(): Promise<Chart | undefined> {
  */
 export function chartSvg(svg: string, labelId: string, descId: string): string {
   return labelSvg(
-    resolveLogos(svg, (team) => url(`logos/${team}.png`), teams),
+    resolveLogos(svg, logoUrl, teams),
     labelId,
     descId
   );

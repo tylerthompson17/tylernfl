@@ -6,6 +6,7 @@
  */
 import teamsData from '../data/teams.json';
 import type { TeamsData } from '../data/types';
+import { logoUrl } from '../utils/logos';
 import { url } from '../utils/url';
 
 interface Props {
@@ -23,7 +24,7 @@ const teamName = new Map((teamsData as TeamsData).map((team) => [team.abbr, team
     <span class="logos">
       {teams.map((team) => (
         <a href={url(`teams/${team}`)} title={teamName.get(team)}>
-          <img src={url(`logos/${team}.png`)} alt={teamName.get(team) ?? team} width={size} height={size} loading="lazy" decoding="async" />
+          <img src={logoUrl(team)} alt={teamName.get(team) ?? team} width={size} height={size} loading="lazy" decoding="async" />
         </a>
       ))}
     </span>

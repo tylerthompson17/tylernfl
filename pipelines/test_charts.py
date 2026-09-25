@@ -9,7 +9,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from build_logos import LOGO_COLUMN, logo_urls
+from build_logos import LOGO_COLUMN, logo_urls, stale_files, versioned_name
 from charts import auto, style
 
 HAS_MATPLOTLIB = importlib.util.find_spec('matplotlib') is not None
@@ -368,20 +368,44 @@ class LogoTests(unittest.TestCase):
     def test_no_logo_file_is_a_solid_block(self):
         from PIL import Image
 
-        root = Path(__file__).resolve().parent.parent
         opaque = []
-        for path in sorted((root / 'public' / 'logos').glob('*.png')):
+        for name in sorted(self.manifest().values()):
+            path = self.root() / 'public' / 'logos' / name
             if Image.open(path).convert('RGBA').getchannel('A').getextrema()[0] == 255:
-                opaque.append(path.stem)
+                opaque.append(name)
         self.assertEqual(opaque, [], 'logos with no transparent pixel: run build_logos.py')
 
-    def test_every_team_has_a_logo_file(self):
+    @staticmethod
+    def root() -> Path:
+        return Path(__file__).resolve().parent.parent
+
+    def manifest(self) -> dict:
         import json
 
-        root = Path(__file__).resolve().parent.parent
-        teams = {t['abbr'] for t in json.loads((root / 'src' / 'data' / 'teams.json').read_text())}
-        logos = {p.stem for p in (root / 'public' / 'logos').glob('*.png')}
-        self.assertEqual(teams, logos)
+        return json.loads((self.root() / 'src' / 'data' / 'logos.json').read_text())
+
+    def test_every_team_is_in_the_manifest_and_on_disk(self):
+        import json
+
+        teams = {t['abbr'] for t in json.loads((self.root() / 'src' / 'data' / 'teams.json').read_text())}
+        manifest = self.manifest()
+        self.assertEqual(teams, set(manifest))
+        missing = [n for n in manifest.values() if not (self.root() / 'public' / 'logos' / n).exists()]
+        self.assertEqual(missing, [], 'in logos.json but not on disk')
+
+    def test_a_logo_file_is_named_for_its_own_bytes(self):
+        self.assertEqual(versioned_name('BUF', b'a picture'), versioned_name('BUF', b'a picture'))
+        self.assertNotEqual(versioned_name('BUF', b'a picture'), versioned_name('BUF', b'another'))
+        for abbr, name in self.manifest().items():
+            picture = (self.root() / 'public' / 'logos' / name).read_bytes()
+            self.assertEqual(name, versioned_name(abbr, picture))
+
+    def test_the_generation_before_this_one_is_kept(self):
+        # A page cached across the deploy still asks for the old name.
+        existing = {'BUF.new.png', 'BUF.old.png', 'BUF.older.png', 'BUF.png'}
+        self.assertEqual(
+            stale_files(existing, {'BUF': 'BUF.new.png'}, {'BUF': 'BUF.old.png'}),
+            {'BUF.older.png', 'BUF.png'})
 
 
 @unittest.skipUnless(HAS_MATPLOTLIB, 'matplotlib not installed')

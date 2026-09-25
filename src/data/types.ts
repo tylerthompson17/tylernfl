@@ -346,6 +346,12 @@ export interface AutoChartData {
  * pipelines/charts/auto.py beside <slug>.svg (and <slug>.hover.json).
  * Every one is kept and listed in the /charts gallery.
  */
+/**
+ * Team abbreviation to its logo's current filename in public/logos/, which
+ * carries a hash of the picture. Written by pipelines/build_logos.py.
+ */
+export type LogosData = Record<string, string>;
+
 export interface ArchivedAutoChart {
   template: 'epa' | 'wp' | 'race';
   title: string;

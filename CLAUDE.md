@@ -39,7 +39,7 @@ tylernfl/
 │   ├── content/charts/     Tyler's charts: <slug>.md entry next to <slug>.svg
 │   ├── content/curated/    curated X and Bluesky posts, one .md each, added by hand
 │   └── data/               JSON consumed at build time (mock now, pipeline output later)
-├── public/logos/           team logos for charts (pipelines/build_logos.py)
+├── public/logos/           team logos, named with a hash (pipelines/build_logos.py)
 ├── pipelines/              Python jobs: run_daily.py (ticker, boards, standings), run_weekly.py, build_teams.py
 │   └── charts/             style.py (shared chart style), auto.py (auto chart), build.py
 │       └── mine/           Tyler's chart scripts (his; do not edit)
@@ -77,7 +77,7 @@ tylernfl/
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `teams.json`, and the auto chart in `charts/`.
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
@@ -182,6 +182,13 @@ tylernfl/
   Charts do not embed logos: `style.py` writes `href="logo:BUF"` and the site resolves
   it under the base path (`resolveLogos` in `src/lib/charts/collection.ts`), so replacing
   these files changes every chart at once and nothing needs redrawing.
+- A logo file is named for its own bytes (`BUF.0d13afd1.png`) and `logos.json` maps each
+  team to its current name, which `logoUrl()` in `src/utils/logos.ts` reads. Every place
+  a logo appears goes through it: charts, `TeamLogos.astro`, the gallery's team filter.
+  A new logo is therefore a new URL and lands with the deploy, instead of waiting out the
+  10 minutes GitHub Pages lets a browser hold the old file. `build_logos.py` keeps the
+  generation before the current one and deletes the rest, so a page cached across that
+  deploy still finds the name it asks for: a stale logo, never a broken one.
 - `standings.json` is written daily by `pipelines/standings.py` from completed regular
   season games: records, division and conference ranks, and for each team the tiebreak
   step that placed it. Before a season's first game it holds last season's final

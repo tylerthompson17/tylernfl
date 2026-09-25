@@ -16,6 +16,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
 import ChartList from '../../components/ChartList.astro';
 import { CHARTS_PER_PAGE, chartTags, chartTeams, getCharts, getGalleryCharts, type Chart } from '../../utils/charts';
+import { logoUrl } from '../../utils/logos';
 import { url } from '../../utils/url';
 
 export const getStaticPaths = (async ({ paginate }) => {
@@ -61,7 +62,7 @@ const { page, tags, teams } = Astro.props;
             <span class="tag-label">Teams:</span>
             {teams.map((team) => (
               <a class="team" href={url(`charts/team/${team.abbr}`)} title={team.name}>
-                <img src={url(`logos/${team.abbr}.png`)} alt={team.name} width="24" height="24" />
+                <img src={logoUrl(team.abbr)} alt={team.name} width="24" height="24" />
                 <span class="count num">({team.count})</span>
               </a>
             ))}
