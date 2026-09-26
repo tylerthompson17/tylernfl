@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "MIN",
   "week": 3,
-  "updated": "2026-09-24T14:28:57Z",
+  "updated": "2026-09-26T13:55:33Z",
   "groups": [
     {
       "key": "offense",
@@ -109,6 +109,21 @@
       "college": "Georgia Tech"
     },
     {
+      "gsisId": "00-0036755",
+      "name": "Jaret Patterson",
+      "slug": "jaret-patterson",
+      "number": 30,
+      "position": "RB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 68,
+      "weight": 195,
+      "age": 26,
+      "experience": 5,
+      "college": "Buffalo"
+    },
+    {
       "gsisId": "00-0036425",
       "name": "DeeJay Dallas",
       "slug": "deejay-dallas",
@@ -122,21 +137,6 @@
       "age": 28,
       "experience": 6,
       "college": "Miami"
-    },
-    {
-      "gsisId": "00-0036755",
-      "name": "Jaret Patterson",
-      "slug": "jaret-patterson",
-      "number": 32,
-      "position": "RB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 68,
-      "weight": 195,
-      "age": 26,
-      "experience": 5,
-      "college": "Buffalo"
     },
     {
       "gsisId": "00-0033293",
@@ -869,7 +869,7 @@
       "statusLabel": "Active",
       "heightInches": 73,
       "weight": 230,
-      "age": 31,
+      "age": 32,
       "experience": 9,
       "college": "Cincinnati; Northwestern"
     },
@@ -1132,7 +1132,7 @@
       "gsisId": "00-0028872",
       "name": "Johnny Hekker",
       "slug": "johnny-hekker",
-      "number": 5,
+      "number": 6,
       "position": "P",
       "group": "specialists",
       "status": "DEV",
