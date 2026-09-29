@@ -1,0 +1,209 @@
+---
+/**
+ * The week recap: every game of a complete week, most exciting first.
+ * /week/ is the latest complete week, /week/<season>/<week>/ each one,
+ * with a tab per week. The order is the pipeline's score (GAME_SCORE in
+ * pipelines/excitement.py, the same function that picks the day's auto
+ * chart), read from game_excitement.json; results show normally. A
+ * spoiler-free version is designed in docs/week-recap-spoilers.md.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import Tabs from '../../components/Tabs.astro';
+import TeamChip from '../../components/TeamChip.astro';
+import excitementData from '../../data/game_excitement.json';
+import scheduleData from '../../data/schedule.json';
+import type { GameExcitementData, ScheduleData } from '../../data/types';
+import { completeWeeks, rankWeek } from '../../lib/week/recap';
+import { getCharts } from '../../utils/charts';
+import { formatStat } from '../../utils/format';
+import { url } from '../../utils/url';
+import { weekLabel } from '../../utils/week';
+
+const schedule = scheduleData as ScheduleData;
+const data = excitementData as GameExcitementData;
+// Both files follow the ticker's season; between them updating, trust neither.
+const excitement = data.season === schedule.season ? data.games : [];
+
+export function getStaticPaths() {
+  const schedule = scheduleData as ScheduleData;
+  const data = excitementData as GameExcitementData;
+  const weeks = completeWeeks(schedule.games, data.season === schedule.season ? data.games : []);
+  return [
+    { params: { week: undefined }, props: { week: weeks.at(-1) ?? null } },
+    ...weeks.map((week) => ({ params: { week: `${schedule.season}/${week}` }, props: { week } })),
+  ];
+}
+
+const { week } = Astro.props as { week: number | null };
+const weeks = completeWeeks(schedule.games, excitement);
+const ranked = week == null ? [] : rankWeek(schedule.games, excitement, week);
+const name = weekLabel(week);
+const tabs = weeks.map((w) => ({ key: String(w), label: weekLabel(w)!, path: `week/${schedule.season}/${w}` }));
+
+// Every final has a win probability chart page, once the daily job has drawn it.
+const chartIds = new Set((await getCharts()).map((chart) => chart.id));
+const chartOf = (away: string, home: string) => {
+  const id = `auto-${schedule.season}-week-${week}-${away}-at-${home}-win-probability`.toLowerCase();
+  return chartIds.has(id) ? id : null;
+};
+
+const { cutoffs } = data;
+const title = name ? `${name} recap, ${schedule.season}` : 'Week recap';
+---
+
+<BaseLayout
+  title={title}
+  description={name
+    ? `Every game of ${schedule.season} ${name.toLowerCase()}, ranked by how much win probability swung.`
+    : 'Every game of the week, ranked by how much win probability swung.'}
+>
+  <h1 class="page-title">{title}</h1>
+  {
+    week == null ? (
+      <div class="content-grid">
+        <Panel title="No complete week yet">
+          <p class="placeholder-note">
+            A week's recap appears the morning after its last game, once every game's play-by-play is out.
+          </p>
+        </Panel>
+      </div>
+    ) : (
+      <>
+        <p class="page-intro">
+          Every game of the week, most exciting first. The <a href={url('scores')}>scoreboard</a> has them in
+          kickoff order.
+        </p>
+        <Tabs label="Weeks" tabs={tabs} current={String(week)} />
+        <div class="content-grid">
+          <Panel title="Ranked by excitement">
+            <div class="stat-table-scroll" tabindex="0">
+              <table class="stat-table recap">
+                <caption class="visually-hidden">
+                  {name} games ranked by excitement, with each game's label, excitement and the winner's low point
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col" class="number">Rank</th>
+                    <th scope="col">Game</th>
+                    <th scope="col">Label</th>
+                    <th scope="col" class="number">Excitement</th>
+                    <th scope="col" class="number">Winner's low</th>
+                    <th scope="col">Chart</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ranked.map(({ rank, game, excitement: e }) => {
+                    const awayWon = game.awayScore! > game.homeScore!;
+                    const homeWon = game.homeScore! > game.awayScore!;
+                    const chart = chartOf(game.away, game.home);
+                    return (
+                      <tr class:list={{ marked: e.label }}>
+                        <td class="number">{rank}</td>
+                        <td>
+                          <span class="game">
+                            <TeamChip abbr={game.away} size="sm" />
+                            <span class:list={['score', { won: awayWon }]}>{game.awayScore}</span>
+                            <span class="at">{game.neutral ? 'vs' : 'at'}</span>
+                            <TeamChip abbr={game.home} size="sm" />
+                            <span class:list={['score', { won: homeWon }]}>{game.homeScore}</span>
+                            {game.overtime && <span class="ot">OT</span>}
+                          </span>
+                        </td>
+                        <td class="label">{e.label}</td>
+                        <td class="number">{e.index.toFixed(2)}</td>
+                        <td class="number">{e.winnerLowWp == null ? 'Tie' : formatStat(e.winnerLowWp, 'percent1')}</td>
+                        <td>{chart && <a href={url(`charts/${chart}`)}>Win probability</a>}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </Panel>
+          <Panel title="How games are ranked">
+            <p>
+              Excitement adds up every change in win probability, play by play, in either direction. A game
+              that swung back and forth scores high; one decided early scores low. Overtime games are scaled
+              to 60 minutes, so extra plays do not count as extra excitement.
+            </p>
+            <p>
+              The winner's low point is the smallest chance the eventual winner had at any moment.
+            </p>
+            <ul class="rules">
+              <li>
+                <strong>Comeback</strong>: the winner was down to a {Math.round(cutoffs.comebackWp * 100)}%
+                chance or less.
+              </li>
+              <li>
+                <strong>Thriller</strong>: excitement of {cutoffs.thrillerIndex.toFixed(2)} or more, the top 5%
+                of games from 2019 to 2025.
+              </li>
+              <li>
+                <strong>Shootout</strong>: {cutoffs.shootoutPoints} or more points, decided by{' '}
+                {cutoffs.shootoutMargin} or fewer.
+              </li>
+            </ul>
+            <p class="source">
+              A game gets the first label it qualifies for. Win probability is nflfastR's, as published in
+              nflverse play-by-play.
+            </p>
+          </Panel>
+        </div>
+      </>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .page-intro {
+    color: var(--text-dim);
+    margin-bottom: var(--space-4);
+  }
+
+  .placeholder-note,
+  .source {
+    color: var(--text-dim);
+  }
+
+  /* The ticker's mark: a slate bar on the row's left edge, the word in
+     its own column. */
+  .recap tr.marked td:first-child {
+    border-left: var(--mark-bar) solid var(--header);
+  }
+
+  .game {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    white-space: nowrap;
+  }
+
+  .score {
+    min-width: 2ch;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Winners in bold, not colored. */
+  .score.won,
+  .label {
+    font-weight: 700;
+  }
+
+  .at,
+  .ot {
+    color: var(--text-dim);
+    padding: 0 var(--space-1);
+  }
+
+  p + p,
+  p + .rules,
+  .rules + p {
+    margin-top: var(--space-2);
+  }
+
+  .rules {
+    padding-left: var(--space-4);
+  }
+</style>

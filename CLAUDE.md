@@ -330,6 +330,22 @@ linked from the ticker's week label.
   the front: the value here is a stable week, and a slate kicking off together
   already groups them.
 
+### Week recap page
+
+`/week/` is the latest complete week, `/week/<season>/<week>/` each one, with a tab per
+week. A week is complete once every game has an entry in `game_excitement.json`, so a
+recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
+
+- One table: rank, game (team chips, scores, winner in bold, OT), label, excitement,
+  the winner's low point, and a link to the game's win probability chart. Equal scores
+  share a rank, in kickoff order. A labelled row carries the ticker's slate bar.
+- The order is `score` from the file (`GAME_SCORE`); the site only sorts. A panel
+  explains the measures, with the label cutoffs read from the file's `cutoffs`.
+- Results show normally. The spoiler-free version is designed in
+  `docs/week-recap-spoilers.md` and not built.
+- Linked from `/scores` (the latest recap, which from Wednesday is not the week on
+  display) and in search; not in the nav.
+
 ### Charts
 
 - Every chart is drawn through `pipelines/charts/style.py`, which reads colors and fonts
@@ -521,7 +537,7 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
     pages (done; see the data contract and Team pages).
 15. Game excitement: `game_excitement.json` daily (excitement index, the winner's low
     point, a label), the ticker and `/scores` marked with a 4px slate bar and the label
-    word, and a `/week` page ranking the week's games by `GAME_SCORE`. The spoiler-free
+    word, and a `/week` page ranking the week's games by `GAME_SCORE` (done; see Week recap page). The spoiler-free
     version of `/week` is designed and waiting in `docs/week-recap-spoilers.md`.
 
 ## Articles

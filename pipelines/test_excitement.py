@@ -70,6 +70,8 @@ class BuildTests(unittest.TestCase):
             [(row('LA', 'SF', 20, 23), comeback), (row('NYJ', 'NE', 17, 17), tie)], 2026, '2026-09-29T10:00:00Z')
 
         self.assertEqual(data['season'], 2026)
+        self.assertEqual(data['cutoffs'], {'comebackWp': 0.10, 'thrillerIndex': 6.88,
+                                           'shootoutPoints': 65, 'shootoutMargin': 8})
         first, second = data['games']
         self.assertEqual(first, {
             'id': '2026_04_LA_SF', 'week': 4, 'away': 'LAR', 'home': 'SF',

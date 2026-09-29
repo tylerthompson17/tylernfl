@@ -36,7 +36,7 @@ from common import normalize_team
 # mark 13.7% (Comeback 116, Thriller 74, Shootout 67), 2.1 a week.
 # Recent seasons run wilder than 2019, so expect somewhat more than that.
 COMEBACK_WP = 0.10          # the winner was down to a 1 in 10 chance or less
-THRILLER_INDEX = 6.88       # the top 5% of excitement index in 2019 to 2025
+THRILLER_INDEX = 6.88       # the top 5% of excitement index in 2019 to 2025 (/week says so)
 SHOOTOUT_POINTS = 65        # both teams' points together
 SHOOTOUT_MARGIN = 8         # and still a one-score game at the end
 
@@ -131,7 +131,11 @@ def build_game_excitement(played: list[tuple[dict, list[dict]]], season: int, up
             'score': scores[row['game_id']],
             'label': label(index, low, margin, points),
         })
-    return {'season': season, 'updated': updated, 'games': games}
+    cutoffs = {'comebackWp': COMEBACK_WP, 'thrillerIndex': THRILLER_INDEX,
+               'shootoutPoints': SHOOTOUT_POINTS, 'shootoutMargin': SHOOTOUT_MARGIN}
+    # The cutoffs go in the file so the pages that explain the labels
+    # read them from here rather than repeating them.
+    return {'season': season, 'updated': updated, 'cutoffs': cutoffs, 'games': games}
 
 
 def labels_by_game(excitement: dict) -> dict[str, str]:

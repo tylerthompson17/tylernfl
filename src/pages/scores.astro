@@ -9,14 +9,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Panel from '../components/Panel.astro';
 import ScoreBox from '../components/ScoreBox.astro';
 import tickerData from '../data/ticker.json';
-import type { TickerData } from '../data/types';
 import { scoreSlots } from '../lib/scores/slots';
+import { url } from '../utils/url';
+import excitementData from '../data/game_excitement.json';
+import scheduleData from '../data/schedule.json';
+import type { GameExcitementData, ScheduleData, TickerData } from '../data/types';
+import { completeWeeks } from '../lib/week/recap';
 import { weekLabel } from '../utils/week';
 
 const ticker = tickerData as TickerData;
 const slots = scoreSlots(ticker.games);
 const week = weekLabel(ticker.week);
 const title = week ? `Scores, ${ticker.season} ${week.toLowerCase()}` : 'Scores';
+
+// The latest week with a recap, which from Wednesday is not the week on display.
+const schedule = scheduleData as ScheduleData;
+const excitement = excitementData as GameExcitementData;
+const recapWeek =
+  excitement.season === schedule.season ? completeWeeks(schedule.games, excitement.games).at(-1) : undefined;
 ---
 
 <BaseLayout title="Scores">
@@ -32,6 +42,12 @@ const title = week ? `Scores, ${ticker.season} ${week.toLowerCase()}` : 'Scores'
       <>
         <p class="page-intro">
           Kickoff times are in your time zone. Scores update while games are being played.
+          {recapWeek != null && (
+            <>
+              {' '}The <a href={url(`week/${schedule.season}/${recapWeek}`)}>{weekLabel(recapWeek)!.toLowerCase()} recap</a>{' '}
+              ranks every game by excitement.
+            </>
+          )}
         </p>
         <div class="content-grid">
           {slots.map((slot) => (

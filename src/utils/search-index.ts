@@ -70,6 +70,7 @@ async function pageEntries(): Promise<SearchEntry[]> {
   const charts = await getCharts();
   return [
     page('Scores', 'scores', 'scoreboard schedule games slate results week kickoff'),
+    page('Week recap', 'week', 'week recap games ranked excitement thriller comeback shootout best'),
     page('Standings', 'standings', 'standings afc division conference playoff seeds wild card tiebreakers records'),
     page('NFC standings', 'standings/nfc', 'standings nfc division conference playoff seeds wild card tiebreakers'),
     page('Stat leaders', 'stats', 'stats leaders top', 'Stats'),

@@ -520,5 +520,15 @@ export interface GameExcitement {
 export interface GameExcitementData {
   season: number;
   updated: string;
+  /** The label rules, as set in pipelines/excitement.py */
+  cutoffs: {
+    /** Comeback: the winner's low point at or under this */
+    comebackWp: number;
+    /** Thriller: an index at or over this */
+    thrillerIndex: number;
+    /** Shootout: at least this many points, won by at most shootoutMargin */
+    shootoutPoints: number;
+    shootoutMargin: number;
+  };
   games: GameExcitement[];
 }
