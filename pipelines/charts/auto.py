@@ -39,7 +39,7 @@ import json
 from datetime import date, datetime, timedelta
 
 from common import DATA_DIR, normalize_team
-from excitement import GAME_SCORE, elapsed_minutes, winner_low, wp_after, wp_plays
+from excitement import GAME_SCORE, play_minutes, winner_low, wp_after, wp_plays
 
 from charts import style
 
@@ -109,11 +109,13 @@ def race_board(today: date) -> tuple[str, str, str]:
 
 
 def clock_label(quarter: float, remaining: float) -> str:
-    """The game clock as a viewer saw it: "Q4 2:10", "OT 5:03". nflverse
-    stores the quarter as a float, so it is made whole first (4.0 -> Q4)."""
+    """The game clock as a viewer saw it: "Q4 2:10", "OT 5:03", and in a
+    playoff game's second overtime "2OT 12:40". nflverse stores the quarter
+    as a float, so it is made whole first (4.0 -> Q4)."""
     quarter = int(quarter)
     left = int(remaining - (4 - quarter) * 900) if quarter <= 4 else int(remaining)
-    return f"{'OT' if quarter > 4 else f'Q{quarter}'} {left // 60}:{left % 60:02d}"
+    period = f'Q{quarter}' if quarter <= 4 else 'OT' if quarter == 5 else f'{quarter - 4}OT'
+    return f"{period} {left // 60}:{left % 60:02d}"
 
 
 def wp_points(plays: list[dict], away_score: int, home_score: int) -> list[tuple[float, float]]:
@@ -121,7 +123,7 @@ def wp_points(plays: list[dict], away_score: int, home_score: int) -> list[tuple
     wp_plays(), ending on the result. Each point is the probability after
     that play, so a swing shows at the play that caused it, where the hover
     readout names it, rather than at the next snap."""
-    points = [(elapsed_minutes(p['qtr'], p['game_seconds_remaining']), wp_after(p)) for p in plays]
+    points = [(play_minutes(p), wp_after(p)) for p in plays]
     if points:
         points.insert(0, (0.0, plays[0]['home_wp']))
     end = points[-1][0] if points else 60.0
@@ -368,7 +370,7 @@ def wp_hover(game: dict, plays: list[dict], ax) -> dict:
         change = swing(play)
         if abs(change) >= 0.005:
             lines.append(f"{home if change > 0 else away} +{round(abs(change) * 100)}% on the play")
-        points.append({'x': elapsed_minutes(play['qtr'], play['game_seconds_remaining']), 'y': after, 'lines': lines})
+        points.append({'x': play_minutes(play), 'y': after, 'lines': lines})
     a, h = game['away_score'], game['home_score']
     end = max(60.0, points[-1]['x'] if points else 60.0)
     overtime = ' in overtime' if game.get('overtime') else ''
@@ -494,7 +496,7 @@ def draw_epa(team_stats: dict):
 # Play-by-play fields the WP chart reads: the win probability before and
 # after each play, and what describe_play() needs to say what happened.
 PLAY_COLUMNS = [
-    'game_id', 'play_id', 'qtr', 'game_seconds_remaining', 'home_wp', 'home_wp_post',
+    'game_id', 'season_type', 'play_id', 'qtr', 'game_seconds_remaining', 'home_wp', 'home_wp_post',
     'sp', 'total_away_score', 'total_home_score',
     'play_type', 'yards_gained', 'touchdown', 'return_touchdown', 'safety', 'sack',
     'interception', 'interception_player_name', 'fumble_lost', 'fumbled_1_player_name',

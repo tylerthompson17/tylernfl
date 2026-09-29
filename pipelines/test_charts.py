@@ -192,16 +192,23 @@ class WinProbabilityTests(unittest.TestCase):
         plays = auto.wp_plays([play(30, 1, 800, 0.6), play(10, 1, 900, 0.5), play(20, 1, 850, None)])
         self.assertEqual([p['play_id'] for p in plays], [10, 30])
 
-    def test_overtime_runs_on_from_minute_sixty(self):
-        self.assertEqual(auto.elapsed_minutes(1, 3600), 0)
-        self.assertEqual(auto.elapsed_minutes(4, 0), 60)
-        self.assertEqual(auto.elapsed_minutes(5, 600), 60)
-        self.assertEqual(auto.elapsed_minutes(5, 300), 65)
+    def test_a_playoff_overtime_plots_after_regulation(self):
+        # Playoff overtime counts down from 15:00: the first overtime play
+        # is at minute 60, not 55, and the line ends on the result.
+        plays = [{'qtr': 4, 'game_seconds_remaining': 0, 'home_wp': 0.5, 'home_wp_post': 0.5, 'season_type': 'POST'},
+                 {'qtr': 5, 'game_seconds_remaining': 900, 'home_wp': 0.5, 'home_wp_post': 0.55, 'season_type': 'POST'},
+                 {'qtr': 5, 'game_seconds_remaining': 3, 'home_wp': 0.6, 'home_wp_post': 0.99, 'season_type': 'POST'}]
+        xs = [x for x, _ in auto.wp_points(plays, 22, 25)]
+        self.assertEqual(xs, sorted(xs))
+        self.assertEqual(xs[2], 60)
+        self.assertAlmostEqual(xs[-1], 60 + 897 / 60)
 
     def test_clock_reads_as_a_viewer_saw_it(self):
         self.assertEqual(auto.clock_label(4, 130), 'Q4 2:10')
         self.assertEqual(auto.clock_label(2, 1800 + 5), 'Q2 0:05')
         self.assertEqual(auto.clock_label(5, 313), 'OT 5:13')
+        self.assertEqual(auto.clock_label(5, 900), 'OT 15:00')
+        self.assertEqual(auto.clock_label(6, 760), '2OT 12:40')
 
     def test_points_end_on_the_result(self):
         points = auto.wp_points([play(1, 1, 3600, 0.55), play(2, 4, 10, 0.9)], 20, 24)

@@ -227,7 +227,10 @@ tylernfl/
   through `pbp_cache.py`: one entry per final of the ticker's season that nflverse has
   play-by-play for, all recomputed each run. `index` is the excitement index (every
   play's change in nflfastR's `home_wp`, either way, from before the first snap to
-  after the last play, scaled to 60 minutes when a game goes to overtime),
+  after the last play, scaled to 60 minutes when a game goes to overtime; overtime
+  periods are 10 minutes in the regular season and 15 in the playoffs, each counted
+  down from its full length in nflfastR, which `overtime_seconds` reads from
+  `season_type`, and the WP charts' time axis uses the same),
   `winnerLowWp` the eventual winner's lowest win probability (null for a tie),
   `score` what `GAME_SCORE` gives it, and `label` the first rule it clears:
   Comeback (winner down to 10% or less), Thriller (index 6.88 or more, the top 5% of

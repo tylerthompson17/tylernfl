@@ -44,10 +44,34 @@ SHOOTOUT_MARGIN = 8         # and still a one-score game at the end
 # ---------------------------------------------------------------- plays
 
 
-def elapsed_minutes(quarter: int, remaining: float) -> float:
-    """Minutes since kickoff. nflfastR counts overtime's clock down from
-    10:00 again, so overtime runs on from minute 60."""
-    return ((3600 - remaining) if quarter <= 4 else (3600 + 600 - remaining)) / 60
+# How long an overtime period is, in seconds: 10 minutes in the regular
+# season, 15 in the playoffs. nflfastR counts each period's clock down from
+# its full length (checked against every playoff overtime game of 2019 to
+# 2025: the first overtime play is at 900 seconds, never above 600 in the
+# regular season).
+REGULAR_SEASON_OVERTIME = 600
+PLAYOFF_OVERTIME = 900
+
+
+def overtime_seconds(play: dict) -> int:
+    """The length of an overtime period in this play's game, from
+    nflverse's season_type (REG or POST)."""
+    return PLAYOFF_OVERTIME if play.get('season_type') == 'POST' else REGULAR_SEASON_OVERTIME
+
+
+def elapsed_minutes(quarter: int, remaining: float, overtime: int = REGULAR_SEASON_OVERTIME) -> float:
+    """Minutes since kickoff. In overtime nflfastR counts each period's
+    clock down from its full length again (`overtime` seconds), so
+    overtime runs on from minute 60, period after period."""
+    quarter = int(quarter)
+    if quarter <= 4:
+        return (3600 - remaining) / 60
+    return (3600 + (quarter - 5) * overtime + overtime - remaining) / 60
+
+
+def play_minutes(play: dict) -> float:
+    """Minutes since kickoff when a play was run."""
+    return elapsed_minutes(play['qtr'], play['game_seconds_remaining'], overtime_seconds(play))
 
 
 def wp_plays(plays: list[dict]) -> list[dict]:
@@ -82,7 +106,7 @@ def excitement_index(plays: list[dict]) -> float:
         return 0.0
     series = [plays[0]['home_wp'], *(wp_after(p) for p in plays)]
     swing = sum(abs(b - a) for a, b in zip(series, series[1:]))
-    minutes = max(60.0, elapsed_minutes(plays[-1]['qtr'], plays[-1]['game_seconds_remaining']))
+    minutes = max(60.0, play_minutes(plays[-1]))
     return swing * 60 / minutes
 
 

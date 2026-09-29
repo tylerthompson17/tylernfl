@@ -20,6 +20,26 @@ def row(away, home, away_score, home_score, week=4):
             'away_score': away_score, 'home_score': home_score}
 
 
+class ClockTests(unittest.TestCase):
+    def test_overtime_runs_on_from_minute_sixty(self):
+        self.assertEqual(excitement.elapsed_minutes(1, 3600), 0)
+        self.assertEqual(excitement.elapsed_minutes(4, 0), 60)
+        self.assertEqual(excitement.elapsed_minutes(5, 600), 60)
+        self.assertEqual(excitement.elapsed_minutes(5, 300), 65)
+
+    def test_playoff_overtime_is_fifteen_minutes_a_period(self):
+        self.assertEqual(excitement.elapsed_minutes(5, 900, 900), 60)
+        self.assertEqual(excitement.elapsed_minutes(5, 0, 900), 75)
+        # A second period starts its clock at 15:00 again.
+        self.assertEqual(excitement.elapsed_minutes(6, 900, 900), 75)
+        self.assertEqual(excitement.elapsed_minutes(6, 450, 900), 82.5)
+
+    def test_the_period_length_comes_from_the_season_type(self):
+        self.assertEqual(excitement.play_minutes({'qtr': 5.0, 'game_seconds_remaining': 900, 'season_type': 'POST'}), 60)
+        self.assertEqual(excitement.play_minutes({'qtr': 5.0, 'game_seconds_remaining': 600, 'season_type': 'REG'}), 60)
+        self.assertEqual(excitement.play_minutes({'qtr': 5.0, 'game_seconds_remaining': 600}), 60)
+
+
 class IndexTests(unittest.TestCase):
     def test_every_change_counts_either_way(self):
         plays = [play(1, 3500, 0.5, 0.6), play(2, 2000, 0.6, 0.3), play(4, 10, 0.3, 0.9)]
@@ -34,6 +54,11 @@ class IndexTests(unittest.TestCase):
         # The last play ends overtime at 5:00 left: 65 minutes played.
         plays = [play(1, 3500, 0.5, 1.0), play(5, 300, 1.0, 0.0)]
         self.assertAlmostEqual(excitement.excitement_index(plays), 1.5 * 60 / 65)
+
+    def test_a_playoff_overtime_is_scaled_by_its_own_length(self):
+        # Ended with 3 seconds left of a 15 minute period: 74.95 minutes.
+        plays = [dict(play(1, 3500, 0.5, 1.0), season_type='POST'), dict(play(5, 3, 1.0, 0.0), season_type='POST')]
+        self.assertAlmostEqual(excitement.excitement_index(plays), 1.5 * 60 / (60 + 897 / 60))
 
     def test_regulation_is_never_scaled_up(self):
         plays = [play(1, 3500, 0.5, 0.9), play(4, 400, 0.9, 0.95)]
