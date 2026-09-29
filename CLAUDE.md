@@ -232,6 +232,10 @@ tylernfl/
   to 1; a game with no line is even odds. Lines exist only about a week ahead, so most
   games are even odds, and every place the odds show says "based on betting lines". No
   team rating model: Tyler's replaces the default, returning the same thing.
+- Both are delegated methods, with notes in `docs/methods/`: `playoff-simulation.md`
+  (including a run against nflseedR's own simulator) and `moneyline-win-probability.md`
+  (calibrated against 2019 to 2025 results). Their scripts are in `docs/methods/scripts/`,
+  run by hand.
 - `pipelines/test_playoff_odds.py` checks the simulator against a known season: 2024
   from week 12, every remaining game given its real result for certain, must give every
   chance as exactly 0 or 1 and reproduce the real final seeding and wins.
