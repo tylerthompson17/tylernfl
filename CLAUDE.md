@@ -5,10 +5,6 @@ Personal NFL analytics site: public tools (4th down model first), stat leaders, 
 ## Division of labor
 
 - Claude Code owns: site scaffolding, layout, components, styling, data plumbing, GitHub Actions.
-- Tyler owns: all statistical modeling (win probability, 4th down logic, team ratings). Do not write model logic. Leave clearly marked stubs and interfaces instead.
-- Modelling means predictive models: win probability, 4th down, team ratings. Descriptive
-  metrics computed from games already played, such as game excitement from nflfastR's
-  published win probability, are not modelling, and Claude Code may compute them.
 - Tyler owns `pipelines/charts/mine/`, like the modeling code: his chart scripts. Do not
   write, edit or delete anything in that folder. Claude Code wrote its README and
   `example_template.py` once, when the folder was created, and does not touch them
@@ -17,6 +13,19 @@ Personal NFL analytics site: public tools (4th down model first), stat leaders, 
 - Round number thresholds the sport already treats as milestones (300 passing
   yards, a 100 yard game) are not modelling; they are the site's editorial
   choice, like the leaderboard qualifiers.
+
+### Modeling ownership
+
+- Tyler's, do not build or edit: the 4th down model, the 2-point model, and team ratings.
+  Leave stubs and interfaces only.
+- Delegated: standard methods Tyler requests explicitly (for example spread to win
+  probability, playoff simulation, excitement index). For each, write a methodology
+  note in `docs/methods/`, validate it against a named reference and report the
+  comparison, and state its limitations. Never present a delegated model as Tyler's
+  original work in site copy.
+- Descriptive metrics (EPA, success rate, rankings, excitement) are not models and need
+  no special handling.
+- If unsure which category something falls in, ask.
 
 ## Stack
 
