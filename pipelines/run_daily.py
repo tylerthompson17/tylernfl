@@ -1,6 +1,6 @@
 """Daily site data job: writes ticker.json, stats/, players/,
 rosters/, transactions.json, on_this_day.json, standings.json,
-schedule.json and playoff_odds.json into
+schedule.json, playoff_odds.json and game_excitement.json into
 src/data/, then draws
 the home page's auto chart (charts/auto.json and its entry in charts/archive/)
 from them.
@@ -25,7 +25,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
-from charts.auto import build_auto_charts, write_charts  # noqa: E402
+from charts.auto import build_auto_charts, season_finals, wp_plays_for, write_charts  # noqa: E402
+from excitement import build_game_excitement, labels_by_game  # noqa: E402
 from game_logs import build_game_logs  # noqa: E402
 from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
 from on_this_day import build_on_this_day, load_on_this_day_input  # noqa: E402
@@ -33,7 +34,7 @@ from rosters import build_rosters, load_roster_rows, unknown_statuses  # noqa: E
 from playoff_odds import build_playoff_odds  # noqa: E402
 from schedule import build_schedule  # noqa: E402
 from standings import build_standings  # noqa: E402
-from ticker import build_ticker, load_schedule_rows  # noqa: E402
+from ticker import build_ticker, load_schedule_rows, with_labels  # noqa: E402
 from transactions import (  # noqa: E402
     build_transactions,
     load_injury_rows,
@@ -61,6 +62,12 @@ def main() -> None:
 
     schedule_rows = load_schedule_rows(today)
     ticker = build_ticker(schedule_rows, today)
+    # Every final of the ticker's season, from play-by-play, so the ticker
+    # can carry each game's label. The auto charts below read the same
+    # cached season.
+    played = wp_plays_for(season_finals(schedule_rows, ticker['season']), ticker['season'], stats_season(today))
+    excitement = build_game_excitement(played, ticker['season'], updated)
+    ticker = with_labels(ticker, labels_by_game(excitement))
     player_rows, stats_year = load_with_fallback(load_player_week_rows, stats_season(today))
     boards = build_leaderboards(player_rows, stats_year)
     game_logs = build_game_logs(player_rows, schedule_rows, stats_year)
@@ -69,6 +76,8 @@ def main() -> None:
 
     week = f"week {ticker['week']}" if ticker['week'] else f"offseason, opener {ticker['nextOpener']}"
     print(f"{today}: ticker {ticker['season']} {week}, {len(ticker['games'])} games")
+    marked = [g for g in excitement['games'] if g['label']]
+    print(f"game excitement: {len(excitement['games'])} games, {len(marked)} labelled")
     print('boards: ' + ', '.join(f"{key} {len(board['rows'])}" for key, board in boards.items()))
     players = sum(len(r['players']) for r in rosters.values())
     print(f"rosters: {rosters_year} week {next(iter(rosters.values()))['week'] if rosters else 0}, "
@@ -113,6 +122,7 @@ def main() -> None:
     files.append(('standings.json', standings, ('updated',)))
     files.append(('schedule.json', schedule, ('updated',)))
     files.append(('playoff_odds.json', odds, ('updated',)))
+    files.append(('game_excitement.json', excitement, ('updated',)))
     files += [(f'rosters/{team}.json', roster, ('updated',)) for team, roster in sorted(rosters.items())]
 
     if args.dry_run:

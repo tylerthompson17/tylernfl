@@ -113,7 +113,8 @@ def build_week_spans(games: list[dict]) -> list[WeekSpan]:
 
 
 def build_ticker(games: list[dict], today: date) -> dict:
-    """Pure function from schedule rows to the TickerData shape in src/data/types.ts."""
+    """Pure function from schedule rows to the TickerData shape in src/data/types.ts.
+    Labels start empty; with_labels() fills them in."""
     weeks = build_week_spans(games)
     selected = select_week(weeks, today)
     updated = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -151,10 +152,16 @@ def build_ticker(games: list[dict], today: date) -> dict:
                 # ESPN event id as recorded by nflverse; the browser uses it to
                 # match live scores. No ESPN data is fetched here.
                 'espnId': g.get('espn') or None,
+                'label': None,
             }
             for g in week_games
         ],
     }
+
+
+def with_labels(ticker: dict, labels: dict[str, str]) -> dict:
+    """The ticker with each game's excitement label (excitement.labels_by_game)."""
+    return {**ticker, 'games': [{**game, 'label': labels.get(game['id'])} for game in ticker['games']]}
 
 
 def load_schedule_rows(today: date) -> list[dict]:

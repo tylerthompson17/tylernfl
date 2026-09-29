@@ -22,6 +22,9 @@ export type TeamsData = Team[];
 /** ticker.json: one full NFL week of games. */
 export type GameState = 'pre' | 'live' | 'final';
 
+/** The excitement labels, set by the rules in pipelines/excitement.py. */
+export type GameLabel = 'Comeback' | 'Thriller' | 'Shootout';
+
 export interface TickerGame {
   /** Stable id, e.g. "2026_02_DET_BUF" */
   id: string;
@@ -46,6 +49,11 @@ export interface TickerGame {
   kickoff: string | null;
   /** ESPN event id recorded by nflverse, used to match live scores. Null if unknown. */
   espnId: string | null;
+  /**
+   * One-word excitement mark, copied from game_excitement.json. Only finals
+   * nflverse has play-by-play for can have one; null otherwise.
+   */
+  label: GameLabel | null;
 }
 
 export interface TickerData {
@@ -487,4 +495,30 @@ export interface ScheduleData {
   season: number;
   updated: string;
   games: ScheduleGame[];
+}
+
+/**
+ * game_excitement.json: written daily by pipelines/excitement.py, one entry
+ * per final of the season that nflverse has play-by-play for, in kickoff
+ * order. Win probability is nflfastR's as published.
+ */
+export interface GameExcitement {
+  /** Game id, as in ticker.json and schedule.json */
+  id: string;
+  week: number;
+  away: string;
+  home: string;
+  /** Sum of every play's change in win probability, per 60 minutes, 2 places */
+  index: number;
+  /** The winner's lowest win probability, 0 to 1, 3 places. Null for a tie. */
+  winnerLowWp: number | null;
+  /** GAME_SCORE in excitement.py: what /week ranks by, highest first */
+  score: number;
+  label: GameLabel | null;
+}
+
+export interface GameExcitementData {
+  season: number;
+  updated: string;
+  games: GameExcitement[];
 }

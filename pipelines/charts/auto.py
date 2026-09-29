@@ -17,9 +17,9 @@ that played; only the day's pick, below, reaches the gallery.
 
 Which chart is today's, the one auto.json names and the home page shows:
 
-- The morning after a game day, the best of that day's games: the one
-  that stayed closest late and blew the biggest lead, scored by
-  GAME_SCORE. It is timely, and only possible then. Games nflverse has
+- The morning after a game day, the best of that day's games, scored by
+  GAME_SCORE in excitement.py, the same function /week ranks by (today
+  the excitement index, how far win probability swung). It is timely, and only possible then. Games nflverse has
   not published play-by-play for yet are not candidates, and a day with
   none of them falls through to the templates below.
 - Any other day, the date picks between the others that have enough data:
@@ -37,9 +37,9 @@ switch to it.
 
 import json
 from datetime import date, datetime, timedelta
-from typing import Callable
 
 from common import DATA_DIR, normalize_team
+from excitement import GAME_SCORE, elapsed_minutes, winner_low, wp_after, wp_plays
 
 from charts import style
 
@@ -53,23 +53,8 @@ RACE_BOARDS = [
 
 # ---------------------------------------------------------------- picking
 #
-# Which of a day's finals the win probability chart draws. Margin alone
-# read the scoreboard and nothing else: on September 13 it ranked GB at
-# MIN 10th of that day's 13 games, a 17-point final in which a team gave
-# back a 91% lead. The score reads the shape of the game instead, from nflfastR's
-# published win probability: how close it stayed when it mattered, and
-# the biggest lead anyone handed back.
-
-# "Late" is the last five minutes of regulation. Overtime is late all the
-# way through, whatever its clock says.
-LATE_SECONDS = 300
-
-# The two halves of the score. Closeness leads: a game still in doubt at
-# the end is the one worth replaying, and a collapse that ends in a
-# comfortable win is a smaller story than one that does not.
-LATE_WEIGHT = 0.6
-COLLAPSE_WEIGHT = 0.4
-
+# Which of a day's finals the win probability chart draws: the highest
+# GAME_SCORE (excitement.py), shared with /week so the two never disagree.
 
 def finals_on(schedule_rows: list[dict], day: date) -> list[dict]:
     """The games played on `day` that have a final score."""
@@ -84,62 +69,6 @@ def kickoff_minutes(gametime: str | None) -> int:
     """Kickoff as minutes past midnight, for ordering a day's games."""
     hours, _, minutes = (gametime or '00:00').partition(':')
     return int(hours) * 60 + int(minutes or 0)
-
-
-def doubt(wp: float) -> float:
-    """1 where the game is a coin flip, 0 where it is decided."""
-    return 1 - 2 * abs(wp - 0.5)
-
-
-def late_doubt(plays: list[dict]) -> float:
-    """How much the game was still in doubt late: the mean doubt over the
-    plays in the last LATE_SECONDS of regulation and all of overtime. A
-    game put away by the fourth quarter scores near 0 however wild the
-    first three were."""
-    late = [p for p in plays if p['qtr'] > 4 or p['game_seconds_remaining'] <= LATE_SECONDS]
-    return sum(doubt(wp_after(p)) for p in late) / len(late) if late else 0.0
-
-
-def collapse(plays: list[dict]) -> float:
-    """The biggest lead blown: how likely a team was to win before giving
-    it all the way back to even or worse, stretched so 50% is 0 and 100%
-    is 1. A team that reached 95% and was level again later scores 0.90;
-    a game where no lead was ever handed back scores 0. Either team can
-    be the one that let it go.
-
-    Measuring the fall itself instead would score every game the same:
-    the losing team always ends at 0, having kicked off at about 50%.
-    """
-    worst = 0.0
-    home = [wp_after(p) for p in plays]
-    for series in (home, [1 - wp for wp in home]):
-        peak = 0.0
-        for wp in series:
-            peak = max(peak, wp)
-            if wp <= 0.5:
-                worst = max(worst, 2 * (peak - 0.5))
-    return worst
-
-
-def drama(plays: list[dict]) -> float:
-    """How worth watching one game was, 0 to 1."""
-    return LATE_WEIGHT * late_doubt(plays) + COLLAPSE_WEIGHT * collapse(plays)
-
-
-def late_drama(games: list[tuple[dict, list[dict]]]) -> dict[str, float]:
-    """The default GAME_SCORE: a score per game_id, over (schedule row,
-    its win probability plays) pairs."""
-    return {row['game_id']: drama(plays) for row, plays in games}
-
-
-# How a day's games are ranked: a function from the day's finals, each
-# with its plays, to a score per game_id. The highest is drawn, and
-# GAME_SCORE names the one in use. late_drama reads nflfastR's published
-# win probability, the same numbers the chart itself draws, the way
-# playoff_odds reads published betting lines; the weights above are a
-# starting point, not a finding. A game rating of Tyler's replaces it,
-# taking the same pairs and returning the same thing.
-GAME_SCORE: Callable[[list[tuple[dict, list[dict]]]], dict[str, float]] = late_drama
 
 
 def best_game(games: list[tuple[dict, list[dict]]],
@@ -179,31 +108,12 @@ def race_board(today: date) -> tuple[str, str, str]:
 # ---------------------------------------------------------------- the numbers
 
 
-def elapsed_minutes(quarter: int, remaining: float) -> float:
-    """Minutes since kickoff. nflfastR counts overtime's clock down from
-    10:00 again, so overtime runs on from minute 60."""
-    return ((3600 - remaining) if quarter <= 4 else (3600 + 600 - remaining)) / 60
-
-
 def clock_label(quarter: float, remaining: float) -> str:
     """The game clock as a viewer saw it: "Q4 2:10", "OT 5:03". nflverse
     stores the quarter as a float, so it is made whole first (4.0 -> Q4)."""
     quarter = int(quarter)
     left = int(remaining - (4 - quarter) * 900) if quarter <= 4 else int(remaining)
     return f"{'OT' if quarter > 4 else f'Q{quarter}'} {left // 60}:{left % 60:02d}"
-
-
-def wp_plays(plays: list[dict]) -> list[dict]:
-    """Plays with a win probability, in the order they happened."""
-    usable = [p for p in plays if None not in (p.get('home_wp'), p.get('game_seconds_remaining'), p.get('qtr'))]
-    return sorted(usable, key=lambda p: p['play_id'])
-
-
-def wp_after(play: dict) -> float:
-    """Home win probability once the play is over. nflfastR's home_wp is
-    before the snap; home_wp_post is after, missing on a few rows."""
-    after = play.get('home_wp_post')
-    return play['home_wp'] if after is None else after
 
 
 def wp_points(plays: list[dict], away_score: int, home_score: int) -> list[tuple[float, float]]:
@@ -218,14 +128,6 @@ def wp_points(plays: list[dict], away_score: int, home_score: int) -> list[tuple
     result = 1.0 if home_score > away_score else 0.0 if away_score > home_score else 0.5
     points.append((max(end, 60.0), result))
     return points
-
-
-def winner_low(plays: list[dict], home_won: bool) -> tuple[float, dict]:
-    """The winner's lowest win probability before the result, and the play
-    it came after. The first low point wins a tie, the earliest scare."""
-    lowest = min(plays, key=lambda p: p['home_wp'] if home_won else 1 - p['home_wp'])
-    wp = lowest['home_wp'] if home_won else 1 - lowest['home_wp']
-    return wp, lowest
 
 
 def wp_note(game: dict, plays: list[dict]) -> str:

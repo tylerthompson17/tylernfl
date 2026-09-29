@@ -130,13 +130,13 @@ def wp_play(qtr, remaining, wp):
     return {'qtr': qtr, 'game_seconds_remaining': remaining, 'home_wp': wp, 'home_wp_post': wp}
 
 
-def decided_late(wp=0.99):
-    """A game put away early: wild in the first half, over by the fourth."""
-    return [wp_play(1, 3000, 0.5), wp_play(2, 2000, 0.1), wp_play(2, 1900, 0.8), wp_play(4, 200, wp), wp_play(4, 60, wp)]
+def swinging():
+    """A game that swung hard in the first half and was over by the fourth."""
+    return [wp_play(1, 3000, 0.5), wp_play(2, 2000, 0.1), wp_play(2, 1900, 0.8), wp_play(4, 200, 0.99), wp_play(4, 60, 0.99)]
 
 
-def close_late():
-    """A game still on a knife edge at the end."""
+def level():
+    """A game that barely moved from even."""
     return [wp_play(1, 3000, 0.5), wp_play(4, 240, 0.52), wp_play(4, 120, 0.48), wp_play(4, 20, 0.5)]
 
 
@@ -146,42 +146,17 @@ class PickingTests(unittest.TestCase):
         self.assertEqual([r['away_team'] for r in auto.finals_on(rows, date(2026, 9, 20))], ['A'])
         self.assertEqual(auto.finals_on(rows, date(2026, 9, 18)), [])
 
-    def test_late_doubt_reads_the_end_of_the_game_only(self):
-        # The three plays inside five minutes: 52%, 48% and even.
-        self.assertAlmostEqual(auto.late_doubt(close_late()), (0.96 + 0.96 + 1.0) / 3)
-        self.assertLess(auto.late_doubt(decided_late()), 0.05)
-
-    def test_all_of_overtime_counts_as_late(self):
-        # Overtime's clock counts down from 10:00 again, so its plays are
-        # late whatever game_seconds_remaining says.
-        self.assertEqual(auto.late_doubt([wp_play(5, 600, 0.5)]), 1.0)
-
-    def test_collapse_is_the_lead_handed_back(self):
-        blown = [wp_play(3, 1200, 0.95), wp_play(4, 300, 0.4), wp_play(4, 10, 0.2)]
-        self.assertAlmostEqual(auto.collapse(blown), 0.9)
-        # The road team can be the one that lets it go.
-        self.assertAlmostEqual(auto.collapse([wp_play(3, 1200, 0.05), wp_play(4, 10, 0.6)]), 0.9)
-
-    def test_a_lead_that_was_never_handed_back_is_no_collapse(self):
-        self.assertEqual(auto.collapse([wp_play(1, 3000, 0.55), wp_play(2, 1800, 0.8), wp_play(4, 10, 0.99)]), 0.0)
-
-    def test_the_best_game_is_the_one_still_in_doubt_late(self):
-        games = [(game('A', 'B', 20, 17, '13:00'), decided_late()),
-                 (game('C', 'D', 41, 10, '16:25'), close_late())]
-        picked, _ = auto.best_game(games, auto.GAME_SCORE(games))
-        self.assertEqual(picked['away_team'], 'C')
-
-    def test_a_blown_lead_beats_a_quiet_close_game(self):
-        quiet = [wp_play(1, 3000, 0.6), wp_play(3, 1200, 0.72), wp_play(4, 200, 0.62), wp_play(4, 10, 0.58)]
-        choke = [wp_play(1, 3000, 0.5), wp_play(3, 1200, 0.93), wp_play(4, 200, 0.5), wp_play(4, 10, 0.45)]
-        games = [(game('A', 'B', 20, 17, '13:00'), quiet), (game('C', 'D', 24, 21, '16:25'), choke)]
+    def test_the_pick_is_the_game_that_swung_most(self):
+        # The pick is the highest GAME_SCORE, the same score /week ranks by.
+        games = [(game('A', 'B', 20, 17, '13:00'), level()),
+                 (game('C', 'D', 41, 10, '16:25'), swinging())]
         picked, _ = auto.best_game(games, auto.GAME_SCORE(games))
         self.assertEqual(picked['away_team'], 'C')
 
     def test_equal_games_go_to_the_later_kickoff(self):
-        games = [(game('A', 'B', 20, 17, '13:00'), close_late()),
-                 (game('C', 'D', 24, 21, '20:20'), close_late()),
-                 (game('E', 'F', 10, 13, '16:25'), close_late())]
+        games = [(game('A', 'B', 20, 17, '13:00'), level()),
+                 (game('C', 'D', 24, 21, '20:20'), level()),
+                 (game('E', 'F', 10, 13, '16:25'), level())]
         picked, _ = auto.best_game(games, auto.GAME_SCORE(games))
         self.assertEqual(picked['away_team'], 'C')
 
@@ -517,9 +492,10 @@ class ArchiveTests(unittest.TestCase):
 class EveryGameTests(unittest.TestCase):
     """Every final gets a win probability chart; one a day is the pick."""
 
-    # A thriller, a game decided early, a blowout, and the next day's game.
+    # A thriller that swung both ways, a game decided early, a blowout, and
+    # the next day's game.
     GAMES = [
-        (game('IND', 'KC', 30, 33, '20:20'), [(1, 1, 3600, 0.5, 0.5), (2, 4, 60, 0.48, 0.52)]),
+        (game('IND', 'KC', 30, 33, '20:20'), [(1, 1, 3600, 0.5, 0.85), (2, 3, 1200, 0.85, 0.15), (3, 4, 60, 0.15, 0.9)]),
         (game('GB', 'NYJ', 20, 17, '13:00'), [(1, 1, 3600, 0.5, 0.5), (2, 4, 60, 0.95, 0.97)]),
         (game('CAR', 'ATL', 34, 3, '13:00'), [(1, 1, 3600, 0.5, 0.6), (2, 4, 60, 0.99, 0.99)]),
         (game('NYG', 'LAR', 6, 28, day='2026-09-21'), [(1, 1, 3600, 0.5, 0.6), (2, 4, 60, 0.98, 0.99)]),

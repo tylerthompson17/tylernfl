@@ -6,6 +6,9 @@ Personal NFL analytics site: public tools (4th down model first), stat leaders, 
 
 - Claude Code owns: site scaffolding, layout, components, styling, data plumbing, GitHub Actions.
 - Tyler owns: all statistical modeling (win probability, 4th down logic, team ratings). Do not write model logic. Leave clearly marked stubs and interfaces instead.
+- Modelling means predictive models: win probability, 4th down, team ratings. Descriptive
+  metrics computed from games already played, such as game excitement from nflfastR's
+  published win probability, are not modelling, and Claude Code may compute them.
 - Tyler owns `pipelines/charts/mine/`, like the modeling code: his chart scripts. Do not
   write, edit or delete anything in that folder. Claude Code wrote its README and
   `example_template.py` once, when the folder was created, and does not touch them
@@ -77,7 +80,7 @@ tylernfl/
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `game_excitement.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
@@ -148,15 +151,12 @@ tylernfl/
   teams that played it. The pick is chosen from the day's files the same way as before,
   from the files `run_daily.py` just wrote and `team_stats.json`. The morning after a
   game day it is the best of that day's games; a day with none falls through to the
-  other templates. Which game is a pluggable input, like the playoff odds' game
-  probabilities: `GAME_SCORE` in `auto.py`, a function from the day's finals with
-  their plays to a score per game. The default, `late_drama`, reads nflfastR's
-  published win probability: 60% how close the game stayed in the last five minutes
-  and all of overtime, 40% the biggest lead handed back to even (`LATE_WEIGHT`,
-  `COLLAPSE_WEIGHT`). Ties go to the later kickoff. Those weights are a starting
-  point, not a finding; a game rating of Tyler's replaces the function, returning the
-  same thing. Margin alone was the first rule and picked dull three-point games over
-  blown leads. Other days the date picks between offense vs defense EPA and a top 5 yards race (from
+  other templates. Which game is the highest `GAME_SCORE` in `excitement.py`, the same
+  function `/week` ranks by, so the two never disagree. It is the excitement index
+  alone (see `game_excitement.json`), and Tyler has said to keep it that way. Ties go
+  to the later kickoff. Margin alone was the first rule and picked dull three-point
+  games over blown leads; `late_drama` (late closeness and blown leads, weighted 60/40)
+  came next and was replaced by the index in step 15. Other days the date picks between offense vs defense EPA and a top 5 yards race (from
   week 4), so a rerun gives the same chart. The WP chart marks no plays on the line (key
   play callouts were tried and removed); the hover readout names each play. Win
   probability and EPA are nflfastR's
@@ -224,6 +224,19 @@ tylernfl/
 - `pipelines/test_playoff_odds.py` checks the simulator against a known season: 2024
   from week 12, every remaining game given its real result for certain, must give every
   chance as exactly 0 or 1 and reproduce the real final seeding and wins.
+- `game_excitement.json` is written daily by `pipelines/excitement.py`, from play-by-play
+  through `pbp_cache.py`: one entry per final of the ticker's season that nflverse has
+  play-by-play for, all recomputed each run. `index` is the excitement index (every
+  play's change in nflfastR's `home_wp`, either way, from before the first snap to
+  after the last play, scaled to 60 minutes when a game goes to overtime),
+  `winnerLowWp` the eventual winner's lowest win probability (null for a tie),
+  `score` what `GAME_SCORE` gives it, and `label` the first rule it clears:
+  Comeback (winner down to 10% or less), Thriller (index 6.88 or more, the top 5% of
+  2019 to 2025), Shootout (65 or more points and a margin of 8 or less), or null.
+  The cutoffs were set against all 1,871 regular season games of 2019 to 2025, aiming
+  at about two marked games a week: together they mark 13.7% (Comeback 116, Thriller
+  74, Shootout 67). Recent seasons run wilder, so expect somewhat more. Each ticker
+  game carries its `label`, copied from this file.
 - There is no placeholder data left. The 4th down model record panel and
   `model_record.json` were removed until the model exists; restore them from git history
   (commit "Replace the rail's model record placeholder") when it does.
@@ -499,6 +512,10 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
 14. Playoff odds: `playoff_odds.json` daily, 10,000 simulations with the standings'
     tiebreakers, moneyline game probabilities through a pluggable function, shown on team
     pages (done; see the data contract and Team pages).
+15. Game excitement: `game_excitement.json` daily (excitement index, the winner's low
+    point, a label), the ticker and `/scores` marked with a 4px slate bar and the label
+    word, and a `/week` page ranking the week's games by `GAME_SCORE`. The spoiler-free
+    version of `/week` is designed and waiting in `docs/week-recap-spoilers.md`.
 
 ## Articles
 

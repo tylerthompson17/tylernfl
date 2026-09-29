@@ -15,6 +15,7 @@ function game(away: string, home: string, kickoff: string | null): TickerGame {
     detail: '',
     kickoff,
     espnId: null,
+    label: null,
   };
 }
 
