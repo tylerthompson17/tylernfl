@@ -9,6 +9,10 @@
  * carries the time, so a scheduled game has no status bar at all rather
  * than repeating it. The bar appears when the game kicks off, or if ESPN
  * reports something else (postponed, say).
+ *
+ * A labelled final gets the ticker's mark: a slate bar on the left edge
+ * and the word (Comeback, Thriller, Shootout) at the right of the status
+ * bar, beside [data-detail] rather than in it.
  */
 import teamsData from '../data/teams.json';
 import TeamChip from './TeamChip.astro';
@@ -31,12 +35,13 @@ const sides = [
 ];
 ---
 
-<article class="box" data-game data-state={game.state} data-espn-id={game.espnId ?? undefined}>
+<article class:list={['box', { marked: game.label }]} data-game data-state={game.state} data-espn-id={game.espnId ?? undefined}>
   <p class="status">
     <span
       class:list={['detail', { live: game.state === 'live' }]}
       data-detail>{game.state === 'pre' ? '' : game.detail}</span
     >
+    {game.label && <span class="label"><span class="visually-hidden">, </span>{game.label}</span>}
   </p>
 
   {
@@ -73,6 +78,24 @@ const sides = [
     font-family: var(--font-heading);
     font-size: 13px;
     color: var(--text-dim);
+  }
+
+  /* Content stays in line with unmarked boxes: the bar takes its width
+     out of the padding. */
+  .box.marked {
+    border-left: var(--mark-bar) solid var(--header);
+  }
+
+  .box.marked .status,
+  .box.marked .row,
+  .box.marked .last-score {
+    padding-left: calc(var(--space-2) - var(--mark-bar) + 1px);
+  }
+
+  .label {
+    margin-left: auto;
+    font-weight: 700;
+    color: var(--text);
   }
 
   .status:has([data-detail]:empty) {

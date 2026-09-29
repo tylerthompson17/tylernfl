@@ -11,6 +11,13 @@
  * number, the site's one bit of motion besides the carousel itself. While
  * a game is pinned live, the last line says who scored last; it stays
  * hidden otherwise.
+ *
+ * A final the pipeline labelled (Comeback, Thriller, Shootout, from
+ * game_excitement.json) gets a slate bar on its left edge and the word
+ * under its status. The word carries the meaning; the bar only draws the
+ * eye. Not yellow, which in the ticker means live. The label sits beside
+ * [data-detail], never inside it, since the live client rewrites that
+ * element's text.
  */
 import type { TickerGame } from '../data/types';
 import { url } from '../utils/url';
@@ -27,13 +34,16 @@ const homeWon = decided && game.homeScore! > game.awayScore!;
 ---
 
 <li
-  class="game"
+  class:list={['game', { marked: game.label }]}
   data-game
   data-state={game.state}
   data-espn-id={game.espnId ?? undefined}
   data-kickoff={game.kickoff ?? undefined}
 >
-  <span class:list={['detail', { live: game.state === 'live' }]} data-detail>{game.detail}</span>
+  <span class="status">
+    <span class:list={['detail', { live: game.state === 'live' }]} data-detail>{game.detail}</span>
+    {game.label && <span class="label"><span class="visually-hidden">, </span>{game.label}</span>}
+  </span>
   <span class:list={['line', { won: awayWon }]} data-side="away" data-team={game.away}>
     <a class="team" href={url(`teams/${game.away}`)}>{game.away}</a>
     <span class="num" data-score>{game.awayScore ?? ''}</span>
@@ -63,12 +73,33 @@ const homeWon = decided && game.homeScore! > game.awayScore!;
     line-height: 1.35;
   }
 
-  .detail {
+  /* Keeps the same width as an unmarked slot: the bar takes its width
+     out of the padding. */
+  .game.marked {
+    border-left: var(--mark-bar) solid var(--header);
+    padding-left: calc(var(--space-3) - var(--mark-bar));
+  }
+
+  /* Positioned so the label's visually hidden comma stays inside the
+     ticker's scroll box; left to the page, it widened the whole page on
+     phones, where the ticker row scrolls. */
+  .status {
+    position: relative;
     grid-area: detail;
     align-self: center;
-    color: var(--text-dim);
-    font-size: 12px;
+    display: flex;
+    flex-direction: column;
     max-width: 72px;
+    font-size: 12px;
+  }
+
+  .detail {
+    color: var(--text-dim);
+  }
+
+  .label {
+    font-weight: 700;
+    color: var(--text);
   }
 
   .detail.live {

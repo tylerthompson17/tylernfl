@@ -31,6 +31,7 @@
   /* Structural paddings from the design spec */
   --header-pad: 6px 10px; /* panel header bars */
   --cell-pad: 2px 6px; /* table cells */
+  --mark-bar: 4px; /* slate bar on an excitement labelled game's left edge */
 
   /* Radius: none, anywhere. No shadows, no gradients, no motion. */
   --radius: 0;

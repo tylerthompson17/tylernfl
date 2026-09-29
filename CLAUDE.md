@@ -16,8 +16,7 @@ Personal NFL analytics site: public tools (4th down model first), stat leaders, 
   that show their charts, and change `style.py` without breaking what it offers.
 - Round number thresholds the sport already treats as milestones (300 passing
   yards, a 100 yard game) are not modelling; they are the site's editorial
-  choice, like the leaderboard qualifiers. Scoring one kind of game against
-  another is modelling and is Tyler's.
+  choice, like the leaderboard qualifiers.
 
 ## Stack
 
@@ -300,6 +299,12 @@ header bars and boxed content, not decoration. Do not use PFR's green.
   the tooltip. It holds its
   space from kickoff to final ("No scoring yet" at 0 to 0) so the ticker's
   height does not jump on each score.
+- A final with an excitement label (`label` in ticker.json) gets a 4px slate
+  (`--header`) bar on its left edge (`--mark-bar`, taken out of the slot's padding so
+  its width does not change) and the word under "Final". The word carries the meaning;
+  the bar is not yellow, which in the ticker means live. The label sits beside
+  `[data-detail]`, never inside it, since the live client rewrites that element. Order
+  stays chronological and nothing moves.
 - Body text 13px, tables 12px, line-height 1.35. Headers in Barlow Condensed, bold.
 - Links are blue and underlined. Player and team names are always links.
 - Yellow is only ever a background (announcement strip, highlighted row),
@@ -319,6 +324,8 @@ linked from the ticker's week label.
   winner in bold. A scheduled game has no status bar at all, since the slot
   heading above already carries the time; the bar appears with the clock at
   kickoff and stays for the final.
+- A labelled final carries the ticker's mark: the slate bar on the box's left edge and
+  the word at the right of the status bar.
 - Boxes stay in kickoff order. Unlike the ticker, live games are not moved to
   the front: the value here is a stable week, and a slate kicking off together
   already groups them.
