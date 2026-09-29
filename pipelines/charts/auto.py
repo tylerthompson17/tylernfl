@@ -31,8 +31,8 @@ Which chart is today's, the one auto.json names and the home page shows:
 Everything is read from published nflverse data or from this site's own
 data files. Win probability and EPA are nflfastR's values as published in
 nflverse play-by-play, not a model of this site's, and the source line
-says so. When Tyler's win probability model exists, the WP template should
-switch to it.
+says so. If the 4th down model's team-adjusted win probability is later
+used for game charts, ask Tyler first.
 """
 
 import json

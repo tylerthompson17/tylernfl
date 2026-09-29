@@ -19,12 +19,15 @@ Personal NFL analytics site: public tools (4th down model first), stat leaders, 
 - Tyler's, do not build or edit: the 4th down model, the 2-point model, and team ratings.
   Leave stubs and interfaces only.
 - Delegated: standard methods Tyler requests explicitly (for example spread to win
-  probability, playoff simulation, excitement index). For each, write a methodology
+  probability, playoff simulation). For each, write a methodology
   note in `docs/methods/`, validate it against a named reference and report the
   comparison, and state its limitations. Never present a delegated model as Tyler's
   original work in site copy.
 - Descriptive metrics (EPA, success rate, rankings, excitement) are not models and need
-  no special handling.
+  no special handling. The excitement index is one: its calibration report (in
+  `pipelines/excitement.py` and under `game_excitement.json` below) is its documentation.
+- Win probability is nflfastR's published values, cited as an external source wherever
+  it is shown. Tyler's team adjustments to it are part of the 4th down model and are his.
 - If unsure which category something falls in, ask.
 
 ## Stack
@@ -169,7 +172,7 @@ tylernfl/
   play callouts were tried and removed); the hover readout names each play. Win
   probability and EPA are nflfastR's
   published values, not a model of this site's, and the chart's source line says so;
-  when Tyler's win probability model exists, the WP template should use it.
+  if the 4th down model's team-adjusted WP is later used for game charts, ask first.
 - Every auto chart is kept: `charts/archive/<slug>.{json,svg,hover.json}`, one set per
   chart, and `charts/auto.json` names today's (`{"slug": ...}`). The slug says what the
   chart covers (`auto-2026-week-2-ind-at-kc-win-probability`,
