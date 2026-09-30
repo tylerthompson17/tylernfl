@@ -6,6 +6,7 @@ state the first time it is needed (or with --regenerate). By hand, from the
 repo root (never on the site or in CI):
     pipelines/.venv/bin/python tests/fixtures/states/generate.py            # every state
     pipelines/.venv/bin/python tests/fixtures/states/generate.py sunday     # one
+    pipelines/.venv/bin/python tests/fixtures/states/generate.py --hash     # the current pipeline hash
 
 nflverse corrects its data now and then, and season rosters are always
 today's, so a set generated on another day can differ slightly.
@@ -25,11 +26,21 @@ reports for weeks that had not started (a week counts from 3 days before its
 first kickoff). Season rosters and the player table cannot be dated and are
 today's.
 
+Betting lines appear about a week before a game (CLAUDE.md), so lines for
+games more than LINES_LEAD after the run are hidden too; nflverse keeps
+every closing line, which put next season's week 1 lines in June.
+
+generated.json also records pipeline_hash(): a hash of every pipeline file
+that shapes the data, this script and states.json. scripts/audit-pages.ts
+asks for the current one (generate.py --hash) and regenerates a set whose
+hash differs, so a change to the pipelines never leaves a stale set in use.
+
 Afterwards the chart archive is trimmed to today's pick and each team's
 newest chart (the home page and team pages), and every `updated` stamp is set
 to its run's moment, so the files read as written then.
 """
 
+import hashlib
 import json
 import os
 import shutil
@@ -47,6 +58,11 @@ SEEDS = ['teams.json', 'logos.json', 'performance_percentiles.json']
 EASTERN = ZoneInfo('America/New_York')
 RESULT_COLUMNS = ['away_score', 'home_score', 'result', 'total', 'overtime']
 WEEK_LEAD = timedelta(days=3)
+LINES_LEAD = timedelta(days=7)
+LINE_COLUMNS = [
+    'spread_line', 'away_moneyline', 'home_moneyline', 'away_spread_odds', 'home_spread_odds',
+    'total_line', 'under_odds', 'over_odds',
+]
 
 
 def utc(text: str) -> datetime:
@@ -87,9 +103,11 @@ def install_masks(as_of: datetime) -> None:
     real_pbp = pbp_cache.load_pbp
 
     games = real['load_schedules'](True).select('game_id', 'season', 'week', 'gameday', 'gametime').to_dicts()
-    unplayed, played, first_kickoff = set(), set(), {}
+    unplayed, played, first_kickoff, unpriced = set(), set(), {}, set()
     for game in games:
         start = kickoff(game)
+        if start is None or start - LINES_LEAD > as_of:
+            unpriced.add(game['game_id'])
         if start is None or start >= as_of:
             unplayed.add(game['game_id'])
         else:
@@ -102,9 +120,11 @@ def install_masks(as_of: datetime) -> None:
     def load_schedules(*args, **kwargs):
         frame = real['load_schedules'](*args, **kwargs)
         hidden = pl.col('game_id').is_in(list(unplayed))
-        return frame.with_columns([
-            pl.when(hidden).then(None).otherwise(pl.col(c)).alias(c) for c in RESULT_COLUMNS if c in frame.columns
-        ])
+        too_far = pl.col('game_id').is_in(list(unpriced))
+        return frame.with_columns(
+            [pl.when(hidden).then(None).otherwise(pl.col(c)).alias(c) for c in RESULT_COLUMNS if c in frame.columns]
+            + [pl.when(too_far).then(None).otherwise(pl.col(c)).alias(c) for c in LINE_COLUMNS if c in frame.columns]
+        )
 
     def only_played(frame):
         return frame.filter(pl.col('game_id').is_in(list(played)))
@@ -186,6 +206,21 @@ def restamp(out: Path, daily: datetime) -> None:
                         else json.dumps(data, indent=2, ensure_ascii=False) + '\n')
 
 
+def pipeline_hash() -> str:
+    """Every file whose change can change a set: the pipelines (not their
+    tests, not Tyler's chart scripts in charts/mine/, which the daily run does
+    not use), this script and states.json."""
+    files = sorted(
+        path for path in PIPELINES.rglob('*.py')
+        if not path.name.startswith('test_')
+        and not any(part in ('.venv', '.cache', '__pycache__', 'mine') for part in path.relative_to(PIPELINES).parts)
+    ) + [Path(__file__).resolve(), HERE / 'states.json']
+    digest = hashlib.sha256()
+    for path in files:
+        digest.update(str(path.relative_to(ROOT)).encode() + b'\0' + path.read_bytes() + b'\0')
+    return digest.hexdigest()[:16]
+
+
 def generate(name: str, state: dict) -> None:
     now = utc(state['now'])
     daily = run_time(now)
@@ -202,10 +237,14 @@ def generate(name: str, state: dict) -> None:
     (out / 'generated.json').write_text(json.dumps({
         'generated': stamp(datetime.now(timezone.utc)),
         'dailyRun': stamp(daily),
+        'pipelineHash': pipeline_hash(),
     }, indent=2) + '\n')
 
 
 def main() -> None:
+    if sys.argv[1:2] == ['--hash']:
+        print(pipeline_hash())
+        return
     if sys.argv[1:2] == ['--child']:
         child(utc(sys.argv[2]))
         return

@@ -560,8 +560,9 @@ a panel's own version. Name things by what the user sees ("Stat leaders", "4th d
   set from `tests/fixtures/states/` as its data. Those sets are written by
   `tests/fixtures/states/generate.py` from real nflverse data, through
   `TYLERNFL_DATA_DIR` (the pipelines' data folder override in `common.py`), never by
-  hand. They are gitignored and generated on first use (`--regenerate` after a data
-  schema change); nothing in CI or the tests reads them.
+  hand. They are gitignored, generated on first use, and regenerated when a hash of the
+  pipeline code in their `generated.json` no longer matches (`--regenerate` forces
+  it); nothing in CI or the tests reads them.
 - Keep tokens in `tokens.css` only; components never hardcode colors or spacing.
 
 ## Build order

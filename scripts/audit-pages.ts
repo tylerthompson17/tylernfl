@@ -28,8 +28,9 @@
  * --state <name> builds the site as it reads at one of the moments in
  * tests/fixtures/states/states.json instead. The state's data set is
  * gitignored and generated on first use (tests/fixtures/states/generate.py,
- * through the pipelines' virtual environment and nflverse, a minute or two);
- * --regenerate makes it again. A copy of the site is staged in
+ * through the pipelines' virtual environment and nflverse, a minute or two),
+ * and again whenever the pipeline code has changed since (a hash kept in the
+ * set's generated.json); --regenerate forces it. A copy of the site is staged in
  * audit/states/<name>/site/ with that state's data in place of src/data, and
  * built with SITE_NOW at the state's time, so the browser's clock reads it
  * too. The page's requests to ESPN never leave the machine: a state with
@@ -103,16 +104,32 @@ if (stateName) {
     console.error(`No state ${stateName}; states: ${Object.keys(states).join(', ')}`);
     process.exit(2);
   }
-  if (values.regenerate || !existsSync(`${STATES_DIR}/${stateName}/generated.json`)) {
-    if (!existsSync(PYTHON)) {
-      console.error(`Generating the ${stateName} data set needs the pipelines' virtual environment (${PYTHON})`);
-      process.exit(1);
-    }
+  if (!existsSync(PYTHON)) {
+    console.error(`The ${stateName} data set needs the pipelines' virtual environment (${PYTHON})`);
+    process.exit(1);
+  }
+  // A set made by older pipeline code is stale: regenerate it.
+  const hash = spawnSync(PYTHON, [`${STATES_DIR}/generate.py`, '--hash'], { encoding: 'utf8' }).stdout.trim();
+  const setFile = `${STATES_DIR}/${stateName}/generated.json`;
+  const setHash = existsSync(setFile) ? JSON.parse(await readFile(setFile, 'utf8')).pipelineHash : null;
+  if (!hash) {
+    console.error('Could not compute the pipeline hash (generate.py --hash)');
+    process.exit(1);
+  }
+  if (values.regenerate || setHash !== hash) {
+    console.error(
+      !existsSync(setFile)
+        ? `Generating the ${stateName} data set`
+        : `Regenerating the ${stateName} data set (${values.regenerate ? '--regenerate' : `pipeline code changed: ${setHash ?? 'no hash'} to ${hash}`})`,
+    );
     const generate = spawnSync(PYTHON, [`${STATES_DIR}/generate.py`, stateName], { stdio: ['ignore', 2, 2] });
     if (generate.status !== 0) {
       console.error(`Generating the ${stateName} data set failed`);
       process.exit(1);
     }
+    // New data needs a new build, whatever --no-build said.
+    if (values['no-build']) console.error('Building anyway: the data set changed');
+    values['no-build'] = false;
   }
   generated = JSON.parse(await readFile(`${STATES_DIR}/${stateName}/generated.json`, 'utf8'));
 }

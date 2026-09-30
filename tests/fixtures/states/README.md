@@ -15,8 +15,10 @@ each state's moment, which the audit's build uses as `SITE_NOW`.
 
 The folders are gitignored and generated on demand: `audit-pages.ts --state`
 runs `generate.py` for a state the first time it is used (a minute or two,
-through the pipelines' virtual environment and nflverse), and `--regenerate`
-makes it again. Only `states.json`, `generate.py` and this README are committed.
+through the pipelines' virtual environment and nflverse), and again whenever
+the pipeline code has changed since: each set's `generated.json` keeps a hash of
+the pipelines, `generate.py` and `states.json` (`generate.py --hash`), and a set
+whose hash differs is regenerated and rebuilt. `--regenerate` forces it. Only `states.json`, `generate.py` and this README are committed.
 By hand:
 
     pipelines/.venv/bin/python tests/fixtures/states/generate.py [state ...]
@@ -27,8 +29,8 @@ slightly. Each carries `generated.json` with when it was made, and the audit's
 report includes it.
 
 It runs the real daily pipeline as of the run before each moment (6 AM
-Eastern), hiding every score, stat and play
-from after that. Regenerate (`--regenerate`) after a change to any data file's schema. See its
+Eastern), hiding every score, stat and play from after that, and every betting
+line for a game more than a week after it (lines appear about a week ahead). A change to the pipelines regenerates the sets on their next use. See its
 docstring for what cannot be dated (season rosters and the player table are
 today's) and for the trimmed chart archive (the day's pick and each team's
 newest chart only).
