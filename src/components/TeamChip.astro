@@ -20,7 +20,6 @@ interface Props {
 const { abbr, size = 'md' } = Astro.props;
 
 const team = (teamsData as TeamsData).find((t) => t.abbr === abbr);
-const background = team?.primary ?? '#4a5a6a';
 
 // Contrast math needs literal values; these mirror --on-brand-light and
 // --on-brand-dark in tokens.css. Keep in sync if the tokens change.
@@ -41,8 +40,12 @@ function contrast(a: string, b: string): number {
   return (hi! + 0.05) / (lo! + 0.05);
 }
 
-const textColor =
-  contrast(background, LIGHT_HEX) >= contrast(background, DARK_HEX)
+// A team's own color is data and needs the contrast pick; an abbreviation
+// not in teams.json gets the neutral token, whose text is fixed with it.
+const background = team ? team.primary : 'var(--chip-unknown)';
+const textColor = !team
+  ? 'var(--on-brand-light)'
+  : contrast(team.primary, LIGHT_HEX) >= contrast(team.primary, DARK_HEX)
     ? 'var(--on-brand-light)'
     : 'var(--on-brand-dark)';
 ---

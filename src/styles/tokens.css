@@ -20,6 +20,9 @@
      contrast against mid-tone brand colors. */
   --on-brand-light: #ffffff;
   --on-brand-dark: #000000;
+  /* TeamChip for an abbreviation not in teams.json: neutral slate, always
+     with --on-brand-light text (7:1). */
+  --chip-unknown: #4a5a6a;
 
   /* Spacing scale */
   --space-1: 4px;
