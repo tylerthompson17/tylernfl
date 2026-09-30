@@ -377,16 +377,10 @@ function isActive(href: string): boolean {
     text-decoration: underline;
   }
 
-  /* A clear gap after the week label: the games glide out of view at a
-     thin rule a little way from it, not under the label itself. */
-  .ticker-week {
-    margin-right: var(--space-3);
-  }
-
-  .ticker-week + .ticker-group:not([hidden]),
-  .ticker-week + .ticker-group[hidden] + .ticker-group {
-    border-left: 1px solid var(--rule);
-  }
+  /* The games meet the label directly: each group clips its own games at
+     its left edge, so they glide out at the label's slate edge and never
+     under it. A 12px gap and a rule stood here first and read as an empty
+     cell once the carousel ran. */
 
   /* The global blue focus ring is about 2:1 against the slate bars, under
      the 3:1 a focus indicator needs. Links sitting on slate take a white
@@ -676,18 +670,11 @@ function isActive(href: string): boolean {
       overflow-x: auto;
     }
 
-    /* The row scrolls as a whole here; the week label stays put, and the
-       gap after it would only show the row scrolling behind it. */
+    /* The row scrolls as a whole here; the week label stays put. */
     .ticker-week {
       position: sticky;
       left: 0;
       z-index: 1;
-      margin-right: 0;
-    }
-
-    .ticker-week + .ticker-group:not([hidden]),
-    .ticker-week + .ticker-group[hidden] + .ticker-group {
-      border-left: 0;
     }
 
     .ticker-group {

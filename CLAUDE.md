@@ -298,10 +298,12 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 - No motion, with two exceptions, both in the score ticker:
   - A ticker group is a looping carousel, a slow continuous glide. It pauses
     on hover and keyboard focus, and stays a static, swipeable strip on touch
-    devices, for reduced motion, and when its games fit. A 12px gap and a thin
-    rule after the week label mark where games glide out of view, so they never
-    disappear under the label itself. (A version that stepped one game at a
-    time was tried and dropped: the start-stop slide read worse.)
+    devices, for reduced motion, and when its games fit. Games glide out of
+    view at the week label's edge; each group clips its own games, so they
+    never pass under the label. (A 12px gap and a rule there were tried and
+    removed: once the carousel ran they read as an empty cell. A version that
+    stepped one game at a time was dropped too: the start-stop slide read
+    worse.)
   - When a live score changes, the new number gets a brief yellow background
     that fades out (2s). Off under reduced motion.
 - The ticker row is the week label, then two groups of games: live games,
