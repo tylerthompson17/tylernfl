@@ -1,17 +1,14 @@
 /**
  * The week's notable player performances, picked from game logs.
  *
- * Selection is deliberately separated from the shape it produces. Today's
- * rule is one row per category: the week's leader in each board's headline
- * stat, kept only if it clears a bar. A later rule can rank performances
- * against each other across categories instead, which needs a way to score
- * a 400 yard passing day against a three sack day. That is modelling and
- * belongs to Tyler; when it exists it should return this same
- * `Performance[]` and the panel will not change.
- *
- * The bars below are this site's editorial choice, like the leaderboard
- * qualifiers in pipelines/leaderboards.py. They are the round numbers the
- * sport already treats as milestones, not anything derived.
+ * A delegated method (docs/methods/notable-performances.md). Every game
+ * line is placed by its headline stat in that category's history: the
+ * share of team games since 1999 whose best in the stat was lower, counting
+ * equal values as half (performance_percentiles.json, written by
+ * pipelines/performance_percentiles.py). A 2-sack game is measured against
+ * what a team's leading pass rusher usually does, a 300 yard game against
+ * a team's passer. The week's lines are then ranked across categories by
+ * that percentile, one row per player, and the top few are shown.
  *
  * Every line names its own stat ("327 pass yds, 4 TD at BUF") rather than
  * leaning on a category column, so a row reads on its own wherever it is
@@ -44,16 +41,24 @@ export interface Performance {
   label: string;
   /** The game in words, naming its own stat: "410 pass yds, 3 TD vs DET". */
   line: string;
+  /** Where the headline stat falls among team games since 1999, 0 to 1. */
+  percentile: number;
+}
+
+/** One category's history: [value, team games] pairs, lowest value first. */
+export interface Pool {
+  stat: string;
+  games: number;
+  values: [number, number][];
 }
 
 interface BoardRule {
   board: string;
   label: string;
-  /** Ranked by this column, and measured against the bar by it. */
+  /** Placed in the category's history by this column. */
   primary: string;
-  /** Ties go to the higher value here, in order. What the line shows first. */
+  /** Within a category, equal percentiles go to the higher value here, in order. */
   secondary: string[];
-  bar: number;
   /** The stats worth reading, without the opponent. */
   line: (values: Record<string, number | null>) => string;
 }
@@ -69,7 +74,6 @@ const RULES: BoardRule[] = [
     label: 'Passing',
     primary: 'passing_yards',
     secondary: ['passing_tds'],
-    bar: 300,
     line: (v) => join([`${n(v, 'passing_yards')} pass yds`, tds(n(v, 'passing_tds'))]),
   },
   {
@@ -77,7 +81,6 @@ const RULES: BoardRule[] = [
     label: 'Rushing',
     primary: 'rushing_yards',
     secondary: ['rushing_tds'],
-    bar: 100,
     line: (v) => join([`${n(v, 'rushing_yards')} rush yds`, tds(n(v, 'rushing_tds'))]),
   },
   {
@@ -85,7 +88,6 @@ const RULES: BoardRule[] = [
     label: 'Receiving',
     primary: 'receiving_yards',
     secondary: ['receiving_tds'],
-    bar: 100,
     line: (v) => join([`${n(v, 'receiving_yards')} rec yds`, tds(n(v, 'receiving_tds'))]),
   },
   {
@@ -95,7 +97,6 @@ const RULES: BoardRule[] = [
     label: 'Sacks',
     primary: 'def_sacks',
     secondary: ['def_interceptions', 'def_qb_hits'],
-    bar: 2,
     line: (v) => join([`${sacks(n(v, 'def_sacks'))} sacks`, plural(n(v, 'def_interceptions'), 'INT')]),
   },
   {
@@ -103,7 +104,6 @@ const RULES: BoardRule[] = [
     label: 'Kicking',
     primary: 'fg_made',
     secondary: ['fg_long'],
-    bar: 4,
     line: (v) => join([`${n(v, 'fg_made')} FG`, n(v, 'fg_long') ? `long ${n(v, 'fg_long')}` : '']),
   },
 ];
@@ -122,37 +122,68 @@ function plural(count: number, word: string): string {
 }
 
 /**
- * The best line on each board that clears its bar, in the order the rules
- * are listed. Ties go to the secondary stats in turn, then to the name, so
- * a build with unchanged data produces an unchanged page.
+ * Where `value` falls in a pool: the share of team games below it, with
+ * equal ones counted as half, so a stat that comes in small steps (sacks,
+ * field goals) does not jump from one end of its ties to the other.
  */
-export function notablePerformances(lines: WeekLine[]): Performance[] {
-  const out: Performance[] = [];
-
-  for (const rule of RULES) {
-    let best: WeekLine | null = null;
-    for (const line of lines) {
-      if (line.board !== rule.board || n(line.values, rule.primary) < rule.bar) continue;
-      if (!best || compare(line, best, rule) < 0) best = line;
-    }
-    if (!best) continue;
-    out.push({
-      playerId: best.playerId,
-      player: best.player,
-      team: best.team,
-      opponent: best.opponent,
-      home: best.home,
-      board: best.board,
-      label: rule.label,
-      line: `${rule.line(best.values)} ${best.home ? 'vs' : 'at'} ${best.opponent}`,
-    });
+export function percentileIn(pool: Pool, value: number): number {
+  let below = 0;
+  let equal = 0;
+  for (const [v, count] of pool.values) {
+    if (v < value) below += count;
+    else if (v === value) equal += count;
   }
+  return (below + equal / 2) / pool.games;
+}
 
+/**
+ * The week's top `limit` lines across categories, highest percentile first,
+ * one per player (their best). A line with nothing in its headline stat is
+ * left out. Equal percentiles go to the category listed first, then the
+ * secondary stats, then the name, so a build with unchanged data produces
+ * an unchanged page.
+ */
+export function notablePerformances(lines: WeekLine[], pools: Record<string, Pool>, limit = 5): Performance[] {
+  const scored: { line: WeekLine; rule: BoardRule; order: number; percentile: number }[] = [];
+  RULES.forEach((rule, order) => {
+    const pool = pools[rule.board];
+    if (!pool || pool.games === 0) return;
+    for (const line of lines) {
+      if (line.board !== rule.board || n(line.values, rule.primary) <= 0) continue;
+      scored.push({ line, rule, order, percentile: percentileIn(pool, n(line.values, rule.primary)) });
+    }
+  });
+
+  scored.sort(
+    (a, b) =>
+      b.percentile - a.percentile ||
+      a.order - b.order ||
+      compare(a.line, b.line, a.rule)
+  );
+
+  const out: Performance[] = [];
+  const seen = new Set<string>();
+  for (const { line, rule, percentile } of scored) {
+    if (seen.has(line.playerId)) continue;
+    seen.add(line.playerId);
+    out.push({
+      playerId: line.playerId,
+      player: line.player,
+      team: line.team,
+      opponent: line.opponent,
+      home: line.home,
+      board: line.board,
+      label: rule.label,
+      line: `${rule.line(line.values)} ${line.home ? 'vs' : 'at'} ${line.opponent}`,
+      percentile,
+    });
+    if (out.length === limit) break;
+  }
   return out;
 }
 
 function compare(a: WeekLine, b: WeekLine, rule: BoardRule): number {
-  let order = n(b.values, rule.primary) - n(a.values, rule.primary);
+  let order = 0;
   for (const key of rule.secondary) {
     if (order !== 0) break;
     order = n(b.values, key) - n(a.values, key);

@@ -532,3 +532,17 @@ export interface GameExcitementData {
   };
   games: GameExcitement[];
 }
+
+/**
+ * performance_percentiles.json: each notable performance category's history,
+ * written by pipelines/performance_percentiles.py when a season is completed.
+ * Each regular season team game since fromSeason gives one value: the
+ * team's best in the stat that game. Field goals count only games with an
+ * attempt. See docs/methods/notable-performances.md.
+ */
+export interface PerformancePercentilesData {
+  fromSeason: number;
+  throughSeason: number;
+  /** Keyed by board: passing, rushing, receiving, defense, kicking */
+  categories: Record<string, { stat: string; games: number; values: [number, number][] }>;
+}

@@ -4,15 +4,24 @@
  * src/lib/performances/notable.ts; this only feeds it and adds the page
  * slug each row links to.
  */
-import type { PlayerLogsData } from '../data/types';
-import { notablePerformances, type Performance, type WeekLine } from '../lib/performances/notable';
+import percentilesData from '../data/performance_percentiles.json';
+import type { PerformancePercentilesData, PlayerLogsData } from '../data/types';
+import { notablePerformances, type Performance, type Pool, type WeekLine } from '../lib/performances/notable';
 import { slugForPlayer } from './players';
 
 const files = import.meta.glob<PlayerLogsData>('../data/players/*.json', { eager: true, import: 'default' });
 
 export interface NotableRow extends Performance {
   slug: string;
+  /** The percentile as shown: "99.2", or ">99.9" for the very top. */
+  shown: string;
 }
+
+/** The seasons the percentiles are measured against, for the panel's note. */
+export const percentileSeasons = {
+  from: (percentilesData as PerformancePercentilesData).fromSeason,
+  through: (percentilesData as PerformancePercentilesData).throughSeason,
+};
 
 export interface NotableWeek {
   season: number;
@@ -71,9 +80,11 @@ function collect(): NotableWeek {
     }
   }
 
-  const rows = notablePerformances(lines).map((row) => ({
+  const pools = (percentilesData as PerformancePercentilesData).categories as Record<string, Pool>;
+  const rows = notablePerformances(lines, pools).map((row) => ({
     ...row,
     slug: slugForPlayer(row.playerId, row.player),
+    shown: row.percentile >= 0.9995 ? '>99.9' : (row.percentile * 100).toFixed(1),
   }));
   return { season, week, teams: teams.size, rows };
 }

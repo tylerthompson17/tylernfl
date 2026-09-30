@@ -91,7 +91,7 @@ tylernfl/
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `game_excitement.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
@@ -259,16 +259,16 @@ tylernfl/
   `model_record.json` were removed until the model exists; restore them from git history
   (commit "Replace the rail's model record placeholder") when it does.
 - The home page's notable performances panel is derived at build time from the
-  `players/{TEAM}.json` game logs, not from a data file of its own. The week it
-  shows is the latest one any game is logged for, which is not the ticker's
-  week: from Wednesday the ticker looks ahead to games not played yet.
-  `src/lib/performances/notable.ts` holds the rule and the bars, kept apart
-  from the panel that renders it. Today the rule is one row per category: the
-  week's leader in each board's headline stat, if it clears the bar. The
-  intended replacement is a single list ranked across categories, which needs
-  a way to score a passing day against a pass rushing day; that is Tyler's to
-  write, and it should return the same `Performance[]` so the panel does not
-  change.
+  `players/{TEAM}.json` game logs. The week it shows is the latest one any game is
+  logged for, which is not the ticker's week: from Wednesday the ticker looks ahead to
+  games not played yet. It is a delegated method (`docs/methods/notable-performances.md`):
+  each line is placed by its headline stat (pass, rush and receiving yards, sacks, field
+  goals made) among every regular season team game since 1999, where each team game
+  gives the team's best in that stat, with ties as half; the week's lines are ranked
+  across categories by that percentile, one per player, top five, shown with the
+  percentile. The pools are `performance_percentiles.json`, written by
+  `pipelines/performance_percentiles.py` from the weekly job only when a newer season
+  has been completed (from March). `src/lib/performances/notable.ts` holds the rule.
 
 ## Design direction
 

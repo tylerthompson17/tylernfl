@@ -6,7 +6,7 @@ import FieldStrip from '../components/FieldStrip.astro';
 import { url } from '../utils/url';
 import { getArticles } from '../utils/articles';
 import { headlineItems, statusSummary, transactions } from '../utils/transactions';
-import { notable } from '../utils/performances';
+import { notable, percentileSeasons } from '../utils/performances';
 import { leadersFor } from '../utils/overview';
 import ChartFigure from '../components/ChartFigure.astro';
 import { formatChartDate, getAutoChart, getFeaturedChart, hoverFor, svgFor } from '../utils/charts';
@@ -25,13 +25,14 @@ const headlineColumns = [
   { key: 'news', label: 'News' },
 ];
 
-// One row per category: the week's leader in each, kept only if it cleared
-// the bar in src/lib/performances/notable.ts. Each line names its own stat,
-// so there is no category column to keep in step with it.
+// The week's best lines across categories, ranked by percentile in
+// src/lib/performances/notable.ts. Each line names its own stat, so there
+// is no category column to keep in step with it.
 const notableColumns = [
   { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
   { key: 'team', label: 'Team', kind: 'team' as const },
   { key: 'line', label: 'Game' },
+  { key: 'shown', label: 'Pctl', kind: 'number' as const },
 ];
 
 // Week 1 is 32 teams; later weeks are 28 to 30 with byes. Well short of that
@@ -142,11 +143,12 @@ const leaderColumns = [
               columns={notableColumns}
               rows={notable.rows}
               caption="Notable performances this week"
-              emptyText="No game cleared the bar this week yet."
+              emptyText="No games logged this week yet."
             />
             <p class="table-foot">
-              The best of week {notable.week} in each category, where the game was big enough to
-              count.{' '}
+              Week {notable.week}'s best games across passing, rushing, receiving, sacks and field
+              goals. Pctl is the share of team games from {percentileSeasons.from} to{' '}
+              {percentileSeasons.through} whose best in that stat was lower.{' '}
               {weekPartlyIn && (
                 <>
                   {notable.teams === 1 ? 'One team has' : `${notable.teams} teams have`} played so
