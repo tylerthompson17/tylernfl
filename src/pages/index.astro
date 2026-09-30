@@ -8,6 +8,7 @@ import { getArticles } from '../utils/articles';
 import { headlineItems, statusSummary, transactions } from '../utils/transactions';
 import { notable, percentileSeasons } from '../utils/performances';
 import { leadersFor } from '../utils/overview';
+import { gameStatusLine, logWeek } from '../utils/as-of';
 import ChartFigure from '../components/ChartFigure.astro';
 import { formatChartDate, getAutoChart, getFeaturedChart, hoverFor, svgFor } from '../utils/charts';
 
@@ -18,7 +19,7 @@ const latest = (await getArticles())[0];
 // Game statuses and real moves, starters first; practice squad churn and
 // practice reports stay on the full wire.
 const headlines = headlineItems(8);
-const injurySummary = statusSummary(transactions.injuries);
+const statusText = gameStatusLine(transactions.week, statusSummary(transactions.injuries));
 const headlineColumns = [
   { key: 'team', label: 'Team', kind: 'team' as const },
   { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
@@ -35,9 +36,9 @@ const notableColumns = [
   { key: 'shown', label: 'Pctl', kind: 'number' as const },
 ];
 
-// Week 1 is 32 teams; later weeks are 28 to 30 with byes. Well short of that
-// means the week is still being played.
-const weekPartlyIn = notable.week !== null && notable.teams < 24;
+// The logs' week, named with its season when that is an earlier one, and
+// how much of it is in while it is still being played.
+const notableWeek = notable.week === null ? null : logWeek(notable.season, notable.week);
 
 // Tyler's featured chart, or the daily auto chart when none is featured.
 const featured = await getFeaturedChart();
@@ -123,8 +124,7 @@ const leaderColumns = [
               emptyText="No game statuses or roster moves yet this week."
             />
             <p class="table-foot">
-              Starters first. Game statuses for week {transactions.week} games still to play:{' '}
-              {injurySummary ?? 'none yet'}. {headlines.rest} more on the{' '}
+              Starters first. {statusText && <>{statusText}{' '}</>}{headlines.rest} more on the{' '}
               <a href={url('transactions')}>full wire</a>, filterable by team and type.
             </p>
           </>
@@ -146,15 +146,10 @@ const leaderColumns = [
               emptyText="No games logged this week yet."
             />
             <p class="table-foot">
-              Week {notable.week}'s best games across passing, rushing, receiving, sacks and field
+              {notableWeek?.name}'s best games across passing, rushing, receiving, sacks and field
               goals. Pctl is the share of team games from {percentileSeasons.from} to{' '}
               {percentileSeasons.through} whose best in that stat was lower.{' '}
-              {weekPartlyIn && (
-                <>
-                  {notable.teams === 1 ? 'One team has' : `${notable.teams} teams have`} played so
-                  far; the rest of the week lands as games finish.{' '}
-                </>
-              )}
+              {notableWeek?.note && <>{notableWeek.note}{' '}</>}
               <a href={url('stats')}>Full leaderboards</a>
             </p>
           </>

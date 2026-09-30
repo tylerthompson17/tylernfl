@@ -12,6 +12,7 @@ import {
   SMALL_SAMPLE_NOTE,
   teamStats,
 } from '../../utils/team-stats';
+import { isPriorSeason } from '../../utils/as-of';
 
 const hasGames = teamStats.teams.length > 0;
 const fewestGames = Math.min(...teamStats.teams.map((team) => team.games));
@@ -29,7 +30,8 @@ const sides = [
   {
     hasGames ? (
       <p class="page-intro">
-        {teamStats.season} regular season, through {gamesPlayed()}. Sorted by EPA per play.
+        {isPriorSeason(teamStats.season) ? '' : `${teamStats.season} regular season. `}{gamesPlayed()} Sorted by
+        EPA per play.
         Updated every morning.
       </p>
     ) : null
@@ -66,7 +68,7 @@ const sides = [
       </dl>
       <p class="table-foot">
         Defense columns are the same measures for opposing offenses, so on defense the lowest value
-        ranks first. Regular season only, complete weeks only, from nflverse play-by-play.
+        ranks first. Regular season only, every final game, from nflverse play-by-play.
       </p>
       <p class="table-foot">
         Changed September 18, 2026: red zone trips now follow nflverse's drive flag, which counts

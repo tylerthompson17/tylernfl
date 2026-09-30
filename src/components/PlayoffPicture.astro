@@ -5,16 +5,14 @@
  * applied). Before a season's first game, standings.json holds last
  * season's final standings, and the title says so.
  */
-import tickerData from '../data/ticker.json';
-import type { TickerData } from '../data/types';
 import { record } from '../lib/standings/ties';
+import { isPriorSeason, through } from '../utils/as-of';
 import { seedsOf, standings } from '../utils/standings';
 import { url } from '../utils/url';
 import Panel from './Panel.astro';
 import TeamChip from './TeamChip.astro';
 
-const ticker = tickerData as TickerData;
-const lastSeason = standings.season < ticker.season;
+const lastSeason = isPriorSeason(standings.season);
 const title = lastSeason ? `${standings.season} final seeding` : 'Playoff picture';
 const conferences = (['AFC', 'NFC'] as const).map((conference) => ({ conference, teams: seedsOf(conference).slice(0, 9) }));
 ---
@@ -48,8 +46,8 @@ const conferences = (['AFC', 'NFC'] as const).map((conference) => ({ conference,
   <p class="foot">
     {
       lastSeason
-        ? 'Last season, as it finished.'
-        : `Through week ${standings.throughWeek}. Seeds 1 to 4 lead their divisions; below the line, in the hunt.`
+        ? through(standings.season, standings.throughWeek)
+        : `${through(standings.season, standings.throughWeek)} Seeds 1 to 4 lead their divisions; below the line, in the hunt.`
     }{' '}
     <a href={url('standings')}>Full standings</a>
   </p>

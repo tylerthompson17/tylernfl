@@ -14,6 +14,7 @@ import teamsData from '../../data/teams.json';
 import type { TeamsData } from '../../data/types';
 import { STEP_WORDS, record, tieNotes } from '../../lib/standings/ties';
 import { divisionsOf, formatPct, seedsOf, standings } from '../../utils/standings';
+import { seasonThrough } from '../../utils/as-of';
 import { url } from '../../utils/url';
 
 export function getStaticPaths() {
@@ -31,10 +32,7 @@ const tabs = [
   { key: 'NFC', label: 'NFC', path: 'standings/nfc' },
 ];
 const early = standings.throughWeek > 0 && standings.throughWeek < 4;
-const intro =
-  standings.throughWeek === 0
-    ? `${standings.season} season, before the first game.`
-    : `${standings.season} season, through week ${standings.throughWeek}.`;
+const intro = seasonThrough(standings.season, standings.throughWeek);
 ---
 
 <BaseLayout

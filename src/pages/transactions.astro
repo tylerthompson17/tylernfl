@@ -10,9 +10,10 @@ import {
   transactions,
   wireItems,
 } from '../utils/transactions';
+import { gameStatusLine } from '../utils/as-of';
 
 const items = wireItems();
-const summary = statusSummary(transactions.injuries);
+const statusText = gameStatusLine(transactions.week, statusSummary(transactions.injuries));
 const movesSpan =
   transactions.comparedToWeek === null
     ? 'Roster moves appear from week 2, comparing each week with the one before.'
@@ -33,9 +34,8 @@ const movesSpan =
     ) : (
       <>
         <p class="page-intro">
-          {transactions.season} week {transactions.week}. {movesSpan} Game statuses for games still
-          to play: {summary ?? 'none yet'}. Statuses for games already played are marked and listed
-          with the routine items.
+          {transactions.season} week {transactions.week}. {movesSpan} {statusText && <>{statusText}{' '}</>}Statuses
+          for games already played are marked and listed with the routine items.
         </p>
         <div class="content-grid">
           <Panel title="The wire">

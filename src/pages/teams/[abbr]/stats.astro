@@ -15,6 +15,7 @@ import { formatStat } from '../../../utils/format';
 import { leaderboards } from '../../../utils/leaderboards';
 import { playerEpa } from '../../../utils/overview';
 import { slugForPlayer } from '../../../utils/players';
+import { through } from '../../../utils/as-of';
 import { url } from '../../../utils/url';
 
 export function getStaticPaths() {
@@ -69,7 +70,7 @@ const epa = playerEpa.categories.map((category) => ({
             emptyText={`No ${team.name} players on the ${board.label.toLowerCase()} leaderboard yet.`}
           />
           <p class="table-foot">
-            Season totals through week {board.throughWeek}, most {primary.title.toLowerCase()} first. NFL rank is by{' '}
+            {through(board.season, board.throughWeek)} Season totals, most {primary.title.toLowerCase()} first. NFL rank is by{' '}
             {primary.title.toLowerCase()}. <a href={url(`stats/${board.key}`)}>Full {board.label.toLowerCase()} leaderboard</a>
           </p>
         </Panel>
@@ -90,7 +91,7 @@ const epa = playerEpa.categories.map((category) => ({
             emptyText={`No ${team.name} player qualifies yet. ${category.qualifier.text}`}
           />
           <p class="table-foot">
-            Through week {playerEpa.throughWeek}. {category.qualifier.text} EPA is nflfastR's.
+            {through(playerEpa.season, playerEpa.throughWeek)} {category.qualifier.text} EPA is nflfastR's.
           </p>
         </Panel>
       ))

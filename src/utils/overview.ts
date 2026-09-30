@@ -8,6 +8,7 @@ import playerEpaData from '../data/player_epa.json';
 import type { BoardRow, LeaderboardData, PlayerEpaCategory, PlayerEpaData, PlayerEpaRow } from '../data/types';
 import { formatCell } from '../lib/leaderboard/arrange';
 import { topOf, type Top } from '../lib/stats/top';
+import { through } from './as-of';
 import { formatStat } from './format';
 import { leaderboards } from './leaderboards';
 import { slugForPlayer } from './players';
@@ -32,7 +33,7 @@ export interface Leaders {
   rows: LeaderRow[];
   moreTied: number;
   tiedValue: string | null;
-  /** What the numbers are through, e.g. "Through week 2." */
+  /** What the numbers are through, from src/utils/as-of.ts: "Through week 2." */
   through: string;
   /** Who counts, for rate stats. */
   qualifier: string | null;
@@ -88,7 +89,7 @@ function fromBoard(spec: BoardSpec): Leaders | null {
     })),
     moreTied: top.moreTied,
     tiedValue: top.tiedValue === null ? null : formatCell(top.tiedValue, column, 'totals'),
-    through: data.throughWeek ? `Through week ${data.throughWeek}.` : 'No games played yet.',
+    through: through(data.season, data.throughWeek),
     qualifier: null,
     link: { href: `stats/${spec.board}`, text: `Full ${data.label.toLowerCase()} leaderboard` },
   };
@@ -112,7 +113,7 @@ function fromEpa(category: PlayerEpaCategory): Leaders {
     })),
     moreTied: top.moreTied,
     tiedValue: top.tiedValue === null ? null : formatStat(top.tiedValue, 'signed3'),
-    through: playerEpa.throughWeek ? `Through week ${playerEpa.throughWeek}.` : 'No games played yet.',
+    through: through(playerEpa.season, playerEpa.throughWeek),
     qualifier: `${category.qualifier.text} EPA is nflfastR's.`,
     link: null,
   };

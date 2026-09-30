@@ -14,6 +14,7 @@ import type { Team, TeamsData } from '../../../data/types';
 import { tieNotes } from '../../../lib/standings/ties';
 import { standings } from '../../../utils/standings';
 import { schedule } from '../../../utils/teams';
+import { through } from '../../../utils/as-of';
 import { url } from '../../../utils/url';
 
 export function getStaticPaths() {
@@ -31,7 +32,7 @@ const notes = tieNotes(division, 'divisionTiebreak');
       <StandingsTable teams={division} caption={`${team.division} standings`} highlight={team.abbr} />
       <p class="table-foot">
         {notes.join(' ')}
-        {standings.season < schedule.season ? `${standings.season} final standings. ` : `Through week ${standings.throughWeek}. `}
+        {through(standings.season, standings.throughWeek)}{' '}
         <a href={url(team.conference === 'NFC' ? 'standings/nfc' : 'standings')}>{team.conference} standings</a>
       </p>
     </Panel>

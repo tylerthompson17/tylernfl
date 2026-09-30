@@ -5,6 +5,7 @@
 import teamStatsData from '../data/team_stats.json';
 import type { TeamStatLine, TeamStatMetric, TeamStatsData } from '../data/types';
 import { SMALL_SAMPLE_GAMES } from '../config';
+import { throughGames } from './as-of';
 import { formatStat } from './format';
 
 export const teamStats = teamStatsData as TeamStatsData;
@@ -31,16 +32,15 @@ export function rankLabel(smallSample: boolean): string {
 export const SMALL_SAMPLE_NOTE = `* Fewer than ${SMALL_SAMPLE_GAMES} games played. Ranks this early can swing a long way on one game.`;
 
 /**
- * "3 games per team", or "2 to 3 games per team" around byes and Thursday
- * games: team stats count every final, not whole weeks. Keep in step with
- * games_played in pipelines/charts/auto.py.
+ * "Through 3 games per team.", or "Through 2 to 3 games per team." around
+ * byes and Thursday games: team stats count every final, not whole weeks.
+ * Keep in step with games_played in pipelines/charts/auto.py.
  */
 export function gamesPlayed(): string {
   const counts = teamStats.teams.map((team) => team.games);
-  const low = Math.min(...counts, Infinity);
   const high = Math.max(...counts, 0);
-  const noun = high === 1 ? 'game' : 'games';
-  return `${low === high || counts.length === 0 ? high : `${low} to ${high}`} ${noun} per team`;
+  const low = counts.length === 0 ? high : Math.min(...counts);
+  return throughGames(teamStats.season, low, high, true);
 }
 
 /** "62 plays", "1 trip". */

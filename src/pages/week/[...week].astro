@@ -17,6 +17,7 @@ import type { GameExcitementData, ScheduleData } from '../../data/types';
 import { completeWeeks, rankWeek } from '../../lib/week/recap';
 import { getCharts } from '../../utils/charts';
 import { formatStat } from '../../utils/format';
+import { emptyRecap } from '../../utils/as-of';
 import { url } from '../../utils/url';
 import { weekLabel } from '../../utils/week';
 
@@ -50,6 +51,7 @@ const chartOf = (away: string, home: string) => {
 
 const { cutoffs } = data;
 const title = name ? `${name} recap, ${schedule.season}` : 'Week recap';
+const empty = emptyRecap();
 ---
 
 <BaseLayout
@@ -62,10 +64,8 @@ const title = name ? `${name} recap, ${schedule.season}` : 'Week recap';
   {
     week == null ? (
       <div class="content-grid">
-        <Panel title="No complete week yet">
-          <p class="placeholder-note">
-            A week's recap appears the morning after its last game, once every game's play-by-play is out.
-          </p>
+        <Panel title={empty.title}>
+          <p class="placeholder-note">{empty.text}</p>
         </Panel>
       </div>
     ) : (

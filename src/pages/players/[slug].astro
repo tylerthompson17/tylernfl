@@ -7,6 +7,7 @@ import { leaderboards } from '../../utils/leaderboards';
 import { playerPages, type PlayerPage } from '../../utils/players';
 import { seasonsFor } from '../../utils/player-stats';
 import { formatExperience, formatHeight } from '../../utils/format';
+import { seasonThrough } from '../../utils/as-of';
 import { url } from '../../utils/url';
 
 export function getStaticPaths() {
@@ -96,12 +97,12 @@ const facts = roster
               <p class="placeholder-note">
                 {throughWeek === 0
                   ? 'No games played yet this season.'
-                  : `No passing, rushing, receiving, defensive or kicking stats through week ${throughWeek}.`}
+                  : `No passing, rushing, receiving, defensive or kicking stats. ${seasonThrough(season ?? 0, throughWeek)}`}
               </p>
             </Panel>
           )}
           <p class="source">
-            {season} regular season through week {throughWeek}, from nflverse weekly stats. Earlier
+            {seasonThrough(season ?? 0, throughWeek)} From nflverse weekly stats. Earlier
             seasons are not on the site yet.
           </p>
         </div>

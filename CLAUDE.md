@@ -530,7 +530,15 @@ added: 2026-09-21        # optional: when it was copied
 
 ## Writing style for UI copy
 
-Plain, specific, sentence case. Name things by what the user sees ("Stat leaders", "4th down calculator"), not by implementation. Never use em dashes in UI copy or docs.
+Plain, specific, sentence case.
+
+Every "as of" label (what a panel's numbers are through) comes from `src/utils/as-of.ts`
+(rules in `src/lib/as-of/labels.ts`, tested for all four date states in
+`tests/as-of.test.ts`): "Through week 3." only once every game of week 3 is final,
+"Week 2 in progress: 1 of 16 games played." before that, "Through 2 to 3 games per
+team." for team stats, the season named and "final" when a file is from an earlier
+season, and no line about game statuses still to play once none is left. Never write
+a panel's own version. Name things by what the user sees ("Stat leaders", "4th down calculator"), not by implementation. Never use em dashes in UI copy or docs.
 
 ## Working agreements
 
