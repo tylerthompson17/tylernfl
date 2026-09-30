@@ -134,6 +134,17 @@ function render(slot: HTMLElement, game: LiveGame): void {
   away?.classList.toggle('won', decided && game.awayScore! > game.homeScore!);
   home?.classList.toggle('won', decided && game.homeScore! > game.awayScore!);
 
+  // The live mark is the ticker's alone: scoreboard boxes carry the
+  // pipeline's post-game label instead. It clears the moment a game is
+  // not live, so a finished game is never marked here.
+  if (slot.closest('.ticker')) {
+    const mark = game.state === 'live' ? game.mark : null;
+    if (mark) slot.dataset.mark = mark;
+    else delete slot.dataset.mark;
+    const text = slot.querySelector('[data-live-mark-text]');
+    if (text) text.textContent = mark ?? '';
+  }
+
   place(slot, game.state);
 }
 

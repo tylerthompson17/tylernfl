@@ -290,6 +290,7 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 | `--text-dim` | `#5B6570` | secondary text |
 | `--link` | `#1A56B5` | all links, underlined |
 | `--highlight` | `#F2D22E` | first-down yellow, background only |
+| `--highlight-soft` | `#FCF5D4` | pale yellow tint on a marked live ticker slot, background only |
 | `--win` | `#1E7A4C` | positive values |
 | `--loss` | `#B3363B` | negative values |
 
@@ -318,12 +319,17 @@ header bars and boxed content, not decoration. Do not use PFR's green.
   the tooltip. It holds its
   space from kickoff to final ("No scoring yet" at 0 to 0) so the ticker's
   height does not jump on each score.
-- A final with an excitement label (`label` in ticker.json) gets a 4px slate
-  (`--header`) bar on its left edge (`--mark-bar`, taken out of the slot's padding so
-  its width does not change) and the word under "Final". The word carries the meaning;
-  the bar is not yellow, which in the ticker means live. The label sits beside
-  `[data-detail]`, never inside it, since the live client rewrites that element. Order
-  stays chronological and nothing moves.
+- The ticker marks live games only, never finished or upcoming ones (a slate bar on
+  finals was tried and removed: it read as a divider). Finished games' labels show on
+  `/scores` and `/week` only. From each poll, `src/lib/live-ticker/mark.ts` gives a
+  live game one word, first match wins: Comeback (a team that trailed by 14 or more
+  at the end of any completed quarter, from ESPN's line scores, is within 8 or
+  leading), Close game (fourth quarter or overtime, within 8), Shootout (50 or more
+  points, within 8). A marked slot is tinted `--highlight-soft` and shows the word on
+  a second line under the clock. From kickoff to the final that line holds room for
+  the widest word, so nothing shifts when a mark comes or goes, and nothing animates.
+  ESPN's scoreboard also carries its own win probability
+  (`competitions[0].situation.lastPlay.probability`); it is not used.
 - Body text 13px, tables 12px, line-height 1.35. Headers in Barlow Condensed, bold.
 - Links are blue and underlined. Player and team names are always links.
 - Yellow is only ever a background (announcement strip, highlighted row),

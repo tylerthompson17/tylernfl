@@ -28,6 +28,7 @@ describe('in-game statuses from the DET at BUF capture (2026-09-17)', () => {
       awayScore: 7,
       homeScore: 21,
       detail: 'Q2 3:01',
+      mark: null,
     });
   });
 
@@ -41,7 +42,7 @@ describe('in-game statuses from the DET at BUF capture (2026-09-17)', () => {
       ['event-401872932-in_progress-q4.json', 'Q4 15:00', 17, 34],
     ];
     for (const [name, detail, awayScore, homeScore] of seen) {
-      assert.deepEqual(detAtBuf(name), { state: 'live', awayScore, homeScore, detail }, name);
+      assert.deepEqual(detAtBuf(name), { state: 'live', awayScore, homeScore, detail, mark: null }, name);
     }
   });
 
@@ -51,6 +52,7 @@ describe('in-game statuses from the DET at BUF capture (2026-09-17)', () => {
       awayScore: 31,
       homeScore: 41,
       detail: 'Final',
+      mark: null,
     });
   });
 });
@@ -61,15 +63,15 @@ describe('parseScoreboard with real responses', () => {
     assert.ok(games);
     assert.equal(games.size, 16);
     // NO at DET went to overtime; SF vs LAR (neutral site) did not.
-    assert.deepEqual(games.get('401872923'), { state: 'final', awayScore: 30, homeScore: 31, detail: 'Final/OT' });
-    assert.deepEqual(games.get('401872657'), { state: 'final', awayScore: 27, homeScore: 7, detail: 'Final' });
+    assert.deepEqual(games.get('401872923'), { state: 'final', awayScore: 30, homeScore: 31, detail: 'Final/OT', mark: null });
+    assert.deepEqual(games.get('401872657'), { state: 'final', awayScore: 27, homeScore: 7, detail: 'Final', mark: null });
   });
 
   test('scheduled week: no scores and no ESPN kickoff text', () => {
     const games = parseScoreboard(fixture('scoreboard-2026-week2-scheduled.json'), 2026, 2);
     assert.ok(games);
     assert.equal(games.size, 16);
-    assert.deepEqual(games.get('401872932'), { state: 'pre', awayScore: null, homeScore: null, detail: null });
+    assert.deepEqual(games.get('401872932'), { state: 'pre', awayScore: null, homeScore: null, detail: null, mark: null });
   });
 
   test('a response for a different week is rejected', () => {
@@ -92,7 +94,7 @@ describe('parse failures', () => {
       status: { period: 0, type: { name: 'STATUS_POSTPONED', state: 'post', completed: false, description: 'Postponed' } },
       competitions: [{ competitors: [{ homeAway: 'away', score: '0' }, { homeAway: 'home', score: '0' }] }],
     };
-    assert.deepEqual(parseEvent(event), ['1', { state: 'pre', awayScore: null, homeScore: null, detail: 'Postponed' }]);
+    assert.deepEqual(parseEvent(event), ['1', { state: 'pre', awayScore: null, homeScore: null, detail: 'Postponed', mark: null }]);
   });
 });
 
@@ -125,6 +127,6 @@ describe('in-progress detail (provisional)', () => {
       status: status('STATUS_IN_PROGRESS', 2, '4:12'),
       competitions: [{ competitors: [{ homeAway: 'home', score: '10' }, { homeAway: 'away', score: '14' }] }],
     };
-    assert.deepEqual(parseEvent(event), ['401872932', { state: 'live', awayScore: 14, homeScore: 10, detail: 'Q2 4:12' }]);
+    assert.deepEqual(parseEvent(event), ['401872932', { state: 'live', awayScore: 14, homeScore: 10, detail: 'Q2 4:12', mark: null }]);
   });
 });

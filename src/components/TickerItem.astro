@@ -12,14 +12,17 @@
  * a game is pinned live, the last line says who scored last; it stays
  * hidden otherwise.
  *
- * A final the pipeline labelled (Comeback, Thriller, Shootout, from
- * game_excitement.json) gets a slate bar on its left edge and the word
- * under its status. The word carries the meaning; the bar only draws the
- * eye. Not yellow, which in the ticker means live. The label sits beside
- * [data-detail], never inside it, since the live client rewrites that
- * element's text.
+ * Only a live game is ever marked here: when the scoreboard poll finds it
+ * worth switching to (src/lib/live-ticker/mark.ts), the whole slot takes
+ * a pale yellow tint and the word (Comeback, Close game, Shootout) shows
+ * on a second line under the clock. Finished games' labels are shown on
+ * /scores and /week, never in the ticker. From kickoff to the final the
+ * line keeps room for the widest word, so the slot does not change size
+ * when a mark comes or goes. It sits beside [data-detail], never inside
+ * it, since the live client rewrites that element's text.
  */
 import type { TickerGame } from '../data/types';
+import { LIVE_MARKS } from '../lib/live-ticker/mark';
 import { url } from '../utils/url';
 
 interface Props {
@@ -34,7 +37,7 @@ const homeWon = decided && game.homeScore! > game.awayScore!;
 ---
 
 <li
-  class:list={['game', { marked: game.label }]}
+  class="game"
   data-game
   data-state={game.state}
   data-espn-id={game.espnId ?? undefined}
@@ -42,7 +45,10 @@ const homeWon = decided && game.homeScore! > game.awayScore!;
 >
   <span class="status">
     <span class:list={['detail', { live: game.state === 'live' }]} data-detail>{game.detail}</span>
-    {game.label && <span class="label"><span class="visually-hidden">, </span>{game.label}</span>}
+    <span class="mark">
+      <span class="mark-room" aria-hidden="true">{LIVE_MARKS.map((word) => <span>{word}</span>)}</span>
+      <span class="mark-text" data-live-mark-text></span>
+    </span>
   </span>
   <span class:list={['line', { won: awayWon }]} data-side="away" data-team={game.away}>
     <a class="team" href={url(`teams/${game.away}`)}>{game.away}</a>
@@ -73,18 +79,12 @@ const homeWon = decided && game.homeScore! > game.awayScore!;
     line-height: 1.35;
   }
 
-  /* Keeps the same width as an unmarked slot: the bar takes its width
-     out of the padding. */
-  .game.marked {
-    border-left: var(--mark-bar) solid var(--header);
-    padding-left: calc(var(--space-3) - var(--mark-bar));
+  /* A live game worth watching: the whole slot, background only. */
+  .game[data-state='live'][data-mark] {
+    background: var(--highlight-soft);
   }
 
-  /* Positioned so the label's visually hidden comma stays inside the
-     ticker's scroll box; left to the page, it widened the whole page on
-     phones, where the ticker row scrolls. */
   .status {
-    position: relative;
     grid-area: detail;
     align-self: center;
     display: flex;
@@ -97,9 +97,37 @@ const homeWon = decided && game.homeScore! > game.awayScore!;
     color: var(--text-dim);
   }
 
-  .label {
+  /* The mark's line exists only while the game is live, and then always:
+     the hidden stack of every word holds the widest one's room, and the
+     visible word sits on top of it, so nothing moves when it changes. */
+  /* Bold throughout, so the hidden room is as wide as the word shown. */
+  .mark {
+    display: none;
     font-weight: 700;
     color: var(--text);
+  }
+
+  .game[data-state='live'] .mark {
+    display: grid;
+  }
+
+  .mark-room,
+  .mark-text {
+    grid-area: 1 / 1;
+  }
+
+  .mark-room {
+    display: grid;
+    visibility: hidden;
+  }
+
+  .mark-room > span {
+    grid-area: 1 / 1;
+    white-space: nowrap;
+  }
+
+  .mark-text {
+    white-space: nowrap;
   }
 
   .detail.live {

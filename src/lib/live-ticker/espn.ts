@@ -8,6 +8,7 @@
  */
 
 import { isObject, type Json } from './json.ts';
+import { liveMark, type LiveMark } from './mark.ts';
 
 export const SCOREBOARD_URL = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
 
@@ -22,6 +23,8 @@ export interface LiveGame {
    * ticker formats in the visitor's time zone instead of using ESPN's text.
    */
   detail: string | null;
+  /** The live mark (mark.ts); null unless the game is live and qualifies. */
+  mark: LiveMark | null;
 }
 
 /**
@@ -75,6 +78,21 @@ export function inProgressDetail(status: Json): string {
   }
 }
 
+/**
+ * A team's points per period, first quarter first, from `linescores`. An
+ * entry without a number ends the list, so a gap never shifts later periods.
+ */
+export function lineScores(competitor: Json): number[] {
+  const lines: number[] = [];
+  if (!Array.isArray(competitor.linescores)) return lines;
+  for (const entry of competitor.linescores) {
+    const value = isObject(entry) ? score(entry.value ?? entry.displayValue) : null;
+    if (value == null) break;
+    lines.push(value);
+  }
+  return lines;
+}
+
 export function parseEvent(event: unknown): [string, LiveGame] | null {
   if (!isObject(event) || typeof event.id !== 'string' || !isObject(event.status)) return null;
   const type = event.status.type;
@@ -93,14 +111,30 @@ export function parseEvent(event: unknown): [string, LiveGame] | null {
   if (type.completed === true) {
     return [
       event.id,
-      { state: 'final', awayScore: score(away.score), homeScore: score(home.score), detail: period > 4 ? 'Final/OT' : 'Final' },
+      {
+        state: 'final',
+        awayScore: score(away.score),
+        homeScore: score(home.score),
+        detail: period > 4 ? 'Final/OT' : 'Final',
+        mark: null,
+      },
     ];
   }
   if (type.state === 'in') {
-    return [
-      event.id,
-      { state: 'live', awayScore: score(away.score), homeScore: score(home.score), detail: inProgressDetail(event.status) },
-    ];
+    const awayScore = score(away.score);
+    const homeScore = score(home.score);
+    const mark =
+      awayScore == null || homeScore == null
+        ? null
+        : liveMark({
+            period,
+            status: typeof type.name === 'string' ? type.name : '',
+            awayScore,
+            homeScore,
+            awayLines: lineScores(away),
+            homeLines: lineScores(home),
+          });
+    return [event.id, { state: 'live', awayScore, homeScore, detail: inProgressDetail(event.status), mark }];
   }
   // Scheduled, or a status like postponed that ESPN marks without completing.
   const scheduled = type.name === 'STATUS_SCHEDULED';
@@ -111,6 +145,7 @@ export function parseEvent(event: unknown): [string, LiveGame] | null {
       awayScore: null,
       homeScore: null,
       detail: scheduled ? null : typeof type.description === 'string' ? type.description : null,
+      mark: null,
     },
   ];
 }
