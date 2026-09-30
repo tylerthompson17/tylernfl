@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "WAS",
   "week": 4,
-  "updated": "2026-09-29T16:10:26Z",
+  "updated": "2026-09-30T16:08:00Z",
   "groups": [
     {
       "key": "offense",
@@ -122,6 +122,21 @@
       "age": 30,
       "experience": 9,
       "college": "Boise State"
+    },
+    {
+      "gsisId": "00-0033699",
+      "name": "Austin Ekeler",
+      "slug": "austin-ekeler",
+      "number": 30,
+      "position": "RB",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 70,
+      "weight": 200,
+      "age": 31,
+      "experience": 9,
+      "college": "Western State"
     },
     {
       "gsisId": "00-0041178",
@@ -865,8 +880,8 @@
       "number": 54,
       "position": "ILB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 75,
       "weight": 250,
       "age": 25,

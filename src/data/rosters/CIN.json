@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "CIN",
   "week": 4,
-  "updated": "2026-09-29T16:10:26Z",
+  "updated": "2026-09-30T16:08:00Z",
   "groups": [
     {
       "key": "offense",
@@ -184,21 +184,6 @@
       "college": "Clemson"
     },
     {
-      "gsisId": "00-0040534",
-      "name": "Ke'Shawn Williams",
-      "slug": "keshawn-williams",
-      "number": 12,
-      "position": "WR",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 69,
-      "weight": 189,
-      "age": 24,
-      "experience": 1,
-      "college": "Indiana; Wake Forest"
-    },
-    {
       "gsisId": "00-0040375",
       "name": "Jordan Moore",
       "slug": "jordan-moore",
@@ -259,6 +244,21 @@
       "college": "Delta State University; Presbyterian College"
     },
     {
+      "gsisId": "00-0038839",
+      "name": "Mitchell Tinsley",
+      "slug": "mitchell-tinsley",
+      "number": 84,
+      "position": "WR",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 73,
+      "weight": 205,
+      "age": 27,
+      "experience": 3,
+      "college": "Penn State; Western Kentucky"
+    },
+    {
       "gsisId": "00-0041069",
       "name": "Colbie Young",
       "slug": "colbie-young",
@@ -310,8 +310,8 @@
       "number": 87,
       "position": "TE",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 77,
       "weight": 239,
       "age": 31,
@@ -814,21 +814,6 @@
       "college": "Clemson"
     },
     {
-      "gsisId": "00-0038890",
-      "name": "Shaka Heyward",
-      "slug": "shaka-heyward",
-      "number": 50,
-      "position": "ILB",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 75,
-      "weight": 238,
-      "age": 26,
-      "experience": 3,
-      "college": "Duke"
-    },
-    {
       "gsisId": "00-0038549",
       "name": "DJ Turner II",
       "slug": "dj-turner-ii",
@@ -940,8 +925,8 @@
       "number": 35,
       "position": "CB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 70,
       "weight": 185,
       "age": 30,
@@ -994,6 +979,21 @@
       "college": "Kansas State"
     },
     {
+      "gsisId": "00-0039241",
+      "name": "Beau Brade",
+      "slug": "beau-brade",
+      "number": 34,
+      "position": "FS",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 200,
+      "age": 24,
+      "experience": 2,
+      "college": "Maryland"
+    },
+    {
       "gsisId": "00-0038560",
       "name": "Jordan Battle",
       "slug": "jordan-battle",
@@ -1037,6 +1037,21 @@
       "age": 25,
       "experience": 2,
       "college": "Southern Illinois"
+    },
+    {
+      "gsisId": "00-0041389",
+      "name": "Isaiah Nwokobia",
+      "slug": "isaiah-nwokobia",
+      "number": 41,
+      "position": "SS",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 205,
+      "age": 23,
+      "experience": 0,
+      "college": null
     },
     {
       "gsisId": "00-0036854",

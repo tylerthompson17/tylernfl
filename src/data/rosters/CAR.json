@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "CAR",
   "week": 4,
-  "updated": "2026-09-29T16:10:26Z",
+  "updated": "2026-09-30T16:08:00Z",
   "groups": [
     {
       "key": "offense",
@@ -484,29 +484,14 @@
       "college": "Louisiana-Lafayette"
     },
     {
-      "gsisId": "00-0038536",
-      "name": "Chandler Zavala",
-      "slug": "chandler-zavala",
-      "number": 62,
-      "position": "G",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 77,
-      "weight": 330,
-      "age": 27,
-      "experience": 3,
-      "college": "N.C. State; Fairmont State"
-    },
-    {
       "gsisId": "00-0040541",
       "name": "Torricelli Simpkins III",
       "slug": "torricelli-simpkins-iii",
       "number": 65,
       "position": "G",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 77,
       "weight": 312,
       "age": 24,
@@ -557,6 +542,21 @@
       "age": 30,
       "experience": 5,
       "college": "BYU"
+    },
+    {
+      "gsisId": "00-0041146",
+      "name": "Isaia Glass",
+      "slug": "isaia-glass",
+      "number": 74,
+      "position": "G",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 311,
+      "age": 23,
+      "experience": 0,
+      "college": null
     },
     {
       "gsisId": "00-0036795",
@@ -814,6 +814,21 @@
       "college": "Central Michigan; Valdosta State"
     },
     {
+      "gsisId": "00-0036045",
+      "name": "Cam Gill",
+      "slug": "cam-gill",
+      "number": 49,
+      "position": "OLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 240,
+      "age": 28,
+      "experience": 6,
+      "college": "Wagner"
+    },
+    {
       "gsisId": "00-0036305",
       "name": "Trevis Gipson",
       "slug": "trevis-gipson",
@@ -889,21 +904,6 @@
       "college": ""
     },
     {
-      "gsisId": "00-0039637",
-      "name": "Maema Njongmeta",
-      "slug": "maema-njongmeta",
-      "number": 45,
-      "position": "ILB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 72,
-      "weight": 240,
-      "age": 25,
-      "experience": 2,
-      "college": "Wisconsin"
-    },
-    {
       "gsisId": "00-0041119",
       "name": "Jackson Kuwatch",
       "slug": "jackson-kuwatch",
@@ -959,7 +959,7 @@
       "statusLabel": "Active",
       "heightInches": 75,
       "weight": 243,
-      "age": 27,
+      "age": 28,
       "experience": 4,
       "college": "Utah"
     },

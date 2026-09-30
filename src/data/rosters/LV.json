@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "LV",
   "week": 4,
-  "updated": "2026-09-29T16:10:26Z",
+  "updated": "2026-09-30T16:08:00Z",
   "groups": [
     {
       "key": "offense",
@@ -109,21 +109,6 @@
       "college": "New Hampshire"
     },
     {
-      "gsisId": "00-0033854",
-      "name": "Dare Ogunbowale",
-      "slug": "dare-ogunbowale",
-      "number": 32,
-      "position": "RB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 71,
-      "weight": 205,
-      "age": 32,
-      "experience": 9,
-      "college": "Wisconsin"
-    },
-    {
       "gsisId": "00-0039244",
       "name": "Chris Collier",
       "slug": "chris-collier",
@@ -214,14 +199,29 @@
       "college": "Tennessee; Oregon"
     },
     {
+      "gsisId": "00-0032208",
+      "name": "Phillip Dorsett",
+      "slug": "phillip-dorsett",
+      "number": 13,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 70,
+      "weight": 192,
+      "age": 33,
+      "experience": 11,
+      "college": "Miami"
+    },
+    {
       "gsisId": "00-0040729",
       "name": "Jack Bech",
       "slug": "jack-bech",
       "number": 18,
       "position": "WR",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 73,
       "weight": 215,
       "age": 23,
@@ -280,8 +280,8 @@
       "number": 82,
       "position": "WR",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 215,
       "age": 27,
@@ -317,21 +317,6 @@
       "age": 26,
       "experience": 4,
       "college": "Utah State"
-    },
-    {
-      "gsisId": "00-0038590",
-      "name": "Justin Shorter",
-      "slug": "justin-shorter",
-      "number": 88,
-      "position": "WR",
-      "group": "offense",
-      "status": "RES",
-      "statusLabel": "Reserve",
-      "heightInches": 76,
-      "weight": 228,
-      "age": 26,
-      "experience": 3,
-      "college": "Florida; Penn State"
     },
     {
       "gsisId": "00-0035345",

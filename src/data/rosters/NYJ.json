@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYJ",
   "week": 4,
-  "updated": "2026-09-29T16:10:26Z",
+  "updated": "2026-09-30T16:08:00Z",
   "groups": [
     {
       "key": "offense",
@@ -529,6 +529,36 @@
       "college": "Miami"
     },
     {
+      "gsisId": "00-0040979",
+      "name": "Nick Dawkins",
+      "slug": "nick-dawkins",
+      "number": 53,
+      "position": "C",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 299,
+      "age": 24,
+      "experience": 0,
+      "college": null
+    },
+    {
+      "gsisId": "00-0036859",
+      "name": "Jimmy Morrissey",
+      "slug": "jimmy-morrissey",
+      "number": 65,
+      "position": "C",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 305,
+      "age": 28,
+      "experience": 5,
+      "college": "Pittsburgh"
+    },
+    {
       "gsisId": "00-0036604",
       "name": "Jordan Meredith",
       "slug": "jordan-meredith",
@@ -1024,21 +1054,6 @@
       "college": "Oklahoma"
     },
     {
-      "gsisId": "00-0040397",
-      "name": "Jordan Clark",
-      "slug": "jordan-clark",
-      "number": 33,
-      "position": "CB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 69,
-      "weight": 185,
-      "age": 25,
-      "experience": 1,
-      "college": "Notre Dame; Arizona State"
-    },
-    {
       "gsisId": "00-0039789",
       "name": "Qwan'tez Stiggers",
       "slug": "qwantez-stiggers",
@@ -1165,28 +1180,13 @@
       "number": 19,
       "position": "K",
       "group": "specialists",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 71,
       "weight": 186,
       "age": 30,
       "experience": 8,
       "college": "New Mexico"
-    },
-    {
-      "gsisId": "00-0038905",
-      "name": "Blake Grupe",
-      "slug": "blake-grupe",
-      "number": 39,
-      "position": "K",
-      "group": "specialists",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 67,
-      "weight": 156,
-      "age": 27,
-      "experience": 3,
-      "college": "Notre Dame; Arkansas State"
     },
     {
       "gsisId": "00-0039634",

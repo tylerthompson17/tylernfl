@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "MIN",
   "week": 4,
-  "updated": "2026-09-29T16:10:26Z",
+  "updated": "2026-09-30T16:08:00Z",
   "groups": [
     {
       "key": "offense",
@@ -55,8 +55,8 @@
       "number": 12,
       "position": "QB",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 74,
       "weight": 218,
       "age": 25,
@@ -94,21 +94,6 @@
       "college": "Georgia Tech"
     },
     {
-      "gsisId": "00-0036755",
-      "name": "Jaret Patterson",
-      "slug": "jaret-patterson",
-      "number": 30,
-      "position": "RB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 68,
-      "weight": 195,
-      "age": 26,
-      "experience": 5,
-      "college": "Buffalo"
-    },
-    {
       "gsisId": "00-0036425",
       "name": "DeeJay Dallas",
       "slug": "deejay-dallas",
@@ -137,21 +122,6 @@
       "age": 31,
       "experience": 9,
       "college": "Texas-El Paso"
-    },
-    {
-      "gsisId": "00-0037267",
-      "name": "Jerome Ford",
-      "slug": "jerome-ford",
-      "number": 34,
-      "position": "RB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 70,
-      "weight": 210,
-      "age": 27,
-      "experience": 4,
-      "college": "Cincinnati; Alabama"
     },
     {
       "gsisId": "00-0041081",
@@ -310,8 +280,8 @@
       "number": 84,
       "position": "TE",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 77,
       "weight": 264,
       "age": 29,
@@ -589,21 +559,6 @@
       "college": "Georgia"
     },
     {
-      "gsisId": "00-0035073",
-      "name": "Jonathan Harris",
-      "slug": "jonathan-harris",
-      "number": 93,
-      "position": "DE",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 77,
-      "weight": 295,
-      "age": 30,
-      "experience": 7,
-      "college": "Lindenwood"
-    },
-    {
       "gsisId": "00-0041033",
       "name": "Caleb Banks",
       "slug": "caleb-banks",
@@ -700,8 +655,8 @@
       "number": 17,
       "position": "OLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 255,
       "age": 35,
@@ -767,6 +722,21 @@
       "age": 32,
       "experience": 10,
       "college": "Illinois; Globe Institute"
+    },
+    {
+      "gsisId": "00-0039494",
+      "name": "Kenny Dyson",
+      "slug": "kenny-dyson",
+      "number": 54,
+      "position": "OLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 235,
+      "age": 25,
+      "experience": 2,
+      "college": "Bryant"
     },
     {
       "gsisId": "00-0040492",
@@ -1112,21 +1082,6 @@
       "age": 25,
       "experience": 2,
       "college": "Alabama"
-    },
-    {
-      "gsisId": "00-0028872",
-      "name": "Johnny Hekker",
-      "slug": "johnny-hekker",
-      "number": 6,
-      "position": "P",
-      "group": "specialists",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 77,
-      "weight": 241,
-      "age": 36,
-      "experience": 14,
-      "college": "Oregon State"
     },
     {
       "gsisId": "00-0041581",
