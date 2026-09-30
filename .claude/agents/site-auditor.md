@@ -33,6 +33,30 @@ Check, in separate passes:
 4. Layout at 1440, 1024, and 390px wide: overflow, overlap, empty gaps.
 5. CLAUDE.md compliance: design tokens, no ESPN data in src/data, modeling
    ownership, no hardcoded colors or base-path links.
+6. Weight:
+   a. Per-page transfer size, from `weight` in the audit script's report,
+      split by HTML, JS, CSS, fonts and images. Flag every page over 500 KB
+      (`overBudget`) and name its largest files. CSS is inlined into each
+      page, so it counts under HTML; so do inline chart SVGs.
+      Report how much of each page's HTML is inlined CSS (`weight.inlineCss`:
+      bytes and share, raw and gzipped), and the report's `fiveViews`: the
+      estimated transfer for a visitor viewing the first five pages in a row
+      with CSS inlined versus one cached external stylesheet, and the
+      difference. Report only; the inlined CSS is a deliberate choice in
+      CLAUDE.md (GitHub Pages caching across deploys), so do not recommend
+      changing it unless the numbers make a strong case, and name that
+      trade-off if you do.
+   b. Total size of `dist/` and its ten largest files.
+   c. Repository size including history (`git count-objects -vH`), how much
+      `src/data/` has grown per daily data commit, and that growth projected
+      to the end of the season.
+   Compare each against the GitHub Pages and repository limits
+   `scripts/audit-weight.ts` prints (published site, source repository,
+   monthly bandwidth: say how many page views of the home page and of the
+   heaviest page would use it, file size). Say how close each is, not just
+   pass or fail. Run this pass on the real build, not a date state.
+
+Run all six passes every time, the first run included.
 
 For passes 2, 3 and 4, use `scripts/audit-pages.ts`:
 
@@ -54,6 +78,16 @@ With `--state <name>` it builds a copy of the site with that state's data and
 clock instead (staged in `audit/states/`, never touching `src/data`), writes
 `audit/report-<name>.json` and screenshots to `audit/screenshots/<name>/`, and
 lists every request the page made to ESPN under `espnRequests`.
+
+For 6b and 6c, run `node scripts/audit-weight.ts` (add `--no-build` when
+`dist/` is from the current source). It prints JSON: `dist` (total, by
+extension, ten largest), `repository` (count-objects in bytes and the size of
+`src/data/` now), `dailyCommits` (what each "Update site data" commit added
+under `src/data/`, uncompressed and on disk), `projection` (to the Super
+Bowl, estimated while the schedule has only the regular season) and `limits`.
+Also run `git count-objects -vH` itself and quote it. On-disk growth depends
+on whether git has packed the objects yet, so treat the projection as an
+estimate and say so.
 
 If any check cannot be run (a tool fails, nflverse is unreachable, a state
 cannot be reproduced), report it as "not checked" with the reason. Never infer

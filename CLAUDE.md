@@ -540,8 +540,10 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
   2026-09-29), for `scripts/audit-pages.ts` only, which the site-auditor agent
   (`.claude/agents/site-auditor.md`) runs to load built pages at 1440, 1024 and 390px
   and report console errors, failed requests, horizontal overflow and axe violations as
-  JSON. Screenshots and the report go to `audit/`, which is gitignored. Never used by
-  the site, the build or the pipelines.
+  JSON, with each page's weight by type. Screenshots and the report go to `audit/`,
+  which is gitignored. Never used by the site, the build or the pipelines.
+  `scripts/audit-weight.ts` (no dependencies) reports the size of `dist/`, the
+  repository, and each daily data commit's growth for the auditor's Weight pass.
 - Date states: anything date-dependent reads the clock through `siteNow()`
   (`src/utils/now.ts`), never `new Date()` or `Date.now()` (`BUILD_ID`, a cache key,
   is the one exception). A build with `SITE_NOW` set (an ISO instant, checked in

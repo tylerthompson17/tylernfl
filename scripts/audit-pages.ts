@@ -1,7 +1,19 @@
 /**
  * Loads pages of the built site at three widths and reports what a browser
- * sees: console errors, failed requests, horizontal overflow, and axe
- * accessibility violations. Used by the site-auditor agent.
+ * sees: console errors, failed requests, horizontal overflow, axe
+ * accessibility violations, and page weight. Used by the site-auditor agent.
+ *
+ * Page weight is a first visit (a fresh browser each load, nothing cached),
+ * by type: HTML, JS, CSS, fonts, images, other. The preview server does not
+ * compress, and GitHub Pages gzips text, so `transfer` estimates the wire
+ * size: HTML, JS, CSS, SVG and JSON gzipped here, everything else as is.
+ * `bytes` is uncompressed. A page whose transfer is over 500 KB is flagged.
+ * `inlineCss` is the share of each page's HTML that is the site's stylesheet
+ * (the <style> blocks in <head>; chart SVGs carry their own <style>, which is
+ * not counted). `fiveViews` in the report estimates what a visitor transfers
+ * over the first five pages given (at 1440px): with the CSS inlined, as the
+ * site is built, and with the same CSS in one external stylesheet fetched
+ * once and cached. It only measures; the CSS setup is CLAUDE.md's call.
  *
  *   node scripts/audit-pages.ts / /stats/ /standings/ /teams/BUF/
  *   node scripts/audit-pages.ts --no-build /scores/
@@ -29,13 +41,14 @@
  */
 
 import { spawn, spawnSync } from 'node:child_process';
+import { gzipSync } from 'node:zlib';
 import { cp, mkdir, readdir, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 
 import AxeBuilder from '@axe-core/playwright';
-import { chromium, type Browser, type BrowserContext, type Page } from 'playwright';
+import { chromium, type Browser, type BrowserContext, type Page, type Response } from 'playwright';
 
 const WIDTHS = [1440, 1024, 390];
 const HEIGHT = 900;
@@ -46,6 +59,9 @@ const PYTHON = 'pipelines/.venv/bin/python';
 // What a staged copy of the site needs to build: the site itself, and
 // Tyler's chart scripts, which the chart collection checks exist.
 const SITE_FILES = ['src', 'public', 'astro.config.mjs', 'package.json', 'tsconfig.json', 'pipelines/charts/mine'];
+const WEIGHT_BUDGET = 500 * 1024;
+const WEIGHT_TYPES = ['html', 'js', 'css', 'font', 'image', 'other'] as const;
+type WeightType = (typeof WEIGHT_TYPES)[number];
 // Long enough for a changed score's 2 second highlight to fade.
 const SETTLE_MS = 2500;
 
@@ -234,9 +250,138 @@ async function overflowOf(page: Page) {
   });
 }
 
+function weightType(response: Response): WeightType {
+  const kind = response.request().resourceType();
+  if (kind === 'document') return 'html';
+  if (kind === 'script') return 'js';
+  if (kind === 'stylesheet') return 'css';
+  if (kind === 'font') return 'font';
+  if (kind === 'image') return 'image';
+  return 'other';
+}
+
+const COMPRESSED_BY_PAGES = /^(text\/|application\/(javascript|json|xml)|image\/svg\+xml)/;
+
+const gzipSize = (text: string) => gzipSync(Buffer.from(text)).length;
+
+/** The site's stylesheet blocks in a page's <head>, and the HTML without them. */
+function splitHeadCss(html: string): { blocks: string[]; without: string } {
+  const head = html.match(/<head[\s\S]*?<\/head>/i)?.[0] ?? '';
+  const blocks = [...head.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map((m) => m[0]);
+  const bareHead = blocks.reduce((h, block) => h.replace(block, ''), head);
+  return { blocks, without: html.replace(head, bareHead) };
+}
+
+/** What a page contributes to the five views estimate. */
+interface Visit {
+  path: string;
+  htmlTransfer: number;
+  htmlTransferWithoutCss: number;
+  cssBlocks: string[];
+  assets: Map<string, number>;
+}
+
+/** Adds up every response a page load receives, by type. */
+function weighPage(page: Page, path: string) {
+  const totals = Object.fromEntries(WEIGHT_TYPES.map((t) => [t, { requests: 0, bytes: 0, transfer: 0 }])) as Record<
+    WeightType,
+    { requests: number; bytes: number; transfer: number }
+  >;
+  const largest: { url: string; type: WeightType; bytes: number; transfer: number }[] = [];
+  const pending: Promise<void>[] = [];
+  const assets = new Map<string, number>();
+  let html: string | null = null;
+  page.on('response', (response) => {
+    pending.push(
+      (async () => {
+        let body: Buffer;
+        try {
+          body = await response.body();
+        } catch {
+          return; // redirects and aborted requests have no body
+        }
+        const type = weightType(response);
+        const contentType = response.headers()['content-type'] ?? '';
+        const transfer = COMPRESSED_BY_PAGES.test(contentType) ? gzipSync(body).length : body.length;
+        if (type === 'html' && response.request().frame() === page.mainFrame() && html === null) {
+          html = body.toString('utf8');
+        } else {
+          assets.set(response.url(), transfer);
+        }
+        totals[type].requests += 1;
+        totals[type].bytes += body.length;
+        totals[type].transfer += transfer;
+        largest.push({ url: response.url(), type, bytes: body.length, transfer });
+      })(),
+    );
+  });
+  return async () => {
+    await Promise.all(pending);
+    const transfer = WEIGHT_TYPES.reduce((sum, t) => sum + totals[t].transfer, 0);
+    let inlineCss = null;
+    let visit: Visit | null = null;
+    if (html !== null) {
+      const { blocks, without } = splitHeadCss(html);
+      const htmlBytes = Buffer.byteLength(html);
+      const cssBytes = blocks.reduce((sum, b) => sum + Buffer.byteLength(b), 0);
+      const htmlTransfer = gzipSize(html);
+      const htmlTransferWithoutCss = gzipSize(without);
+      inlineCss = {
+        blocks: blocks.length,
+        bytes: cssBytes,
+        shareOfHtmlBytes: Number((cssBytes / htmlBytes).toFixed(3)),
+        transfer: htmlTransfer - htmlTransferWithoutCss,
+        shareOfHtmlTransfer: Number(((htmlTransfer - htmlTransferWithoutCss) / htmlTransfer).toFixed(3)),
+      };
+      visit = { path, htmlTransfer, htmlTransferWithoutCss, cssBlocks: blocks, assets };
+    }
+    return {
+      weight: {
+        transfer,
+        bytes: WEIGHT_TYPES.reduce((sum, t) => sum + totals[t].bytes, 0),
+        overBudget: transfer > WEIGHT_BUDGET,
+        byType: totals,
+        inlineCss,
+        largest: largest.sort((a, b) => b.transfer - a.transfer).slice(0, 5),
+      },
+      visit,
+    };
+  };
+}
+
+/**
+ * Five page views in a row, first visit: HTML every time, every other file
+ * once (the browser keeps it). Inlined, each page carries its CSS; external,
+ * each page drops it and one stylesheet holding every distinct block the five
+ * pages use is fetched once. That single sheet is the best case for external
+ * CSS: Astro would split it into shared and per-page files, adding requests.
+ */
+function fiveViews(visits: Visit[]) {
+  const pages = visits.filter((v, i) => visits.findIndex((w) => w.path === v.path) === i).slice(0, 5);
+  if (pages.length < 5) return { notChecked: `needs five different pages, ${pages.length} given` };
+  const assets = new Map<string, number>();
+  for (const page of pages) for (const [url, size] of page.assets) assets.set(url, size);
+  const assetsOnce = [...assets.values()].reduce((sum, n) => sum + n, 0);
+  const sheet = [...new Set(pages.flatMap((p) => p.cssBlocks))]
+    .map((block) => block.replace(/^<style[^>]*>|<\/style>$/gi, ''))
+    .join('\n');
+  const inlineHtml = pages.reduce((sum, p) => sum + p.htmlTransfer, 0);
+  const externalHtml = pages.reduce((sum, p) => sum + p.htmlTransferWithoutCss, 0);
+  const stylesheet = gzipSize(sheet);
+  const inlined = inlineHtml + assetsOnce;
+  const external = externalHtml + stylesheet + assetsOnce;
+  return {
+    pages: pages.map((p) => p.path),
+    inlined: { transfer: inlined, cssTransfer: inlineHtml - externalHtml, requests: 5 + assets.size },
+    externalStylesheet: { transfer: external, cssTransfer: stylesheet, requests: 6 + assets.size },
+    difference: inlined - external,
+    otherFilesOnce: assetsOnce,
+  };
+}
+
 // A fresh context per page and width: axe needs one, and nothing (listeners,
 // cache, storage) carries over from the previous load.
-async function auditPage(browser: Browser, path: string, width: number) {
+async function auditPage(browser: Browser, path: string, width: number, visits: Visit[]) {
   const context = await browser.newContext({
     viewport: { width, height: HEIGHT },
     ...(state ? { timezoneId: 'America/New_York' } : {}),
@@ -257,9 +402,12 @@ async function auditPage(browser: Browser, path: string, width: number) {
     if (res.status() >= 400) failedRequests.push(`${res.url()} (HTTP ${res.status()})`);
   });
 
+  const weigh = weighPage(page, path);
   const url = `${origin}${BASE}${path.startsWith('/') ? path : `/${path}`}`;
   const response = await page.goto(url, { waitUntil: 'networkidle' });
   if (espnRequests.length > 0) await page.waitForTimeout(SETTLE_MS);
+  const { weight, visit } = await weigh();
+  if (visit && width === WIDTHS[0]) visits.push(visit);
   const screenshot = `${shotDir}/${slugOf(path)}-${width}.png`;
   await page.screenshot({ path: screenshot, fullPage: true });
 
@@ -279,6 +427,7 @@ async function auditPage(browser: Browser, path: string, width: number) {
     failedRequests,
     ...(state ? { espnRequests } : {}),
     overflow,
+    weight,
     axeViolations: axe.violations.map((v) => ({
       id: v.id,
       impact: v.impact,
@@ -295,10 +444,11 @@ try {
   await waitForServer();
   const browser = await chromium.launch();
   const results = [];
+  const visits: Visit[] = [];
   for (const path of positionals) {
     for (const width of WIDTHS) {
       try {
-        results.push(await auditPage(browser, path, width));
+        results.push(await auditPage(browser, path, width, visits));
       } catch (err) {
         results.push({ path, width, error: String(err) });
       }
@@ -309,6 +459,7 @@ try {
     {
       generated: new Date().toISOString(),
       ...(state ? { state: { name: stateName, siteNow: state.now, description: state.description, data: generated } } : {}),
+      fiveViews: fiveViews(visits),
       results,
     },
     null,
