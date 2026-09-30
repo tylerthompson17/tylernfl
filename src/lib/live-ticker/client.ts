@@ -12,6 +12,7 @@
  */
 
 import { LIVE_TICKER_ENABLED } from '../../config.ts';
+import { siteNow } from '../../utils/now.ts';
 import { parseScoreboard, scoreboardUrl, type LiveGame } from './espn.ts';
 import { formatKickoff, formatKickoffDate } from './kickoff.ts';
 import { scoreChanged, stripInsertIndex } from './pin.ts';
@@ -326,7 +327,7 @@ export function initLiveTicker(): void {
   async function tick() {
     if (document.hidden) return;
 
-    const now = new Date();
+    const now = siteNow();
     const window_ = pollWindow([...games.values()], now);
     if (!window_.active) {
       if (!caughtUp && needsCatchUp([...games.values()], now)) {

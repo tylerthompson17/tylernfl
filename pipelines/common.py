@@ -1,6 +1,7 @@
 """Shared helpers for the site data pipelines."""
 
 import json
+import os
 import re
 import unicodedata
 from datetime import date, datetime
@@ -8,7 +9,10 @@ from pathlib import Path
 from typing import Callable
 from zoneinfo import ZoneInfo
 
-DATA_DIR = Path(__file__).resolve().parent.parent / 'src' / 'data'
+# TYLERNFL_DATA_DIR sends every read and write elsewhere: the date state
+# fixtures (tests/fixtures/states/generate.py) are written through it, so
+# they never touch src/data.
+DATA_DIR = Path(os.environ.get('TYLERNFL_DATA_DIR') or Path(__file__).resolve().parent.parent / 'src' / 'data')
 
 # NFL schedules and kickoff times are published in US Eastern time.
 EASTERN = ZoneInfo('America/New_York')

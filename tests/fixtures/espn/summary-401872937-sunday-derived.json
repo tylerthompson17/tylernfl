@@ -1,0 +1,142 @@
+{
+ "derived": "Synthetic, from derive_sunday.py: not an ESPN response.",
+ "header": {
+  "competitions": [
+   {
+    "competitors": [
+     {
+      "homeAway": "home",
+      "team": {
+       "id": "3",
+       "abbreviation": "CHI"
+      }
+     },
+     {
+      "homeAway": "away",
+      "team": {
+       "id": "16",
+       "abbreviation": "MIN"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "scoringPlays": [
+  {
+   "type": {
+    "text": "Passing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Jordan Addison 12 Yd pass from Kyler Murray (Will Reichard Kick)",
+   "awayScore": 7,
+   "homeScore": 0,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "11:42"
+   },
+   "team": {
+    "id": "16",
+    "abbreviation": "MIN"
+   }
+  },
+  {
+   "type": {
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Demond Claiborne 3 Yd Rush (Will Reichard Kick)",
+   "awayScore": 14,
+   "homeScore": 0,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "6:15"
+   },
+   "team": {
+    "id": "16",
+    "abbreviation": "MIN"
+   }
+  },
+  {
+   "type": {
+    "text": "Field Goal Good",
+    "abbreviation": "FG"
+   },
+   "scoringType": {
+    "abbreviation": "FG",
+    "displayName": "Field Goal"
+   },
+   "text": "Will Reichard 33 Yd Field Goal",
+   "awayScore": 17,
+   "homeScore": 0,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "11:42"
+   },
+   "team": {
+    "id": "16",
+    "abbreviation": "MIN"
+   }
+  },
+  {
+   "type": {
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "D'Andre Swift 3 Yd Rush (Cairo Santos Kick)",
+   "awayScore": 17,
+   "homeScore": 7,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "6:15"
+   },
+   "team": {
+    "id": "3",
+    "abbreviation": "CHI"
+   }
+  },
+  {
+   "type": {
+    "text": "Passing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Jahdae Walker 26 Yd pass from Case Keenum (Cairo Santos Kick)",
+   "awayScore": 17,
+   "homeScore": 14,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "1:58"
+   },
+   "team": {
+    "id": "3",
+    "abbreviation": "CHI"
+   }
+  }
+ ]
+}

@@ -1,0 +1,165 @@
+{
+ "derived": "Synthetic, from derive_sunday.py: not an ESPN response.",
+ "header": {
+  "competitions": [
+   {
+    "competitors": [
+     {
+      "homeAway": "home",
+      "team": {
+       "id": "20",
+       "abbreviation": "NYJ"
+      }
+     },
+     {
+      "homeAway": "away",
+      "team": {
+       "id": "9",
+       "abbreviation": "GB"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "scoringPlays": [
+  {
+   "type": {
+    "text": "Passing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Matthew Golden 12 Yd pass from Tyrod Taylor (Trey Smack Kick)",
+   "awayScore": 7,
+   "homeScore": 0,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "11:42"
+   },
+   "team": {
+    "id": "9",
+    "abbreviation": "GB"
+   }
+  },
+  {
+   "type": {
+    "text": "Field Goal Good",
+    "abbreviation": "FG"
+   },
+   "scoringType": {
+    "abbreviation": "FG",
+    "displayName": "Field Goal"
+   },
+   "text": "Blake Grupe 37 Yd Field Goal",
+   "awayScore": 7,
+   "homeScore": 3,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "6:15"
+   },
+   "team": {
+    "id": "20",
+    "abbreviation": "NYJ"
+   }
+  },
+  {
+   "type": {
+    "text": "Passing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Matthew Golden 12 Yd pass from Tyrod Taylor (Trey Smack Kick)",
+   "awayScore": 14,
+   "homeScore": 3,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "11:42"
+   },
+   "team": {
+    "id": "9",
+    "abbreviation": "GB"
+   }
+  },
+  {
+   "type": {
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Braelon Allen 3 Yd Rush (Blake Grupe Kick)",
+   "awayScore": 14,
+   "homeScore": 10,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "6:15"
+   },
+   "team": {
+    "id": "20",
+    "abbreviation": "NYJ"
+   }
+  },
+  {
+   "type": {
+    "text": "Passing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Matthew Golden 26 Yd pass from Tyrod Taylor (Trey Smack Kick)",
+   "awayScore": 21,
+   "homeScore": 10,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "1:58"
+   },
+   "team": {
+    "id": "9",
+    "abbreviation": "GB"
+   }
+  },
+  {
+   "type": {
+    "text": "Field Goal Good",
+    "abbreviation": "FG"
+   },
+   "scoringType": {
+    "abbreviation": "FG",
+    "displayName": "Field Goal"
+   },
+   "text": "Trey Smack 45 Yd Field Goal",
+   "awayScore": 24,
+   "homeScore": 10,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "0:21"
+   },
+   "team": {
+    "id": "9",
+    "abbreviation": "GB"
+   }
+  }
+ ]
+}

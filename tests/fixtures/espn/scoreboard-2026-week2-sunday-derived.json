@@ -1,0 +1,934 @@
+{
+ "derived": "Synthetic, from derive_sunday.py: not an ESPN response.",
+ "season": {
+  "type": 2,
+  "year": 2026
+ },
+ "week": {
+  "number": 2
+ },
+ "events": [
+  {
+   "id": "401872932",
+   "date": "2026-09-18T00:15Z",
+   "shortName": "DET @ BUF",
+   "status": {
+    "clock": 0,
+    "displayClock": "0:00",
+    "period": 4,
+    "type": {
+     "id": "3",
+     "name": "STATUS_FINAL",
+     "state": "post",
+     "completed": true,
+     "description": "Final",
+     "detail": "Final",
+     "shortDetail": "Final"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "41",
+       "team": {
+        "id": "2",
+        "abbreviation": "BUF"
+       },
+       "linescores": [
+        {
+         "value": 14,
+         "displayValue": "14",
+         "period": 1
+        },
+        {
+         "value": 13,
+         "displayValue": "13",
+         "period": 2
+        },
+        {
+         "value": 7,
+         "displayValue": "7",
+         "period": 3
+        },
+        {
+         "value": 7,
+         "displayValue": "7",
+         "period": 4
+        }
+       ]
+      },
+      {
+       "homeAway": "away",
+       "score": "31",
+       "team": {
+        "id": "8",
+        "abbreviation": "DET"
+       },
+       "linescores": [
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 1
+        },
+        {
+         "value": 10,
+         "displayValue": "10",
+         "period": 2
+        },
+        {
+         "value": 7,
+         "displayValue": "7",
+         "period": 3
+        },
+        {
+         "value": 14,
+         "displayValue": "14",
+         "period": 4
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872933",
+   "date": "2026-09-20T17:00Z",
+   "shortName": "CAR @ ATL",
+   "status": {
+    "clock": 0,
+    "displayClock": "0:00",
+    "period": 2,
+    "type": {
+     "id": "23",
+     "name": "STATUS_HALFTIME",
+     "state": "in",
+     "completed": false,
+     "description": "Halftime",
+     "detail": "Halftime",
+     "shortDetail": "Halftime"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "17",
+       "team": {
+        "id": "1",
+        "abbreviation": "ATL"
+       },
+       "linescores": [
+        {
+         "value": 7,
+         "displayValue": "7",
+         "period": 1
+        },
+        {
+         "value": 10,
+         "displayValue": "10",
+         "period": 2
+        }
+       ]
+      },
+      {
+       "homeAway": "away",
+       "score": "10",
+       "team": {
+        "id": "29",
+        "abbreviation": "CAR"
+       },
+       "linescores": [
+        {
+         "value": 3,
+         "displayValue": "3",
+         "period": 1
+        },
+        {
+         "value": 7,
+         "displayValue": "7",
+         "period": 2
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872937",
+   "date": "2026-09-20T17:00Z",
+   "shortName": "MIN @ CHI",
+   "status": {
+    "clock": 900,
+    "displayClock": "15:00",
+    "period": 3,
+    "type": {
+     "id": "2",
+     "name": "STATUS_IN_PROGRESS",
+     "state": "in",
+     "completed": false,
+     "description": "In Progress",
+     "detail": "15:00 - 3rd Quarter",
+     "shortDetail": "15:00 - 3rd"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "14",
+       "team": {
+        "id": "3",
+        "abbreviation": "CHI"
+       },
+       "linescores": [
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 1
+        },
+        {
+         "value": 14,
+         "displayValue": "14",
+         "period": 2
+        },
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 3
+        }
+       ]
+      },
+      {
+       "homeAway": "away",
+       "score": "17",
+       "team": {
+        "id": "16",
+        "abbreviation": "MIN"
+       },
+       "linescores": [
+        {
+         "value": 14,
+         "displayValue": "14",
+         "period": 1
+        },
+        {
+         "value": 3,
+         "displayValue": "3",
+         "period": 2
+        },
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 3
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872939",
+   "date": "2026-09-20T17:00Z",
+   "shortName": "PHI @ TEN",
+   "status": {
+    "clock": 181,
+    "displayClock": "3:01",
+    "period": 2,
+    "type": {
+     "id": "2",
+     "name": "STATUS_IN_PROGRESS",
+     "state": "in",
+     "completed": false,
+     "description": "In Progress",
+     "detail": "3:01 - 2nd Quarter",
+     "shortDetail": "3:01 - 2nd"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "3",
+       "team": {
+        "id": "10",
+        "abbreviation": "TEN"
+       },
+       "linescores": [
+        {
+         "value": 3,
+         "displayValue": "3",
+         "period": 1
+        },
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 2
+        }
+       ]
+      },
+      {
+       "homeAway": "away",
+       "score": "21",
+       "team": {
+        "id": "21",
+        "abbreviation": "PHI"
+       },
+       "linescores": [
+        {
+         "value": 14,
+         "displayValue": "14",
+         "period": 1
+        },
+        {
+         "value": 7,
+         "displayValue": "7",
+         "period": 2
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872946",
+   "date": "2026-09-20T17:00Z",
+   "shortName": "PIT @ NE",
+   "status": {
+    "clock": 0,
+    "displayClock": "0:00",
+    "period": 2,
+    "type": {
+     "id": "23",
+     "name": "STATUS_HALFTIME",
+     "state": "in",
+     "completed": false,
+     "description": "Halftime",
+     "detail": "Halftime",
+     "shortDetail": "Halftime"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "13",
+       "team": {
+        "id": "17",
+        "abbreviation": "NE"
+       },
+       "linescores": [
+        {
+         "value": 7,
+         "displayValue": "7",
+         "period": 1
+        },
+        {
+         "value": 6,
+         "displayValue": "6",
+         "period": 2
+        }
+       ]
+      },
+      {
+       "homeAway": "away",
+       "score": "13",
+       "team": {
+        "id": "23",
+        "abbreviation": "PIT"
+       },
+       "linescores": [
+        {
+         "value": 3,
+         "displayValue": "3",
+         "period": 1
+        },
+        {
+         "value": 10,
+         "displayValue": "10",
+         "period": 2
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872936",
+   "date": "2026-09-20T17:00Z",
+   "shortName": "GB @ NYJ",
+   "status": {
+    "clock": 900,
+    "displayClock": "15:00",
+    "period": 3,
+    "type": {
+     "id": "2",
+     "name": "STATUS_IN_PROGRESS",
+     "state": "in",
+     "completed": false,
+     "description": "In Progress",
+     "detail": "15:00 - 3rd Quarter",
+     "shortDetail": "15:00 - 3rd"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "10",
+       "team": {
+        "id": "20",
+        "abbreviation": "NYJ"
+       },
+       "linescores": [
+        {
+         "value": 3,
+         "displayValue": "3",
+         "period": 1
+        },
+        {
+         "value": 7,
+         "displayValue": "7",
+         "period": 2
+        },
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 3
+        }
+       ]
+      },
+      {
+       "homeAway": "away",
+       "score": "24",
+       "team": {
+        "id": "9",
+        "abbreviation": "GB"
+       },
+       "linescores": [
+        {
+         "value": 7,
+         "displayValue": "7",
+         "period": 1
+        },
+        {
+         "value": 17,
+         "displayValue": "17",
+         "period": 2
+        },
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 3
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872935",
+   "date": "2026-09-20T17:00Z",
+   "shortName": "CLE @ TB",
+   "status": {
+    "clock": 181,
+    "displayClock": "3:01",
+    "period": 2,
+    "type": {
+     "id": "2",
+     "name": "STATUS_IN_PROGRESS",
+     "state": "in",
+     "completed": false,
+     "description": "In Progress",
+     "detail": "3:01 - 2nd Quarter",
+     "shortDetail": "3:01 - 2nd"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "0",
+       "team": {
+        "id": "27",
+        "abbreviation": "TB"
+       },
+       "linescores": [
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 1
+        },
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 2
+        }
+       ]
+      },
+      {
+       "homeAway": "away",
+       "score": "0",
+       "team": {
+        "id": "5",
+        "abbreviation": "CLE"
+       },
+       "linescores": [
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 1
+        },
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 2
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872938",
+   "date": "2026-09-20T17:00Z",
+   "shortName": "NO @ BAL",
+   "status": {
+    "clock": 0,
+    "displayClock": "0:00",
+    "period": 2,
+    "type": {
+     "id": "23",
+     "name": "STATUS_HALFTIME",
+     "state": "in",
+     "completed": false,
+     "description": "Halftime",
+     "detail": "Halftime",
+     "shortDetail": "Halftime"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "20",
+       "team": {
+        "id": "33",
+        "abbreviation": "BAL"
+       },
+       "linescores": [
+        {
+         "value": 10,
+         "displayValue": "10",
+         "period": 1
+        },
+        {
+         "value": 10,
+         "displayValue": "10",
+         "period": 2
+        }
+       ]
+      },
+      {
+       "homeAway": "away",
+       "score": "6",
+       "team": {
+        "id": "18",
+        "abbreviation": "NO"
+       },
+       "linescores": [
+        {
+         "value": 3,
+         "displayValue": "3",
+         "period": 1
+        },
+        {
+         "value": 3,
+         "displayValue": "3",
+         "period": 2
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872934",
+   "date": "2026-09-20T17:00Z",
+   "shortName": "CIN @ HOU",
+   "status": {
+    "clock": 900,
+    "displayClock": "15:00",
+    "period": 3,
+    "type": {
+     "id": "2",
+     "name": "STATUS_IN_PROGRESS",
+     "state": "in",
+     "completed": false,
+     "description": "In Progress",
+     "detail": "15:00 - 3rd Quarter",
+     "shortDetail": "15:00 - 3rd"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "24",
+       "team": {
+        "id": "34",
+        "abbreviation": "HOU"
+       },
+       "linescores": [
+        {
+         "value": 10,
+         "displayValue": "10",
+         "period": 1
+        },
+        {
+         "value": 14,
+         "displayValue": "14",
+         "period": 2
+        },
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 3
+        }
+       ]
+      },
+      {
+       "homeAway": "away",
+       "score": "28",
+       "team": {
+        "id": "4",
+        "abbreviation": "CIN"
+       },
+       "linescores": [
+        {
+         "value": 14,
+         "displayValue": "14",
+         "period": 1
+        },
+        {
+         "value": 14,
+         "displayValue": "14",
+         "period": 2
+        },
+        {
+         "value": 0,
+         "displayValue": "0",
+         "period": 3
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872940",
+   "date": "2026-09-20T20:05Z",
+   "shortName": "JAX @ DEN",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 0,
+    "type": {
+     "id": "1",
+     "name": "STATUS_SCHEDULED",
+     "state": "pre",
+     "completed": false,
+     "description": "Scheduled",
+     "detail": "Sun, September 20th at 4:05 PM EDT",
+     "shortDetail": "9/20 - 4:05 PM EDT"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "0",
+       "team": {
+        "id": "7",
+        "abbreviation": "DEN"
+       }
+      },
+      {
+       "homeAway": "away",
+       "score": "0",
+       "team": {
+        "id": "30",
+        "abbreviation": "JAX"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872941",
+   "date": "2026-09-20T20:05Z",
+   "shortName": "LV @ LAC",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 0,
+    "type": {
+     "id": "1",
+     "name": "STATUS_SCHEDULED",
+     "state": "pre",
+     "completed": false,
+     "description": "Scheduled",
+     "detail": "Sun, September 20th at 4:05 PM EDT",
+     "shortDetail": "9/20 - 4:05 PM EDT"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "0",
+       "team": {
+        "id": "24",
+        "abbreviation": "LAC"
+       }
+      },
+      {
+       "homeAway": "away",
+       "score": "0",
+       "team": {
+        "id": "13",
+        "abbreviation": "LV"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872944",
+   "date": "2026-09-20T20:25Z",
+   "shortName": "WSH @ DAL",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 0,
+    "type": {
+     "id": "1",
+     "name": "STATUS_SCHEDULED",
+     "state": "pre",
+     "completed": false,
+     "description": "Scheduled",
+     "detail": "Sun, September 20th at 4:25 PM EDT",
+     "shortDetail": "9/20 - 4:25 PM EDT"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "0",
+       "team": {
+        "id": "6",
+        "abbreviation": "DAL"
+       }
+      },
+      {
+       "homeAway": "away",
+       "score": "0",
+       "team": {
+        "id": "28",
+        "abbreviation": "WSH"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872943",
+   "date": "2026-09-20T20:25Z",
+   "shortName": "SEA @ ARI",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 0,
+    "type": {
+     "id": "1",
+     "name": "STATUS_SCHEDULED",
+     "state": "pre",
+     "completed": false,
+     "description": "Scheduled",
+     "detail": "Sun, September 20th at 4:25 PM EDT",
+     "shortDetail": "9/20 - 4:25 PM EDT"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "0",
+       "team": {
+        "id": "22",
+        "abbreviation": "ARI"
+       }
+      },
+      {
+       "homeAway": "away",
+       "score": "0",
+       "team": {
+        "id": "26",
+        "abbreviation": "SEA"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872942",
+   "date": "2026-09-20T20:25Z",
+   "shortName": "MIA @ SF",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 0,
+    "type": {
+     "id": "1",
+     "name": "STATUS_SCHEDULED",
+     "state": "pre",
+     "completed": false,
+     "description": "Scheduled",
+     "detail": "Sun, September 20th at 4:25 PM EDT",
+     "shortDetail": "9/20 - 4:25 PM EDT"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "0",
+       "team": {
+        "id": "25",
+        "abbreviation": "SF"
+       }
+      },
+      {
+       "homeAway": "away",
+       "score": "0",
+       "team": {
+        "id": "15",
+        "abbreviation": "MIA"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872945",
+   "date": "2026-09-21T00:20Z",
+   "shortName": "IND @ KC",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 0,
+    "type": {
+     "id": "1",
+     "name": "STATUS_SCHEDULED",
+     "state": "pre",
+     "completed": false,
+     "description": "Scheduled",
+     "detail": "Sun, September 20th at 8:20 PM EDT",
+     "shortDetail": "9/20 - 8:20 PM EDT"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "0",
+       "team": {
+        "id": "12",
+        "abbreviation": "KC"
+       }
+      },
+      {
+       "homeAway": "away",
+       "score": "0",
+       "team": {
+        "id": "11",
+        "abbreviation": "IND"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401872947",
+   "date": "2026-09-22T00:15Z",
+   "shortName": "NYG @ LAR",
+   "status": {
+    "clock": 0.0,
+    "displayClock": "0:00",
+    "period": 0,
+    "type": {
+     "id": "1",
+     "name": "STATUS_SCHEDULED",
+     "state": "pre",
+     "completed": false,
+     "description": "Scheduled",
+     "detail": "Mon, September 21st at 8:15 PM EDT",
+     "shortDetail": "9/21 - 8:15 PM EDT"
+    }
+   },
+   "competitions": [
+    {
+     "competitors": [
+      {
+       "homeAway": "home",
+       "score": "0",
+       "team": {
+        "id": "14",
+        "abbreviation": "LAR"
+       }
+      },
+      {
+       "homeAway": "away",
+       "score": "0",
+       "team": {
+        "id": "19",
+        "abbreviation": "NYG"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

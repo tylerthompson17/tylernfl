@@ -1,0 +1,119 @@
+{
+ "derived": "Synthetic, from derive_sunday.py: not an ESPN response.",
+ "header": {
+  "competitions": [
+   {
+    "competitors": [
+     {
+      "homeAway": "home",
+      "team": {
+       "id": "10",
+       "abbreviation": "TEN"
+      }
+     },
+     {
+      "homeAway": "away",
+      "team": {
+       "id": "21",
+       "abbreviation": "PHI"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "scoringPlays": [
+  {
+   "type": {
+    "text": "Passing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Marquise Brown 12 Yd pass from Jalen Hurts (Jake Elliott Kick)",
+   "awayScore": 7,
+   "homeScore": 0,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "11:42"
+   },
+   "team": {
+    "id": "21",
+    "abbreviation": "PHI"
+   }
+  },
+  {
+   "type": {
+    "text": "Field Goal Good",
+    "abbreviation": "FG"
+   },
+   "scoringType": {
+    "abbreviation": "FG",
+    "displayName": "Field Goal"
+   },
+   "text": "Joey Slye 37 Yd Field Goal",
+   "awayScore": 7,
+   "homeScore": 3,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "6:15"
+   },
+   "team": {
+    "id": "10",
+    "abbreviation": "TEN"
+   }
+  },
+  {
+   "type": {
+    "text": "Passing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Marquise Brown 26 Yd pass from Jalen Hurts (Jake Elliott Kick)",
+   "awayScore": 14,
+   "homeScore": 3,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "1:58"
+   },
+   "team": {
+    "id": "21",
+    "abbreviation": "PHI"
+   }
+  },
+  {
+   "type": {
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Tank Bigsby 1 Yd Rush (Jake Elliott Kick)",
+   "awayScore": 21,
+   "homeScore": 3,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "11:42"
+   },
+   "team": {
+    "id": "21",
+    "abbreviation": "PHI"
+   }
+  }
+ ]
+}

@@ -1,0 +1,211 @@
+{
+ "derived": "Synthetic, from derive_sunday.py: not an ESPN response.",
+ "header": {
+  "competitions": [
+   {
+    "competitors": [
+     {
+      "homeAway": "home",
+      "team": {
+       "id": "34",
+       "abbreviation": "HOU"
+      }
+     },
+     {
+      "homeAway": "away",
+      "team": {
+       "id": "4",
+       "abbreviation": "CIN"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "scoringPlays": [
+  {
+   "type": {
+    "text": "Passing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Ja'Marr Chase 12 Yd pass from Joe Burrow (Evan McPherson Kick)",
+   "awayScore": 7,
+   "homeScore": 0,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "11:42"
+   },
+   "team": {
+    "id": "4",
+    "abbreviation": "CIN"
+   }
+  },
+  {
+   "type": {
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Woody Marks 3 Yd Rush (Ka'imi Fairbairn Kick)",
+   "awayScore": 7,
+   "homeScore": 7,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "6:15"
+   },
+   "team": {
+    "id": "34",
+    "abbreviation": "HOU"
+   }
+  },
+  {
+   "type": {
+    "text": "Passing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Ja'Marr Chase 26 Yd pass from Joe Burrow (Evan McPherson Kick)",
+   "awayScore": 14,
+   "homeScore": 7,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "1:58"
+   },
+   "team": {
+    "id": "4",
+    "abbreviation": "CIN"
+   }
+  },
+  {
+   "type": {
+    "text": "Field Goal Good",
+    "abbreviation": "FG"
+   },
+   "scoringType": {
+    "abbreviation": "FG",
+    "displayName": "Field Goal"
+   },
+   "text": "Ka'imi Fairbairn 45 Yd Field Goal",
+   "awayScore": 14,
+   "homeScore": 10,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "0:21"
+   },
+   "team": {
+    "id": "34",
+    "abbreviation": "HOU"
+   }
+  },
+  {
+   "type": {
+    "text": "Passing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Ja'Marr Chase 12 Yd pass from Joe Burrow (Evan McPherson Kick)",
+   "awayScore": 21,
+   "homeScore": 10,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "11:42"
+   },
+   "team": {
+    "id": "4",
+    "abbreviation": "CIN"
+   }
+  },
+  {
+   "type": {
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Woody Marks 3 Yd Rush (Ka'imi Fairbairn Kick)",
+   "awayScore": 21,
+   "homeScore": 17,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "6:15"
+   },
+   "team": {
+    "id": "34",
+    "abbreviation": "HOU"
+   }
+  },
+  {
+   "type": {
+    "text": "Passing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Ja'Marr Chase 26 Yd pass from Joe Burrow (Evan McPherson Kick)",
+   "awayScore": 28,
+   "homeScore": 17,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "1:58"
+   },
+   "team": {
+    "id": "4",
+    "abbreviation": "CIN"
+   }
+  },
+  {
+   "type": {
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Woody Marks 7 Yd Rush (Ka'imi Fairbairn Kick)",
+   "awayScore": 28,
+   "homeScore": 24,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "0:21"
+   },
+   "team": {
+    "id": "34",
+    "abbreviation": "HOU"
+   }
+  }
+ ]
+}

@@ -1,0 +1,142 @@
+{
+ "derived": "Synthetic, from derive_sunday.py: not an ESPN response.",
+ "header": {
+  "competitions": [
+   {
+    "competitors": [
+     {
+      "homeAway": "home",
+      "team": {
+       "id": "1",
+       "abbreviation": "ATL"
+      }
+     },
+     {
+      "homeAway": "away",
+      "team": {
+       "id": "29",
+       "abbreviation": "CAR"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "scoringPlays": [
+  {
+   "type": {
+    "text": "Field Goal Good",
+    "abbreviation": "FG"
+   },
+   "scoringType": {
+    "abbreviation": "FG",
+    "displayName": "Field Goal"
+   },
+   "text": "Ryan Fitzgerald 33 Yd Field Goal",
+   "awayScore": 3,
+   "homeScore": 0,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "11:42"
+   },
+   "team": {
+    "id": "29",
+    "abbreviation": "CAR"
+   }
+  },
+  {
+   "type": {
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Bijan Robinson 3 Yd Rush (Nick Folk Kick)",
+   "awayScore": 3,
+   "homeScore": 7,
+   "period": {
+    "number": 1
+   },
+   "clock": {
+    "displayValue": "6:15"
+   },
+   "team": {
+    "id": "1",
+    "abbreviation": "ATL"
+   }
+  },
+  {
+   "type": {
+    "text": "Passing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Tetairoa McMillan 12 Yd pass from Bryce Young (Ryan Fitzgerald Kick)",
+   "awayScore": 10,
+   "homeScore": 7,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "11:42"
+   },
+   "team": {
+    "id": "29",
+    "abbreviation": "CAR"
+   }
+  },
+  {
+   "type": {
+    "text": "Rushing Touchdown",
+    "abbreviation": "TD"
+   },
+   "scoringType": {
+    "abbreviation": "TD",
+    "displayName": "Touchdown"
+   },
+   "text": "Bijan Robinson 3 Yd Rush (Nick Folk Kick)",
+   "awayScore": 10,
+   "homeScore": 14,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "6:15"
+   },
+   "team": {
+    "id": "1",
+    "abbreviation": "ATL"
+   }
+  },
+  {
+   "type": {
+    "text": "Field Goal Good",
+    "abbreviation": "FG"
+   },
+   "scoringType": {
+    "abbreviation": "FG",
+    "displayName": "Field Goal"
+   },
+   "text": "Nick Folk 41 Yd Field Goal",
+   "awayScore": 10,
+   "homeScore": 17,
+   "period": {
+    "number": 2
+   },
+   "clock": {
+    "displayValue": "1:58"
+   },
+   "team": {
+    "id": "1",
+    "abbreviation": "ATL"
+   }
+  }
+ ]
+}

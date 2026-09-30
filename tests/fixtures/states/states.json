@@ -1,0 +1,22 @@
+{
+  "sunday": {
+    "description": "Week 2 Sunday at 2:30 PM Eastern: Thursday's game final, the 1 PM games in progress, the late games not started.",
+    "now": "2026-09-20T18:30:00Z",
+    "espn": {
+      "scoreboard": "scoreboard-2026-week2-sunday-derived.json",
+      "summaries": "summary-*-sunday-derived.json"
+    }
+  },
+  "tuesday": {
+    "description": "Week 3 Tuesday at 10 AM Eastern: every game final, Monday night's included.",
+    "now": "2026-09-29T14:00:00Z"
+  },
+  "wednesday": {
+    "description": "Week 3 Wednesday at noon Eastern: the ticker has moved on to week 3's schedule, no game played yet.",
+    "now": "2026-09-23T16:00:00Z"
+  },
+  "offseason": {
+    "description": "Mid June 2026: last season complete, the next one's schedule published.",
+    "now": "2026-06-15T16:00:00Z"
+  }
+}

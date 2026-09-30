@@ -84,7 +84,7 @@ tylernfl/
   search box loads it as a script the first time it is used (about 50 KB gzipped). It
   covers every player page, every team and the site's pages; matching and ranking live
   in `src/lib/search/match.ts`. Nothing else may use this as a way to load data.
-- ESPN data is browser-only: never write it to `src/data/` and never use it in pipelines. Pipelines use nflverse (the `espnId` in `ticker.json` comes from nflverse schedules). Test fixtures in `tests/fixtures/espn/` are the only stored ESPN data. This is about data: scores, stats, schedules and lines. Team logo images are artwork, not data, and are the one thing pipelines may take from ESPN's column, through nflverse team data (see the logo bullet below).
+- ESPN data is browser-only: never write it to `src/data/` and never use it in pipelines. Pipelines use nflverse (the `espnId` in `ticker.json` comes from nflverse schedules). Test fixtures in `tests/fixtures/espn/` are the only stored ESPN data (including the synthetic Sunday scoreboard `derive_sunday.py` writes for the audit's date states, marked `"derived"`). This is about data: scores, stats, schedules and lines. Team logo images are artwork, not data, and are the one thing pipelines may take from ESPN's column, through nflverse team data (see the logo bullet below).
 - Upcoming kickoff times display in the visitor's time zone, formatted in the browser from the UTC `kickoff` field (not from ESPN's text). That covers the ticker's upcoming slots, the `/scores` kickoff headings, and dates on team pages.
 - In-progress parsing (quarter, clock, halftime, final) is verified against the real capture from DET at BUF on
   2026-09-17 (`tests/fixtures/espn/`). Not yet seen in a real response: an end of quarter status (ESPN showed the
@@ -542,6 +542,16 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
   and report console errors, failed requests, horizontal overflow and axe violations as
   JSON. Screenshots and the report go to `audit/`, which is gitignored. Never used by
   the site, the build or the pipelines.
+- Date states: anything date-dependent reads the clock through `siteNow()`
+  (`src/utils/now.ts`), never `new Date()` or `Date.now()` (`BUILD_ID`, a cache key,
+  is the one exception). A build with `SITE_NOW` set (an ISO instant, checked in
+  `astro.config.mjs`) is frozen at that moment, in the browser too. Only
+  `audit-pages.ts --state` sets it, building a staged copy of the site with a fixture
+  set from `tests/fixtures/states/` as its data. Those sets are written by
+  `tests/fixtures/states/generate.py` from real nflverse data, through
+  `TYLERNFL_DATA_DIR` (the pipelines' data folder override in `common.py`), never by
+  hand. They are gitignored and generated on first use (`--regenerate` after a data
+  schema change); nothing in CI or the tests reads them.
 - Keep tokens in `tokens.css` only; components never hardcode colors or spacing.
 
 ## Build order

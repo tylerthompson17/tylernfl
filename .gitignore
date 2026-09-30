@@ -29,3 +29,5 @@ docs/methods/scripts/out/
 
 # site-auditor screenshots and report (scripts/audit-pages.ts)
 audit/
+# date state data sets, generated on demand by tests/fixtures/states/generate.py
+tests/fixtures/states/*/
