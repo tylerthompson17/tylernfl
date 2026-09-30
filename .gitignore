@@ -26,3 +26,6 @@ npm-debug.log*
 # play-by-play download cache (persisted in CI by actions/cache)
 pipelines/.cache/
 docs/methods/scripts/out/
+
+# site-auditor screenshots and report (scripts/audit-pages.ts)
+audit/

@@ -15,5 +15,9 @@
     "@fontsource/barlow": "^5.2.6",
     "@fontsource/barlow-condensed": "^5.2.6",
     "astro": "^5.13.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "playwright": "^1.63.0"
   }
 }

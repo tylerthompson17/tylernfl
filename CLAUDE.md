@@ -532,6 +532,12 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
 
 - Work in the build order below, one step at a time. Stop after each step and summarize what changed.
 - Ask before adding a dependency not listed here.
+- Approved dev dependencies: `playwright` and `@axe-core/playwright` (Tyler approved
+  2026-09-29), for `scripts/audit-pages.ts` only, which the site-auditor agent
+  (`.claude/agents/site-auditor.md`) runs to load built pages at 1440, 1024 and 390px
+  and report console errors, failed requests, horizontal overflow and axe violations as
+  JSON. Screenshots and the report go to `audit/`, which is gitignored. Never used by
+  the site, the build or the pipelines.
 - Keep tokens in `tokens.css` only; components never hardcode colors or spacing.
 
 ## Build order
