@@ -12,7 +12,7 @@ what a team's leading pass rusher usually does, not against every defender
 on the field, most of whom get none.
 
 The file holds counts per value, not the games themselves, and changes only
-when a season is completed: run_weekly.py rebuilds it when the season it
+when a season is completed: run_daily.py rebuilds it when the season it
 covers is out of date and leaves it alone otherwise, so the 27 season
 download happens about once a year.
 """

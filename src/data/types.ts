@@ -147,7 +147,7 @@ export interface TeamRoster {
   players: RosterPlayer[];
 }
 
-/** team_stats.json: written weekly by pipelines/run_weekly.py from nflverse play-by-play. */
+/** team_stats.json: written daily by pipelines/run_daily.py from nflverse play-by-play. */
 export type StatFormat = 'signed3' | 'percent1';
 
 export interface TeamStatMetric {
@@ -186,7 +186,11 @@ export interface TeamStatLine {
 
 export interface TeamStatsData {
   season: number;
-  /** Last regular season week included, 0 before any games */
+  /**
+   * Latest regular season week with a game counted, 0 before any. Every final
+   * counts, so this week can be partly played; the site shows each team's
+   * games instead. Names the auto EPA chart.
+   */
   throughWeek: number;
   /** ISO timestamp of the run that last changed the numbers */
   updated: string;
@@ -432,7 +436,7 @@ export interface StandingsData {
 }
 
 /**
- * player_epa.json: EPA per dropback and rush EPA per carry, written weekly by
+ * player_epa.json: EPA per dropback and rush EPA per carry, written daily by
  * pipelines/player_epa.py from nflverse play-by-play (nflfastR's EPA). Every
  * qualified player, ranked; equal shown values share a rank.
  */

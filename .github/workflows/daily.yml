@@ -48,10 +48,13 @@ jobs:
       - name: Test pipelines
         run: python -m unittest discover -s pipelines
 
-      # The auto chart's win probability template reads play-by-play the
-      # morning after a game day. Same cache as weekly.yml (entries are
-      # immutable: each run saves under its run id, the next restores the
-      # newest by prefix), so the two jobs share one download.
+      # Game excitement, team stats, player EPA and the auto charts read
+      # play-by-play. Cache entries are immutable, so each run saves a new
+      # one under its run id and the next restores the newest by prefix.
+      # Completed seasons are reused from here; pipelines/pbp_cache.py
+      # refreshes the current one. GitHub evicts entries unused for 7 days,
+      # which a daily job never hits; a miss costs one download, never
+      # wrong data.
       - name: Restore play-by-play cache
         uses: actions/cache@v6
         with:

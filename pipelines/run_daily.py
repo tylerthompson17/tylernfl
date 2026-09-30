@@ -1,6 +1,7 @@
 """Daily site data job: writes ticker.json, stats/, players/,
 rosters/, transactions.json, on_this_day.json, standings.json,
-schedule.json, playoff_odds.json and game_excitement.json into
+schedule.json, playoff_odds.json, game_excitement.json, team_stats.json,
+player_epa.json and, once a season, performance_percentiles.json into
 src/data/, then draws
 the home page's auto chart (charts/auto.json and its entry in charts/archive/)
 from them.
@@ -12,8 +13,8 @@ Options:
     --today YYYY-MM-DD   pretend it is this US Eastern date (for testing)
     --dry-run            print the output instead of writing files
 
-team_stats.json comes from the weekly job (run_weekly.py), which needs the
-much larger play-by-play download.
+Play-by-play is loaded once (pbp_cache.py) and shared by game excitement,
+team stats, player EPA and the auto charts.
 """
 
 import argparse
@@ -24,16 +25,20 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from common import load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
+from common import DATA_DIR, load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
 from charts.auto import build_auto_charts, season_finals, wp_plays_for, write_charts  # noqa: E402
 from excitement import build_game_excitement, labels_by_game  # noqa: E402
 from game_logs import build_game_logs  # noqa: E402
 from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
 from on_this_day import build_on_this_day, load_on_this_day_input  # noqa: E402
+from performance_percentiles import build_performance_percentiles, last_completed_season  # noqa: E402
+from performance_percentiles import load_rows as load_percentile_rows  # noqa: E402
+from player_epa import board_people, build_player_epa, load_player_epa_plays  # noqa: E402
 from rosters import build_rosters, load_roster_rows, unknown_statuses  # noqa: E402
 from playoff_odds import build_playoff_odds  # noqa: E402
 from schedule import build_schedule  # noqa: E402
 from standings import build_standings  # noqa: E402
+from team_stats import build_team_stats, load_team_stats_rows  # noqa: E402
 from ticker import build_ticker, load_schedule_rows, with_labels  # noqa: E402
 from transactions import (  # noqa: E402
     build_transactions,
@@ -72,12 +77,24 @@ def main() -> None:
     boards = build_leaderboards(player_rows, stats_year)
     game_logs = build_game_logs(player_rows, schedule_rows, stats_year)
     roster_rows, rosters_year = load_with_fallback(load_roster_rows, roster_season(today))
+    # Every final so far, from the play-by-play excitement just loaded.
+    # Before a season's first game, last season's final numbers stay up.
+    current = stats_season(today)
+    pbp_rows, pbp_season = load_with_fallback(lambda s: load_team_stats_rows(s, current, schedule_rows), current)
+    team_stats = build_team_stats(pbp_rows, pbp_season, updated)
+    # Same season as team stats, so the two never disagree about the games.
+    epa_plays, epa_week = load_player_epa_plays(pbp_season, current, schedule_rows)
+    player_epa = build_player_epa(epa_plays, pbp_season, epa_week, updated, board_people(boards))
     rosters = build_rosters(roster_rows, rosters_year, today, updated)
 
     week = f"week {ticker['week']}" if ticker['week'] else f"offseason, opener {ticker['nextOpener']}"
     print(f"{today}: ticker {ticker['season']} {week}, {len(ticker['games'])} games")
     marked = [g for g in excitement['games'] if g['label']]
     print(f"game excitement: {len(excitement['games'])} games, {len(marked)} labelled")
+    counts = sorted({t['games'] for t in team_stats['teams']})
+    print(f"team stats: {pbp_season}, {len(team_stats['teams'])} teams, "
+          f"{counts[0] if counts else 0} to {counts[-1] if counts else 0} games, {len(pbp_rows)} plays")
+    print('player EPA: ' + ', '.join(f"{c['key']} {len(c['rows'])} qualified" for c in player_epa['categories']))
     print('boards: ' + ', '.join(f"{key} {len(board['rows'])}" for key, board in boards.items()))
     players = sum(len(r['players']) for r in rosters.values())
     print(f"rosters: {rosters_year} week {next(iter(rosters.values()))['week'] if rosters else 0}, "
@@ -110,6 +127,17 @@ def main() -> None:
     on_this_day = build_on_this_day(*load_on_this_day_input(), today)
     print(f"on this day: {today:%m-%d}, {len(on_this_day['items'])} of {on_this_day['gamesOnDate']} games")
 
+    # Only when a newer season has been completed (from March); otherwise
+    # the 27 season download would be redone every day for an identical file.
+    completed = last_completed_season(today)
+    existing = DATA_DIR / 'performance_percentiles.json'
+    covered = json.loads(existing.read_text())['throughSeason'] if existing.exists() else None
+    percentiles = None
+    if covered != completed:
+        percentiles = build_performance_percentiles(load_percentile_rows(completed), completed)
+        print(f"performance percentiles: {percentiles['fromSeason']} to {completed}, "
+              f"{percentiles['categories']['passing']['games']} team games")
+
     unknown = unknown_statuses(roster_rows)
     if unknown:
         print(f"rosters: WARNING unknown status codes left off rosters: {', '.join(sorted(unknown))}")
@@ -123,7 +151,11 @@ def main() -> None:
     files.append(('schedule.json', schedule, ('updated',)))
     files.append(('playoff_odds.json', odds, ('updated',)))
     files.append(('game_excitement.json', excitement, ('updated',)))
+    files.append(('team_stats.json', team_stats, ('updated',)))
+    files.append(('player_epa.json', player_epa, ('updated',)))
     files += [(f'rosters/{team}.json', roster, ('updated',)) for team, roster in sorted(rosters.items())]
+    if percentiles is not None:
+        files.append(('performance_percentiles.json', percentiles, ()))
 
     if args.dry_run:
         print(json.dumps({name: data for name, data, _ in files + logs}, indent=2))
@@ -140,8 +172,8 @@ def main() -> None:
             written += 1
     print(f'{written} of {len(files) + len(logs)} files updated')
 
-    # Drawn last: they read the files just written (boards, game logs) and
-    # team_stats.json from the weekly job. Every game the archive has no
+    # Drawn last: they read the files just written (boards, game logs,
+    # team_stats.json). Every game the archive has no
     # win probability chart for is drawn, so a missed run catches up.
     charts, pick = build_auto_charts(today, schedule_rows, stats_season(today), redraw=args.redraw_charts)
     drawn, chart_changes = write_charts(charts, pick)

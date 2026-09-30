@@ -640,12 +640,24 @@ def _wp_chart(game: dict, plays: list[dict], pick: bool = True):
     return meta, fig, wp_slug(game), hover
 
 
+def games_played(team_stats: dict) -> str:
+    """"3 games per team", or "2 to 3 games per team" around byes and
+    Thursday games. Team stats count every final, not whole weeks."""
+    counts = sorted({t['games'] for t in team_stats['teams']}) or [0]
+    low, high = counts[0], counts[-1]
+    noun = 'game' if high == 1 else 'games'
+    return (f'{high} {noun}' if low == high else f'{low} to {high} {noun}') + ' per team'
+
+
 def _epa_chart(team_stats: dict, today: date):
+    # The slug keeps the latest week with a game counted, so a Friday
+    # drawing with Thursday's game in and the next week's with the rest
+    # are one entry, redrawn.
     meta = {
         'template': 'epa',
         'title': 'Offense and defense, EPA per play',
         'note': epa_note(team_stats),
-        'asOf': f"{team_stats['season']} season, through week {team_stats['throughWeek']}",
+        'asOf': f"{team_stats['season']} season, {games_played(team_stats)}",
         'source': 'nflverse play-by-play, EPA from the nflfastR model',
         'date': today.isoformat(),
         'tags': ['Auto', 'EPA'],

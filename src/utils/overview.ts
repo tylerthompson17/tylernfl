@@ -1,7 +1,7 @@
 /**
  * The stats overview's panels: the top 5 in eight categories, read at build
  * time from the full leaderboards (stats/{board}.json, daily) and from
- * player_epa.json (weekly). The home page's receiving panel and team pages
+ * player_epa.json (daily). The home page's receiving panel and team pages
  * use the same lists, so a leader reads the same everywhere.
  */
 import playerEpaData from '../data/player_epa.json';
@@ -112,9 +112,7 @@ function fromEpa(category: PlayerEpaCategory): Leaders {
     })),
     moreTied: top.moreTied,
     tiedValue: top.tiedValue === null ? null : formatStat(top.tiedValue, 'signed3'),
-    through: playerEpa.throughWeek
-      ? `Through week ${playerEpa.throughWeek}; updated Wednesdays.`
-      : 'No games played yet.',
+    through: playerEpa.throughWeek ? `Through week ${playerEpa.throughWeek}.` : 'No games played yet.',
     qualifier: `${category.qualifier.text} EPA is nflfastR's.`,
     link: null,
   };

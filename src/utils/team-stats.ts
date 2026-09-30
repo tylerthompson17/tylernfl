@@ -30,6 +30,19 @@ export function rankLabel(smallSample: boolean): string {
 
 export const SMALL_SAMPLE_NOTE = `* Fewer than ${SMALL_SAMPLE_GAMES} games played. Ranks this early can swing a long way on one game.`;
 
+/**
+ * "3 games per team", or "2 to 3 games per team" around byes and Thursday
+ * games: team stats count every final, not whole weeks. Keep in step with
+ * games_played in pipelines/charts/auto.py.
+ */
+export function gamesPlayed(): string {
+  const counts = teamStats.teams.map((team) => team.games);
+  const low = Math.min(...counts, Infinity);
+  const high = Math.max(...counts, 0);
+  const noun = high === 1 ? 'game' : 'games';
+  return `${low === high || counts.length === 0 ? high : `${low} to ${high}`} ${noun} per team`;
+}
+
 /** "62 plays", "1 trip". */
 export function sampleText(n: number, noun: string): string {
   return `${n} ${n === 1 ? noun.replace(/s$/, '') : noun}`;

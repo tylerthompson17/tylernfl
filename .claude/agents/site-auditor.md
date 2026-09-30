@@ -14,7 +14,7 @@ Check, in separate passes:
    Read nflverse through the pipelines virtual environment
    (`pipelines/.venv/bin/python`, which has nflreadpy), read-only: load and
    compare, nothing else. Never write to `src/data/` or anywhere else in the
-   repo, and never run `run_daily.py`, `run_weekly.py` or any other pipeline
+   repo, and never run `run_daily.py` or any other pipeline
    entry point, since they write data files.
 2. Date-dependent states: how does each panel read on a Sunday during games,
    a Tuesday after all games, and in the offseason? Flag copy that is stale,

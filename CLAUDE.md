@@ -54,11 +54,11 @@ tylernfl/
 │   ├── content/curated/    curated X and Bluesky posts, one .md each, added by hand
 │   └── data/               JSON consumed at build time (mock now, pipeline output later)
 ├── public/logos/           team logos, named with a hash (pipelines/build_logos.py)
-├── pipelines/              Python jobs: run_daily.py (ticker, boards, standings), run_weekly.py, build_teams.py
+├── pipelines/              Python jobs: run_daily.py (every data file), build_teams.py
 │   └── charts/             style.py (shared chart style), auto.py (auto chart), build.py
 │       └── mine/           Tyler's chart scripts (his; do not edit)
 ├── models/                 exported model files (empty for now)
-└── .github/workflows/      deploy.yml, daily.yml (weekly.yml later)
+└── .github/workflows/      deploy.yml, daily.yml
 ```
 
 ## GitHub Pages rules
@@ -123,26 +123,30 @@ tylernfl/
   slugs are written by the pipeline, not derived by the site, because players who
   share a name need a team suffix. `player_slug` in `pipelines/common.py` and
   `playerSlug` in `src/utils/slug.ts` must produce the same strings.
-- `team_stats.json` is written by `pipelines/run_weekly.py`, run Wednesday mornings by
-  `.github/workflows/weekly.yml`, from nflverse play-by-play. Definitions live in the
-  `pipelines/team_stats.py` docstring. Values are rounded to the displayed precision
-  before ranking, so equal displayed values share a rank.
-- `player_epa.json` is written weekly by `pipelines/player_epa.py`, next to
+- `team_stats.json` is written daily by `pipelines/team_stats.py` from nflverse
+  play-by-play, the same frame game excitement and the auto charts read. Definitions
+  live in its docstring. Values are rounded to the displayed precision before ranking,
+  so equal displayed values share a rank. The site shows each team's games played
+  ("Through 3 games"; "2 to 3 games per team" on `/stats/teams`), never a week, since
+  teams stand at different counts around byes and Thursday games.
+- `player_epa.json` is written daily by `pipelines/player_epa.py`, next to
   `team_stats.json` and from the same play-by-play: EPA per dropback (nflfastR's `qb_epa`
   over passes, sacks and scrambles, by the `id` player) and rush EPA per carry (`epa` on
   designed runs). Every qualified player, ranked on the value rounded to 3 places;
   qualifiers match the boards (14 dropbacks, 6 carries per team game). Names and current
   teams come from the passing and rushing boards by gsis id. Definitions are in its
   docstring.
-- A week counts in the weekly files only once every game in it is final in the schedule
-  and present in the play-by-play (`last_complete_week` in `team_stats.py`): nflverse adds
-  a Monday night game to play-by-play overnight, after the schedule shows it final.
+- Both count every final, not whole weeks: a regular season game is in once it is final
+  in the schedule and present in the play-by-play (`final_game_ids` in `team_stats.py`).
+  nflverse adds a night game to play-by-play hours after the schedule shows it final, so
+  the morning after Monday night can be a game short until the next run. Nothing needs a
+  complete week, so there is no weekly job (it was retired on 2026-09-30).
 - There is no `leaders.json` any more. Every top 5 on the site (the stats overview, the
   home page's receiving panel, a team's stat leader appearances) comes from the boards and
   `player_epa.json` through `src/utils/overview.ts`, whose rows carry player ids.
 - Play-by-play goes through `pipelines/pbp_cache.py`: completed seasons are cached for
-  good, the current season refreshes after 12 hours. CI persists the cache with
-  `actions/cache`. Anything that needs pbp (including the 4th down model) should load
+  good, the current season refreshes after 12 hours, and a season is read once per run
+  and shared by every caller. CI persists the cache with `actions/cache`. Anything that needs pbp (including the 4th down model) should load
   it through this module rather than calling `nflreadpy.load_pbp` directly.
 - `on_this_day.json` is real data written daily by `pipelines/on_this_day.py`: up to 3 notable games
   played on today's date (one per season, newest first), picked and worded only from nflverse schedule
@@ -267,7 +271,7 @@ tylernfl/
   gives the team's best in that stat, with ties as half; the week's lines are ranked
   across categories by that percentile, one per player, top five, shown with the
   percentile. The pools are `performance_percentiles.json`, written by
-  `pipelines/performance_percentiles.py` from the weekly job only when a newer season
+  `pipelines/performance_percentiles.py` from the daily job only when a newer season
   has been completed (from March). `src/lib/performances/notable.ts` holds the rule.
 
 ## Design direction
@@ -452,7 +456,7 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   EPA per dropback and rush EPA per carry. Equal values share a rank; when the last place
   shown is shared by more players than fit, the rest are counted ("31 more tied at 1")
   rather than listed. Counting stats list only players above zero. Each panel says what
-  it is through; the EPA panels also say who qualifies and that they update Wednesdays.
+  it is through; the EPA panels also say who qualifies.
   The rule is `topOf` in `src/lib/stats/top.ts`.
 
 ### Standings page
@@ -559,8 +563,8 @@ Plain, specific, sentence case. Name things by what the user sees ("Stat leaders
    Done; see Curated posts under Design direction.
 10. Ticker steps one game at a time (done); standings and tiebreakers validated against
     nflseedR, and the `/standings` page (done).
-11. Stats overview: top 5 in eight categories in equal panels, `player_epa.json` in the
-    weekly job, `leaders.json` retired (done; see Stat leaders page).
+11. Stats overview: top 5 in eight categories in equal panels, `player_epa.json` from
+    play-by-play, `leaders.json` retired (done; see Stat leaders page).
 12. Right rail: the model record placeholder removed, the playoff picture added (done; see
     Right rail).
 13. Team hubs with a header strip and five static tabs, and `schedule.json` in the daily

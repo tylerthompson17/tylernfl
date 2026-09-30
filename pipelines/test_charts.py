@@ -171,6 +171,13 @@ class PickingTests(unittest.TestCase):
         self.assertEqual(auto.other_templates(empty, 3), [])
         self.assertEqual(auto.other_templates(None, 6), ['race'])
 
+    def test_the_epa_chart_says_games_played_not_a_week(self):
+        teams = lambda *games: {'teams': [{'games': g} for g in games]}
+        self.assertEqual(auto.games_played(teams(3, 3)), '3 games per team')
+        self.assertEqual(auto.games_played(teams(3, 4, 3)), '3 to 4 games per team')
+        self.assertEqual(auto.games_played(teams(1)), '1 game per team')
+        self.assertEqual(auto.games_played(teams(10, 11)), '10 to 11 games per team')
+
     def test_the_date_decides_so_a_rerun_matches(self):
         day = date(2026, 10, 7)
         self.assertEqual(auto.pick_other(['epa', 'race'], day), auto.pick_other(['epa', 'race'], day))

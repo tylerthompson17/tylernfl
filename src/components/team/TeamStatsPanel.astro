@@ -30,7 +30,7 @@ const columns = [
       <>
         <StatTable columns={columns} rows={teamPanelRows(statLine)} caption={`${team.name} offense and defense, with league ranks`} />
         <p class="table-foot">
-          Through week {teamStats.throughWeek}, {statLine.games} {statLine.games === 1 ? 'game' : 'games'}. Ranks are out
+          Through {statLine.games} {statLine.games === 1 ? 'game' : 'games'}. Ranks are out
           of 32; on defense the lowest value allowed ranks first. <a href={url('stats/teams')}>All team stats</a>
         </p>
         {small && <p class="table-foot">{SMALL_SAMPLE_NOTE}</p>}

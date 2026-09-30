@@ -4,6 +4,7 @@ import Panel from '../../components/Panel.astro';
 import StatTable from '../../components/StatTable.astro';
 import StatsNav from '../../components/StatsNav.astro';
 import {
+  gamesPlayed,
   isSmallSample,
   leagueColumns,
   leagueRows,
@@ -28,8 +29,8 @@ const sides = [
   {
     hasGames ? (
       <p class="page-intro">
-        {teamStats.season} regular season, through week {teamStats.throughWeek}. Sorted by EPA
-        per play. Updated Wednesday mornings.
+        {teamStats.season} regular season, through {gamesPlayed()}. Sorted by EPA per play.
+        Updated every morning.
       </p>
     ) : null
   }

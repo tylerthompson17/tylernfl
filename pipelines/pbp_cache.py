@@ -1,12 +1,14 @@
-"""Per-season play-by-play cache for the weekly jobs and, later, the 4th down model.
+"""Per-season play-by-play cache for the daily job and, later, the 4th down model.
 
 A completed season never changes, so it is downloaded once and kept for
 good. The current season is refreshed whenever the cached copy is older
-than CURRENT_SEASON_MAX_AGE, so a weekly run always sees new games while a
-manual rerun the same morning reuses the download.
+than CURRENT_SEASON_MAX_AGE, so each daily run sees new games while a
+manual rerun the same morning reuses the download. Within one run a season
+is read once: game excitement, the auto charts, team stats and player EPA
+all get the same frame.
 
 Files live in pipelines/.cache/pbp/ (gitignored), or PBP_CACHE_DIR if set.
-In CI, .github/workflows/weekly.yml persists the directory between runs
+In CI, .github/workflows/daily.yml persists the directory between runs
 with actions/cache.
 
 nflreadpy has a cache of its own, but one expiry for every file: long enough
@@ -21,6 +23,9 @@ from common import missing_season
 
 CACHE_DIR = Path(os.environ.get('PBP_CACHE_DIR') or Path(__file__).resolve().parent / '.cache' / 'pbp')
 CURRENT_SEASON_MAX_AGE = timedelta(hours=12)
+
+# (season, current season) -> frame, or None for an unpublished season.
+_loaded: dict[tuple[int, int], object] = {}
 
 
 def is_fresh(season: int, current_season: int, cached_at: datetime | None, now: datetime) -> bool:
@@ -40,9 +45,19 @@ def load_pbp(season: int, current_season: int):
     """Full nflverse play-by-play for one season as a polars DataFrame.
 
     Returns None when nflverse has not published the season yet. Any other
-    download failure raises, even with an older copy cached: a weekly job
-    that quietly republished last week's numbers would look current.
+    download failure raises, even with an older copy cached: a daily job
+    that quietly republished yesterday's numbers would look current.
+
+    Loaded once per process and kept, so every caller in a run sees the
+    same plays.
     """
+    key = (season, current_season)
+    if key not in _loaded:
+        _loaded[key] = _load(season, current_season)
+    return _loaded[key]
+
+
+def _load(season: int, current_season: int):
     import nflreadpy as nfl
     import polars as pl
 

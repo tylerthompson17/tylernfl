@@ -1,8 +1,8 @@
 """Build src/data/player_epa.json from nflverse play-by-play: EPA per
 dropback for passers and EPA per carry on designed runs.
 
-Regular season only, complete weeks only (the same rule and play-by-play
-load as team_stats.py), written by the weekly job next to team_stats.json.
+Regular season only, every final game (the same rule and play-by-play
+load as team_stats.py), written by the daily job next to team_stats.json.
 EPA is nflfastR's, as published in nflverse play-by-play; these are
 standard stat definitions, not a model of this site's.
 
@@ -21,7 +21,7 @@ player's current team has played. Values are rounded to the displayed
 precision (3 places) before ranking, so equal shown values share a rank.
 
 Names and teams come from the passing and rushing boards the daily job
-writes (stats/passing.json, stats/rushing.json), keyed by gsis id, so a
+builds in the same run (stats/passing.json, stats/rushing.json), keyed by gsis id, so a
 player reads the same here as everywhere else on the site; play-by-play
 only has "P.Mahomes".
 """
@@ -30,7 +30,7 @@ import json
 from collections import defaultdict
 
 from common import DATA_DIR, normalize_team
-from team_stats import last_complete_week
+from team_stats import final_game_ids
 
 PBP_COLUMNS = [
     'game_id', 'week', 'season_type', 'posteam', 'play_type', 'qb_dropback', 'qb_scramble',
@@ -112,21 +112,25 @@ def _ranked(players: dict[str, dict], per_team_game: float, games: dict[str, int
     return [{'rank': r.pop('rank'), **r} for r in rows]
 
 
-def board_people() -> dict[str, tuple[str, str]]:
-    """gsis id to (full name, current team) from the passing and rushing boards."""
+def board_people(boards: dict[str, dict] | None = None) -> dict[str, tuple[str, str]]:
+    """gsis id to (full name, current team) from the passing and rushing
+    boards: the ones given, else the files in src/data/stats/."""
     people = {}
-    for board in ('passing', 'rushing'):
-        path = DATA_DIR / 'stats' / f'{board}.json'
-        if path.exists():
-            for row in json.loads(path.read_text())['rows']:
-                people.setdefault(row['playerId'], (row['player'], row['team']))
+    for key in ('passing', 'rushing'):
+        if boards is not None:
+            board = boards.get(key)
+        else:
+            path = DATA_DIR / 'stats' / f'{key}.json'
+            board = json.loads(path.read_text()) if path.exists() else None
+        for row in (board or {}).get('rows', []):
+            people.setdefault(row['playerId'], (row['player'], row['team']))
     return people
 
 
 def build_player_epa(plays: list[dict], season: int, through_week: int, updated: str,
                      people: dict[str, tuple[str, str]] | None = None) -> dict:
-    """The PlayerEpaData shape in src/data/types.ts, from regular season plays
-    already limited to complete weeks."""
+    """The PlayerEpaData shape in src/data/types.ts, from the plays of every
+    final regular season game."""
     people = board_people() if people is None else people
     games = team_games(plays)
     tallies = [
@@ -144,9 +148,8 @@ def build_player_epa(plays: list[dict], season: int, through_week: int, updated:
     }
 
 
-def load_player_epa_plays(season: int, current_season: int) -> tuple[list[dict], int]:
-    """Regular season plays through the last complete week, and that week."""
-    import nflreadpy as nfl
+def load_player_epa_plays(season: int, current_season: int, schedule_rows: list[dict]) -> tuple[list[dict], int]:
+    """Plays of every final regular season game, and the latest week among them."""
     import polars as pl
 
     from pbp_cache import load_pbp
@@ -154,11 +157,10 @@ def load_player_epa_plays(season: int, current_season: int) -> tuple[list[dict],
     pbp = load_pbp(season, current_season)
     if pbp is None:
         return [], 0
-    schedule = nfl.load_schedules(season).select('game_id', 'game_type', 'week', 'away_score', 'home_score').to_dicts()
-    through = last_complete_week(schedule, set(pbp['game_id'].unique().to_list()))
+    finals = final_game_ids(schedule_rows, season, set(pbp['game_id'].unique().to_list()))
     plays = (
-        pbp.filter((pl.col('season_type') == 'REG') & (pl.col('week') <= through))
+        pbp.filter(pl.col('game_id').is_in(list(finals)))
         .select([c for c in PBP_COLUMNS if c in pbp.columns])
         .to_dicts()
     )
-    return plays, through
+    return plays, max((p['week'] for p in plays), default=0)

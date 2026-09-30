@@ -22,11 +22,14 @@ point tries, and never count):
   this counted drives with a snap at or inside the 20, about 3% more
   trips.)
 
-Only complete weeks count: a week is in once every one of its regular
-season games has a final score in the nflverse schedule and is in the
-play-by-play, so a run on a Friday never shows "through week 2" with one
-game of it played, and a run the morning after Monday night never counts
-a game the play-by-play does not have yet.
+Every final counts, not only complete weeks: a regular season game is in
+once it has a final score in the nflverse schedule and is in the
+play-by-play. The play-by-play gets a night game hours after the schedule
+shows it final, so the morning after Monday night can be a game short
+until the next run. Teams can therefore stand at different numbers of
+games (byes, Thursday games), and the site shows each team's own count
+rather than a week. Written daily by run_daily.py, from the play-by-play
+it loads for game excitement and the auto charts.
 
 Offense is grouped by `posteam`, defense by `defteam`. Defensive ranks
 invert: 1 is the fewest EPA, conversions and touchdowns allowed.
@@ -149,6 +152,8 @@ def build_team_stats(rows: list[dict], season: int, updated: str) -> dict:
 
     return {
         'season': season,
+        # Latest week with a game counted, which may be partly played. Names
+        # the auto EPA chart; the site shows games played instead.
         'throughWeek': max((r['week'] for r in rows), default=0),
         'updated': updated,
         'metrics': [
@@ -168,32 +173,20 @@ def build_team_stats(rows: list[dict], season: int, updated: str) -> dict:
     }
 
 
-def last_complete_week(schedule_rows: list[dict], in_pbp: set[str] | None = None) -> int:
-    """Latest regular season week with every game final, counting up from week 1 without gaps.
-
-    With in_pbp (the game ids play-by-play has), a game also has to be in
-    the play-by-play. The schedule shows a Monday night game final that
-    night; nflverse's play-by-play gets it overnight, and a week counted
-    before then would be missing a game.
-    """
-    weeks: dict[int, bool] = {}
-    for game in schedule_rows:
-        if game['game_type'] != 'REG':
-            continue
-        final = game['away_score'] is not None and game['home_score'] is not None
-        if in_pbp is not None:
-            final = final and game['game_id'] in in_pbp
-        weeks[game['week']] = weeks.get(game['week'], True) and final
-    complete = 0
-    for week in sorted(weeks):
-        if week != complete + 1 or not weeks[week]:
-            break
-        complete = week
-    return complete
+def final_game_ids(schedule_rows: list[dict], season: int, in_pbp: set[str]) -> set[str]:
+    """Regular season games of `season` with a final score in the schedule
+    that the play-by-play already has."""
+    return {
+        game['game_id'] for game in schedule_rows
+        if game['season'] == season and game['game_type'] == 'REG'
+        and game['away_score'] is not None and game['home_score'] is not None
+        and game['game_id'] in in_pbp
+    }
 
 
-def load_team_stats_rows(season: int, current_season: int) -> list[dict]:
-    import nflreadpy as nfl
+def load_team_stats_rows(season: int, current_season: int, schedule_rows: list[dict]) -> list[dict]:
+    """Plays of every final regular season game. `schedule_rows` must cover
+    `season` (the daily job's cover the year before, this one and the next)."""
     import polars as pl
 
     from pbp_cache import load_pbp
@@ -201,10 +194,5 @@ def load_team_stats_rows(season: int, current_season: int) -> list[dict]:
     pbp = load_pbp(season, current_season)
     if pbp is None:
         return []
-    schedule = nfl.load_schedules(season).select('game_id', 'game_type', 'week', 'away_score', 'home_score').to_dicts()
-    through = last_complete_week(schedule, set(pbp['game_id'].unique().to_list()))
-    return (
-        pbp.filter((pl.col('season_type') == 'REG') & (pl.col('week') <= through))
-        .select(PBP_COLUMNS)
-        .to_dicts()
-    )
+    finals = final_game_ids(schedule_rows, season, set(pbp['game_id'].unique().to_list()))
+    return pbp.filter(pl.col('game_id').is_in(list(finals))).select(PBP_COLUMNS).to_dicts()

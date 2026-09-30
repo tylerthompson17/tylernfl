@@ -14,7 +14,7 @@ from leaderboards import BOARDS, build_leaderboards
 from on_this_day import build_on_this_day, roman
 from pbp_cache import is_fresh
 from rosters import age_on, build_rosters, unknown_statuses
-from team_stats import build_team_stats, last_complete_week, rank
+from team_stats import build_team_stats, final_game_ids, rank
 from transactions import build_transactions, snap_shares
 from ticker import WeekSpan, build_ticker, format_detail, kickoff_utc, next_opener, select_week
 
@@ -913,28 +913,25 @@ class BuildTransactionsTest(unittest.TestCase):
         )
 
 
-class LastCompleteWeekTest(unittest.TestCase):
-    def game(self, week, final=True, game_type='REG'):
+class FinalGameIdsTest(unittest.TestCase):
+    def game(self, game_id, week=1, final=True, game_type='REG', season=2026):
         score = 20 if final else None
-        return {'game_type': game_type, 'week': week, 'away_score': score, 'home_score': score}
+        return {'game_id': game_id, 'season': season, 'game_type': game_type, 'week': week,
+                'away_score': score, 'home_score': score}
 
-    def test_a_week_counts_once_every_game_is_final(self):
-        # Thursday of week 2: one game played, fifteen to go.
-        rows = [self.game(1), self.game(1), self.game(2), self.game(2, final=False)]
-        self.assertEqual(last_complete_week(rows), 1)
-        self.assertEqual(last_complete_week(rows[:3]), 2)
+    def test_every_final_counts_without_waiting_for_the_week(self):
+        # Friday of week 4: Thursday's game is in, Sunday's are not played.
+        rows = [self.game('w3a', 3), self.game('w3b', 3), self.game('w4a', 4), self.game('w4b', 4, final=False)]
+        self.assertEqual(final_game_ids(rows, 2026, {'w3a', 'w3b', 'w4a'}), {'w3a', 'w3b', 'w4a'})
 
-    def test_nothing_played_and_preseason_games(self):
-        self.assertEqual(last_complete_week([self.game(1, final=False)]), 0)
-        self.assertEqual(last_complete_week([self.game(1, game_type='PRE')]), 0)
+    def test_a_final_game_missing_from_play_by_play_waits(self):
+        # Monday night is final in the schedule before the play-by-play has it.
+        rows = [self.game('sun', 3), self.game('mon', 3)]
+        self.assertEqual(final_game_ids(rows, 2026, {'sun'}), {'sun'})
 
-    def test_a_gap_stops_the_count(self):
-        self.assertEqual(last_complete_week([self.game(1), self.game(3)]), 1)
-
-    def test_a_final_game_missing_from_play_by_play_holds_its_week_back(self):
-        rows = [dict(self.game(1), game_id='g1'), dict(self.game(2), game_id='g2a'), dict(self.game(2), game_id='g2b')]
-        self.assertEqual(last_complete_week(rows, {'g1', 'g2a', 'g2b'}), 2)
-        self.assertEqual(last_complete_week(rows, {'g1', 'g2a'}), 1)
+    def test_only_the_seasons_regular_season(self):
+        rows = [self.game('pre', game_type='PRE'), self.game('old', season=2025), self.game('wc', 19, game_type='WC')]
+        self.assertEqual(final_game_ids(rows, 2026, {'pre', 'old', 'wc'}), set())
 
 
 class RankTest(unittest.TestCase):
