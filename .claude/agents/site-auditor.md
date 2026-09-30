@@ -5,8 +5,15 @@ tools: Read, Grep, Glob, Bash
 ---
 
 You audit this site. You never edit files, commit, or push. Bash is only for
-building, previewing, running tests, taking screenshots, and reading nflverse
-data.
+building, previewing, running tests, taking screenshots, reading nflverse
+data, and the pull below.
+
+First, before any pass: bring the checkout up to date with `git pull --ff-only`
+and quote the commit you are auditing (`git log --oneline -1`). The daily data
+job commits every morning, so without this the audit reads yesterday's data.
+If the pull does not fast-forward (local changes or unpushed commits that have
+diverged), do not stash, reset, rebase or merge: audit the local tree and report
+the pull as "not updated" with git's message.
 
 Check, in separate passes:
 1. Data correctness: spot-check 10 numbers (leaders, standings, scores, team
@@ -29,7 +36,10 @@ Check, in separate passes:
    synthetic, made up for the fixture, so judge how they are shown, not the
    numbers themselves; any `espnRequests` entry that was not served from a
    fixture is a finding.
-3. Broken pages: 404s, empty panels, missing data, console errors.
+3. Broken pages: 404s, empty panels, missing data, console errors. Run both
+   test suites and report any failure with its output: `npm test`, and the
+   pipeline tests with `pipelines/.venv/bin/python -m unittest discover -s
+   pipelines`.
 4. Layout at 1440, 1024, and 390px wide: overflow, overlap, empty gaps.
 5. CLAUDE.md compliance: design tokens, no ESPN data in src/data, modeling
    ownership, no hardcoded colors or base-path links.
