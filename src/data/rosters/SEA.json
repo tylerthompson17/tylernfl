@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "SEA",
   "week": 4,
-  "updated": "2026-09-30T16:08:00Z",
+  "updated": "2026-10-01T16:43:35Z",
   "groups": [
     {
       "key": "offense",
@@ -265,8 +265,8 @@
       "number": 35,
       "position": "WR",
       "group": "offense",
-      "status": "EXE",
-      "statusLabel": "Commissioner exempt",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 76,
       "weight": 201,
       "age": 25,
@@ -619,6 +619,21 @@
       "college": "Florida Atlantic"
     },
     {
+      "gsisId": "00-0041007",
+      "name": "Gary Smith",
+      "slug": "gary-smith",
+      "number": 75,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": null,
+      "weight": 319,
+      "age": null,
+      "experience": 0,
+      "college": null
+    },
+    {
       "gsisId": "00-0039309",
       "name": "Byron Murphy II",
       "slug": "byron-murphy-ii",
@@ -842,6 +857,21 @@
       "age": 26,
       "experience": 3,
       "college": "N.C. State"
+    },
+    {
+      "gsisId": "00-0039277",
+      "name": "Jimmy Ciarlo",
+      "slug": "jimmy-ciarlo",
+      "number": 35,
+      "position": "ILB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 225,
+      "age": 25,
+      "experience": 2,
+      "college": "Army"
     },
     {
       "gsisId": "00-0037003",

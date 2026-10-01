@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "DET",
   "week": 4,
-  "updated": "2026-09-30T16:08:00Z",
+  "updated": "2026-10-01T16:43:35Z",
   "groups": [
     {
       "key": "offense",
@@ -227,6 +227,21 @@
       "age": 23,
       "experience": 1,
       "college": "Georgia; Missouri"
+    },
+    {
+      "gsisId": "00-0039474",
+      "name": "Lawrence Keys",
+      "slug": "lawrence-keys",
+      "number": 80,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": null,
+      "weight": 170,
+      "age": null,
+      "experience": 2,
+      "college": null
     },
     {
       "gsisId": "00-0035544",
@@ -865,8 +880,8 @@
       "number": 57,
       "position": "OLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 72,
       "weight": 231,
       "age": 28,

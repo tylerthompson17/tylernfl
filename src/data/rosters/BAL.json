@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "BAL",
   "week": 4,
-  "updated": "2026-09-30T16:08:00Z",
+  "updated": "2026-10-01T16:43:35Z",
   "groups": [
     {
       "key": "offense",
@@ -484,6 +484,21 @@
       "college": "LSU"
     },
     {
+      "gsisId": "00-0039624",
+      "name": "Kyle Hergel",
+      "slug": "kyle-hergel",
+      "number": 60,
+      "position": "G",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 315,
+      "age": 26,
+      "experience": 2,
+      "college": "Boston College; Texas State-San Marcos"
+    },
+    {
       "gsisId": "00-0040866",
       "name": "Olaivavega Ioane",
       "slug": "olaivavega-ioane",
@@ -542,6 +557,21 @@
       "age": 27,
       "experience": 3,
       "college": "South Carolina"
+    },
+    {
+      "gsisId": "00-0035127",
+      "name": "Andre James",
+      "slug": "andre-james",
+      "number": 61,
+      "position": "C",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 300,
+      "age": 29,
+      "experience": 7,
+      "college": "UCLA"
     },
     {
       "gsisId": "00-0036215",
@@ -1045,8 +1075,8 @@
       "number": 25,
       "position": "FS",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 71,
       "weight": 208,
       "age": 29,

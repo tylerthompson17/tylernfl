@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "GB",
   "week": 4,
-  "updated": "2026-09-30T16:08:00Z",
+  "updated": "2026-10-01T16:43:35Z",
   "groups": [
     {
       "key": "offense",
@@ -169,14 +169,29 @@
       "college": "North Dakota State"
     },
     {
+      "gsisId": "00-0040352",
+      "name": "Coleman Owen",
+      "slug": "coleman-owen",
+      "number": 9,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 70,
+      "weight": 191,
+      "age": 25,
+      "experience": 1,
+      "college": "Ohio; Northern Arizona"
+    },
+    {
       "gsisId": "00-0039146",
       "name": "Jayden Reed",
       "slug": "jayden-reed",
       "number": 11,
       "position": "WR",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 71,
       "weight": 190,
       "age": 26,
@@ -484,6 +499,21 @@
       "college": "Auburn; Tulsa"
     },
     {
+      "gsisId": "00-0029592",
+      "name": "Kevin Zeitler",
+      "slug": "kevin-zeitler",
+      "number": 70,
+      "position": "G",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 76,
+      "weight": 315,
+      "age": 36,
+      "experience": 14,
+      "college": "Wisconsin"
+    },
+    {
       "gsisId": "00-0032234",
       "name": "Laken Tomlinson",
       "slug": "laken-tomlinson",
@@ -632,6 +662,21 @@
       "age": 22,
       "experience": 0,
       "college": "Missouri; Florida"
+    },
+    {
+      "gsisId": "00-0041315",
+      "name": "David Blay",
+      "slug": "david-blay",
+      "number": 64,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": null,
+      "weight": 305,
+      "age": null,
+      "experience": 0,
+      "college": null
     },
     {
       "gsisId": "00-0040016",

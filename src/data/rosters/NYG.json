@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYG",
   "week": 4,
-  "updated": "2026-09-30T16:08:00Z",
+  "updated": "2026-10-01T16:43:35Z",
   "groups": [
     {
       "key": "offense",
@@ -37,7 +37,7 @@
       "gsisId": "00-0039923",
       "name": "J.J. McCarthy",
       "slug": "jj-mccarthy",
-      "number": 9,
+      "number": 18,
       "position": "QB",
       "group": "offense",
       "status": "ACT",
@@ -47,6 +47,21 @@
       "age": 23,
       "experience": 2,
       "college": "Michigan"
+    },
+    {
+      "gsisId": "00-0038998",
+      "name": "Jake Haener",
+      "slug": "jake-haener",
+      "number": 18,
+      "position": "QB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 200,
+      "age": 27,
+      "experience": 3,
+      "college": "Fresno State; Washington"
     },
     {
       "gsisId": "00-0031503",
@@ -94,6 +109,21 @@
       "college": "Florida Atlantic"
     },
     {
+      "gsisId": "00-0040021",
+      "name": "Phil Mafah",
+      "slug": "phil-mafah",
+      "number": 26,
+      "position": "RB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 230,
+      "age": 23,
+      "experience": 1,
+      "college": "Clemson"
+    },
+    {
       "gsisId": "00-0039384",
       "name": "Tyrone Tracy Jr.",
       "slug": "tyrone-tracy-jr",
@@ -107,21 +137,6 @@
       "age": 26,
       "experience": 2,
       "college": "Purdue; Iowa"
-    },
-    {
-      "gsisId": "00-0040021",
-      "name": "Phil Mafah",
-      "slug": "phil-mafah",
-      "number": 37,
-      "position": "RB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 230,
-      "age": 23,
-      "experience": 1,
-      "college": "Clemson"
     },
     {
       "gsisId": "00-0040715",
@@ -574,21 +589,6 @@
       "college": "Iowa"
     },
     {
-      "gsisId": "00-0039332",
-      "name": "C.J. Ravenell",
-      "slug": "cj-ravenell",
-      "number": 91,
-      "position": "DT",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 77,
-      "weight": 287,
-      "age": 26,
-      "experience": 2,
-      "college": "Missouri Western"
-    },
-    {
       "gsisId": "00-0040694",
       "name": "Darius Alexander",
       "slug": "darius-alexander",
@@ -634,6 +634,21 @@
       "college": "Texas-El Paso"
     },
     {
+      "gsisId": "00-0039332",
+      "name": "C.J. Ravenell",
+      "slug": "cj-ravenell",
+      "number": 96,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 287,
+      "age": 26,
+      "experience": 2,
+      "college": "Missouri Western"
+    },
+    {
       "gsisId": "00-0041095",
       "name": "Bobby Jamison-Travis",
       "slug": "bobby-jamison-travis",
@@ -667,7 +682,7 @@
       "gsisId": "00-0038795",
       "name": "PJ Mustipher",
       "slug": "pj-mustipher",
-      "number": 79,
+      "number": 90,
       "position": "NT",
       "group": "defense",
       "status": "DEV",

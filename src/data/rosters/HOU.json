@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "HOU",
   "week": 4,
-  "updated": "2026-09-30T16:08:00Z",
+  "updated": "2026-10-01T16:43:35Z",
   "groups": [
     {
       "key": "offense",
@@ -212,6 +212,21 @@
       "age": 24,
       "experience": 3,
       "college": "LSU"
+    },
+    {
+      "gsisId": "00-0041308",
+      "name": "Treyvhon Saunders",
+      "slug": "treyvhon-saunders",
+      "number": 14,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": null,
+      "weight": 190,
+      "age": null,
+      "experience": 0,
+      "college": null
     },
     {
       "gsisId": "00-0038728",
@@ -769,6 +784,21 @@
       "college": "Houston"
     },
     {
+      "gsisId": "00-0040982",
+      "name": "Aaron Graves",
+      "slug": "aaron-graves",
+      "number": 59,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": null,
+      "weight": 295,
+      "age": null,
+      "experience": 0,
+      "college": null
+    },
+    {
       "gsisId": "00-0036883",
       "name": "Tommy Togiai",
       "slug": "tommy-togiai",
@@ -835,8 +865,8 @@
       "number": 97,
       "position": "DT",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 75,
       "weight": 280,
       "age": 32,
@@ -925,8 +955,8 @@
       "number": 53,
       "position": "OLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 255,
       "age": 24,
@@ -962,6 +992,21 @@
       "age": 23,
       "experience": 1,
       "college": "Louisiana"
+    },
+    {
+      "gsisId": "00-0036704",
+      "name": "Caleb Johnson",
+      "slug": "caleb-johnson",
+      "number": 53,
+      "position": "ILB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 220,
+      "age": 28,
+      "experience": 5,
+      "college": "Houston Christian University"
     },
     {
       "gsisId": "00-0035166",

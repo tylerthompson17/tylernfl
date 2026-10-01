@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "CAR",
   "week": 4,
-  "updated": "2026-09-30T16:08:00Z",
+  "updated": "2026-10-01T16:43:35Z",
   "groups": [
     {
       "key": "offense",
@@ -130,8 +130,8 @@
       "number": 34,
       "position": "RB",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 73,
       "weight": 222,
       "age": 23,
@@ -182,6 +182,21 @@
       "age": 26,
       "experience": 4,
       "college": "Alabama"
+    },
+    {
+      "gsisId": "00-0036635",
+      "name": "Ihmir Smith-Marsette",
+      "slug": "ihmir-smith-marsette",
+      "number": 15,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 200,
+      "age": 27,
+      "experience": 5,
+      "college": "Iowa"
     },
     {
       "gsisId": "00-0039342",
@@ -235,28 +250,13 @@
       "number": 83,
       "position": "WR",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 72,
       "weight": 220,
       "age": 31,
       "experience": 9,
       "college": "East Central"
-    },
-    {
-      "gsisId": "00-0036635",
-      "name": "Ihmir Smith-Marsette",
-      "slug": "ihmir-smith-marsette",
-      "number": 83,
-      "position": "WR",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 200,
-      "age": 27,
-      "experience": 5,
-      "college": "Iowa"
     },
     {
       "gsisId": "00-0039394",
@@ -484,6 +484,21 @@
       "college": "Louisiana-Lafayette"
     },
     {
+      "gsisId": "00-0041146",
+      "name": "Isaia Glass",
+      "slug": "isaia-glass",
+      "number": 60,
+      "position": "G",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 311,
+      "age": 23,
+      "experience": 0,
+      "college": null
+    },
+    {
       "gsisId": "00-0040541",
       "name": "Torricelli Simpkins III",
       "slug": "torricelli-simpkins-iii",
@@ -542,21 +557,6 @@
       "age": 30,
       "experience": 5,
       "college": "BYU"
-    },
-    {
-      "gsisId": "00-0041146",
-      "name": "Isaia Glass",
-      "slug": "isaia-glass",
-      "number": 74,
-      "position": "G",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 311,
-      "age": 23,
-      "experience": 0,
-      "college": null
     },
     {
       "gsisId": "00-0036795",
@@ -919,21 +919,6 @@
       "college": "Miami (Ohio); Ohio State"
     },
     {
-      "gsisId": "00-0038493",
-      "name": "Claudin Cherelus",
-      "slug": "claudin-cherelus",
-      "number": 53,
-      "position": "ILB",
-      "group": "defense",
-      "status": "RES",
-      "statusLabel": "Reserve",
-      "heightInches": 74,
-      "weight": 237,
-      "age": 27,
-      "experience": 3,
-      "college": "Alcorn State; UMass Amherst"
-    },
-    {
       "gsisId": "00-0040289",
       "name": "Bam Martin-Scott",
       "slug": "bam-martin-scott",
@@ -985,8 +970,8 @@
       "number": 2,
       "position": "CB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 73,
       "weight": 210,
       "age": 29,
@@ -1000,8 +985,8 @@
       "number": 8,
       "position": "CB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 73,
       "weight": 212,
       "age": 26,
@@ -1067,6 +1052,21 @@
       "age": 25,
       "experience": 1,
       "college": "Louisville"
+    },
+    {
+      "gsisId": "00-0036904",
+      "name": "Robert Rochell",
+      "slug": "robert-rochell",
+      "number": 33,
+      "position": "CB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 195,
+      "age": 28,
+      "experience": 5,
+      "college": "Central Arkansas"
     },
     {
       "gsisId": "00-0041153",
