@@ -46,7 +46,7 @@ tylernfl/
 ├── src/
 │   ├── styles/tokens.css   all design tokens (single source of truth)
 │   ├── styles/global.css
-│   ├── layouts/            BaseLayout (ticker, header, 3-column shell)
+│   ├── layouts/            BaseLayout (ticker, header, nav bar, main and rail)
 │   ├── components/         Panel, StatTable, StatCard, TickerItem, TeamChip, ...
 │   ├── pages/              index, scores, charts/, curated, tools/, stats/, articles/, about, 404
 │   ├── content/articles/   MDX articles (content collection)
@@ -428,9 +428,11 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   ones inside the chart are too small at thumbnail size), each linking to its team page: `teams` in an auto chart's
   entry (away, home on WP charts), or optional `teams: [BUF, KC]` in one of Tyler's.
   The build fails on an abbreviation that is not a team.
-- The home page's chart panel is full width under the 4th down panel: Tyler's featured
-  chart with its date, else the auto chart labeled "Auto chart" with what its data
-  covers, else an empty state.
+- The home page's chart panel spans its first two columns (see Home page): Tyler's
+  featured chart with its date, else the auto chart labeled "Auto chart" with what its
+  data covers, else an empty state. Win probability charts are drawn 3:1 (720 by 240,
+  `WP_HEIGHT_PX` in `auto.py`) to fit it; the EPA scatter (3:2) and yards race (16:9)
+  keep their shapes.
 - A team's own page shows its newest chart, full width on the overview under the playoff
   odds and drawn inline with its hover readout (`TeamChart.astro`): the morning after a
   game, that game's win probability chart is on both teams' pages, whether or not it was
@@ -438,9 +440,30 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   one, to its full list (`/charts/team/<ABBR>/`), which is where the gallery's logo
   filter row points. A team with no charts yet gets an empty state.
 
+### Site shell
+
+- Ticker, then the header with the nav as a white bar of links right under it (PFR
+  style; it wraps onto a second line on phones, no menu button). There is no left
+  column: content and the right rail take the full width.
+
+### Home page
+
+- Three independent columns: each stacks its own panels, so a short panel never leaves
+  a hole beside a tall one. The chart spans columns 1 and 2 (a full-size chart stops
+  shrinking at 600px); column 3 runs from the top beside it.
+- Column 1: the latest complete week's results (the week `/week` recaps, kickoff
+  order, each final's excitement label with the slate bar). Column 2: transactions,
+  latest article, and the 4th down calculator as one boxed line until the model
+  exists. Column 3: playoff picture, notable performances, receiving leaders, on this
+  day. The split is what balances heights: at 1440px with a WP chart the columns end
+  at about 960, 950 and 1,070px. Recheck when a panel is added or grows.
+- Below 1100px: two columns, chart across the top, column 3's panels in a pair under
+  the rest. Below 760px: one column.
+
 ### Right rail
 
-- On every page, top to bottom: the playoff picture, then on this day.
+- On every page but home (`rail={false}`, which places the same panels in its third
+  column), top to bottom: the playoff picture, then on this day.
 - There is no games list in the rail: the ticker right above shows the same games (one was
   tried and removed as a duplicate that made the rail heavy).
 - Playoff picture (`PlayoffPicture.astro`, from `standings.json`): each conference's seeds 1

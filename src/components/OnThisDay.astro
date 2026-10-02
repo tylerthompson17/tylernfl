@@ -1,0 +1,73 @@
+---
+/**
+ * On this day: up to 3 notable games played on today's date since 1999,
+ * from on_this_day.json (pipelines/on_this_day.py). In the right rail on
+ * every page, and in the home page's third column.
+ */
+import onThisDayData from '../data/on_this_day.json';
+import type { OnThisDayData } from '../data/types';
+import { url } from '../utils/url';
+import Panel from './Panel.astro';
+
+const onThisDay = onThisDayData as OnThisDayData;
+const date = new Date(2000, onThisDay.month - 1, onThisDay.day).toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Panel title={`On this day, ${date}`}>
+  {
+    onThisDay.items.length > 0 ? (
+      <ul class="otd">
+        {onThisDay.items.map((item) => (
+          <li>
+            <span class="otd-year num">{item.year}</span>
+            <span>
+              {item.parts.map((part) => (part.team ? <a href={url(`teams/${part.team}`)}>{part.text}</a> : part.text))}
+            </span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="placeholder-note">
+        {onThisDay.gamesOnDate === 0
+          ? 'No NFL games on this date since 1999.'
+          : 'No standout games on this date since 1999.'}
+      </p>
+    )
+  }
+  <p class="otd-source">Games since 1999, from nflverse schedules.</p>
+</Panel>
+
+<style>
+  /* Dotted dividers between items */
+  .otd {
+    list-style: none;
+    padding: 0;
+  }
+
+  .otd li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-2);
+  }
+
+  .otd li + li {
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px dotted var(--rule-soft);
+  }
+
+  .otd-source {
+    margin-top: var(--space-2);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .otd-year {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--text-dim);
+  }
+</style>

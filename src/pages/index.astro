@@ -2,7 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Panel from '../components/Panel.astro';
 import StatTable from '../components/StatTable.astro';
-import FieldStrip from '../components/FieldStrip.astro';
+import TeamChip from '../components/TeamChip.astro';
+import PlayoffPicture from '../components/PlayoffPicture.astro';
+import OnThisDay from '../components/OnThisDay.astro';
 import { url } from '../utils/url';
 import { getArticles } from '../utils/articles';
 import { headlineItems, statusSummary, transactions } from '../utils/transactions';
@@ -11,6 +13,12 @@ import { leadersFor } from '../utils/overview';
 import { gameStatusLine, logWeek } from '../utils/as-of';
 import ChartFigure from '../components/ChartFigure.astro';
 import { formatChartDate, getAutoChart, getFeaturedChart, hoverFor, svgFor } from '../utils/charts';
+import excitementData from '../data/game_excitement.json';
+import scheduleData from '../data/schedule.json';
+import type { GameExcitementData, ScheduleData } from '../data/types';
+import { completeWeeks } from '../lib/week/recap';
+import { emptyRecap } from '../utils/as-of';
+import { weekLabel } from '../utils/week';
 
 const receiving = leadersFor('receiving');
 
@@ -44,6 +52,23 @@ const notableWeek = notable.week === null ? null : logWeek(notable.season, notab
 const featured = await getFeaturedChart();
 const auto = featured ? null : getAutoChart();
 
+// The latest complete week's results with their excitement labels, in
+// kickoff order: the labels the ticker never shows on a final. The same
+// week /week recaps, so from Wednesday it is the week before the ticker's.
+const schedule = scheduleData as ScheduleData;
+const excitementFile = excitementData as GameExcitementData;
+const excitement = excitementFile.season === schedule.season ? excitementFile.games : [];
+const resultsWeek = completeWeeks(schedule.games, excitement).at(-1) ?? null;
+const labelOf = new Map(excitement.map((e) => [e.id, e.label]));
+const results =
+  resultsWeek == null
+    ? []
+    : schedule.games
+        .filter((g) => g.week === resultsWeek)
+        .sort((a, b) => (a.kickoff ?? '').localeCompare(b.kickoff ?? ''));
+const resultsName = weekLabel(resultsWeek);
+const noResults = emptyRecap();
+
 const leaderColumns = [
   { key: 'rank', label: 'Rk', kind: 'number' as const },
   { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
@@ -52,20 +77,12 @@ const leaderColumns = [
 ];
 ---
 
-<BaseLayout title="Home">
+<BaseLayout title="Home" rail={false}>
   <h1 class="visually-hidden">Tyler NFL home</h1>
-  <div class="content-grid home-grid">
-    <Panel title="4th down calculator" class="lead">
-      <FieldStrip ballOn={55} lineToGain={57} label="4th & 2 at MIN 45" />
-      <p class="lead-copy">
-        Go or kick? Every 4th down comes down to two win probabilities. The calculator will grade
-        any situation you set, down to the timeout count.
-      </p>
-      <p><a href={url('tools/4th-down')}>Open the calculator</a></p>
-    </Panel>
+  <div class="home">
     {
       featured ? (
-        <Panel title={featured.data.title} titleId="home-chart-title" class="lead">
+        <Panel title={featured.data.title} titleId="home-chart-title" class="home-chart">
           <ChartFigure svg={svgFor(featured)} titleId="home-chart-title" note={featured.data.note} id="home-chart" hover={hoverFor(featured)}>
             <p class="chart-meta">
               <span class="num">{formatChartDate(featured.data.date)}</span>, {featured.data.author}.{' '}
@@ -76,7 +93,7 @@ const leaderColumns = [
           </ChartFigure>
         </Panel>
       ) : auto ? (
-        <Panel title={auto.data.title} titleId="home-chart-title" class="lead">
+        <Panel title={auto.data.title} titleId="home-chart-title" class="home-chart">
           <ChartFigure svg={auto.svg} titleId="home-chart-title" note={auto.data.note} id="home-chart" hover={auto.hover}>
             <p class="chart-meta">
               <span class="auto-label">Auto chart</span> {auto.data.asOf}. Source: {auto.data.source}.{' '}
@@ -86,109 +103,233 @@ const leaderColumns = [
           </ChartFigure>
         </Panel>
       ) : (
-        <Panel title="Charts" class="lead">
+        <Panel title="Charts" class="home-chart">
           <p class="placeholder-note">No chart yet. One is drawn each morning once games are played.</p>
         </Panel>
       )
     }
-    <Panel title="Receiving yards leaders">
-      {
-        receiving ? (
-          <StatTable
-            columns={leaderColumns}
-            rows={receiving.rows}
-            caption="Receiving yards leaders"
-            emptyText="No games played yet. Leaders appear after week 1."
-          />
-        ) : (
-          <p class="placeholder-note">No games played yet. Leaders appear after week 1.</p>
-        )
-      }
-      <p class="table-foot">
-        {receiving?.through ?? 'No games played yet.'}{' '}
-        <a href={url(receiving?.link?.href ?? 'stats')}>Full receiving leaderboard</a>
+    <div class="col col-1">
+      <Panel title={resultsName ? `${resultsName} results` : 'Results'}>
+        {
+          resultsWeek == null ? (
+            <p class="placeholder-note">{noResults.text}</p>
+          ) : (
+            <>
+              <table class="stat-table results">
+                <caption class="visually-hidden">{resultsName} results in kickoff order, with each game's excitement label</caption>
+                <thead class="visually-hidden">
+                  <tr>
+                    <th scope="col">Game</th>
+                    <th scope="col">Label</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {results.map((game) => {
+                    const label = labelOf.get(game.id) ?? null;
+                    const awayWon = game.awayScore! > game.homeScore!;
+                    const homeWon = game.homeScore! > game.awayScore!;
+                    return (
+                      <tr class:list={{ marked: label }}>
+                        <td>
+                          <span class="game">
+                            <TeamChip abbr={game.away} size="sm" />
+                            <span class:list={['score', { won: awayWon }]}>{game.awayScore}</span>
+                            <span class="at">{game.neutral ? 'vs' : 'at'}</span>
+                            <TeamChip abbr={game.home} size="sm" />
+                            <span class:list={['score', { won: homeWon }]}>{game.homeScore}</span>
+                            {game.overtime && <span class="at">OT</span>}
+                          </span>
+                        </td>
+                        <td class="label">{label}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <p class="table-foot">
+                Labels mark comebacks, thrillers and shootouts. The{' '}
+                <a href={url(`week/${schedule.season}/${resultsWeek}`)}>{resultsName!.toLowerCase()} recap</a> ranks every
+                game by excitement.
+              </p>
+            </>
+          )
+        }
+      </Panel>
+    </div>
+    <div class="col col-2">
+      <Panel title="Transactions and injuries">
+        {
+          transactions.week === null ? (
+            <p class="placeholder-note">
+              Offseason. Roster moves and injury reports return in week 1.
+            </p>
+          ) : (
+            <>
+              <StatTable
+                columns={headlineColumns}
+                rows={headlines.items}
+                caption="Top transactions and game statuses"
+                emptyText="No game statuses or roster moves yet this week."
+              />
+              <p class="table-foot">
+                Starters first. {statusText && <>{statusText}{' '}</>}{headlines.rest} more on the{' '}
+                <a href={url('transactions')}>full wire</a>, filterable by team and type.
+              </p>
+            </>
+          )
+        }
+      </Panel>
+      <Panel title="Latest article">
+        {
+          latest ? (
+            <>
+              <h3 class="article-title">
+                <a href={url(`articles/${latest.id}`)}>{latest.data.title}</a>
+              </h3>
+              <p class="article-desc">{latest.data.description}</p>
+            </>
+          ) : (
+            <p class="placeholder-note">No articles yet.</p>
+          )
+        }
+      </Panel>
+      <p class="soon">
+        <a href={url('tools/4th-down')}>4th down calculator</a>: go or kick for any situation, coming with the model.
       </p>
-    </Panel>
-    <Panel title="Transactions and injuries">
-      {
-        transactions.week === null ? (
-          <p class="placeholder-note">
-            Offseason. Roster moves and injury reports return in week 1.
-          </p>
-        ) : (
-          <>
-            <StatTable
-              columns={headlineColumns}
-              rows={headlines.items}
-              caption="Top transactions and game statuses"
-              emptyText="No game statuses or roster moves yet this week."
-            />
-            <p class="table-foot">
-              Starters first. {statusText && <>{statusText}{' '}</>}{headlines.rest} more on the{' '}
-              <a href={url('transactions')}>full wire</a>, filterable by team and type.
+    </div>
+    <div class="col col-3">
+      <PlayoffPicture />
+      <Panel title="Notable performances">
+        {
+          notable.week === null ? (
+            <p class="placeholder-note">
+              No games played yet. Performances appear after week 1.
             </p>
-          </>
-        )
-      }
-    </Panel>
-    <Panel title="Notable performances">
-      {
-        notable.week === null ? (
-          <p class="placeholder-note">
-            No games played yet. Performances appear after week 1.
-          </p>
-        ) : (
-          <>
+          ) : (
+            <>
+              <StatTable
+                columns={notableColumns}
+                rows={notable.rows}
+                caption="Notable performances this week"
+                emptyText="No games logged this week yet."
+              />
+              <p class="table-foot">
+                {notableWeek?.name}'s best games across passing, rushing, receiving, sacks and field
+                goals. Pctl is the share of team games from {percentileSeasons.from} to{' '}
+                {percentileSeasons.through} whose best in that stat was lower.{' '}
+                {notableWeek?.note && <>{notableWeek.note}{' '}</>}
+                <a href={url('stats')}>Full leaderboards</a>
+              </p>
+            </>
+          )
+        }
+      </Panel>
+      <Panel title="Receiving yards leaders">
+        {
+          receiving ? (
             <StatTable
-              columns={notableColumns}
-              rows={notable.rows}
-              caption="Notable performances this week"
-              emptyText="No games logged this week yet."
+              columns={leaderColumns}
+              rows={receiving.rows}
+              caption="Receiving yards leaders"
+              emptyText="No games played yet. Leaders appear after week 1."
             />
-            <p class="table-foot">
-              {notableWeek?.name}'s best games across passing, rushing, receiving, sacks and field
-              goals. Pctl is the share of team games from {percentileSeasons.from} to{' '}
-              {percentileSeasons.through} whose best in that stat was lower.{' '}
-              {notableWeek?.note && <>{notableWeek.note}{' '}</>}
-              <a href={url('stats')}>Full leaderboards</a>
-            </p>
-          </>
-        )
-      }
-    </Panel>
-    <Panel title="Latest article">
-      {
-        latest ? (
-          <>
-            <h3 class="article-title">
-              <a href={url(`articles/${latest.id}`)}>{latest.data.title}</a>
-            </h3>
-            <p class="article-desc">{latest.data.description}</p>
-          </>
-        ) : (
-          <p class="placeholder-note">No articles yet.</p>
-        )
-      }
-    </Panel>
+          ) : (
+            <p class="placeholder-note">No games played yet. Leaders appear after week 1.</p>
+          )
+        }
+        <p class="table-foot">
+          {receiving?.through ?? 'No games played yet.'}{' '}
+          <a href={url(receiving?.link?.href ?? 'stats')}>Full receiving leaderboard</a>
+        </p>
+      </Panel>
+      <OnThisDay />
+    </div>
   </div>
 </BaseLayout>
 
 <style>
-  .home-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Three independent columns: each stacks its own panels, so a short
+     panel never leaves a hole beside a tall one. The chart spans the
+     first two (at 600px and under, its labels would be too small), and
+     the third column runs from the top beside it. Which panel goes in
+     which column is what balances their heights: at 1440px, with a win
+     probability chart, each column is about 1,000px tall. */
+  .home {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: auto 1fr;
+    gap: var(--space-3);
+    align-items: start;
   }
 
-  .home-grid > :global(.lead) {
-    grid-column: 1 / -1;
+  .home > :global(.home-chart) {
+    grid-column: 1 / 3;
+    grid-row: 1;
   }
 
-  .lead-copy {
-    margin-top: var(--space-4);
-    max-width: 60ch;
+  .col {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
   }
 
-  .lead-copy + p {
-    margin-top: var(--space-2);
+  .col-1 {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .col-2 {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .col-3 {
+    grid-column: 3;
+    grid-row: 1 / 3;
+  }
+
+  /* Until the 4th down model exists, its calculator is one boxed line. */
+  .soon {
+    padding: var(--space-2) var(--space-3);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+  }
+
+  .soon a {
+    font-weight: 700;
+  }
+
+  /* Results: one row per game, the ticker's mark on a labelled one. */
+  .results {
+    width: 100%;
+  }
+
+  .results tr.marked td:first-child {
+    border-left: var(--mark-bar) solid var(--header);
+  }
+
+  .game {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    white-space: nowrap;
+  }
+
+  .score {
+    min-width: 2ch;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Winners in bold, not colored. */
+  .score.won,
+  .results .label {
+    font-weight: 700;
+  }
+
+  .at {
+    color: var(--text-dim);
+    padding: 0 var(--space-1);
   }
 
   .table-foot {
@@ -228,8 +369,39 @@ const leaderColumns = [
     color: var(--text-dim);
   }
 
-  @media (max-width: 900px) {
-    .home-grid {
+  /* Two columns: the chart across the top, the first two columns side by
+     side under it, and the third's panels side by side under those. */
+  @media (max-width: 1100px) {
+    .home {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: auto;
+    }
+
+    .home > :global(.home-chart) {
+      grid-column: 1 / -1;
+    }
+
+    .col-3 {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .home {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .col-1,
+    .col-2,
+    .col-3 {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .col-3 {
       grid-template-columns: minmax(0, 1fr);
     }
   }
