@@ -1,0 +1,293 @@
+---
+/**
+ * Target map: where a player's targets (or, for a passer, his throws)
+ * went this season, as a field of 3 zones by 4 depth bands, deep at the
+ * top and the line of scrimmage marked above the behind band. Each cell
+ * shows its count and catch rate, shaded against the league in the same
+ * cell (src/lib/targets/map.ts). The full numbers are in a table under it,
+ * which is also what a screen reader gets.
+ */
+import Panel from './Panel.astro';
+import type { TargetsData } from '../data/types';
+import { cellRows, count, LOCATIONS, SHADE_MIN_TARGETS, SHADE_STEPS, shadeOf, WORDS, wholePercent, zoneName, type TargetKind } from '../lib/targets/map';
+import { formatStat } from '../utils/format';
+import { seasonThrough } from '../utils/as-of';
+
+interface Props {
+  data: TargetsData;
+  kind: TargetKind;
+}
+
+const { data, kind } = Astro.props;
+const grid = data[kind]!;
+const words = WORDS[kind];
+const rows = cellRows(grid);
+const baseline = data.baselineSeason;
+
+const tooltip = (cell: (typeof grid.cells)[number]) => {
+  const parts = [`${zoneName(cell)}: ${count(cell.targets, kind)}`];
+  if (cell.targets > 0) {
+    parts.push(
+      `${cell.receptions} ${kind === 'targets' ? 'caught' : 'completed'} (${formatStat(cell.catchRate, 'percent1')})`,
+      `${cell.yards} yds, ${cell.touchdowns} TD, ${cell.interceptions} INT`,
+      `${formatStat(cell.epaPerTarget, 'signed3')} EPA per ${words.noun[0]}` +
+        (cell.leagueEpaPerTarget === null ? '' : ` (league ${formatStat(cell.leagueEpaPerTarget, 'signed3')})`)
+    );
+  }
+  return parts.join('. ') + '.';
+};
+
+const tableRows = [
+  ...rows.flatMap((row) => row.cells.map((cell) => ({ name: zoneName(cell), stats: cell, league: cell.leagueEpaPerTarget }))),
+  { name: 'Total', stats: grid.total, league: null, total: true },
+];
+const steps = SHADE_STEPS.map((s) => String(s)).join(', ').replace(/, (?=[^,]*$)/, ' and ');
+---
+
+<Panel title={words.title}>
+  <div class="field" aria-hidden="true">
+    <div></div>
+    {LOCATIONS.map(({ label }) => <div class="zone">{label}</div>)}
+    {
+      rows.map(({ depth, cells }) => (
+        <>
+          {depth.depth === 'behind' && (
+            <div class="los">
+              <span>Line of scrimmage</span>
+            </div>
+          )}
+          <div class="band">
+            {depth.label}
+            <span>{depth.range}</span>
+          </div>
+          {cells.map((cell) => (
+            <div class={`cell shade-${shadeOf(cell)}`} title={tooltip(cell)}>
+              <span class="count">{cell.targets}</span>
+              {cell.targets > 0 && (
+                <span class="rate">
+                  {wholePercent(cell.catchRate)} {words.rateWord}
+                </span>
+              )}
+            </div>
+          ))}
+        </>
+      ))
+    }
+  </div>
+
+  <div class="legend">
+    {
+      baseline !== null ? (
+        <>
+          <p>EPA per {words.noun[0]} vs. {baseline} league average in this zone:</p>
+          <p class="scale">
+            <span>Below</span>
+            {['loss-3', 'loss-2', 'loss-1', 'neutral', 'win-1', 'win-2', 'win-3'].map((s) => (
+              <i class={`swatch shade-${s}`} />
+            ))}
+            <span>Above</span>
+            <span class="steps">(steps at {steps})</span>
+          </p>
+        </>
+      ) : (
+        <p>No league average from last season yet, so cells are not shaded.</p>
+      )
+    }
+    <p class="scale">
+      <i class="swatch shade-sparse" />
+      <span>Under {SHADE_MIN_TARGETS} {words.noun[1]}, not shaded</span>
+    </p>
+  </div>
+
+  <p class="note">
+    Horizontal zones are left, middle, right as charted in play-by-play, not exact field position.
+    {words.dpi}
+  </p>
+
+  <details>
+    <summary>Cell stats</summary>
+    <div class="stat-table-scroll">
+      <table class="stat-table">
+        <caption class="visually-hidden">{words.title}, by zone</caption>
+        <thead>
+          <tr>
+            <th scope="col">Zone</th>
+            <th scope="col" class="number">{words.plays}</th>
+            <th scope="col" class="number">{words.caught}</th>
+            <th scope="col" class="number">{words.rate}</th>
+            <th scope="col" class="number">Yds</th>
+            <th scope="col" class="number">TD</th>
+            <th scope="col" class="number">Int</th>
+            <th scope="col" class="number">EPA/{words.plays.toLowerCase()}</th>
+            {baseline !== null && <th scope="col" class="number">{baseline} avg</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            tableRows.map((row) => (
+              <tr class:list={{ total: 'total' in row }}>
+                <th scope="row">{row.name}</th>
+                <td class="number">{row.stats.targets}</td>
+                <td class="number">{row.stats.receptions}</td>
+                <td class="number">{formatStat(row.stats.catchRate, 'percent1')}</td>
+                <td class="number">{row.stats.yards}</td>
+                <td class="number">{row.stats.touchdowns}</td>
+                <td class="number">{row.stats.interceptions}</td>
+                <td class="number">{formatStat(row.stats.epaPerTarget, 'signed3')}</td>
+                {baseline !== null && <td class="number">{formatStat(row.league, 'signed3')}</td>}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <p class="source">
+    {count(grid.total.targets, kind)} charted. {seasonThrough(data.season, data.throughWeek)} From nflverse
+    play-by-play; EPA is nflfastR's.
+  </p>
+</Panel>
+
+<style>
+  /* The field: a label column, then left, middle and right. Cells carry
+     their own borders and share them through negative margins. */
+  .field {
+    display: grid;
+    grid-template-columns: auto repeat(3, minmax(0, 1fr));
+    max-width: 480px;
+  }
+
+  .zone {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-align: center;
+    padding-bottom: var(--space-1);
+  }
+
+  .band {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: var(--space-2);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .band span {
+    font-weight: 400;
+    color: var(--text-dim);
+  }
+
+  .cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    border: 1px solid var(--rule);
+    margin: 0 -1px -1px 0;
+    background: var(--panel);
+  }
+
+  .count {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .rate {
+    font-size: 12px;
+  }
+
+  /* The line of scrimmage: a heavy slate rule across the field, between
+     short and behind. */
+  .los {
+    grid-column: 1 / -1;
+    border-top: 2px solid var(--header);
+    margin-top: var(--space-1);
+    padding-bottom: var(--space-1);
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: right;
+  }
+
+  .shade-sparse {
+    background: var(--bg);
+    color: var(--text-dim);
+  }
+
+  .shade-win-1 {
+    background: var(--win-tint-1);
+  }
+
+  .shade-win-2 {
+    background: var(--win-tint-2);
+  }
+
+  .shade-win-3 {
+    background: var(--win-tint-3);
+  }
+
+  .shade-loss-1 {
+    background: var(--loss-tint-1);
+  }
+
+  .shade-loss-2 {
+    background: var(--loss-tint-2);
+  }
+
+  .shade-loss-3 {
+    background: var(--loss-tint-3);
+  }
+
+  .legend {
+    margin-top: var(--space-2);
+    font-size: 12px;
+  }
+
+  .scale {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1);
+    margin-top: var(--space-1);
+  }
+
+  .swatch {
+    display: inline-block;
+    width: 16px;
+    height: 12px;
+    border: 1px solid var(--rule);
+  }
+
+  .steps {
+    color: var(--text-dim);
+  }
+
+  .note,
+  .source {
+    margin-top: var(--space-2);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  details {
+    margin-top: var(--space-2);
+  }
+
+  summary {
+    cursor: pointer;
+    color: var(--link);
+    text-decoration: underline;
+    font-size: 12px;
+  }
+
+  details .stat-table-scroll {
+    margin-top: var(--space-2);
+  }
+
+  .stat-table tr.total th,
+  .stat-table tr.total td {
+    font-weight: 700;
+  }
+</style>

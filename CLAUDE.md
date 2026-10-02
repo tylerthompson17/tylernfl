@@ -91,7 +91,7 @@ tylernfl/
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `player_epa.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `targets/{gsisId}.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
@@ -141,6 +141,25 @@ tylernfl/
   nflverse adds a night game to play-by-play hours after the schedule shows it final, so
   the morning after Monday night can be a game short until the next run. Nothing needs a
   complete week, so there is no weekly job (it was retired on 2026-09-30).
+- `targets/{gsisId}.json` is written daily by `pipelines/targets.py`, from the same
+  play-by-play and finals as `team_stats.json`: where each player's targets went (as a
+  receiver) and his throws (as a passer), on 3 zones (`pass_location`) by 4 depth bands
+  (air yards under 0, 0 to 9, 10 to 19, 20+), with targets, receptions, catch rate, yards,
+  TDs, INTs and EPA per target per cell. Which plays count and in what order the filters
+  run is in its docstring, and each run prints how many plays each removes. nflverse
+  clears the receiver on plays nullified by a penalty, so defensive pass interference is
+  never a target. One file per player with at least one target or throw, written
+  compactly (about 600 by a season's end). A file is deleted only once a run has regular
+  season plays for a season at least as new as it (`stale_files`), so last season's grids
+  stay up through the preseason.
+- Every cell carries the league's EPA per target in the same cell over the season before
+  (`leagueEpaPerTarget`, `baselineSeason`), fixed for the whole season. The player page's
+  "Target locations" and "Throw locations" panels (`TargetMap.astro`) shade each cell
+  against it, not against zero, because the zones differ by about a point of EPA (2025:
+  -0.25 behind the line in the middle to +0.74 deep middle). Steps at 0.15, 0.4 and 0.8
+  above or below, three tints each way (`--win-tint-*`, `--loss-tint-*`); cells under 3
+  targets are gray and unshaded. The rule is `shadeOf` in `src/lib/targets/map.ts`. Full
+  numbers per cell are in a table under the grid. A player with no file gets no panel.
 - There is no `leaders.json` any more. Every top 5 on the site (the stats overview, the
   home page's receiving panel, a team's stat leader appearances) comes from the boards and
   `player_epa.json` through `src/utils/overview.ts`, whose rows carry player ids.

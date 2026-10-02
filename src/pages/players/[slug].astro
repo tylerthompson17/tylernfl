@@ -3,12 +3,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
 import TeamChip from '../../components/TeamChip.astro';
 import GameLog from '../../components/GameLog.astro';
+import TargetMap from '../../components/TargetMap.astro';
 import { leaderboards } from '../../utils/leaderboards';
 import { playerPages, type PlayerPage } from '../../utils/players';
 import { seasonsFor } from '../../utils/player-stats';
 import { formatExperience, formatHeight } from '../../utils/format';
 import { seasonThrough } from '../../utils/as-of';
 import { url } from '../../utils/url';
+import { targetsFor } from '../../utils/targets';
 
 export function getStaticPaths() {
   return [...playerPages.entries()].map(([slug, pages]) => ({
@@ -27,6 +29,13 @@ const shared = pages.length > 1;
 const page = pages[0]!;
 const roster = page.roster;
 const seasons = shared ? [] : seasonsFor(page.playerId);
+// The larger grid first (a passer's throws); a player with neither gets no map.
+const targets = shared ? undefined : targetsFor(page.playerId);
+const maps = targets
+  ? (['throws', 'targets'] as const)
+      .filter((kind) => targets[kind])
+      .sort((a, b) => targets[b]!.total.targets - targets[a]!.total.targets)
+  : [];
 
 const facts = roster
   ? [
@@ -86,6 +95,9 @@ const facts = roster
               </p>
             )}
           </Panel>
+          {maps.map((kind) => (
+            <TargetMap data={targets!} kind={kind} />
+          ))}
           {seasons.length > 0 ? (
             seasons.map((data) => (
               <Panel title={`${season} ${data.board.label.toLowerCase()}`}>

@@ -1,7 +1,7 @@
 """Daily site data job: writes ticker.json, stats/, players/,
 rosters/, transactions.json, on_this_day.json, standings.json,
 schedule.json, playoff_odds.json, game_excitement.json, team_stats.json,
-player_epa.json and, once a season, performance_percentiles.json into
+player_epa.json, targets/ and, once a season, performance_percentiles.json into
 src/data/, then draws
 the home page's auto chart (charts/auto.json and its entry in charts/archive/)
 from them.
@@ -14,7 +14,7 @@ Options:
     --dry-run            print the output instead of writing files
 
 Play-by-play is loaded once (pbp_cache.py) and shared by game excitement,
-team stats, player EPA and the auto charts.
+team stats, player EPA, target maps and the auto charts.
 """
 
 import argparse
@@ -38,6 +38,7 @@ from rosters import build_rosters, load_roster_rows, unknown_statuses  # noqa: E
 from playoff_odds import build_playoff_odds  # noqa: E402
 from schedule import build_schedule  # noqa: E402
 from standings import build_standings  # noqa: E402
+from targets import build_targets, existing_files, load_target_input, remove_files, stale_files, target_plays  # noqa: E402
 from team_stats import build_team_stats, load_team_stats_rows  # noqa: E402
 from ticker import build_ticker, load_schedule_rows, with_labels  # noqa: E402
 from transactions import (  # noqa: E402
@@ -85,6 +86,9 @@ def main() -> None:
     # Same season as team stats, so the two never disagree about the games.
     epa_plays, epa_week = load_player_epa_plays(pbp_season, current, schedule_rows)
     player_epa = build_player_epa(epa_plays, pbp_season, epa_week, updated, board_people(boards))
+    raw_targets, targets_week, raw_baseline = load_target_input(pbp_season, current, schedule_rows)
+    kept_targets, removed = target_plays(raw_targets)
+    targets = build_targets(kept_targets, pbp_season, targets_week, target_plays(raw_baseline)[0])
     rosters = build_rosters(roster_rows, rosters_year, today, updated)
 
     week = f"week {ticker['week']}" if ticker['week'] else f"offseason, opener {ticker['nextOpener']}"
@@ -95,6 +99,10 @@ def main() -> None:
     print(f"team stats: {pbp_season}, {len(team_stats['teams'])} teams, "
           f"{counts[0] if counts else 0} to {counts[-1] if counts else 0} games, {len(pbp_rows)} plays")
     print('player EPA: ' + ', '.join(f"{c['key']} {len(c['rows'])} qualified" for c in player_epa['categories']))
+    print(f"targets: {pbp_season}, {len(kept_targets)} of {len(raw_targets)} plays kept ("
+          + ', '.join(f'{label} -{n}' for label, n in removed)
+          + f"), {sum(1 for t in targets.values() if t['targets'])} receivers, "
+          f"{sum(1 for t in targets.values() if t['throws'])} passers")
     print('boards: ' + ', '.join(f"{key} {len(board['rows'])}" for key, board in boards.items()))
     players = sum(len(r['players']) for r in rosters.values())
     print(f"rosters: {rosters_year} week {next(iter(rosters.values()))['week'] if rosters else 0}, "
@@ -145,6 +153,7 @@ def main() -> None:
     files = [('ticker.json', ticker, ('updated',))]
     files += [(f'stats/{key}.json', board, ()) for key, board in boards.items()]
     logs = [(f'players/{team}.json', data, ()) for team, data in sorted(game_logs.items())]
+    target_files = [(f'targets/{pid}.json', data, ()) for pid, data in targets.items()]
     files.append(('transactions.json', transactions, ('updated',)))
     files.append(('on_this_day.json', on_this_day, ()))
     files.append(('standings.json', standings, ('updated',)))
@@ -158,7 +167,7 @@ def main() -> None:
         files.append(('performance_percentiles.json', percentiles, ()))
 
     if args.dry_run:
-        print(json.dumps({name: data for name, data, _ in files + logs}, indent=2))
+        print(json.dumps({name: data for name, data, _ in files + logs + target_files}, indent=2))
         return
 
     written = 0
@@ -170,7 +179,14 @@ def main() -> None:
     for name, data, volatile in logs:
         if write_json_if_changed(name, data, volatile, compact=True):
             written += 1
-    print(f'{written} of {len(files) + len(logs)} files updated')
+    # Target maps are about 600 files by the season's end, so compact too.
+    changed_targets = sum(write_json_if_changed(name, data, volatile, compact=True)
+                          for name, data, volatile in target_files)
+    # Last season's files stay until this season has regular season games.
+    stale = stale_files(existing_files(), set(targets), pbp_season if kept_targets else None)
+    remove_files(stale)
+    print(f'targets: {changed_targets} of {len(target_files)} files updated, {len(stale)} removed')
+    print(f'{written} of {len(files) + len(logs)} other files updated')
 
     # Drawn last: they read the files just written (boards, game logs,
     # team_stats.json). Every game the archive has no

@@ -550,3 +550,50 @@ export interface PerformancePercentilesData {
   /** Keyed by board: passing, rushing, receiving, defense, kicking */
   categories: Record<string, { stat: string; games: number; values: [number, number][] }>;
 }
+
+/**
+ * targets/<gsis id>.json: where one player's targets (as a receiver) and
+ * throws (as a passer) went this season, written daily by
+ * pipelines/targets.py from nflverse play-by-play. Only players with at
+ * least one target or throw have a file.
+ */
+export type TargetLocation = 'left' | 'middle' | 'right';
+/** By air yards: deep 20+, intermediate 10 to 19, short 0 to 9, behind under 0. */
+export type TargetDepth = 'deep' | 'intermediate' | 'short' | 'behind';
+
+export interface TargetStats {
+  targets: number;
+  receptions: number;
+  /** 0 to 1, null with no targets */
+  catchRate: number | null;
+  yards: number;
+  touchdowns: number;
+  interceptions: number;
+  /** nflfastR EPA, null with no targets */
+  epaPerTarget: number | null;
+}
+
+export interface TargetCell extends TargetStats {
+  location: TargetLocation;
+  depth: TargetDepth;
+  /** League EPA per target in this cell over baselineSeason; null without one */
+  leagueEpaPerTarget: number | null;
+}
+
+export interface TargetGrid {
+  total: TargetStats;
+  /** All 12 cells, deep left first, row by row; empty cells included */
+  cells: TargetCell[];
+}
+
+export interface TargetsData {
+  season: number;
+  throughWeek: number;
+  playerId: string;
+  /** The regular season the league values come from (the one before), or null */
+  baselineSeason: number | null;
+  /** As a receiver; null if never targeted */
+  targets: TargetGrid | null;
+  /** As a passer; null if he never threw one */
+  throws: TargetGrid | null;
+}
