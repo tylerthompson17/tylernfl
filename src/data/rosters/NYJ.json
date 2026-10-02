@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYJ",
   "week": 4,
-  "updated": "2026-09-30T16:08:00Z",
+  "updated": "2026-10-02T15:59:36Z",
   "groups": [
     {
       "key": "offense",
@@ -19,6 +19,21 @@
   ],
   "players": [
     {
+      "gsisId": "00-0039152",
+      "name": "Will Levis",
+      "slug": "will-levis",
+      "number": 4,
+      "position": "QB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 232,
+      "age": 27,
+      "experience": 3,
+      "college": "Kentucky; Penn State"
+    },
+    {
       "gsisId": "00-0030565",
       "name": "Geno Smith",
       "slug": "geno-smith",
@@ -32,21 +47,6 @@
       "age": 35,
       "experience": 13,
       "college": "West Virginia"
-    },
-    {
-      "gsisId": "00-0039152",
-      "name": "Will Levis",
-      "slug": "will-levis",
-      "number": 8,
-      "position": "QB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 232,
-      "age": 27,
-      "experience": 3,
-      "college": "Kentucky; Penn State"
     },
     {
       "gsisId": "00-0041056",
@@ -214,21 +214,6 @@
       "college": "Texas; Georgia"
     },
     {
-      "gsisId": "00-0036427",
-      "name": "Tyler Johnson",
-      "slug": "tyler-johnson",
-      "number": 15,
-      "position": "WR",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 205,
-      "age": 28,
-      "experience": 6,
-      "college": "Minnesota"
-    },
-    {
       "gsisId": "00-0033375",
       "name": "Tim Patrick",
       "slug": "tim-patrick",
@@ -287,6 +272,21 @@
       "age": 24,
       "experience": 1,
       "college": "Georgia"
+    },
+    {
+      "gsisId": "00-0036427",
+      "name": "Tyler Johnson",
+      "slug": "tyler-johnson",
+      "number": 83,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 205,
+      "age": 28,
+      "experience": 6,
+      "college": "Minnesota"
     },
     {
       "gsisId": "00-0041267",
@@ -349,21 +349,6 @@
       "college": "LSU"
     },
     {
-      "gsisId": "00-0041327",
-      "name": "Cody Hardy",
-      "slug": "cody-hardy",
-      "number": 86,
-      "position": "TE",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 271,
-      "age": 22,
-      "experience": 0,
-      "college": "N.C. State; Elon"
-    },
-    {
       "gsisId": "00-0037755",
       "name": "Jelani Woods",
       "slug": "jelani-woods",
@@ -377,6 +362,21 @@
       "age": 27,
       "experience": 4,
       "college": "Virginia"
+    },
+    {
+      "gsisId": "00-0041327",
+      "name": "Cody Hardy",
+      "slug": "cody-hardy",
+      "number": 88,
+      "position": "TE",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 271,
+      "age": 22,
+      "experience": 0,
+      "college": "N.C. State; Elon"
     },
     {
       "gsisId": "00-0037805",
@@ -475,8 +475,8 @@
       "number": 60,
       "position": "G",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 78,
       "weight": 350,
       "age": 28,
@@ -541,7 +541,7 @@
       "weight": 299,
       "age": 24,
       "experience": 0,
-      "college": null
+      "college": "Penn State"
     },
     {
       "gsisId": "00-0036859",
@@ -607,7 +607,7 @@
       "gsisId": "00-0036843",
       "name": "Isaiahh Loudermilk",
       "slug": "isaiahh-loudermilk",
-      "number": 69,
+      "number": 58,
       "position": "DT",
       "group": "defense",
       "status": "DEV",
@@ -1054,6 +1054,21 @@
       "college": "Oklahoma"
     },
     {
+      "gsisId": "00-0040397",
+      "name": "Jordan Clark",
+      "slug": "jordan-clark",
+      "number": 33,
+      "position": "CB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 69,
+      "weight": 185,
+      "age": 25,
+      "experience": 1,
+      "college": "Notre Dame; Arizona State"
+    },
+    {
       "gsisId": "00-0039789",
       "name": "Qwan'tez Stiggers",
       "slug": "qwantez-stiggers",
@@ -1082,21 +1097,6 @@
       "age": 25,
       "experience": 0,
       "college": "BYU; Tyler JC"
-    },
-    {
-      "gsisId": "00-0040310",
-      "name": "John Saunders Jr.",
-      "slug": "john-saunders-jr",
-      "number": 23,
-      "position": "FS",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 74,
-      "weight": 210,
-      "age": 24,
-      "experience": 1,
-      "college": "Mississippi; Miami (Ohio)"
     },
     {
       "gsisId": "00-0040165",
@@ -1187,6 +1187,21 @@
       "age": 30,
       "experience": 8,
       "college": "New Mexico"
+    },
+    {
+      "gsisId": "00-0038905",
+      "name": "Blake Grupe",
+      "slug": "blake-grupe",
+      "number": 39,
+      "position": "K",
+      "group": "specialists",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 67,
+      "weight": 156,
+      "age": 27,
+      "experience": 3,
+      "college": "Notre Dame; Arkansas State"
     },
     {
       "gsisId": "00-0039634",

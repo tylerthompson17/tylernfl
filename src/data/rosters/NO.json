@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NO",
   "week": 4,
-  "updated": "2026-09-30T16:08:00Z",
+  "updated": "2026-10-02T15:59:36Z",
   "groups": [
     {
       "key": "offense",
@@ -70,8 +70,8 @@
       "number": 3,
       "position": "RB",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 70,
       "weight": 215,
       "age": 27,
@@ -122,6 +122,21 @@
       "age": 28,
       "experience": 4,
       "college": "North Carolina"
+    },
+    {
+      "gsisId": "00-0040476",
+      "name": "Ulysses Bentley IV",
+      "slug": "ulysses-bentley-iv",
+      "number": 37,
+      "position": "RB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 70,
+      "weight": 200,
+      "age": 25,
+      "experience": 1,
+      "college": "Mississippi; SMU"
     },
     {
       "gsisId": "00-0033906",
@@ -280,8 +295,8 @@
       "number": 81,
       "position": "WR",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 74,
       "weight": 200,
       "age": 26,
@@ -464,7 +479,7 @@
       "statusLabel": "Active",
       "heightInches": 76,
       "weight": 307,
-      "age": 25,
+      "age": 26,
       "experience": 3,
       "college": "North Carolina"
     },
@@ -632,6 +647,21 @@
       "age": 29,
       "experience": 7,
       "college": "Texas A&M"
+    },
+    {
+      "gsisId": "00-0038142",
+      "name": "David Ojabo",
+      "slug": "david-ojabo",
+      "number": 50,
+      "position": "DE",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 250,
+      "age": 26,
+      "experience": 4,
+      "college": "Michigan"
     },
     {
       "gsisId": "00-0035944",

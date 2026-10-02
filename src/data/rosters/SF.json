@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "SF",
   "week": 4,
-  "updated": "2026-10-01T16:43:35Z",
+  "updated": "2026-10-02T15:59:36Z",
   "groups": [
     {
       "key": "offense",
@@ -265,8 +265,8 @@
       "number": 18,
       "position": "WR",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 70,
       "weight": 183,
       "age": 33,
@@ -287,6 +287,21 @@
       "age": 30,
       "experience": 7,
       "college": "South Carolina"
+    },
+    {
+      "gsisId": "00-0034867",
+      "name": "Malik Turner",
+      "slug": "malik-turner",
+      "number": 81,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 200,
+      "age": 30,
+      "experience": 8,
+      "college": "Illinois"
     },
     {
       "gsisId": "00-0041359",
@@ -317,21 +332,6 @@
       "age": 23,
       "experience": 0,
       "college": "Notre Dame; Wisconsin; Cincinnati"
-    },
-    {
-      "gsisId": "00-0034854",
-      "name": "KhaDarel Hodge",
-      "slug": "khadarel-hodge",
-      "number": 86,
-      "position": "WR",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 74,
-      "weight": 210,
-      "age": 32,
-      "experience": 8,
-      "college": "Prairie View A&M; Hinds CC; Alcorn State"
     },
     {
       "gsisId": "00-0034860",

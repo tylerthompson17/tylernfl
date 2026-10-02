@@ -2,7 +2,7 @@
   "key": "kicking",
   "label": "Kicking",
   "season": 2026,
-  "throughWeek": 3,
+  "throughWeek": 4,
   "primary": "fg_made",
   "qualifier": {
     "column": "fg_att",
@@ -105,6 +105,25 @@
     },
     {
       "rank": 2,
+      "playerId": "00-0038428",
+      "player": "Andre Szmyt",
+      "team": "CLE",
+      "position": "K",
+      "teamGames": 4,
+      "qualified": true,
+      "values": {
+        "games": 4,
+        "fg_made": 8,
+        "fg_att": 8,
+        "fg_long": 56,
+        "pat_made": 7,
+        "pat_att": 7,
+        "fg_pct": 1.0,
+        "xp_pct": 1.0
+      }
+    },
+    {
+      "rank": 2,
       "playerId": "00-0036854",
       "player": "Evan McPherson",
       "team": "CIN",
@@ -142,7 +161,7 @@
       }
     },
     {
-      "rank": 4,
+      "rank": 5,
       "playerId": "00-0038567",
       "player": "Chad Ryland",
       "team": "ARI",
@@ -161,7 +180,26 @@
       }
     },
     {
-      "rank": 4,
+      "rank": 5,
+      "playerId": "00-0031136",
+      "player": "Chris Boswell",
+      "team": "PIT",
+      "position": "K",
+      "teamGames": 4,
+      "qualified": true,
+      "values": {
+        "games": 4,
+        "fg_made": 7,
+        "fg_att": 10,
+        "fg_long": 56,
+        "pat_made": 6,
+        "pat_att": 6,
+        "fg_pct": 0.7,
+        "xp_pct": 1.0
+      }
+    },
+    {
+      "rank": 5,
       "playerId": "00-0040279",
       "player": "Ryan Fitzgerald",
       "team": "CAR",
@@ -180,7 +218,7 @@
       }
     },
     {
-      "rank": 4,
+      "rank": 5,
       "playerId": "00-0039404",
       "player": "Will Reichard",
       "team": "MIN",
@@ -199,26 +237,7 @@
       }
     },
     {
-      "rank": 7,
-      "playerId": "00-0038428",
-      "player": "Andre Szmyt",
-      "team": "CLE",
-      "position": "K",
-      "teamGames": 3,
-      "qualified": true,
-      "values": {
-        "games": 3,
-        "fg_made": 6,
-        "fg_att": 6,
-        "fg_long": 50,
-        "pat_made": 4,
-        "pat_att": 4,
-        "fg_pct": 1.0,
-        "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 7,
+      "rank": 9,
       "playerId": "00-0037692",
       "player": "Brandon Aubrey",
       "team": "DAL",
@@ -237,26 +256,7 @@
       }
     },
     {
-      "rank": 7,
-      "playerId": "00-0031136",
-      "player": "Chris Boswell",
-      "team": "PIT",
-      "position": "K",
-      "teamGames": 3,
-      "qualified": true,
-      "values": {
-        "games": 3,
-        "fg_made": 6,
-        "fg_att": 8,
-        "fg_long": 56,
-        "pat_made": 5,
-        "pat_att": 5,
-        "fg_pct": 0.75,
-        "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 7,
+      "rank": 9,
       "playerId": "00-0041145",
       "player": "Dominic Zvada",
       "team": "NYG",
@@ -275,7 +275,7 @@
       }
     },
     {
-      "rank": 7,
+      "rank": 9,
       "playerId": "00-0033303",
       "player": "Harrison Butker",
       "team": "KC",
@@ -294,7 +294,7 @@
       }
     },
     {
-      "rank": 7,
+      "rank": 9,
       "playerId": "00-0035269",
       "player": "Matt Gay",
       "team": "LV",

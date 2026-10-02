@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NE",
   "week": 4,
-  "updated": "2026-10-01T16:43:35Z",
+  "updated": "2026-10-02T15:59:36Z",
   "groups": [
     {
       "key": "offense",
@@ -492,11 +492,26 @@
       "group": "offense",
       "status": "DEV",
       "statusLabel": "Practice squad",
-      "heightInches": null,
+      "heightInches": 79,
       "weight": 320,
-      "age": null,
+      "age": 23,
       "experience": 0,
       "college": null
+    },
+    {
+      "gsisId": "00-0034417",
+      "name": "Matt Pryor",
+      "slug": "matt-pryor",
+      "number": 76,
+      "position": "T",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 79,
+      "weight": 332,
+      "age": 31,
+      "experience": 8,
+      "college": "TCU"
     },
     {
       "gsisId": "00-0031330",

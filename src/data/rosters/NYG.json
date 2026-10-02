@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYG",
   "week": 4,
-  "updated": "2026-10-01T16:43:35Z",
+  "updated": "2026-10-02T15:59:36Z",
   "groups": [
     {
       "key": "offense",
@@ -109,21 +109,6 @@
       "college": "Florida Atlantic"
     },
     {
-      "gsisId": "00-0040021",
-      "name": "Phil Mafah",
-      "slug": "phil-mafah",
-      "number": 26,
-      "position": "RB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 230,
-      "age": 23,
-      "experience": 1,
-      "college": "Clemson"
-    },
-    {
       "gsisId": "00-0039384",
       "name": "Tyrone Tracy Jr.",
       "slug": "tyrone-tracy-jr",
@@ -137,6 +122,21 @@
       "age": 26,
       "experience": 2,
       "college": "Purdue; Iowa"
+    },
+    {
+      "gsisId": "00-0040021",
+      "name": "Phil Mafah",
+      "slug": "phil-mafah",
+      "number": 36,
+      "position": "RB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 230,
+      "age": 23,
+      "experience": 1,
+      "college": "Clemson"
     },
     {
       "gsisId": "00-0040715",
@@ -700,8 +700,8 @@
       "number": 94,
       "position": "NT",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 75,
       "weight": 350,
       "age": 32,
@@ -782,6 +782,21 @@
       "age": 25,
       "experience": 1,
       "college": "Oklahoma; Oklahoma State"
+    },
+    {
+      "gsisId": "00-0033046",
+      "name": "Jihad Ward",
+      "slug": "jihad-ward",
+      "number": 52,
+      "position": "OLB",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 77,
+      "weight": 287,
+      "age": 32,
+      "experience": 10,
+      "college": "Illinois; Globe Institute"
     },
     {
       "gsisId": "00-0037259",

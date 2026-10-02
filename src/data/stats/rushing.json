@@ -2,7 +2,7 @@
   "key": "rushing",
   "label": "Rushing",
   "season": 2026,
-  "throughWeek": 3,
+  "throughWeek": 4,
   "primary": "rushing_yards",
   "qualifier": {
     "column": "carries",
@@ -131,6 +131,24 @@
     },
     {
       "rank": 4,
+      "playerId": "00-0037228",
+      "player": "Jaylen Warren",
+      "team": "PIT",
+      "position": "RB",
+      "teamGames": 4,
+      "qualified": true,
+      "values": {
+        "games": 4,
+        "carries": 55,
+        "rushing_yards": 309,
+        "rushing_tds": 0,
+        "rushing_first_downs": 16,
+        "rushing_fumbles_lost": 0,
+        "rush_ypc": 5.6
+      }
+    },
+    {
+      "rank": 5,
       "playerId": "00-0039139",
       "player": "Jahmyr Gibbs",
       "team": "DET",
@@ -148,7 +166,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0032764",
       "player": "Derrick Henry",
       "team": "BAL",
@@ -166,7 +184,7 @@
       }
     },
     {
-      "rank": 6,
+      "rank": 7,
       "playerId": "00-0036223",
       "player": "Jonathan Taylor",
       "team": "IND",
@@ -184,7 +202,7 @@
       }
     },
     {
-      "rank": 7,
+      "rank": 8,
       "playerId": "00-0036275",
       "player": "D'Andre Swift",
       "team": "CHI",
@@ -199,24 +217,6 @@
         "rushing_first_downs": 10,
         "rushing_fumbles_lost": 1,
         "rush_ypc": 4.7
-      }
-    },
-    {
-      "rank": 8,
-      "playerId": "00-0037228",
-      "player": "Jaylen Warren",
-      "team": "PIT",
-      "position": "RB",
-      "teamGames": 3,
-      "qualified": true,
-      "values": {
-        "games": 3,
-        "carries": 38,
-        "rushing_yards": 216,
-        "rushing_tds": 0,
-        "rushing_first_downs": 9,
-        "rushing_fumbles_lost": 0,
-        "rush_ypc": 5.7
       }
     },
     {
@@ -400,7 +400,25 @@
       }
     },
     {
-      "rank": 19,
+      "rank": 18,
+      "playerId": "00-0040784",
+      "player": "Quinshon Judkins",
+      "team": "CLE",
+      "position": "RB",
+      "teamGames": 4,
+      "qualified": true,
+      "values": {
+        "games": 4,
+        "carries": 59,
+        "rushing_yards": 177,
+        "rushing_tds": 1,
+        "rushing_first_downs": 8,
+        "rushing_fumbles_lost": 0,
+        "rush_ypc": 3.0
+      }
+    },
+    {
+      "rank": 20,
       "playerId": "00-0034844",
       "player": "Saquon Barkley",
       "team": "PHI",
@@ -418,7 +436,7 @@
       }
     },
     {
-      "rank": 20,
+      "rank": 21,
       "playerId": "00-0035261",
       "player": "Tony Pollard",
       "team": "TEN",
@@ -436,7 +454,7 @@
       }
     },
     {
-      "rank": 21,
+      "rank": 22,
       "playerId": "00-0036997",
       "player": "Javonte Williams",
       "team": "DAL",
@@ -454,7 +472,7 @@
       }
     },
     {
-      "rank": 22,
+      "rank": 23,
       "playerId": "00-0033280",
       "player": "Christian McCaffrey",
       "team": "SF",
@@ -472,7 +490,7 @@
       }
     },
     {
-      "rank": 23,
+      "rank": 24,
       "playerId": "00-0038120",
       "player": "Breece Hall",
       "team": "NYJ",
@@ -490,7 +508,7 @@
       }
     },
     {
-      "rank": 24,
+      "rank": 25,
       "playerId": "00-0041027",
       "player": "Jeremiyah Love",
       "team": "ARI",
@@ -508,7 +526,7 @@
       }
     },
     {
-      "rank": 25,
+      "rank": 26,
       "playerId": "00-0039738",
       "player": "Blake Corum",
       "team": "LAR",
@@ -526,7 +544,7 @@
       }
     },
     {
-      "rank": 26,
+      "rank": 27,
       "playerId": "00-0040242",
       "player": "Jacory Croskey-Merritt",
       "team": "WAS",
@@ -544,7 +562,7 @@
       }
     },
     {
-      "rank": 27,
+      "rank": 28,
       "playerId": "00-0037746",
       "player": "Brian Robinson",
       "team": "ATL",
@@ -562,7 +580,7 @@
       }
     },
     {
-      "rank": 28,
+      "rank": 29,
       "playerId": "00-0036973",
       "player": "Travis Etienne",
       "team": "NO",
@@ -580,7 +598,7 @@
       }
     },
     {
-      "rank": 29,
+      "rank": 30,
       "playerId": "00-0039040",
       "player": "De'Von Achane",
       "team": "MIA",
@@ -599,6 +617,24 @@
     },
     {
       "rank": 30,
+      "playerId": "00-0033537",
+      "player": "Deshaun Watson",
+      "team": "CLE",
+      "position": "QB",
+      "teamGames": 4,
+      "qualified": true,
+      "values": {
+        "games": 4,
+        "carries": 31,
+        "rushing_yards": 127,
+        "rushing_tds": 0,
+        "rushing_first_downs": 10,
+        "rushing_fumbles_lost": 1,
+        "rush_ypc": 4.1
+      }
+    },
+    {
+      "rank": 32,
       "playerId": "00-0034796",
       "player": "Lamar Jackson",
       "team": "BAL",
@@ -616,25 +652,7 @@
       }
     },
     {
-      "rank": 30,
-      "playerId": "00-0040784",
-      "player": "Quinshon Judkins",
-      "team": "CLE",
-      "position": "RB",
-      "teamGames": 3,
-      "qualified": true,
-      "values": {
-        "games": 3,
-        "carries": 42,
-        "rushing_yards": 124,
-        "rushing_tds": 0,
-        "rushing_first_downs": 4,
-        "rushing_fumbles_lost": 0,
-        "rush_ypc": 3.0
-      }
-    },
-    {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0036158",
       "player": "J.K. Dobbins",
       "team": "DEN",
@@ -652,7 +670,7 @@
       }
     },
     {
-      "rank": 33,
+      "rank": 34,
       "playerId": "00-0041512",
       "player": "Jadarian Price",
       "team": "SEA",
@@ -670,7 +688,7 @@
       }
     },
     {
-      "rank": 34,
+      "rank": 35,
       "playerId": "00-0036875",
       "player": "Rhamondre Stevenson",
       "team": "NE",
@@ -688,7 +706,7 @@
       }
     },
     {
-      "rank": 35,
+      "rank": 36,
       "playerId": "00-0034857",
       "player": "Josh Allen",
       "team": "BUF",
@@ -706,7 +724,7 @@
       }
     },
     {
-      "rank": 36,
+      "rank": 37,
       "playerId": "00-0038797",
       "player": "Emanuel Wilson",
       "team": "SEA",
@@ -724,7 +742,7 @@
       }
     },
     {
-      "rank": 37,
+      "rank": 38,
       "playerId": "00-0039918",
       "player": "Caleb Williams",
       "team": "CHI",
@@ -742,7 +760,7 @@
       }
     },
     {
-      "rank": 37,
+      "rank": 38,
       "playerId": "00-0041052",
       "player": "Kaelon Black",
       "team": "SF",
@@ -757,24 +775,6 @@
         "rushing_first_downs": 4,
         "rushing_fumbles_lost": 0,
         "rush_ypc": 4.3
-      }
-    },
-    {
-      "rank": 39,
-      "playerId": "00-0033537",
-      "player": "Deshaun Watson",
-      "team": "CLE",
-      "position": "QB",
-      "teamGames": 3,
-      "qualified": true,
-      "values": {
-        "games": 3,
-        "carries": 24,
-        "rushing_yards": 105,
-        "rushing_tds": 0,
-        "rushing_first_downs": 9,
-        "rushing_fumbles_lost": 0,
-        "rush_ypc": 4.4
       }
     },
     {
@@ -1467,7 +1467,7 @@
       "player": "Rico Dowdle",
       "team": "PIT",
       "position": "RB",
-      "teamGames": 3,
+      "teamGames": 4,
       "qualified": false,
       "values": {
         "games": 2,
@@ -1571,6 +1571,42 @@
     },
     {
       "rank": 84,
+      "playerId": "00-0038794",
+      "player": "Jaleel McLaughlin",
+      "team": "CLE",
+      "position": "RB",
+      "teamGames": 4,
+      "qualified": false,
+      "values": {
+        "games": 2,
+        "carries": 2,
+        "rushing_yards": 31,
+        "rushing_tds": 1,
+        "rushing_first_downs": 1,
+        "rushing_fumbles_lost": 0,
+        "rush_ypc": 15.5
+      }
+    },
+    {
+      "rank": 84,
+      "playerId": "00-0040466",
+      "player": "Raheim Sanders",
+      "team": "CLE",
+      "position": "RB",
+      "teamGames": 4,
+      "qualified": false,
+      "values": {
+        "games": 4,
+        "carries": 6,
+        "rushing_yards": 31,
+        "rushing_tds": 0,
+        "rushing_first_downs": 1,
+        "rushing_fumbles_lost": 0,
+        "rush_ypc": 5.2
+      }
+    },
+    {
+      "rank": 86,
       "playerId": "00-0040676",
       "player": "Cam Ward",
       "team": "TEN",
@@ -1588,7 +1624,7 @@
       }
     },
     {
-      "rank": 84,
+      "rank": 86,
       "playerId": "00-0035719",
       "player": "Deebo Samuel Sr.",
       "team": "SF",
@@ -1606,7 +1642,7 @@
       }
     },
     {
-      "rank": 84,
+      "rank": 86,
       "playerId": "00-0039344",
       "player": "Jonathon Brooks",
       "team": "CAR",
@@ -1624,7 +1660,7 @@
       }
     },
     {
-      "rank": 87,
+      "rank": 89,
       "playerId": "00-0040556",
       "player": "Corey Kiner",
       "team": "NE",
@@ -1642,7 +1678,7 @@
       }
     },
     {
-      "rank": 88,
+      "rank": 90,
       "playerId": "00-0039746",
       "player": "Will Shipley",
       "team": "PHI",
@@ -1660,7 +1696,7 @@
       }
     },
     {
-      "rank": 89,
+      "rank": 91,
       "playerId": "00-0035228",
       "player": "Kyler Murray",
       "team": "MIN",
@@ -1678,7 +1714,7 @@
       }
     },
     {
-      "rank": 90,
+      "rank": 92,
       "playerId": "00-0035250",
       "player": "Devin Singletary",
       "team": "NYG",
@@ -1696,7 +1732,7 @@
       }
     },
     {
-      "rank": 90,
+      "rank": 92,
       "playerId": "00-0033119",
       "player": "Jacoby Brissett",
       "team": "ARI",
@@ -1714,7 +1750,7 @@
       }
     },
     {
-      "rank": 92,
+      "rank": 94,
       "playerId": "00-0037157",
       "player": "Bam Knight",
       "team": "ARI",
@@ -1732,7 +1768,7 @@
       }
     },
     {
-      "rank": 92,
+      "rank": 94,
       "playerId": "00-0040730",
       "player": "RJ Harvey",
       "team": "DEN",
@@ -1750,25 +1786,7 @@
       }
     },
     {
-      "rank": 94,
-      "playerId": "00-0040466",
-      "player": "Raheim Sanders",
-      "team": "CLE",
-      "position": "RB",
-      "teamGames": 3,
-      "qualified": false,
-      "values": {
-        "games": 3,
-        "carries": 4,
-        "rushing_yards": 22,
-        "rushing_tds": 0,
-        "rushing_first_downs": 1,
-        "rushing_fumbles_lost": 0,
-        "rush_ypc": 5.5
-      }
-    },
-    {
-      "rank": 94,
+      "rank": 96,
       "playerId": "00-0037120",
       "player": "Tyler Goodson",
       "team": "DAL",
@@ -1786,7 +1804,7 @@
       }
     },
     {
-      "rank": 96,
+      "rank": 97,
       "playerId": "00-0040138",
       "player": "Jaylin Noel",
       "team": "HOU",
@@ -1804,7 +1822,7 @@
       }
     },
     {
-      "rank": 96,
+      "rank": 97,
       "playerId": "00-0036919",
       "player": "Kenny Gainwell",
       "team": "TB",
@@ -1822,7 +1840,7 @@
       }
     },
     {
-      "rank": 98,
+      "rank": 99,
       "playerId": "00-0033662",
       "player": "Cooper Rush",
       "team": "ATL",
@@ -1840,7 +1858,7 @@
       }
     },
     {
-      "rank": 98,
+      "rank": 99,
       "playerId": "00-0038102",
       "player": "Kenny Pickett",
       "team": "CAR",
@@ -1858,7 +1876,7 @@
       }
     },
     {
-      "rank": 98,
+      "rank": 99,
       "playerId": "00-0039064",
       "player": "Zay Flowers",
       "team": "BAL",
@@ -1876,7 +1894,7 @@
       }
     },
     {
-      "rank": 101,
+      "rank": 102,
       "playerId": "00-0035710",
       "player": "Daniel Jones",
       "team": "IND",
@@ -1894,7 +1912,7 @@
       }
     },
     {
-      "rank": 101,
+      "rank": 102,
       "playerId": "00-0037557",
       "player": "Ronnie Rivers",
       "team": "LAR",
@@ -1912,7 +1930,7 @@
       }
     },
     {
-      "rank": 103,
+      "rank": 104,
       "playerId": "00-0039384",
       "player": "Tyrone Tracy Jr.",
       "team": "NYG",
@@ -1930,7 +1948,7 @@
       }
     },
     {
-      "rank": 104,
+      "rank": 105,
       "playerId": "00-0039150",
       "player": "Bryce Young",
       "team": "CAR",
@@ -1948,7 +1966,7 @@
       }
     },
     {
-      "rank": 104,
+      "rank": 105,
       "playerId": "00-0041194",
       "player": "Jack Strand",
       "team": "ATL",
@@ -1966,7 +1984,7 @@
       }
     },
     {
-      "rank": 104,
+      "rank": 105,
       "playerId": "00-0040134",
       "player": "Pat Bryant",
       "team": "DEN",
@@ -1981,24 +1999,6 @@
         "rushing_first_downs": 1,
         "rushing_fumbles_lost": 0,
         "rush_ypc": 16.0
-      }
-    },
-    {
-      "rank": 104,
-      "playerId": "00-0035594",
-      "player": "Travis Homer",
-      "team": "PIT",
-      "position": "RB",
-      "teamGames": 3,
-      "qualified": false,
-      "values": {
-        "games": 2,
-        "carries": 3,
-        "rushing_yards": 16,
-        "rushing_tds": 0,
-        "rushing_first_downs": 1,
-        "rushing_fumbles_lost": 0,
-        "rush_ypc": 5.3
       }
     },
     {
@@ -2110,7 +2110,25 @@
       }
     },
     {
-      "rank": 114,
+      "rank": 108,
+      "playerId": "00-0035594",
+      "player": "Travis Homer",
+      "team": "PIT",
+      "position": "RB",
+      "teamGames": 4,
+      "qualified": false,
+      "values": {
+        "games": 3,
+        "carries": 5,
+        "rushing_yards": 15,
+        "rushing_tds": 0,
+        "rushing_first_downs": 2,
+        "rushing_fumbles_lost": 0,
+        "rush_ypc": 3.0
+      }
+    },
+    {
+      "rank": 115,
       "playerId": "00-0041132",
       "player": "Deion Burks",
       "team": "IND",
@@ -2128,7 +2146,7 @@
       }
     },
     {
-      "rank": 114,
+      "rank": 115,
       "playerId": "00-0039451",
       "player": "Isaiah Williams",
       "team": "NYJ",
@@ -2146,7 +2164,7 @@
       }
     },
     {
-      "rank": 114,
+      "rank": 115,
       "playerId": "00-0036613",
       "player": "Jaylen Waddle",
       "team": "DEN",
@@ -2164,7 +2182,7 @@
       }
     },
     {
-      "rank": 114,
+      "rank": 115,
       "playerId": "00-0032268",
       "player": "Marcus Mariota",
       "team": "WAS",
@@ -2182,7 +2200,7 @@
       }
     },
     {
-      "rank": 114,
+      "rank": 115,
       "playerId": "00-0041125",
       "player": "Seth McGowan",
       "team": "IND",
@@ -2200,7 +2218,7 @@
       }
     },
     {
-      "rank": 119,
+      "rank": 120,
       "playerId": "00-0035704",
       "player": "Drew Lock",
       "team": "SEA",
@@ -2218,15 +2236,15 @@
       }
     },
     {
-      "rank": 120,
+      "rank": 121,
       "playerId": "00-0023459",
       "player": "Aaron Rodgers",
       "team": "PIT",
       "position": "QB",
-      "teamGames": 3,
+      "teamGames": 4,
       "qualified": false,
       "values": {
-        "games": 3,
+        "games": 4,
         "carries": 7,
         "rushing_yards": 12,
         "rushing_tds": 0,
@@ -2236,7 +2254,7 @@
       }
     },
     {
-      "rank": 120,
+      "rank": 121,
       "playerId": "00-0035662",
       "player": "Marquise Brown",
       "team": "PHI",
@@ -2254,7 +2272,7 @@
       }
     },
     {
-      "rank": 122,
+      "rank": 123,
       "playerId": "00-0041326",
       "player": "CJ Donaldson",
       "team": "NO",
@@ -2272,7 +2290,7 @@
       }
     },
     {
-      "rank": 122,
+      "rank": 123,
       "playerId": "00-0026498",
       "player": "Matthew Stafford",
       "team": "LAR",
@@ -2290,7 +2308,7 @@
       }
     },
     {
-      "rank": 124,
+      "rank": 125,
       "playerId": "00-0036425",
       "player": "DeeJay Dallas",
       "team": "MIN",
@@ -2308,7 +2326,7 @@
       }
     },
     {
-      "rank": 124,
+      "rank": 125,
       "playerId": "00-0040785",
       "player": "Dohnte Meyers",
       "team": "CIN",
@@ -2326,7 +2344,7 @@
       }
     },
     {
-      "rank": 124,
+      "rank": 125,
       "playerId": "00-0039874",
       "player": "Jaylen Wright",
       "team": "MIA",
@@ -2344,7 +2362,7 @@
       }
     },
     {
-      "rank": 124,
+      "rank": 125,
       "playerId": "00-0037801",
       "player": "KaVontae Turpin",
       "team": "DAL",
@@ -2362,7 +2380,7 @@
       }
     },
     {
-      "rank": 124,
+      "rank": 125,
       "playerId": "00-0040886",
       "player": "Nicholas Singleton",
       "team": "TEN",
@@ -2380,7 +2398,7 @@
       }
     },
     {
-      "rank": 129,
+      "rank": 130,
       "playerId": "00-0036309",
       "player": "Darnell Mooney",
       "team": "NYG",
@@ -2398,7 +2416,7 @@
       }
     },
     {
-      "rank": 129,
+      "rank": 130,
       "playerId": "00-0041251",
       "player": "Jalon Daniels",
       "team": "TB",
@@ -2416,15 +2434,15 @@
       }
     },
     {
-      "rank": 129,
+      "rank": 130,
       "playerId": "00-0041547",
       "player": "KC Concepcion",
       "team": "CLE",
       "position": "WR",
-      "teamGames": 3,
+      "teamGames": 4,
       "qualified": false,
       "values": {
-        "games": 3,
+        "games": 4,
         "carries": 4,
         "rushing_yards": 9,
         "rushing_tds": 0,
@@ -2434,7 +2452,7 @@
       }
     },
     {
-      "rank": 129,
+      "rank": 130,
       "playerId": "00-0040735",
       "player": "Luther Burden III",
       "team": "CHI",
@@ -2452,7 +2470,7 @@
       }
     },
     {
-      "rank": 129,
+      "rank": 130,
       "playerId": "00-0039880",
       "player": "Malik Washington",
       "team": "MIA",
@@ -2470,7 +2488,7 @@
       }
     },
     {
-      "rank": 129,
+      "rank": 130,
       "playerId": "00-0039107",
       "player": "Stetson Bennett",
       "team": "LAR",
@@ -2488,7 +2506,7 @@
       }
     },
     {
-      "rank": 135,
+      "rank": 136,
       "playerId": "00-0038738",
       "player": "Hunter Luepke",
       "team": "DAL",
@@ -2506,7 +2524,7 @@
       }
     },
     {
-      "rank": 136,
+      "rank": 137,
       "playerId": "00-0036554",
       "player": "Nico Collins",
       "team": "HOU",
@@ -2524,7 +2542,7 @@
       }
     },
     {
-      "rank": 136,
+      "rank": 137,
       "playerId": "00-0038544",
       "player": "Quentin Johnston",
       "team": "LAC",
@@ -2542,7 +2560,7 @@
       }
     },
     {
-      "rank": 138,
+      "rank": 139,
       "playerId": "00-0028986",
       "player": "Case Keenum",
       "team": "CHI",
@@ -2560,7 +2578,7 @@
       }
     },
     {
-      "rank": 138,
+      "rank": 139,
       "playerId": "00-0039391",
       "player": "Kimani Vidal",
       "team": "LAC",
@@ -2578,7 +2596,7 @@
       }
     },
     {
-      "rank": 138,
+      "rank": 139,
       "playerId": "00-0038783",
       "player": "Nate Adkins",
       "team": "DEN",
@@ -2596,7 +2614,7 @@
       }
     },
     {
-      "rank": 141,
+      "rank": 142,
       "playerId": "00-0032950",
       "player": "Carson Wentz",
       "team": "MIN",
@@ -2614,7 +2632,7 @@
       }
     },
     {
-      "rank": 141,
+      "rank": 142,
       "playerId": "00-0034869",
       "player": "Sam Darnold",
       "team": "SEA",
@@ -2632,7 +2650,7 @@
       }
     },
     {
-      "rank": 141,
+      "rank": 142,
       "playerId": "00-0039868",
       "player": "Troy Franklin",
       "team": "DEN",
@@ -2650,7 +2668,7 @@
       }
     },
     {
-      "rank": 141,
+      "rank": 142,
       "playerId": "00-0040128",
       "player": "Tyler Warren",
       "team": "IND",
@@ -2668,7 +2686,7 @@
       }
     },
     {
-      "rank": 145,
+      "rank": 146,
       "playerId": "00-0037238",
       "player": "Drake London",
       "team": "ATL",
@@ -2686,7 +2704,7 @@
       }
     },
     {
-      "rank": 145,
+      "rank": 146,
       "playerId": "00-0037545",
       "player": "Rashid Shaheed",
       "team": "SEA",
@@ -2704,7 +2722,7 @@
       }
     },
     {
-      "rank": 145,
+      "rank": 146,
       "playerId": "00-0038618",
       "player": "Xavier Hutchinson",
       "team": "HOU",
@@ -2722,7 +2740,7 @@
       }
     },
     {
-      "rank": 148,
+      "rank": 149,
       "playerId": "00-0041099",
       "player": "Barion Brown",
       "team": "NO",
@@ -2740,7 +2758,7 @@
       }
     },
     {
-      "rank": 148,
+      "rank": 149,
       "playerId": "00-0039471",
       "player": "Frank Gore Jr.",
       "team": "BUF",
@@ -2758,25 +2776,7 @@
       }
     },
     {
-      "rank": 148,
-      "playerId": "00-0038794",
-      "player": "Jaleel McLaughlin",
-      "team": "CLE",
-      "position": "RB",
-      "teamGames": 3,
-      "qualified": false,
-      "values": {
-        "games": 1,
-        "carries": 1,
-        "rushing_yards": 3,
-        "rushing_tds": 0,
-        "rushing_first_downs": 0,
-        "rushing_fumbles_lost": 0,
-        "rush_ypc": 3.0
-      }
-    },
-    {
-      "rank": 148,
+      "rank": 149,
       "playerId": "00-0041032",
       "player": "Kenyon Sadiq",
       "team": "NYJ",
@@ -2794,7 +2794,7 @@
       }
     },
     {
-      "rank": 148,
+      "rank": 149,
       "playerId": "00-0036909",
       "player": "Khyiris Tonga",
       "team": "KC",
@@ -2812,12 +2812,12 @@
       }
     },
     {
-      "rank": 148,
+      "rank": 149,
       "playerId": "00-0034771",
       "player": "Mason Rudolph",
       "team": "PIT",
       "position": "QB",
-      "teamGames": 3,
+      "teamGames": 4,
       "qualified": false,
       "values": {
         "games": 1,
@@ -2830,15 +2830,15 @@
       }
     },
     {
-      "rank": 148,
+      "rank": 149,
       "playerId": "00-0036894",
       "player": "Pat Freiermuth",
       "team": "PIT",
       "position": "TE",
-      "teamGames": 3,
+      "teamGames": 4,
       "qualified": false,
       "values": {
-        "games": 3,
+        "games": 4,
         "carries": 2,
         "rushing_yards": 3,
         "rushing_tds": 0,
@@ -2848,7 +2848,7 @@
       }
     },
     {
-      "rank": 148,
+      "rank": 149,
       "playerId": "00-0039875",
       "player": "Ray Davis",
       "team": "BUF",
@@ -2866,7 +2866,7 @@
       }
     },
     {
-      "rank": 148,
+      "rank": 149,
       "playerId": "00-0040718",
       "player": "Travis Hunter",
       "team": "JAX",
@@ -2884,7 +2884,7 @@
       }
     },
     {
-      "rank": 148,
+      "rank": 149,
       "playerId": "00-0037085",
       "player": "Tyler Badie",
       "team": "DEN",
@@ -3069,10 +3069,10 @@
       "player": "Lew Nichols III",
       "team": "PIT",
       "position": "RB",
-      "teamGames": 3,
+      "teamGames": 4,
       "qualified": false,
       "values": {
-        "games": 1,
+        "games": 2,
         "carries": 1,
         "rushing_yards": 0,
         "rushing_tds": 0,
