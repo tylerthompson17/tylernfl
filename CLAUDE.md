@@ -449,9 +449,9 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   The build fails on an abbreviation that is not a team.
 - The home page's chart panel spans its first two columns (see Home page): Tyler's
   featured chart with its date, else the auto chart labeled "Auto chart" with what its
-  data covers, else an empty state. Win probability charts are drawn 3:1 (720 by 240,
-  `WP_HEIGHT_PX` in `auto.py`) to fit it; the EPA scatter (3:2) and yards race (16:9)
-  keep their shapes.
+  data covers, else an empty state. Win probability and yards race charts are the default
+  720 by 405 (16:9), the EPA scatter 720 by 480. WP charts were drawn 3:1 for a while
+  and read too flat.
 - A team's own page shows its newest chart, full width on the overview under the playoff
   odds and drawn inline with its hover readout (`TeamChart.astro`): the morning after a
   game, that game's win probability chart is on both teams' pages, whether or not it was
@@ -475,7 +475,7 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   latest article, and the 4th down calculator as one boxed line until the model
   exists. Column 3: playoff picture, notable performances, receiving leaders, on this
   day. The split is what balances heights: at 1440px with a WP chart the columns end
-  at about 960, 950 and 1,070px. Recheck when a panel is added or grows.
+  at about 1,175, 1,165 and 1,070px. Recheck when a panel is added or grows.
 - Below 1100px: two columns, chart across the top, column 3's panels in a pair under
   the rest. Below 760px: one column.
 

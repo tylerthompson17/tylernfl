@@ -420,13 +420,9 @@ def race_hover(label: str, last_week: int, series: list[tuple[str, str, list[int
 # ---------------------------------------------------------------- drawing
 
 
-# Win probability is one line across a whole game, so it is drawn wide and
-# short, 3:1: on the home page it spans two of the three columns.
-WP_HEIGHT_PX = style.WIDTH_PX // 3
-
-
 def draw_wp(game: dict, points: list[tuple[float, float]], plays: list[dict] = ()):
-    fig, ax = style.figure(height_px=WP_HEIGHT_PX)
+    # The default 16:9, like the yards race. 3:1 was tried and read too flat.
+    fig, ax = style.figure()
     away, home = game['away_team'], game['home_team']
     xs, ys = zip(*points)
     end = max(60.0, xs[-1])
