@@ -30,7 +30,8 @@ interceptions, and EPA per target (`epa`, for passers too, so both grids
 measure the same thing).
 
 Every cell also carries the league's EPA per target in the same cell over
-the previous regular season, a fixed baseline the site shades against:
+the previous regular season (and each file the league's share of targets
+by depth band that season), a fixed baseline the site shades against:
 deep passes gain far more EPA than screens, so a single midpoint would
 describe the zone instead of the player. 2026 is compared with 2025 all
 season, and a season's files are always compared with the season before.
@@ -132,6 +133,16 @@ def league_baseline(plays: list[dict]) -> dict[tuple[str, str], float | None]:
     }
 
 
+def league_depth_share(plays: list[dict]) -> dict[str, float] | None:
+    """Share of one season's targets in each depth band, deep first."""
+    if not plays:
+        return None
+    counts = defaultdict(int)
+    for p in plays:
+        counts[depth_band(p['air_yards'])] += 1
+    return {depth: round(counts[depth] / len(plays), 3) for depth in DEPTHS}
+
+
 def grid(plays: list[dict], baseline: dict[tuple[str, str], float | None]) -> dict:
     """The TargetGrid shape in src/data/types.ts: a total and all 12 cells,
     deep left first, empty cells included."""
@@ -155,6 +166,7 @@ def build_targets(plays: list[dict], season: int, through_week: int, baseline_pl
     player with at least one target or throw. `plays` are already target
     plays (target_plays); so are `baseline_plays`, from the season before."""
     baseline = league_baseline(baseline_plays) if baseline_plays else {}
+    depth_share = league_depth_share(baseline_plays)
     by_receiver = defaultdict(list)
     by_passer = defaultdict(list)
     for p in plays:
@@ -167,6 +179,7 @@ def build_targets(plays: list[dict], season: int, through_week: int, baseline_pl
             'throughWeek': through_week,
             'playerId': player_id,
             'baselineSeason': season - 1 if baseline else None,
+            'leagueDepthShare': depth_share,
             'targets': grid(by_receiver[player_id], baseline) if player_id in by_receiver else None,
             'throws': grid(by_passer[player_id], baseline) if player_id in by_passer else None,
         }

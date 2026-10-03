@@ -1,15 +1,37 @@
 ---
 /**
  * Target map: where a player's targets (or, for a passer, his throws)
- * went this season, as a field of 3 zones by 4 depth bands, deep at the
- * top and the line of scrimmage marked above the behind band. Each cell
- * shows its count and catch rate, shaded against the league in the same
- * cell (src/lib/targets/map.ts). The full numbers are in a table under it,
- * which is also what a screen reader gets.
+ * went this season. On the left a field of 3 zones by 4 depth bands, deep
+ * at the top and the line of scrimmage marked above the behind band; on
+ * the right a summary: the total, the best and worst zone against the
+ * league, and the share by depth against the league's. Stacked below
+ * 1024px. Each cell leads with its catch rate, then EPA against the league
+ * in that zone, then its count, and is shaded by that EPA difference
+ * (src/lib/targets/map.ts). The full numbers are in a table under it,
+ * which is also what a screen reader gets for the grid.
  */
 import Panel from './Panel.astro';
-import type { TargetsData } from '../data/types';
-import { cellRows, count, LOCATIONS, SHADE_MIN_TARGETS, SHADE_STEPS, shadeOf, WORDS, wholePercent, zoneName, type TargetKind } from '../lib/targets/map';
+import type { TargetCell, TargetsData } from '../data/types';
+import {
+  bestAndWorst,
+  cellRows,
+  count,
+  DEPTHS,
+  depthShares,
+  FULL_SHADE_MIN_TARGETS,
+  LEGEND_SHADES,
+  LOCATIONS,
+  SHADE_MIN_TARGETS,
+  SHADE_STEPS,
+  shadeOf,
+  SIDE_LABELS,
+  signed2,
+  vsLeague,
+  WORDS,
+  wholePercent,
+  zoneName,
+  type TargetKind,
+} from '../lib/targets/map';
 import { formatStat } from '../utils/format';
 import { seasonThrough } from '../utils/as-of';
 
@@ -23,89 +45,168 @@ const grid = data[kind]!;
 const words = WORDS[kind];
 const rows = cellRows(grid);
 const baseline = data.baselineSeason;
+const { best, worst } = bestAndWorst(grid);
+const shares = depthShares(grid, data.leagueDepthShare);
+const epaWords = `EPA per ${words.noun[0]}`;
 
-const tooltip = (cell: (typeof grid.cells)[number]) => {
+const tooltip = (cell: TargetCell) => {
   const parts = [`${zoneName(cell)}: ${count(cell.targets, kind)}`];
   if (cell.targets > 0) {
     parts.push(
       `${cell.receptions} ${kind === 'targets' ? 'caught' : 'completed'} (${formatStat(cell.catchRate, 'percent1')})`,
       `${cell.yards} yds, ${cell.touchdowns} TD, ${cell.interceptions} INT`,
-      `${formatStat(cell.epaPerTarget, 'signed3')} EPA per ${words.noun[0]}` +
+      `${formatStat(cell.epaPerTarget, 'signed3')} ${epaWords}` +
         (cell.leagueEpaPerTarget === null ? '' : ` (league ${formatStat(cell.leagueEpaPerTarget, 'signed3')})`)
     );
   }
   return parts.join('. ') + '.';
 };
 
+const zones = [
+  { label: 'Best zone', cell: best },
+  { label: 'Worst zone', cell: worst },
+].filter((z): z is { label: string; cell: TargetCell } => z.cell !== null);
+
 const tableRows = [
   ...rows.flatMap((row) => row.cells.map((cell) => ({ name: zoneName(cell), stats: cell, league: cell.leagueEpaPerTarget }))),
   { name: 'Total', stats: grid.total, league: null, total: true },
 ];
-const steps = SHADE_STEPS.map((s) => String(s)).join(', ').replace(/, (?=[^,]*$)/, ' and ');
+const [step1, step2] = SHADE_STEPS;
 ---
 
 <Panel title={words.title}>
-  <div class="field" aria-hidden="true">
-    <div></div>
-    {LOCATIONS.map(({ label }) => <div class="zone">{label}</div>)}
-    {
-      rows.map(({ depth, cells }) => (
-        <>
-          {depth.depth === 'behind' && (
-            <div class="los">
-              <span>Line of scrimmage</span>
+  <div class="layout">
+    <div class="map">
+      <div class="field" aria-hidden="true">
+        <div class="zones">
+          {LOCATIONS.map(({ label }) => <div>{label}</div>)}
+        </div>
+        {
+          DEPTHS.map((depth, i) => (
+            <div class="band" style={`grid-row: ${i + 2}`}>
+              {depth.label}
+              <span>{depth.range}</span>
             </div>
-          )}
-          <div class="band">
-            {depth.label}
-            <span>{depth.range}</span>
-          </div>
-          {cells.map((cell) => (
-            <div class={`cell shade-${shadeOf(cell)}`} title={tooltip(cell)}>
-              <span class="count">{cell.targets}</span>
-              {cell.targets > 0 && (
-                <span class="rate">
+          ))
+        }
+        <div class="los-label">
+          <span>Line of scrimmage</span>
+        </div>
+        {
+          ['left', 'right'].map((side) => (
+            <div class={`sideline-labels ${side}`}>
+              {SIDE_LABELS.map(({ text, bands }) => (
+                <span style={`--bands: ${bands}`}>{text}</span>
+              ))}
+            </div>
+          ))
+        }
+        <div class="turf">
+          {
+            rows.map(({ depth, cells }) =>
+              cells.map((cell) => {
+                const diff = vsLeague(cell);
+                return (
+                  <div class={`cell row-${depth.depth} col-${cell.location} shade-${shadeOf(cell)}`} title={tooltip(cell)}>
+                    {cell.targets > 0 && <span class="rate">{wholePercent(cell.catchRate)}</span>}
+                    {diff !== null && <span class="epa">{signed2(diff)}</span>}
+                    <span class="count">{count(cell.targets, kind)}</span>
+                  </div>
+                );
+              })
+            )
+          }
+          <i class="break left" />
+          <i class="break right" />
+          <i class="los" />
+        </div>
+      </div>
+
+      <div class="legend">
+        {
+          baseline !== null && (
+            <p class="scale">
+              <span>Worse than league average</span>
+              {LEGEND_SHADES.map((s) => (
+                <i class={`swatch shade-${s}`} />
+              ))}
+              <span>Better</span>
+            </p>
+          )
+        }
+        <p class="scale">
+          <span class="sample">50%</span>
+          <span>Under {SHADE_MIN_TARGETS} {words.noun[1]}: not shaded, no EPA</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="summary">
+      <div class="box total">
+        <span class="label">Total {words.noun[1]}</span>
+        <span class="big">{grid.total.targets}</span>
+        <span class="sub">{wholePercent(grid.total.catchRate)} {words.rateWord}, {formatStat(grid.total.epaPerTarget, 'signed3')} {epaWords}</span>
+      </div>
+      {
+        baseline !== null &&
+          (zones.length > 0 ? (
+            zones.map(({ label, cell }) => (
+              <div class="box">
+                <span class="label">{label} vs. league</span>
+                <span class="zone-name">{zoneName(cell)}</span>
+                <span class="sub">
+                  {signed2(vsLeague(cell)!)} {epaWords} vs. {baseline} league, {count(cell.targets, kind)},{' '}
                   {wholePercent(cell.catchRate)} {words.rateWord}
                 </span>
-              )}
+              </div>
+            ))
+          ) : (
+            <div class="box">
+              <span class="label">Best and worst zone vs. league</span>
+              <span class="sub">No zone has {SHADE_MIN_TARGETS} {words.noun[1]} yet.</span>
             </div>
-          ))}
-        </>
-      ))
-    }
+          ))
+      }
+      <table class="stat-table shares">
+        <caption>Share of {words.noun[1]} by depth</caption>
+        <thead>
+          <tr>
+            <th scope="col">Depth</th>
+            <th scope="col" class="number">{words.plays}</th>
+            <th scope="col" class="number">Share</th>
+            {data.leagueDepthShare && <th scope="col" class="number">{baseline} league</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            shares.map((row) => (
+              <tr>
+                <th scope="row">
+                  {row.depth.label} <span class="range">{row.depth.range}</span>
+                </th>
+                <td class="number">{row.targets}</td>
+                <td class="number">{formatStat(row.share, 'percent1')}</td>
+                {data.leagueDepthShare && <td class="number">{formatStat(row.league, 'percent1')}</td>}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
   </div>
-
-  <div class="legend">
-    {
-      baseline !== null ? (
-        <>
-          <p>EPA per {words.noun[0]} vs. {baseline} league average in this zone:</p>
-          <p class="scale">
-            <span>Below</span>
-            {['loss-3', 'loss-2', 'loss-1', 'neutral', 'win-1', 'win-2', 'win-3'].map((s) => (
-              <i class={`swatch shade-${s}`} />
-            ))}
-            <span>Above</span>
-            <span class="steps">(steps at {steps})</span>
-          </p>
-        </>
-      ) : (
-        <p>No league average from last season yet, so cells are not shaded.</p>
-      )
-    }
-    <p class="scale">
-      <i class="swatch shade-sparse" />
-      <span>Under {SHADE_MIN_TARGETS} {words.noun[1]}, not shaded</span>
-    </p>
-  </div>
-
-  <p class="note">
-    Horizontal zones are left, middle, right as charted in play-by-play, not exact field position.
-    {words.dpi}
-  </p>
 
   <details>
     <summary>Cell stats</summary>
+    {
+      baseline !== null && (
+        <p class="steps">
+          Cells are shaded by {epaWords} against the {baseline} league average in the same zone: within {step1}{' '}
+          is unshaded, {step1} to {step2} above or below is one step, {step2} or more is two. Cells with fewer than{' '}
+          {FULL_SHADE_MIN_TARGETS} {words.noun[1]} get one step at most, and cells with fewer than {SHADE_MIN_TARGETS}{' '}
+          are not shaded, show no EPA, and are left out of the best and worst zone.
+        </p>
+      )
+    }
     <div class="stat-table-scroll">
       <table class="stat-table">
         <caption class="visually-hidden">{words.title}, by zone</caption>
@@ -143,35 +244,58 @@ const steps = SHADE_STEPS.map((s) => String(s)).join(', ').replace(/, (?=[^,]*$)
     </div>
   </details>
 
-  <p class="source">
-    {count(grid.total.targets, kind)} charted. {seasonThrough(data.season, data.throughWeek)} From nflverse
-    play-by-play; EPA is nflfastR's.
+  <p class="footnote">
+    Horizontal zones are left, middle, right as charted in play-by-play, not exact field position.
+    {words.dpi}
+    {seasonThrough(data.season, data.throughWeek)} From nflverse play-by-play; EPA is nflfastR's.
   </p>
 </Panel>
 
 <style>
-  /* The field: a label column, then left, middle and right. Cells carry
-     their own borders and share them through negative margins. */
-  .field {
+  /* Grid and summary side by side from 1024px, stacked below. */
+  .layout {
     display: grid;
-    grid-template-columns: auto repeat(3, minmax(0, 1fr));
-    max-width: 480px;
+    gap: var(--space-4);
   }
 
-  .zone {
+  @media (min-width: 1024px) {
+    .layout {
+      grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
+    }
+  }
+
+  /* The field, top-down: band labels, +10 and +20 along both sidelines,
+     and the turf between. Bands are all one height (--band); deep has no
+     far edge, which the break marks at its top say. The turf stays light:
+     green already means better than the league. Lines are drawn only on
+     band and zone edges, so none crosses a cell's numbers. */
+  .field {
+    --band: 76px;
+    display: grid;
+    grid-template-columns: auto 28px minmax(0, 1fr) 28px;
+    grid-template-rows: auto repeat(4, var(--band));
+  }
+
+  .zones {
+    grid-column: 3;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     font-size: 12px;
     color: var(--text-dim);
     text-align: center;
-    padding-bottom: var(--space-1);
+    padding-bottom: var(--space-2);
   }
 
   .band {
+    grid-column: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding-right: var(--space-2);
     font-size: 12px;
     font-weight: 700;
+    line-height: 1.2;
   }
 
   .band span {
@@ -179,41 +303,149 @@ const steps = SHADE_STEPS.map((s) => String(s)).join(', ').replace(/, (?=[^,]*$)
     color: var(--text-dim);
   }
 
+  /* The line's label: a yellow tab at the line's height, beside the field.
+     In flow, so the label column is wide enough for it. */
+  .los-label {
+    grid-column: 1;
+    grid-row: 2 / 6;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-right: var(--space-1);
+    pointer-events: none;
+  }
+
+  .los-label span {
+    margin-bottom: var(--band);
+    transform: translateY(50%);
+    padding: 0 var(--space-1);
+    background: var(--highlight);
+    border: 1px solid var(--header);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .sideline-labels {
+    grid-row: 2 / 6;
+    position: relative;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .sideline-labels.left {
+    grid-column: 2;
+  }
+
+  .sideline-labels.right {
+    grid-column: 4;
+  }
+
+  .sideline-labels span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--bands) * var(--band));
+    transform: translateY(50%);
+    text-align: center;
+    line-height: 1;
+  }
+
+  /* Heavy slate sidelines; open at the top (deep runs on), closed at the
+     bottom. */
+  .turf {
+    grid-column: 3;
+    grid-row: 2 / 6;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: subgrid;
+    border-left: 3px solid var(--header);
+    border-right: 3px solid var(--header);
+    border-bottom: 1px solid var(--rule);
+  }
+
   .cell {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 52px;
-    border: 1px solid var(--rule);
-    margin: 0 -1px -1px 0;
     background: var(--panel);
+    line-height: 1.15;
+    min-width: 0;
   }
 
-  .count {
-    font-size: 16px;
+  /* Band edges solid, zone edges dashed. */
+  .row-deep,
+  .row-intermediate {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .col-left,
+  .col-middle {
+    border-right: 1px dashed var(--rule);
+  }
+
+  /* Break marks: two short slanted strokes across each sideline's top end,
+     the usual sign that an axis is cut. */
+  .break {
+    position: absolute;
+    top: 6px;
+    width: 13px;
+    height: 6px;
+    background: var(--panel);
+    border-top: 2px solid var(--header);
+    border-bottom: 2px solid var(--header);
+    transform: skewY(-25deg);
+  }
+
+  .break.left {
+    left: -8px;
+  }
+
+  .break.right {
+    right: -8px;
+  }
+
+  /* The line of scrimmage: first-down yellow, edged in slate so it reads
+     on white, on top of the behind band. */
+  .los {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--band);
+    height: 6px;
+    transform: translateY(50%);
+    background: var(--highlight);
+    border-top: 1px solid var(--header);
+    border-bottom: 1px solid var(--header);
+  }
+
+  /* Every number in a shaded cell is --text: --text-dim fails AA on the
+     darker tints. Unshaded small samples are muted instead. */
+  .rate {
+    font-size: 17px;
     font-weight: 700;
   }
 
-  .rate {
+  .epa {
     font-size: 12px;
   }
 
-  /* The line of scrimmage: a heavy slate rule across the field, between
-     short and behind. */
-  .los {
-    grid-column: 1 / -1;
-    border-top: 2px solid var(--header);
-    margin-top: var(--space-1);
-    padding-bottom: var(--space-1);
+  .count {
     font-size: 11px;
-    color: var(--text-dim);
-    text-align: right;
   }
 
   .shade-sparse {
-    background: var(--bg);
     color: var(--text-dim);
+  }
+
+  .shade-sparse .rate {
+    font-weight: 400;
   }
 
   .shade-win-1 {
@@ -224,20 +456,12 @@ const steps = SHADE_STEPS.map((s) => String(s)).join(', ').replace(/, (?=[^,]*$)
     background: var(--win-tint-2);
   }
 
-  .shade-win-3 {
-    background: var(--win-tint-3);
-  }
-
   .shade-loss-1 {
     background: var(--loss-tint-1);
   }
 
   .shade-loss-2 {
     background: var(--loss-tint-2);
-  }
-
-  .shade-loss-3 {
-    background: var(--loss-tint-3);
   }
 
   .legend {
@@ -255,30 +479,77 @@ const steps = SHADE_STEPS.map((s) => String(s)).join(', ').replace(/, (?=[^,]*$)
 
   .swatch {
     display: inline-block;
-    width: 16px;
-    height: 12px;
+    width: 18px;
+    height: 14px;
     border: 1px solid var(--rule);
   }
 
-  .steps {
+  /* A small-sample cell in miniature: white, muted text. */
+  .sample {
+    border: 1px solid var(--rule);
+    padding: 0 var(--space-1);
     color: var(--text-dim);
   }
 
-  .note,
-  .source {
-    margin-top: var(--space-2);
+  /* Summary: boxed units, then the share by depth. */
+  .summary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    align-self: start;
+  }
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--rule);
+    padding: var(--space-2);
+  }
+
+  .label {
     font-size: 12px;
     color: var(--text-dim);
   }
 
+  .big {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .zone-name {
+    font-weight: 700;
+  }
+
+  .sub {
+    font-size: 12px;
+  }
+
+  .shares caption {
+    text-align: left;
+    font-size: 12px;
+    color: var(--text-dim);
+    padding-bottom: var(--space-1);
+  }
+
+  .shares .range {
+    font-weight: 400;
+    color: var(--text-dim);
+  }
+
   details {
-    margin-top: var(--space-2);
+    margin-top: var(--space-3);
   }
 
   summary {
     cursor: pointer;
     color: var(--link);
     text-decoration: underline;
+    font-size: 12px;
+  }
+
+  .steps {
+    margin-top: var(--space-2);
     font-size: 12px;
   }
 
@@ -289,5 +560,11 @@ const steps = SHADE_STEPS.map((s) => String(s)).join(', ').replace(/, (?=[^,]*$)
   .stat-table tr.total th,
   .stat-table tr.total td {
     font-weight: 700;
+  }
+
+  .footnote {
+    margin-top: var(--space-2);
+    font-size: 12px;
+    color: var(--text-dim);
   }
 </style>

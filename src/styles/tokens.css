@@ -17,15 +17,12 @@
   --loss: #b3363b; /* negative values */
 
   /* Target map cells, shaded by EPA per target against the league in the
-     same zone: three steps of --win and --loss tinted on white, light
-     enough for --text on all of them (8.5:1 or better). A cell with too few
-     targets to shade is --bg gray. */
-  --win-tint-1: color-mix(in srgb, var(--win) 12%, var(--panel));
-  --win-tint-2: color-mix(in srgb, var(--win) 25%, var(--panel));
-  --win-tint-3: color-mix(in srgb, var(--win) 40%, var(--panel));
-  --loss-tint-1: color-mix(in srgb, var(--loss) 12%, var(--panel));
-  --loss-tint-2: color-mix(in srgb, var(--loss) 25%, var(--panel));
-  --loss-tint-3: color-mix(in srgb, var(--loss) 40%, var(--panel));
+     same zone: two steps of --win and --loss tinted on white. --text on the
+     darkest is about 6:1, so every number in a cell stays AA. */
+  --win-tint-1: color-mix(in srgb, var(--win) 30%, var(--panel));
+  --win-tint-2: color-mix(in srgb, var(--win) 60%, var(--panel));
+  --loss-tint-1: color-mix(in srgb, var(--loss) 30%, var(--panel));
+  --loss-tint-2: color-mix(in srgb, var(--loss) 60%, var(--panel));
 
   /* Text over team brand colors (TeamChip). Pure white/black for WCAG AA
      contrast against mid-tone brand colors. */

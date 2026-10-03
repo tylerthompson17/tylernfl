@@ -3,7 +3,7 @@ when a player's file is removed."""
 
 import unittest
 
-from targets import build_targets, depth_band, grid, league_baseline, stale_files, target_plays
+from targets import build_targets, depth_band, grid, league_baseline, league_depth_share, stale_files, target_plays
 
 
 def play(**fields):
@@ -89,6 +89,12 @@ class GridTests(unittest.TestCase):
         self.assertIsNone(baseline[('right', 'deep')])
 
 
+    def test_league_depth_share(self):
+        share = league_depth_share([play(air_yards=25.0), play(air_yards=0.0), play(air_yards=3.0), play(air_yards=-2.0)])
+        self.assertEqual(share, {'deep': 0.25, 'intermediate': 0.0, 'short': 0.5, 'behind': 0.25})
+        self.assertIsNone(league_depth_share([]))
+
+
 class BuildTests(unittest.TestCase):
     def test_receivers_get_targets_and_passers_get_throws(self):
         plays = [play(receiver_player_id='wr1'), play(receiver_player_id='wr2'), play(receiver_player_id='qb1')]
@@ -104,6 +110,7 @@ class BuildTests(unittest.TestCase):
     def test_no_baseline_season_means_no_league_values(self):
         data = build_targets([play()], 2026, 1, [])
         self.assertIsNone(data['wr1']['baselineSeason'])
+        self.assertIsNone(data['wr1']['leagueDepthShare'])
         self.assertTrue(all(c['leagueEpaPerTarget'] is None for c in data['wr1']['targets']['cells']))
 
 

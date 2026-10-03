@@ -153,13 +153,28 @@ tylernfl/
   season plays for a season at least as new as it (`stale_files`), so last season's grids
   stay up through the preseason.
 - Every cell carries the league's EPA per target in the same cell over the season before
-  (`leagueEpaPerTarget`, `baselineSeason`), fixed for the whole season. The player page's
-  "Target locations" and "Throw locations" panels (`TargetMap.astro`) shade each cell
-  against it, not against zero, because the zones differ by about a point of EPA (2025:
-  -0.25 behind the line in the middle to +0.74 deep middle). Steps at 0.15, 0.4 and 0.8
-  above or below, three tints each way (`--win-tint-*`, `--loss-tint-*`); cells under 3
-  targets are gray and unshaded. The rule is `shadeOf` in `src/lib/targets/map.ts`. Full
-  numbers per cell are in a table under the grid. A player with no file gets no panel.
+  (`leagueEpaPerTarget`, `baselineSeason`), fixed for the whole season, and each file the
+  league's share of targets by depth that season (`leagueDepthShare`). The player page's
+  "Target locations" and "Throw locations" panels (`TargetMap.astro`) put the grid on the
+  left and a summary on the right (total, best and worst zone against the league, share
+  by depth against the league's), stacked below 1024px. A cell leads with catch or
+  completion %, then EPA per target minus the league's in that zone, then the count. It
+  is shaded on that difference, not on EPA itself, because the zones differ by about a
+  point of EPA (2025: -0.25 behind the line in the middle to +0.74 deep middle): two
+  steps each way at 0.15 and 0.5 (`--win-tint-*`, `--loss-tint-*`, `--text` on all of
+  them at 6:1 or better). Cells under 5 targets are unshaded with muted text and no EPA,
+  and are left out of the best and worst zone; cells under 10 get the lighter shade at
+  most. The rule is `shadeOf` in `src/lib/targets/map.ts`; the thresholds are spelled out
+  in the panel's Cell stats, the legend only reads worse to better. A player with no file
+  gets no panel, and a throws panel needs 3 throws (`MIN_THROWS`), so a receiver's trick
+  play throw gets none.
+- The grid is drawn as a top-down field, light (no green turf: green means better than
+  the league): four bands of one height (proportional heights were tried and left deep
+  mostly empty), deep open at the top with break marks on the sidelines, +10 and +20
+  along both sidelines at the band edges, sidelines as heavy slate borders, zones split
+  by dashed lines, and the line of scrimmage a first-down yellow line with a yellow tab
+  naming it. Lines are drawn only on band and zone edges, so none crosses a cell's
+  numbers (yard lines every 5 yards were tried and did). No perspective.
 - There is no `leaders.json` any more. Every top 5 on the site (the stats overview, the
   home page's receiving panel, a team's stat leader appearances) comes from the boards and
   `player_epa.json` through `src/utils/overview.ts`, whose rows carry player ids.

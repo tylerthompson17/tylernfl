@@ -592,6 +592,8 @@ export interface TargetsData {
   playerId: string;
   /** The regular season the league values come from (the one before), or null */
   baselineSeason: number | null;
+  /** Share of the league's targets in each depth band over baselineSeason (0 to 1), or null */
+  leagueDepthShare: Record<TargetDepth, number> | null;
   /** As a receiver; null if never targeted */
   targets: TargetGrid | null;
   /** As a passer; null if he never threw one */
