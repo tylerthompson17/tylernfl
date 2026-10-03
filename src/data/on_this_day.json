@@ -1,67 +1,64 @@
 {
   "month": 10,
-  "day": 2,
-  "gamesOnDate": 61,
+  "day": 3,
+  "gamesOnDate": 60,
   "items": [
     {
-      "year": 2025,
-      "gameId": "2025_05_SF_LA",
-      "text": "The 49ers beat the Rams 26-23 in overtime as 8.5-point underdogs.",
+      "year": 2021,
+      "gameId": "2021_04_HOU_BUF",
+      "text": "The Bills shut out the Texans 40-0.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "49ers",
-          "team": "SF"
+          "text": "Bills",
+          "team": "BUF"
+        },
+        {
+          "text": " shut out the "
+        },
+        {
+          "text": "Texans",
+          "team": "HOU"
+        },
+        {
+          "text": " 40-0."
+        }
+      ]
+    },
+    {
+      "year": 2010,
+      "gameId": "2010_04_ARI_SD",
+      "text": "The Chargers beat the Cardinals 41-10.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Chargers",
+          "team": "LAC"
         },
         {
           "text": " beat the "
         },
         {
-          "text": "Rams",
-          "team": "LAR"
+          "text": "Cardinals",
+          "team": "ARI"
         },
         {
-          "text": " 26-23 in overtime as 8.5-point underdogs."
+          "text": " 41-10."
         }
       ]
     },
     {
-      "year": 2022,
-      "gameId": "2022_04_SEA_DET",
-      "text": "The Seahawks beat the Lions 48-45 with 93 combined points.",
+      "year": 1999,
+      "gameId": "1999_04_CAR_WAS",
+      "text": "Washington beat the Panthers 38-36 with 74 combined points.",
       "parts": [
         {
-          "text": "The "
-        },
-        {
-          "text": "Seahawks",
-          "team": "SEA"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Lions",
-          "team": "DET"
-        },
-        {
-          "text": " 48-45 with 93 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2016,
-      "gameId": "2016_04_CAR_ATL",
-      "text": "The Falcons beat the Panthers 48-33 with 81 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Falcons",
-          "team": "ATL"
+          "text": "Washington",
+          "team": "WAS"
         },
         {
           "text": " beat the "
@@ -71,7 +68,7 @@
           "team": "CAR"
         },
         {
-          "text": " 48-33 with 81 combined points."
+          "text": " 38-36 with 74 combined points."
         }
       ]
     }
