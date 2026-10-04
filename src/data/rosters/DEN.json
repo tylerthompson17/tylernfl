@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "DEN",
   "week": 4,
-  "updated": "2026-10-03T14:26:40Z",
+  "updated": "2026-10-04T15:00:53Z",
   "groups": [
     {
       "key": "offense",
@@ -145,13 +145,28 @@
       "number": 46,
       "position": "FB",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 72,
       "weight": 245,
       "age": 29,
       "experience": 5,
       "college": "South Carolina"
+    },
+    {
+      "gsisId": "00-0035406",
+      "name": "Lil'Jordan Humphrey",
+      "slug": "liljordan-humphrey",
+      "number": 5,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 225,
+      "age": 28,
+      "experience": 7,
+      "college": "Texas"
     },
     {
       "gsisId": "00-0039868",
@@ -989,7 +1004,7 @@
       "statusLabel": "Active",
       "heightInches": 71,
       "weight": 178,
-      "age": 24,
+      "age": 25,
       "experience": 2,
       "college": "Missouri"
     },

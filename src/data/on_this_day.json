@@ -1,43 +1,43 @@
 {
   "month": 10,
-  "day": 3,
-  "gamesOnDate": 60,
+  "day": 4,
+  "gamesOnDate": 44,
   "items": [
     {
-      "year": 2021,
-      "gameId": "2021_04_HOU_BUF",
-      "text": "The Bills shut out the Texans 40-0.",
+      "year": 2020,
+      "gameId": "2020_04_CLE_DAL",
+      "text": "The Browns beat the Cowboys 49-38 with 87 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Bills",
-          "team": "BUF"
+          "text": "Browns",
+          "team": "CLE"
         },
         {
-          "text": " shut out the "
+          "text": " beat the "
         },
         {
-          "text": "Texans",
-          "team": "HOU"
+          "text": "Cowboys",
+          "team": "DAL"
         },
         {
-          "text": " 40-0."
+          "text": " 49-38 with 87 combined points."
         }
       ]
     },
     {
-      "year": 2010,
-      "gameId": "2010_04_ARI_SD",
-      "text": "The Chargers beat the Cardinals 41-10.",
+      "year": 2015,
+      "gameId": "2015_04_STL_ARI",
+      "text": "The Rams beat the Cardinals 24-22 as 7-point underdogs.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Chargers",
-          "team": "LAC"
+          "text": "Rams",
+          "team": "LAR"
         },
         {
           "text": " beat the "
@@ -47,28 +47,31 @@
           "team": "ARI"
         },
         {
-          "text": " 41-10."
+          "text": " 24-22 as 7-point underdogs."
         }
       ]
     },
     {
-      "year": 1999,
-      "gameId": "1999_04_CAR_WAS",
-      "text": "Washington beat the Panthers 38-36 with 74 combined points.",
+      "year": 2009,
+      "gameId": "2009_04_STL_SF",
+      "text": "The 49ers shut out the Rams 35-0.",
       "parts": [
         {
-          "text": "Washington",
-          "team": "WAS"
+          "text": "The "
         },
         {
-          "text": " beat the "
+          "text": "49ers",
+          "team": "SF"
         },
         {
-          "text": "Panthers",
-          "team": "CAR"
+          "text": " shut out the "
         },
         {
-          "text": " 38-36 with 74 combined points."
+          "text": "Rams",
+          "team": "LAR"
+        },
+        {
+          "text": " 35-0."
         }
       ]
     }
