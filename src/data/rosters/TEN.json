@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "TEN",
   "week": 5,
-  "updated": "2026-10-06T16:19:02Z",
+  "updated": "2026-10-07T17:03:56Z",
   "groups": [
     {
       "key": "offense",
@@ -439,6 +439,21 @@
       "college": "Florida; San Diego State"
     },
     {
+      "gsisId": "00-0038536",
+      "name": "Chandler Zavala",
+      "slug": "chandler-zavala",
+      "number": 62,
+      "position": "G",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 330,
+      "age": 27,
+      "experience": 3,
+      "college": "N.C. State; Fairmont State"
+    },
+    {
       "gsisId": "00-0040190",
       "name": "Jackson Slater",
       "slug": "jackson-slater",
@@ -452,21 +467,6 @@
       "age": 23,
       "experience": 1,
       "college": "Sacramento State"
-    },
-    {
-      "gsisId": "00-0038633",
-      "name": "Nick Broeker",
-      "slug": "nick-broeker",
-      "number": 65,
-      "position": "G",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 305,
-      "age": 25,
-      "experience": 3,
-      "college": "Mississippi"
     },
     {
       "gsisId": "00-0040881",
@@ -889,6 +889,21 @@
       "college": "Illinois"
     },
     {
+      "gsisId": "00-0041515",
+      "name": "Chase Wilson",
+      "slug": "chase-wilson",
+      "number": 53,
+      "position": "ILB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": null,
+      "weight": 230,
+      "age": null,
+      "experience": 0,
+      "college": null
+    },
+    {
       "gsisId": "00-0038600",
       "name": "Owen Pappoe",
       "slug": "owen-pappoe",
@@ -1026,7 +1041,7 @@
     {
       "gsisId": "00-0038407",
       "name": "Jaylon Jones",
-      "slug": "jaylon-jones",
+      "slug": "jaylon-jones-ten",
       "number": 42,
       "position": "CB",
       "group": "defense",
@@ -1112,6 +1127,21 @@
       "age": 27,
       "experience": 6,
       "college": "Utah"
+    },
+    {
+      "gsisId": "00-0040659",
+      "name": "Derrick Canteen",
+      "slug": "derrick-canteen",
+      "number": 42,
+      "position": "FS",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 70,
+      "weight": 190,
+      "age": 25,
+      "experience": 1,
+      "college": "Cincinnati; Virginia Tech"
     },
     {
       "gsisId": "00-0040141",
