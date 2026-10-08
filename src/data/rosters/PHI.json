@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "PHI",
   "week": 5,
-  "updated": "2026-10-07T17:03:56Z",
+  "updated": "2026-10-08T17:00:49Z",
   "groups": [
     {
       "key": "offense",
@@ -160,8 +160,8 @@
       "number": 39,
       "position": "RB",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 70,
       "weight": 215,
       "age": 26,
@@ -257,6 +257,21 @@
       "age": 25,
       "experience": 3,
       "college": "Stephen F. Austin State"
+    },
+    {
+      "gsisId": "00-0038092",
+      "name": "Erik Ezukanma",
+      "slug": "erik-ezukanma",
+      "number": 49,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 220,
+      "age": 26,
+      "experience": 4,
+      "college": "Texas Tech"
     },
     {
       "gsisId": "00-0040024",
@@ -544,21 +559,6 @@
       "college": "Georgia"
     },
     {
-      "gsisId": "00-0038112",
-      "name": "Cam Jurgens",
-      "slug": "cam-jurgens",
-      "number": 51,
-      "position": "C",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 75,
-      "weight": 303,
-      "age": 27,
-      "experience": 4,
-      "college": "Nebraska"
-    },
-    {
       "gsisId": "00-0040631",
       "name": "Willie Lampkin",
       "slug": "willie-lampkin",
@@ -587,6 +587,21 @@
       "age": 24,
       "experience": 1,
       "college": "Boston College"
+    },
+    {
+      "gsisId": "00-0041186",
+      "name": "James Brockermeyer",
+      "slug": "james-brockermeyer",
+      "number": 66,
+      "position": "C",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 297,
+      "age": 24,
+      "experience": 0,
+      "college": "Miami; TCU; Alabama"
     },
     {
       "gsisId": "00-0040422",
@@ -914,7 +929,7 @@
       "statusLabel": "Practice squad",
       "heightInches": 74,
       "weight": 235,
-      "age": 26,
+      "age": 27,
       "experience": 4,
       "college": "Mississippi"
     },

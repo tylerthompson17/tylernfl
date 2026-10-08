@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "BAL",
   "week": 5,
-  "updated": "2026-10-07T17:03:56Z",
+  "updated": "2026-10-08T17:00:49Z",
   "groups": [
     {
       "key": "offense",
@@ -152,6 +152,21 @@
       "age": 28,
       "experience": 7,
       "college": "Oklahoma State"
+    },
+    {
+      "gsisId": "00-0040637",
+      "name": "Lucas Scott",
+      "slug": "lucas-scott",
+      "number": 47,
+      "position": "FB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 305,
+      "age": 23,
+      "experience": 1,
+      "college": "Army"
     },
     {
       "gsisId": "00-0039064",
@@ -310,8 +325,8 @@
       "number": 80,
       "position": "TE",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 76,
       "weight": 248,
       "age": 31,
@@ -340,8 +355,8 @@
       "number": 87,
       "position": "TE",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 78,
       "weight": 257,
       "age": 33,
@@ -542,6 +557,21 @@
       "age": 29,
       "experience": 6,
       "college": "Clemson"
+    },
+    {
+      "gsisId": "00-0038112",
+      "name": "Cam Jurgens",
+      "slug": "cam-jurgens",
+      "number": 51,
+      "position": "C",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 75,
+      "weight": 303,
+      "age": 27,
+      "experience": 4,
+      "college": "Nebraska"
     },
     {
       "gsisId": "00-0038629",

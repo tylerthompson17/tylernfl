@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYJ",
   "week": 5,
-  "updated": "2026-10-06T16:19:02Z",
+  "updated": "2026-10-08T17:00:49Z",
   "groups": [
     {
       "key": "offense",
@@ -209,7 +209,7 @@
       "statusLabel": "Active",
       "heightInches": 74,
       "weight": 205,
-      "age": 23,
+      "age": 24,
       "experience": 2,
       "college": "Texas; Georgia"
     },
@@ -299,7 +299,7 @@
       "statusLabel": "Active",
       "heightInches": 77,
       "weight": 195,
-      "age": 23,
+      "age": 24,
       "experience": 0,
       "college": "Arizona State; Penn State; Florida"
     },
@@ -805,13 +805,28 @@
       "number": 55,
       "position": "OLB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 78,
       "weight": 267,
       "age": 25,
       "experience": 2,
       "college": "Michigan"
+    },
+    {
+      "gsisId": "00-0041202",
+      "name": "Nathan Voorhis",
+      "slug": "nathan-voorhis",
+      "number": 69,
+      "position": "OLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": null,
+      "weight": 247,
+      "age": null,
+      "experience": 0,
+      "college": null
     },
     {
       "gsisId": "00-0039447",
@@ -820,8 +835,8 @@
       "number": 92,
       "position": "OLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 255,
       "age": 24,
