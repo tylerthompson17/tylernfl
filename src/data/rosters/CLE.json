@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "CLE",
   "week": 5,
-  "updated": "2026-10-08T17:00:49Z",
+  "updated": "2026-10-09T16:39:05Z",
   "groups": [
     {
       "key": "offense",
@@ -259,21 +259,6 @@
       "college": "Washington"
     },
     {
-      "gsisId": "00-0036133",
-      "name": "James Proche",
-      "slug": "james-proche",
-      "number": 13,
-      "position": "WR",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 71,
-      "weight": 193,
-      "age": 30,
-      "experience": 6,
-      "college": "SMU"
-    },
-    {
       "gsisId": "00-0036630",
       "name": "Tylan Wallace",
       "slug": "tylan-wallace",
@@ -302,6 +287,21 @@
       "age": 24,
       "experience": 1,
       "college": "Colorado; University of South Florida"
+    },
+    {
+      "gsisId": "00-0036133",
+      "name": "James Proche",
+      "slug": "james-proche",
+      "number": 80,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 71,
+      "weight": 193,
+      "age": 30,
+      "experience": 6,
+      "college": "SMU"
     },
     {
       "gsisId": "00-0039386",
@@ -382,7 +382,7 @@
       "gsisId": "00-0037306",
       "name": "John FitzPatrick",
       "slug": "john-fitzpatrick",
-      "number": 86,
+      "number": 87,
       "position": "TE",
       "group": "offense",
       "status": "DEV",
@@ -1259,7 +1259,7 @@
       "statusLabel": "Active",
       "heightInches": 78,
       "weight": 242,
-      "age": 29,
+      "age": 30,
       "experience": 6,
       "college": "West Virginia"
     }

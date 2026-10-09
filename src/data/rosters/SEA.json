@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "SEA",
   "week": 5,
-  "updated": "2026-10-08T17:00:49Z",
+  "updated": "2026-10-09T16:39:05Z",
   "groups": [
     {
       "key": "offense",
@@ -74,7 +74,7 @@
       "statusLabel": "Reserve",
       "heightInches": 71,
       "weight": 209,
-      "age": 22,
+      "age": 23,
       "experience": 0,
       "college": "Notre Dame"
     },
@@ -94,6 +94,21 @@
       "college": "Fort Valley State College"
     },
     {
+      "gsisId": "00-0040984",
+      "name": "Dontae McMillan",
+      "slug": "dontae-mcmillan",
+      "number": 25,
+      "position": "RB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": null,
+      "weight": 203,
+      "age": null,
+      "experience": 0,
+      "college": null
+    },
+    {
       "gsisId": "00-0039165",
       "name": "Zach Charbonnet",
       "slug": "zach-charbonnet",
@@ -107,21 +122,6 @@
       "age": 25,
       "experience": 3,
       "college": "UCLA; Michigan"
-    },
-    {
-      "gsisId": "00-0041178",
-      "name": "Robert Henry Jr.",
-      "slug": "robert-henry-jr",
-      "number": 30,
-      "position": "RB",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 69,
-      "weight": 196,
-      "age": 24,
-      "experience": 0,
-      "college": "Texas-San Antonio"
     },
     {
       "gsisId": "00-0040067",
@@ -154,19 +154,19 @@
       "college": "Tennessee; USC"
     },
     {
-      "gsisId": "00-0040984",
-      "name": "Dontae McMillan",
-      "slug": "dontae-mcmillan",
-      "number": 36,
+      "gsisId": "00-0041178",
+      "name": "Robert Henry Jr.",
+      "slug": "robert-henry-jr",
+      "number": 34,
       "position": "RB",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": null,
-      "weight": 203,
-      "age": null,
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 69,
+      "weight": 196,
+      "age": 24,
       "experience": 0,
-      "college": null
+      "college": "Texas-San Antonio"
     },
     {
       "gsisId": "00-0039299",
@@ -1090,8 +1090,8 @@
       "number": 30,
       "position": "FS",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 74,
       "weight": 205,
       "age": 25,

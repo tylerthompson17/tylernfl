@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "GB",
   "week": 5,
-  "updated": "2026-10-07T17:03:56Z",
+  "updated": "2026-10-09T16:39:05Z",
   "groups": [
     {
       "key": "offense",
@@ -85,8 +85,8 @@
       "number": 22,
       "position": "RB",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 71,
       "weight": 205,
       "age": 27,
@@ -977,6 +977,21 @@
       "age": 27,
       "experience": 5,
       "college": "Boston College"
+    },
+    {
+      "gsisId": "00-0041242",
+      "name": "Jack Dingle",
+      "slug": "jack-dingle",
+      "number": 59,
+      "position": "ILB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": null,
+      "weight": 240,
+      "age": null,
+      "experience": 0,
+      "college": null
     },
     {
       "gsisId": "00-0039812",

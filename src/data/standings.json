@@ -1,7 +1,7 @@
 {
   "season": 2026,
-  "throughWeek": 4,
-  "updated": "2026-10-06T16:19:02Z",
+  "throughWeek": 5,
+  "updated": "2026-10-09T16:39:05Z",
   "teams": [
     {
       "team": "BUF",
@@ -274,33 +274,6 @@
       "conferenceTiebreak": "strength_of_victory"
     },
     {
-      "team": "HOU",
-      "conference": "AFC",
-      "division": "AFC South",
-      "wins": 0,
-      "losses": 4,
-      "ties": 0,
-      "pct": 0.0,
-      "pointsFor": 84,
-      "pointsAgainst": 109,
-      "diff": -25,
-      "divisionRecord": [
-        0,
-        1,
-        0
-      ],
-      "conferenceRecord": [
-        0,
-        3,
-        0
-      ],
-      "streak": "L4",
-      "divisionRank": 3,
-      "conferenceRank": 15,
-      "divisionTiebreak": "coin_toss",
-      "conferenceTiebreak": "division_order"
-    },
-    {
       "team": "TEN",
       "conference": "AFC",
       "division": "AFC South",
@@ -322,9 +295,36 @@
         0
       ],
       "streak": "L4",
+      "divisionRank": 3,
+      "conferenceRank": 15,
+      "divisionTiebreak": "strength_of_schedule",
+      "conferenceTiebreak": "division_order"
+    },
+    {
+      "team": "HOU",
+      "conference": "AFC",
+      "division": "AFC South",
+      "wins": 0,
+      "losses": 4,
+      "ties": 0,
+      "pct": 0.0,
+      "pointsFor": 84,
+      "pointsAgainst": 109,
+      "diff": -25,
+      "divisionRecord": [
+        0,
+        1,
+        0
+      ],
+      "conferenceRecord": [
+        0,
+        3,
+        0
+      ],
+      "streak": "L4",
       "divisionRank": 4,
       "conferenceRank": 16,
-      "divisionTiebreak": "coin_toss",
+      "divisionTiebreak": "strength_of_schedule",
       "conferenceTiebreak": "division_order"
     },
     {
@@ -486,20 +486,20 @@
       "streak": "L2",
       "divisionRank": 2,
       "conferenceRank": 11,
-      "divisionTiebreak": "division_record",
-      "conferenceTiebreak": "division_order"
+      "divisionTiebreak": null,
+      "conferenceTiebreak": null
     },
     {
       "team": "DAL",
       "conference": "NFC",
       "division": "NFC East",
       "wins": 2,
-      "losses": 2,
+      "losses": 3,
       "ties": 0,
-      "pct": 0.5,
-      "pointsFor": 122,
-      "pointsAgainst": 112,
-      "diff": 10,
+      "pct": 0.4,
+      "pointsFor": 138,
+      "pointsAgainst": 136,
+      "diff": 2,
       "divisionRecord": [
         1,
         1,
@@ -507,14 +507,14 @@
       ],
       "conferenceRecord": [
         1,
-        1,
+        2,
         0
       ],
-      "streak": "W1",
+      "streak": "L1",
       "divisionRank": 3,
       "conferenceRank": 12,
-      "divisionTiebreak": "division_record",
-      "conferenceTiebreak": "division_order"
+      "divisionTiebreak": null,
+      "conferenceTiebreak": null
     },
     {
       "team": "WAS",
@@ -568,7 +568,7 @@
       "divisionRank": 1,
       "conferenceRank": 1,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "coin_toss"
+      "conferenceTiebreak": "strength_of_victory"
     },
     {
       "team": "CHI",
@@ -649,7 +649,7 @@
       "divisionRank": 4,
       "conferenceRank": 10,
       "divisionTiebreak": "conference_record",
-      "conferenceTiebreak": "strength_of_schedule"
+      "conferenceTiebreak": "strength_of_victory"
     },
     {
       "team": "CAR",
@@ -736,24 +736,24 @@
       "team": "TB",
       "conference": "NFC",
       "division": "NFC South",
-      "wins": 0,
+      "wins": 1,
       "losses": 4,
       "ties": 0,
-      "pct": 0.0,
-      "pointsFor": 76,
-      "pointsAgainst": 96,
-      "diff": -20,
+      "pct": 0.2,
+      "pointsFor": 100,
+      "pointsAgainst": 112,
+      "diff": -12,
       "divisionRecord": [
         0,
         0,
         0
       ],
       "conferenceRecord": [
-        0,
+        1,
         2,
         0
       ],
-      "streak": "L4",
+      "streak": "W1",
       "divisionRank": 4,
       "conferenceRank": 16,
       "divisionTiebreak": null,
@@ -784,7 +784,7 @@
       "divisionRank": 1,
       "conferenceRank": 2,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "coin_toss"
+      "conferenceTiebreak": null
     },
     {
       "team": "SEA",

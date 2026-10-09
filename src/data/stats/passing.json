@@ -2,7 +2,7 @@
   "key": "passing",
   "label": "Passing",
   "season": 2026,
-  "throughWeek": 4,
+  "throughWeek": 5,
   "primary": "passing_yards",
   "qualifier": {
     "column": "attempts",
@@ -95,6 +95,26 @@
   "rows": [
     {
       "rank": 1,
+      "playerId": "00-0033077",
+      "player": "Dak Prescott",
+      "team": "DAL",
+      "position": "QB",
+      "teamGames": 5,
+      "qualified": true,
+      "values": {
+        "games": 5,
+        "completions": 129,
+        "attempts": 192,
+        "passing_yards": 1381,
+        "passing_tds": 9,
+        "passing_interceptions": 3,
+        "sacks_suffered": 6,
+        "cmp_pct": 0.672,
+        "pass_ypa": 7.2
+      }
+    },
+    {
+      "rank": 2,
       "playerId": "00-0039150",
       "player": "Bryce Young",
       "team": "CAR",
@@ -114,7 +134,7 @@
       }
     },
     {
-      "rank": 2,
+      "rank": 3,
       "playerId": "00-0033106",
       "player": "Jared Goff",
       "team": "DET",
@@ -134,7 +154,7 @@
       }
     },
     {
-      "rank": 3,
+      "rank": 4,
       "playerId": "00-0040743",
       "player": "Tyler Shough",
       "team": "NO",
@@ -154,7 +174,7 @@
       }
     },
     {
-      "rank": 4,
+      "rank": 5,
       "playerId": "00-0026498",
       "player": "Matthew Stafford",
       "team": "LAR",
@@ -174,7 +194,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0036442",
       "player": "Joe Burrow",
       "team": "CIN",
@@ -194,7 +214,7 @@
       }
     },
     {
-      "rank": 6,
+      "rank": 7,
       "playerId": "00-0039163",
       "player": "C.J. Stroud",
       "team": "HOU",
@@ -211,26 +231,6 @@
         "sacks_suffered": 12,
         "cmp_pct": 0.616,
         "pass_ypa": 7.6
-      }
-    },
-    {
-      "rank": 7,
-      "playerId": "00-0033077",
-      "player": "Dak Prescott",
-      "team": "DAL",
-      "position": "QB",
-      "teamGames": 4,
-      "qualified": true,
-      "values": {
-        "games": 4,
-        "completions": 105,
-        "attempts": 150,
-        "passing_yards": 1065,
-        "passing_tds": 8,
-        "passing_interceptions": 1,
-        "sacks_suffered": 6,
-        "cmp_pct": 0.7,
-        "pass_ypa": 7.1
       }
     },
     {
@@ -599,7 +599,7 @@
       "player": "Baker Mayfield",
       "team": "TB",
       "position": "QB",
-      "teamGames": 4,
+      "teamGames": 5,
       "qualified": true,
       "values": {
         "games": 3,
@@ -755,6 +755,26 @@
     },
     {
       "rank": 34,
+      "playerId": "00-0041251",
+      "player": "Jalon Daniels",
+      "team": "TB",
+      "position": "QB",
+      "teamGames": 5,
+      "qualified": false,
+      "values": {
+        "games": 3,
+        "completions": 38,
+        "attempts": 55,
+        "passing_yards": 337,
+        "passing_tds": 2,
+        "passing_interceptions": 3,
+        "sacks_suffered": 4,
+        "cmp_pct": 0.691,
+        "pass_ypa": 6.1
+      }
+    },
+    {
+      "rank": 35,
       "playerId": "00-0038416",
       "player": "Tyson Bagent",
       "team": "CHI",
@@ -774,7 +794,7 @@
       }
     },
     {
-      "rank": 35,
+      "rank": 36,
       "playerId": "00-0032950",
       "player": "Carson Wentz",
       "team": "MIN",
@@ -794,7 +814,7 @@
       }
     },
     {
-      "rank": 36,
+      "rank": 37,
       "playerId": "00-0039910",
       "player": "Jayden Daniels",
       "team": "WAS",
@@ -814,7 +834,7 @@
       }
     },
     {
-      "rank": 37,
+      "rank": 38,
       "playerId": "00-0040691",
       "player": "Jaxson Dart",
       "team": "NYG",
@@ -834,7 +854,7 @@
       }
     },
     {
-      "rank": 38,
+      "rank": 39,
       "playerId": "00-0028986",
       "player": "Case Keenum",
       "team": "CHI",
@@ -854,7 +874,7 @@
       }
     },
     {
-      "rank": 39,
+      "rank": 40,
       "playerId": "00-0033662",
       "player": "Cooper Rush",
       "team": "ATL",
@@ -874,7 +894,7 @@
       }
     },
     {
-      "rank": 40,
+      "rank": 41,
       "playerId": "00-0041117",
       "player": "Athan Kaliakmanis",
       "team": "WAS",
@@ -891,26 +911,6 @@
         "sacks_suffered": 1,
         "cmp_pct": 0.455,
         "pass_ypa": 5.6
-      }
-    },
-    {
-      "rank": 41,
-      "playerId": "00-0041251",
-      "player": "Jalon Daniels",
-      "team": "TB",
-      "position": "QB",
-      "teamGames": 4,
-      "qualified": false,
-      "values": {
-        "games": 2,
-        "completions": 19,
-        "attempts": 30,
-        "passing_yards": 148,
-        "passing_tds": 1,
-        "passing_interceptions": 3,
-        "sacks_suffered": 3,
-        "cmp_pct": 0.633,
-        "pass_ypa": 4.9
       }
     },
     {
