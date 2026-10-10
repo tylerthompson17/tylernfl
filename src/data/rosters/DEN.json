@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "DEN",
   "week": 5,
-  "updated": "2026-10-09T16:39:05Z",
+  "updated": "2026-10-10T15:35:57Z",
   "groups": [
     {
       "key": "offense",
@@ -160,8 +160,8 @@
       "number": 5,
       "position": "WR",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 76,
       "weight": 225,
       "age": 28,
@@ -190,8 +190,8 @@
       "number": 13,
       "position": "WR",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 74,
       "weight": 204,
       "age": 23,
@@ -209,7 +209,7 @@
       "statusLabel": "Active",
       "heightInches": 76,
       "weight": 216,
-      "age": 30,
+      "age": 31,
       "experience": 8,
       "college": "SMU"
     },
@@ -245,16 +245,16 @@
     },
     {
       "gsisId": "00-0041299",
-      "name": "Cam Ross",
-      "slug": "cam-ross",
+      "name": "Cameron Ross",
+      "slug": "cameron-ross",
       "number": 80,
       "position": "WR",
       "group": "offense",
       "status": "DEV",
       "statusLabel": "Practice squad",
-      "heightInches": null,
+      "heightInches": 70,
       "weight": 186,
-      "age": null,
+      "age": 25,
       "experience": 0,
       "college": null
     },
@@ -569,7 +569,7 @@
       "statusLabel": "Active",
       "heightInches": 77,
       "weight": 310,
-      "age": 22,
+      "age": 23,
       "experience": 0,
       "college": "Boise State"
     },
@@ -782,21 +782,6 @@
       "age": 27,
       "experience": 4,
       "college": "Oklahoma"
-    },
-    {
-      "gsisId": "00-0040604",
-      "name": "Jahfari Harvey",
-      "slug": "jahfari-harvey",
-      "number": 42,
-      "position": "OLB",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 74,
-      "weight": 252,
-      "age": 25,
-      "experience": 1,
-      "college": "SMU; Miami"
     },
     {
       "gsisId": "00-0040168",
@@ -1097,6 +1082,21 @@
       "age": 28,
       "experience": 5,
       "college": "Western Kentucky"
+    },
+    {
+      "gsisId": "00-0035142",
+      "name": "Ugo Amadi",
+      "slug": "ugo-amadi",
+      "number": 29,
+      "position": "FS",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 69,
+      "weight": 201,
+      "age": 29,
+      "experience": 7,
+      "college": "Oregon"
     },
     {
       "gsisId": "00-0035663",
