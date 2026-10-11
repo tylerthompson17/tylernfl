@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "SF",
   "week": 5,
-  "updated": "2026-10-10T15:35:57Z",
+  "updated": "2026-10-11T15:59:26Z",
   "groups": [
     {
       "key": "offense",
@@ -415,8 +415,8 @@
       "number": 89,
       "position": "TE",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 76,
       "weight": 260,
       "age": 28,
@@ -709,6 +709,21 @@
       "college": "Indiana; James Madison"
     },
     {
+      "gsisId": "00-0034807",
+      "name": "Ogbo Okoronkwo",
+      "slug": "ogbo-okoronkwo",
+      "number": 59,
+      "position": "DE",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 74,
+      "weight": 253,
+      "age": 31,
+      "experience": 8,
+      "college": "Oklahoma"
+    },
+    {
       "gsisId": "00-0038575",
       "name": "Viliami Fehoko Jr.",
       "slug": "viliami-fehoko-jr",
@@ -775,8 +790,8 @@
       "number": 98,
       "position": "DE",
       "group": "defense",
-      "status": "RES",
-      "statusLabel": "Reserve",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 77,
       "weight": 265,
       "age": 22,

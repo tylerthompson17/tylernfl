@@ -3,7 +3,7 @@
   "week": 5,
   "movesWeek": 5,
   "comparedToWeek": 4,
-  "updated": "2026-10-10T15:35:57Z",
+  "updated": "2026-10-11T15:59:26Z",
   "categories": [
     {
       "key": "game-status",
@@ -58,6 +58,20 @@
       "priority": 110
     },
     {
+      "playerId": "00-0039808",
+      "player": "Isaiah Adams",
+      "position": "G",
+      "team": "ARI",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.93,
+      "starter": true,
+      "priority": 10
+    },
+    {
       "playerId": "00-0038540",
       "player": "Paris Johnson Jr.",
       "position": "T",
@@ -72,6 +86,20 @@
       "priority": 10
     },
     {
+      "playerId": "00-0038580",
+      "player": "Yasir Abdullah",
+      "position": "OLB",
+      "team": "ATL",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.15,
+      "starter": false,
+      "priority": 110
+    },
+    {
       "playerId": "00-0034798",
       "player": "Durham Smythe",
       "position": "TE",
@@ -84,6 +112,20 @@
       "snapShare": 0.37,
       "starter": false,
       "priority": 110
+    },
+    {
+      "playerId": "00-0038390",
+      "player": "Noah Sewell",
+      "position": "OLB",
+      "team": "CHI",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.36,
+      "starter": false,
+      "priority": 130
     },
     {
       "playerId": "00-0037243",
@@ -114,6 +156,20 @@
       "priority": 10
     },
     {
+      "playerId": "00-0038685",
+      "player": "Chris Brooks",
+      "position": "RB",
+      "team": "GB",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.37,
+      "starter": false,
+      "priority": 110
+    },
+    {
       "playerId": "00-0039850",
       "player": "Edgerrin Cooper",
       "position": "ILB",
@@ -142,6 +198,48 @@
       "priority": 110
     },
     {
+      "playerId": "00-0041440",
+      "player": "Kayden McDonald",
+      "position": "DT",
+      "team": "HOU",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": null,
+      "starter": false,
+      "priority": 130
+    },
+    {
+      "playerId": "00-0034355",
+      "player": "M.J. Stewart",
+      "position": "FS",
+      "team": "HOU",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.52,
+      "starter": true,
+      "priority": 30
+    },
+    {
+      "playerId": "00-0034825",
+      "player": "Arden Key",
+      "position": "DE",
+      "team": "IND",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.65,
+      "starter": true,
+      "priority": 10
+    },
+    {
       "playerId": "00-0040145",
       "player": "Caleb Ransaw",
       "position": "FS",
@@ -156,18 +254,18 @@
       "priority": 110
     },
     {
-      "playerId": "00-0038616",
-      "player": "Christian Braswell",
-      "position": "CB",
-      "team": "JAX",
+      "playerId": "00-0040212",
+      "player": "Branson Taylor",
+      "position": "G",
+      "team": "LAC",
       "fromTeam": null,
       "type": "status",
       "practiceSquad": false,
-      "note": "Placed on reserve list",
-      "category": "reserve",
-      "snapShare": 0.14,
-      "starter": false,
-      "priority": 110
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 1.0,
+      "starter": true,
+      "priority": 30
     },
     {
       "playerId": "00-0037009",
@@ -184,6 +282,76 @@
       "priority": 10
     },
     {
+      "playerId": "00-0038614",
+      "player": "Scott Matlock",
+      "position": "FB",
+      "team": "LAC",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.3,
+      "starter": false,
+      "priority": 130
+    },
+    {
+      "playerId": "00-0037241",
+      "player": "Trevor Penning",
+      "position": "G",
+      "team": "LAC",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.52,
+      "starter": true,
+      "priority": 10
+    },
+    {
+      "playerId": "00-0037012",
+      "player": "Trey Lance",
+      "position": "QB",
+      "team": "LAC",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.38,
+      "starter": false,
+      "priority": 110
+    },
+    {
+      "playerId": "00-0040127",
+      "player": "Kenneth Grant",
+      "position": "DT",
+      "team": "MIA",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.5,
+      "starter": true,
+      "priority": 30
+    },
+    {
+      "playerId": "00-0040509",
+      "player": "Ben Yurosek",
+      "position": "TE",
+      "team": "MIN",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.19,
+      "starter": false,
+      "priority": 130
+    },
+    {
       "playerId": "00-0040661",
       "player": "Donovan Jackson",
       "position": "G",
@@ -196,6 +364,90 @@
       "snapShare": 0.89,
       "starter": true,
       "priority": 10
+    },
+    {
+      "playerId": "00-0039419",
+      "player": "Michael Jurgens",
+      "position": "C",
+      "team": "MIN",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.38,
+      "starter": false,
+      "priority": 130
+    },
+    {
+      "playerId": "00-0037205",
+      "player": "Brenden Schooler",
+      "position": "FS",
+      "team": "NE",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.08,
+      "starter": false,
+      "priority": 130
+    },
+    {
+      "playerId": "00-0033555",
+      "player": "Mack Hollins",
+      "position": "WR",
+      "team": "NE",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.7,
+      "starter": true,
+      "priority": 10
+    },
+    {
+      "playerId": "00-0036187",
+      "player": "Reggie Gilliam",
+      "position": "FB",
+      "team": "NE",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.19,
+      "starter": false,
+      "priority": 110
+    },
+    {
+      "playerId": "00-0039388",
+      "player": "Jaylan Ford",
+      "position": "ILB",
+      "team": "NO",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.01,
+      "starter": false,
+      "priority": 130
+    },
+    {
+      "playerId": "00-0041089",
+      "player": "Lorenzo Styles Jr.",
+      "position": "CB",
+      "team": "NO",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": null,
+      "starter": false,
+      "priority": 130
     },
     {
       "playerId": "00-0034419",
@@ -212,6 +464,20 @@
       "priority": 110
     },
     {
+      "playerId": "00-0036982",
+      "player": "Chauncey Golston",
+      "position": "DE",
+      "team": "NYG",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.45,
+      "starter": false,
+      "priority": 110
+    },
+    {
       "playerId": "00-0039284",
       "player": "Braiden McGregor",
       "position": "OLB",
@@ -224,6 +490,20 @@
       "snapShare": 0.26,
       "starter": false,
       "priority": 110
+    },
+    {
+      "playerId": "00-0033375",
+      "player": "Tim Patrick",
+      "position": "WR",
+      "team": "NYJ",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.38,
+      "starter": false,
+      "priority": 130
     },
     {
       "playerId": "00-0038555",
@@ -252,6 +532,62 @@
       "snapShare": 0.49,
       "starter": false,
       "priority": 110
+    },
+    {
+      "playerId": "00-0036252",
+      "player": "Michael Pittman",
+      "position": "WR",
+      "team": "PIT",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.85,
+      "starter": true,
+      "priority": 10
+    },
+    {
+      "playerId": "00-0040873",
+      "player": "Julian Neal",
+      "position": "CB",
+      "team": "SEA",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.01,
+      "starter": false,
+      "priority": 110
+    },
+    {
+      "playerId": "00-0040660",
+      "player": "Mykel Williams",
+      "position": "DE",
+      "team": "SF",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.66,
+      "starter": true,
+      "priority": 30
+    },
+    {
+      "playerId": "00-0033947",
+      "player": "Deatrich Wise",
+      "position": "DE",
+      "team": "WAS",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.38,
+      "starter": false,
+      "priority": 130
     },
     {
       "playerId": "00-0040164",
@@ -380,30 +716,30 @@
       "priority": 120
     },
     {
-      "playerId": "00-0039650",
-      "player": "Bryce Oliver",
-      "position": "WR",
-      "team": "HOU",
-      "fromTeam": null,
-      "type": "signed",
+      "playerId": "00-0036956",
+      "player": "Darren Hall",
+      "position": "FS",
+      "team": "WAS",
+      "fromTeam": "ATL",
+      "type": "joined",
       "practiceSquad": false,
-      "note": "Signed",
-      "category": "signed",
-      "snapShare": 0.17,
+      "note": "Joined from ATL",
+      "category": "team-change",
+      "snapShare": 0.24,
       "starter": false,
-      "priority": 140
+      "priority": 120
     },
     {
-      "playerId": "00-0041156",
-      "player": "Mark Gronowski",
-      "position": "QB",
-      "team": "HOU",
+      "playerId": "00-0035857",
+      "player": "Chris Williams",
+      "position": "DT",
+      "team": "CLE",
       "fromTeam": null,
       "type": "signed",
       "practiceSquad": false,
       "note": "Signed",
       "category": "signed",
-      "snapShare": null,
+      "snapShare": 0.23,
       "starter": false,
       "priority": 140
     },
@@ -418,6 +754,34 @@
       "note": "Signed",
       "category": "signed",
       "snapShare": 0.01,
+      "starter": false,
+      "priority": 140
+    },
+    {
+      "playerId": "00-0033221",
+      "player": "Daniel Brunskill",
+      "position": "C",
+      "team": "LAC",
+      "fromTeam": null,
+      "type": "signed",
+      "practiceSquad": false,
+      "note": "Signed",
+      "category": "signed",
+      "snapShare": 0.26,
+      "starter": false,
+      "priority": 140
+    },
+    {
+      "playerId": "00-0031235",
+      "player": "Odell Beckham Jr.",
+      "position": "WR",
+      "team": "MIN",
+      "fromTeam": null,
+      "type": "signed",
+      "practiceSquad": false,
+      "note": "Signed",
+      "category": "signed",
+      "snapShare": 0.1,
       "starter": false,
       "priority": 140
     },
@@ -450,6 +814,48 @@
       "priority": 150
     },
     {
+      "playerId": "00-0038616",
+      "player": "Christian Braswell",
+      "position": "CB",
+      "team": "JAX",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": 0.14,
+      "starter": false,
+      "priority": 150
+    },
+    {
+      "playerId": "00-0040723",
+      "player": "Jack Kiser",
+      "position": "MLB",
+      "team": "JAX",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": 0.06,
+      "starter": false,
+      "priority": 150
+    },
+    {
+      "playerId": "00-0040398",
+      "player": "Brady Cook",
+      "position": "QB",
+      "team": "MIA",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": 0.98,
+      "starter": true,
+      "priority": 50
+    },
+    {
       "playerId": "00-0028872",
       "player": "Johnny Hekker",
       "position": "P",
@@ -478,6 +884,48 @@
       "priority": 150
     },
     {
+      "playerId": "00-0039357",
+      "player": "Decamerion Richardson",
+      "position": "CB",
+      "team": "NO",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": 0.03,
+      "starter": false,
+      "priority": 150
+    },
+    {
+      "playerId": "00-0037231",
+      "player": "Kevin Austin Jr.",
+      "position": "WR",
+      "team": "NO",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": 0.43,
+      "starter": false,
+      "priority": 150
+    },
+    {
+      "playerId": "00-0040405",
+      "player": "Jamaal Pritchett",
+      "position": "WR",
+      "team": "NYJ",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": 0.0,
+      "starter": false,
+      "priority": 150
+    },
+    {
       "playerId": "00-0027973",
       "player": "Andy Dalton",
       "position": "QB",
@@ -488,20 +936,6 @@
       "note": "Released",
       "category": "released",
       "snapShare": 0.32,
-      "starter": false,
-      "priority": 150
-    },
-    {
-      "playerId": "00-0034807",
-      "player": "Ogbo Okoronkwo",
-      "position": "DE",
-      "team": "SF",
-      "fromTeam": null,
-      "type": "released",
-      "practiceSquad": false,
-      "note": "Released",
-      "category": "released",
-      "snapShare": 0.31,
       "starter": false,
       "priority": 150
     },
@@ -544,20 +978,6 @@
       "note": "Joined practice squad from ATL",
       "category": "practice-squad",
       "snapShare": null,
-      "starter": false,
-      "priority": 370
-    },
-    {
-      "playerId": "00-0036956",
-      "player": "Darren Hall",
-      "position": "FS",
-      "team": "WAS",
-      "fromTeam": "ATL",
-      "type": "joined",
-      "practiceSquad": true,
-      "note": "Joined practice squad from ATL",
-      "category": "practice-squad",
-      "snapShare": 0.24,
       "starter": false,
       "priority": 370
     },
@@ -670,20 +1090,6 @@
       "note": "Signed to practice squad",
       "category": "practice-squad",
       "snapShare": 0.18,
-      "starter": false,
-      "priority": 370
-    },
-    {
-      "playerId": "00-0035857",
-      "player": "Chris Williams",
-      "position": "DT",
-      "team": "CLE",
-      "fromTeam": null,
-      "type": "signed",
-      "practiceSquad": true,
-      "note": "Signed to practice squad",
-      "category": "practice-squad",
-      "snapShare": 0.23,
       "starter": false,
       "priority": 370
     },
@@ -842,20 +1248,6 @@
       "priority": 370
     },
     {
-      "playerId": "00-0033221",
-      "player": "Daniel Brunskill",
-      "position": "C",
-      "team": "LAC",
-      "fromTeam": null,
-      "type": "signed",
-      "practiceSquad": true,
-      "note": "Signed to practice squad",
-      "category": "practice-squad",
-      "snapShare": 0.26,
-      "starter": false,
-      "priority": 370
-    },
-    {
       "playerId": "00-0031554",
       "player": "Eric Kendricks",
       "position": "ILB",
@@ -880,20 +1272,6 @@
       "note": "Signed to practice squad",
       "category": "practice-squad",
       "snapShare": 0.37,
-      "starter": false,
-      "priority": 370
-    },
-    {
-      "playerId": "00-0031235",
-      "player": "Odell Beckham Jr.",
-      "position": "WR",
-      "team": "MIN",
-      "fromTeam": null,
-      "type": "signed",
-      "practiceSquad": true,
-      "note": "Signed to practice squad",
-      "category": "practice-squad",
-      "snapShare": 0.1,
       "starter": false,
       "priority": 370
     },
@@ -1514,6 +1892,34 @@
       "snapShare": 0.57,
       "starter": true,
       "priority": 0
+    },
+    {
+      "playerId": "00-0035230",
+      "player": "Ed Oliver",
+      "team": "BUF",
+      "position": "DE",
+      "status": "Out",
+      "injury": "Knee",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.56,
+      "starter": true,
+      "priority": 0
+    },
+    {
+      "playerId": "00-0036988",
+      "player": "Josh Palmer",
+      "team": "BUF",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Shoulder",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.5,
+      "starter": false,
+      "priority": 100
     },
     {
       "playerId": "00-0041085",
@@ -2874,6 +3280,48 @@
       "priority": 2
     },
     {
+      "playerId": "00-0034827",
+      "player": "DJ Moore",
+      "team": "BUF",
+      "position": "WR",
+      "status": "Questionable",
+      "injury": "Shoulder",
+      "practice": "Limited",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.71,
+      "starter": true,
+      "priority": 2
+    },
+    {
+      "playerId": "00-0037034",
+      "player": "Dee Alford",
+      "team": "BUF",
+      "position": "CB",
+      "status": "Questionable",
+      "injury": "Ankle",
+      "practice": "Limited",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.58,
+      "starter": true,
+      "priority": 2
+    },
+    {
+      "playerId": "00-0040132",
+      "player": "Landon Jackson",
+      "team": "BUF",
+      "position": "DE",
+      "status": "Questionable",
+      "injury": "Knee",
+      "practice": "Full",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.29,
+      "starter": false,
+      "priority": 102
+    },
+    {
       "playerId": "00-0039918",
       "player": "Caleb Williams",
       "team": "CHI",
@@ -3278,6 +3726,20 @@
       "snapShare": 0.3,
       "starter": false,
       "priority": 102
+    },
+    {
+      "playerId": "00-0037841",
+      "player": "Quentin Lake",
+      "team": "LAR",
+      "position": "S",
+      "status": "Questionable",
+      "injury": "Hip",
+      "practice": "Limited",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.92,
+      "starter": true,
+      "priority": 2
     },
     {
       "playerId": "00-0040122",
@@ -4098,26 +4560,12 @@
       "position": "CB",
       "status": null,
       "injury": "Toe",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.95,
       "starter": true,
-      "priority": 281
-    },
-    {
-      "playerId": "00-0034827",
-      "player": "DJ Moore",
-      "team": "BUF",
-      "position": "WR",
-      "status": null,
-      "injury": "Shoulder",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.71,
-      "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0036888",
@@ -4134,20 +4582,6 @@
       "priority": 382
     },
     {
-      "playerId": "00-0037034",
-      "player": "Dee Alford",
-      "team": "BUF",
-      "position": "CB",
-      "status": null,
-      "injury": "Ankle",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.58,
-      "starter": true,
-      "priority": 280
-    },
-    {
       "playerId": "00-0038557",
       "player": "Dorian Williams",
       "team": "BUF",
@@ -4160,20 +4594,6 @@
       "snapShare": 0.58,
       "starter": true,
       "priority": 282
-    },
-    {
-      "playerId": "00-0035230",
-      "player": "Ed Oliver",
-      "team": "BUF",
-      "position": "DE",
-      "status": null,
-      "injury": "Knee",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.56,
-      "starter": true,
-      "priority": 280
     },
     {
       "playerId": "00-0039763",
@@ -4202,20 +4622,6 @@
       "snapShare": 0.58,
       "starter": true,
       "priority": 282
-    },
-    {
-      "playerId": "00-0040132",
-      "player": "Landon Jackson",
-      "team": "BUF",
-      "position": "DE",
-      "status": null,
-      "injury": "Knee",
-      "practice": "Limited",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.29,
-      "starter": false,
-      "priority": 381
     },
     {
       "playerId": "00-0039875",
@@ -4252,12 +4658,12 @@
       "position": "LB",
       "status": null,
       "injury": "Knee",
-      "practice": "Full",
+      "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.86,
       "starter": true,
-      "priority": 282
+      "priority": 280
     },
     {
       "playerId": "00-0035357",
@@ -5134,12 +5540,40 @@
       "position": "DT",
       "status": null,
       "injury": "Back",
-      "practice": "Limited",
+      "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.54,
       "starter": true,
-      "priority": 281
+      "priority": 280
+    },
+    {
+      "playerId": "00-0036603",
+      "player": "Alaric Jackson",
+      "team": "LAR",
+      "position": "T",
+      "status": null,
+      "injury": "Not injury related - resting player",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.97,
+      "starter": true,
+      "priority": 280
+    },
+    {
+      "playerId": "00-0039137",
+      "player": "Byron Young",
+      "team": "LAR",
+      "position": "LB",
+      "status": null,
+      "injury": "Not injury related - resting player",
+      "practice": "Did not practice",
+      "category": "practice-report",
+      "gamePlayed": false,
+      "snapShare": 0.78,
+      "starter": true,
+      "priority": 280
     },
     {
       "playerId": "00-0036244",
@@ -5148,12 +5582,12 @@
       "position": "TE",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.74,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0031381",
@@ -5162,12 +5596,12 @@
       "position": "WR",
       "status": null,
       "injury": "Not injury related - resting player",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.67,
       "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0036672",
@@ -5176,12 +5610,12 @@
       "position": "LB",
       "status": null,
       "injury": "Hamstring",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.0,
       "starter": false,
-      "priority": 380
+      "priority": 381
     },
     {
       "playerId": "00-0037195",
@@ -5190,12 +5624,12 @@
       "position": "CB",
       "status": null,
       "injury": "Shoulder",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.88,
       "starter": true,
-      "priority": 281
+      "priority": 282
     },
     {
       "playerId": "00-0040580",
@@ -5204,12 +5638,12 @@
       "position": "LB",
       "status": null,
       "injury": "Groin",
-      "practice": "Did not practice",
+      "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.45,
       "starter": false,
-      "priority": 380
+      "priority": 381
     },
     {
       "playerId": "00-0040590",
@@ -5232,26 +5666,26 @@
       "position": "LB",
       "status": null,
       "injury": "Shoulder",
-      "practice": "Did not practice",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.91,
       "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
-      "playerId": "00-0037841",
-      "player": "Quentin Lake",
+      "playerId": "00-0033110",
+      "player": "Tyler Higbee",
       "team": "LAR",
-      "position": "S",
+      "position": "TE",
       "status": null,
-      "injury": "Hip",
+      "injury": "Not injury related - resting player",
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": false,
-      "snapShare": 0.92,
-      "starter": true,
-      "priority": 280
+      "snapShare": 0.49,
+      "starter": false,
+      "priority": 380
     },
     {
       "playerId": "00-0039338",

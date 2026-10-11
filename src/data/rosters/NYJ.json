@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYJ",
   "week": 5,
-  "updated": "2026-10-10T15:35:57Z",
+  "updated": "2026-10-11T15:59:26Z",
   "groups": [
     {
       "key": "offense",
@@ -220,8 +220,8 @@
       "number": 17,
       "position": "WR",
       "group": "offense",
-      "status": "RES",
-      "statusLabel": "Reserve",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 77,
       "weight": 212,
       "age": 32,
@@ -244,21 +244,6 @@
       "college": "Illinois"
     },
     {
-      "gsisId": "00-0040405",
-      "name": "Jamaal Pritchett",
-      "slug": "jamaal-pritchett",
-      "number": 81,
-      "position": "WR",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 68,
-      "weight": 175,
-      "age": 23,
-      "experience": 1,
-      "college": "South Alabama; Tuskegee University"
-    },
-    {
       "gsisId": "00-0040582",
       "name": "Arian Smith",
       "slug": "arian-smith",
@@ -269,7 +254,7 @@
       "statusLabel": "Reserve",
       "heightInches": 72,
       "weight": 179,
-      "age": 24,
+      "age": 25,
       "experience": 1,
       "college": "Georgia"
     },
@@ -826,7 +811,7 @@
       "weight": 247,
       "age": 22,
       "experience": 0,
-      "college": null
+      "college": "Ball State; Bryant"
     },
     {
       "gsisId": "00-0039447",
@@ -895,8 +880,8 @@
       "number": 48,
       "position": "ILB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 235,
       "age": 23,
