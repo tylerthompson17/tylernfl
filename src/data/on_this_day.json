@@ -1,67 +1,67 @@
 {
   "month": 10,
-  "day": 11,
-  "gamesOnDate": 42,
+  "day": 12,
+  "gamesOnDate": 56,
   "items": [
     {
-      "year": 2020,
-      "gameId": "2020_05_LV_KC",
-      "text": "The Raiders beat the Chiefs 40-32 as 11-point underdogs with 72 combined points.",
+      "year": 2014,
+      "gameId": "2014_06_CAR_CIN",
+      "text": "The Panthers and the Bengals tied 37-37 in overtime with 74 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Raiders",
-          "team": "LV"
+          "text": "Panthers",
+          "team": "CAR"
         },
         {
-          "text": " beat the "
+          "text": " and the "
+        },
+        {
+          "text": "Bengals",
+          "team": "CIN"
+        },
+        {
+          "text": " tied 37-37 in overtime with 74 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2008,
+      "gameId": "2008_06_STL_WAS",
+      "text": "The Rams beat Washington 19-17 as 12-point underdogs.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Rams",
+          "team": "LAR"
+        },
+        {
+          "text": " beat "
+        },
+        {
+          "text": "Washington",
+          "team": "WAS"
+        },
+        {
+          "text": " 19-17 as 12-point underdogs."
+        }
+      ]
+    },
+    {
+      "year": 2003,
+      "gameId": "2003_06_KC_GB",
+      "text": "The Chiefs beat the Packers 40-34 in overtime with 74 combined points.",
+      "parts": [
+        {
+          "text": "The "
         },
         {
           "text": "Chiefs",
           "team": "KC"
-        },
-        {
-          "text": " 40-32 as 11-point underdogs with 72 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2009,
-      "gameId": "2009_05_JAX_SEA",
-      "text": "The Seahawks shut out the Jaguars 41-0.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Seahawks",
-          "team": "SEA"
-        },
-        {
-          "text": " shut out the "
-        },
-        {
-          "text": "Jaguars",
-          "team": "JAX"
-        },
-        {
-          "text": " 41-0."
-        }
-      ]
-    },
-    {
-      "year": 2004,
-      "gameId": "2004_05_TEN_GB",
-      "text": "The Titans beat the Packers 48-27 with 75 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Titans",
-          "team": "TEN"
         },
         {
           "text": " beat the "
@@ -71,7 +71,7 @@
           "team": "GB"
         },
         {
-          "text": " 48-27 with 75 combined points."
+          "text": " 40-34 in overtime with 74 combined points."
         }
       ]
     }
