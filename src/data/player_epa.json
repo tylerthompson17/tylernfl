@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 5,
-  "updated": "2026-10-12T19:26:13Z",
+  "updated": "2026-10-13T17:11:20Z",
   "categories": [
     {
       "key": "epa_per_dropback",
@@ -25,6 +25,15 @@
         },
         {
           "rank": 2,
+          "playerId": "00-0034857",
+          "player": "Josh Allen",
+          "team": "BUF",
+          "value": 0.396,
+          "plays": 164,
+          "teamGames": 5
+        },
+        {
+          "rank": 3,
           "playerId": "00-0039918",
           "player": "Caleb Williams",
           "team": "CHI",
@@ -33,22 +42,13 @@
           "teamGames": 5
         },
         {
-          "rank": 3,
+          "rank": 4,
           "playerId": "00-0034796",
           "player": "Lamar Jackson",
           "team": "BAL",
           "value": 0.375,
           "plays": 111,
           "teamGames": 5
-        },
-        {
-          "rank": 4,
-          "playerId": "00-0034857",
-          "player": "Josh Allen",
-          "team": "BUF",
-          "value": 0.337,
-          "plays": 136,
-          "teamGames": 4
         },
         {
           "rank": 5,
@@ -142,6 +142,15 @@
         },
         {
           "rank": 15,
+          "playerId": "00-0026498",
+          "player": "Matthew Stafford",
+          "team": "LAR",
+          "value": 0.152,
+          "plays": 224,
+          "teamGames": 5
+        },
+        {
+          "rank": 16,
           "playerId": "00-0039163",
           "player": "C.J. Stroud",
           "team": "HOU",
@@ -150,22 +159,13 @@
           "teamGames": 5
         },
         {
-          "rank": 16,
+          "rank": 17,
           "playerId": "00-0036264",
           "player": "Jordan Love",
           "team": "GB",
           "value": 0.106,
           "plays": 196,
           "teamGames": 5
-        },
-        {
-          "rank": 17,
-          "playerId": "00-0026498",
-          "player": "Matthew Stafford",
-          "team": "LAR",
-          "value": 0.087,
-          "plays": 169,
-          "teamGames": 4
         },
         {
           "rank": 18,
@@ -335,15 +335,6 @@
       "rows": [
         {
           "rank": 1,
-          "playerId": "00-0037248",
-          "player": "James Cook",
-          "team": "BUF",
-          "value": 0.131,
-          "plays": 70,
-          "teamGames": 4
-        },
-        {
-          "rank": 2,
           "playerId": "00-0038134",
           "player": "Kenneth Walker III",
           "team": "KC",
@@ -352,7 +343,7 @@
           "teamGames": 4
         },
         {
-          "rank": 3,
+          "rank": 2,
           "playerId": "00-0040236",
           "player": "Kyle Monangai",
           "team": "CHI",
@@ -361,7 +352,7 @@
           "teamGames": 5
         },
         {
-          "rank": 4,
+          "rank": 3,
           "playerId": "00-0037746",
           "player": "Brian Robinson",
           "team": "ATL",
@@ -370,7 +361,7 @@
           "teamGames": 5
         },
         {
-          "rank": 4,
+          "rank": 3,
           "playerId": "00-0037228",
           "player": "Jaylen Warren",
           "team": "PIT",
@@ -379,7 +370,7 @@
           "teamGames": 5
         },
         {
-          "rank": 6,
+          "rank": 5,
           "playerId": "00-0038542",
           "player": "Bijan Robinson",
           "team": "ATL",
@@ -388,7 +379,7 @@
           "teamGames": 5
         },
         {
-          "rank": 7,
+          "rank": 6,
           "playerId": "00-0040198",
           "player": "Ollie Gordon II",
           "team": "MIA",
@@ -397,12 +388,21 @@
           "teamGames": 5
         },
         {
-          "rank": 8,
+          "rank": 7,
           "playerId": "00-0039361",
           "player": "Bucky Irving",
           "team": "TB",
           "value": 0.079,
           "plays": 77,
+          "teamGames": 5
+        },
+        {
+          "rank": 8,
+          "playerId": "00-0037248",
+          "player": "James Cook",
+          "team": "BUF",
+          "value": 0.063,
+          "plays": 95,
           "teamGames": 5
         },
         {
@@ -416,15 +416,6 @@
         },
         {
           "rank": 10,
-          "playerId": "00-0037840",
-          "player": "Kyren Williams",
-          "team": "LAR",
-          "value": 0.045,
-          "plays": 54,
-          "teamGames": 4
-        },
-        {
-          "rank": 11,
           "playerId": "00-0036555",
           "player": "Chuba Hubbard",
           "team": "CAR",
@@ -433,7 +424,7 @@
           "teamGames": 4
         },
         {
-          "rank": 12,
+          "rank": 11,
           "playerId": "00-0039139",
           "player": "Jahmyr Gibbs",
           "team": "DET",
@@ -442,7 +433,7 @@
           "teamGames": 5
         },
         {
-          "rank": 13,
+          "rank": 12,
           "playerId": "00-0036223",
           "player": "Jonathan Taylor",
           "team": "IND",
@@ -451,7 +442,25 @@
           "teamGames": 5
         },
         {
+          "rank": 13,
+          "playerId": "00-0037840",
+          "player": "Kyren Williams",
+          "team": "LAR",
+          "value": 0.025,
+          "plays": 70,
+          "teamGames": 5
+        },
+        {
           "rank": 14,
+          "playerId": "00-0039738",
+          "player": "Blake Corum",
+          "team": "LAR",
+          "value": 0.005,
+          "plays": 38,
+          "teamGames": 5
+        },
+        {
+          "rank": 15,
           "playerId": "00-0034844",
           "player": "Saquon Barkley",
           "team": "PHI",
@@ -460,22 +469,13 @@
           "teamGames": 5
         },
         {
-          "rank": 15,
+          "rank": 16,
           "playerId": "00-0036997",
           "player": "Javonte Williams",
           "team": "DAL",
           "value": -0.007,
           "plays": 74,
           "teamGames": 5
-        },
-        {
-          "rank": 16,
-          "playerId": "00-0039738",
-          "player": "Blake Corum",
-          "team": "LAR",
-          "value": -0.012,
-          "plays": 33,
-          "teamGames": 4
         },
         {
           "rank": 17,

@@ -1,19 +1,19 @@
 {
   "season": 2026,
   "throughWeek": 5,
-  "updated": "2026-10-12T19:26:13Z",
+  "updated": "2026-10-13T17:11:20Z",
   "teams": [
     {
       "team": "BUF",
       "conference": "AFC",
       "division": "AFC East",
-      "wins": 3,
+      "wins": 4,
       "losses": 1,
       "ties": 0,
-      "pct": 0.75,
-      "pointsFor": 127,
-      "pointsAgainst": 107,
-      "diff": 20,
+      "pct": 0.8,
+      "pointsFor": 164,
+      "pointsAgainst": 141,
+      "diff": 23,
       "divisionRecord": [
         0,
         1,
@@ -24,7 +24,7 @@
         1,
         0
       ],
-      "streak": "L1",
+      "streak": "W1",
       "divisionRank": 1,
       "conferenceRank": 4,
       "divisionTiebreak": null,
@@ -244,7 +244,7 @@
       "divisionRank": 1,
       "conferenceRank": 3,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "IND",
@@ -818,12 +818,12 @@
       "conference": "NFC",
       "division": "NFC West",
       "wins": 2,
-      "losses": 2,
+      "losses": 3,
       "ties": 0,
-      "pct": 0.5,
-      "pointsFor": 85,
-      "pointsAgainst": 83,
-      "diff": 2,
+      "pct": 0.4,
+      "pointsFor": 119,
+      "pointsAgainst": 120,
+      "diff": -1,
       "divisionRecord": [
         0,
         1,
@@ -834,11 +834,11 @@
         1,
         0
       ],
-      "streak": "W1",
+      "streak": "L1",
       "divisionRank": 3,
       "conferenceRank": 9,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "strength_of_victory"
     },
     {
       "team": "ARI",
