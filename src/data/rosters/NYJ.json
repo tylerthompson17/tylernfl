@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYJ",
   "week": 6,
-  "updated": "2026-10-13T17:11:20Z",
+  "updated": "2026-10-14T14:44:30Z",
   "groups": [
     {
       "key": "offense",
@@ -244,6 +244,21 @@
       "college": "Illinois"
     },
     {
+      "gsisId": "00-0040405",
+      "name": "Jamaal Pritchett",
+      "slug": "jamaal-pritchett",
+      "number": 81,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 68,
+      "weight": 175,
+      "age": 23,
+      "experience": 1,
+      "college": "South Alabama; Tuskegee University"
+    },
+    {
       "gsisId": "00-0040582",
       "name": "Arian Smith",
       "slug": "arian-smith",
@@ -257,21 +272,6 @@
       "age": 25,
       "experience": 1,
       "college": "Georgia"
-    },
-    {
-      "gsisId": "00-0036427",
-      "name": "Tyler Johnson",
-      "slug": "tyler-johnson",
-      "number": 83,
-      "position": "WR",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 205,
-      "age": 28,
-      "experience": 6,
-      "college": "Minnesota"
     },
     {
       "gsisId": "00-0041267",
@@ -347,21 +347,6 @@
       "age": 28,
       "experience": 4,
       "college": "Virginia"
-    },
-    {
-      "gsisId": "00-0041327",
-      "name": "Cody Hardy",
-      "slug": "cody-hardy",
-      "number": 88,
-      "position": "TE",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 271,
-      "age": 22,
-      "experience": 0,
-      "college": "N.C. State; Elon"
     },
     {
       "gsisId": "00-0037805",
@@ -934,21 +919,6 @@
       "college": "Arkansas State"
     },
     {
-      "gsisId": "00-0035617",
-      "name": "Troy Reeder",
-      "slug": "troy-reeder",
-      "number": 50,
-      "position": "MLB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 75,
-      "weight": 245,
-      "age": 32,
-      "experience": 7,
-      "college": "Delaware"
-    },
-    {
       "gsisId": "00-0040133",
       "name": "Azareye'h Thomas",
       "slug": "azareyeh-thomas",
@@ -1187,21 +1157,6 @@
       "age": 30,
       "experience": 8,
       "college": "New Mexico"
-    },
-    {
-      "gsisId": "00-0038905",
-      "name": "Blake Grupe",
-      "slug": "blake-grupe",
-      "number": 39,
-      "position": "K",
-      "group": "specialists",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 67,
-      "weight": 156,
-      "age": 27,
-      "experience": 3,
-      "college": "Notre Dame; Arkansas State"
     },
     {
       "gsisId": "00-0039634",

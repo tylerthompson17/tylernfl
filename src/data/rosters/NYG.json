@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYG",
   "week": 6,
-  "updated": "2026-10-13T17:11:20Z",
+  "updated": "2026-10-14T14:44:30Z",
   "groups": [
     {
       "key": "offense",
@@ -604,6 +604,21 @@
       "college": "Iowa"
     },
     {
+      "gsisId": "00-0033907",
+      "name": "Dawuane Smoot",
+      "slug": "dawuane-smoot",
+      "number": 98,
+      "position": "DE",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 264,
+      "age": 31,
+      "experience": 9,
+      "college": "Illinois"
+    },
+    {
       "gsisId": "00-0040694",
       "name": "Darius Alexander",
       "slug": "darius-alexander",
@@ -895,8 +910,8 @@
       "number": 54,
       "position": "ILB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 245,
       "age": 28,

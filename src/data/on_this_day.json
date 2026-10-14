@@ -1,19 +1,67 @@
 {
   "month": 10,
-  "day": 13,
-  "gamesOnDate": 58,
+  "day": 14,
+  "gamesOnDate": 55,
   "items": [
     {
-      "year": 2024,
-      "gameId": "2024_06_DET_DAL",
-      "text": "The Lions beat the Cowboys 47-9.",
+      "year": 2018,
+      "gameId": "2018_06_KC_NE",
+      "text": "The Patriots beat the Chiefs 43-40 with 83 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Lions",
-          "team": "DET"
+          "text": "Patriots",
+          "team": "NE"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Chiefs",
+          "team": "KC"
+        },
+        {
+          "text": " 43-40 with 83 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2012,
+      "gameId": "2012_06_NYG_SF",
+      "text": "The Giants beat the 49ers 26-3 as 7-point underdogs.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Giants",
+          "team": "NYG"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "49ers",
+          "team": "SF"
+        },
+        {
+          "text": " 26-3 as 7-point underdogs."
+        }
+      ]
+    },
+    {
+      "year": 2007,
+      "gameId": "2007_06_NE_DAL",
+      "text": "The Patriots beat the Cowboys 48-27 with 75 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Patriots",
+          "team": "NE"
         },
         {
           "text": " beat the "
@@ -23,55 +71,7 @@
           "team": "DAL"
         },
         {
-          "text": " 47-9."
-        }
-      ]
-    },
-    {
-      "year": 2003,
-      "gameId": "2003_06_ATL_STL",
-      "text": "The Rams shut out the Falcons 36-0.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Rams",
-          "team": "LAR"
-        },
-        {
-          "text": " shut out the "
-        },
-        {
-          "text": "Falcons",
-          "team": "ATL"
-        },
-        {
-          "text": " 36-0."
-        }
-      ]
-    },
-    {
-      "year": 2002,
-      "gameId": "2002_06_NO_WAS",
-      "text": "The Saints beat Washington 43-27 with 70 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Saints",
-          "team": "NO"
-        },
-        {
-          "text": " beat "
-        },
-        {
-          "text": "Washington",
-          "team": "WAS"
-        },
-        {
-          "text": " 43-27 with 70 combined points."
+          "text": " 48-27 with 75 combined points."
         }
       ]
     }

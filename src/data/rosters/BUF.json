@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "BUF",
   "week": 6,
-  "updated": "2026-10-13T17:11:20Z",
+  "updated": "2026-10-14T14:44:30Z",
   "groups": [
     {
       "key": "offense",
@@ -235,8 +235,8 @@
       "number": 18,
       "position": "WR",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 72,
       "weight": 203,
       "age": 30,
@@ -595,8 +595,8 @@
       "number": 72,
       "position": "DT",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 76,
       "weight": 312,
       "age": 28,
@@ -692,6 +692,21 @@
       "age": 26,
       "experience": 5,
       "college": "Miami"
+    },
+    {
+      "gsisId": "00-0036378",
+      "name": "Michael Danna",
+      "slug": "michael-danna",
+      "number": 51,
+      "position": "OLB",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 74,
+      "weight": 255,
+      "age": 28,
+      "experience": 6,
+      "college": "Michigan"
     },
     {
       "gsisId": "00-0035933",
@@ -872,21 +887,6 @@
       "age": 28,
       "experience": 6,
       "college": "Tusculum College"
-    },
-    {
-      "gsisId": "00-0038848",
-      "name": "Anthony Kendall",
-      "slug": "anthony-kendall",
-      "number": 30,
-      "position": "CB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 70,
-      "weight": 188,
-      "age": 26,
-      "experience": 3,
-      "college": "Baldwin Wallace College"
     },
     {
       "gsisId": "00-0039685",

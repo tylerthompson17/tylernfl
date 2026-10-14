@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "KC",
   "week": 6,
-  "updated": "2026-10-13T17:11:20Z",
+  "updated": "2026-10-14T14:44:30Z",
   "groups": [
     {
       "key": "offense",
@@ -175,8 +175,8 @@
       "number": 2,
       "position": "WR",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 74,
       "weight": 185,
       "age": 26,
@@ -287,6 +287,21 @@
       "age": 24,
       "experience": 1,
       "college": "Louisiana Tech; Western Kentucky; Tennessee"
+    },
+    {
+      "gsisId": "00-0034386",
+      "name": "Justin Watson",
+      "slug": "justin-watson",
+      "number": 84,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 215,
+      "age": 30,
+      "experience": 8,
+      "college": "Penn"
     },
     {
       "gsisId": "00-0040298",
@@ -820,8 +835,8 @@
       "number": 45,
       "position": "OLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 74,
       "weight": 228,
       "age": 26,

@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "JAX",
   "week": 6,
-  "updated": "2026-10-13T17:11:20Z",
+  "updated": "2026-10-14T14:44:30Z",
   "groups": [
     {
       "key": "offense",
@@ -415,8 +415,8 @@
       "number": 77,
       "position": "T",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 77,
       "weight": 315,
       "age": 24,
@@ -1004,7 +1004,7 @@
       "statusLabel": "Active",
       "heightInches": 71,
       "weight": 190,
-      "age": 28,
+      "age": 29,
       "experience": 4,
       "college": "Mississippi"
     },
@@ -1105,8 +1105,8 @@
       "number": 26,
       "position": "SS",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 72,
       "weight": 207,
       "age": 26,
@@ -1172,6 +1172,21 @@
       "age": 30,
       "experience": 6,
       "college": "Baylor"
+    },
+    {
+      "gsisId": "00-0035757",
+      "name": "Jacob Bobenmoyer",
+      "slug": "jacob-bobenmoyer",
+      "number": 50,
+      "position": "LS",
+      "group": "specialists",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 235,
+      "age": 29,
+      "experience": 6,
+      "college": "Northern Colorado"
     }
   ]
 }
