@@ -1,19 +1,43 @@
 {
   "month": 10,
-  "day": 14,
+  "day": 15,
   "gamesOnDate": 55,
   "items": [
     {
-      "year": 2018,
-      "gameId": "2018_06_KC_NE",
-      "text": "The Patriots beat the Chiefs 43-40 with 83 combined points.",
+      "year": 2017,
+      "gameId": "2017_06_DET_NO",
+      "text": "The Saints beat the Lions 52-38 with 90 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Patriots",
-          "team": "NE"
+          "text": "Saints",
+          "team": "NO"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Lions",
+          "team": "DET"
+        },
+        {
+          "text": " 52-38 with 90 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2006,
+      "gameId": "2006_06_KC_PIT",
+      "text": "The Steelers beat the Chiefs 45-7.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Steelers",
+          "team": "PIT"
         },
         {
           "text": " beat the "
@@ -23,55 +47,31 @@
           "team": "KC"
         },
         {
-          "text": " 43-40 with 83 combined points."
+          "text": " 45-7."
         }
       ]
     },
     {
-      "year": 2012,
-      "gameId": "2012_06_NYG_SF",
-      "text": "The Giants beat the 49ers 26-3 as 7-point underdogs.",
+      "year": 2000,
+      "gameId": "2000_07_ATL_STL",
+      "text": "The Rams beat the Falcons 45-29 with 74 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Giants",
-          "team": "NYG"
+          "text": "Rams",
+          "team": "LAR"
         },
         {
           "text": " beat the "
         },
         {
-          "text": "49ers",
-          "team": "SF"
+          "text": "Falcons",
+          "team": "ATL"
         },
         {
-          "text": " 26-3 as 7-point underdogs."
-        }
-      ]
-    },
-    {
-      "year": 2007,
-      "gameId": "2007_06_NE_DAL",
-      "text": "The Patriots beat the Cowboys 48-27 with 75 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Patriots",
-          "team": "NE"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Cowboys",
-          "team": "DAL"
-        },
-        {
-          "text": " 48-27 with 75 combined points."
+          "text": " 45-29 with 74 combined points."
         }
       ]
     }

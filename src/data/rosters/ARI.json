@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "ARI",
   "week": 6,
-  "updated": "2026-10-14T14:44:30Z",
+  "updated": "2026-10-15T14:29:34Z",
   "groups": [
     {
       "key": "offense",
@@ -154,6 +154,36 @@
       "college": "Florida State; Oregon"
     },
     {
+      "gsisId": "00-0037267",
+      "name": "Jerome Ford",
+      "slug": "jerome-ford",
+      "number": 34,
+      "position": "RB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 70,
+      "weight": 210,
+      "age": 27,
+      "experience": 4,
+      "college": "Cincinnati; Alabama"
+    },
+    {
+      "gsisId": "00-0038891",
+      "name": "Shedrick Jackson",
+      "slug": "shedrick-jackson",
+      "number": 4,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 202,
+      "age": 26,
+      "experience": 3,
+      "college": "Auburn"
+    },
+    {
       "gsisId": "00-0038559",
       "name": "Michael Wilson",
       "slug": "michael-wilson",
@@ -182,21 +212,6 @@
       "age": 31,
       "experience": 9,
       "college": "Eastern Washington"
-    },
-    {
-      "gsisId": "00-0041368",
-      "name": "Harrison Wallace III",
-      "slug": "harrison-wallace-iii",
-      "number": 30,
-      "position": "WR",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 71,
-      "weight": 192,
-      "age": 23,
-      "experience": 0,
-      "college": "Mississippi; Penn State"
     },
     {
       "gsisId": "00-0036646",
@@ -244,6 +259,21 @@
       "college": "Texas Tech; Miami (Ohio)"
     },
     {
+      "gsisId": "00-0041368",
+      "name": "Harrison Wallace III",
+      "slug": "harrison-wallace-iii",
+      "number": 83,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 71,
+      "weight": 192,
+      "age": 23,
+      "experience": 0,
+      "college": "Mississippi; Penn State"
+    },
+    {
       "gsisId": "00-0038640",
       "name": "Jalen Brooks",
       "slug": "jalen-brooks",
@@ -265,13 +295,28 @@
       "number": 44,
       "position": "TE",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 76,
       "weight": 249,
       "age": 26,
       "experience": 2,
       "college": "Rutgers; Maine"
+    },
+    {
+      "gsisId": "00-0036510",
+      "name": "Kenny Yeboah",
+      "slug": "kenny-yeboah",
+      "number": 45,
+      "position": "TE",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 240,
+      "age": 27,
+      "experience": 5,
+      "college": "Mississippi"
     },
     {
       "gsisId": "00-0041366",
@@ -302,21 +347,6 @@
       "age": 26,
       "experience": 4,
       "college": "Oregon State"
-    },
-    {
-      "gsisId": "00-0036510",
-      "name": "Kenny Yeboah",
-      "slug": "kenny-yeboah",
-      "number": 48,
-      "position": "TE",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 240,
-      "age": 27,
-      "experience": 5,
-      "college": "Mississippi"
     },
     {
       "gsisId": "00-0039041",
@@ -562,7 +592,7 @@
       "gsisId": "00-0039442",
       "name": "Kingsley Eguakun",
       "slug": "kingsley-eguakun",
-      "number": 67,
+      "number": 64,
       "position": "C",
       "group": "offense",
       "status": "DEV",
@@ -919,6 +949,21 @@
       "college": "Minnesota; Abilene Christian"
     },
     {
+      "gsisId": "00-0041564",
+      "name": "Riley Wilson",
+      "slug": "riley-wilson",
+      "number": 51,
+      "position": "ILB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 226,
+      "age": 24,
+      "experience": 0,
+      "college": "Arizona; Hawaii; Montana"
+    },
+    {
       "gsisId": "00-0040751",
       "name": "Will Johnson",
       "slug": "will-johnson",
@@ -1147,7 +1192,7 @@
       "gsisId": "00-0039488",
       "name": "Mark Perry",
       "slug": "mark-perry",
-      "number": 41,
+      "number": 37,
       "position": "SS",
       "group": "defense",
       "status": "DEV",
@@ -1169,7 +1214,7 @@
       "statusLabel": "Active",
       "heightInches": 72,
       "weight": 195,
-      "age": 26,
+      "age": 27,
       "experience": 3,
       "college": "Maryland; Eastern Michigan"
     },

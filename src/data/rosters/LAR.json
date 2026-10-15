@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "LAR",
   "week": 6,
-  "updated": "2026-10-14T14:44:30Z",
+  "updated": "2026-10-15T14:29:34Z",
   "groups": [
     {
       "key": "offense",
@@ -415,8 +415,8 @@
       "number": 77,
       "position": "T",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 79,
       "weight": 338,
       "age": 28,
@@ -799,6 +799,21 @@
       "college": "Wisconsin"
     },
     {
+      "gsisId": "00-0038693",
+      "name": "Garrett Nelson",
+      "slug": "garrett-nelson",
+      "number": 59,
+      "position": "OLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 245,
+      "age": 26,
+      "experience": 3,
+      "college": "Nebraska"
+    },
+    {
       "gsisId": "00-0039061",
       "name": "Desjuan Johnson",
       "slug": "desjuan-johnson",
@@ -839,7 +854,7 @@
       "statusLabel": "Active",
       "heightInches": 71,
       "weight": 230,
-      "age": 27,
+      "age": 28,
       "experience": 5,
       "college": "Houston"
     },
@@ -1127,6 +1142,21 @@
       "age": 26,
       "experience": 3,
       "college": "N.C. State"
+    },
+    {
+      "gsisId": "00-0038905",
+      "name": "Blake Grupe",
+      "slug": "blake-grupe",
+      "number": 39,
+      "position": "K",
+      "group": "specialists",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 67,
+      "weight": 156,
+      "age": 27,
+      "experience": 3,
+      "college": "Notre Dame; Arkansas State"
     },
     {
       "gsisId": "00-0041560",

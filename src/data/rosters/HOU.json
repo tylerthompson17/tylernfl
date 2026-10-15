@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "HOU",
   "week": 6,
-  "updated": "2026-10-14T14:44:30Z",
+  "updated": "2026-10-15T14:29:34Z",
   "groups": [
     {
       "key": "offense",
@@ -47,6 +47,21 @@
       "age": 27,
       "experience": 5,
       "college": "Stanford"
+    },
+    {
+      "gsisId": "00-0041156",
+      "name": "Mark Gronowski",
+      "slug": "mark-gronowski",
+      "number": 16,
+      "position": "QB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 235,
+      "age": 25,
+      "experience": 0,
+      "college": "Iowa; South Dakota"
     },
     {
       "gsisId": "00-0040211",
@@ -259,6 +274,21 @@
       "college": "Iowa State"
     },
     {
+      "gsisId": "00-0039650",
+      "name": "Bryce Oliver",
+      "slug": "bryce-oliver",
+      "number": 31,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 215,
+      "age": 26,
+      "experience": 2,
+      "college": "Youngstown State; Kentucky"
+    },
+    {
       "gsisId": "00-0040130",
       "name": "Jayden Higgins",
       "slug": "jayden-higgins",
@@ -445,8 +475,8 @@
       "number": 71,
       "position": "T",
       "group": "offense",
-      "status": "RES",
-      "statusLabel": "Reserve",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 78,
       "weight": 315,
       "age": 30,
