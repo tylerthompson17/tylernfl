@@ -1,36 +1,12 @@
 {
   "month": 10,
-  "day": 15,
-  "gamesOnDate": 55,
+  "day": 16,
+  "gamesOnDate": 56,
   "items": [
     {
-      "year": 2017,
-      "gameId": "2017_06_DET_NO",
-      "text": "The Saints beat the Lions 52-38 with 90 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Saints",
-          "team": "NO"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Lions",
-          "team": "DET"
-        },
-        {
-          "text": " 52-38 with 90 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2006,
-      "gameId": "2006_06_KC_PIT",
-      "text": "The Steelers beat the Chiefs 45-7.",
+      "year": 2022,
+      "gameId": "2022_06_TB_PIT",
+      "text": "The Steelers beat the Buccaneers 20-18 as 10-point underdogs.",
       "parts": [
         {
           "text": "The "
@@ -43,35 +19,59 @@
           "text": " beat the "
         },
         {
-          "text": "Chiefs",
-          "team": "KC"
+          "text": "Buccaneers",
+          "team": "TB"
         },
         {
-          "text": " 45-7."
+          "text": " 20-18 as 10-point underdogs."
         }
       ]
     },
     {
-      "year": 2000,
-      "gameId": "2000_07_ATL_STL",
-      "text": "The Rams beat the Falcons 45-29 with 74 combined points.",
+      "year": 2016,
+      "gameId": "2016_06_CAR_NO",
+      "text": "The Saints beat the Panthers 41-38 with 79 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Rams",
-          "team": "LAR"
+          "text": "Saints",
+          "team": "NO"
         },
         {
           "text": " beat the "
         },
         {
-          "text": "Falcons",
-          "team": "ATL"
+          "text": "Panthers",
+          "team": "CAR"
         },
         {
-          "text": " 45-29 with 74 combined points."
+          "text": " 41-38 with 79 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2005,
+      "gameId": "2005_06_HOU_SEA",
+      "text": "The Seahawks beat the Texans 42-10.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Seahawks",
+          "team": "SEA"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Texans",
+          "team": "HOU"
+        },
+        {
+          "text": " 42-10."
         }
       ]
     }

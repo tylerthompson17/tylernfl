@@ -1,7 +1,7 @@
 {
   "season": 2026,
-  "throughWeek": 5,
-  "updated": "2026-10-13T17:11:20Z",
+  "throughWeek": 6,
+  "updated": "2026-10-16T14:22:29Z",
   "teams": [
     {
       "team": "BUF",
@@ -53,7 +53,7 @@
       ],
       "streak": "W2",
       "divisionRank": 2,
-      "conferenceRank": 5,
+      "conferenceRank": 6,
       "divisionTiebreak": null,
       "conferenceTiebreak": "conference_record"
     },
@@ -358,13 +358,13 @@
       "team": "DEN",
       "conference": "AFC",
       "division": "AFC West",
-      "wins": 3,
+      "wins": 4,
       "losses": 2,
       "ties": 0,
-      "pct": 0.6,
-      "pointsFor": 97,
-      "pointsAgainst": 111,
-      "diff": -14,
+      "pct": 0.667,
+      "pointsFor": 114,
+      "pointsAgainst": 125,
+      "diff": -11,
       "divisionRecord": [
         1,
         1,
@@ -375,11 +375,11 @@
         1,
         0
       ],
-      "streak": "W1",
+      "streak": "W2",
       "divisionRank": 2,
-      "conferenceRank": 6,
-      "divisionTiebreak": "conference_record",
-      "conferenceTiebreak": "conference_record"
+      "conferenceRank": 5,
+      "divisionTiebreak": null,
+      "conferenceTiebreak": null
     },
     {
       "team": "LV",
@@ -405,7 +405,7 @@
       "streak": "L2",
       "divisionRank": 3,
       "conferenceRank": 7,
-      "divisionTiebreak": "conference_record",
+      "divisionTiebreak": null,
       "conferenceTiebreak": "conference_record"
     },
     {
@@ -595,7 +595,7 @@
       "divisionRank": 2,
       "conferenceRank": 5,
       "divisionTiebreak": "head_to_head",
-      "conferenceTiebreak": "conference_record"
+      "conferenceTiebreak": "division_order"
     },
     {
       "team": "CHI",
@@ -622,7 +622,7 @@
       "divisionRank": 3,
       "conferenceRank": 6,
       "divisionTiebreak": "common_games",
-      "conferenceTiebreak": "conference_record"
+      "conferenceTiebreak": "division_order"
     },
     {
       "team": "DET",
@@ -649,7 +649,7 @@
       "divisionRank": 4,
       "conferenceRank": 7,
       "divisionTiebreak": "common_games",
-      "conferenceTiebreak": "conference_record"
+      "conferenceTiebreak": "division_order"
     },
     {
       "team": "CAR",
@@ -791,12 +791,12 @@
       "conference": "NFC",
       "division": "NFC West",
       "wins": 3,
-      "losses": 2,
+      "losses": 3,
       "ties": 0,
-      "pct": 0.6,
-      "pointsFor": 134,
-      "pointsAgainst": 105,
-      "diff": 29,
+      "pct": 0.5,
+      "pointsFor": 148,
+      "pointsAgainst": 122,
+      "diff": 26,
       "divisionRecord": [
         1,
         1,
@@ -807,7 +807,7 @@
         2,
         0
       ],
-      "streak": "L1",
+      "streak": "L2",
       "divisionRank": 2,
       "conferenceRank": 8,
       "divisionTiebreak": null,

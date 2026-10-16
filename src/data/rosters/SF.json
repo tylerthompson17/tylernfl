@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "SF",
   "week": 6,
-  "updated": "2026-10-14T14:44:30Z",
+  "updated": "2026-10-16T14:22:29Z",
   "groups": [
     {
       "key": "offense",
@@ -715,8 +715,8 @@
       "number": 59,
       "position": "DE",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 74,
       "weight": 253,
       "age": 31,
@@ -1007,6 +1007,21 @@
       "age": 29,
       "experience": 7,
       "college": "Arkansas"
+    },
+    {
+      "gsisId": "00-0040299",
+      "name": "Eugene Asante",
+      "slug": "eugene-asante",
+      "number": 48,
+      "position": "ILB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 222,
+      "age": 26,
+      "experience": 1,
+      "college": "Auburn; North Carolina"
     },
     {
       "gsisId": "00-0038648",

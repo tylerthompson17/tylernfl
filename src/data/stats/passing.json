@@ -2,7 +2,7 @@
   "key": "passing",
   "label": "Passing",
   "season": 2026,
-  "throughWeek": 5,
+  "throughWeek": 6,
   "primary": "passing_yards",
   "qualifier": {
     "column": "attempts",
@@ -415,6 +415,26 @@
     },
     {
       "rank": 17,
+      "playerId": "00-0039732",
+      "player": "Bo Nix",
+      "team": "DEN",
+      "position": "QB",
+      "teamGames": 6,
+      "qualified": true,
+      "values": {
+        "games": 6,
+        "completions": 114,
+        "attempts": 189,
+        "passing_yards": 1049,
+        "passing_tds": 6,
+        "passing_interceptions": 3,
+        "sacks_suffered": 8,
+        "cmp_pct": 0.603,
+        "pass_ypa": 5.6
+      }
+    },
+    {
+      "rank": 18,
       "playerId": "00-0033873",
       "player": "Patrick Mahomes",
       "team": "KC",
@@ -434,7 +454,27 @@
       }
     },
     {
-      "rank": 18,
+      "rank": 19,
+      "playerId": "00-0034869",
+      "player": "Sam Darnold",
+      "team": "SEA",
+      "position": "QB",
+      "teamGames": 6,
+      "qualified": true,
+      "values": {
+        "games": 5,
+        "completions": 90,
+        "attempts": 149,
+        "passing_yards": 1033,
+        "passing_tds": 7,
+        "passing_interceptions": 7,
+        "sacks_suffered": 14,
+        "cmp_pct": 0.604,
+        "pass_ypa": 6.9
+      }
+    },
+    {
+      "rank": 20,
       "playerId": "00-0035710",
       "player": "Daniel Jones",
       "team": "IND",
@@ -454,7 +494,7 @@
       }
     },
     {
-      "rank": 19,
+      "rank": 21,
       "playerId": "00-0033537",
       "player": "Deshaun Watson",
       "team": "CLE",
@@ -474,7 +514,7 @@
       }
     },
     {
-      "rank": 20,
+      "rank": 22,
       "playerId": "00-0034796",
       "player": "Lamar Jackson",
       "team": "BAL",
@@ -494,27 +534,7 @@
       }
     },
     {
-      "rank": 21,
-      "playerId": "00-0039732",
-      "player": "Bo Nix",
-      "team": "DEN",
-      "position": "QB",
-      "teamGames": 5,
-      "qualified": true,
-      "values": {
-        "games": 5,
-        "completions": 97,
-        "attempts": 162,
-        "passing_yards": 942,
-        "passing_tds": 6,
-        "passing_interceptions": 3,
-        "sacks_suffered": 6,
-        "cmp_pct": 0.599,
-        "pass_ypa": 5.8
-      }
-    },
-    {
-      "rank": 22,
+      "rank": 23,
       "playerId": "00-0036355",
       "player": "Justin Herbert",
       "team": "LAC",
@@ -534,7 +554,7 @@
       }
     },
     {
-      "rank": 23,
+      "rank": 24,
       "playerId": "00-0036389",
       "player": "Jalen Hurts",
       "team": "PHI",
@@ -554,7 +574,7 @@
       }
     },
     {
-      "rank": 24,
+      "rank": 25,
       "playerId": "00-0040676",
       "player": "Cam Ward",
       "team": "TEN",
@@ -574,7 +594,7 @@
       }
     },
     {
-      "rank": 25,
+      "rank": 26,
       "playerId": "00-0038128",
       "player": "Malik Willis",
       "team": "MIA",
@@ -594,7 +614,7 @@
       }
     },
     {
-      "rank": 26,
+      "rank": 27,
       "playerId": "00-0031503",
       "player": "Jameis Winston",
       "team": "NYG",
@@ -611,26 +631,6 @@
         "sacks_suffered": 11,
         "cmp_pct": 0.576,
         "pass_ypa": 6.1
-      }
-    },
-    {
-      "rank": 27,
-      "playerId": "00-0034869",
-      "player": "Sam Darnold",
-      "team": "SEA",
-      "position": "QB",
-      "teamGames": 5,
-      "qualified": true,
-      "values": {
-        "games": 4,
-        "completions": 63,
-        "attempts": 98,
-        "passing_yards": 755,
-        "passing_tds": 7,
-        "passing_interceptions": 5,
-        "sacks_suffered": 9,
-        "cmp_pct": 0.643,
-        "pass_ypa": 7.7
       }
     },
     {
@@ -719,7 +719,7 @@
       "player": "Drew Lock",
       "team": "SEA",
       "position": "QB",
-      "teamGames": 5,
+      "teamGames": 6,
       "qualified": false,
       "values": {
         "games": 2,
@@ -1039,10 +1039,10 @@
       "player": "Jaxon Smith-Njigba",
       "team": "SEA",
       "position": "WR",
-      "teamGames": 5,
+      "teamGames": 6,
       "qualified": false,
       "values": {
-        "games": 5,
+        "games": 6,
         "completions": 1,
         "attempts": 1,
         "passing_yards": 14,
