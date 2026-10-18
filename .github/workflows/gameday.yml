@@ -1,0 +1,106 @@
+name: Game day updates
+
+# While games are on, rebuild the site data each time nflverse publishes a
+# new final, so records, standings, playoff odds and the "as of" lines move
+# within the hour instead of the next morning. pipelines/gameday.py decides
+# when there is something new and when to stop.
+#
+# Started by the daily run on any day with a kickoff in the next 16 hours,
+# and by the crons below in case that run fires late (GitHub has started it
+# over three hours late). A job may run 6 hours, so one still watching near
+# the end starts the next and exits. Only one runs at a time; extra starts
+# wait, then find nothing left and exit.
+
+on:
+  schedule:
+    # 16:37 UTC is 12:37 PM Eastern (11:37 AM in winter); 22:37 UTC is 6:37
+    # PM (5:37 PM). Odd minutes, since GitHub delays runs on the hour most.
+    - cron: '37 16 * * 0'
+    - cron: '37 22 * * 1,4'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: gameday
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      PBP_CACHE_DIR: ${{ github.workspace }}/pipelines/.cache/pbp
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: pipelines/requirements.txt
+
+      - name: Install pipeline dependencies
+        run: pip install -r pipelines/requirements.txt
+
+      - name: Restore play-by-play cache
+        uses: actions/cache@v6
+        with:
+          path: pipelines/.cache/pbp
+          key: pbp-${{ github.run_id }}
+          restore-keys: pbp-
+
+      - name: Watch for finals
+        id: watch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          started=$(date +%s)
+          # Leave room under the 355 minute timeout for one last pipeline run.
+          budget=$(( 330 * 60 ))
+          while true; do
+            # Another run (the daily one) may have pushed since.
+            git fetch -q origin main && git reset -q --hard origin/main || echo "Fetch failed."
+            if ! read -r new watch wait < <(python pipelines/gameday.py); then
+              echo "Check failed; trying again in 5 minutes."
+              new=0; watch=1; wait=300
+            fi
+            if (( new > 0 )) && ! python pipelines/run_daily.py; then
+              echo "Pipeline failed; trying again at the next check."
+            elif (( new > 0 )); then
+              if [ -n "$(git status --porcelain -- src/data)" ]; then
+                git add src/data
+                git commit -q -m "Update site data for $(TZ=America/New_York date +%Y-%m-%d), game day"
+                # A conflict means the daily run wrote the same files; drop
+                # this commit, and the next check starts from its data.
+                if git pull -q --rebase origin main && git push -q origin HEAD:main; then
+                  gh workflow run deploy.yml --ref main
+                  echo "Published $new new finals."
+                else
+                  git rebase --abort 2>/dev/null || true
+                  echo "Push failed; checking again."
+                fi
+              fi
+            fi
+            if (( watch == 0 )); then
+              echo "No games on or coming up; done."
+              exit 0
+            fi
+            if (( $(date +%s) - started + wait > budget )); then
+              echo "continue=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            sleep "$wait"
+          done
+
+      - name: Continue in a new run
+        if: steps.watch.outputs.continue == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run gameday.yml --ref main

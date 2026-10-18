@@ -111,3 +111,15 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run deploy.yml --ref main
+
+      # With a kickoff in the next 16 hours, watch for finals through the
+      # day (gameday.yml), so results do not wait for tomorrow's run.
+      - name: Start game day updates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if read -r new watch wait < <(python pipelines/gameday.py) && (( watch == 1 )); then
+            gh workflow run gameday.yml --ref main
+          else
+            echo "No games coming up."
+          fi

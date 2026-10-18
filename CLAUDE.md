@@ -55,10 +55,11 @@ tylernfl/
 │   └── data/               JSON consumed at build time (mock now, pipeline output later)
 ├── public/logos/           team logos, named with a hash (pipelines/build_logos.py)
 ├── pipelines/              Python jobs: run_daily.py (every data file), build_teams.py
+│   ├── gameday.py          game day check: new finals, keep watching (gameday.yml)
 │   └── charts/             style.py (shared chart style), auto.py (auto chart), build.py
 │       └── mine/           Tyler's chart scripts (his; do not edit)
 ├── models/                 exported model files (empty for now)
-└── .github/workflows/      deploy.yml, daily.yml
+└── .github/workflows/      deploy.yml, daily.yml, gameday.yml
 ```
 
 ## GitHub Pages rules
@@ -97,6 +98,16 @@ tylernfl/
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
   at 6 AM Eastern and again Friday at 8 PM Eastern, after teams file Sunday game statuses.
   nflverse calls the Rams `LA`; pipelines normalize it to `LAR`.
+- On game days `.github/workflows/gameday.yml` reruns `run_daily.py` whenever nflverse
+  publishes a final the committed `schedule.json` does not have, so records, standings,
+  playoff odds and the "as of" lines follow the games within the hour (nflverse updates
+  its schedule every 10 to 30 minutes, then the deploy and Pages' 10 minute cache). It
+  checks every 5 minutes while a game is on, every 15 while waiting for a kickoff, and
+  stops when nothing is on or kicks off within 16 hours; the rule is `check` in
+  `pipelines/gameday.py`. The daily run starts it on any day with a kickoff ahead, with
+  backup crons on Sunday, Monday and Thursday, and a run near the 6 hour job limit
+  starts the next. Excitement labels and win probability charts still wait for
+  play-by-play, which `pbp_cache.py` refreshes every 12 hours.
 - `stats/{board}.json` holds the full player leaderboards (passing, rushing, receiving,
   defense, kicking). The pipeline decides values, ranks and who qualifies; the site only
   sorts and switches totals / per game in the browser. Qualifying bars are per team game
