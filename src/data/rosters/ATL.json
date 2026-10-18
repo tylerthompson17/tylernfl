@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "ATL",
   "week": 6,
-  "updated": "2026-10-16T14:22:29Z",
+  "updated": "2026-10-18T13:38:42Z",
   "groups": [
     {
       "key": "offense",
@@ -790,8 +790,8 @@
       "number": 48,
       "position": "OLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 76,
       "weight": 274,
       "age": 25,
@@ -850,8 +850,8 @@
       "number": 91,
       "position": "OLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 76,
       "weight": 250,
       "age": 25,
@@ -1157,6 +1157,21 @@
       "age": 26,
       "experience": 3,
       "college": "Illinois"
+    },
+    {
+      "gsisId": "00-0038587",
+      "name": "Jammie Robinson",
+      "slug": "jammie-robinson",
+      "number": 34,
+      "position": "SS",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 71,
+      "weight": 195,
+      "age": 25,
+      "experience": 3,
+      "college": "Florida State"
     },
     {
       "gsisId": "00-0025565",
