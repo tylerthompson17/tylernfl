@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 6,
-  "updated": "2026-10-19T03:54:24Z",
+  "updated": "2026-10-19T16:39:57Z",
   "categories": [
     {
       "key": "epa_per_dropback",
@@ -88,15 +88,6 @@
         },
         {
           "rank": 9,
-          "playerId": "00-0033077",
-          "player": "Dak Prescott",
-          "team": "DAL",
-          "value": 0.219,
-          "plays": 209,
-          "teamGames": 5
-        },
-        {
-          "rank": 10,
           "playerId": "00-0029604",
           "player": "Kirk Cousins",
           "team": "LV",
@@ -105,7 +96,7 @@
           "teamGames": 6
         },
         {
-          "rank": 11,
+          "rank": 10,
           "playerId": "00-0039910",
           "player": "Jayden Daniels",
           "team": "WAS",
@@ -114,7 +105,7 @@
           "teamGames": 5
         },
         {
-          "rank": 12,
+          "rank": 11,
           "playerId": "00-0033873",
           "player": "Patrick Mahomes",
           "team": "KC",
@@ -123,7 +114,7 @@
           "teamGames": 5
         },
         {
-          "rank": 13,
+          "rank": 12,
           "playerId": "00-0036442",
           "player": "Joe Burrow",
           "team": "CIN",
@@ -132,12 +123,21 @@
           "teamGames": 5
         },
         {
-          "rank": 14,
+          "rank": 13,
           "playerId": "00-0039163",
           "player": "C.J. Stroud",
           "team": "HOU",
           "value": 0.163,
           "plays": 237,
+          "teamGames": 6
+        },
+        {
+          "rank": 14,
+          "playerId": "00-0033077",
+          "player": "Dak Prescott",
+          "team": "DAL",
+          "value": 0.141,
+          "plays": 265,
           "teamGames": 6
         },
         {
@@ -151,21 +151,21 @@
         },
         {
           "rank": 16,
+          "playerId": "00-0036264",
+          "player": "Jordan Love",
+          "team": "GB",
+          "value": 0.112,
+          "plays": 240,
+          "teamGames": 6
+        },
+        {
+          "rank": 17,
           "playerId": "00-0035993",
           "player": "Tyler Huntley",
           "team": "BAL",
           "value": 0.111,
           "plays": 85,
           "teamGames": 6
-        },
-        {
-          "rank": 17,
-          "playerId": "00-0036264",
-          "player": "Jordan Love",
-          "team": "GB",
-          "value": 0.106,
-          "plays": 196,
-          "teamGames": 5
         },
         {
           "rank": 18,
@@ -452,6 +452,15 @@
         },
         {
           "rank": 14,
+          "playerId": "00-0036997",
+          "player": "Javonte Williams",
+          "team": "DAL",
+          "value": 0.022,
+          "plays": 85,
+          "teamGames": 6
+        },
+        {
+          "rank": 15,
           "playerId": "00-0034844",
           "player": "Saquon Barkley",
           "team": "PHI",
@@ -460,22 +469,13 @@
           "teamGames": 6
         },
         {
-          "rank": 15,
+          "rank": 16,
           "playerId": "00-0039361",
           "player": "Bucky Irving",
           "team": "TB",
           "value": -0.002,
           "plays": 96,
           "teamGames": 6
-        },
-        {
-          "rank": 16,
-          "playerId": "00-0036997",
-          "player": "Javonte Williams",
-          "team": "DAL",
-          "value": -0.007,
-          "plays": 74,
-          "teamGames": 5
         },
         {
           "rank": 17,
@@ -695,20 +695,20 @@
         },
         {
           "rank": 41,
-          "playerId": "00-0039811",
-          "player": "MarShawn Lloyd",
-          "team": "GB",
-          "value": -0.312,
-          "plays": 40,
-          "teamGames": 5
-        },
-        {
-          "rank": 42,
           "playerId": "00-0035685",
           "player": "David Montgomery",
           "team": "HOU",
           "value": -0.345,
           "plays": 52,
+          "teamGames": 6
+        },
+        {
+          "rank": 42,
+          "playerId": "00-0039811",
+          "player": "MarShawn Lloyd",
+          "team": "GB",
+          "value": -0.351,
+          "plays": 48,
           "teamGames": 6
         }
       ]
