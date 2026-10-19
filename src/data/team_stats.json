@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 6,
-  "updated": "2026-10-16T14:22:29Z",
+  "updated": "2026-10-19T03:54:24Z",
   "metrics": [
     {
       "key": "off_epa",
@@ -87,241 +87,103 @@
   "teams": [
     {
       "abbr": "ARI",
-      "games": 5,
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": -0.013,
+          "value": -0.015,
           "rank": 17,
-          "n": 345
+          "n": 417
         },
         "off_success": {
-          "value": 0.458,
-          "rank": 10,
-          "n": 345
+          "value": 0.463,
+          "rank": 11,
+          "n": 417
         },
         "off_third_down": {
-          "value": 0.405,
-          "rank": 13,
-          "n": 74
+          "value": 0.393,
+          "rank": 14,
+          "n": 89
         },
         "off_red_zone": {
-          "value": 0.611,
-          "rank": 16,
-          "n": 18
+          "value": 0.478,
+          "rank": 27,
+          "n": 23
         },
         "def_epa": {
-          "value": 0.134,
-          "rank": 29,
-          "n": 309
+          "value": 0.095,
+          "rank": 28,
+          "n": 366
         },
         "def_success": {
-          "value": 0.45,
-          "rank": 25,
-          "n": 309
+          "value": 0.456,
+          "rank": 26,
+          "n": 366
         },
         "def_third_down": {
-          "value": 0.421,
-          "rank": 20,
-          "n": 57
+          "value": 0.418,
+          "rank": 21,
+          "n": 67
         },
         "def_red_zone": {
-          "value": 0.765,
-          "rank": 27,
-          "n": 17
+          "value": 0.714,
+          "rank": 25,
+          "n": 21
         }
       }
     },
     {
       "abbr": "ATL",
-      "games": 5,
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": -0.028,
-          "rank": 21,
-          "n": 316
+          "value": -0.063,
+          "rank": 23,
+          "n": 369
         },
         "off_success": {
-          "value": 0.456,
-          "rank": 11,
-          "n": 316
+          "value": 0.436,
+          "rank": 16,
+          "n": 369
         },
         "off_third_down": {
-          "value": 0.417,
-          "rank": 11,
-          "n": 60
-        },
-        "off_red_zone": {
-          "value": 0.692,
-          "rank": 7,
-          "n": 13
-        },
-        "def_epa": {
-          "value": -0.035,
-          "rank": 8,
-          "n": 343
-        },
-        "def_success": {
-          "value": 0.397,
-          "rank": 3,
-          "n": 343
-        },
-        "def_third_down": {
-          "value": 0.403,
-          "rank": 17,
+          "value": 0.389,
+          "rank": 16,
           "n": 72
         },
+        "off_red_zone": {
+          "value": 0.75,
+          "rank": 5,
+          "n": 16
+        },
+        "def_epa": {
+          "value": -0.028,
+          "rank": 12,
+          "n": 419
+        },
+        "def_success": {
+          "value": 0.413,
+          "rank": 6,
+          "n": 419
+        },
+        "def_third_down": {
+          "value": 0.427,
+          "rank": 23,
+          "n": 89
+        },
         "def_red_zone": {
-          "value": 0.6,
-          "rank": 16,
-          "n": 20
+          "value": 0.64,
+          "rank": 21,
+          "n": 25
         }
       }
     },
     {
       "abbr": "BAL",
-      "games": 5,
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": 0.132,
-          "rank": 6,
-          "n": 320
-        },
-        "off_success": {
-          "value": 0.494,
-          "rank": 3,
-          "n": 320
-        },
-        "off_third_down": {
-          "value": 0.385,
-          "rank": 15,
-          "n": 52
-        },
-        "off_red_zone": {
-          "value": 0.737,
-          "rank": 5,
-          "n": 19
-        },
-        "def_epa": {
-          "value": -0.008,
-          "rank": 18,
-          "n": 318
-        },
-        "def_success": {
-          "value": 0.415,
-          "rank": 6,
-          "n": 318
-        },
-        "def_third_down": {
-          "value": 0.415,
-          "rank": 19,
-          "n": 65
-        },
-        "def_red_zone": {
-          "value": 0.588,
-          "rank": 15,
-          "n": 17
-        }
-      }
-    },
-    {
-      "abbr": "BUF",
-      "games": 5,
-      "values": {
-        "off_epa": {
-          "value": 0.215,
-          "rank": 1,
-          "n": 311
-        },
-        "off_success": {
-          "value": 0.495,
-          "rank": 2,
-          "n": 311
-        },
-        "off_third_down": {
-          "value": 0.5,
-          "rank": 2,
-          "n": 52
-        },
-        "off_red_zone": {
-          "value": 0.714,
-          "rank": 6,
-          "n": 21
-        },
-        "def_epa": {
-          "value": 0.152,
-          "rank": 30,
-          "n": 367
-        },
-        "def_success": {
-          "value": 0.493,
-          "rank": 30,
-          "n": 367
-        },
-        "def_third_down": {
-          "value": 0.426,
-          "rank": 22,
-          "n": 68
-        },
-        "def_red_zone": {
-          "value": 0.762,
-          "rank": 26,
-          "n": 21
-        }
-      }
-    },
-    {
-      "abbr": "CAR",
-      "games": 4,
-      "values": {
-        "off_epa": {
-          "value": 0.09,
+          "value": 0.098,
           "rank": 8,
-          "n": 281
-        },
-        "off_success": {
-          "value": 0.434,
-          "rank": 16,
-          "n": 281
-        },
-        "off_third_down": {
-          "value": 0.38,
-          "rank": 17,
-          "n": 50
-        },
-        "off_red_zone": {
-          "value": 0.647,
-          "rank": 10,
-          "n": 17
-        },
-        "def_epa": {
-          "value": 0.012,
-          "rank": 21,
-          "n": 282
-        },
-        "def_success": {
-          "value": 0.429,
-          "rank": 15,
-          "n": 282
-        },
-        "def_third_down": {
-          "value": 0.426,
-          "rank": 22,
-          "n": 54
-        },
-        "def_red_zone": {
-          "value": 0.727,
-          "rank": 25,
-          "n": 11
-        }
-      }
-    },
-    {
-      "abbr": "CHI",
-      "games": 5,
-      "values": {
-        "off_epa": {
-          "value": 0.038,
-          "rank": 12,
           "n": 377
         },
         "off_success": {
@@ -330,34 +192,172 @@
           "n": 377
         },
         "off_third_down": {
-          "value": 0.437,
-          "rank": 10,
-          "n": 71
+          "value": 0.382,
+          "rank": 18,
+          "n": 68
         },
         "off_red_zone": {
-          "value": 0.429,
-          "rank": 32,
+          "value": 0.714,
+          "rank": 6,
           "n": 21
         },
         "def_epa": {
-          "value": 0.0,
-          "rank": 20,
-          "n": 261
+          "value": -0.027,
+          "rank": 13,
+          "n": 381
         },
         "def_success": {
-          "value": 0.418,
+          "value": 0.417,
           "rank": 9,
-          "n": 261
+          "n": 381
         },
         "def_third_down": {
-          "value": 0.26,
-          "rank": 2,
-          "n": 50
+          "value": 0.395,
+          "rank": 15,
+          "n": 81
         },
         "def_red_zone": {
-          "value": 0.583,
-          "rank": 13,
-          "n": 12
+          "value": 0.579,
+          "rank": 15,
+          "n": 19
+        }
+      }
+    },
+    {
+      "abbr": "BUF",
+      "games": 6,
+      "values": {
+        "off_epa": {
+          "value": 0.21,
+          "rank": 1,
+          "n": 376
+        },
+        "off_success": {
+          "value": 0.492,
+          "rank": 2,
+          "n": 376
+        },
+        "off_third_down": {
+          "value": 0.476,
+          "rank": 5,
+          "n": 63
+        },
+        "off_red_zone": {
+          "value": 0.692,
+          "rank": 7,
+          "n": 26
+        },
+        "def_epa": {
+          "value": 0.148,
+          "rank": 30,
+          "n": 433
+        },
+        "def_success": {
+          "value": 0.487,
+          "rank": 29,
+          "n": 433
+        },
+        "def_third_down": {
+          "value": 0.45,
+          "rank": 28,
+          "n": 80
+        },
+        "def_red_zone": {
+          "value": 0.692,
+          "rank": 23,
+          "n": 26
+        }
+      }
+    },
+    {
+      "abbr": "CAR",
+      "games": 5,
+      "values": {
+        "off_epa": {
+          "value": 0.099,
+          "rank": 7,
+          "n": 357
+        },
+        "off_success": {
+          "value": 0.437,
+          "rank": 15,
+          "n": 357
+        },
+        "off_third_down": {
+          "value": 0.388,
+          "rank": 17,
+          "n": 67
+        },
+        "off_red_zone": {
+          "value": 0.667,
+          "rank": 9,
+          "n": 21
+        },
+        "def_epa": {
+          "value": -0.011,
+          "rank": 19,
+          "n": 346
+        },
+        "def_success": {
+          "value": 0.422,
+          "rank": 12,
+          "n": 346
+        },
+        "def_third_down": {
+          "value": 0.42,
+          "rank": 22,
+          "n": 69
+        },
+        "def_red_zone": {
+          "value": 0.769,
+          "rank": 28,
+          "n": 13
+        }
+      }
+    },
+    {
+      "abbr": "CHI",
+      "games": 6,
+      "values": {
+        "off_epa": {
+          "value": 0.033,
+          "rank": 14,
+          "n": 453
+        },
+        "off_success": {
+          "value": 0.472,
+          "rank": 7,
+          "n": 453
+        },
+        "off_third_down": {
+          "value": 0.455,
+          "rank": 6,
+          "n": 88
+        },
+        "off_red_zone": {
+          "value": 0.5,
+          "rank": 22,
+          "n": 26
+        },
+        "def_epa": {
+          "value": -0.046,
+          "rank": 8,
+          "n": 314
+        },
+        "def_success": {
+          "value": 0.401,
+          "rank": 4,
+          "n": 314
+        },
+        "def_third_down": {
+          "value": 0.258,
+          "rank": 2,
+          "n": 62
+        },
+        "def_red_zone": {
+          "value": 0.667,
+          "rank": 22,
+          "n": 15
         }
       }
     },
@@ -382,74 +382,74 @@
         },
         "off_red_zone": {
           "value": 0.529,
-          "rank": 23,
+          "rank": 20,
           "n": 17
         },
         "def_epa": {
           "value": -0.024,
-          "rank": 12,
+          "rank": 15,
           "n": 316
         },
         "def_success": {
           "value": 0.44,
-          "rank": 19,
+          "rank": 20,
           "n": 316
         },
         "def_third_down": {
           "value": 0.46,
-          "rank": 28,
+          "rank": 29,
           "n": 63
         },
         "def_red_zone": {
           "value": 0.412,
-          "rank": 3,
+          "rank": 4,
           "n": 17
         }
       }
     },
     {
       "abbr": "CLE",
-      "games": 5,
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": -0.067,
-          "rank": 24,
-          "n": 305
+          "value": -0.077,
+          "rank": 25,
+          "n": 368
         },
         "off_success": {
-          "value": 0.397,
-          "rank": 27,
-          "n": 305
+          "value": 0.402,
+          "rank": 23,
+          "n": 368
         },
         "off_third_down": {
-          "value": 0.306,
+          "value": 0.308,
           "rank": 31,
-          "n": 62
+          "n": 78
         },
         "off_red_zone": {
-          "value": 0.455,
-          "rank": 31,
-          "n": 11
+          "value": 0.462,
+          "rank": 30,
+          "n": 13
         },
         "def_epa": {
-          "value": -0.02,
-          "rank": 13,
-          "n": 331
+          "value": -0.03,
+          "rank": 11,
+          "n": 388
         },
         "def_success": {
-          "value": 0.438,
-          "rank": 18,
-          "n": 331
+          "value": 0.423,
+          "rank": 13,
+          "n": 388
         },
         "def_third_down": {
-          "value": 0.394,
-          "rank": 16,
-          "n": 71
+          "value": 0.391,
+          "rank": 14,
+          "n": 87
         },
         "def_red_zone": {
-          "value": 0.429,
-          "rank": 4,
-          "n": 14
+          "value": 0.438,
+          "rank": 5,
+          "n": 16
         }
       }
     },
@@ -459,22 +459,22 @@
       "values": {
         "off_epa": {
           "value": 0.158,
-          "rank": 5,
+          "rank": 4,
           "n": 323
         },
         "off_success": {
           "value": 0.492,
-          "rank": 4,
+          "rank": 2,
           "n": 323
         },
         "off_third_down": {
           "value": 0.492,
-          "rank": 4,
+          "rank": 3,
           "n": 59
         },
         "off_red_zone": {
           "value": 0.833,
-          "rank": 2,
+          "rank": 3,
           "n": 18
         },
         "def_epa": {
@@ -505,12 +505,12 @@
       "values": {
         "off_epa": {
           "value": -0.073,
-          "rank": 25,
+          "rank": 24,
           "n": 361
         },
         "off_success": {
           "value": 0.38,
-          "rank": 29,
+          "rank": 28,
           "n": 361
         },
         "off_third_down": {
@@ -520,7 +520,7 @@
         },
         "off_red_zone": {
           "value": 0.611,
-          "rank": 16,
+          "rank": 13,
           "n": 18
         },
         "def_epa": {
@@ -540,7 +540,7 @@
         },
         "def_red_zone": {
           "value": 0.529,
-          "rank": 11,
+          "rank": 12,
           "n": 17
         }
       }
@@ -556,12 +556,12 @@
         },
         "off_success": {
           "value": 0.491,
-          "rank": 5,
+          "rank": 4,
           "n": 342
         },
         "off_third_down": {
           "value": 0.373,
-          "rank": 21,
+          "rank": 20,
           "n": 59
         },
         "off_red_zone": {
@@ -612,17 +612,17 @@
         },
         "off_red_zone": {
           "value": 0.5,
-          "rank": 24,
+          "rank": 22,
           "n": 18
         },
         "def_epa": {
           "value": -0.015,
-          "rank": 14,
+          "rank": 17,
           "n": 333
         },
         "def_success": {
           "value": 0.447,
-          "rank": 22,
+          "rank": 23,
           "n": 333
         },
         "def_third_down": {
@@ -639,323 +639,323 @@
     },
     {
       "abbr": "HOU",
-      "games": 5,
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": 0.003,
-          "rank": 14,
-          "n": 329
+          "value": 0.045,
+          "rank": 10,
+          "n": 392
         },
         "off_success": {
-          "value": 0.432,
-          "rank": 17,
-          "n": 329
-        },
-        "off_third_down": {
-          "value": 0.379,
-          "rank": 19,
-          "n": 66
-        },
-        "off_red_zone": {
-          "value": 0.556,
-          "rank": 20,
-          "n": 18
-        },
-        "def_epa": {
-          "value": -0.014,
-          "rank": 15,
-          "n": 326
-        },
-        "def_success": {
-          "value": 0.399,
-          "rank": 4,
-          "n": 326
-        },
-        "def_third_down": {
-          "value": 0.375,
-          "rank": 12,
-          "n": 64
-        },
-        "def_red_zone": {
-          "value": 0.583,
+          "value": 0.441,
           "rank": 13,
-          "n": 12
-        }
-      }
-    },
-    {
-      "abbr": "IND",
-      "games": 5,
-      "values": {
-        "off_epa": {
-          "value": -0.038,
-          "rank": 22,
-          "n": 325
-        },
-        "off_success": {
-          "value": 0.428,
-          "rank": 18,
-          "n": 325
+          "n": 392
         },
         "off_third_down": {
-          "value": 0.353,
-          "rank": 25,
-          "n": 68
+          "value": 0.39,
+          "rank": 15,
+          "n": 77
         },
         "off_red_zone": {
-          "value": 0.667,
-          "rank": 8,
-          "n": 15
+          "value": 0.565,
+          "rank": 16,
+          "n": 23
         },
         "def_epa": {
-          "value": 0.067,
-          "rank": 26,
-          "n": 320
+          "value": 0.016,
+          "rank": 20,
+          "n": 395
         },
         "def_success": {
-          "value": 0.434,
-          "rank": 17,
-          "n": 320
+          "value": 0.42,
+          "rank": 11,
+          "n": 395
         },
         "def_third_down": {
-          "value": 0.305,
-          "rank": 4,
-          "n": 59
+          "value": 0.408,
+          "rank": 17,
+          "n": 76
         },
         "def_red_zone": {
           "value": 0.625,
-          "rank": 18,
+          "rank": 19,
           "n": 16
         }
       }
     },
     {
-      "abbr": "JAX",
-      "games": 5,
+      "abbr": "IND",
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": 0.108,
-          "rank": 7,
-          "n": 305
+          "value": -0.05,
+          "rank": 21,
+          "n": 407
         },
         "off_success": {
-          "value": 0.456,
-          "rank": 11,
-          "n": 305
+          "value": 0.425,
+          "rank": 19,
+          "n": 407
         },
         "off_third_down": {
-          "value": 0.459,
-          "rank": 5,
-          "n": 61
+          "value": 0.373,
+          "rank": 20,
+          "n": 83
         },
         "off_red_zone": {
-          "value": 0.643,
+          "value": 0.632,
           "rank": 11,
-          "n": 14
+          "n": 19
         },
         "def_epa": {
-          "value": -0.073,
-          "rank": 4,
-          "n": 311
+          "value": 0.048,
+          "rank": 24,
+          "n": 365
         },
         "def_success": {
-          "value": 0.415,
-          "rank": 6,
-          "n": 311
+          "value": 0.43,
+          "rank": 16,
+          "n": 365
         },
         "def_third_down": {
-          "value": 0.345,
-          "rank": 10,
-          "n": 58
+          "value": 0.304,
+          "rank": 4,
+          "n": 69
         },
         "def_red_zone": {
-          "value": 0.333,
-          "rank": 2,
-          "n": 15
+          "value": 0.611,
+          "rank": 17,
+          "n": 18
+        }
+      }
+    },
+    {
+      "abbr": "JAX",
+      "games": 6,
+      "values": {
+        "off_epa": {
+          "value": 0.117,
+          "rank": 6,
+          "n": 374
+        },
+        "off_success": {
+          "value": 0.468,
+          "rank": 10,
+          "n": 374
+        },
+        "off_third_down": {
+          "value": 0.479,
+          "rank": 4,
+          "n": 73
+        },
+        "off_red_zone": {
+          "value": 0.667,
+          "rank": 9,
+          "n": 18
+        },
+        "def_epa": {
+          "value": -0.016,
+          "rank": 16,
+          "n": 374
+        },
+        "def_success": {
+          "value": 0.428,
+          "rank": 15,
+          "n": 374
+        },
+        "def_third_down": {
+          "value": 0.362,
+          "rank": 10,
+          "n": 69
+        },
+        "def_red_zone": {
+          "value": 0.4,
+          "rank": 3,
+          "n": 20
         }
       }
     },
     {
       "abbr": "KC",
-      "games": 4,
+      "games": 5,
       "values": {
         "off_epa": {
-          "value": 0.161,
-          "rank": 4,
-          "n": 257
+          "value": 0.143,
+          "rank": 5,
+          "n": 316
         },
         "off_success": {
-          "value": 0.482,
-          "rank": 6,
-          "n": 257
+          "value": 0.487,
+          "rank": 5,
+          "n": 316
         },
         "off_third_down": {
-          "value": 0.44,
-          "rank": 9,
-          "n": 50
+          "value": 0.417,
+          "rank": 10,
+          "n": 60
         },
         "off_red_zone": {
-          "value": 0.632,
-          "rank": 14,
-          "n": 19
+          "value": 0.565,
+          "rank": 16,
+          "n": 23
         },
         "def_epa": {
-          "value": -0.035,
-          "rank": 8,
-          "n": 268
+          "value": -0.087,
+          "rank": 3,
+          "n": 336
         },
         "def_success": {
-          "value": 0.422,
-          "rank": 12,
-          "n": 268
+          "value": 0.396,
+          "rank": 3,
+          "n": 336
         },
         "def_third_down": {
-          "value": 0.37,
-          "rank": 11,
-          "n": 54
+          "value": 0.357,
+          "rank": 9,
+          "n": 70
         },
         "def_red_zone": {
-          "value": 0.444,
-          "rank": 5,
-          "n": 9
+          "value": 0.333,
+          "rank": 2,
+          "n": 12
         }
       }
     },
     {
       "abbr": "LAC",
-      "games": 5,
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": -0.192,
+          "value": -0.209,
           "rank": 32,
-          "n": 328
+          "n": 396
         },
         "off_success": {
-          "value": 0.384,
-          "rank": 28,
-          "n": 328
+          "value": 0.369,
+          "rank": 30,
+          "n": 396
         },
         "off_third_down": {
-          "value": 0.348,
+          "value": 0.341,
           "rank": 26,
-          "n": 66
+          "n": 82
         },
         "off_red_zone": {
-          "value": 0.615,
-          "rank": 15,
-          "n": 13
+          "value": 0.5,
+          "rank": 22,
+          "n": 16
         },
         "def_epa": {
-          "value": -0.053,
-          "rank": 6,
-          "n": 317
+          "value": -0.034,
+          "rank": 9,
+          "n": 376
         },
         "def_success": {
-          "value": 0.42,
-          "rank": 11,
-          "n": 317
+          "value": 0.434,
+          "rank": 18,
+          "n": 376
         },
         "def_third_down": {
-          "value": 0.312,
+          "value": 0.311,
           "rank": 5,
-          "n": 64
+          "n": 74
         },
         "def_red_zone": {
-          "value": 0.524,
-          "rank": 10,
-          "n": 21
+          "value": 0.48,
+          "rank": 6,
+          "n": 25
         }
       }
     },
     {
       "abbr": "LAR",
-      "games": 5,
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": 0.068,
-          "rank": 9,
-          "n": 366
+          "value": 0.044,
+          "rank": 11,
+          "n": 423
         },
         "off_success": {
-          "value": 0.473,
-          "rank": 7,
-          "n": 366
+          "value": 0.475,
+          "rank": 6,
+          "n": 423
         },
         "off_third_down": {
-          "value": 0.446,
+          "value": 0.44,
           "rank": 7,
-          "n": 65
+          "n": 75
         },
         "off_red_zone": {
-          "value": 0.65,
-          "rank": 9,
-          "n": 20
+          "value": 0.625,
+          "rank": 12,
+          "n": 24
         },
         "def_epa": {
-          "value": -0.034,
-          "rank": 11,
-          "n": 311
+          "value": -0.032,
+          "rank": 10,
+          "n": 383
         },
         "def_success": {
-          "value": 0.428,
-          "rank": 14,
-          "n": 311
+          "value": 0.439,
+          "rank": 19,
+          "n": 383
         },
         "def_third_down": {
-          "value": 0.328,
-          "rank": 6,
-          "n": 58
+          "value": 0.329,
+          "rank": 7,
+          "n": 73
         },
         "def_red_zone": {
-          "value": 0.647,
-          "rank": 22,
-          "n": 17
+          "value": 0.5,
+          "rank": 7,
+          "n": 22
         }
       }
     },
     {
       "abbr": "LV",
-      "games": 5,
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": 0.021,
+          "value": 0.039,
           "rank": 13,
-          "n": 331
+          "n": 397
         },
         "off_success": {
-          "value": 0.438,
-          "rank": 14,
-          "n": 331
+          "value": 0.441,
+          "rank": 13,
+          "n": 397
         },
         "off_third_down": {
-          "value": 0.394,
-          "rank": 14,
-          "n": 66
+          "value": 0.423,
+          "rank": 9,
+          "n": 78
         },
         "off_red_zone": {
-          "value": 0.556,
-          "rank": 20,
-          "n": 18
+          "value": 0.522,
+          "rank": 21,
+          "n": 23
         },
         "def_epa": {
-          "value": -0.012,
-          "rank": 16,
-          "n": 327
+          "value": 0.021,
+          "rank": 21,
+          "n": 392
         },
         "def_success": {
-          "value": 0.446,
-          "rank": 20,
-          "n": 327
+          "value": 0.452,
+          "rank": 25,
+          "n": 392
         },
         "def_third_down": {
-          "value": 0.422,
-          "rank": 21,
-          "n": 64
+          "value": 0.413,
+          "rank": 19,
+          "n": 75
         },
         "def_red_zone": {
-          "value": 0.778,
-          "rank": 28,
-          "n": 18
+          "value": 0.739,
+          "rank": 26,
+          "n": 23
         }
       }
     },
@@ -965,12 +965,12 @@
       "values": {
         "off_epa": {
           "value": -0.122,
-          "rank": 30,
+          "rank": 29,
           "n": 291
         },
         "off_success": {
           "value": 0.375,
-          "rank": 30,
+          "rank": 29,
           "n": 291
         },
         "off_third_down": {
@@ -980,12 +980,12 @@
         },
         "off_red_zone": {
           "value": 0.462,
-          "rank": 28,
+          "rank": 30,
           "n": 13
         },
         "def_epa": {
           "value": 0.106,
-          "rank": 28,
+          "rank": 29,
           "n": 304
         },
         "def_success": {
@@ -1011,22 +1011,22 @@
       "values": {
         "off_epa": {
           "value": -0.104,
-          "rank": 28,
+          "rank": 27,
           "n": 314
         },
         "off_success": {
           "value": 0.363,
-          "rank": 31,
+          "rank": 32,
           "n": 314
         },
         "off_third_down": {
           "value": 0.38,
-          "rank": 17,
+          "rank": 19,
           "n": 79
         },
         "off_red_zone": {
           "value": 0.5,
-          "rank": 24,
+          "rank": 22,
           "n": 12
         },
         "def_epa": {
@@ -1053,277 +1053,277 @@
     },
     {
       "abbr": "NE",
-      "games": 5,
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": 0.045,
-          "rank": 11,
-          "n": 332
+          "value": 0.04,
+          "rank": 12,
+          "n": 399
         },
         "off_success": {
-          "value": 0.452,
-          "rank": 13,
-          "n": 332
+          "value": 0.449,
+          "rank": 12,
+          "n": 399
         },
         "off_third_down": {
-          "value": 0.375,
-          "rank": 20,
-          "n": 64
+          "value": 0.405,
+          "rank": 13,
+          "n": 79
         },
         "off_red_zone": {
-          "value": 0.571,
+          "value": 0.556,
           "rank": 18,
-          "n": 14
+          "n": 18
         },
         "def_epa": {
-          "value": -0.012,
-          "rank": 16,
-          "n": 298
+          "value": -0.014,
+          "rank": 18,
+          "n": 359
         },
         "def_success": {
-          "value": 0.419,
-          "rank": 10,
-          "n": 298
+          "value": 0.432,
+          "rank": 17,
+          "n": 359
         },
         "def_third_down": {
-          "value": 0.383,
-          "rank": 13,
-          "n": 60
-        },
-        "def_red_zone": {
-          "value": 0.6,
-          "rank": 16,
-          "n": 15
-        }
-      }
-    },
-    {
-      "abbr": "NO",
-      "games": 5,
-      "values": {
-        "off_epa": {
-          "value": -0.041,
-          "rank": 23,
-          "n": 346
-        },
-        "off_success": {
-          "value": 0.436,
-          "rank": 15,
-          "n": 346
-        },
-        "off_third_down": {
-          "value": 0.458,
-          "rank": 6,
-          "n": 72
-        },
-        "off_red_zone": {
-          "value": 0.812,
-          "rank": 3,
-          "n": 16
-        },
-        "def_epa": {
-          "value": 0.095,
-          "rank": 27,
-          "n": 322
-        },
-        "def_success": {
-          "value": 0.506,
-          "rank": 31,
-          "n": 322
-        },
-        "def_third_down": {
-          "value": 0.483,
-          "rank": 29,
-          "n": 60
-        },
-        "def_red_zone": {
-          "value": 0.636,
-          "rank": 20,
-          "n": 22
-        }
-      }
-    },
-    {
-      "abbr": "NYG",
-      "games": 5,
-      "values": {
-        "off_epa": {
-          "value": -0.008,
-          "rank": 15,
-          "n": 340
-        },
-        "off_success": {
-          "value": 0.426,
-          "rank": 20,
-          "n": 340
-        },
-        "off_third_down": {
-          "value": 0.443,
-          "rank": 8,
-          "n": 70
-        },
-        "off_red_zone": {
-          "value": 0.643,
+          "value": 0.371,
           "rank": 11,
-          "n": 14
-        },
-        "def_epa": {
-          "value": 0.044,
-          "rank": 22,
-          "n": 302
-        },
-        "def_success": {
-          "value": 0.464,
-          "rank": 26,
-          "n": 302
-        },
-        "def_third_down": {
-          "value": 0.456,
-          "rank": 27,
-          "n": 57
-        },
-        "def_red_zone": {
-          "value": 0.692,
-          "rank": 23,
-          "n": 13
-        }
-      }
-    },
-    {
-      "abbr": "NYJ",
-      "games": 5,
-      "values": {
-        "off_epa": {
-          "value": -0.025,
-          "rank": 20,
-          "n": 301
-        },
-        "off_success": {
-          "value": 0.425,
-          "rank": 21,
-          "n": 301
-        },
-        "off_third_down": {
-          "value": 0.358,
-          "rank": 23,
-          "n": 67
-        },
-        "off_red_zone": {
-          "value": 0.462,
-          "rank": 28,
-          "n": 13
-        },
-        "def_epa": {
-          "value": -0.035,
-          "rank": 8,
-          "n": 331
-        },
-        "def_success": {
-          "value": 0.447,
-          "rank": 22,
-          "n": 331
-        },
-        "def_third_down": {
-          "value": 0.339,
-          "rank": 8,
-          "n": 62
+          "n": 70
         },
         "def_red_zone": {
           "value": 0.5,
-          "rank": 6,
+          "rank": 7,
           "n": 18
         }
       }
     },
     {
-      "abbr": "PHI",
-      "games": 5,
+      "abbr": "NO",
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": -0.111,
-          "rank": 29,
-          "n": 302
+          "value": -0.043,
+          "rank": 20,
+          "n": 417
         },
         "off_success": {
-          "value": 0.361,
-          "rank": 32,
-          "n": 302
+          "value": 0.42,
+          "rank": 20,
+          "n": 417
         },
         "off_third_down": {
-          "value": 0.368,
-          "rank": 22,
-          "n": 68
+          "value": 0.425,
+          "rank": 8,
+          "n": 87
         },
         "off_red_zone": {
-          "value": 0.643,
-          "rank": 11,
-          "n": 14
+          "value": 0.842,
+          "rank": 2,
+          "n": 19
         },
         "def_epa": {
-          "value": 0.052,
-          "rank": 24,
-          "n": 347
+          "value": 0.077,
+          "rank": 27,
+          "n": 392
         },
         "def_success": {
-          "value": 0.447,
-          "rank": 22,
-          "n": 347
+          "value": 0.497,
+          "rank": 31,
+          "n": 392
         },
         "def_third_down": {
-          "value": 0.384,
-          "rank": 14,
-          "n": 73
+          "value": 0.446,
+          "rank": 27,
+          "n": 74
+        },
+        "def_red_zone": {
+          "value": 0.615,
+          "rank": 18,
+          "n": 26
+        }
+      }
+    },
+    {
+      "abbr": "NYG",
+      "games": 6,
+      "values": {
+        "off_epa": {
+          "value": -0.008,
+          "rank": 15,
+          "n": 410
+        },
+        "off_success": {
+          "value": 0.432,
+          "rank": 18,
+          "n": 410
+        },
+        "off_third_down": {
+          "value": 0.417,
+          "rank": 10,
+          "n": 84
+        },
+        "off_red_zone": {
+          "value": 0.611,
+          "rank": 13,
+          "n": 18
+        },
+        "def_epa": {
+          "value": 0.025,
+          "rank": 22,
+          "n": 373
+        },
+        "def_success": {
+          "value": 0.44,
+          "rank": 20,
+          "n": 373
+        },
+        "def_third_down": {
+          "value": 0.417,
+          "rank": 20,
+          "n": 72
+        },
+        "def_red_zone": {
+          "value": 0.75,
+          "rank": 27,
+          "n": 16
+        }
+      }
+    },
+    {
+      "abbr": "NYJ",
+      "games": 6,
+      "values": {
+        "off_epa": {
+          "value": -0.024,
+          "rank": 19,
+          "n": 362
+        },
+        "off_success": {
+          "value": 0.436,
+          "rank": 16,
+          "n": 362
+        },
+        "off_third_down": {
+          "value": 0.351,
+          "rank": 24,
+          "n": 77
+        },
+        "off_red_zone": {
+          "value": 0.375,
+          "rank": 32,
+          "n": 16
+        },
+        "def_epa": {
+          "value": -0.027,
+          "rank": 13,
+          "n": 398
+        },
+        "def_success": {
+          "value": 0.445,
+          "rank": 22,
+          "n": 398
+        },
+        "def_third_down": {
+          "value": 0.377,
+          "rank": 12,
+          "n": 77
         },
         "def_red_zone": {
           "value": 0.5,
-          "rank": 6,
-          "n": 20
+          "rank": 7,
+          "n": 22
+        }
+      }
+    },
+    {
+      "abbr": "PHI",
+      "games": 6,
+      "values": {
+        "off_epa": {
+          "value": -0.111,
+          "rank": 28,
+          "n": 366
+        },
+        "off_success": {
+          "value": 0.366,
+          "rank": 31,
+          "n": 366
+        },
+        "off_third_down": {
+          "value": 0.373,
+          "rank": 20,
+          "n": 83
+        },
+        "off_red_zone": {
+          "value": 0.688,
+          "rank": 8,
+          "n": 16
+        },
+        "def_epa": {
+          "value": 0.067,
+          "rank": 26,
+          "n": 423
+        },
+        "def_success": {
+          "value": 0.447,
+          "rank": 23,
+          "n": 423
+        },
+        "def_third_down": {
+          "value": 0.389,
+          "rank": 13,
+          "n": 90
+        },
+        "def_red_zone": {
+          "value": 0.542,
+          "rank": 14,
+          "n": 24
         }
       }
     },
     {
       "abbr": "PIT",
-      "games": 5,
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": -0.024,
-          "rank": 19,
-          "n": 321
+          "value": -0.05,
+          "rank": 21,
+          "n": 397
         },
         "off_success": {
-          "value": 0.427,
-          "rank": 19,
-          "n": 321
+          "value": 0.418,
+          "rank": 21,
+          "n": 397
         },
         "off_third_down": {
-          "value": 0.328,
+          "value": 0.329,
           "rank": 27,
-          "n": 61
+          "n": 76
         },
         "off_red_zone": {
-          "value": 0.545,
-          "rank": 22,
-          "n": 11
+          "value": 0.533,
+          "rank": 19,
+          "n": 15
         },
         "def_epa": {
-          "value": -0.002,
-          "rank": 19,
-          "n": 303
+          "value": -0.056,
+          "rank": 6,
+          "n": 377
         },
         "def_success": {
-          "value": 0.446,
-          "rank": 20,
-          "n": 303
+          "value": 0.419,
+          "rank": 10,
+          "n": 377
         },
         "def_third_down": {
-          "value": 0.328,
+          "value": 0.325,
           "rank": 6,
-          "n": 61
+          "n": 80
         },
         "def_red_zone": {
           "value": 0.5,
-          "rank": 6,
-          "n": 8
+          "rank": 7,
+          "n": 10
         }
       }
     },
@@ -1333,7 +1333,7 @@
       "values": {
         "off_epa": {
           "value": -0.077,
-          "rank": 26,
+          "rank": 25,
           "n": 389
         },
         "off_success": {
@@ -1348,7 +1348,7 @@
         },
         "off_red_zone": {
           "value": 0.571,
-          "rank": 18,
+          "rank": 15,
           "n": 21
         },
         "def_epa": {
@@ -1399,115 +1399,115 @@
         },
         "def_epa": {
           "value": -0.076,
-          "rank": 3,
+          "rank": 5,
           "n": 334
         },
         "def_success": {
           "value": 0.416,
-          "rank": 8,
+          "rank": 7,
           "n": 334
         },
         "def_third_down": {
           "value": 0.408,
-          "rank": 18,
+          "rank": 17,
           "n": 71
         },
         "def_red_zone": {
           "value": 0.5,
-          "rank": 6,
+          "rank": 7,
           "n": 14
         }
       }
     },
     {
       "abbr": "TB",
-      "games": 5,
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": -0.092,
-          "rank": 27,
-          "n": 322
+          "value": -0.127,
+          "rank": 30,
+          "n": 396
         },
         "off_success": {
-          "value": 0.41,
-          "rank": 23,
-          "n": 322
+          "value": 0.391,
+          "rank": 27,
+          "n": 396
         },
         "off_third_down": {
-          "value": 0.382,
-          "rank": 16,
-          "n": 68
+          "value": 0.368,
+          "rank": 23,
+          "n": 87
         },
         "off_red_zone": {
-          "value": 0.471,
-          "rank": 27,
-          "n": 17
+          "value": 0.474,
+          "rank": 28,
+          "n": 19
         },
         "def_epa": {
-          "value": -0.056,
-          "rank": 5,
-          "n": 294
+          "value": -0.077,
+          "rank": 4,
+          "n": 370
         },
         "def_success": {
-          "value": 0.425,
-          "rank": 13,
-          "n": 294
+          "value": 0.416,
+          "rank": 7,
+          "n": 370
         },
         "def_third_down": {
-          "value": 0.339,
+          "value": 0.338,
           "rank": 8,
-          "n": 62
+          "n": 77
         },
         "def_red_zone": {
-          "value": 0.538,
+          "value": 0.529,
           "rank": 12,
-          "n": 13
+          "n": 17
         }
       }
     },
     {
       "abbr": "TEN",
-      "games": 5,
+      "games": 6,
       "values": {
         "off_epa": {
-          "value": -0.14,
+          "value": -0.133,
           "rank": 31,
-          "n": 288
+          "n": 333
         },
         "off_success": {
-          "value": 0.403,
-          "rank": 24,
-          "n": 288
+          "value": 0.402,
+          "rank": 23,
+          "n": 333
         },
         "off_third_down": {
-          "value": 0.356,
-          "rank": 24,
-          "n": 59
+          "value": 0.348,
+          "rank": 25,
+          "n": 69
         },
         "off_red_zone": {
-          "value": 0.462,
-          "rank": 28,
-          "n": 13
+          "value": 0.467,
+          "rank": 29,
+          "n": 15
         },
         "def_epa": {
-          "value": 0.057,
-          "rank": 25,
-          "n": 329
+          "value": 0.026,
+          "rank": 23,
+          "n": 411
         },
         "def_success": {
-          "value": 0.429,
-          "rank": 15,
-          "n": 329
+          "value": 0.426,
+          "rank": 14,
+          "n": 411
         },
         "def_third_down": {
-          "value": 0.385,
-          "rank": 15,
-          "n": 65
+          "value": 0.4,
+          "rank": 16,
+          "n": 80
         },
         "def_red_zone": {
-          "value": 0.625,
-          "rank": 18,
-          "n": 16
+          "value": 0.6,
+          "rank": 16,
+          "n": 20
         }
       }
     },
@@ -1532,12 +1532,12 @@
         },
         "off_red_zone": {
           "value": 0.5,
-          "rank": 24,
+          "rank": 22,
           "n": 12
         },
         "def_epa": {
           "value": 0.05,
-          "rank": 23,
+          "rank": 25,
           "n": 327
         },
         "def_success": {

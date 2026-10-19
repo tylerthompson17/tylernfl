@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 6,
-  "updated": "2026-10-18T23:43:13Z",
+  "updated": "2026-10-19T03:54:24Z",
   "teams": [
     {
       "team": "BUF",
@@ -463,33 +463,6 @@
       "conferenceTiebreak": null
     },
     {
-      "team": "DAL",
-      "conference": "NFC",
-      "division": "NFC East",
-      "wins": 2,
-      "losses": 3,
-      "ties": 0,
-      "pct": 0.4,
-      "pointsFor": 138,
-      "pointsAgainst": 136,
-      "diff": 2,
-      "divisionRecord": [
-        1,
-        1,
-        0
-      ],
-      "conferenceRecord": [
-        1,
-        2,
-        0
-      ],
-      "streak": "L1",
-      "divisionRank": 2,
-      "conferenceRank": 9,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
-    },
-    {
       "team": "PHI",
       "conference": "NFC",
       "division": "NFC East",
@@ -511,9 +484,36 @@
         0
       ],
       "streak": "L4",
+      "divisionRank": 2,
+      "conferenceRank": 11,
+      "divisionTiebreak": "division_record",
+      "conferenceTiebreak": "conference_record"
+    },
+    {
+      "team": "DAL",
+      "conference": "NFC",
+      "division": "NFC East",
+      "wins": 2,
+      "losses": 4,
+      "ties": 0,
+      "pct": 0.333,
+      "pointsFor": 151,
+      "pointsAgainst": 159,
+      "diff": -8,
+      "divisionRecord": [
+        1,
+        1,
+        0
+      ],
+      "conferenceRecord": [
+        1,
+        3,
+        0
+      ],
+      "streak": "L2",
       "divisionRank": 3,
       "conferenceRank": 12,
-      "divisionTiebreak": null,
+      "divisionTiebreak": "division_record",
       "conferenceTiebreak": "conference_record"
     },
     {
@@ -566,9 +566,36 @@
       ],
       "streak": "W5",
       "divisionRank": 1,
-      "conferenceRank": 2,
+      "conferenceRank": 1,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "coin_toss"
+    },
+    {
+      "team": "GB",
+      "conference": "NFC",
+      "division": "NFC North",
+      "wins": 4,
+      "losses": 2,
+      "ties": 0,
+      "pct": 0.667,
+      "pointsFor": 127,
+      "pointsAgainst": 125,
+      "diff": 2,
+      "divisionRecord": [
+        1,
+        1,
+        0
+      ],
+      "conferenceRecord": [
+        3,
+        2,
+        0
+      ],
+      "streak": "W3",
+      "divisionRank": 2,
+      "conferenceRank": 5,
+      "divisionTiebreak": "head_to_head",
+      "conferenceTiebreak": "division_order"
     },
     {
       "team": "CHI",
@@ -592,36 +619,9 @@
         0
       ],
       "streak": "W1",
-      "divisionRank": 2,
-      "conferenceRank": 5,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
-    },
-    {
-      "team": "GB",
-      "conference": "NFC",
-      "division": "NFC North",
-      "wins": 3,
-      "losses": 2,
-      "ties": 0,
-      "pct": 0.6,
-      "pointsFor": 104,
-      "pointsAgainst": 112,
-      "diff": -8,
-      "divisionRecord": [
-        1,
-        1,
-        0
-      ],
-      "conferenceRecord": [
-        2,
-        2,
-        0
-      ],
-      "streak": "W2",
       "divisionRank": 3,
       "conferenceRank": 6,
-      "divisionTiebreak": "division_record",
+      "divisionTiebreak": "head_to_head",
       "conferenceTiebreak": "division_order"
     },
     {
@@ -648,8 +648,8 @@
       "streak": "W1",
       "divisionRank": 4,
       "conferenceRank": 7,
-      "divisionTiebreak": "division_record",
-      "conferenceTiebreak": "division_order"
+      "divisionTiebreak": null,
+      "conferenceTiebreak": null
     },
     {
       "team": "CAR",
@@ -701,7 +701,7 @@
       ],
       "streak": "L2",
       "divisionRank": 2,
-      "conferenceRank": 10,
+      "conferenceRank": 9,
       "divisionTiebreak": "head_to_head",
       "conferenceTiebreak": "conference_record"
     },
@@ -728,7 +728,7 @@
       ],
       "streak": "W1",
       "divisionRank": 3,
-      "conferenceRank": 11,
+      "conferenceRank": 10,
       "divisionTiebreak": "head_to_head",
       "conferenceTiebreak": "strength_of_victory"
     },
@@ -782,9 +782,9 @@
       ],
       "streak": "W5",
       "divisionRank": 1,
-      "conferenceRank": 1,
+      "conferenceRank": 2,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "strength_of_victory"
+      "conferenceTiebreak": "coin_toss"
     },
     {
       "team": "SEA",

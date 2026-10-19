@@ -95,6 +95,26 @@
   "rows": [
     {
       "rank": 1,
+      "playerId": "00-0026498",
+      "player": "Matthew Stafford",
+      "team": "LAR",
+      "position": "QB",
+      "teamGames": 6,
+      "qualified": true,
+      "values": {
+        "games": 6,
+        "completions": 164,
+        "attempts": 249,
+        "passing_yards": 1794,
+        "passing_tds": 11,
+        "passing_interceptions": 6,
+        "sacks_suffered": 10,
+        "cmp_pct": 0.659,
+        "pass_ypa": 7.2
+      }
+    },
+    {
+      "rank": 2,
       "playerId": "00-0039163",
       "player": "C.J. Stroud",
       "team": "HOU",
@@ -114,27 +134,27 @@
       }
     },
     {
-      "rank": 2,
-      "playerId": "00-0026498",
-      "player": "Matthew Stafford",
-      "team": "LAR",
+      "rank": 3,
+      "playerId": "00-0029604",
+      "player": "Kirk Cousins",
+      "team": "LV",
       "position": "QB",
-      "teamGames": 5,
+      "teamGames": 6,
       "qualified": true,
       "values": {
-        "games": 5,
-        "completions": 139,
-        "attempts": 216,
-        "passing_yards": 1572,
-        "passing_tds": 9,
-        "passing_interceptions": 6,
-        "sacks_suffered": 7,
-        "cmp_pct": 0.644,
-        "pass_ypa": 7.3
+        "games": 6,
+        "completions": 135,
+        "attempts": 213,
+        "passing_yards": 1582,
+        "passing_tds": 14,
+        "passing_interceptions": 5,
+        "sacks_suffered": 8,
+        "cmp_pct": 0.634,
+        "pass_ypa": 7.4
       }
     },
     {
-      "rank": 3,
+      "rank": 4,
       "playerId": "00-0039150",
       "player": "Bryce Young",
       "team": "CAR",
@@ -154,7 +174,27 @@
       }
     },
     {
-      "rank": 4,
+      "rank": 5,
+      "playerId": "00-0034857",
+      "player": "Josh Allen",
+      "team": "BUF",
+      "position": "QB",
+      "teamGames": 6,
+      "qualified": true,
+      "values": {
+        "games": 6,
+        "completions": 114,
+        "attempts": 171,
+        "passing_yards": 1504,
+        "passing_tds": 9,
+        "passing_interceptions": 4,
+        "sacks_suffered": 12,
+        "cmp_pct": 0.667,
+        "pass_ypa": 8.8
+      }
+    },
+    {
+      "rank": 6,
       "playerId": "00-0023459",
       "player": "Aaron Rodgers",
       "team": "PIT",
@@ -174,7 +214,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 7,
       "playerId": "00-0033106",
       "player": "Jared Goff",
       "team": "DET",
@@ -194,7 +234,7 @@
       }
     },
     {
-      "rank": 6,
+      "rank": 8,
       "playerId": "00-0036971",
       "player": "Trevor Lawrence",
       "team": "JAX",
@@ -214,7 +254,7 @@
       }
     },
     {
-      "rank": 7,
+      "rank": 9,
       "playerId": "00-0039851",
       "player": "Drake Maye",
       "team": "NE",
@@ -234,7 +274,7 @@
       }
     },
     {
-      "rank": 8,
+      "rank": 10,
       "playerId": "00-0040743",
       "player": "Tyler Shough",
       "team": "NO",
@@ -254,7 +294,7 @@
       }
     },
     {
-      "rank": 9,
+      "rank": 11,
       "playerId": "00-0036264",
       "player": "Jordan Love",
       "team": "GB",
@@ -274,7 +314,7 @@
       }
     },
     {
-      "rank": 10,
+      "rank": 12,
       "playerId": "00-0033077",
       "player": "Dak Prescott",
       "team": "DAL",
@@ -294,7 +334,7 @@
       }
     },
     {
-      "rank": 11,
+      "rank": 13,
       "playerId": "00-0036442",
       "player": "Joe Burrow",
       "team": "CIN",
@@ -314,7 +354,7 @@
       }
     },
     {
-      "rank": 12,
+      "rank": 14,
       "playerId": "00-0030565",
       "player": "Geno Smith",
       "team": "NYJ",
@@ -334,7 +374,47 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 15,
+      "playerId": "00-0033119",
+      "player": "Jacoby Brissett",
+      "team": "ARI",
+      "position": "QB",
+      "teamGames": 6,
+      "qualified": true,
+      "values": {
+        "games": 6,
+        "completions": 156,
+        "attempts": 234,
+        "passing_yards": 1328,
+        "passing_tds": 9,
+        "passing_interceptions": 6,
+        "sacks_suffered": 12,
+        "cmp_pct": 0.667,
+        "pass_ypa": 5.7
+      }
+    },
+    {
+      "rank": 16,
+      "playerId": "00-0033873",
+      "player": "Patrick Mahomes",
+      "team": "KC",
+      "position": "QB",
+      "teamGames": 5,
+      "qualified": true,
+      "values": {
+        "games": 5,
+        "completions": 105,
+        "attempts": 158,
+        "passing_yards": 1309,
+        "passing_tds": 9,
+        "passing_interceptions": 3,
+        "sacks_suffered": 6,
+        "cmp_pct": 0.665,
+        "pass_ypa": 8.3
+      }
+    },
+    {
+      "rank": 17,
       "playerId": "00-0035710",
       "player": "Daniel Jones",
       "team": "IND",
@@ -354,47 +434,7 @@
       }
     },
     {
-      "rank": 14,
-      "playerId": "00-0029604",
-      "player": "Kirk Cousins",
-      "team": "LV",
-      "position": "QB",
-      "teamGames": 5,
-      "qualified": true,
-      "values": {
-        "games": 5,
-        "completions": 112,
-        "attempts": 172,
-        "passing_yards": 1269,
-        "passing_tds": 12,
-        "passing_interceptions": 4,
-        "sacks_suffered": 8,
-        "cmp_pct": 0.651,
-        "pass_ypa": 7.4
-      }
-    },
-    {
-      "rank": 15,
-      "playerId": "00-0034857",
-      "player": "Josh Allen",
-      "team": "BUF",
-      "position": "QB",
-      "teamGames": 5,
-      "qualified": true,
-      "values": {
-        "games": 5,
-        "completions": 91,
-        "attempts": 138,
-        "passing_yards": 1249,
-        "passing_tds": 7,
-        "passing_interceptions": 4,
-        "sacks_suffered": 10,
-        "cmp_pct": 0.659,
-        "pass_ypa": 9.1
-      }
-    },
-    {
-      "rank": 16,
+      "rank": 18,
       "playerId": "00-0037834",
       "player": "Brock Purdy",
       "team": "SF",
@@ -414,7 +454,7 @@
       }
     },
     {
-      "rank": 17,
+      "rank": 19,
       "playerId": "00-0033537",
       "player": "Deshaun Watson",
       "team": "CLE",
@@ -434,27 +474,27 @@
       }
     },
     {
-      "rank": 18,
-      "playerId": "00-0033119",
-      "player": "Jacoby Brissett",
-      "team": "ARI",
+      "rank": 20,
+      "playerId": "00-0036355",
+      "player": "Justin Herbert",
+      "team": "LAC",
       "position": "QB",
-      "teamGames": 5,
+      "teamGames": 6,
       "qualified": true,
       "values": {
-        "games": 5,
-        "completions": 132,
-        "attempts": 199,
-        "passing_yards": 1110,
-        "passing_tds": 9,
-        "passing_interceptions": 5,
-        "sacks_suffered": 12,
-        "cmp_pct": 0.663,
-        "pass_ypa": 5.6
+        "games": 6,
+        "completions": 107,
+        "attempts": 180,
+        "passing_yards": 1141,
+        "passing_tds": 5,
+        "passing_interceptions": 8,
+        "sacks_suffered": 21,
+        "cmp_pct": 0.594,
+        "pass_ypa": 6.3
       }
     },
     {
-      "rank": 19,
+      "rank": 21,
       "playerId": "00-0039732",
       "player": "Bo Nix",
       "team": "DEN",
@@ -474,27 +514,7 @@
       }
     },
     {
-      "rank": 20,
-      "playerId": "00-0033873",
-      "player": "Patrick Mahomes",
-      "team": "KC",
-      "position": "QB",
-      "teamGames": 4,
-      "qualified": true,
-      "values": {
-        "games": 4,
-        "completions": 82,
-        "attempts": 128,
-        "passing_yards": 1037,
-        "passing_tds": 9,
-        "passing_interceptions": 2,
-        "sacks_suffered": 6,
-        "cmp_pct": 0.641,
-        "pass_ypa": 8.1
-      }
-    },
-    {
-      "rank": 21,
+      "rank": 22,
       "playerId": "00-0034869",
       "player": "Sam Darnold",
       "team": "SEA",
@@ -514,7 +534,7 @@
       }
     },
     {
-      "rank": 22,
+      "rank": 23,
       "playerId": "00-0040676",
       "player": "Cam Ward",
       "team": "TEN",
@@ -534,7 +554,7 @@
       }
     },
     {
-      "rank": 23,
+      "rank": 24,
       "playerId": "00-0034796",
       "player": "Lamar Jackson",
       "team": "BAL",
@@ -554,7 +574,7 @@
       }
     },
     {
-      "rank": 24,
+      "rank": 25,
       "playerId": "00-0031503",
       "player": "Jameis Winston",
       "team": "NYG",
@@ -574,7 +594,7 @@
       }
     },
     {
-      "rank": 25,
+      "rank": 26,
       "playerId": "00-0039917",
       "player": "Michael Penix Jr.",
       "team": "ATL",
@@ -591,26 +611,6 @@
         "sacks_suffered": 9,
         "cmp_pct": 0.645,
         "pass_ypa": 8.6
-      }
-    },
-    {
-      "rank": 26,
-      "playerId": "00-0036355",
-      "player": "Justin Herbert",
-      "team": "LAC",
-      "position": "QB",
-      "teamGames": 5,
-      "qualified": true,
-      "values": {
-        "games": 5,
-        "completions": 85,
-        "attempts": 143,
-        "passing_yards": 937,
-        "passing_tds": 5,
-        "passing_interceptions": 7,
-        "sacks_suffered": 17,
-        "cmp_pct": 0.594,
-        "pass_ypa": 6.6
       }
     },
     {
@@ -999,7 +999,7 @@
       "player": "Fernando Mendoza",
       "team": "LV",
       "position": "QB",
-      "teamGames": 5,
+      "teamGames": 6,
       "qualified": false,
       "values": {
         "games": 1,
@@ -1099,7 +1099,7 @@
       "player": "Stetson Bennett",
       "team": "LAR",
       "position": "QB",
-      "teamGames": 5,
+      "teamGames": 6,
       "qualified": false,
       "values": {
         "games": 1,
@@ -1119,10 +1119,10 @@
       "player": "Michael Wilson",
       "team": "ARI",
       "position": "WR",
-      "teamGames": 5,
+      "teamGames": 6,
       "qualified": false,
       "values": {
-        "games": 5,
+        "games": 6,
         "completions": 1,
         "attempts": 1,
         "passing_yards": 7,
@@ -1299,7 +1299,7 @@
       "player": "Tre Harris",
       "team": "LAC",
       "position": "WR",
-      "teamGames": 5,
+      "teamGames": 6,
       "qualified": false,
       "values": {
         "games": 5,
