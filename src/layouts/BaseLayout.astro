@@ -9,6 +9,8 @@ import OnThisDay from '../components/OnThisDay.astro';
 import tickerData from '../data/ticker.json';
 import type { TickerData, GameState } from '../data/types';
 import { weekLabel } from '../utils/week';
+import { standings } from '../utils/standings';
+import type { LiveRecordsData } from '../lib/live-ticker/records';
 
 const ticker = tickerData as TickerData;
 
@@ -34,6 +36,31 @@ if (ticker.nextOpener) {
   });
   openerText = `Offseason. Next season opens ${opener}.`;
 }
+// Each team's standing as built, so the live poll can move records the
+// moment a regular season game ends (src/lib/live-ticker/records.ts). Only
+// when the standings are the ticker's season and the week is a regular
+// season one; playoff games do not change records.
+const liveRecords: LiveRecordsData | null =
+  standings.season === ticker.season && ticker.week !== null && ticker.week <= 18
+    ? Object.fromEntries(
+        standings.teams.map((t) => [
+          t.team,
+          {
+            division: t.division,
+            conference: t.conference,
+            wins: t.wins,
+            losses: t.losses,
+            ties: t.ties,
+            pointsFor: t.pointsFor,
+            pointsAgainst: t.pointsAgainst,
+            divisionRecord: t.divisionRecord,
+            conferenceRecord: t.conferenceRecord,
+            streak: t.streak,
+          },
+        ])
+      )
+    : null;
+
 // Versioned per build so a deploy never pairs new pages with a cached index.
 const searchIndexUrl = `${url('search-index.js')}?v=${BUILD_ID}`;
 
@@ -80,6 +107,7 @@ function isActive(href: string): boolean {
     <title>{title} | Tyler NFL</title>
   </head>
   <body>
+    {liveRecords && <script type="application/json" id="live-records" set:html={JSON.stringify(liveRecords)} />}
     <div class="shell">
       <div
         class="ticker"

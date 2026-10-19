@@ -24,19 +24,4 @@ export function seedsOf(conference: 'AFC' | 'NFC'): TeamStanding[] {
   return standings.teams.filter((t) => t.conference === conference).sort((a, b) => a.conferenceRank - b.conferenceRank);
 }
 
-/** ".667", "1.000", ".000": the way standings print it. */
-export function formatPct(pct: number): string {
-  return pct >= 1 ? '1.000' : pct.toFixed(3).replace(/^0/, '');
-}
-
-/** "+34", "−12" with a true minus, "0". */
-export function formatSigned(value: number): string {
-  if (value > 0) return `+${value}`;
-  if (value < 0) return `−${Math.abs(value)}`;
-  return '0';
-}
-
-/** [4, 1, 0] -> "4-1"; [4, 1, 1] -> "4-1-1". */
-export function formatRecord([w, l, t]: [number, number, number]): string {
-  return t ? `${w}-${l}-${t}` : `${w}-${l}`;
-}
+export { formatPct, formatRecord, formatSigned } from '../lib/standings/format';

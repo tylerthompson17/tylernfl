@@ -16,6 +16,7 @@ import { STEP_WORDS, record, tieNotes } from '../../lib/standings/ties';
 import { divisionsOf, formatPct, seedsOf, standings } from '../../utils/standings';
 import { seasonThrough } from '../../utils/as-of';
 import { url } from '../../utils/url';
+import { LIVE_RECORDS_NOTE } from '../../lib/live-ticker/records';
 
 export function getStaticPaths() {
   return [
@@ -45,6 +46,7 @@ const intro = seasonThrough(standings.season, standings.throughWeek);
     table says which one decided it.
     {early && ' This early, many records are level, so strength of victory and coin tosses settle more than usual.'}
   </p>
+  <p class="page-intro" data-live-records-note hidden>{LIVE_RECORDS_NOTE}</p>
   <Tabs label="Conferences" tabs={tabs} current={conference} />
 
   {
@@ -59,7 +61,7 @@ const intro = seasonThrough(standings.season, standings.throughWeek);
               <Panel title={division.name}>
                 <StandingsTable teams={division.teams} caption={`${division.name} standings`} />
                 {notes.length > 0 && (
-                  <ul class="notes">
+                  <ul class="notes" data-live-stale>
                     {notes.map((note) => <li>{note}</li>)}
                   </ul>
                 )}
@@ -90,8 +92,8 @@ const intro = seasonThrough(standings.season, standings.throughWeek);
                       <TeamChip abbr={t.team} size="sm" />
                       <a href={url(`teams/${t.team}`)}>{names.get(t.team) ?? t.team}</a>
                     </th>
-                    <td class="number">{record(t)}</td>
-                    <td class="number">{formatPct(t.pct)}</td>
+                    <td class="number" data-live-record={t.team} data-field="record">{record(t)}</td>
+                    <td class="number" data-live-record={t.team} data-field="pct">{formatPct(t.pct)}</td>
                     <td>
                       {t.conferenceRank <= 4 ? 'Division leader' : t.conferenceRank <= 7 ? 'Wild card' : 'Out'}
                     </td>

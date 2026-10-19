@@ -16,6 +16,7 @@ import { siteNow } from '../../utils/now.ts';
 import { parseScoreboard, scoreboardUrl, type LiveGame } from './espn.ts';
 import { formatKickoff, formatKickoffDate } from './kickoff.ts';
 import { scoreChanged, stripInsertIndex } from './pin.ts';
+import { applyFinals, recordText, type LiveFinal, type LiveRecordsData, type RecordField } from './records.ts';
 import { describeLastScore, matchesScore, parseLastScore, summaryUrl } from './scoring.ts';
 import {
   POLL_INTERVAL_MS,
@@ -270,6 +271,53 @@ function createLastScoreTracker() {
   };
 }
 
+/**
+ * Records on the page (playoff picture, standings, the team header) move as
+ * games go final here, from the base the page embeds. Order and seeds stay
+ * as built; a note says they catch up, and tiebreak notes that may no
+ * longer hold are hidden.
+ */
+function createLiveRecords() {
+  const embedded = document.getElementById('live-records')?.textContent;
+  let base: LiveRecordsData | null = null;
+  try {
+    base = embedded ? (JSON.parse(embedded) as LiveRecordsData) : null;
+  } catch {
+    base = null;
+  }
+  const finals = new Map<string, LiveFinal>();
+
+  return {
+    /** A game the build had not counted just went final. */
+    add(eventId: string, game: LiveGame): void {
+      if (!base || game.awayScore == null || game.homeScore == null) return;
+      const slot = slotsFor(eventId)[0];
+      const away = slot?.querySelector<HTMLElement>('[data-side="away"]')?.dataset.team;
+      const home = slot?.querySelector<HTMLElement>('[data-side="home"]')?.dataset.team;
+      if (!away || !home || finals.has(eventId)) return;
+      finals.set(eventId, { away, home, awayScore: game.awayScore, homeScore: game.homeScore });
+
+      const updated = applyFinals(base, [...finals.values()]);
+      for (const [team, rec] of updated) {
+        const text = recordText(rec);
+        const diff = rec.pointsFor - rec.pointsAgainst;
+        for (const el of document.querySelectorAll<HTMLElement>(`[data-live-record="${CSS.escape(team)}"]`)) {
+          const field = el.dataset.field as RecordField;
+          if (!(field in text)) continue;
+          el.textContent = text[field];
+          if (field === 'diff' && el.classList.contains('number')) {
+            el.classList.toggle('up', diff > 0);
+            el.classList.toggle('down', diff < 0);
+          }
+        }
+      }
+      if (updated.size === 0) return;
+      for (const note of document.querySelectorAll<HTMLElement>('[data-live-records-note]')) note.hidden = false;
+      for (const stale of document.querySelectorAll<HTMLElement>('[data-live-stale]')) stale.hidden = true;
+    },
+  };
+}
+
 export function initLiveTicker(): void {
   const ticker = document.querySelector<HTMLElement>('.ticker');
   if (!ticker) return;
@@ -302,6 +350,7 @@ export function initLiveTicker(): void {
   let timer: number | undefined;
   let failures = 0;
   const lastScores = createLastScoreTracker();
+  const records = createLiveRecords();
 
   const schedule = (delay: number) => {
     window.clearTimeout(timer);
@@ -316,6 +365,7 @@ export function initLiveTicker(): void {
       current.state = game.state;
       for (const slot of slotsFor(id)) render(slot, game);
       lastScores.update(id, game);
+      if (game.state === 'final') records.add(id, game);
     }
   }
 

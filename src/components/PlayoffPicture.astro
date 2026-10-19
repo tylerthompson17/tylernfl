@@ -9,6 +9,7 @@ import { record } from '../lib/standings/ties';
 import { isPriorSeason, through } from '../utils/as-of';
 import { seedsOf, standings } from '../utils/standings';
 import { url } from '../utils/url';
+import { LIVE_RECORDS_NOTE } from '../lib/live-ticker/records';
 import Panel from './Panel.astro';
 import TeamChip from './TeamChip.astro';
 
@@ -35,7 +36,7 @@ const conferences = (['AFC', 'NFC'] as const).map((conference) => ({ conference,
               <tr class:list={{ hunt: t.conferenceRank > 7, cut: t.conferenceRank === 7 }}>
                 <td class="seed num">{t.conferenceRank}</td>
                 <th scope="row"><TeamChip abbr={t.team} size="sm" /></th>
-                <td class="num">{record(t)}</td>
+                <td class="num" data-live-record={t.team} data-field="record">{record(t)}</td>
               </tr>
             ))}
           </tbody>
@@ -51,6 +52,7 @@ const conferences = (['AFC', 'NFC'] as const).map((conference) => ({ conference,
     }{' '}
     <a href={url('standings')}>Full standings</a>
   </p>
+  <p class="foot" data-live-records-note hidden>{LIVE_RECORDS_NOTE}</p>
 </Panel>
 
 <style>

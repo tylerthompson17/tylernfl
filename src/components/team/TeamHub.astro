@@ -46,7 +46,9 @@ const odds = oddsOf(team.abbr);
   <dl class="strip">
     <div>
       <dt>{facts.lastSeason ? 'Last season' : 'Record'}</dt>
-      <dd class="num">{facts.record ?? '0-0'}</dd>
+      <dd class="num" data-live-record={facts.lastSeason ? undefined : team.abbr} data-field="record">
+        {facts.record ?? '0-0'}
+      </dd>
     </div>
     <div>
       <dt>Division</dt>
@@ -54,7 +56,9 @@ const odds = oddsOf(team.abbr);
     </div>
     <div>
       <dt>Point differential</dt>
-      <dd class="num">{facts.diff ?? '0'}</dd>
+      <dd class="num" data-live-record={facts.lastSeason ? undefined : team.abbr} data-field="diff">
+        {facts.diff ?? '0'}
+      </dd>
     </div>
     {
       odds && (
