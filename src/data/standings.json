@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 6,
-  "updated": "2026-10-19T03:54:24Z",
+  "updated": "2026-10-20T03:32:51Z",
   "teams": [
     {
       "team": "BUF",
@@ -521,12 +521,12 @@
       "conference": "NFC",
       "division": "NFC East",
       "wins": 1,
-      "losses": 3,
+      "losses": 4,
       "ties": 1,
-      "pct": 0.3,
-      "pointsFor": 115,
-      "pointsAgainst": 149,
-      "diff": -34,
+      "pct": 0.25,
+      "pointsFor": 132,
+      "pointsAgainst": 172,
+      "diff": -40,
       "divisionRecord": [
         0,
         2,
@@ -534,10 +534,10 @@
       ],
       "conferenceRecord": [
         1,
-        2,
+        3,
         1
       ],
-      "streak": "T1",
+      "streak": "L1",
       "divisionRank": 4,
       "conferenceRank": 15,
       "divisionTiebreak": null,
@@ -568,7 +568,7 @@
       "divisionRank": 1,
       "conferenceRank": 1,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "coin_toss"
+      "conferenceTiebreak": "strength_of_victory"
     },
     {
       "team": "GB",
@@ -763,28 +763,28 @@
       "team": "SF",
       "conference": "NFC",
       "division": "NFC West",
-      "wins": 5,
+      "wins": 6,
       "losses": 0,
       "ties": 0,
       "pct": 1.0,
-      "pointsFor": 154,
-      "pointsAgainst": 93,
-      "diff": 61,
+      "pointsFor": 177,
+      "pointsAgainst": 110,
+      "diff": 67,
       "divisionRecord": [
         3,
         0,
         0
       ],
       "conferenceRecord": [
-        3,
+        4,
         0,
         0
       ],
-      "streak": "W5",
+      "streak": "W6",
       "divisionRank": 1,
       "conferenceRank": 2,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "coin_toss"
+      "conferenceTiebreak": null
     },
     {
       "team": "SEA",
