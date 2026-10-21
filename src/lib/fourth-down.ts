@@ -50,25 +50,54 @@ export interface FourthDownSituation {
   kickerId?: string;
 }
 
+/** wpGo = conversionProb * wpIfConvert + (1 - conversionProb) * wpIfFail */
+export interface GoOutcomes {
+  /** Same value as the recommendation's conversionProb */
+  conversionProb: number;
+  wpIfConvert: number;
+  wpIfFail: number;
+}
+
+/** wpFieldGoal = makeProb * wpIfMake + (1 - makeProb) * wpIfMiss */
+export interface FieldGoalOutcomes {
+  /** Same value as the recommendation's fgMakeProb */
+  makeProb: number;
+  wpIfMake: number;
+  wpIfMiss: number;
+}
+
+/** wpPunt = wpAfterPunt, already averaged over where the punt lands */
+export interface PuntOutcomes {
+  wpAfterPunt: number;
+}
+
 /**
  * One option's win probability split into terms:
- * base + the sum of every wpDelta + residual equals the option's WP exactly.
+ * the sum of every wpDelta + residual = the option's WP - wpAllTermsOff.
  */
-export interface OptionBreakdown {
-  /** WP the terms start from */
-  base: number;
+export interface TermBreakdown {
+  /** The option's WP with every term turned off */
+  wpAllTermsOff: number;
   /** Each term's contribution, in the order the page lists them; labels shown as is */
   terms: { term: string; wpDelta: number }[];
-  /** What the terms do not explain, so the total matches */
+  /** What the terms do not explain */
   residual: number;
 }
 
 export interface FourthDownBreakdown {
-  go: OptionBreakdown;
+  go: { outcomes: GoOutcomes; terms: TermBreakdown };
   /** Null when wpPunt is */
-  punt: OptionBreakdown | null;
+  punt: { outcomes: PuntOutcomes; terms: TermBreakdown } | null;
   /** Null when wpFieldGoal is */
-  fieldGoal: OptionBreakdown | null;
+  fieldGoal: { outcomes: FieldGoalOutcomes; terms: TermBreakdown } | null;
+}
+
+/** Always present; false when nothing was assumed. The page says so for each one set. */
+export interface FourthDownFlags {
+  /** temp was null in a game where it is read (roof outdoors or open) */
+  temperatureUnknown: boolean;
+  /** No kickerId given, or the model does not know it: a league-average kicker */
+  kickerUnknown: boolean;
 }
 
 export interface FourthDownRecommendation {
@@ -87,20 +116,20 @@ export interface FourthDownRecommendation {
   conversionProb: number;
   /** Chance the field goal is good; null when wpFieldGoal is */
   fgMakeProb: number | null;
-  /**
-   * The kicker the numbers used. leagueAverage is true, and id null, when no
-   * kickerId was given or the model does not know it; the page must say so.
-   */
-  kicker: { id: string | null; leagueAverage: boolean };
-  /** The model may set this when temp was null and it mattered; the page says so */
-  tempUnknown?: boolean;
+  /** ESPN athlete id of the kicker the numbers used; null for a league-average kicker */
+  kickerId: string | null;
+  flags: FourthDownFlags;
   breakdown: FourthDownBreakdown;
 }
 
-/** Overtime is not supported in v1; reason can grow if other cases are ruled out. */
+/**
+ * Never thrown, always returned. Unsupported carries no WP values:
+ * 'overtime' is not supported in v1, 'unavailable' until the model is in the
+ * site. reason can grow if other cases are ruled out.
+ */
 export type FourthDownResult =
   | ({ supported: true } & FourthDownRecommendation)
-  | { supported: false; reason: 'overtime' };
+  | { supported: false; reason: 'overtime' | 'unavailable' };
 
 /**
  * One graded call in model_record.json: the coach's choice differed from the
@@ -149,8 +178,9 @@ export interface ModelRecordData {
 
 /**
  * STUB: replaced by Tyler's exported model (JSON in models/, run in the
- * browser). Throws until the real implementation lands.
+ * browser). Unavailable for every situation until the real implementation
+ * lands.
  */
 export function recommend(_situation: FourthDownSituation): FourthDownResult {
-  throw new Error('4th down model not implemented yet');
+  return { supported: false, reason: 'unavailable' };
 }

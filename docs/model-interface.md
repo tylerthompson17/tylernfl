@@ -6,7 +6,8 @@ records the contract; the decisions in it are Tyler's (2026-10-21), and anything
 open is listed at the end.
 
 Status on 2026-10-21: the types are in `src/lib/fourth-down.ts`. `recommend()` is a stub
-that throws, and the calculator page does not call it yet. The sidebar record panel and
+that returns `{ supported: false, reason: 'unavailable' }`, and the calculator page does
+not call it yet. The sidebar record panel and
 `model_record.json` were removed on 2026-09-22 (commit 3a116f0) and come back in the
 shape below when the model exists.
 
@@ -31,15 +32,21 @@ export function recommend(situation: FourthDownSituation): FourthDownResult;
 
 type FourthDownResult =
   | ({ supported: true } & FourthDownRecommendation)
-  | { supported: false; reason: 'overtime' };
+  | { supported: false; reason: 'overtime' | 'unavailable' };
 ```
 
 Synchronous, one situation in, one result out. It runs in the browser from the
 exported model JSON in `models/` (see section 3).
 
-Overtime is not supported in v1: a situation with `overtime: true` returns
-`{ supported: false, reason: 'overtime' }`, and the page says the calculator does not
-cover overtime yet. The `reason` union can grow if other cases are ruled out later.
+`recommend()` never throws. A situation it does not cover returns
+`{ supported: false, reason }` with no win probabilities or other values, and the page
+says why:
+
+- `'overtime'`: overtime is not supported in v1 (`overtime: true`).
+- `'unavailable'`: the model is not in the site yet. The stub returns this for every
+  situation until the real model replaces it.
+
+The `reason` union can grow if other cases are ruled out later.
 
 ### Input: `FourthDownSituation`
 
@@ -72,9 +79,19 @@ cover overtime yet. The `reason` union can grow if other cases are ruled out lat
 | `wpFieldGoal` | number or null | 0 to 1 | Null when the kick would be longer than the maximum field goal distance (below). |
 | `conversionProb` | number | 0 to 1 | Chance of gaining the first down if the offense goes. |
 | `fgMakeProb` | number or null | 0 to 1 | Null when `wpFieldGoal` is. |
-| `kicker` | `{ id: string \| null, leagueAverage: boolean }` | | The kicker the numbers used. `leagueAverage` is true, and `id` null, when no `kickerId` was given or the model does not know it. The page must say so. |
-| `tempUnknown` | boolean, optional | | The model may set it to true when `temp` was null and it mattered (an outdoor or open roof game). The page then says the temperature was unknown. |
-| `breakdown` | `FourthDownBreakdown` | | Per-term breakdown, below. |
+| `kickerId` | string or null | ESPN athlete id | The kicker the numbers used; null when they used a league-average kicker. |
+| `flags` | `{ temperatureUnknown: boolean, kickerUnknown: boolean }` | | What the model had to assume, below. The page must say so for each one set. |
+| `breakdown` | `FourthDownBreakdown` | | Outcome and term breakdown, below. |
+
+### Flags
+
+- `temperatureUnknown`: `temp` was null in a game where it is read (`roof` is
+  `'outdoors'` or `'open'`). Under a dome or closed roof temperature is not read, so a
+  null there is not unknown and the flag stays false.
+- `kickerUnknown`: no `kickerId` was given, or the model does not know it. The numbers
+  use a league-average kicker and `kickerId` in the output is null.
+
+Both are always present, false when nothing was assumed.
 
 A null option shows on the page as not available.
 
@@ -88,33 +105,53 @@ model JSON in `models/`, so changing it needs no site code.
 
 Whether a punt is realistic is the model's call.
 
-### Per-term breakdown
+### Breakdown
 
-`breakdown` has one entry per option, null when that option is:
+`breakdown` has one entry per option, null when that option is. Each entry carries two
+views of the same number: the outcomes the option averages over, and the terms that
+move it.
 
 ```ts
 interface FourthDownBreakdown {
-  go: OptionBreakdown;
-  punt: OptionBreakdown | null;
-  fieldGoal: OptionBreakdown | null;
+  go: { outcomes: GoOutcomes; terms: TermBreakdown };
+  punt: { outcomes: PuntOutcomes; terms: TermBreakdown } | null;
+  fieldGoal: { outcomes: FieldGoalOutcomes; terms: TermBreakdown } | null;
 }
 
-interface OptionBreakdown {
-  /** WP the terms start from */
-  base: number;
+interface GoOutcomes { conversionProb: number; wpIfConvert: number; wpIfFail: number }
+interface FieldGoalOutcomes { makeProb: number; wpIfMake: number; wpIfMiss: number }
+interface PuntOutcomes { wpAfterPunt: number }
+
+interface TermBreakdown {
+  /** The option's WP with every term turned off */
+  wpAllTermsOff: number;
   /** Each term's contribution, in the order the page lists them */
   terms: { term: string; wpDelta: number }[];
-  /** What the terms do not explain, so the total matches */
+  /** What the terms do not explain */
   residual: number;
 }
 ```
 
-For each option, `base + sum of wpDelta + residual` equals that option's win probability
-(`wpGo`, `wpPunt` or `wpFieldGoal`) exactly. `wpDelta` and `residual` are in win
-probability, -1 to 1, and may be negative. `term` names are short labels the page shows
-as they are ("Field position", "Score", "Kicker"), so the model chooses them and they
-need no mapping on the site. Which terms there are and what `base` is are Tyler's
-choices with the model.
+**Outcomes.** All 0 to 1, and they combine to the option's win probability:
+
+- go: `wpGo = conversionProb * wpIfConvert + (1 - conversionProb) * wpIfFail`, with
+  `conversionProb` the same value as the top-level one.
+- field goal: `wpFieldGoal = makeProb * wpIfMake + (1 - makeProb) * wpIfMiss`, with
+  `makeProb` equal to `fgMakeProb`.
+- punt: `wpPunt = wpAfterPunt`, already averaged over where the punt lands.
+
+**Terms.** For each option, the deltas and the residual account for everything the
+terms change:
+
+```
+sum of wpDelta + residual = wp(option) - wpAllTermsOff
+```
+
+so `wpAllTermsOff + sum of wpDelta + residual` is the option's win probability exactly.
+`wpDelta` and `residual` are in win probability, -1 to 1, and may be negative. `term`
+names are short labels the page shows as they are ("Field position", "Score",
+"Kicker"), so the model chooses them and they need no mapping on the site. Which terms
+there are, and what turning one off means, are Tyler's choices with the model.
 
 ## 2. Sidebar record: `model_record.json`
 
@@ -161,7 +198,8 @@ Grading is by decision, not by outcome. A 4th down play is graded when:
    win probability (0.02 to start; configurable in the pipeline, and written into the
    file so the page can state it).
 
-Overtime plays are not graded in v1, since the model returns no recommendation there.
+A play is never graded when `recommend()` returns `supported: false` for it (in v1, every
+overtime play), since there is no recommendation to grade against.
 
 The graded value is `wpCost = wp(modelCall) - wp(coachCall)`, the win probability the
 coach's choice cost, as of the moment of the decision. What happened on the play does
