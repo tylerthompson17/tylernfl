@@ -48,10 +48,23 @@ export function nextStreak(streak: string | null, result: 'W' | 'L' | 'T'): stri
   return match && match[1] === result ? `${result}${Number(match[2]) + 1}` : `${result}1`;
 }
 
-/** Ties count as half a win, 3 decimals, as pipelines/standings.py writes it. */
+/**
+ * Ties count as half a win, 3 decimals, as pipelines/standings.py writes it.
+ * Python's round() goes to the even digit on an exact half (4-3-1 is 0.5625,
+ * written .562), so this rounds the exact fraction the same way instead of
+ * using Math.round. With at most 17 games an exact half only happens when the
+ * fraction is in sixteenths, which the float holds exactly, so this matches
+ * Python on every record.
+ */
 export function winPct(wins: number, losses: number, ties: number): number {
   const games = wins + losses + ties;
-  return games ? Math.round(((wins + ties / 2) / games) * 1000) / 1000 : 0;
+  if (!games) return 0;
+  const num = (2 * wins + ties) * 1000;
+  const den = 2 * games;
+  let thousandths = Math.floor(num / den);
+  const twiceRest = 2 * (num - thousandths * den);
+  if (twiceRest > den || (twiceRest === den && thousandths % 2 === 1)) thousandths += 1;
+  return thousandths / 1000;
 }
 
 function add([w, l, t]: WLT, result: 'W' | 'L' | 'T'): WLT {

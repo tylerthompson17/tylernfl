@@ -48,6 +48,28 @@ export function isAdvance(current: ScheduledGame['state'], next: ScheduledGame['
   return STATE_RANK[next] >= STATE_RANK[current];
 }
 
+/**
+ * Moves each game the page knows to its state in a poll. `advanced` is every
+ * game to redraw; `finished` only those that went final here, not ones
+ * ticker.json (and so standings.json) already had final, and each only once
+ * however many polls report it. Live records count `finished` alone.
+ */
+export function advanceGames(
+  games: Map<string, ScheduledGame>,
+  live: Map<string, { state: ScheduledGame['state'] }>,
+): { advanced: string[]; finished: string[] } {
+  const advanced: string[] = [];
+  const finished: string[] = [];
+  for (const [id, game] of live) {
+    const current = games.get(id);
+    if (!current || !isAdvance(current.state, game.state)) continue;
+    if (game.state === 'final' && current.state !== 'final') finished.push(id);
+    current.state = game.state;
+    advanced.push(id);
+  }
+  return { advanced, finished };
+}
+
 // Long enough to reach the next daily data run from any kickoff, with room
 // for GitHub starting that run hours late (it has).
 const CATCH_UP_MS = 48 * 60 * 60_000;

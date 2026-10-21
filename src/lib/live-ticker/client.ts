@@ -21,7 +21,7 @@ import { describeLastScore, matchesScore, parseLastScore, summaryUrl } from './s
 import {
   POLL_INTERVAL_MS,
   REQUEST_TIMEOUT_MS,
-  isAdvance,
+  advanceGames,
   needsCatchUp,
   pollWindow,
   retryDelay,
@@ -359,14 +359,13 @@ export function initLiveTicker(): void {
 
   async function applyScoreboard() {
     const live = await fetchScoreboard(season, week);
-    for (const [id, game] of live) {
-      const current = games.get(id);
-      if (!current || !isAdvance(current.state, game.state)) continue;
-      current.state = game.state;
+    const { advanced, finished } = advanceGames(games, live);
+    for (const id of advanced) {
+      const game = live.get(id)!;
       for (const slot of slotsFor(id)) render(slot, game);
       lastScores.update(id, game);
-      if (game.state === 'final') records.add(id, game);
     }
+    for (const id of finished) records.add(id, live.get(id)!);
   }
 
   // A game whose live window closed before ticker.json caught up gets one

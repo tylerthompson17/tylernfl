@@ -73,4 +73,13 @@ describe('helpers', () => {
     assert.equal(winPct(1, 0, 0), 1);
     assert.equal(winPct(2, 1, 1), 0.625);
   });
+
+  test('pct rounds an exact half to even, as Python round() does', () => {
+    assert.equal(winPct(4, 3, 1), 0.562); // 0.5625
+    assert.equal(winPct(6, 1, 1), 0.812); // 0.8125
+    assert.equal(winPct(2, 5, 1), 0.312); // 0.3125
+    assert.equal(winPct(1, 6, 1), 0.188); // 0.1875
+    assert.equal(winPct(2, 1, 0), 0.667);
+    assert.equal(winPct(1, 2, 0), 0.333);
+  });
 });

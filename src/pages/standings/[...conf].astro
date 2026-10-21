@@ -97,7 +97,7 @@ const intro = seasonThrough(standings.season, standings.throughWeek);
                     <td>
                       {t.conferenceRank <= 4 ? 'Division leader' : t.conferenceRank <= 7 ? 'Wild card' : 'Out'}
                     </td>
-                    <td>{t.conferenceTiebreak ? STEP_WORDS[t.conferenceTiebreak] : ''}</td>
+                    <td>{t.conferenceTiebreak && <span data-live-stale>{STEP_WORDS[t.conferenceTiebreak]}</span>}</td>
                   </tr>
                 ))}
               </tbody>
