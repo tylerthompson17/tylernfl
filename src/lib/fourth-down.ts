@@ -29,9 +29,11 @@ export interface FourthDownSituation {
   yardline100: number;
   /** Yards to gain for a first down */
   distance: number;
-  /** Seconds remaining in the game */
+  /** Any overtime period. v1 returns not supported. */
+  overtime: boolean;
+  /** Seconds remaining in regulation; not read in overtime */
   secondsRemaining: number;
-  /** Seconds remaining in the half */
+  /** Seconds remaining in the half; not read in overtime */
   halfSecondsRemaining: number;
   /** Offense score minus defense score */
   scoreDiff: number;
@@ -42,19 +44,31 @@ export interface FourthDownSituation {
   /** The offense receives the second half kickoff (first half only) */
   receives2ndHalfKickoff: boolean;
   roof: Roof;
-  /** Degrees Fahrenheit, null under a roof or when unknown */
+  /** Degrees Fahrenheit, null when unknown; not read under a dome or closed roof */
   temp: number | null;
   /** ESPN athlete id. Missing means a league-average kicker. */
   kickerId?: string;
 }
 
+/**
+ * One option's win probability split into terms:
+ * base + the sum of every wpDelta + residual equals the option's WP exactly.
+ */
+export interface OptionBreakdown {
+  /** WP the terms start from */
+  base: number;
+  /** Each term's contribution, in the order the page lists them; labels shown as is */
+  terms: { term: string; wpDelta: number }[];
+  /** What the terms do not explain, so the total matches */
+  residual: number;
+}
+
 export interface FourthDownBreakdown {
-  /** wpGo = conversionProb * wpIfConvert + (1 - conversionProb) * wpIfFail */
-  go: { conversionProb: number; wpIfConvert: number; wpIfFail: number };
-  /** Same form as go; null when a field goal is not a realistic option */
-  fieldGoal: { makeProb: number; wpIfMake: number; wpIfMiss: number } | null;
-  /** Null when a punt is not a realistic option */
-  punt: { wpAfterPunt: number } | null;
+  go: OptionBreakdown;
+  /** Null when wpPunt is */
+  punt: OptionBreakdown | null;
+  /** Null when wpFieldGoal is */
+  fieldGoal: OptionBreakdown | null;
 }
 
 export interface FourthDownRecommendation {
@@ -64,7 +78,10 @@ export interface FourthDownRecommendation {
   wpGo: number;
   /** Null when a punt is not a realistic option */
   wpPunt: number | null;
-  /** Null when a field goal is not a realistic option */
+  /**
+   * Null when the kick (yardline100 + 17) is over maxFieldGoalDistance,
+   * 70 yards to start, set in the exported model JSON
+   */
   wpFieldGoal: number | null;
   /** Chance of gaining the first down if the offense goes */
   conversionProb: number;
@@ -75,8 +92,15 @@ export interface FourthDownRecommendation {
    * kickerId was given or the model does not know it; the page must say so.
    */
   kicker: { id: string | null; leagueAverage: boolean };
+  /** The model may set this when temp was null and it mattered; the page says so */
+  tempUnknown?: boolean;
   breakdown: FourthDownBreakdown;
 }
+
+/** Overtime is not supported in v1; reason can grow if other cases are ruled out. */
+export type FourthDownResult =
+  | ({ supported: true } & FourthDownRecommendation)
+  | { supported: false; reason: 'overtime' };
 
 /**
  * One graded call in model_record.json: the coach's choice differed from the
@@ -127,6 +151,6 @@ export interface ModelRecordData {
  * STUB: replaced by Tyler's exported model (JSON in models/, run in the
  * browser). Throws until the real implementation lands.
  */
-export function recommend(_situation: FourthDownSituation): FourthDownRecommendation {
+export function recommend(_situation: FourthDownSituation): FourthDownResult {
   throw new Error('4th down model not implemented yet');
 }
