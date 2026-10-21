@@ -140,8 +140,11 @@ interface TermBreakdown {
   `makeProb` equal to `fgMakeProb`.
 - punt: `wpPunt = wpAfterPunt`, already averaged over where the punt lands.
 
-**Terms.** For each option, the deltas and the residual account for everything the
-terms change:
+**Terms.** Terms are the model's correction terms: adjustments it applies on top of
+its uncorrected win probability, such as the kicker. They are not the situation inputs
+(field position, score, clock), which are already in `wpAllTermsOff`, the option's win
+probability with every correction turned off. For each option, the deltas and the
+residual account for everything the corrections change:
 
 ```
 sum of wpDelta + residual = wp(option) - wpAllTermsOff
@@ -149,9 +152,10 @@ sum of wpDelta + residual = wp(option) - wpAllTermsOff
 
 so `wpAllTermsOff + sum of wpDelta + residual` is the option's win probability exactly.
 `wpDelta` and `residual` are in win probability, -1 to 1, and may be negative. `term`
-names are short labels the page shows as they are ("Field position", "Score",
-"Kicker"), so the model chooses them and they need no mapping on the site. Which terms
-there are, and what turning one off means, are Tyler's choices with the model.
+names are short labels naming the correction ("Kicker (H. Butker)"), shown on the page
+as they are, so the model chooses them and they need no mapping on the site.
+Which corrections there are, and what turning one off means, are Tyler's choices with
+the model.
 
 ## 2. Sidebar record: `model_record.json`
 
@@ -199,7 +203,8 @@ Grading is by decision, not by outcome. A 4th down play is graded when:
    file so the page can state it).
 
 A play is never graded when `recommend()` returns `supported: false` for it (in v1, every
-overtime play), since there is no recommendation to grade against.
+overtime play), since there is no recommendation to grade against. The other plays left
+out, and how fakes count, are under "Decided" at the end.
 
 The graded value is `wpCost = wp(modelCall) - wp(coachCall)`, the win probability the
 coach's choice cost, as of the moment of the decision. What happened on the play does
@@ -250,9 +255,17 @@ wins-losses-pushes record. It needs to show the derived totals instead.
    schedules. The pipeline writing `model_record.json` needs the same mapping to fill
    `situation.kickerId`, and model training on nflverse play-by-play (gsis
    `kicker_player_id`) needs it to export ESPN ids.
-2. **Coach's call the model rated unrealistic.** If the coach tries a field goal the
-   model gave `wpFieldGoal: null`, the cost has no value. Grade it against something,
-   or skip it?
-   This includes a coach who tries a field goal longer than `maxFieldGoalDistance`.
-3. **Which plays are 4th down decisions.** Fakes, plays wiped out by penalties, kneels
-   and spikes all need a rule in the grading pipeline.
+
+### Decided (2026-10-21)
+
+Grading rules for the pipeline that writes `model_record.json`:
+
+- **Coach's choice is a null option: ungraded.** If the coach punts when `wpPunt` is
+  null, or tries a field goal when `wpFieldGoal` is null (including one longer than
+  `maxFieldGoalDistance`), the cost has no value and the play is not graded.
+- **Fakes count as go.** A fake punt or fake field goal is graded as `coachCall: 'go'`.
+- **Plays skipped:**
+  - plays nullified by a penalty;
+  - kneels and spikes;
+  - plays where the game is already decided: every non-null option's win probability is
+    below 0.02, or every one is above 0.98.
