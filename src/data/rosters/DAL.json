@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "DAL",
   "week": 7,
-  "updated": "2026-10-20T14:32:29Z",
+  "updated": "2026-10-21T14:43:13Z",
   "groups": [
     {
       "key": "offense",
@@ -32,6 +32,21 @@
       "age": 33,
       "experience": 10,
       "college": "Mississippi State"
+    },
+    {
+      "gsisId": "00-0036928",
+      "name": "Kyle Trask",
+      "slug": "kyle-trask",
+      "number": 14,
+      "position": "QB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 240,
+      "age": 28,
+      "experience": 5,
+      "college": "Florida"
     },
     {
       "gsisId": "00-0037077",
@@ -934,21 +949,6 @@
       "college": "Georgia; Clemson"
     },
     {
-      "gsisId": "00-0039387",
-      "name": "Caelen Carson",
-      "slug": "caelen-carson",
-      "number": 21,
-      "position": "CB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 72,
-      "weight": 195,
-      "age": 24,
-      "experience": 2,
-      "college": "Wake Forest"
-    },
-    {
       "gsisId": "00-0038624",
       "name": "Ameer Speed",
       "slug": "ameer-speed",
@@ -1150,8 +1150,8 @@
       "number": 43,
       "position": "SS",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 217,
       "age": 26,

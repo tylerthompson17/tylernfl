@@ -1,74 +1,77 @@
 {
   "month": 10,
-  "day": 20,
-  "gamesOnDate": 57,
+  "day": 21,
+  "gamesOnDate": 55,
   "items": [
     {
-      "year": 2022,
-      "gameId": "2022_07_NO_ARI",
-      "text": "The Cardinals beat the Saints 42-34 with 76 combined points.",
+      "year": 2019,
+      "gameId": "2019_07_NE_NYJ",
+      "text": "The Patriots shut out the Jets 33-0.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Cardinals",
-          "team": "ARI"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Saints",
-          "team": "NO"
-        },
-        {
-          "text": " 42-34 with 76 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2013,
-      "gameId": "2013_07_CHI_WAS",
-      "text": "Washington beat the Bears 45-41 with 86 combined points.",
-      "parts": [
-        {
-          "text": "Washington",
-          "team": "WAS"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Bears",
-          "team": "CHI"
-        },
-        {
-          "text": " 45-41 with 86 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2002,
-      "gameId": "2002_07_CAR_ATL",
-      "text": "The Falcons shut out the Panthers 30-0.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Falcons",
-          "team": "ATL"
+          "text": "Patriots",
+          "team": "NE"
         },
         {
           "text": " shut out the "
         },
         {
-          "text": "Panthers",
-          "team": "CAR"
+          "text": "Jets",
+          "team": "NYJ"
         },
         {
-          "text": " 30-0."
+          "text": " 33-0."
+        }
+      ]
+    },
+    {
+      "year": 2018,
+      "gameId": "2018_07_CIN_KC",
+      "text": "The Chiefs beat the Bengals 45-10.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Chiefs",
+          "team": "KC"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Bengals",
+          "team": "CIN"
+        },
+        {
+          "text": " 45-10."
+        }
+      ]
+    },
+    {
+      "year": 2007,
+      "gameId": "2007_07_NE_MIA",
+      "text": "The Patriots beat the Dolphins 49-28 with 77 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Patriots",
+          "team": "NE"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Dolphins",
+          "team": "MIA"
+        },
+        {
+          "text": " 49-28 with 77 combined points."
         }
       ]
     }

@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYG",
   "week": 7,
-  "updated": "2026-10-20T14:32:29Z",
+  "updated": "2026-10-21T14:43:13Z",
   "groups": [
     {
       "key": "offense",
@@ -77,21 +77,6 @@
       "age": 32,
       "experience": 11,
       "college": "Florida State"
-    },
-    {
-      "gsisId": "00-0036893",
-      "name": "Najee Harris",
-      "slug": "najee-harris",
-      "number": 23,
-      "position": "RB",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 73,
-      "weight": 230,
-      "age": 28,
-      "experience": 5,
-      "college": "Alabama"
     },
     {
       "gsisId": "00-0035250",
@@ -332,6 +317,21 @@
       "age": 27,
       "experience": 3,
       "college": "Purdue; Iowa"
+    },
+    {
+      "gsisId": "00-0038492",
+      "name": "Jason Brownlee",
+      "slug": "jason-brownlee",
+      "number": 89,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 202,
+      "age": 27,
+      "experience": 3,
+      "college": "Southern Mississippi"
     },
     {
       "gsisId": "00-0037838",
@@ -805,28 +805,13 @@
       "number": 48,
       "position": "OLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 74,
       "weight": 252,
       "age": 25,
       "experience": 1,
       "college": "Oklahoma; Oklahoma State"
-    },
-    {
-      "gsisId": "00-0033046",
-      "name": "Jihad Ward",
-      "slug": "jihad-ward",
-      "number": 53,
-      "position": "OLB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 77,
-      "weight": 287,
-      "age": 32,
-      "experience": 10,
-      "college": "Illinois; Globe Institute"
     },
     {
       "gsisId": "00-0037259",

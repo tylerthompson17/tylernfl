@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "MIA",
   "week": 7,
-  "updated": "2026-10-20T14:32:29Z",
+  "updated": "2026-10-21T14:43:13Z",
   "groups": [
     {
       "key": "offense",
@@ -595,8 +595,8 @@
       "number": 59,
       "position": "DE",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 76,
       "weight": 273,
       "age": 24,
@@ -779,7 +779,7 @@
       "statusLabel": "Active",
       "heightInches": 72,
       "weight": 240,
-      "age": 28,
+      "age": 29,
       "experience": 6,
       "college": "Texas Tech"
     },
@@ -842,21 +842,6 @@
       "age": 29,
       "experience": 8,
       "college": "Alabama"
-    },
-    {
-      "gsisId": "00-0038635",
-      "name": "Andre Jones Jr.",
-      "slug": "andre-jones-jr",
-      "number": 58,
-      "position": "OLB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 77,
-      "weight": 258,
-      "age": 27,
-      "experience": 3,
-      "college": "Louisiana-Lafayette"
     },
     {
       "gsisId": "00-0038890",
@@ -1009,21 +994,6 @@
       "college": "Stanford"
     },
     {
-      "gsisId": "00-0039481",
-      "name": "Storm Duck",
-      "slug": "storm-duck",
-      "number": 29,
-      "position": "CB",
-      "group": "defense",
-      "status": "RES",
-      "statusLabel": "Reserve",
-      "heightInches": 72,
-      "weight": 195,
-      "age": 25,
-      "experience": 2,
-      "college": "Louisville"
-    },
-    {
       "gsisId": "00-0039383",
       "name": "Jaylin Simpson",
       "slug": "jaylin-simpson",
@@ -1129,19 +1099,19 @@
       "college": "LSU; Georgia"
     },
     {
-      "gsisId": "00-0036816",
-      "name": "Riley Patterson",
-      "slug": "riley-patterson",
-      "number": 47,
+      "gsisId": "00-0033862",
+      "name": "Zane Gonzalez",
+      "slug": "zane-gonzalez",
+      "number": 45,
       "position": "K",
       "group": "specialists",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 72,
-      "weight": 196,
-      "age": 27,
-      "experience": 5,
-      "college": "Memphis"
+      "weight": 202,
+      "age": 31,
+      "experience": 9,
+      "college": "Arizona State"
     },
     {
       "gsisId": "00-0032065",

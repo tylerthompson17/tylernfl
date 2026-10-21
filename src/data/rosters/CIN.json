@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "CIN",
   "week": 7,
-  "updated": "2026-10-20T14:32:29Z",
+  "updated": "2026-10-21T14:43:13Z",
   "groups": [
     {
       "key": "offense",
@@ -287,6 +287,21 @@
       "age": 24,
       "experience": 0,
       "college": "Georgia; Miami; Lackawanna JC"
+    },
+    {
+      "gsisId": "00-0041246",
+      "name": "Josh Kattus",
+      "slug": "josh-kattus",
+      "number": 48,
+      "position": "TE",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 247,
+      "age": 22,
+      "experience": 0,
+      "college": null
     },
     {
       "gsisId": "00-0039814",
@@ -829,6 +844,21 @@
       "college": "Clemson"
     },
     {
+      "gsisId": "00-0039526",
+      "name": "Emany Johnson",
+      "slug": "emany-johnson",
+      "number": 50,
+      "position": "ILB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 216,
+      "age": 25,
+      "experience": 2,
+      "college": "Nevada"
+    },
+    {
       "gsisId": "00-0040723",
       "name": "Jack Kiser",
       "slug": "jack-kiser",
@@ -1000,8 +1030,8 @@
       "number": 22,
       "position": "FS",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 70,
       "weight": 195,
       "age": 27,
@@ -1067,21 +1097,6 @@
       "age": 25,
       "experience": 2,
       "college": "Southern Illinois"
-    },
-    {
-      "gsisId": "00-0041389",
-      "name": "Isaiah Nwokobia",
-      "slug": "isaiah-nwokobia",
-      "number": 41,
-      "position": "SS",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 205,
-      "age": 23,
-      "experience": 0,
-      "college": "SMU"
     },
     {
       "gsisId": "00-0036854",

@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "CLE",
   "week": 7,
-  "updated": "2026-10-20T14:32:29Z",
+  "updated": "2026-10-21T14:43:13Z",
   "groups": [
     {
       "key": "offense",
@@ -349,21 +349,6 @@
       "college": "BYU; Utah; UCLA"
     },
     {
-      "gsisId": "00-0039754",
-      "name": "Devin Culp",
-      "slug": "devin-culp",
-      "number": 82,
-      "position": "TE",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 237,
-      "age": 26,
-      "experience": 2,
-      "college": "Washington"
-    },
-    {
       "gsisId": "00-0038710",
       "name": "Blake Whiteheart",
       "slug": "blake-whiteheart",
@@ -467,6 +452,21 @@
       "age": 27,
       "experience": 2,
       "college": "Kansas State"
+    },
+    {
+      "gsisId": "00-0039535",
+      "name": "Andrew Coker",
+      "slug": "andrew-coker",
+      "number": 79,
+      "position": "T",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 79,
+      "weight": 315,
+      "age": 25,
+      "experience": 2,
+      "college": "TCU"
     },
     {
       "gsisId": "00-0039014",
@@ -722,21 +722,6 @@
       "age": 23,
       "experience": 2,
       "college": "Ohio State"
-    },
-    {
-      "gsisId": "00-0035857",
-      "name": "Chris Williams",
-      "slug": "chris-williams",
-      "number": 53,
-      "position": "DT",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 74,
-      "weight": 298,
-      "age": 28,
-      "experience": 6,
-      "college": "Wagner"
     },
     {
       "gsisId": "00-0039764",
@@ -1099,6 +1084,21 @@
       "college": "West Virginia; Nevada; East Central JC"
     },
     {
+      "gsisId": "00-0040310",
+      "name": "John Saunders Jr.",
+      "slug": "john-saunders-jr",
+      "number": 25,
+      "position": "FS",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 210,
+      "age": 24,
+      "experience": 1,
+      "college": "Mississippi; Miami (Ohio)"
+    },
+    {
       "gsisId": "00-0041471",
       "name": "Emmanuel McNeil-Warren",
       "slug": "emmanuel-mcneil-warren",
@@ -1217,6 +1217,21 @@
       "age": 30,
       "experience": 8,
       "college": "New Mexico; Cerritos College"
+    },
+    {
+      "gsisId": "00-0041284",
+      "name": "Wes Pahl",
+      "slug": "wes-pahl",
+      "number": 36,
+      "position": "P",
+      "group": "specialists",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 195,
+      "age": 24,
+      "experience": 0,
+      "college": "Oklahoma State"
     },
     {
       "gsisId": "00-0036443",
