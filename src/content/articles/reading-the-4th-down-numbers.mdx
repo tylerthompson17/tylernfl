@@ -24,6 +24,8 @@ So when you see a recommendation here, read the margin before the verdict. A "go
 
 ## What the record will mean
 
-Once the model is live, the sidebar will keep a record of graded calls: situations where the model's recommendation and the coach's choice disagreed, scored by what happened next. It will be a running tally, not a proof. Single games are noisy, and a good process loses plenty of individual bets. The record is meant for watching the sample grow, not for declaring victory in week 3.
+Once the model is live, the sidebar will keep a record of graded calls: situations where the coach's choice differed from the model's recommendation by at least 2 points of win probability. Each one is graded by what the choice cost, the win probability the coach gave up at the moment of the decision, not by what happened next. A go that fails and a go that converts were the same decision, and a punt that works out was still the worse bet. Single plays are noisy, and grading the decision instead of the result keeps that noise out of the record.
 
-The calculator itself is in progress. When it goes live, you will be able to set any situation, down to the timeout count, and see both win probabilities and the margin between them.
+How well the model's win probabilities match what actually happens is a separate question, and it will get its own season-level check rather than a play-by-play scorecard.
+
+The calculator itself is in progress. When it goes live, you will be able to set any situation, down to the timeout count, and see the win probability of going for it, punting and kicking a field goal, and the margin between them.
