@@ -304,6 +304,16 @@ tylernfl/
   2027 picks). nflverse's trade data is never used for it; the daily run only logs a
   warning for a round 1 trade it lists that the file lacks. `pipelines/test_draft_order.py`
   must reproduce the league's 2026 order from the 2025 season.
+- Its `projected` part comes from the playoff odds' own simulated seasons
+  (`DraftProjection` in `playoff_odds.py`): each season's playoffs played out (higher
+  seed at home, played games kept, every unpriced playoff game 50/50, labelled on the
+  page), its draft order set from that season's records, strength of schedule and
+  tiebreakers, leftover ties drawn at random. Per team: expected wins, mean and median
+  pick, chances of 1, top 3, 5 and 10, the 10th to 90th percentile pick, and each
+  pick's chance. Its draws use a second random stream, so `playoff_odds.json` is
+  byte-identical with or without it (checked against a saved fixture in
+  `test_playoff_odds.py`). A delegated method: section in `playoff-simulation.md`,
+  compared with nflseedR by `docs/methods/scripts/draft_sim_compare.py`.
 - `pipelines/test_playoff_odds.py` checks the simulator against a known season: 2024
   from week 12, every remaining game given its real result for certain, must give every
   chance as exactly 0 or 1 and reproduce the real final seeding and wins.

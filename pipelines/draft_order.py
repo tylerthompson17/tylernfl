@@ -286,8 +286,9 @@ def order(table: dict, h2h: dict, exits: dict[str, str],
 
 def build_draft_order(schedule_rows: list[dict], season: int, updated: str,
                       alignment: dict[str, tuple[str, str]] | None = None,
-                      picks_path: Path = PICKS_FILE) -> dict:
-    """The DraftOrderData shape in src/data/types.ts."""
+                      picks_path: Path = PICKS_FILE, projected: dict | None = None) -> dict:
+    """The DraftOrderData shape in src/data/types.ts. `projected` is
+    playoff_odds.DraftProjection's result, kept until the order is final."""
     alignment = alignment or standings.load_alignment()
     draft = season + 1
     rows = [r for r in schedule_rows if r['season'] == season]
@@ -295,7 +296,7 @@ def build_draft_order(schedule_rows: list[dict], season: int, updated: str,
     base = {'draft': draft, 'season': season, 'throughWeek': max((g['week'] for g in regular), default=0),
             'updated': updated}
     if not regular:
-        return {**base, 'stage': 'not_started', 'picks': []}
+        return {**base, 'stage': 'not_started', 'picks': [], 'projected': None}
     table, h2h = standings.records(regular, alignment)
     standings.division_ranks(table, h2h)
     standings.conference_ranks(table, h2h)
@@ -326,4 +327,4 @@ def build_draft_order(schedule_rows: list[dict], season: int, updated: str,
             'tiebreak': placed_row['tiebreak'],
             'coinFlip': slot['team'] in flips,
         })
-    return {**base, 'stage': stage, 'picks': picks}
+    return {**base, 'stage': stage, 'picks': picks, 'projected': None if stage == 'final' else projected}

@@ -3,8 +3,8 @@
 Not a model: the league's rules for the order of the draft, applied to today's records.
 `pipelines/draft_order.py` writes `src/data/draft_order.json` every day, round 1 of the
 draft that follows the current season, as it would stand if the season ended today.
-The projected order (simulated seasons) is a delegated method and gets its own section
-of `playoff-simulation.md` when it is built.
+The projected order (simulated seasons) is a delegated method, in the Draft order
+section of `playoff-simulation.md`; it uses these same rules on each simulated season.
 
 Rules as published: [NFL tie-breaking procedures, selection meeting](https://www.nfl.com/standings/tie-breaking-procedures).
 

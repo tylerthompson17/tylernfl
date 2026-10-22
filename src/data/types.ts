@@ -543,6 +543,45 @@ export interface DraftOrderData {
   stage: 'not_started' | 'regular_season' | 'playoffs' | 'final';
   /** Empty before the season's first game; 31 when a pick is forfeited */
   picks: DraftPick[];
+  /** From the playoff odds' simulated seasons; null before the first game and once final */
+  projected: DraftProjection | null;
+}
+
+/**
+ * The projected order: every simulated season played out through the Super
+ * Bowl, its draft order set from its own records and tiebreakers, leftover
+ * ties drawn at random. Based on betting lines, like playoff odds; playoff
+ * games without a line (all of them until January) are even.
+ */
+export interface DraftProjection {
+  simulations: number;
+  source: string;
+  pricedGames: number;
+  remainingGames: number;
+  /** Unplayed real playoff games with a line; 0 means every playoff game is 50/50 */
+  pricedPlayoffGames: number;
+  /** One per pick, by median pick then mean pick */
+  teams: ProjectedPick[];
+  /** Picks whose owner depends on where two picks land */
+  choices: { between: [string, string]; takes: 'earlier' | 'later'; to: string; chances: Record<string, number> }[];
+}
+
+export interface ProjectedPick {
+  /** The team whose pick it is */
+  team: string;
+  /** Who holds it; null when a choice decides (see choices) */
+  owner: string | null;
+  meanWins: number;
+  meanPick: number;
+  medianPick: number;
+  first: number;
+  top3: number;
+  top5: number;
+  top10: number;
+  /** 10th to 90th percentile pick */
+  range: [number, number];
+  /** Chance of each pick, index 0 is pick 1 */
+  slots: number[];
 }
 
 export type DraftGroup =

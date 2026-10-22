@@ -1,7 +1,9 @@
 """Playoff odds: the moneyline arithmetic, and the simulator checked against
 a season whose outcome is known."""
 
+import json
 import unittest
+from pathlib import Path
 
 import playoff_odds
 import test_standings as fixtures
@@ -15,6 +17,26 @@ def schedule_rows(season: int) -> list[dict]:
          'away_score': g['away_score'], 'home_score': g['home_score']}
         for g in fixtures.GAMES[season]
     ]
+
+
+FROZEN = Path(__file__).resolve().parent.parent / 'tests' / 'fixtures' / 'playoff_odds' / '2023_week10.json'
+
+
+def frozen_input() -> list[dict]:
+    """2023 after week 10, week 11 priced (home -150, away +130), the rest
+    unpriced. FROZEN is what build_playoff_odds gave for it, n=2000, before
+    the draft projection was added to the simulation, written as the daily
+    run writes it."""
+    rows = schedule_rows(2023)
+    for r in rows:
+        if r['week'] > 10:
+            r['away_score'] = r['home_score'] = None
+        r['home_moneyline'], r['away_moneyline'] = (-150, 130) if r['week'] == 11 else (None, None)
+    return rows
+
+
+def frozen_text(odds: dict) -> str:
+    return json.dumps(odds, indent=2, ensure_ascii=False) + '\n'
 
 
 class MoneylineTests(unittest.TestCase):
@@ -114,3 +136,103 @@ class BeforeTheSeasonTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+def season_2025(playoffs_through: str | None = 'SB') -> list[dict]:
+    """The draft fixture's 2025 season in the schedule's shape, playoff
+    games after `playoffs_through` left unplayed (None: all of them)."""
+    import test_draft_order
+    played = PLAYOFF_ORDER[:PLAYOFF_ORDER.index(playoffs_through) + 1] if playoffs_through else ()
+    rows = []
+    for g in test_draft_order.GAMES:
+        r = {**g, 'game_id': f"2025_{g['week']:02d}_{g['away_team']}_{g['home_team']}",
+             'home_moneyline': None, 'away_moneyline': None}
+        if r['game_type'] != 'REG' and r['game_type'] not in played:
+            r['away_score'] = r['home_score'] = None
+        rows.append(r)
+    return rows
+
+
+PLAYOFF_ORDER = ['WC', 'DIV', 'CON', 'SB']
+
+
+def project(rows: list[dict], n: int, picks: dict | None = None) -> tuple[dict, dict]:
+    projection = playoff_odds.DraftProjection(picks or {'picks': [], 'choices': []}, list(fixtures.ALIGNMENT))
+    odds = playoff_odds.build_playoff_odds(rows, 2025, 'x', alignment=fixtures.ALIGNMENT, n=n, draft=projection)
+    return odds, projection.result(odds)
+
+
+class OddsUnchangedTests(unittest.TestCase):
+    """The draft projection draws from its own random stream, so the odds
+    are exactly what the simulator gave before it existed."""
+
+    def test_playoff_odds_are_byte_identical_with_and_without_the_draft(self):
+        expected = FROZEN.read_text(encoding='utf-8')
+        plain = playoff_odds.build_playoff_odds(frozen_input(), 2023, '2026-10-22T00:00:00Z',
+                                                alignment=fixtures.ALIGNMENT, n=2000)
+        self.assertEqual(frozen_text(plain), expected)
+        projection = playoff_odds.DraftProjection({'picks': [], 'choices': []}, list(fixtures.ALIGNMENT))
+        with_draft = playoff_odds.build_playoff_odds(frozen_input(), 2023, '2026-10-22T00:00:00Z',
+                                                     alignment=fixtures.ALIGNMENT, n=2000, draft=projection)
+        self.assertEqual(frozen_text(with_draft), expected)
+        self.assertEqual(projection.n, 2000)
+
+
+class DraftProjectionTests(unittest.TestCase):
+    def test_a_finished_season_projects_the_leagues_order_for_certain(self):
+        import test_draft_order
+        expected = test_draft_order.EXPECTED['order']
+        _, projected = project(season_2025(), 20)
+        for t in projected['teams']:
+            pick = expected.index(t['team']) + 1
+            self.assertEqual(t['slots'][pick - 1], 1.0, t['team'])
+            self.assertEqual((t['medianPick'], t['range']), (pick, [pick, pick]), t['team'])
+        self.assertEqual([t['team'] for t in projected['teams']], expected)
+
+    def test_before_the_playoffs_the_first_18_are_certain_and_the_rest_by_round(self):
+        import test_draft_order
+        expected = test_draft_order.EXPECTED['order']
+        _, projected = project(season_2025(None), 2000)
+        by_team = {t['team']: t for t in projected['teams']}
+        for pick, team in enumerate(expected[:18], 1):
+            self.assertEqual(by_team[team]['slots'][pick - 1], 1.0, team)
+        for team in expected[18:]:
+            self.assertEqual(sum(by_team[team]['slots'][:18]), 0.0, team)
+        # Every playoff game even: a top seed (a bye) is champion one time
+        # in 8, everyone else one in 16.
+        for team in ('DEN', 'SEA'):
+            self.assertAlmostEqual(by_team[team]['slots'][31], 1 / 8, delta=0.025, msg=team)
+        for team in ('JAX', 'BUF', 'CAR', 'GB'):
+            self.assertAlmostEqual(by_team[team]['slots'][31], 1 / 16, delta=0.02, msg=team)
+        self.assertEqual(projected['pricedPlayoffGames'], 0)
+
+    def test_played_playoff_games_are_kept(self):
+        # After the wild card round its six losers can only pick 19 to 24.
+        _, projected = project(season_2025('WC'), 500)
+        losers = {'CAR', 'GB', 'PIT', 'LAC', 'PHI', 'JAX'}
+        for t in projected['teams']:
+            in_19_to_24 = sum(t['slots'][18:24])
+            self.assertAlmostEqual(in_19_to_24, 1.0 if t['team'] in losers else 0.0, places=2, msg=t['team'])
+
+    def test_ties_left_are_drawn_at_random_in_each_season(self):
+        # Week 1 only, nothing left to play: 16 teams at 0-1 level on
+        # everything, so picks 1 to 16 are a fresh draw every time.
+        rows = [r for r in season_2025() if r['game_type'] == 'REG' and r['week'] == 1]
+        _, projected = project(rows, 1500)
+        losers = [t for t in projected['teams'] if t['meanWins'] == 0]
+        self.assertEqual(len(losers), 16)
+        for t in losers:
+            self.assertAlmostEqual(t['first'], 1 / 16, delta=0.025, msg=t['team'])
+
+    def test_a_choice_counts_how_often_each_pick_goes_over(self):
+        picks = {'picks': [{'draft': 2026, 'original': 'GB', 'owner': 'DAL', 'status': 'traded'}],
+                 'choices': [{'between': ['DAL', 'GB'], 'takes': 'earlier', 'from': 'DAL', 'to': 'NYJ'}]}
+        _, projected = project(season_2025(), 20, picks)
+        # 2025: Dallas picked 12th, Green Bay 20th.
+        self.assertEqual(projected['choices'][0]['chances'], {'DAL': 1.0, 'GB': 0.0})
+        owners = {t['team']: t['owner'] for t in projected['teams']}
+        self.assertEqual((owners['DAL'], owners['GB'], owners['LV']), (None, None, 'LV'))
+
+    def test_a_rerun_with_the_same_inputs_is_identical(self):
+        rows = season_2025(None)
+        self.assertEqual(project(rows, 300)[1], project(rows, 300)[1])

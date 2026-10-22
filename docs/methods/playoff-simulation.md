@@ -79,6 +79,78 @@ points of standard error on a 50% chance, so a largest gap near 1.5 across 32 te
 expected. Average wins are rounded to one decimal on the site, which accounts for up to
 0.05 of their gap. Nothing points to a difference in method.
 
+## Draft order
+
+The same 10,000 simulated seasons also project round 1 of the next draft, shown on
+`/draft/projected/` and labelled as based on betting lines. Tyler asked for it as part of
+the draft section; the order's rules are in `draft-order.md`.
+
+1. Seed each simulated season as above (the standings the playoff odds count).
+2. Play its playoffs: seeds 2 to 7 in the wild card round (2 hosts 7, 3 hosts 6, 4 hosts
+   5), the top seed hosting the lowest seed left in the divisional round, the higher
+   seed hosting after that, and the Super Bowl at a neutral site. A playoff game already
+   played keeps its result. Every other one is a home win with the chance
+   `GAME_PROBABILITIES` gives it, which is **0.5 for a game with no betting line: every
+   playoff game until the real matchups are set in January.** `pricedPlayoffGames` in
+   the file says how many have a line, and the page says playoff games are even.
+3. Set that season's draft order by `draft_order.order`: its own final records,
+   strength of schedule and tiebreakers, with any tie still level at the end drawn at
+   random within that season (a fresh random key per team per season, used by every
+   coin toss in it).
+4. Apply the picks file, then count each team's pick. Per team: expected wins (the
+   playoff odds' average), mean and median pick, the chance of pick 1, top 3, top 5
+   and top 10, a likely range (10th to 90th percentile pick), and each pick's chance.
+   For a pick that goes to whichever of two slots comes first, how often each one goes.
+
+The draft's draws (playoff games, coin tosses) come from a second random stream seeded
+from the playoff odds' seed. The odds draw exactly what they drew before, so
+`playoff_odds.json` is byte-identical with or without the projection:
+`test_playoff_odds.py` compares the output with and without it against a file saved
+before the projection existed (`tests/fixtures/playoff_odds/2023_week10.json`).
+
+### Validation
+
+**A finished season.** With all of 2025 played, every simulated season is 2025, and
+every team's chance of its real 2026 pick comes out exactly 1.
+
+**The bracket.** With 2025's regular season played and every playoff game even, a team
+leaves each round half the time: 10,000 seasons gave each wild card team 0.496 to 0.505
+out in the wild card round (exact: 0.5), 0.246 to 0.253 out in the divisional round
+(0.25), 0.119 to 0.132 in the conference round (0.125), and 0.059 to 0.066 each for
+losing and winning the Super Bowl (0.0625). Top seeds were never out in the wild card
+round, and won it all 0.131 (DEN) and 0.119 (SEA) of the time (0.125). Played playoff
+games stay as they finished (tested from the wild card round on).
+
+**Coin tosses are drawn.** After 2025's week 1 alone, 16 teams are level on
+everything; each takes pick 1 about one time in 16.
+
+**Against nflseedR.** nflseedR 2.0.2's `nfl_simulations` with `sim_include = "DRAFT"`
+plays out the playoffs and sets a draft rank in every simulated season. Run on the same
+two checkpoints as above, with the same chances for regular season games and every
+playoff game even on both sides, 10,000 seasons each. Reproduce with
+`docs/methods/scripts/draft_sim_compare.py` and `.R` (after `playoff_sim_compare.py
+prepare`).
+
+| Checkpoint | Measure | Mean difference | Largest difference |
+|---|---|---|---|
+| 2023, through week 12 | Mean pick | 0.06 picks | 0.22 (GB 17.8 vs 17.58) |
+| | Pick 1 | 0.07 points | 1.0 (CAR 55.3% vs 56.3%) |
+| | Top 3 | 0.15 | 1.8 (NE 72.4% vs 74.2%) |
+| | Top 5 | 0.19 | 1.2 (TEN 14.3% vs 15.5%) |
+| | Top 10 | 0.34 | 1.7 (LV 48.2% vs 46.5%) |
+| 2024, through week 9 | Mean pick | 0.05 picks | 0.15 (PIT 22.7 vs 22.55) |
+| | Pick 1 | 0.13 points | 1.1 (CAR 21.6% vs 20.5%) |
+| | Top 3 | 0.19 | 1.2 (CAR 52.6% vs 51.4%) |
+| | Top 5 | 0.22 | 1.2 (CAR 74.6% vs 73.4%) |
+| | Top 10 | 0.18 | 0.9 (TEN 79.1% vs 78.2%) |
+
+The largest gaps are 2.5 to 3 standard errors of the difference between two runs of
+10,000, the top of what 32 teams by five measures would give by chance. The site's mean
+pick is rounded to one decimal, up to 0.05 of its gap. One small difference in method
+remains: between conferences the site goes on to head-to-head, common games and strength
+of victory before a coin toss, and nflseedR at this depth may toss sooner; it decides a
+few simulated places at most.
+
 ## Limitations
 
 - **Games with no line are even.** See Game probabilities. This is the largest
@@ -92,5 +164,11 @@ expected. Average wins are rounded to one decimal on the site, which accounts fo
 - **Coin tosses by abbreviation.** Where the tiebreakers run out, the team whose
   abbreviation comes first wins, every time, rather than half the time. It decides very
   few simulated seedings.
-- **Regular season only.** The playoffs themselves are not simulated, so there are no
-  chances of winning a round or the Super Bowl.
+- **Playoffs only for the draft.** The playoffs are simulated for the projected draft
+  order, every game even until real lines exist, so they say nothing about who is
+  better: the site shows no chances of winning a round or the Super Bowl. A bye is
+  worth exactly one round, and picks 19 to 32 within a playoff team's range are close
+  to a coin flip per game.
+- **Projected draft coin tosses stop early.** The league's steps after strength of
+  victory (points) are not applied, so ties there are drawn at random, more often than
+  the league would need a toss.

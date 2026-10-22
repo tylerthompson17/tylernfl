@@ -27,7 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import DATA_DIR, load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
 from charts.auto import build_auto_charts, season_finals, wp_plays_for, write_charts  # noqa: E402
-from draft_order import build_draft_order, load_trade_rows, unlisted_trades  # noqa: E402
+from draft_order import build_draft_order, load_picks, load_trade_rows, unlisted_trades  # noqa: E402
 from excitement import build_game_excitement, labels_by_game  # noqa: E402
 from game_logs import build_game_logs  # noqa: E402
 from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
@@ -36,9 +36,9 @@ from performance_percentiles import build_performance_percentiles, last_complete
 from performance_percentiles import load_rows as load_percentile_rows  # noqa: E402
 from player_epa import board_people, build_player_epa, load_player_epa_plays  # noqa: E402
 from rosters import build_rosters, load_roster_rows, unknown_statuses  # noqa: E402
-from playoff_odds import build_playoff_odds  # noqa: E402
+from playoff_odds import DraftProjection, build_playoff_odds  # noqa: E402
 from schedule import build_schedule  # noqa: E402
-from standings import build_standings  # noqa: E402
+from standings import build_standings, load_alignment  # noqa: E402
 from targets import build_targets, existing_files, load_target_input, remove_files, stale_files, target_plays  # noqa: E402
 from team_stats import build_team_stats, load_team_stats_rows  # noqa: E402
 from ticker import build_ticker, load_schedule_rows, with_labels  # noqa: E402
@@ -127,12 +127,16 @@ def main() -> None:
     # The ticker's season: in the offseason, the coming one once published.
     schedule = build_schedule(schedule_rows, ticker['season'], updated)
     print(f"schedule: {schedule['season']}, {len(schedule['games'])} games")
-    odds = build_playoff_odds(schedule_rows, schedule['season'], updated)
+    # The same simulated seasons project the next draft's round 1.
+    draft_year = schedule['season'] + 1
+    projection = DraftProjection(load_picks(draft_year, set(load_alignment())), list(load_alignment()))
+    odds = build_playoff_odds(schedule_rows, schedule['season'], updated, draft=projection)
     print(f"playoff odds: {odds['simulations']} simulations, {odds['pricedGames']} of "
           f"{odds['remainingGames']} remaining games priced by betting lines")
-    draft = build_draft_order(schedule_rows, schedule['season'], updated)
+    draft = build_draft_order(schedule_rows, schedule['season'], updated, projected=projection.result(odds))
     print(f"draft order: {draft['draft']} round 1, {draft['stage']}, {len(draft['picks'])} picks, "
-          f"{sum(p['coinFlip'] for p in draft['picks'])} on a coin flip")
+          f"{sum(p['coinFlip'] for p in draft['picks'])} on a coin flip, "
+          f"projected from {draft['projected']['simulations'] if draft['projected'] else 0} simulations")
     # Pick ownership is kept by hand; nflverse's trades are only a prompt
     # to look for one the file is missing. Never fails the run.
     try:
