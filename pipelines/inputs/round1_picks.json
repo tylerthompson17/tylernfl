@@ -1,0 +1,43 @@
+{
+  "picks": [
+    {
+      "draft": 2027,
+      "original": "GB",
+      "owner": "DAL",
+      "status": "traded",
+      "date": "2025-08-28",
+      "note": "Micah Parsons trade: Green Bay sent its 2026 and 2027 first-round picks and Kenny Clark to Dallas.",
+      "source": "https://www.packers.com/news/packers-agree-to-terms-on-trade-with-cowboys-acquire-micah-parsons"
+    },
+    {
+      "draft": 2027,
+      "original": "IND",
+      "owner": "NYJ",
+      "status": "traded",
+      "date": "2025-11-04",
+      "note": "Sauce Gardner trade: Indianapolis sent its 2026 and 2027 first-round picks and Adonai Mitchell to the Jets.",
+      "source": "https://www.colts.com/news/colts-acquire-cb-sauce-gardner-from-new-york-jets-in-exchange-for-2026-2027-first-round-picks-and-wr-adonai-mitchell"
+    },
+    {
+      "draft": 2027,
+      "original": "LAR",
+      "owner": "CLE",
+      "status": "traded",
+      "date": "2026-06-01",
+      "note": "Myles Garrett trade: the Rams sent their 2027 first-round pick, a 2028 second, a 2029 third and Jared Verse to Cleveland.",
+      "source": "https://www.clevelandbrowns.com/news/what-picks-do-the-browns-have-in-the-2027-nfl-draft"
+    }
+  ],
+  "choices": [
+    {
+      "draft": 2027,
+      "from": "DAL",
+      "to": "NYJ",
+      "between": ["DAL", "GB"],
+      "takes": "earlier",
+      "date": "2025-11-04",
+      "note": "Quinnen Williams trade: the Jets get the earlier of Dallas's two 2027 first-round picks (its own and Green Bay's); Dallas keeps the other.",
+      "source": "https://www.nfl.com/news/jets-trade-dt-quinnen-williams-to-cowboys-for-first-round-pick"
+    }
+  ]
+}
