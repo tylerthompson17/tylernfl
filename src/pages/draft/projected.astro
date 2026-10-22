@@ -1,0 +1,161 @@
+---
+/**
+ * Round 1 of the next draft projected from the playoff odds' simulated
+ * seasons (DraftProjection in pipelines/playoff_odds.py, a delegated
+ * method: docs/methods/playoff-simulation.md). The label saying what it is
+ * based on is the shared one (lib/odds/basis.ts), plus how the playoffs are
+ * played.
+ */
+import Panel from '../../components/Panel.astro';
+import TeamChip from '../../components/TeamChip.astro';
+import DraftFrame from '../../components/draft/DraftFrame.astro';
+import teamsData from '../../data/teams.json';
+import type { TeamsData } from '../../data/types';
+import { choiceLine, projectedOwnerNote } from '../../lib/draft/view';
+import { playoffBasis } from '../../lib/odds/basis';
+import { formatChance } from '../../lib/teams/odds';
+import { draft } from '../../utils/draft';
+import { oddsBasisNow } from '../../utils/teams';
+import { url } from '../../utils/url';
+
+const names = new Map((teamsData as TeamsData).map((t) => [t.abbr, t.name]));
+const projected = draft.kind === 'ready' ? draft.data.projected : null;
+const range = ([low, high]: [number, number]) => (low === high ? `${low}` : `${low} to ${high}`);
+---
+
+<DraftFrame tab="projected" description="Round 1 of the next NFL draft projected from 10,000 simulations of the rest of the season and the playoffs.">
+  {
+    draft.kind === 'missing' && (
+      <Panel title="Projected order">
+        <p class="empty">
+          The projected order is not available yet. It is written by the site's daily data update, which has not
+          produced it for this build.
+        </p>
+      </Panel>
+    )
+  }
+  {
+    draft.kind === 'not_started' && (
+      <Panel title="Projected order">
+        <p class="empty">
+          The {draft.data.draft} projection starts once the {draft.data.season} season has played its first games.
+        </p>
+      </Panel>
+    )
+  }
+  {
+    draft.kind === 'ready' && !projected && (
+      <Panel title="Projected order">
+        <p class="empty">
+          Nothing is left to simulate: the order is final. See the <a href={url('draft')}>current order</a>.
+        </p>
+      </Panel>
+    )
+  }
+  {
+    projected && (
+      <Panel title="Where each pick could land">
+        <p class="lead">
+          {oddsBasisNow.long} {playoffBasis(projected.pricedPlayoffGames)}
+        </p>
+        <div class="stat-table-scroll" tabindex="0">
+          <table class="stat-table">
+            <caption class="visually-hidden">
+              Projected {draft.kind === 'ready' && draft.data.draft} round 1 order, by median pick
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Team</th>
+                <th scope="col" class="number">Projected wins</th>
+                <th scope="col" class="number">Median pick</th>
+                <th scope="col" class="number">Likely range</th>
+                <th scope="col" class="number">No. 1</th>
+                <th scope="col" class="number">Top 3</th>
+                <th scope="col" class="number">Top 5</th>
+                <th scope="col" class="number">Top 10</th>
+              </tr>
+            </thead>
+            <tbody>
+              {projected.teams.map((t) => {
+                const note = projectedOwnerNote(t);
+                return (
+                  <tr>
+                    <th scope="row" class="team-cell">
+                      <TeamChip abbr={t.team} size="sm" />
+                      <span>
+                        <a href={url(`teams/${t.team}`)}>{names.get(t.team) ?? t.team}</a>
+                        {note && <span class="owner">{note}</span>}
+                      </span>
+                    </th>
+                    <td class="number">{t.meanWins.toFixed(1)}</td>
+                    <td class="number">{t.medianPick}</td>
+                    <td class="number">{range(t.range)}</td>
+                    <td class="number">{formatChance(t.first)}</td>
+                    <td class="number">{formatChance(t.top3)}</td>
+                    <td class="number">{formatChance(t.top5)}</td>
+                    <td class="number">{formatChance(t.top10)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div class="table-foot">
+          <p>
+            {projected.simulations.toLocaleString('en-US')} simulations of the {projected.remainingGames} remaining
+            regular season games and the playoffs. In each, the draft order follows that season's own records,
+            strength of schedule and the NFL's tiebreakers, with any tie left at the end settled by a random coin
+            flip. Likely range is the 10th to 90th percentile pick: 8 seasons in 10 land inside it.
+          </p>
+          {
+            projected.choices.map((c) => (
+              <p>{choiceLine(c, (abbr) => abbr, formatChance)}</p>
+            ))
+          }
+        </div>
+      </Panel>
+    )
+  }
+</DraftFrame>
+
+<style>
+  .lead {
+    margin: 0 0 var(--space-2);
+    max-width: 80ch;
+  }
+
+  .empty {
+    margin: 0;
+    color: var(--text-dim);
+  }
+
+  .team-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 400;
+  }
+
+  .owner {
+    display: block;
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  .table-foot {
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px dotted var(--rule-soft);
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  .table-foot p {
+    margin: 0;
+    max-width: 100ch;
+  }
+
+  .table-foot p + p {
+    margin-top: var(--space-1);
+  }
+</style>

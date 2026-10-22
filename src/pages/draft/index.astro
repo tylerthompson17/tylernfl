@@ -1,0 +1,146 @@
+---
+/**
+ * Round 1 of the next draft if the season ended today, from
+ * draft_order.json (pipelines/draft_order.py, rules in
+ * docs/methods/draft-order.md): record, strength of schedule and what
+ * decided each tie. Builds without the file, showing why it is empty.
+ */
+import Panel from '../../components/Panel.astro';
+import TeamChip from '../../components/TeamChip.astro';
+import DraftFrame from '../../components/draft/DraftFrame.astro';
+import teamsData from '../../data/teams.json';
+import type { TeamsData } from '../../data/types';
+import { draftRecord, groupWords, ownerNote, stageNote, tiebreakWords } from '../../lib/draft/view';
+import { formatPct } from '../../utils/standings';
+import { draft } from '../../utils/draft';
+import { url } from '../../utils/url';
+
+const names = new Map((teamsData as TeamsData).map((t) => [t.abbr, t.name]));
+const picks = draft.kind === 'ready' ? draft.data.picks : [];
+const stage = draft.kind === 'ready' ? draft.data.stage : 'not_started';
+const flips = picks.some((p) => p.coinFlip);
+// The line between teams outside the playoffs and playoff teams.
+const lastOut = picks.filter((p) => p.group === 'non_playoff').length;
+---
+
+<DraftFrame tab="current" description="Round 1 of the next NFL draft if the season ended today, with records, strength of schedule and tiebreakers.">
+  {
+    draft.kind === 'missing' && (
+      <Panel title="Current order">
+        <p class="empty">
+          The draft order is not available yet. It is written by the site's daily data update, which has not
+          produced it for this build.
+        </p>
+      </Panel>
+    )
+  }
+  {
+    draft.kind === 'not_started' && (
+      <Panel title="Current order">
+        <p class="empty">
+          The {draft.data.draft} order starts once the {draft.data.season} season has played its first games.
+        </p>
+      </Panel>
+    )
+  }
+  {
+    draft.kind === 'ready' && (
+      <Panel title="If the season ended today">
+        <p class="lead">{stageNote(draft.data.stage)}</p>
+        <div class="stat-table-scroll" tabindex="0">
+          <table class="stat-table order">
+            <caption class="visually-hidden">
+              {draft.data.draft} round 1 order if the season ended today
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" class="number">Pick</th>
+                <th scope="col">Team</th>
+                <th scope="col" class="number">Record</th>
+                <th scope="col" class="number">Pct</th>
+                <th scope="col" class="number">
+                  <abbr title="Strength of schedule: opponents' win percentage">SOS</abbr>
+                </th>
+                <th scope="col">Tiebreak</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {picks.map((p) => {
+                const note = ownerNote(p, stage === 'final');
+                return (
+                  <tr class:list={{ cutoff: p.pick === lastOut, flip: p.coinFlip }}>
+                    <td class="number">{p.pick}</td>
+                    <th scope="row" class="team-cell">
+                      <TeamChip abbr={p.team} size="sm" />
+                      <span>
+                        <a href={url(`teams/${p.team}`)}>{names.get(p.team) ?? p.team}</a>
+                        {note && <span class="owner">{note}</span>}
+                      </span>
+                    </th>
+                    <td class="number">{draftRecord(p)}</td>
+                    <td class="number">{formatPct(p.pct)}</td>
+                    <td class="number">{formatPct(p.sos)}</td>
+                    <td>{tiebreakWords(p)}</td>
+                    <td>{groupWords(p.group, stage)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p class="table-foot">
+          Worst record picks first. Teams on the same record are ordered by strength of schedule, lower first;
+          if that is level too, by the NFL's division or conference tiebreakers, the team that would lose them
+          picking first. Tiebreak names the step that placed a team among teams on its record.
+          {flips && ' A coin flip still to come is listed in alphabetical order until it is held.'} The line
+          under pick {lastOut} separates teams outside the playoff places from playoff teams. Who holds a
+          traded pick comes from a hand-kept list of trades, each with its source.
+        </p>
+      </Panel>
+    )
+  }
+</DraftFrame>
+
+<style>
+  .lead {
+    margin: 0 0 var(--space-2);
+    max-width: 80ch;
+  }
+
+  .empty {
+    margin: 0;
+    color: var(--text-dim);
+  }
+
+  .team-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 400;
+  }
+
+  .owner {
+    display: block;
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  .order .cutoff td,
+  .order .cutoff th {
+    border-bottom: 2px solid var(--header);
+  }
+
+  .order .flip td,
+  .order .flip th {
+    background: var(--highlight-soft);
+  }
+
+  .table-foot {
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px dotted var(--rule-soft);
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+</style>

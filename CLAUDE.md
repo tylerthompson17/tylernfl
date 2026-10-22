@@ -580,6 +580,25 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   are division leaders, whatever their record. Pct is written the NFL way (.667, 1.000).
 - Standings is in the nav, first after Home.
 
+### Draft pages
+
+- `/draft/` (current order) and `/draft/projected/`, a tab each (`Tabs.astro`), from
+  `draft_order.json`. Linked from `/standings` and in search; not in the nav.
+- Both say what they are through (`seasonThrough`) and the date of the data. A file over
+  36 hours old, or from an earlier season than the site, gets a yellow-background note
+  that it may be behind (`draftState` in `src/lib/draft/view.ts`). A small page script
+  applies the same 36 hour rule (`isOld`) against the visitor's clock, since a failed
+  daily run means no new build for the build-time check to run in. The file is loaded by
+  glob (`src/utils/draft.ts`), so a build without it shows an empty state on both tabs;
+  before the first game, and on the projected tab once the order is final, too.
+- Current order: pick, team (with who holds a traded pick), record, Pct, SOS, the
+  tiebreak in words, and status. A heavier rule separates teams outside the playoff
+  places from playoff teams, and the intro says picks 19 to 32 depend on playoff
+  results. A coin flip still to come is tinted `--highlight-soft`.
+- Projected order: projected wins, median pick, likely range (10th to 90th
+  percentile), and chances of No. 1, top 3, 5 and 10. Labelled with `oddsBasis()` plus
+  `playoffBasis()`, the same wording as the team pages' odds.
+
 ### Curated posts
 
 `/curated` lists X and Bluesky posts Tyler picked, newest first by the post's date, each

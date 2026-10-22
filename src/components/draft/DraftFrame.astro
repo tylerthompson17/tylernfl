@@ -1,0 +1,74 @@
+---
+/**
+ * What both draft tabs share: the title, what the numbers are through, the
+ * date of the data (and a warning when it is behind), and the tabs. Each
+ * tab is its own static page, like the standings.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Tabs from '../Tabs.astro';
+import { STALE_NOTE, dataDate } from '../../lib/draft/view';
+import { seasonThrough } from '../../utils/as-of';
+import { draft } from '../../utils/draft';
+
+export type DraftTab = 'current' | 'projected';
+
+interface Props {
+  tab: DraftTab;
+  description: string;
+}
+
+const { tab, description } = Astro.props;
+const year = draft.kind === 'missing' ? null : draft.data.draft;
+const title = year ? `${year} draft order` : 'Draft order';
+const tabs = [
+  { key: 'current', label: 'Current order', path: 'draft' },
+  { key: 'projected', label: 'Projected order', path: 'draft/projected' },
+];
+---
+
+<BaseLayout title={tab === 'current' ? title : `Projected ${title.charAt(0).toLowerCase()}${title.slice(1)}`} {description}>
+  <h1 class="page-title">{title}</h1>
+  {
+    draft.kind !== 'missing' && (
+      <p class="page-intro">
+        Round 1. {draft.kind === 'ready' && seasonThrough(draft.data.season, draft.data.throughWeek)}{' '}
+        <span class:list={{ stale: draft.stale }} data-draft-updated={draft.data.updated}>
+          Data from {dataDate(draft.data.updated)}.
+          <span data-draft-stale hidden={!draft.stale}>{STALE_NOTE}</span>
+        </span>
+      </p>
+    )
+  }
+  <Tabs label="Draft order views" tabs={tabs} current={tab} />
+  <slot />
+</BaseLayout>
+
+<script>
+  // The build marks a file it saw as behind. A failed daily run means no
+  // new build at all, so the page also checks the data's age against the
+  // visitor's clock, with the same 36 hour rule (isOld).
+  import { isOld } from '../../lib/draft/view';
+  import { siteNow } from '../../utils/now';
+
+  const line = document.querySelector<HTMLElement>('[data-draft-updated]');
+  const note = line?.querySelector<HTMLElement>('[data-draft-stale]');
+  if (line && note && isOld(line.dataset.draftUpdated ?? '', siteNow())) {
+    note.hidden = false;
+    line.classList.add('stale');
+  }
+</script>
+
+<style>
+  .page-intro {
+    color: var(--text-dim);
+    margin-bottom: var(--space-4);
+    max-width: 80ch;
+  }
+
+  /* Yellow is only ever a background. */
+  .stale {
+    background: var(--highlight-soft);
+    color: var(--text);
+    padding: 0 var(--space-1);
+  }
+</style>

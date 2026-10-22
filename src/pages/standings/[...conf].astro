@@ -45,6 +45,7 @@ const intro = seasonThrough(standings.season, standings.throughWeek);
     {intro} Teams on the same record are ordered by the NFL's tiebreakers, and a note under each
     table says which one decided it.
     {early && ' This early, many records are level, so strength of victory and coin tosses settle more than usual.'}
+    {' '}Where these records put each team in the next draft: <a href={url('draft')}>draft order</a>.
   </p>
   <p class="page-intro" data-live-records-note hidden>{LIVE_RECORDS_NOTE}</p>
   <Tabs label="Conferences" tabs={tabs} current={conference} />

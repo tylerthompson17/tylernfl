@@ -61,6 +61,20 @@ with a team or league source. A forfeited pick is removed and later picks move u
 hold the earlier of Dallas's and Green Bay's 2027 picks, so their owner is settled only
 once the order is known.
 
+The terms of that choice come from the Quinnen Williams trade of 2025-11-04. NFL.com,
+"Cowboys trade for Jets star DT Quinnen Williams in blockbuster deal"
+(<https://www.nfl.com/news/jets-trade-dt-quinnen-williams-to-cowboys-for-first-round-pick>),
+states the condition as:
+
+> New York will receive the higher of the Cowboys' two first-round picks in 2027.
+
+Dallas's two 2027 firsts are its own and Green Bay's, from the Micah Parsons trade of
+2025-08-28 ([packers.com](https://www.packers.com/news/packers-agree-to-terms-on-trade-with-cowboys-acquire-micah-parsons)).
+"Higher" means the earlier pick, the better of the two, so the file records it as
+`takes: "earlier"` between `DAL` and `GB`, with Dallas keeping the other. The pages say
+so on both picks: the one the Jets hold today, and the other, which they would get
+instead if it landed first.
+
 nflverse's trade data (`load_trades`) is not used for ownership. Checked on 2026-10-22,
 it had no trade after 2026-04-17, no original team for a pick that moved twice, a
 conditional flag without the condition, and no forfeitures. The daily run compares it
