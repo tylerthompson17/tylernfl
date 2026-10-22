@@ -8,6 +8,9 @@
  * Every probability is 0 to 1; format as a percent only when displaying.
  */
 
+/** Version of docs/model-interface.md these types match */
+export const CONTRACT_VERSION = 2;
+
 export type FourthDownCall = 'go' | 'punt' | 'field goal';
 
 /** nflfastR's `roof` values */
@@ -19,8 +22,8 @@ export interface FourthDownSituation {
   posteam: string;
   /** Defense, site team abbreviation */
   defteam: string;
-  /** Home team abbreviation, null at a neutral site */
-  home: string | null;
+  /** Home team abbreviation; the nominal home team at a neutral site (nflverse) */
+  home: string;
   /**
    * Yards to the opponent's goal line, 1 to 99 (nflfastR's yardline_100).
    * Convert at the boundary: ESPN's situation in the live page's parser,
@@ -41,13 +44,17 @@ export interface FourthDownSituation {
   timeoutsOffense: number;
   /** Timeouts remaining, defense */
   timeoutsDefense: number;
-  /** The offense receives the second half kickoff (first half only) */
-  receives2ndHalfKickoff: boolean;
+  /** The home team received the opening kickoff */
+  homeOpeningKickoff: boolean;
   roof: Roof;
   /** Degrees Fahrenheit, null when unknown; not read under a dome or closed roof */
   temp: number | null;
   /** ESPN athlete id. Missing means a league-average kicker. */
   kickerId?: string;
+  /** Pregame spread in points, positive when the home team is favored (nflverse spread_line); null when unknown */
+  spreadLine: number | null;
+  /** Pregame total (over/under) in points; null when unknown */
+  totalLine: number | null;
 }
 
 /** wpGo = conversionProb * wpIfConvert + (1 - conversionProb) * wpIfFail */
@@ -98,6 +105,8 @@ export interface FourthDownFlags {
   temperatureUnknown: boolean;
   /** No kickerId given, or the model does not know it: a league-average kicker */
   kickerUnknown: boolean;
+  /** spreadLine or totalLine was null: a pick'em spread and the league-average total */
+  linesUnknown: boolean;
 }
 
 export interface FourthDownRecommendation {
@@ -130,12 +139,13 @@ export interface FourthDownRecommendation {
 
 /**
  * Never thrown, always returned. Unsupported carries no WP values:
- * 'overtime' is not supported in v1, 'unavailable' until the model is in the
- * site. reason can grow if other cases are ruled out.
+ * 'overtime' is not supported in v1, 'endgame' is 15 seconds or less left in
+ * the game, 'unavailable' until the model is in the site. reason can grow if
+ * other cases are ruled out.
  */
 export type FourthDownResult =
   | ({ supported: true } & FourthDownRecommendation)
-  | { supported: false; reason: 'overtime' | 'unavailable' };
+  | { supported: false; reason: 'overtime' | 'unavailable' | 'endgame' };
 
 /**
  * One graded call in model_record.json: the coach's choice differed from the

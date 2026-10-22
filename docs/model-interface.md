@@ -5,6 +5,10 @@ page and the sidebar record expect from the model. The model is Tyler's. This fi
 records the contract; the decisions in it are Tyler's (2026-10-21), and anything still
 open is listed at the end.
 
+**Contract version 2** (2026-10-22). Changes are listed under "Version history" at the
+end; bump the version with every change to a type or rule here, and `CONTRACT_VERSION`
+in `src/lib/fourth-down.ts` with it.
+
 Status on 2026-10-21: the types are in `src/lib/fourth-down.ts`. `recommend()` is a stub
 that returns `{ supported: false, reason: 'unavailable' }`, and the calculator page does
 not call it yet. The sidebar record panel and
@@ -32,7 +36,7 @@ export function recommend(situation: FourthDownSituation): FourthDownResult;
 
 type FourthDownResult =
   | ({ supported: true } & FourthDownRecommendation)
-  | { supported: false; reason: 'overtime' | 'unavailable' };
+  | { supported: false; reason: 'overtime' | 'unavailable' | 'endgame' };
 ```
 
 Synchronous, one situation in, one result out. It runs in the browser from the
@@ -43,6 +47,8 @@ exported model JSON in `models/` (see section 3).
 says why:
 
 - `'overtime'`: overtime is not supported in v1 (`overtime: true`).
+- `'endgame'`: 15 seconds or less left in the game (`secondsRemaining <= 15`, in
+  regulation). The baseline the model is built on, nfl4th, does not compute these plays.
 - `'unavailable'`: the model is not in the site yet. The stub returns this for every
   situation until the real model replaces it.
 
@@ -55,7 +61,7 @@ The `reason` union can grow if other cases are ruled out later.
 | `season` | number | | |
 | `posteam` | string | team abbreviation | The offense. |
 | `defteam` | string | team abbreviation | |
-| `home` | string or null | team abbreviation | The home team; null at a neutral site. |
+| `home` | string | team abbreviation | The home team. At a neutral site, the nominal home team (the nflverse convention, which nfl4th was trained on). |
 | `yardline100` | number | yards to the opponent's goal line, 1 to 99 | |
 | `distance` | number | yards to gain for a first down | Goal to go is `distance = yardline100`. |
 | `overtime` | boolean | | True in any overtime period. v1 returns not supported. |
@@ -64,10 +70,12 @@ The `reason` union can grow if other cases are ruled out later.
 | `scoreDiff` | number | points, offense minus defense | Negative when the offense trails. |
 | `timeoutsOffense` | number | 0 to 3 | |
 | `timeoutsDefense` | number | 0 to 3 | |
-| `receives2ndHalfKickoff` | boolean | | True when the offense receives the second half kickoff. Only matters in the first half. |
+| `homeOpeningKickoff` | boolean | | True when the home team received the opening kickoff. |
 | `roof` | `'outdoors' \| 'dome' \| 'closed' \| 'open'` | | nflfastR's `roof` values. |
 | `temp` | number or null | degrees Fahrenheit | Null means unknown. Not read when `roof` is `'dome'` or `'closed'`. |
 | `kickerId` | string, optional | ESPN athlete id | Missing means a league-average kicker. |
+| `spreadLine` | number or null | points | Pregame spread, positive when the home team is favored (nflverse `spread_line`, the same convention as `spreadLine` in `schedule.json`). Null means unknown. |
+| `totalLine` | number or null | points | Pregame total (over/under). Null means unknown. |
 
 ### Output: `FourthDownRecommendation`
 
@@ -81,7 +89,7 @@ The `reason` union can grow if other cases are ruled out later.
 | `fgMakeProb` | number or null | 0 to 1 | Null when `wpFieldGoal` is. |
 | `kickDistance` | number | yards | The field goal distance the model used. Always present, so the page can show it when the kick is too long and `wpFieldGoal` is null. |
 | `kickerId` | string or null | ESPN athlete id | The kicker the numbers used; null when they used a league-average kicker. |
-| `flags` | `{ temperatureUnknown: boolean, kickerUnknown: boolean }` | | What the model had to assume, below. The page must say so for each one set. |
+| `flags` | `{ temperatureUnknown: boolean, kickerUnknown: boolean, linesUnknown: boolean }` | | What the model had to assume, below. The page must say so for each one set. |
 | `breakdown` | `FourthDownBreakdown` | | Outcome and term breakdown, below. |
 
 ### Flags
@@ -91,8 +99,10 @@ The `reason` union can grow if other cases are ruled out later.
   null there is not unknown and the flag stays false.
 - `kickerUnknown`: no `kickerId` was given, or the model does not know it. The numbers
   use a league-average kicker and `kickerId` in the output is null.
+- `linesUnknown`: `spreadLine` or `totalLine` was null. The numbers use a pick'em
+  spread (0) and the league-average total.
 
-Both are always present, false when nothing was assumed.
+All are always present, false when nothing was assumed.
 
 A null option shows on the page as not available.
 
@@ -209,8 +219,9 @@ Grading is by decision, not by outcome. A 4th down play is graded when:
    file so the page can state it).
 
 A play is never graded when `recommend()` returns `supported: false` for it (in v1, every
-overtime play), since there is no recommendation to grade against. The other plays left
-out, and how fakes count, are under "Decided" at the end.
+overtime play and every play with 15 seconds or less left in the game), since there is
+no recommendation to grade against. The other plays left out, and how fakes count, are
+under "Decided" at the end.
 
 The graded value is `wpCost = wp(modelCall) - wp(coachCall)`, the win probability the
 coach's choice cost, as of the moment of the decision. What happened on the play does
@@ -275,3 +286,18 @@ Grading rules for the pipeline that writes `model_record.json`:
   - kneels and spikes;
   - plays where the game is already decided: every non-null option's win probability is
     below 0.02, or every one is above 0.98.
+
+## Version history
+
+- **2** (2026-10-22), from the fourth-down repo's contract change request (milestone 3:
+  the decision baseline is a Python port of nfl4th at commit `ecb7293`, matching its R
+  output on all 49,416 4th downs from 2014 to 2025):
+  - `FourthDownSituation` gains `spreadLine` and `totalLine`; `flags` gains
+    `linesUnknown`.
+  - `home` is required: the nominal home team at a neutral site.
+  - New unsupported reason `'endgame'` for 15 seconds or less left in the game; grading
+    skips those plays.
+  - `receives2ndHalfKickoff` is replaced by `homeOpeningKickoff`.
+  - No change for field goals beyond 70 yards: nfl4th keeps the option with a make
+    probability of 0, and the export maps it to null under `maxFieldGoalDistance`.
+- **1** (2026-10-21): the interface as first decided.
