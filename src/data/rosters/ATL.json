@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "ATL",
   "week": 7,
-  "updated": "2026-10-21T14:43:13Z",
+  "updated": "2026-10-22T14:43:28Z",
   "groups": [
     {
       "key": "offense",
@@ -52,7 +52,7 @@
       "gsisId": "00-0027973",
       "name": "Andy Dalton",
       "slug": "andy-dalton",
-      "number": 14,
+      "number": 13,
       "position": "QB",
       "group": "offense",
       "status": "ACT",
@@ -604,6 +604,21 @@
       "college": "Eastern Washington"
     },
     {
+      "gsisId": "00-0036711",
+      "name": "Charles Snowden",
+      "slug": "charles-snowden",
+      "number": 93,
+      "position": "DE",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 78,
+      "weight": 235,
+      "age": 28,
+      "experience": 5,
+      "college": "Virginia"
+    },
+    {
       "gsisId": "00-0038980",
       "name": "Zach Harrison",
       "slug": "zach-harrison",
@@ -934,21 +949,6 @@
       "college": "LSU"
     },
     {
-      "gsisId": "00-0040947",
-      "name": "TJ Quinn",
-      "slug": "tj-quinn",
-      "number": 40,
-      "position": "MLB",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 72,
-      "weight": 225,
-      "age": 23,
-      "experience": 0,
-      "college": null
-    },
-    {
       "gsisId": "00-0037822",
       "name": "Brian Asamoah II",
       "slug": "brian-asamoah-ii",
@@ -962,6 +962,21 @@
       "age": 26,
       "experience": 4,
       "college": "Oklahoma"
+    },
+    {
+      "gsisId": "00-0040947",
+      "name": "TJ Quinn",
+      "slug": "tj-quinn",
+      "number": 43,
+      "position": "MLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 225,
+      "age": 23,
+      "experience": 0,
+      "college": "Louisville"
     },
     {
       "gsisId": "00-0041469",

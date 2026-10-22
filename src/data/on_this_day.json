@@ -1,26 +1,26 @@
 {
   "month": 10,
-  "day": 21,
-  "gamesOnDate": 55,
+  "day": 22,
+  "gamesOnDate": 54,
   "items": [
     {
-      "year": 2019,
-      "gameId": "2019_07_NE_NYJ",
-      "text": "The Patriots shut out the Jets 33-0.",
+      "year": 2017,
+      "gameId": "2017_07_ARI_LA",
+      "text": "The Rams shut out the Cardinals 33-0.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Patriots",
-          "team": "NE"
+          "text": "Rams",
+          "team": "LAR"
         },
         {
           "text": " shut out the "
         },
         {
-          "text": "Jets",
-          "team": "NYJ"
+          "text": "Cardinals",
+          "team": "ARI"
         },
         {
           "text": " 33-0."
@@ -28,9 +28,33 @@
       ]
     },
     {
-      "year": 2018,
-      "gameId": "2018_07_CIN_KC",
-      "text": "The Chiefs beat the Bengals 45-10.",
+      "year": 2006,
+      "gameId": "2006_07_PIT_ATL",
+      "text": "The Falcons beat the Steelers 41-38 in overtime with 79 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Falcons",
+          "team": "ATL"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Steelers",
+          "team": "PIT"
+        },
+        {
+          "text": " 41-38 in overtime with 79 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2000,
+      "gameId": "2000_08_STL_KC",
+      "text": "The Chiefs beat the Rams 54-34 as 7-point underdogs with 88 combined points.",
       "parts": [
         {
           "text": "The "
@@ -43,35 +67,11 @@
           "text": " beat the "
         },
         {
-          "text": "Bengals",
-          "team": "CIN"
+          "text": "Rams",
+          "team": "LAR"
         },
         {
-          "text": " 45-10."
-        }
-      ]
-    },
-    {
-      "year": 2007,
-      "gameId": "2007_07_NE_MIA",
-      "text": "The Patriots beat the Dolphins 49-28 with 77 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Patriots",
-          "team": "NE"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Dolphins",
-          "team": "MIA"
-        },
-        {
-          "text": " 49-28 with 77 combined points."
+          "text": " 54-34 as 7-point underdogs with 88 combined points."
         }
       ]
     }
