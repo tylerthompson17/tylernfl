@@ -1,17 +1,18 @@
 # 4th down model interface
 
 What the 4th down calculator page (`src/pages/tools/4th-down.astro`), the live 4th down
-page and the sidebar record expect from the model. The model is Tyler's. This file
+page and the sidebar record expect from the model: the 4th down decision and the try
+after a touchdown (kick the extra point or go for 2). The model is Tyler's. This file
 records the contract; the decisions in it are Tyler's (2026-10-21), and anything still
 open is listed at the end.
 
-**Contract version 2** (2026-10-22). Changes are listed under "Version history" at the
+**Contract version 3** (2026-10-22). Changes are listed under "Version history" at the
 end; bump the version with every change to a type or rule here, and `CONTRACT_VERSION`
 in `src/lib/fourth-down.ts` with it.
 
-Status on 2026-10-21: the types are in `src/lib/fourth-down.ts`. `recommend()` is a stub
-that returns `{ supported: false, reason: 'unavailable' }`, and the calculator page does
-not call it yet. The sidebar record panel and
+Status on 2026-10-22: the types are in `src/lib/fourth-down.ts`. `recommend()` and
+`recommendTry()` are stubs that return `{ supported: false, reason: 'unavailable' }`, and
+the calculator page calls neither yet. The sidebar record panel and
 `model_record.json` were removed on 2026-09-22 (commit 3a116f0) and come back in the
 shape below when the model exists.
 
@@ -40,7 +41,7 @@ type FourthDownResult =
 ```
 
 Synchronous, one situation in, one result out. It runs in the browser from the
-exported model JSON in `models/` (see section 3).
+exported model JSON in `models/` (see section 4).
 
 `recommend()` never throws. A situation it does not cover returns
 `{ supported: false, reason }` with no win probabilities or other values, and the page
@@ -49,8 +50,9 @@ says why:
 - `'overtime'`: overtime is not supported in v1 (`overtime: true`).
 - `'endgame'`: 15 seconds or less left in the game (`secondsRemaining <= 15`, in
   regulation). The baseline the model is built on, nfl4th, does not compute these plays.
-- `'unavailable'`: the model is not in the site yet. The stub returns this for every
-  situation until the real model replaces it.
+- `'unavailable'`: the model cannot be loaded or run: it is not in the site yet, its
+  exported JSON is missing or fails to load, or evaluating it fails. Returned instead of
+  throwing. The stub returns this for every situation until the real model replaces it.
 
 The `reason` union can grow if other cases are ruled out later.
 
@@ -99,8 +101,13 @@ The `reason` union can grow if other cases are ruled out later.
   null there is not unknown and the flag stays false.
 - `kickerUnknown`: no `kickerId` was given, or the model does not know it. The numbers
   use a league-average kicker and `kickerId` in the output is null.
-- `linesUnknown`: `spreadLine` or `totalLine` was null. The numbers use a pick'em
-  spread (0) and the league-average total.
+- `linesUnknown`: true whenever `spreadLine` or `totalLine` is null. Each fallback
+  applies only to the line that is missing:
+  - `spreadLine` null: the model uses a pick'em spread (0).
+  - `totalLine` null: the model uses the median `total_line` from the most recent
+    completed season.
+
+  The same rule applies to the try (section 2).
 
 All are always present, false when nothing was assumed.
 
@@ -173,7 +180,93 @@ as they are, so the model chooses them and they need no mapping on the site.
 Which corrections there are, and what turning one off means, are Tyler's choices with
 the model.
 
-## 2. Sidebar record: `model_record.json`
+## 2. The try after a touchdown: function signature
+
+```ts
+export function recommendTry(situation: TrySituation): TryResult;
+
+type TryResult =
+  | ({ supported: true } & TryRecommendation)
+  | { supported: false; reason: 'overtime' | 'unavailable' | 'endgame' };
+```
+
+A separate decision with its own inputs and outputs, so it has its own function and
+types rather than extending `recommend()`. Synchronous, never throws, and runs in the
+browser from the exported model JSON, like `recommend()`. The unsupported reasons mean
+the same as for `recommend()` (section 1): `'overtime'` and `'endgame'` because nfl4th
+computes no tries in overtime or with 15 seconds or less left in the game, and
+`'unavailable'` when the model cannot be loaded or run, which the stub returns for every
+situation.
+
+### Input: `TrySituation`
+
+The game state right after the touchdown, before the try.
+
+| Field | Type | Unit and range | Notes |
+|---|---|---|---|
+| `season` | number | | |
+| `posteam` | string | team abbreviation | The team that scored and is attempting the try. |
+| `defteam` | string | team abbreviation | |
+| `home` | string | team abbreviation | As in `FourthDownSituation`. |
+| `overtime` | boolean | | True in any overtime period. Returns not supported. |
+| `secondsRemaining` | number | seconds left in regulation, 0 to 3600 | |
+| `halfSecondsRemaining` | number | seconds left in the half, 0 to 1800 | |
+| `scoreDiff` | number | points, try team minus opponent, **after the touchdown** | See below. |
+| `timeoutsOffense` | number | 0 to 3 | The try team's timeouts. |
+| `timeoutsDefense` | number | 0 to 3 | |
+| `homeOpeningKickoff` | boolean | | As in `FourthDownSituation`. |
+| `roof` | `'outdoors' \| 'dome' \| 'closed' \| 'open'` | | |
+| `spreadLine` | number or null | points | As in `FourthDownSituation`. |
+| `totalLine` | number or null | points | As in `FourthDownSituation`. |
+
+**`scoreDiff` is after the touchdown, before the try.** It counts the touchdown's 6
+points and nothing from the try. Example: a team down 14 scores a touchdown, so
+`scoreDiff = -8`. Kicking makes it -7, a 2-point conversion -6. This is nflverse's
+`score_differential` on the try play, which is what nfl4th reads.
+
+No field position, distance, temperature or kicker: nfl4th's extra point probability is
+a league-average 33-yard kick (its field goal model at `yardline100` 15), and its
+2-point model reads only the season era, the roof and the pregame lines.
+
+### Output: `TryRecommendation`
+
+| Field | Type | Unit | Notes |
+|---|---|---|---|
+| `call` | `'kick' \| 'go for 2'` | | The option with the higher win probability. An exact tie is `'go for 2'` (nfl4th's rule). |
+| `wpKick` | number | 0 to 1 | Try team's win probability if it kicks the extra point. |
+| `wpGoForTwo` | number | 0 to 1 | Try team's win probability if it goes for 2. |
+| `patMakeProb` | number | 0 to 1 | |
+| `twoPointConvProb` | number | 0 to 1 | |
+| `flags` | `{ linesUnknown: boolean }` | | As in `FourthDownRecommendation` (see Flags in section 1). |
+| `breakdown` | `TryBreakdown` | | Below. |
+
+```ts
+interface TryBreakdown {
+  kick: { outcomes: TryOutcomes; terms: TermBreakdown };
+  goForTwo: { outcomes: TryOutcomes; terms: TermBreakdown };
+}
+
+interface TryOutcomes {
+  /** makeProb for the kick, conversion probability for going for 2 */
+  successProb: number;
+  /** WP after the try succeeds: +1 for the kick, +2 for going for 2 */
+  wpIfSuccess: number;
+  /** WP after the try fails (+0); the same value in both options */
+  wpIfFail: number;
+}
+```
+
+- kick: `wpKick = successProb * wpIfSuccess + (1 - successProb) * wpIfFail`, with
+  `successProb` equal to `patMakeProb`.
+- go for 2: `wpGoForTwo = successProb * wpIfSuccess + (1 - successProb) * wpIfFail`,
+  with `successProb` equal to `twoPointConvProb`.
+- `TermBreakdown` is the type in section 1. The baseline has no correction terms for
+  the try, so `terms` is empty, `residual` is 0, and `wpAllTermsOff` is the option's win
+  probability.
+
+Grading of tries in `model_record.json` is not part of the contract yet.
+
+## 3. Sidebar record: `model_record.json`
 
 A list of graded calls for one season, written by a pipeline into `src/data/`. Season
 totals are derived from the list by the site, never stored.
@@ -248,7 +341,7 @@ interface CalibrationSummary {
 
 Which plays and which predictions it covers is Tyler's to define with the model.
 
-## 3. Where the model runs
+## 4. Where the model runs
 
 In the browser, from exported JSON in `models/`. The calculator imports it at build time
 and ships it with the page; it is not fetched at runtime, so it stays within the data
@@ -289,6 +382,17 @@ Grading rules for the pipeline that writes `model_record.json`:
 
 ## Version history
 
+- **3** (2026-10-22), from the fourth-down repo's contract change request (issue #1:
+  the decision baseline also ports nfl4th's `add_2pt_probs()`, matching its R output on
+  all 16,702 tries from 2014 to 2025):
+  - New `recommendTry()` with `TrySituation`, `TryResult`, `TryRecommendation`,
+    `TryBreakdown` and `TryOutcomes` (section 2). `recommend()` and the 4th down types
+    are unchanged.
+  - `'unavailable'` covers a model that cannot be loaded or run, not only one that is
+    not in the site yet, for both `recommend()` and `recommendTry()`.
+  - Missing lines, both decisions: each fallback applies only to the missing line, and
+    a missing total uses the median `total_line` of the most recent completed season,
+    not the league-average total (fourth-down milestone 4).
 - **2** (2026-10-22), from the fourth-down repo's contract change request (milestone 3:
   the decision baseline is a Python port of nfl4th at commit `ecb7293`, matching its R
   output on all 49,416 4th downs from 2014 to 2025):
