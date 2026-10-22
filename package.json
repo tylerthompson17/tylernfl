@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "node --test \"tests/**/*.test.ts\"",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "test:fourth-down-engine": "ENGINE_FIXTURES=all node --test tests/fourth-down-engine.test.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",

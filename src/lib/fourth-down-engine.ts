@@ -4,7 +4,7 @@
  * is tested against the Python model.
  *
  * Browser engine for the 4th down model: recommend() and recommendTry() from
- * docs/model-interface.md (contract version 3), evaluated from the exported
+ * docs/model-interface.md (contract version 4), evaluated from the exported
  * model JSON (scripts/export_model.py).
  *
  * The model is the decision baseline, nfl4th at commit ecb7293. This file
@@ -20,7 +20,7 @@
  */
 
 /** Contract version this engine implements */
-export const ENGINE_CONTRACT_VERSION = 3;
+export const ENGINE_CONTRACT_VERSION = 4;
 
 // ---------------------------------------------------------------------------
 // Contract types (structurally identical to src/lib/fourth-down.ts)
