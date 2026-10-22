@@ -16,10 +16,12 @@ Personal NFL analytics site: public tools (4th down model first), stat leaders, 
 
 ### Modeling ownership
 
-- Tyler's, do not build or edit: the 4th down model, the 2-point model, and team ratings.
-  Leave stubs and interfaces only.
+- Tyler's, do not build or edit: the fourth-down decision models (the 4th down model and
+  the 2-point model). Leave stubs and interfaces only. His ownership covers those models,
+  not the site's other pipelines.
 - Delegated: standard methods Tyler requests explicitly (for example spread to win
-  probability, playoff simulation). For each, write a methodology
+  probability, playoff simulation), and team ratings for the playoff odds and draft
+  projection, which Claude may build and maintain as a standard method. For each, write a methodology
   note in `docs/methods/`, validate it against a named reference and report the
   comparison, and state its limitations. Never present a delegated model as Tyler's
   original work in site copy.
