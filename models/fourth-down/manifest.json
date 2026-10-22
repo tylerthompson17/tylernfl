@@ -1,0 +1,59 @@
+{
+  "contractVersion": 4,
+  "modelVersion": "nfl4th-ecb7293",
+  "kickDistanceOffset": 18,
+  "maxFieldGoalDistance": 70,
+  "fallbackTotalLine": {
+    "value": 44.5,
+    "season": 2025
+  },
+  "teams": {
+    "nflverseToSite": {
+      "LA": "LAR"
+    }
+  },
+  "source": {
+    "nfl4thSha": "ecb7293ec62e2e15b4fb7113244ee0a33741f924",
+    "nflfastR": "6.0.0",
+    "fastrmodels": "2.1.0",
+    "xgboost": "3.2.1.1"
+  },
+  "license": "Model files derived from nfl4th (Ben Baldwin, MIT License) and nflfastR / fastrmodels (Sebastian Carl and Ben Baldwin, MIT License). Copyright notices: https://github.com/nflverse/nfl4th/blob/master/LICENSE and https://github.com/nflverse/nflfastR/blob/master/LICENSE.",
+  "files": {
+    "fd_model": {
+      "path": "fd_model.json",
+      "sha256": "eddad46e9023891386ff211c1655c90d806a725cadbaf88b2de9576b2f51551a",
+      "bytes": 6010060
+    },
+    "ep_model": {
+      "path": "ep_model.json",
+      "sha256": "3709fd91d5ec5339f016aa4b8460b9b5f882018c46826dd261606c36eb8316e9",
+      "bytes": 3117873
+    },
+    "home_wp_model": {
+      "path": "home_wp_model.json",
+      "sha256": "df2f72fca1c173642d1923d05dee509a998071506614ee649776b9ac59846a14",
+      "bytes": 897797
+    },
+    "wp_spread_model": {
+      "path": "wp_spread_model.json",
+      "sha256": "542bc2e469ba74169f6dc7df58f7c1cbb76b615f8766defa4260e357a7fe8f0d",
+      "bytes": 404083
+    },
+    "two_pt_model": {
+      "path": "two_pt_model.json",
+      "sha256": "6e536312b174f896d458e497ef94e45053d8847e963666976f5df613d8e5250e",
+      "bytes": 5344
+    },
+    "tables": {
+      "path": "tables.json",
+      "sha256": "2e035d77eedb9aec19c2640cb12b95a1c09ea35e70f30aa3c102b1f7c30d703d",
+      "bytes": 175678
+    },
+    "terms": {
+      "path": "terms.json",
+      "sha256": "e310fe2515486190cd0ac76f877df40471580b5d65c50f949bf6da1cdbdc6dd4",
+      "bytes": 71
+    }
+  }
+}
