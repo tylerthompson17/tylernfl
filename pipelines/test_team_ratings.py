@@ -68,7 +68,7 @@ class FitTests(unittest.TestCase):
         tight, home_tight = tr.fit(rows, TEAMS, date(2024, 9, 8), prior, penalty=100)
         team = TEAMS[-1]
         self.assertGreater(loose[team], tight[team])
-        self.assertAlmostEqual(tight[team], -0.7 * TRUE[team], delta=0.02)
+        self.assertAlmostEqual(tight[team], -tr.CARRYOVER * TRUE[team], delta=0.02)
         # Home field is not penalized, so it still comes from the lines.
         self.assertGreater(home_tight, 0.1)
 
@@ -113,13 +113,29 @@ class PricingTests(unittest.TestCase):
         g = self.game(home_moneyline=-150, away_moneyline=130)
         self.assertEqual(drawn([g]), self.pricer([g]))
 
-    def test_draws_have_the_spread_sigma_says(self):
+    def test_draws_have_the_spread_sigma_says_around_the_stretched_rating(self):
         rng = random.Random(1)
         values = [self.pricer.draw(rng).ratings['BUF'] for _ in range(4000)]
         mean = sum(values) / len(values)
         sd = math.sqrt(sum((v - mean) ** 2 for v in values) / len(values))
-        self.assertAlmostEqual(mean, 0.4, delta=0.03)
+        self.assertAlmostEqual(tr.stretch(0.6), math.sqrt(1 + math.pi * 0.72 / 8))
+        self.assertAlmostEqual(mean, tr.stretch(0.6) * 0.4, delta=0.03)
         self.assertAlmostEqual(sd, 0.6, delta=0.03)
+        self.assertAlmostEqual(self.pricer.draw(rng).home_field, tr.stretch(0.6) * 0.2)
+
+    def test_averaged_over_the_draws_a_chance_matches_its_point_estimate(self):
+        for home, away, neutral in ((1.0, -0.5, False), (0.0, 0.0, True), (-0.8, 0.3, False)):
+            pricer = tr.Pricer({'BUF': home, 'KC': away}, 0.25, sigma=tr.SIGMA)
+            g = self.game(location='Neutral' if neutral else 'Home')
+            point = pricer([g])['g']
+            rng = random.Random(3)
+            averaged = sum(pricer.draw(rng)([g])['g'] for _ in range(20000)) / 20000
+            self.assertAlmostEqual(averaged, point, delta=0.01)
+            # Without the stretch the average is pulled toward 50/50.
+            rng = random.Random(3)
+            flat = sum(tr.logistic(home - away + (0 if neutral else 0.25) + rng.gauss(0, tr.SIGMA) - rng.gauss(0, tr.SIGMA))
+                       for _ in range(20000)) / 20000
+            self.assertLessEqual(abs(flat - 0.5), abs(point - 0.5) + 0.005)
 
 
 class SeasonTests(unittest.TestCase):

@@ -291,10 +291,12 @@ tylernfl/
   by scaling the two implied probabilities to sum to 1, and prices every other game,
   playoffs included, from team ratings (`pipelines/team_ratings.py`): one rating per team
   and a home field, fitted by weighted ridge least squares to the logit of every line of
-  the season, played and upcoming, pulled toward 0.7 times last season's final ratings,
-  with a 3 week half-life, and no home field at a neutral site. Its function also has
+  the season, played and upcoming, pulled toward 0.55 times last season's final ratings,
+  with a 2 week half-life, and no home field at a neutral site. Its function also has
   `draw(rng)`, and the simulator then draws each team's rating once per simulated season
-  (sigma 0.6) from a third random stream, so a team's games move together; with a fixed
+  (sigma 0.65, around the logit stretched by sqrt(1 + pi * 2 sigma^2 / 8) so a game's
+  averaged chance matches its point estimate) from a third random stream, so a team's
+  games move together; with a fixed
   function (`betting_lines`) the simulator draws exactly what it did before. Lines exist
   only about a week ahead, so most games are priced from the ratings. Every place the
   odds or the draft projection show says so in the words of `oddsBasis()`

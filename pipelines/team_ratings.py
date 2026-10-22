@@ -20,8 +20,13 @@ season's games, playoffs included, pulled toward zero.
 Pricing (Pricer): a game with its own moneylines keeps them; every other
 game, playoffs included, is priced from the ratings, with no home field at
 a neutral site (international games, the Super Bowl). In the simulation each
-team's rating is drawn once per simulated season from N(estimate, SIGMA^2),
-so a team that is better or worse than its rating is so in all of its games.
+team's rating is drawn once per simulated season around its estimate, with
+spread SIGMA, so a team that is better or worse than its rating is so in all
+of its games. Averaging a logistic over normal draws pulls every chance
+toward 50/50, so before the draws are added the whole logit (ratings and
+home field) is scaled up by sqrt(1 + pi * 2 SIGMA^2 / 8), the logistic-normal
+approximation; a game's chance averaged over the draws then matches its
+point estimate (within a point; test_team_ratings.py).
 
 CARRYOVER, HALF_LIFE_WEEKS and PENALTY were tuned on the log loss of the
 rest of each regular season's results, 2015 to 2025; SIGMA then on the
@@ -40,10 +45,10 @@ import numpy as np
 from common import normalize_team
 from playoff_odds import betting_lines
 
-CARRYOVER = 0.7
-HALF_LIFE_WEEKS = 3.0
+CARRYOVER = 0.55
+HALF_LIFE_WEEKS = 2.0
 PENALTY = 1.0
-SIGMA = 0.6
+SIGMA = 0.65
 
 # Franchises by today's abbreviation, for last season's ratings.
 FRANCHISES = {'STL': 'LAR', 'SD': 'LAC', 'OAK': 'LV'}
@@ -67,6 +72,13 @@ def logit(p: float) -> float:
 
 def logistic(x: float) -> float:
     return 1 / (1 + math.exp(-x))
+
+
+def stretch(sigma: float) -> float:
+    """How much to scale a logit so that, with two ratings drawn at spread
+    sigma (the difference at sigma * sqrt(2)), the averaged chance is the
+    unscaled one."""
+    return math.sqrt(1 + math.pi * 2 * sigma ** 2 / 8)
 
 
 def fit(games: list[dict], teams: list[str], as_of: date | None, prior: dict[str, float] | None = None,
@@ -134,8 +146,9 @@ class Pricer:
         return {g['game_id']: lines[g['game_id']] if has_line(g) else self.chance(g) for g in games}
 
     def draw(self, rng: random.Random) -> 'Pricer':
-        drawn = {t: r + rng.gauss(0, self.sigma) for t, r in sorted(self.ratings.items())}
-        return Pricer(drawn, self.home_field, 0)
+        k = stretch(self.sigma)
+        drawn = {t: k * r + rng.gauss(0, self.sigma) for t, r in sorted(self.ratings.items())}
+        return Pricer(drawn, k * self.home_field, 0)
 
 
 def pricer(schedule_rows: list[dict], season: int) -> Callable[[list[dict]], dict[str, float]]:

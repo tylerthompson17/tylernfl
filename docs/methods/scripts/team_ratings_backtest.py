@@ -6,11 +6,11 @@ results are in docs/methods/team-ratings.md.
 
 For each season and cutoff week w, the ratings are fitted the way the daily
 run fits them: every game through week w with its closing line, plus the
-next week's lines (LOOKAHEAD), which are out before its games, counted from
-the date of the last game of week w. They then price the rest of the
-regular season, and the log loss is taken on the real results (ties left
-out). The current setup prices the same next week from its lines and every
-later game at 50/50.
+lines of the next two weeks (LOOKAHEAD), which the daily run has by
+midweek, counted from the date of the last game of week w. No later line is
+seen. They then price the rest of the regular season, and the log loss is
+taken on the real results (ties left out). The current setup prices the
+same two weeks from their lines and every later game at 50/50.
 """
 import itertools
 import math
@@ -27,13 +27,13 @@ from playoff_odds import betting_lines  # noqa: E402
 
 SEASONS = list(range(2015, 2026))
 CUTOFFS = [1, 2, 4, 6, 8, 10, 12, 14]
-LOOKAHEAD = 1
+LOOKAHEAD = 2
 GRID = {
     'carryover': [0.4, 0.55, 0.7, 0.85, 1.0],
-    'half_life_weeks': [1.5, 2.0, 3.0, 4.5, 6.0, 10.0, math.inf],
+    'half_life_weeks': [1.0, 1.5, 2.0, 3.0, 4.5, 6.0, 10.0, math.inf],
     'penalty': [0.1, 0.3, 1.0, 3.0],
 }
-SIGMAS = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1.0]
+SIGMAS = [0.0, 0.2, 0.4, 0.5, 0.6, 0.65, 0.7, 0.8, 1.0, 1.2]
 DRAWS = 4000
 NODES, WEIGHTS = np.polynomial.hermite_e.hermegauss(40)
 WEIGHTS = WEIGHTS / WEIGHTS.sum()
@@ -52,10 +52,12 @@ def outcome(g):
 
 
 def expected(mu, sigma):
-    """Mean of logistic(mu + d) with d ~ N(0, 2 sigma^2): two ratings drawn."""
+    """Mean of logistic(k mu + d) with d ~ N(0, 2 sigma^2), two ratings drawn
+    and the logit stretched first (team_ratings.stretch), as the simulator does."""
     if sigma == 0:
         return 1 / (1 + np.exp(-mu))
-    return (WEIGHTS / (1 + np.exp(-(mu[:, None] + math.sqrt(2) * sigma * NODES[None, :])))).sum(axis=1)
+    k = tr.stretch(sigma)
+    return (WEIGHTS / (1 + np.exp(-(k * mu[:, None] + math.sqrt(2) * sigma * NODES[None, :])))).sum(axis=1)
 
 
 def log_loss(p, y):
@@ -163,11 +165,12 @@ def win_totals(s, w, sigma):
     far = cases[(s, w)][1]
     if not far:
         return []
-    r = np.array([ratings[t] for t in teams])[None, :] + sigma * normal[:, :len(teams)]
+    k = tr.stretch(sigma)
+    r = k * np.array([ratings[t] for t in teams])[None, :] + sigma * normal[:, :len(teams)]
     hi = np.array([index[tr.franchise(g['home_team'])] for g in far])
     ai = np.array([index[tr.franchise(g['away_team'])] for g in far])
     nn = np.array([0.0 if tr.is_neutral(g) else 1.0 for g in far])
-    p = 1 / (1 + np.exp(-(r[:, hi] - r[:, ai] + h * nn)))  # draws x games
+    p = 1 / (1 + np.exp(-(r[:, hi] - r[:, ai] + k * h * nn)))  # draws x games
     out = []
     for t, i in index.items():
         home, away = hi == i, ai == i
@@ -234,13 +237,17 @@ for key in list(cases):
     cases[key] = (near, [g for g in far_all if outcome(g) is not None], y_near, y_far)
 fits = {(best, s, w): far_fit(s, w, *best) for s, w in cases}
 
-print('\nOne game\'s log loss hardly depends on sigma (far games, pooled):')
+point = np.concatenate([expected(fits[(best, s, w)][2], 0) for s, w in cases])
+averaged = np.concatenate([expected(fits[(best, s, w)][2], sigma) for s, w in cases])
+print(f'\nAveraged over the draws at sigma {sigma}, against the point estimate: '
+      f'mean gap {np.abs(averaged - point).mean():.4f}, largest {np.abs(averaged - point).max():.4f}')
+print('\nOne game\'s log loss by sigma, with the stretch (far games, pooled):')
 print('  ' + ', '.join(f'{sg}: {np.mean(np.concatenate([log_loss(expected(fits[(best, s, w)][2], sg), cases[(s, w)][3]) for s, w in cases])):.4f}'
                        for sg in SIGMAS))
 
 print('\nRest of the regular season after week w (ties left out), log loss:')
 print('  w   games  50/50   current  ratings  all closing lines   | far games only: n   current  ratings')
-calib_p, calib_y, calib_line = [], [], []
+calib_p, calib_y, calib_line, calib_ids, calib_seasons = [], [], [], [], []
 totals = {'n': 0, 'even': 0.0, 'current': 0.0, 'ratings': 0.0, 'lines': 0.0}
 for w in CUTOFFS:
     sums = {'even': 0.0, 'current': 0.0, 'ratings': 0.0, 'lines': 0.0, 'far_current': 0.0, 'far_ratings': 0.0}
@@ -262,26 +269,63 @@ for w in CUTOFFS:
         calib_p.extend(p_far)
         calib_y.extend(y_far)
         calib_line.extend(p_far_lines)
+        calib_ids.extend(g['game_id'] for g in far)
+        calib_seasons.extend([s] * len(far))
     for k in ('even', 'current', 'ratings', 'lines'):
         totals[k] += sums[k]
     totals['n'] += n
     print(f'  {w:2d}  {n:5d}  {sums["even"] / n:.4f}  {sums["current"] / n:.4f}   {sums["ratings"] / n:.4f}   '
           f'{sums["lines"] / n:.4f}            | {n_far:5d}  {sums["far_current"] / n_far:.4f}   {sums["far_ratings"] / n_far:.4f}')
 n = totals['n']
+appearances = {}
+for i in calib_ids:
+    appearances[i] = appearances.get(i, 0) + 1
 print(f'  all {n:5d}  {totals["even"] / n:.4f}  {totals["current"] / n:.4f}   {totals["ratings"] / n:.4f}   {totals["lines"] / n:.4f}')
 
-print('\nCalibration, far games, every season and cutoff pooled (a game counts once per cutoff):')
-print('  predicted    games  mean predicted  actual   95% band          | closing lines on the same games: mean, actual')
+print('\nCalibration, far games, every season and cutoff pooled. A game appears once per cutoff before it,')
+print('so each appearance is weighted 1 / appearances: every game counts once, and the band uses that count.')
+print('  predicted    games  mean predicted  actual   95% band          | closing lines on the same games')
 calib_p, calib_y, calib_line = np.array(calib_p), np.array(calib_y), np.array(calib_line)
+calib_w = 1 / np.array([appearances[i] for i in calib_ids])
 for lo in [i / 10 for i in range(10)]:
     mask = (calib_p >= lo) & ((calib_p < lo + 0.1) | ((lo == 0.9) & (calib_p <= 1)))
     if not mask.any():
         continue
-    mp, ma, k = calib_p[mask].mean(), calib_y[mask].mean(), mask.sum()
+    w_ = calib_w[mask]
+    k = w_.sum()
+    mp, ma, ml = (np.average(x[mask], weights=w_) for x in (calib_p, calib_y, calib_line))
     band = 1.96 * math.sqrt(mp * (1 - mp) / k)
-    print(f'  {lo:.1f} to {lo + 0.1:.1f}  {k:6d}  {mp:14.3f}  {ma:6.3f}   ±{band:.3f}{"" if abs(ma - mp) <= band else "  outside"}'
-          f'{"":10s}| {calib_line[mask].mean():.3f}')
-print(f'  all        {len(calib_p):6d}  {calib_p.mean():14.3f}  {calib_y.mean():6.3f}   (closing lines on the same games {calib_line.mean():.3f})')
+    print(f'  {lo:.1f} to {lo + 0.1:.1f}  {k:6.0f}  {mp:14.3f}  {ma:6.3f}   ±{band:.3f}{"" if abs(ma - mp) <= band else "  outside"}'
+          f'{"":10s}| {ml:.3f}')
+print(f'  all        {calib_w.sum():6.0f}  {np.average(calib_p, weights=calib_w):14.3f}  {np.average(calib_y, weights=calib_w):6.3f}'
+      f'   (closing lines on the same games {np.average(calib_line, weights=calib_w):.3f})')
+
+
+def calibration_fit(p, y, w):
+    """Weighted logistic regression of the result on logit(p): (intercept, slope).
+    Calibrated is (0, 1)."""
+    x = np.column_stack([np.ones_like(p), np.log(p / (1 - p))])
+    beta = np.array([0.0, 1.0])
+    for _ in range(25):
+        q = 1 / (1 + np.exp(-x @ beta))
+        hess = x.T @ (x * (w * q * (1 - q))[:, None])
+        beta = beta + np.linalg.solve(hess, x.T @ (w * (y - q)))
+    return beta
+
+
+season_of_row = np.array(calib_seasons)
+point = calibration_fit(calib_p, calib_y, calib_w)
+boot_rng = np.random.default_rng(15)
+boots = []
+for _ in range(1000):
+    pick = boot_rng.choice(SEASONS, size=len(SEASONS))
+    idx = np.concatenate([np.flatnonzero(season_of_row == s) for s in pick])
+    boots.append(calibration_fit(calib_p[idx], calib_y[idx], calib_w[idx]))
+lo_, hi_ = np.percentile(np.array(boots), [2.5, 97.5], axis=0)
+print(f'  calibration intercept {point[0]:+.3f} (95% {lo_[0]:+.3f} to {hi_[0]:+.3f}, seasons resampled; 0 is calibrated)')
+print(f'  calibration slope     {point[1]:.3f} (95% {lo_[1]:.3f} to {hi_[1]:.3f}; 1 is calibrated)')
+line_fit = calibration_fit(calib_line, calib_y, calib_w)
+print(f'  closing lines on the same games: intercept {line_fit[0]:+.3f}, slope {line_fit[1]:.3f}')
 
 print('\nNext week\'s closing lines, from ratings fitted through week w without them (no lookahead):')
 print('  w   games  mean |diff| in win chance  RMSE logit  within 5 pts  | 50/50 mean |diff|')
