@@ -1,6 +1,6 @@
 """Daily site data job: writes ticker.json, stats/, players/,
 rosters/, transactions.json, on_this_day.json, standings.json,
-schedule.json, playoff_odds.json, game_excitement.json, team_stats.json,
+schedule.json, playoff_odds.json, draft_order.json, game_excitement.json, team_stats.json,
 player_epa.json, targets/ and, once a season, performance_percentiles.json into
 src/data/, then draws
 the home page's auto chart (charts/auto.json and its entry in charts/archive/)
@@ -27,6 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import DATA_DIR, load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
 from charts.auto import build_auto_charts, season_finals, wp_plays_for, write_charts  # noqa: E402
+from draft_order import build_draft_order, load_trade_rows, unlisted_trades  # noqa: E402
 from excitement import build_game_excitement, labels_by_game  # noqa: E402
 from game_logs import build_game_logs  # noqa: E402
 from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
@@ -129,6 +130,16 @@ def main() -> None:
     odds = build_playoff_odds(schedule_rows, schedule['season'], updated)
     print(f"playoff odds: {odds['simulations']} simulations, {odds['pricedGames']} of "
           f"{odds['remainingGames']} remaining games priced by betting lines")
+    draft = build_draft_order(schedule_rows, schedule['season'], updated)
+    print(f"draft order: {draft['draft']} round 1, {draft['stage']}, {len(draft['picks'])} picks, "
+          f"{sum(p['coinFlip'] for p in draft['picks'])} on a coin flip")
+    # Pick ownership is kept by hand; nflverse's trades are only a prompt
+    # to look for one the file is missing. Never fails the run.
+    try:
+        for line in unlisted_trades(load_trade_rows(), draft=draft['draft']):
+            print(f'draft order: WARNING nflverse lists a trade round1_picks.json does not have: {line}')
+    except Exception as error:  # noqa: BLE001
+        print(f'draft order: WARNING could not check nflverse trades: {error}')
     top_seeds = [t['team'] for t in standings['teams'] if t['conferenceRank'] == 1]
     print(f"standings: {standings['season']} through week {standings['throughWeek']}, top seeds {', '.join(top_seeds)}")
 
@@ -159,6 +170,7 @@ def main() -> None:
     files.append(('standings.json', standings, ('updated',)))
     files.append(('schedule.json', schedule, ('updated',)))
     files.append(('playoff_odds.json', odds, ('updated',)))
+    files.append(('draft_order.json', draft, ('updated',)))
     files.append(('game_excitement.json', excitement, ('updated',)))
     files.append(('team_stats.json', team_stats, ('updated',)))
     files.append(('player_epa.json', player_epa, ('updated',)))

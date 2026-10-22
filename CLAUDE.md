@@ -100,7 +100,7 @@ tylernfl/
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `player_epa.json`, `targets/{gsisId}.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `targets/{gsisId}.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `draft_order.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
@@ -293,6 +293,17 @@ tylernfl/
   (including a run against nflseedR's own simulator) and `moneyline-win-probability.md`
   (calibrated against 2019 to 2025 results). Their scripts are in `docs/methods/scripts/`,
   run by hand.
+- `draft_order.json` is written daily by `pipelines/draft_order.py`: round 1 of the
+  draft after the ticker's season if the season ended today, by the league's rules
+  (`docs/methods/draft-order.md`): non-playoff teams, then playoff teams by the round
+  they went out in (before the playoffs, all 14 by record), each group by record, then
+  strength of schedule, then the standings' tiebreakers reversed (`standings.rank_tied`),
+  then a coin flip marked as still to come. Pick ownership is
+  `pipelines/inputs/round1_picks.json`, kept by hand, a source URL per entry, covering
+  traded and forfeited picks and `choices` (the Jets hold the earlier of DAL's and GB's
+  2027 picks). nflverse's trade data is never used for it; the daily run only logs a
+  warning for a round 1 trade it lists that the file lacks. `pipelines/test_draft_order.py`
+  must reproduce the league's 2026 order from the 2025 season.
 - `pipelines/test_playoff_odds.py` checks the simulator against a known season: 2024
   from week 12, every remaining game given its real result for certain, must give every
   chance as exactly 0 or 1 and reproduce the real final seeding and wins.

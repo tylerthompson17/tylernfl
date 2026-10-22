@@ -529,6 +529,58 @@ export interface PlayoffOddsData {
 }
 
 /**
+ * draft_order.json: written daily by pipelines/draft_order.py, round 1 of
+ * the draft after `season` as it would stand if the season ended today.
+ * Rules in docs/methods/draft-order.md.
+ */
+export interface DraftOrderData {
+  /** The draft year, season + 1 */
+  draft: number;
+  season: number;
+  throughWeek: number;
+  updated: string;
+  /** Picks 19 to 32 depend on playoff results until 'final' */
+  stage: 'not_started' | 'regular_season' | 'playoffs' | 'final';
+  /** Empty before the season's first game; 31 when a pick is forfeited */
+  picks: DraftPick[];
+}
+
+export type DraftGroup =
+  | 'non_playoff'
+  | 'wild_card'
+  | 'divisional'
+  | 'conference'
+  | 'super_bowl'
+  /** A playoff team not yet out (every playoff team before the playoffs) */
+  | 'alive'
+  | 'champion';
+
+export interface DraftPick {
+  pick: number;
+  /** The team whose pick it is (its record sets the place) */
+  team: string;
+  /** Who holds it, from pipelines/inputs/round1_picks.json */
+  owner: string;
+  /** Set when the owner depends on where two picks land */
+  choice: { between: [string, string]; takes: 'earlier' | 'later'; to: string } | null;
+  group: DraftGroup;
+  wins: number;
+  losses: number;
+  ties: number;
+  pct: number;
+  /** Strength of schedule, 3 places */
+  sos: number;
+  /**
+   * The step that placed the team among teams on its record (site keys, as
+   * in standings.json, plus 'head_to_head', 'common_games' and
+   * 'strength_of_victory' between conferences); null when alone on it.
+   */
+  tiebreak: string | null;
+  /** A coin toss still to come: listed in abbreviation order meanwhile */
+  coinFlip: boolean;
+}
+
+/**
  * game_excitement.json: written daily by pipelines/excitement.py, one entry
  * per final of the season that nflverse has play-by-play for, in kickoff
  * order. Win probability is nflfastR's as published.
