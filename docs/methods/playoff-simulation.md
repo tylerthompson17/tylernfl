@@ -3,7 +3,8 @@
 A delegated method: a standard Monte Carlo simulation Tyler asked for, not his own work
 and not a model of the site's. It writes `src/data/playoff_odds.json` every day, and the
 team pages show it, labelled with what it is based on: betting lines for the weeks that
-have them, and 50/50 for every other game (see Game probabilities).
+have them, and team ratings derived from betting lines for every other game (see Game
+probabilities).
 
 Code: `pipelines/playoff_odds.py`, with the tiebreakers in `pipelines/standings.py`.
 
@@ -28,28 +29,33 @@ simulated and the file is empty.
 
 ### Game probabilities
 
-The default is the moneyline conversion (`moneyline-win-probability.md`): each game's
-moneylines as nflverse lists them on the day, with the bookmaker's margin removed.
+A game with a betting line uses it: the moneyline conversion
+(`moneyline-win-probability.md`), each game's moneylines as nflverse lists them on the
+day, with the bookmaker's margin removed.
 
-**A game with no betting line yet gets exactly 0.5 for each team.** No home field
-advantage and no team strength go into it. Lines appear about a week before a game, so
-early in the season nearly every remaining game is 0.5, and even late in the season
-only the next week or so is priced. `pricedGames` and `remainingGames` in the file say
-how many of each. On 2026-10-22, 28 of the 179 remaining games had a line (weeks 7 and
-8) and the other 151 (weeks 9 to 18) were 50/50.
+**Every other game is priced from team ratings** (`team-ratings.md`), a delegated
+method: a rating per team and a home field, fitted to this season's lines, played and
+upcoming, and pulled toward last season's. Lines appear about a week before a game, so
+most of the remaining schedule is priced this way. `pricedGames` and `remainingGames`
+in the file say how many have a line. On 2026-10-22, 28 of the 179 remaining games had
+a line (weeks 7 and 8) and the other 151 (weeks 9 to 18) were priced from the ratings.
+
+The ratings are uncertain, so each simulated season draws every team's rating once
+around its estimate, and that draw prices all of the team's rated games that season.
+This is the one thing `simulate` does differently for them: `GAME_PROBABILITIES`
+returns a pricing function, and when it has `draw(rng)` the simulator calls it once per
+season from a third random stream. A fixed pricing function draws exactly what it did
+before.
 
 Every page that shows the odds or the draft projection says this plainly, naming the
 weeks: "Based on betting lines for weeks 7 and 8. Games without a line yet (weeks 9 to
-18) count as 50/50 for each team." The wording lives in one place, `oddsBasis()` in
-`src/lib/odds/basis.ts`, which reads the weeks from `schedule.json`.
+18) are priced from team ratings derived from betting lines." The wording lives in one
+place, `oddsBasis()` in `src/lib/odds/basis.ts`, which reads the weeks from
+`schedule.json`.
 
-What that does to the odds: with most games even, each team's future is close to a
-coin flip per game, so the odds lean heavily on the current records and the schedule's
-tiebreaker shape. A strong team's chances are understated and a weak team's overstated,
-more so the earlier in the season. Team ratings would fix this. They are a delegated
-method that is not built yet: they would replace `GAME_PROBABILITIES`, returning the
-same thing, with their own methods note and validation, and `oddsBasis()` would change
-in the same edit.
+Until 2026-10-22 every game without a line was 50/50, which understated strong teams'
+chances and overstated weak ones'; `team-ratings.md` compares the two on that day's
+projection and on 2015 to 2025.
 
 ## Validation
 
@@ -91,8 +97,8 @@ expected. Average wins are rounded to one decimal on the site, which accounts fo
 ## Draft order
 
 The same 10,000 simulated seasons also project round 1 of the next draft, shown on
-`/draft/projected/` with the same wording as the odds plus a line saying every playoff
-game is 50/50 (`playoffBasis()`, same file). Tyler asked for it as part of
+`/draft/projected/` with the same wording as the odds plus a line saying how playoff
+games are priced (`playoffBasis()`, same file). Tyler asked for it as part of
 the draft section; the order's rules are in `draft-order.md`.
 
 1. Seed each simulated season as above (the standings the playoff odds count).
@@ -100,9 +106,11 @@ the draft section; the order's rules are in `draft-order.md`.
    5), the top seed hosting the lowest seed left in the divisional round, the higher
    seed hosting after that, and the Super Bowl at a neutral site. A playoff game already
    played keeps its result. Every other one is a home win with the chance
-   `GAME_PROBABILITIES` gives it, which is **0.5 for a game with no betting line: every
-   playoff game until the real matchups are set in January.** `pricedPlayoffGames` in
-   the file says how many have a line, and the page says playoff games are even.
+   `GAME_PROBABILITIES` gives it: its betting line once the real game has one, and
+   until then (every playoff game until the matchups are set in January) that
+   simulated season's drawn team ratings, with no home field in the Super Bowl.
+   `pricedPlayoffGames` in the file says how many have a line, and the page says how
+   the rest are priced.
 3. Set that season's draft order by `draft_order.order`: its own final records,
    strength of schedule and tiebreakers, with any tie still level at the end drawn at
    random within that season (a fresh random key per team per season, used by every
@@ -123,7 +131,8 @@ before the projection existed (`tests/fixtures/playoff_odds/2023_week10.json`).
 **A finished season.** With all of 2025 played, every simulated season is 2025, and
 every team's chance of its real 2026 pick comes out exactly 1.
 
-**The bracket.** With 2025's regular season played and every playoff game even, a team
+**The bracket.** With 2025's regular season played and every playoff game even (the
+test prices them with `betting_lines`, which has no ratings), a team
 leaves each round half the time: 10,000 seasons gave each wild card team 0.496 to 0.505
 out in the wild card round (exact: 0.5), 0.246 to 0.253 out in the divisional round
 (0.25), 0.119 to 0.132 in the conference round (0.125), and 0.059 to 0.066 each for
@@ -163,22 +172,21 @@ few simulated places at most.
 
 ## Limitations
 
-- **Games with no line are even.** See Game probabilities. This is the largest
-  limitation by far.
-- **Chances are fixed within a simulated season.** A team that wins its first three
-  simulated games is no likelier to win the fourth. nflseedR's default simulation
-  updates an Elo rating as it goes, which spreads the outcomes wider; this one does
-  not, so extreme outcomes are somewhat rarer here.
+- **Games with no line follow the market's ratings, a week late.** See
+  `team-ratings.md`, Limitations.
+- **Chances are fixed within a simulated season.** Each team's rating is drawn once per
+  season, which spreads the outcomes the way real win totals spread, but a team that
+  wins its first three simulated games is no likelier to win the fourth. nflseedR's
+  default simulation updates an Elo rating as it goes instead.
 - **Lines as published on the day.** A line taken days before kickoff misses later news.
 - **No ties.** About 0.3% of real games tie; a simulated game never does.
 - **Coin tosses by abbreviation.** Where the tiebreakers run out, the team whose
   abbreviation comes first wins, every time, rather than half the time. It decides very
   few simulated seedings.
 - **Playoffs only for the draft.** The playoffs are simulated for the projected draft
-  order, every game even until real lines exist, so they say nothing about who is
-  better: the site shows no chances of winning a round or the Super Bowl. A bye is
-  worth exactly one round, and picks 19 to 32 within a playoff team's range are close
-  to a coin flip per game.
+  order, priced from the ratings until real lines exist. The site shows no chances of
+  winning a round or the Super Bowl: the ratings were validated on regular season games,
+  not playoff ones.
 - **Projected draft coin tosses stop early.** The league's steps after strength of
   victory (points) are not applied, so ties there are drawn at random, more often than
   the league would need a toss.

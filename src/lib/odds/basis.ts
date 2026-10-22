@@ -1,12 +1,13 @@
 /**
  * What the playoff odds and the draft projection are based on, in the words
  * every page uses. This is the one place the wording lives: the team pages'
- * odds panel and header strip and both draft tabs read it, so when team
- * ratings replace the 50/50 default (GAME_PROBABILITIES in
- * pipelines/playoff_odds.py) it changes here, once.
+ * odds panel and header strip and both draft tabs read it, so when the
+ * source changes (GAME_PROBABILITIES in pipelines/playoff_odds.py) it
+ * changes here, once.
  *
- * Today a game is priced from its betting line when it has one, and every
- * other game counts as 50/50 for each team: no team strength, no home field.
+ * A game is priced from its betting line when it has one, and every other
+ * game from team ratings fitted to this season's betting lines
+ * (pipelines/team_ratings.py, docs/methods/team-ratings.md).
  */
 
 /** The parts of a schedule game the wording needs (ScheduleGame fits). */
@@ -26,8 +27,8 @@ export interface OddsBasis {
   short: string;
   /** Weeks of unplayed regular season games with a line */
   pricedWeeks: number[];
-  /** Weeks of unplayed regular season games without one, counted as 50/50 */
-  evenWeeks: number[];
+  /** Weeks of unplayed regular season games without one, priced from the ratings */
+  ratedWeeks: number[];
 }
 
 /** "week 9", "weeks 7 and 8", "weeks 9 to 18", "weeks 7, 8 and 10 to 18". */
@@ -46,39 +47,41 @@ export function formatWeeks(weeks: number[]): string {
   return `${sorted.length === 1 ? 'week' : 'weeks'} ${list}`;
 }
 
-/** Which unplayed regular season weeks have lines and which count as 50/50. */
-export function splitWeeks(games: BasisGame[]): { pricedWeeks: number[]; evenWeeks: number[] } {
+/** Which unplayed regular season weeks have lines and which are priced from the ratings. */
+export function splitWeeks(games: BasisGame[]): { pricedWeeks: number[]; ratedWeeks: number[] } {
   const priced = new Set<number>();
-  const even = new Set<number>();
+  const rated = new Set<number>();
   for (const g of games) {
     if (g.type !== 'REG' || (g.homeScore !== null && g.awayScore !== null)) continue;
-    (g.homeMoneyline !== null && g.awayMoneyline !== null ? priced : even).add(g.week);
+    (g.homeMoneyline !== null && g.awayMoneyline !== null ? priced : rated).add(g.week);
   }
   const sorted = (s: Set<number>) => [...s].sort((a, b) => a - b);
-  return { pricedWeeks: sorted(priced), evenWeeks: sorted(even) };
+  return { pricedWeeks: sorted(priced), ratedWeeks: sorted(rated) };
 }
 
+const RATINGS = 'team ratings derived from betting lines';
+
 export function oddsBasis(games: BasisGame[]): OddsBasis {
-  const { pricedWeeks, evenWeeks } = splitWeeks(games);
-  const weeks = { pricedWeeks, evenWeeks };
-  if (pricedWeeks.length === 0 && evenWeeks.length === 0) {
+  const { pricedWeeks, ratedWeeks } = splitWeeks(games);
+  const weeks = { pricedWeeks, ratedWeeks };
+  if (pricedWeeks.length === 0 && ratedWeeks.length === 0) {
     return { long: 'The regular season is over.', short: 'regular season over', ...weeks };
   }
   if (pricedWeeks.length === 0) {
     return {
-      long: 'No remaining game has a betting line yet, so every game counts as 50/50 for each team.',
-      short: 'every game 50/50',
+      long: `No remaining game has a betting line yet, so every game is priced from ${RATINGS}.`,
+      short: 'based on market ratings',
       ...weeks,
     };
   }
-  if (evenWeeks.length === 0) {
+  if (ratedWeeks.length === 0) {
     return { long: 'Based on betting lines for every remaining game.', short: 'based on betting lines', ...weeks };
   }
   return {
     long:
       `Based on betting lines for ${formatWeeks(pricedWeeks)}. ` +
-      `Games without a line yet (${formatWeeks(evenWeeks)}) count as 50/50 for each team.`,
-    short: `${formatWeeks(evenWeeks)} at 50/50`,
+      `Games without a line yet (${formatWeeks(ratedWeeks)}) are priced from ${RATINGS}.`,
+    short: 'betting lines and market ratings',
     ...weeks,
   };
 }
@@ -86,6 +89,7 @@ export function oddsBasis(games: BasisGame[]): OddsBasis {
 /** The draft projection also plays out the playoffs. */
 export function playoffBasis(pricedPlayoffGames: number): string {
   return pricedPlayoffGames === 0
-    ? 'Every playoff game counts as 50/50 for each team.'
-    : 'Playoff games use their betting line where they have one; the rest count as 50/50 for each team.';
+    ? `Playoff games are priced from the same ${RATINGS}, with no home field in the Super Bowl.`
+    : `Playoff games use their betting line where they have one and ${RATINGS} otherwise, ` +
+        'with no home field in the Super Bowl.';
 }

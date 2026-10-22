@@ -36,7 +36,8 @@ def frozen_input() -> list[dict]:
 
 
 def frozen_text(odds: dict) -> str:
-    return json.dumps(odds, indent=2, ensure_ascii=False) + '\n'
+    # FROZEN predates the team ratings, when the label read 'betting lines'.
+    return json.dumps({**odds, 'source': 'betting lines'}, indent=2, ensure_ascii=False) + '\n'
 
 
 class MoneylineTests(unittest.TestCase):
@@ -94,7 +95,7 @@ class KnownSeasonTests(unittest.TestCase):
     def test_what_it_says_about_itself(self):
         self.assertEqual(self.odds['throughWeek'], 12)
         self.assertEqual(self.odds['remainingGames'], sum(1 for g in fixtures.GAMES[2024] if g['week'] > 12))
-        self.assertEqual(self.odds['source'], 'betting lines')
+        self.assertEqual(self.odds['source'], 'betting lines and market ratings')
 
 
 class ChanceTests(unittest.TestCase):
@@ -157,23 +158,29 @@ PLAYOFF_ORDER = ['WC', 'DIV', 'CON', 'SB']
 
 
 def project(rows: list[dict], n: int, picks: dict | None = None) -> tuple[dict, dict]:
+    """The projection's mechanics, with every unpriced game even."""
     projection = playoff_odds.DraftProjection(picks or {'picks': [], 'choices': []}, list(fixtures.ALIGNMENT))
-    odds = playoff_odds.build_playoff_odds(rows, 2025, 'x', alignment=fixtures.ALIGNMENT, n=n, draft=projection)
+    odds = playoff_odds.build_playoff_odds(rows, 2025, 'x', alignment=fixtures.ALIGNMENT, n=n, draft=projection,
+                                           game_probabilities=playoff_odds.betting_lines)
     return odds, projection.result(odds)
 
 
 class OddsUnchangedTests(unittest.TestCase):
     """The draft projection draws from its own random stream, so the odds
-    are exactly what the simulator gave before it existed."""
+    are exactly what the simulator gave before it existed. With chances
+    fixed per game (betting_lines), the simulator is also unchanged by the
+    per-season draws the team ratings added."""
 
     def test_playoff_odds_are_byte_identical_with_and_without_the_draft(self):
         expected = FROZEN.read_text(encoding='utf-8')
         plain = playoff_odds.build_playoff_odds(frozen_input(), 2023, '2026-10-22T00:00:00Z',
-                                                alignment=fixtures.ALIGNMENT, n=2000)
+                                                alignment=fixtures.ALIGNMENT, n=2000,
+                                                game_probabilities=playoff_odds.betting_lines)
         self.assertEqual(frozen_text(plain), expected)
         projection = playoff_odds.DraftProjection({'picks': [], 'choices': []}, list(fixtures.ALIGNMENT))
         with_draft = playoff_odds.build_playoff_odds(frozen_input(), 2023, '2026-10-22T00:00:00Z',
-                                                     alignment=fixtures.ALIGNMENT, n=2000, draft=projection)
+                                                     alignment=fixtures.ALIGNMENT, n=2000, draft=projection,
+                                                     game_probabilities=playoff_odds.betting_lines)
         self.assertEqual(frozen_text(with_draft), expected)
         self.assertEqual(projection.n, 2000)
 

@@ -285,19 +285,27 @@ tylernfl/
   division, the top seed, each seed 1 to 7, and average wins. Random draws are seeded
   from a hash of the inputs, so unchanged inputs write an identical file. Empty before a
   season's first game. Simulated games never tie.
-- Game probabilities are a pluggable input: `GAME_PROBABILITIES` in `playoff_odds.py`, a
-  function from unplayed games to each one's home win chance. The default reads
-  nflverse's moneylines, margin removed by scaling the two implied probabilities to sum
-  to 1; a game with no line is even odds. Lines exist only about a week ahead, so most
-  games are even odds. Every place the odds or the draft projection show says so in the
-  words of `oddsBasis()` (`src/lib/odds/basis.ts`), the one place the wording lives,
-  naming the weeks with lines and the weeks counted as 50/50. Team ratings are not built
-  yet; they are a delegated method (see Modeling ownership) and would replace the
-  default, returning the same thing, with that wording changed in the same edit.
-- Both are delegated methods, with notes in `docs/methods/`: `playoff-simulation.md`
-  (including a run against nflseedR's own simulator) and `moneyline-win-probability.md`
-  (calibrated against 2019 to 2025 results). Their scripts are in `docs/methods/scripts/`,
-  run by hand.
+- Game probabilities are a pluggable input: `GAME_PROBABILITIES` in `playoff_odds.py`,
+  given the schedule and season, returns a function from games to each one's home win
+  chance. The one in use (`lines_and_ratings`) keeps a game's moneylines, margin removed
+  by scaling the two implied probabilities to sum to 1, and prices every other game,
+  playoffs included, from team ratings (`pipelines/team_ratings.py`): one rating per team
+  and a home field, fitted by weighted ridge least squares to the logit of every line of
+  the season, played and upcoming, pulled toward 0.7 times last season's final ratings,
+  with a 3 week half-life, and no home field at a neutral site. Its function also has
+  `draw(rng)`, and the simulator then draws each team's rating once per simulated season
+  (sigma 0.6) from a third random stream, so a team's games move together; with a fixed
+  function (`betting_lines`) the simulator draws exactly what it did before. Lines exist
+  only about a week ahead, so most games are priced from the ratings. Every place the
+  odds or the draft projection show says so in the words of `oddsBasis()`
+  (`src/lib/odds/basis.ts`), the one place the wording lives, naming the weeks with
+  lines and the weeks priced from the ratings.
+- All three are delegated methods, with notes in `docs/methods/`: `playoff-simulation.md`
+  (including a run against nflseedR's own simulator), `moneyline-win-probability.md`
+  (calibrated against 2019 to 2025 results) and `team-ratings.md` (tuned and validated
+  on 2015 to 2025: log loss on the rest of each season against 50/50 and lines with
+  50/50, calibration, and next week's closing lines). Their scripts are in
+  `docs/methods/scripts/`, run by hand.
 - `draft_order.json` is written daily by `pipelines/draft_order.py`: round 1 of the
   draft after the ticker's season if the season ended today, by the league's rules
   (`docs/methods/draft-order.md`): non-playoff teams, then playoff teams by the round
@@ -311,8 +319,8 @@ tylernfl/
   must reproduce the league's 2026 order from the 2025 season.
 - Its `projected` part comes from the playoff odds' own simulated seasons
   (`DraftProjection` in `playoff_odds.py`): each season's playoffs played out (higher
-  seed at home, played games kept, every unpriced playoff game 50/50, labelled on the
-  page), its draft order set from that season's records, strength of schedule and
+  seed at home, played games kept, every unpriced playoff game from that season's drawn
+  ratings with no home field in the Super Bowl, labelled on the page), its draft order set from that season's records, strength of schedule and
   tiebreakers, leftover ties drawn at random. Per team: expected wins, mean and median
   pick, chances of 1, top 3, 5 and 10, the 10th to 90th percentile pick, and each
   pick's chance. Its draws use a second random stream, so `playoff_odds.json` is
