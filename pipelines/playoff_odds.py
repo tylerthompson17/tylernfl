@@ -3,20 +3,22 @@ of the regular season many times and seeding each simulated season with
 the same NFL tiebreakers as the standings (standings.py, checked against
 nflseedR).
 
-Game probabilities are an input, not something this module decides. It
-takes a function from the season's unplayed games to each one's chance of
-a home win, and GAME_PROBABILITIES names the one in use. Team ratings are
-not built yet; they are a delegated method (CLAUDE.md, Modeling ownership)
-and would replace betting_lines, returning the same thing.
+Game probabilities are an input, not something this module decides.
+GAME_PROBABILITIES names the source in use: given the schedule and the
+season, it returns a function from games to each one's chance of a home
+win. That function may also have draw(rng), giving one simulated season's
+function; simulate then calls it once per season, so the chances can move
+together (a team drawn stronger is stronger in all its games).
 
-The default, betting_lines, reads nflverse's moneylines. Each side's
-American odds become an implied probability, and the bookmaker's margin
-is taken out by scaling the two to sum to 1; there is nothing to tune.
-Lines appear about a week before a game, so every game without one counts
-as 50/50. Early in the season that is nearly every game, and the odds
-are close to records and schedules alone. The pages say so, naming the
-weeks, in the words of oddsBasis() in src/lib/odds/basis.ts: change that
-with GAME_PROBABILITIES.
+betting_lines reads nflverse's moneylines. Each side's American odds
+become an implied probability, and the bookmaker's margin is taken out by
+scaling the two to sum to 1; there is nothing to tune. Lines appear about a
+week before a game. The source in use, lines_and_ratings, keeps a game's
+line when it has one and prices every other game, playoffs included, from
+team ratings fitted to the season's lines (team_ratings.py, a delegated
+method: docs/methods/team-ratings.md), each team's rating drawn once per
+simulated season. The pages say so, naming the weeks, in the words of
+oddsBasis() in src/lib/odds/basis.ts: change that with GAME_PROBABILITIES.
 
 Simulated games never end in a tie (about 0.3% of real games do).
 Simulated scores are 1 to 0, which the tiebreakers never read at this
@@ -42,7 +44,7 @@ import standings
 from common import normalize_team
 
 SIMULATIONS = 10_000
-SOURCE = 'betting lines'
+SOURCE = 'betting lines and market ratings'
 
 
 def implied(american: float) -> float:
@@ -69,8 +71,14 @@ def priced(games: list[dict]) -> int:
     return sum(1 for g in games if g.get('home_moneyline') is not None and g.get('away_moneyline') is not None)
 
 
+def lines_and_ratings(schedule_rows: list[dict], season: int) -> Callable[[list[dict]], dict[str, float]]:
+    """Lines where a game has them, team ratings for the rest."""
+    import team_ratings  # it reads betting_lines from this module
+    return team_ratings.pricer(schedule_rows, season)
+
+
 # The one place to plug in a different source of game probabilities.
-GAME_PROBABILITIES: Callable[[list[dict]], dict[str, float]] = betting_lines
+GAME_PROBABILITIES: Callable[[list[dict], int], Callable[[list[dict]], dict[str, float]]] = lines_and_ratings
 
 
 def split_season(schedule_rows: list[dict], season: int) -> tuple[list[dict], list[dict]]:
@@ -95,26 +103,32 @@ def _seed_for(completed: list[dict], probabilities: dict[str, float], n: int) ->
 
 def simulate(completed: list[dict], unplayed: list[dict], probabilities: dict[str, float],
              alignment: dict[str, tuple[str, str]], n: int = SIMULATIONS,
-             draft: 'DraftProjection | None' = None) -> dict[str, dict]:
+             draft: 'DraftProjection | None' = None,
+             draw: Callable[[random.Random], Callable[[list[dict]], dict[str, float]]] | None = None) -> dict[str, dict]:
     """Counts per team over n simulated seasons: playoffs, division, top
     seed, each seed 1 to 7, and total wins (ties in completed games as half).
-    With `draft`, each simulated season also goes to draft.record."""
+    With `draft`, each simulated season also goes to draft.record. With
+    `draw`, each season's chances come from draw(rng) instead of
+    `probabilities`, from a third random stream."""
     seed = _seed_for(completed, probabilities, n)
     rng = random.Random(seed)
+    draw_rng = random.Random(int(hashlib.sha256(f'ratings {seed}'.encode()).hexdigest()[:16], 16)) if draw else None
     if draft:
         draft.start(seed)
     counts = {team: {'playoffs': 0, 'division': 0, 'topSeed': 0, 'seeds': [0] * 7, 'wins': 0.0} for team in alignment}
     for _ in range(n):
+        season_of = draw(draw_rng) if draw else None
+        chances = season_of(unplayed) if season_of else probabilities
         simulated = []
         for g in unplayed:
-            home_wins = rng.random() < probabilities.get(g['game_id'], 0.5)
+            home_wins = rng.random() < chances.get(g['game_id'], 0.5)
             simulated.append({**g, 'home_score': 1 if home_wins else 0, 'away_score': 0 if home_wins else 1})
         # standings.compute, keeping h2h for the draft order.
         table, h2h = standings.records(completed + simulated, alignment)
         standings.division_ranks(table, h2h)
         standings.conference_ranks(table, h2h)
         if draft:
-            draft.record(table, h2h)
+            draft.record(table, h2h, season_of)
         for team, row in table.items():
             c = counts[team]
             c['wins'] += row['wins']
@@ -141,11 +155,11 @@ def build_playoff_odds(schedule_rows: list[dict], season: int, updated: str,
         # Before the first game there is nothing but coin flips to show.
         return {'season': season, 'throughWeek': 0, 'updated': updated, 'simulations': 0,
                 'source': SOURCE, 'pricedGames': priced(unplayed), 'remainingGames': len(unplayed), 'teams': []}
-    probability_of = game_probabilities or GAME_PROBABILITIES
+    probability_of = game_probabilities or GAME_PROBABILITIES(schedule_rows, season)
     probabilities = probability_of(unplayed)
     if draft:
         draft.prepare(schedule_rows, season, probability_of, priced(unplayed), len(unplayed))
-    counts = simulate(completed, unplayed, probabilities, alignment, n, draft)
+    counts = simulate(completed, unplayed, probabilities, alignment, n, draft, getattr(probability_of, 'draw', None))
     return {
         'season': season,
         'throughWeek': max((g['week'] for g in completed), default=0),
@@ -180,9 +194,9 @@ class DraftProjection:
     Each simulated season is seeded as the standings seed it (the same
     `standings` ranks the odds count), then the playoffs are played: the
     higher seed at home, a played playoff game kept as it finished, every
-    other one a home win with the chance GAME_PROBABILITIES gives it. A
-    matchup with no betting line, which is every one until the real games
-    are set in January, is even. Then the draft order (draft_order.order)
+    other one a home win with the chance GAME_PROBABILITIES gives it: its
+    betting line when the real game has one, else that simulated season's
+    drawn ratings, with no home field in the Super Bowl. Then the draft order (draft_order.order)
     from that season's own records, strength of schedule and tiebreakers,
     with any tie left drawn at random, and the picks file applied.
 
@@ -196,6 +210,7 @@ class DraftProjection:
         self.slots = {t: [0] * len(self.teams) for t in self.teams}
         self.choice_counts = [{t: 0 for t in c['between']} for c in picks['choices']]
         self.n = 0
+        self.season_of = None
 
     def prepare(self, schedule_rows: list[dict], season: int,
                 probability_of: Callable[[list[dict]], dict[str, float]], priced_games: int, remaining: int) -> None:
@@ -214,16 +229,21 @@ class DraftProjection:
         self.rng = random.Random(int(hashlib.sha256(f'draft {seed}'.encode()).hexdigest()[:16], 16))
 
     def _chance(self, kind: str, home: str, away: str) -> float:
-        """Home win chance for a playoff matchup, worked out once."""
+        """Home win chance for a playoff matchup: worked out once, or each
+        season when the season has its own chances."""
         key = (kind, home, away)
-        if key not in self.chances:
-            real = self.real.get((kind, frozenset((home, away))))
-            game = real or {'game_id': f'{self.season}_{kind}_{away}_{home}', 'season': self.season,
-                            'game_type': kind, 'away_team': away, 'home_team': home,
-                            'away_moneyline': None, 'home_moneyline': None}
-            p = self.probability_of([game]).get(game['game_id'], 0.5)
-            self.chances[key] = p if normalize_team(game['home_team']) == home else 1 - p
-        return self.chances[key]
+        if self.season_of is None and key in self.chances:
+            return self.chances[key]
+        real = self.real.get((kind, frozenset((home, away))))
+        game = real or {'game_id': f'{self.season}_{kind}_{away}_{home}', 'season': self.season,
+                        'game_type': kind, 'away_team': away, 'home_team': home,
+                        'location': 'Neutral' if kind == 'SB' else 'Home',
+                        'away_moneyline': None, 'home_moneyline': None}
+        p = (self.season_of or self.probability_of)([game]).get(game['game_id'], 0.5)
+        p = p if normalize_team(game['home_team']) == home else 1 - p
+        if self.season_of is None:
+            self.chances[key] = p
+        return p
 
     def _winner(self, kind: str, home: str, away: str) -> tuple[str, str]:
         real = self.real.get((kind, frozenset((home, away))))
@@ -258,12 +278,14 @@ class DraftProjection:
             won, lost = self._winner('CON', home, away)
             exits[lost] = 'conference'
             champions.append(won)
-        # A neutral site: the AFC side stands in as home for the lookup.
+        # A neutral site, so no home field: the AFC side stands in as home for the lookup.
         won, lost = self._winner('SB', champions[0], champions[1])
         exits[lost], exits[won] = 'super_bowl', 'champion'
         return exits
 
-    def record(self, table: dict, h2h: dict) -> None:
+    def record(self, table: dict, h2h: dict,
+               season_of: Callable[[list[dict]], dict[str, float]] | None = None) -> None:
+        self.season_of = season_of
         exits = self.bracket(table)
         keys = {t: self.rng.random() for t in self.teams}
         placed = draft_order.order(table, h2h, exits, toss_key=lambda r: keys[r['team']])

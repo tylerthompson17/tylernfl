@@ -132,7 +132,7 @@ def main() -> None:
     projection = DraftProjection(load_picks(draft_year, set(load_alignment())), list(load_alignment()))
     odds = build_playoff_odds(schedule_rows, schedule['season'], updated, draft=projection)
     print(f"playoff odds: {odds['simulations']} simulations, {odds['pricedGames']} of "
-          f"{odds['remainingGames']} remaining games priced by betting lines")
+          f"{odds['remainingGames']} remaining games priced by betting lines, the rest by team ratings")
     draft = build_draft_order(schedule_rows, schedule['season'], updated, projected=projection.result(odds))
     print(f"draft order: {draft['draft']} round 1, {draft['stage']}, {len(draft['picks'])} picks, "
           f"{sum(p['coinFlip'] for p in draft['picks'])} on a coin flip, "

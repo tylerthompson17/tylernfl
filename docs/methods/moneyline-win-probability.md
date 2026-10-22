@@ -18,7 +18,8 @@ Code: `implied` and `betting_lines` in `pipelines/playoff_odds.py`, plugged in a
    to 2025): the difference is the bookmaker's margin. It is removed by dividing each by
    their sum, so the two sides add up to exactly 1. This is the plain proportional
    method; it has no parameters to tune.
-4. A game with no moneyline yet gets 0.5 for each side. See Limitations.
+4. A game with no moneyline yet is priced from team ratings fitted to the lines that
+   exist (`team-ratings.md`). See Limitations.
 
 ## Validation
 
@@ -70,11 +71,10 @@ it is probably a quirk of the source. The conversion scales it to 1 all the same
   validated: the most accurate a line gets. The playoff simulation uses whatever line is
   listed on the day it runs, up to about a week before kickoff, so its accuracy in use
   is likely a little lower than above.
-- **Games with no line are a coin flip.** Lines appear about a week ahead, so most of
-  the remaining schedule has none, and each such game is 0.5 for both teams: no home
-  field (home teams won 53.7% of these games) and no team strength. That is a choice
-  of the playoff simulation, not something this validation covers; its note says what
-  it does to the odds.
+- **Games with no line.** Lines appear about a week ahead, so most of the remaining
+  schedule has none. Those games are priced from team ratings fitted to these same
+  conversions (`team-ratings.md`, with its own validation); this note covers only games
+  that have a line.
 - **Proportional margin removal.** Scaling both sides by the same factor is known to
   overrate longshots slightly compared with other methods (Shin's, the power method).
   This data shows no significant sign of it, so the simpler method stays.
