@@ -6,7 +6,7 @@ after a touchdown (kick the extra point or go for 2). The model is Tyler's. This
 records the contract; the decisions in it are Tyler's (2026-10-21), and anything still
 open is listed at the end.
 
-**Contract version 3** (2026-10-22). Changes are listed under "Version history" at the
+**Contract version 4** (2026-10-22). Changes are listed under "Version history" at the
 end; bump the version with every change to a type or rule here, and `CONTRACT_VERSION`
 in `src/lib/fourth-down.ts` with it.
 
@@ -83,7 +83,7 @@ The `reason` union can grow if other cases are ruled out later.
 
 | Field | Type | Unit | Notes |
 |---|---|---|---|
-| `call` | `'go' \| 'punt' \| 'field goal'` | | The option with the highest win probability. |
+| `call` | `'go' \| 'punt' \| 'field goal'` | | The option with the highest win probability. Null options are skipped. An exact tie goes to the first of `'go'`, `'field goal'`, `'punt'` in that order. |
 | `wpGo` | number | 0 to 1 | Offense's win probability if it goes for it. |
 | `wpPunt` | number or null | 0 to 1 | Null when a punt is not a realistic option. |
 | `wpFieldGoal` | number or null | 0 to 1 | Null when the kick would be longer than the maximum field goal distance (below). |
@@ -96,11 +96,15 @@ The `reason` union can grow if other cases are ruled out later.
 
 ### Flags
 
+A flag means an input the model uses was missing and a fallback was applied. A flag is
+never set for an input the model does not use, whether or not it was given.
+
 - `temperatureUnknown`: `temp` was null in a game where it is read (`roof` is
-  `'outdoors'` or `'open'`). Under a dome or closed roof temperature is not read, so a
-  null there is not unknown and the flag stays false.
-- `kickerUnknown`: no `kickerId` was given, or the model does not know it. The numbers
-  use a league-average kicker and `kickerId` in the output is null.
+  `'outdoors'` or `'open'`) and the model uses temperature. Under a dome or closed roof
+  temperature is not read, so a null there is not unknown and the flag stays false.
+- `kickerUnknown`: the model uses a kicker-specific term, and no `kickerId` was given or
+  the model does not know it. The numbers use a league-average kicker and `kickerId` in
+  the output is null.
 - `linesUnknown`: true whenever `spreadLine` or `totalLine` is null. Each fallback
   applies only to the line that is missing:
   - `spreadLine` null: the model uses a pick'em spread (0).
@@ -110,6 +114,15 @@ The `reason` union can grow if other cases are ruled out later.
   The same rule applies to the try (section 2).
 
 All are always present, false when nothing was assumed.
+
+Under the baseline (no correction terms), which reads neither the kicker nor the
+temperature, `kickerUnknown` and `temperatureUnknown` are always false and `kickerId`
+in the output is null; the page's explanation text says the kicker is treated as league
+average. `linesUnknown` is unchanged: the baseline uses both lines, so it is set
+whenever either is null. Example: `{ roof: 'outdoors', temp: null, kickerId: undefined,
+spreadLine: -3, totalLine: 44.5 }` under the baseline returns `flags: {
+temperatureUnknown: false, kickerUnknown: false, linesUnknown: false }` and `kickerId:
+null`.
 
 A null option shows on the page as not available.
 
@@ -141,7 +154,7 @@ interface FourthDownBreakdown {
   fieldGoal: { outcomes: FieldGoalOutcomes; terms: TermBreakdown } | null;
 }
 
-interface GoOutcomes { conversionProb: number; wpIfConvert: number; wpIfFail: number }
+interface GoOutcomes { conversionProb: number; wpIfConvert: number | null; wpIfFail: number }
 interface FieldGoalOutcomes { makeProb: number; wpIfMake: number; wpIfMiss: number }
 interface PuntOutcomes { wpAfterPunt: number }
 
@@ -158,7 +171,12 @@ interface TermBreakdown {
 **Outcomes.** All 0 to 1, and they combine to the option's win probability:
 
 - go: `wpGo = conversionProb * wpIfConvert + (1 - conversionProb) * wpIfFail`, with
-  `conversionProb` the same value as the top-level one.
+  `conversionProb` the same value as the top-level one. `wpIfConvert` is null when no
+  gain can reach the line to gain (4th and more than 65); `conversionProb` is then 0 and
+  `wpGo = wpIfFail`, so the identity still holds with the convert term at weight 0.
+  Example: `{ yardline100: 90, distance: 70, ... }` returns `conversionProb: 0`,
+  `wpIfConvert: null` and `wpGo` equal to `wpIfFail`. 4th and 65 at the same spot still
+  has a convert branch (a 65-yard gain) and a numeric `wpIfConvert`.
 - field goal: `wpFieldGoal = makeProb * wpIfMake + (1 - makeProb) * wpIfMiss`, with
   `makeProb` equal to `fgMakeProb`.
 - punt: `wpPunt = wpAfterPunt`, already averaged over where the punt lands.
@@ -382,6 +400,15 @@ Grading rules for the pipeline that writes `model_record.json`:
 
 ## Version history
 
+- **4** (2026-10-22), from the fourth-down repo's contract change request (issue #3,
+  milestone 4, the export pipeline):
+  - Flags: a flag means an input the model uses was missing and a fallback was applied,
+    and is never set for an input the model does not use. Under the baseline
+    `kickerUnknown` and `temperatureUnknown` are always false.
+  - `recommend()`'s `call` skips null options, and an exact tie goes to the first of
+    `'go'`, `'field goal'`, `'punt'`.
+  - `GoOutcomes.wpIfConvert` is `number | null`: null on 4th and more than 65, where no
+    gain reaches the line to gain, with `conversionProb` 0 and `wpGo = wpIfFail`.
 - **3** (2026-10-22), from the fourth-down repo's contract change request (issue #1:
   the decision baseline also ports nfl4th's `add_2pt_probs()`, matching its R output on
   all 16,702 tries from 2014 to 2025):

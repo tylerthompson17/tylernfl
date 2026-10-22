@@ -10,7 +10,7 @@
  */
 
 /** Version of docs/model-interface.md these types match */
-export const CONTRACT_VERSION = 3;
+export const CONTRACT_VERSION = 4;
 
 export type FourthDownCall = 'go' | 'punt' | 'field goal';
 
@@ -58,11 +58,18 @@ export interface FourthDownSituation {
   totalLine: number | null;
 }
 
-/** wpGo = conversionProb * wpIfConvert + (1 - conversionProb) * wpIfFail */
+/**
+ * wpGo = conversionProb * wpIfConvert + (1 - conversionProb) * wpIfFail, or
+ * wpGo = wpIfFail when wpIfConvert is null
+ */
 export interface GoOutcomes {
   /** Same value as the recommendation's conversionProb */
   conversionProb: number;
-  wpIfConvert: number;
+  /**
+   * Null when no gain can reach the line to gain (4th and more than 65);
+   * conversionProb is then 0
+   */
+  wpIfConvert: number | null;
   wpIfFail: number;
 }
 
@@ -100,11 +107,16 @@ export interface FourthDownBreakdown {
   fieldGoal: { outcomes: FieldGoalOutcomes; terms: TermBreakdown } | null;
 }
 
-/** Always present; false when nothing was assumed. The page says so for each one set. */
+/**
+ * Always present; false when nothing was assumed. The page says so for each one set.
+ * A flag means an input the model uses was missing and a fallback was applied; it is
+ * never set for an input the model does not use. Under the baseline, which reads
+ * neither kicker nor temperature, temperatureUnknown and kickerUnknown are always false.
+ */
 export interface FourthDownFlags {
-  /** temp was null in a game where it is read (roof outdoors or open) */
+  /** temp was null in a game where it is read (roof outdoors or open), and the model uses temperature */
   temperatureUnknown: boolean;
-  /** No kickerId given, or the model does not know it: a league-average kicker */
+  /** The model uses a kicker term, and no kickerId was given or it does not know it */
   kickerUnknown: boolean;
   /**
    * spreadLine or totalLine was null. Only the missing line is replaced: a
@@ -114,7 +126,10 @@ export interface FourthDownFlags {
 }
 
 export interface FourthDownRecommendation {
-  /** The option with the highest win probability */
+  /**
+   * The option with the highest win probability, null options skipped. An exact
+   * tie goes to the first of 'go', 'field goal', 'punt'.
+   */
   call: FourthDownCall;
   /** Win probability if the offense goes for it */
   wpGo: number;
