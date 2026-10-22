@@ -125,6 +125,83 @@ class FixtureTests(unittest.TestCase):
                 self.assertEqual([r['team'] for r in ours], order, f'{season} {conf}')
 
 
+def _same_record_groups(rows: list[dict], group_key) -> list[list[dict]]:
+    groups = defaultdict(list)
+    for r in rows:
+        groups[(group_key(r), r['win_pct'])].append(r)
+    return [g for g in groups.values() if len(g) > 1]
+
+
+class RankTiedTests(unittest.TestCase):
+    """rank_tied, which the draft order uses, ranks a set of teams among
+    themselves alone. Given exactly the teams the standings found level on
+    a record, it must put them in the standings' order, so it is checked
+    against the same nflseedR fixtures."""
+
+    def test_teams_level_in_a_division_come_out_in_division_order(self):
+        mismatches, checked = [], 0
+        for (season, week), expected in EXPECTED.items():
+            if any('Coin' in r['div_tie_broken_by'] for r in expected.values()):
+                continue
+            played = [g for g in GAMES[season] if g['week'] <= week]
+            table, h2h = standings.records(played, ALIGNMENT)
+            ranked = standings.compute(played, ALIGNMENT)
+            for group in _same_record_groups(list(ranked.values()), lambda r: r['division']):
+                checked += 1
+                ours = [r['team'] for r in standings.rank_tied(table, h2h, [r['team'] for r in group])]
+                theirs = [r['team'] for r in sorted(group, key=lambda r: r['div_rank'])]
+                if ours != theirs:
+                    mismatches.append((season, week, ours, theirs))
+        self.assertGreater(checked, 100)
+        self.assertEqual(mismatches, [])
+
+    def test_wild_card_teams_level_in_a_conference_come_out_in_seed_order(self):
+        # Seeds 5 to 16 on one record: the standings rank them among
+        # themselves (division leaders are seeded apart), as rank_tied does.
+        mismatches, checked = [], 0
+        for (season, week), expected in EXPECTED.items():
+            if any('Coin' in r['conf_tie_broken_by'] or 'Coin' in r['div_tie_broken_by'] for r in expected.values()):
+                continue
+            played = [g for g in GAMES[season] if g['week'] <= week]
+            table, h2h = standings.records(played, ALIGNMENT)
+            ranked = standings.compute(played, ALIGNMENT)
+            wild = [r for r in ranked.values() if r['conf_rank'] >= 5]
+            for group in _same_record_groups(wild, lambda r: r['conf']):
+                if len({r['division'] for r in group}) < 2:
+                    continue  # one division: the test above
+                checked += 1
+                ours = [r['team'] for r in standings.rank_tied(table, h2h, [r['team'] for r in group])]
+                theirs = [r['team'] for r in sorted(group, key=lambda r: r['conf_rank'])]
+                if ours != theirs:
+                    mismatches.append((season, week, ours, theirs))
+        self.assertGreater(checked, 100)
+        self.assertEqual(mismatches, [])
+
+    def test_places_run_from_one_and_the_table_is_left_alone(self):
+        played = [g for g in GAMES[2024] if g['week'] <= 18]
+        table, h2h = standings.records(played, ALIGNMENT)
+        before = {t: dict(r) for t, r in table.items()}
+        ranked = standings.rank_tied(table, h2h, ['KC', 'BUF', 'BAL', 'HOU'])
+        self.assertEqual([r['conf_rank'] for r in ranked], [1, 2, 3, 4])
+        self.assertEqual(table, before)
+
+    def test_teams_of_two_conferences_are_refused(self):
+        table, h2h = standings.records([], ALIGNMENT)
+        with self.assertRaises(ValueError):
+            standings.rank_tied(table, h2h, ['BUF', 'DAL'])
+
+    def test_a_coin_toss_follows_the_toss_key(self):
+        # No games: every step is level, so only the toss separates them.
+        table, h2h = standings.records([], ALIGNMENT)
+        for teams in (['BUF', 'MIA', 'NE', 'NYJ'], ['BUF', 'CIN', 'HOU', 'KC']):
+            default = standings.rank_tied(table, h2h, teams)
+            self.assertEqual([r['team'] for r in default], sorted(teams))
+            self.assertTrue(all(
+                'Coin Toss' in (r['div_broken_by'], r['conf_broken_by']) for r in default))
+            reverse = standings.rank_tied(table, h2h, teams, toss_key=lambda r: [-ord(c) for c in r['team']])
+            self.assertEqual([r['team'] for r in reverse], sorted(teams, reverse=True))
+
+
 class RecordTests(unittest.TestCase):
     def test_a_tie_is_half_a_win_and_streaks_read_as_the_latest_run(self):
         table = compute(2022, 18)

@@ -254,7 +254,14 @@ def _div_step_common(rows: list[dict], h2h: dict, n: int) -> None:
             r['div_broken_by'] = f'Common Games Win PCT ({n})'
 
 
-def division_ranks(table: dict, h2h: dict) -> None:
+def by_abbreviation(row: dict) -> str:
+    """The default coin toss: tied teams go in abbreviation order. Any other
+    key (the draft simulation draws a random one per team) orders them the
+    same way, lowest first."""
+    return row['team']
+
+
+def division_ranks(table: dict, h2h: dict, toss_key=by_abbreviation) -> None:
     """Sets div_rank (1 to 4) and div_broken_by on every row of `table`."""
     rows = list(table.values())
     by_division = defaultdict(list)
@@ -282,14 +289,14 @@ def division_ranks(table: dict, h2h: dict) -> None:
                 step()
 
         # Coin toss, drawn in nflseedR; here the tied teams go in
-        # abbreviation order.
+        # toss_key order (abbreviation unless the caller draws).
         tied = defaultdict(list)
         for r in rows:
             if r['div_counter'] > 1:
                 tied[r['division']].append(r)
         for group in tied.values():
             low = min(r['div_rank'] for r in group)
-            order = sorted(group, key=lambda r: (r['div_rank'], -r['win_pct'], r['team']))
+            order = sorted(group, key=lambda r: (r['div_rank'], -r['win_pct'], toss_key(r)))
             for i, r in enumerate(order):
                 r['div_rank'] = low + i
                 r['div_broken_by'] = 'Coin Toss'
@@ -418,20 +425,25 @@ def _conf_step_value(rows: list[dict], n: int, key: str, label: str) -> None:
     _conf_settle_first(rows, n, values, label)
 
 
-def conference_ranks(table: dict, h2h: dict) -> None:
+def conference_ranks(table: dict, h2h: dict, toss_key=by_abbreviation,
+                     seed_division_winners: bool = True) -> None:
     """Sets conf_rank (1 to 16) and conf_broken_by on every row. Needs
-    division_ranks first."""
+    division_ranks first. With seed_division_winners off, division leaders
+    are ranked with everyone else (rank_tied, for the draft order)."""
     rows = list(table.values())
     for r in rows:
         r['conf_broken_by'] = None
         r['tied_for'] = None
     for conf in ('AFC', 'NFC'):
-        winners = [r for r in rows if r['conf'] == conf and r['div_rank'] == 1]
-        others = [r for r in rows if r['conf'] == conf and r['div_rank'] != 1]
+        if seed_division_winners:
+            winners = [r for r in rows if r['conf'] == conf and r['div_rank'] == 1]
+            others = [r for r in rows if r['conf'] == conf and r['div_rank'] != 1]
+        else:
+            winners, others = [], [r for r in rows if r['conf'] == conf]
         for r, rank in zip(winners, _rank_min([-w['win_pct'] for w in winners])):
             r['conf_rank'] = rank
         for r, rank in zip(others, _rank_min([-o['win_pct'] for o in others])):
-            r['conf_rank'] = 4 + rank
+            r['conf_rank'] = len(winners) + rank
     _conf_count(rows)
 
     if any(r['conf_counter'] > 1 for r in rows):
@@ -442,7 +454,7 @@ def conference_ranks(table: dict, h2h: dict) -> None:
             if rounds > 12:
                 # nflseedR stops with an error here; settle what is left by
                 # coin toss so a live season always has standings.
-                _conf_coin_toss(rows, None)
+                _conf_coin_toss(rows, None, toss_key)
                 break
             for r in rows:
                 if r['conf_counter'] is not None and r['conf_counter'] > 1:
@@ -455,7 +467,7 @@ def conference_ranks(table: dict, h2h: dict) -> None:
                     lambda: _conf_step_common(rows, h2h, n),
                     lambda: _conf_step_value(rows, n, 'sov', 'SOV'),
                     lambda: _conf_step_value(rows, n, 'sos', 'SOS'),
-                    lambda: _conf_coin_toss(rows, n),
+                    lambda: _conf_coin_toss(rows, n, toss_key),
                 ]
                 for step in steps:
                     if all(r['conf_counter'] is None or r['conf_counter'] < n for r in rows):
@@ -470,11 +482,11 @@ def conference_ranks(table: dict, h2h: dict) -> None:
         r.pop('tied_for', None)
 
 
-def _conf_coin_toss(rows: list[dict], n: int | None) -> None:
+def _conf_coin_toss(rows: list[dict], n: int | None, toss_key=by_abbreviation) -> None:
     """nflseedR draws these at random: conf_rank - 1 + frank(list(conf_rank,
     -win_pct), "random") within each tie. Here the tied teams go in
-    abbreviation order. With n None, every tie left (the fallback when the
-    rounds run out)."""
+    toss_key order (abbreviation unless the caller draws). With n None,
+    every tie left (the fallback when the rounds run out)."""
     groups = defaultdict(list)
     for r in rows:
         counter = r['conf_counter']
@@ -482,18 +494,38 @@ def _conf_coin_toss(rows: list[dict], n: int | None) -> None:
             continue
         groups[r['tied_for'] if n else (r['conf'], r['conf_rank'])].append(r)
     for group in groups.values():
-        keys = [(r['conf_rank'], -r['win_pct'], r['team']) for r in group]
+        keys = [(r['conf_rank'], -r['win_pct'], toss_key(r)) for r in group]
         for r, rank in zip(group, _rank_min(keys)):
             r['conf_rank'] = r['conf_rank'] - 1 + rank
             r['conf_broken_by'] = 'Coin Toss'
 
 
-def compute(games: list[dict], alignment: dict[str, tuple[str, str]]) -> dict:
+def compute(games: list[dict], alignment: dict[str, tuple[str, str]],
+            toss_key=by_abbreviation) -> dict:
     """Standings rows by team, ranked, from completed games."""
     table, h2h = records(games, alignment)
-    division_ranks(table, h2h)
-    conference_ranks(table, h2h)
+    division_ranks(table, h2h, toss_key)
+    conference_ranks(table, h2h, toss_key)
     return table
+
+
+def rank_tied(table: dict, h2h: dict, teams: list[str], toss_key=by_abbreviation) -> list[dict]:
+    """Ranks some teams of one conference among themselves alone, by the
+    same steps the standings use for teams on one record: division
+    tiebreakers between teams of a division, then conference tiebreakers,
+    then the coin toss. Division leaders get no seeding of their own here.
+    The draft order needs this to break a tie among exactly the teams still
+    level after strength of schedule.
+
+    Works on copies of the rows (`table` is left as it is) and returns them
+    best first, each with conf_rank as its place among `teams` and
+    div_broken_by / conf_broken_by as the steps that placed it."""
+    if len({table[t]['conf'] for t in teams}) > 1:
+        raise ValueError(f'rank_tied needs teams of one conference: {teams}')
+    subset = {t: dict(table[t]) for t in teams}
+    division_ranks(subset, h2h, toss_key)
+    conference_ranks(subset, h2h, toss_key, seed_division_winners=False)
+    return sorted(subset.values(), key=lambda r: r['conf_rank'])
 
 
 # ---------------------------------------------------------------- the file
