@@ -79,6 +79,7 @@ The `reason` union can grow if other cases are ruled out later.
 | `wpFieldGoal` | number or null | 0 to 1 | Null when the kick would be longer than the maximum field goal distance (below). |
 | `conversionProb` | number | 0 to 1 | Chance of gaining the first down if the offense goes. |
 | `fgMakeProb` | number or null | 0 to 1 | Null when `wpFieldGoal` is. |
+| `kickDistance` | number | yards | The field goal distance the model used. Always present, so the page can show it when the kick is too long and `wpFieldGoal` is null. |
 | `kickerId` | string or null | ESPN athlete id | The kicker the numbers used; null when they used a league-average kicker. |
 | `flags` | `{ temperatureUnknown: boolean, kickerUnknown: boolean }` | | What the model had to assume, below. The page must say so for each one set. |
 | `breakdown` | `FourthDownBreakdown` | | Outcome and term breakdown, below. |
@@ -98,10 +99,15 @@ A null option shows on the page as not available.
 ### Maximum field goal distance
 
 `wpFieldGoal`, `fgMakeProb` and the field goal breakdown are null when the kick distance
-is over `maxFieldGoalDistance`, 70 yards to start. The kick distance is
-`yardline100 + 17` (10 yards of end zone and a 7 yard snap), so at 70 the longest
-attempt is from the opponent's 53. The value is configurable: it lives in the exported
-model JSON in `models/`, so changing it needs no site code.
+is over `maxFieldGoalDistance`, 70 yards to start.
+
+The site passes only `yardline100`. The model computes the kick distance itself, from
+`yardline100` and an offset stored in the exported model JSON (`kickDistanceOffset`,
+measured at 18 yards), and returns it as `kickDistance`. The site never computes a kick
+distance of its own: wherever one is shown, it is `kickDistance` from the response.
+
+Both values live in the exported model JSON in `models/`, so changing either needs no
+site code.
 
 Whether a punt is realistic is the model's call.
 

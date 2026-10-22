@@ -108,14 +108,20 @@ export interface FourthDownRecommendation {
   /** Null when a punt is not a realistic option */
   wpPunt: number | null;
   /**
-   * Null when the kick (yardline100 + 17) is over maxFieldGoalDistance,
-   * 70 yards to start, set in the exported model JSON
+   * Null when kickDistance is over maxFieldGoalDistance, 70 yards to start,
+   * set in the exported model JSON
    */
   wpFieldGoal: number | null;
   /** Chance of gaining the first down if the offense goes */
   conversionProb: number;
   /** Chance the field goal is good; null when wpFieldGoal is */
   fgMakeProb: number | null;
+  /**
+   * Field goal distance in yards, computed by the model from yardline100 and
+   * the offset in its JSON. Always present; the site shows this and never
+   * computes its own.
+   */
+  kickDistance: number;
   /** ESPN athlete id of the kicker the numbers used; null for a league-average kicker */
   kickerId: string | null;
   flags: FourthDownFlags;
