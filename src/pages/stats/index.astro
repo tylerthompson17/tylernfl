@@ -6,21 +6,21 @@
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
-import StatTable from '../../components/StatTable.astro';
+import StatTable, { type StatTableColumn } from '../../components/StatTable.astro';
 import StatsNav from '../../components/StatsNav.astro';
-import { boardSeason, overviewPanels, type Leaders } from '../../utils/overview';
+import { boardSeason, overviewPanels, type LeaderRow, type Leaders } from '../../utils/overview';
 import { url } from '../../utils/url';
 
 const panels = overviewPanels();
 const season = boardSeason();
 
-function columnsFor(panel: Leaders) {
+function columnsFor(panel: Leaders): StatTableColumn<LeaderRow>[] {
   return [
     { key: 'rank', label: 'Rk', kind: 'number' as const },
     { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
     { key: 'team', label: 'Team', kind: 'team' as const },
     { key: 'value', label: panel.valueLabel, kind: 'number' as const },
-    ...(panel.extraLabel ? [{ key: 'extra', label: panel.extraLabel, kind: 'number' as const }] : []),
+    ...(panel.extraLabel ? [{ key: 'extra' as const, label: panel.extraLabel, kind: 'number' as const }] : []),
   ];
 }
 ---

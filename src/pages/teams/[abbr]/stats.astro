@@ -6,7 +6,7 @@
  */
 import TeamHub from '../../../components/team/TeamHub.astro';
 import Panel from '../../../components/Panel.astro';
-import StatTable from '../../../components/StatTable.astro';
+import StatTable, { type StatTableColumn } from '../../../components/StatTable.astro';
 import TeamStatsPanel from '../../../components/team/TeamStatsPanel.astro';
 import teamsData from '../../../data/teams.json';
 import type { Team, TeamsData } from '../../../data/types';
@@ -24,18 +24,21 @@ export function getStaticPaths() {
 
 const { team } = Astro.props as { team: Team };
 
+// Stat columns come from each board, so their keys are only known as strings.
+type BoardRow = { player: string; slug: string; rank: number; [stat: string]: string | number };
+
 const boards = leaderboards.map((board) => {
   const primary = board.columns.find((c) => c.key === board.primary)!;
   const rows = board.rows
     .filter((row) => row.team === team.abbr)
     .sort((a, b) => (b.values[primary.key] ?? 0) - (a.values[primary.key] ?? 0) || a.player.localeCompare(b.player))
-    .map((row) => ({
+    .map((row): BoardRow => ({
       player: row.player,
       slug: slugForPlayer(row.playerId, row.player),
       rank: row.rank,
       ...Object.fromEntries(board.columns.map((c) => [c.key, formatCell(row.values[c.key] ?? null, c, 'totals')])),
     }));
-  const columns = [
+  const columns: StatTableColumn<BoardRow>[] = [
     { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
     ...board.columns.map((c) => ({ key: c.key, label: c.label, kind: 'number' as const })),
     { key: 'rank', label: 'NFL rank', kind: 'number' as const },

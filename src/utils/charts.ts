@@ -16,7 +16,6 @@ import type { ArchivedAutoChart, AutoChartData, TeamsData } from '../data/types'
 import { chartProblems, labelSvg, resolveLogos, tagSlug } from '../lib/charts/collection';
 import type { ChartHover } from '../lib/charts/hover';
 import { logoUrl } from './logos';
-import { url } from './url';
 
 /** A chart on the site: one of Tyler's, or a kept auto chart. */
 export interface Chart {

@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "node --test \"tests/**/*.test.ts\""
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "typecheck": "astro check"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
@@ -17,7 +18,10 @@
     "astro": "^5.13.0"
   },
   "devDependencies": {
+    "@astrojs/check": "0.9.12",
     "@axe-core/playwright": "^4.13.0",
-    "playwright": "^1.63.0"
+    "@types/node": "24.19.2",
+    "playwright": "^1.63.0",
+    "typescript": "5.9.3"
   }
 }

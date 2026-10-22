@@ -1,9 +1,9 @@
 ---
 /** A team's best player in each stat leaders category, with his league rank. */
 import Panel from '../Panel.astro';
-import StatTable from '../StatTable.astro';
+import StatTable, { type StatTableColumn } from '../StatTable.astro';
 import type { Team } from '../../data/types';
-import { boardSeason, teamLeaders } from '../../utils/overview';
+import { boardSeason, teamLeaders, type TeamLeader } from '../../utils/overview';
 import { url } from '../../utils/url';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 
 const { team } = Astro.props;
 const leaders = teamLeaders(team.abbr);
-const columns = [
+const columns: StatTableColumn<TeamLeader>[] = [
   { key: 'category', label: 'Category' },
   { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
   { key: 'value', label: 'Value', kind: 'number' as const },

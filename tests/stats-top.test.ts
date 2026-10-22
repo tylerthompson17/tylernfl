@@ -3,8 +3,10 @@ import { test } from 'node:test';
 
 import { topOf } from '../src/lib/stats/top.ts';
 
-const players = (pairs: [string, number | null][]) => pairs.map(([name, value]) => ({ name, value }));
-const opts = { value: (p: { value: number | null }) => p.value, name: (p: { name: string }) => p.name };
+type Player = { name: string; value: number | null };
+
+const players = (pairs: [string, number | null][]): Player[] => pairs.map(([name, value]) => ({ name, value }));
+const opts = { value: (p: Player) => p.value, name: (p: Player) => p.name };
 
 test('best first, equal values share a rank, names settle the order', () => {
   const top = topOf(players([['Cook', 135], ['Henry', 144], ['Walker', 173], ['Achane', 135], ['Gibbs', 156], ['Hall', 99]]), opts);

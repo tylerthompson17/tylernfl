@@ -1,7 +1,7 @@
 ---
 /** A team's offense and defense from team_stats.json, with league ranks. */
 import Panel from '../Panel.astro';
-import StatTable from '../StatTable.astro';
+import StatTable, { type StatTableColumn } from '../StatTable.astro';
 import type { Team } from '../../data/types';
 import { isSmallSample, rankLabel, SMALL_SAMPLE_NOTE, teamLine, teamPanelRows, teamStats } from '../../utils/team-stats';
 import { throughGames } from '../../utils/as-of';
@@ -14,7 +14,7 @@ interface Props {
 const { team } = Astro.props;
 const statLine = teamLine(team.abbr);
 const small = statLine !== undefined && isSmallSample(statLine.games);
-const columns = [
+const columns: StatTableColumn<ReturnType<typeof teamPanelRows>[number]>[] = [
   { key: 'measure', label: 'Measure' },
   { key: 'offValue', label: 'Value', kind: 'number' as const, group: 'Offense' },
   { key: 'offRank', label: rankLabel(small), kind: 'number' as const, group: 'Offense' },

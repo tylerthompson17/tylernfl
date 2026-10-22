@@ -9,6 +9,10 @@ import type { PerformancePercentilesData, PlayerLogsData } from '../data/types';
 import { notablePerformances, type Performance, type Pool, type WeekLine } from '../lib/performances/notable';
 import { slugForPlayer } from './players';
 
+// JSON imports infer arrays, never tuples, so the [value, games] pairs read
+// as number[][] and need a cast through unknown to the declared shape.
+const percentiles = percentilesData as unknown as PerformancePercentilesData;
+
 const files = import.meta.glob<PlayerLogsData>('../data/players/*.json', { eager: true, import: 'default' });
 
 export interface NotableRow extends Performance {
@@ -19,8 +23,8 @@ export interface NotableRow extends Performance {
 
 /** The seasons the percentiles are measured against, for the panel's note. */
 export const percentileSeasons = {
-  from: (percentilesData as PerformancePercentilesData).fromSeason,
-  through: (percentilesData as PerformancePercentilesData).throughSeason,
+  from: percentiles.fromSeason,
+  through: percentiles.throughSeason,
 };
 
 export interface NotableWeek {
@@ -80,7 +84,7 @@ function collect(): NotableWeek {
     }
   }
 
-  const pools = (percentilesData as PerformancePercentilesData).categories as Record<string, Pool>;
+  const pools = percentiles.categories as Record<string, Pool>;
   const rows = notablePerformances(lines, pools).map((row) => ({
     ...row,
     slug: slugForPlayer(row.playerId, row.player),

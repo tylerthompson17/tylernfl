@@ -8,8 +8,8 @@ import TeamChip from './TeamChip.astro';
 import { url } from '../utils/url';
 import { playerSlug } from '../utils/slug';
 
-export interface StatTableColumn {
-  key: string;
+export interface StatTableColumn<Row> {
+  key: keyof Row & string;
   label: string;
   kind?: 'text' | 'number' | 'team' | 'player';
   /**
@@ -17,7 +17,7 @@ export interface StatTableColumn {
    * carry for players who share a name. Without it the slug is derived
    * from the name, which is right for data that has no slug of its own.
    */
-  slugKey?: string;
+  slugKey?: keyof Row & string;
   /**
    * Over-header shared by adjacent columns, e.g. "EPA/play" above a value
    * and a rank column. Columns without one span both header rows.
@@ -25,9 +25,11 @@ export interface StatTableColumn {
   group?: string;
 }
 
-interface Props {
-  columns: StatTableColumn[];
-  rows: Record<string, string | number | null>[];
+// Row is inferred from rows alone, so a column naming a key the rows do not
+// have fails the type check.
+interface Props<Row extends object> {
+  columns: StatTableColumn<NoInfer<Row>>[];
+  rows: Row[];
   /** Screen reader description of the table */
   caption: string;
   /** Shown instead of the table when there are no rows */
@@ -37,7 +39,7 @@ interface Props {
 const { columns, rows, caption, emptyText = 'No data yet.' } = Astro.props;
 
 // Adjacent columns with the same group share one over-header cell.
-const runs: { group: string | undefined; columns: StatTableColumn[] }[] = [];
+const runs: { group: string | undefined; columns: (typeof columns)[number][] }[] = [];
 for (const col of columns) {
   const last = runs.at(-1);
   if (last && col.group !== undefined && last.group === col.group) last.columns.push(col);

@@ -5,9 +5,9 @@
  * team's Transactions tab for the rest.
  */
 import Panel from '../Panel.astro';
-import StatTable from '../StatTable.astro';
+import StatTable, { type StatTableColumn } from '../StatTable.astro';
 import type { Team } from '../../data/types';
-import { INJURY_NOTE, MOVES_NOTE, SNAPS_NOTE, transactions, wireItems } from '../../utils/transactions';
+import { INJURY_NOTE, MOVES_NOTE, SNAPS_NOTE, transactions, wireItems, type WireItem } from '../../utils/transactions';
 import { url } from '../../utils/url';
 
 interface Props {
@@ -18,10 +18,10 @@ interface Props {
 const { team, limit } = Astro.props;
 const all = wireItems(team.abbr);
 const items = limit ? all.slice(0, limit) : all;
-const columns = [
+const columns: StatTableColumn<WireItem>[] = [
   { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
   { key: 'position', label: 'Pos' },
-  ...(limit ? [] : [{ key: 'snaps', label: 'Snaps', kind: 'number' as const }, { key: 'categoryLabel', label: 'Type' }]),
+  ...(limit ? [] : [{ key: 'snaps' as const, label: 'Snaps', kind: 'number' as const }, { key: 'categoryLabel' as const, label: 'Type' }]),
   { key: 'news', label: 'News' },
 ];
 const title = transactions.week === null ? 'Transactions and injuries' : `Week ${transactions.week} transactions and injuries`;

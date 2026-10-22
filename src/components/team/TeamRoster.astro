@@ -1,7 +1,7 @@
 ---
 /** A team's roster by position group, then its practice squad. */
 import Panel from '../Panel.astro';
-import StatTable from '../StatTable.astro';
+import StatTable, { type StatTableColumn } from '../StatTable.astro';
 import type { RosterPlayer, Team } from '../../data/types';
 import { formatExperience, formatHeight } from '../../utils/format';
 import { groupPlayers, PRACTICE_SQUAD, rosterFor } from '../../utils/rosters';
@@ -30,7 +30,7 @@ function toRow(player: RosterPlayer) {
   };
 }
 
-const rosterColumns = [
+const rosterColumns: StatTableColumn<ReturnType<typeof toRow>>[] = [
   { key: 'number', label: 'No.', kind: 'number' as const },
   { key: 'name', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
   { key: 'position', label: 'Pos' },

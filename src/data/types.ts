@@ -502,6 +502,33 @@ export interface ScheduleData {
 }
 
 /**
+ * playoff_odds.json: written daily by pipelines/playoff_odds.py from
+ * simulations of the rest of the regular season. Chances are 0 to 1.
+ */
+export interface TeamOdds {
+  team: string;
+  playoffs: number;
+  division: number;
+  topSeed: number;
+  /** Chance of each seed, 1 to 7 */
+  seeds: number[];
+  meanWins: number;
+}
+
+export interface PlayoffOddsData {
+  season: number;
+  throughWeek: number;
+  updated: string;
+  /** 0 before the season's first game, when teams is empty */
+  simulations: number;
+  source: string;
+  /** Unplayed games with a betting line */
+  pricedGames: number;
+  remainingGames: number;
+  teams: TeamOdds[];
+}
+
+/**
  * game_excitement.json: written daily by pipelines/excitement.py, one entry
  * per final of the season that nflverse has play-by-play for, in kickoff
  * order. Win probability is nflfastR's as published.
