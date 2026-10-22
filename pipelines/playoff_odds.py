@@ -5,16 +5,18 @@ nflseedR).
 
 Game probabilities are an input, not something this module decides. It
 takes a function from the season's unplayed games to each one's chance of
-a home win, and GAME_PROBABILITIES names the one in use. There is no team
-rating model here: that is Tyler's, and when it exists it replaces
-betting_lines, returning the same thing.
+a home win, and GAME_PROBABILITIES names the one in use. Team ratings are
+not built yet; they are a delegated method (CLAUDE.md, Modeling ownership)
+and would replace betting_lines, returning the same thing.
 
 The default, betting_lines, reads nflverse's moneylines. Each side's
 American odds become an implied probability, and the bookmaker's margin
 is taken out by scaling the two to sum to 1; there is nothing to tune.
 Lines appear about a week before a game, so every game without one counts
-as even odds. Early in the season that is nearly every game, and the odds
-are close to records and schedules alone; the page says so.
+as 50/50. Early in the season that is nearly every game, and the odds
+are close to records and schedules alone. The pages say so, naming the
+weeks, in the words of oddsBasis() in src/lib/odds/basis.ts: change that
+with GAME_PROBABILITIES.
 
 Simulated games never end in a tie (about 0.3% of real games do).
 Simulated scores are 1 to 0, which the tiebreakers never read at this

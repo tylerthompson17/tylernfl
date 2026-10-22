@@ -10,7 +10,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import TeamChip from '../TeamChip.astro';
 import Tabs from '../Tabs.astro';
 import type { Team } from '../../data/types';
-import { easternDate, headerFacts, oddsOf } from '../../utils/teams';
+import { easternDate, headerFacts, oddsBasisNow, oddsOf } from '../../utils/teams';
 import { formatChance } from '../../lib/teams/odds';
 import { url } from '../../utils/url';
 
@@ -66,7 +66,7 @@ const odds = oddsOf(team.abbr);
           <dt>Playoff odds</dt>
           <dd class="num">
             {formatChance(odds.playoffs)}
-            <span class="line">based on betting lines</span>
+            <span class="line" title={oddsBasisNow.long}>{oddsBasisNow.short}</span>
           </dd>
         </div>
       )

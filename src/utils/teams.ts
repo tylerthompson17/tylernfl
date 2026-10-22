@@ -6,12 +6,16 @@ import scheduleData from '../data/schedule.json';
 import oddsData from '../data/playoff_odds.json';
 import type { PlayoffOddsData, ScheduleData, TeamOdds, TeamStanding } from '../data/types';
 import { formatKickoffDate } from '../lib/live-ticker/kickoff';
+import { oddsBasis } from '../lib/odds/basis';
 import { lineText, nextGame, ordinal, teamGames, type TeamGame } from '../lib/teams/hub';
 import { standings, formatSigned } from './standings';
 import { record } from '../lib/standings/ties';
 
 export const schedule = scheduleData as ScheduleData;
 export const playoffOdds = oddsData as PlayoffOddsData;
+
+/** What the odds are based on, in the shared wording (lib/odds/basis.ts). */
+export const oddsBasisNow = oddsBasis(schedule.games);
 
 /** A team's playoff odds, or undefined before the season's first game. */
 export function oddsOf(team: string): TeamOdds | undefined {

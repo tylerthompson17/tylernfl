@@ -6,8 +6,8 @@
  */
 import Panel from '../Panel.astro';
 import type { Team } from '../../data/types';
-import { formatChance, oddsLabel } from '../../lib/teams/odds';
-import { oddsOf, playoffOdds } from '../../utils/teams';
+import { formatChance } from '../../lib/teams/odds';
+import { oddsBasisNow, oddsOf, playoffOdds } from '../../utils/teams';
 
 interface Props {
   team: Team;
@@ -56,7 +56,7 @@ const odds = oddsOf(team.abbr);
         </table>
       </div>
       <p class="table-foot">
-        {oddsLabel(playoffOdds.pricedGames, playoffOdds.remainingGames)}{' '}
+        {oddsBasisNow.long}{' '}
         {`${playoffOdds.simulations.toLocaleString('en-US')} simulations of the ${playoffOdds.remainingGames} remaining games (${playoffOdds.pricedGames} with a line), seeded with the NFL's tiebreakers. Simulated games never end in a tie.`}
       </p>
     </Panel>

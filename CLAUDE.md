@@ -289,8 +289,11 @@ tylernfl/
   function from unplayed games to each one's home win chance. The default reads
   nflverse's moneylines, margin removed by scaling the two implied probabilities to sum
   to 1; a game with no line is even odds. Lines exist only about a week ahead, so most
-  games are even odds, and every place the odds show says "based on betting lines". No
-  team rating model: Tyler's replaces the default, returning the same thing.
+  games are even odds. Every place the odds or the draft projection show says so in the
+  words of `oddsBasis()` (`src/lib/odds/basis.ts`), the one place the wording lives,
+  naming the weeks with lines and the weeks counted as 50/50. Team ratings are not built
+  yet; they are a delegated method (see Modeling ownership) and would replace the
+  default, returning the same thing, with that wording changed in the same edit.
 - Both are delegated methods, with notes in `docs/methods/`: `playoff-simulation.md`
   (including a run against nflseedR's own simulator) and `moneyline-win-probability.md`
   (calibrated against 2019 to 2025 results). Their scripts are in `docs/methods/scripts/`,

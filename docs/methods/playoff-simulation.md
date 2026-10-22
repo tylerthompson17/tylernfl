@@ -2,7 +2,8 @@
 
 A delegated method: a standard Monte Carlo simulation Tyler asked for, not his own work
 and not a model of the site's. It writes `src/data/playoff_odds.json` every day, and the
-team pages show it, labelled as based on betting lines.
+team pages show it, labelled with what it is based on: betting lines for the weeks that
+have them, and 50/50 for every other game (see Game probabilities).
 
 Code: `pipelines/playoff_odds.py`, with the tiebreakers in `pipelines/standings.py`.
 
@@ -34,13 +35,21 @@ moneylines as nflverse lists them on the day, with the bookmaker's margin remove
 advantage and no team strength go into it. Lines appear about a week before a game, so
 early in the season nearly every remaining game is 0.5, and even late in the season
 only the next week or so is priced. `pricedGames` and `remainingGames` in the file say
-how many of each, and the page says the odds are based on betting lines.
+how many of each. On 2026-10-22, 28 of the 179 remaining games had a line (weeks 7 and
+8) and the other 151 (weeks 9 to 18) were 50/50.
+
+Every page that shows the odds or the draft projection says this plainly, naming the
+weeks: "Based on betting lines for weeks 7 and 8. Games without a line yet (weeks 9 to
+18) count as 50/50 for each team." The wording lives in one place, `oddsBasis()` in
+`src/lib/odds/basis.ts`, which reads the weeks from `schedule.json`.
 
 What that does to the odds: with most games even, each team's future is close to a
 coin flip per game, so the odds lean heavily on the current records and the schedule's
 tiebreaker shape. A strong team's chances are understated and a weak team's overstated,
-more so the earlier in the season. A team rating model would fix this, and that is
-Tyler's: it would replace `GAME_PROBABILITIES`, returning the same thing.
+more so the earlier in the season. Team ratings would fix this. They are a delegated
+method that is not built yet: they would replace `GAME_PROBABILITIES`, returning the
+same thing, with their own methods note and validation, and `oddsBasis()` would change
+in the same edit.
 
 ## Validation
 
@@ -82,7 +91,8 @@ expected. Average wins are rounded to one decimal on the site, which accounts fo
 ## Draft order
 
 The same 10,000 simulated seasons also project round 1 of the next draft, shown on
-`/draft/projected/` and labelled as based on betting lines. Tyler asked for it as part of
+`/draft/projected/` with the same wording as the odds plus a line saying every playoff
+game is 50/50 (`playoffBasis()`, same file). Tyler asked for it as part of
 the draft section; the order's rules are in `draft-order.md`.
 
 1. Seed each simulated season as above (the standings the playoff odds count).
