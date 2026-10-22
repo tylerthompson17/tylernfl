@@ -8,8 +8,10 @@ export interface ChartCheck {
   slug: string;
   featured: boolean;
   draft: boolean;
-  /** Script filename in pipelines/charts/mine/ */
-  script: string;
+  /** Script filename in pipelines/charts/mine/, for a chart drawn here */
+  script?: string;
+  /** Image filenames beside the entry, for a chart made elsewhere */
+  images?: string[];
 }
 
 /**
@@ -30,7 +32,8 @@ export function chartProblems(
   entries: ChartCheck[],
   svgSlugs: Set<string>,
   scripts: Set<string>,
-  autoSlugs: Set<string> = new Set()
+  autoSlugs: Set<string> = new Set(),
+  imageFiles: Set<string> = new Set()
 ): string[] {
   const problems: string[] = [];
   for (const entry of entries) {
@@ -40,11 +43,21 @@ export function chartProblems(
     if (reservedSlug(entry.slug)) {
       problems.push(`"${entry.slug}" cannot be a chart name: it is taken by the gallery's own pages.`);
     }
-    if (!svgSlugs.has(entry.slug)) {
-      problems.push(`${entry.slug}.md has no ${entry.slug}.svg next to it. Run its script to draw it.`);
-    }
-    if (!scripts.has(entry.script)) {
-      problems.push(`${entry.slug}.md names script ${entry.script}, which is not in pipelines/charts/mine/.`);
+    if (entry.script && entry.images) {
+      problems.push(`${entry.slug}.md names both a script and images. A chart is one or the other.`);
+    } else if (entry.images) {
+      for (const file of entry.images.filter((name) => !imageFiles.has(name))) {
+        problems.push(`${entry.slug}.md names image ${file}, which is not in src/content/charts/.`);
+      }
+    } else if (!entry.script) {
+      problems.push(`${entry.slug}.md names neither a script nor images.`);
+    } else {
+      if (!svgSlugs.has(entry.slug)) {
+        problems.push(`${entry.slug}.md has no ${entry.slug}.svg next to it. Run its script to draw it.`);
+      }
+      if (!scripts.has(entry.script)) {
+        problems.push(`${entry.slug}.md names script ${entry.script}, which is not in pipelines/charts/mine/.`);
+      }
     }
   }
   const featured = entries.filter((entry) => entry.featured && !entry.draft).map((entry) => entry.slug);

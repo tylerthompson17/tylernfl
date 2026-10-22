@@ -12,12 +12,16 @@
  * chart can be read point by point: hover, drag, or the arrow keys
  * (src/lib/charts/hover-dom.ts). The data is written into the page, not
  * fetched. Thumbnails stay plain; they link to the full chart.
+ *
+ * A chart made elsewhere has finished images instead of an SVG, each with
+ * its own alt text, stacked in order. A thumbnail shows only the first.
  */
 import type { ChartHover } from '../lib/charts/hover';
-import { chartSvg } from '../utils/charts';
+import { chartSvg, type ChartImage } from '../utils/charts';
 
 interface Props {
-  svg: string;
+  svg?: string;
+  images?: ChartImage[];
   /** id of the heading that titles the chart */
   titleId: string;
   note: string;
@@ -27,7 +31,8 @@ interface Props {
   hover?: ChartHover | null;
 }
 
-const { svg, titleId, note, id, size = 'full', hover } = Astro.props;
+const { svg, images = [], titleId, note, id, size = 'full', hover } = Astro.props;
+const shown = size === 'thumb' ? images.slice(0, 1) : images;
 const noteId = `${id}-note`;
 const hintId = `${id}-hint`;
 const readable = size === 'full' && hover && hover.points.length > 0;
@@ -39,12 +44,20 @@ const hoverJson = readable ? JSON.stringify(hover).replace(/</g, '\\u003c') : ''
   {/* Focusable so the chart can be scrolled with the keyboard when it is
       wider than a phone screen, as the site's tables are, and read with
       the arrow keys when it has hover data. */}
-  <div
-    class="frame"
-    tabindex={size === 'full' ? 0 : undefined}
-    aria-describedby={readable ? hintId : undefined}
-    set:html={chartSvg(svg, titleId, noteId)}
-  />
+  {svg ? (
+    <div
+      class="frame"
+      tabindex={size === 'full' ? 0 : undefined}
+      aria-describedby={readable ? hintId : undefined}
+      set:html={chartSvg(svg, titleId, noteId)}
+    />
+  ) : (
+    shown.map((image) => (
+      <div class="frame" tabindex={size === 'full' ? 0 : undefined}>
+        <img src={image.src} width={image.width} height={image.height} alt={image.alt} loading={size === 'thumb' ? 'lazy' : undefined} decoding="async" />
+      </div>
+    ))
+  )}
   {readable && <script type="application/json" data-chart-hover-data set:html={hoverJson} />}
   <figcaption>
     <p class="note" id={noteId}>{note}</p>
@@ -124,10 +137,15 @@ const hoverJson = readable ? JSON.stringify(hover).replace(/</g, '\\u003c') : ''
     font-family: var(--font-heading);
   }
 
-  .frame :global(svg) {
+  .frame :global(svg),
+  .frame img {
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  .frame + .frame {
+    margin-top: var(--space-2);
   }
 
   /* Chart text scales with the chart. Below 600px wide the labels would
@@ -138,7 +156,8 @@ const hoverJson = readable ? JSON.stringify(hover).replace(/</g, '\\u003c') : ''
     overflow-x: auto;
   }
 
-  .full .frame :global(svg) {
+  .full .frame :global(svg),
+  .full .frame img {
     min-width: 600px;
   }
 

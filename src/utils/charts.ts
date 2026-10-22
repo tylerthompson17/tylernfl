@@ -8,6 +8,7 @@
  */
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import type { ImageMetadata } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 import { entriesOf } from './collections';
 import teamsData from '../data/teams.json';
@@ -46,6 +47,11 @@ const archiveEntries = import.meta.glob<ArchivedAutoChart>(
   { import: 'default', eager: true }
 );
 const archiveHovers = import.meta.glob<ChartHover>('../data/charts/archive/*.hover.json', { import: 'default', eager: true });
+
+// Finished images beside entries that name them (a chart made elsewhere).
+// Imported, so each is served under a name hashed from its bytes.
+const images = import.meta.glob<ImageMetadata>('../content/charts/*.{webp,png,jpg}', { import: 'default', eager: true });
+const imageByFile = new Map(Object.entries(images).map(([path, image]) => [path.split('/').pop()!, image]));
 
 // Hover data beside each SVG (<slug>.hover.json), when its script made some.
 const hovers = import.meta.glob<ChartHover>('../content/charts/*.hover.json', { import: 'default', eager: true });
@@ -95,10 +101,17 @@ function scriptsInMine(): Set<string> {
 export async function getCharts(): Promise<Chart[]> {
   const all = await entriesOf('charts', 'src/content/charts');
   const problems = chartProblems(
-    all.map((entry) => ({ slug: entry.id, featured: entry.data.featured, draft: entry.data.draft, script: entry.data.script })),
+    all.map((entry) => ({
+      slug: entry.id,
+      featured: entry.data.featured,
+      draft: entry.data.draft,
+      script: entry.data.script,
+      images: entry.data.images?.map((image) => image.file),
+    })),
     new Set(svgBySlug.keys()),
     scriptsInMine(),
-    new Set(archiveBySlug.keys())
+    new Set(archiveBySlug.keys()),
+    new Set(imageByFile.keys())
   );
   if (problems.length > 0) throw new Error(`Charts collection:\n- ${problems.join('\n- ')}`);
 
@@ -139,8 +152,24 @@ export function chartSvg(svg: string, labelId: string, descId: string): string {
   );
 }
 
-export function svgFor(chart: Chart): string {
-  return (chart.auto ? archiveSvgBySlug : svgBySlug).get(chart.id)!;
+/** A chart's SVG, or undefined for a chart made elsewhere (see imagesFor). */
+export function svgFor(chart: Chart): string | undefined {
+  return (chart.auto ? archiveSvgBySlug : svgBySlug).get(chart.id);
+}
+
+export interface ChartImage {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
+/** A chart made elsewhere: its finished images, in order. Empty for a drawn chart. */
+export function imagesFor(chart: Chart): ChartImage[] {
+  return (chart.data.images ?? []).map(({ file, alt }) => {
+    const { src, width, height } = imageByFile.get(file)!;
+    return { src, width, height, alt };
+  });
 }
 
 /** A chart's hover data, or null if its script wrote none. */

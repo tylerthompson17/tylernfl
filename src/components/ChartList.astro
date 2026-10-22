@@ -7,7 +7,7 @@
  */
 import Panel from './Panel.astro';
 import ChartFigure from './ChartFigure.astro';
-import { formatChartDate, svgFor, type Chart } from '../utils/charts';
+import { formatChartDate, imagesFor, svgFor, type Chart } from '../utils/charts';
 import { tagSlug } from '../lib/charts/collection';
 import { url } from '../utils/url';
 import TeamLogos from './TeamLogos.astro';
@@ -33,7 +33,7 @@ const { charts } = Astro.props;
             <a href={url(`charts/${chart.id}`)}>{chart.data.title}</a>
           </h2>
         </div>
-        <ChartFigure svg={svgFor(chart)} titleId={`${chart.id}-title`} note={chart.data.note} id={chart.id} size="thumb">
+        <ChartFigure svg={svgFor(chart)} images={imagesFor(chart)} titleId={`${chart.id}-title`} note={chart.data.note} id={chart.id} size="thumb">
           {chart.data.tags.length > 0 && (
             <p class="tags">
               {chart.data.tags.map((tag) => (

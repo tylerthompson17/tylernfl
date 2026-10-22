@@ -12,7 +12,7 @@ import { notable, percentileSeasons } from '../utils/performances';
 import { leadersFor } from '../utils/overview';
 import { gameStatusLine, logWeek } from '../utils/as-of';
 import ChartFigure from '../components/ChartFigure.astro';
-import { formatChartDate, getAutoChart, getFeaturedChart, hoverFor, svgFor } from '../utils/charts';
+import { formatChartDate, getAutoChart, getFeaturedChart, hoverFor, imagesFor, svgFor } from '../utils/charts';
 import excitementData from '../data/game_excitement.json';
 import scheduleData from '../data/schedule.json';
 import type { GameExcitementData, ScheduleData } from '../data/types';
@@ -83,7 +83,7 @@ const leaderColumns = [
     {
       featured ? (
         <Panel title={featured.data.title} titleId="home-chart-title" class="home-chart">
-          <ChartFigure svg={svgFor(featured)} titleId="home-chart-title" note={featured.data.note} id="home-chart" hover={hoverFor(featured)}>
+          <ChartFigure svg={svgFor(featured)} images={imagesFor(featured)} titleId="home-chart-title" note={featured.data.note} id="home-chart" hover={hoverFor(featured)}>
             <p class="chart-meta">
               <span class="num">{formatChartDate(featured.data.date)}</span>, {featured.data.author}.{' '}
               Source: {featured.data.source}.{' '}

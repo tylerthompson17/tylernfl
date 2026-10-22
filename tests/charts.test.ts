@@ -81,3 +81,16 @@ test("a chart of Tyler's cannot take a kept auto chart's name", () => {
   assert.equal(problems.length, 1);
   assert.match(problems[0]!, /a kept auto chart already has it/);
 });
+
+test('a chart made elsewhere needs its images, not an SVG or script', () => {
+  const made = entry('run-rate', { script: undefined, images: ['run-rate.webp', 'epa.webp'] });
+  assert.deepEqual(chartProblems([made], new Set(), new Set(), new Set(), new Set(['run-rate.webp', 'epa.webp'])), []);
+
+  const missing = chartProblems([made], new Set(), new Set(), new Set(), new Set(['run-rate.webp']));
+  assert.equal(missing.length, 1);
+  assert.match(missing[0]!, /names image epa\.webp, which is not in src\/content\/charts/);
+
+  const both = entry('run-rate', { images: ['run-rate.webp'] });
+  assert.match(chartProblems([both], new Set(['run-rate']), new Set(['run_rate.py']), new Set(), new Set(['run-rate.webp']))[0]!, /both a script and images/);
+  assert.match(chartProblems([entry('run-rate', { script: undefined })], new Set(), new Set())[0]!, /neither a script nor images/);
+});

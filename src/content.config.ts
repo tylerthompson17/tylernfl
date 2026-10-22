@@ -37,8 +37,10 @@ const articles = defineCollection({
 
 // Tyler's charts: the /charts gallery and the home page's featured chart.
 // Each entry sits next to the SVG its script draws (<slug>.md, <slug>.svg);
-// the scripts live in pipelines/charts/mine/, which is Tyler's. The home
-// page's auto chart is not part of this collection.
+// the scripts live in pipelines/charts/mine/, which is Tyler's. A chart made
+// elsewhere names its finished images instead of a script, each a file
+// beside the entry with its alt text. The home page's auto chart is not
+// part of this collection.
 const charts = defineCollection({
   loader: entries('./src/content/charts'),
   schema: z
@@ -52,7 +54,20 @@ const charts = defineCollection({
       note: z.string().max(300),
       featured: z.boolean().default(false),
       /** Filename of the script in pipelines/charts/mine/ that draws it. */
-      script: z.string().regex(/^[\w-]+\.py$/),
+      script: z.string().regex(/^[\w-]+\.py$/).optional(),
+      /** Finished images made elsewhere, in order, in place of a script. */
+      images: z
+        .array(
+          z
+            .object({
+              file: z.string().regex(/^[\w-]+\.(webp|png|jpg)$/),
+              /** What the image shows, for a screen reader: its values, not the takeaway. */
+              alt: z.string().min(1),
+            })
+            .strict()
+        )
+        .min(1)
+        .optional(),
       /** Teams the chart is about, as abbreviations; their logos go on its gallery card. */
       teams: z.array(z.string()).default([]),
       draft: z.boolean().default(false),

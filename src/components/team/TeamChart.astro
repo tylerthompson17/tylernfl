@@ -10,7 +10,7 @@
 import Panel from '../Panel.astro';
 import ChartFigure from '../ChartFigure.astro';
 import type { Team } from '../../data/types';
-import { AUTO_AUTHOR, formatChartDate, getCharts, hoverFor, svgFor } from '../../utils/charts';
+import { AUTO_AUTHOR, formatChartDate, getCharts, hoverFor, imagesFor, svgFor } from '../../utils/charts';
 import { url } from '../../utils/url';
 
 interface Props {
@@ -27,7 +27,7 @@ const titleId = 'team-chart-title';
 {
   chart ? (
     <Panel title={chart.data.title} titleId={titleId}>
-      <ChartFigure svg={svgFor(chart)} titleId={titleId} note={chart.data.note} id="team-chart" hover={hoverFor(chart)}>
+      <ChartFigure svg={svgFor(chart)} images={imagesFor(chart)} titleId={titleId} note={chart.data.note} id="team-chart" hover={hoverFor(chart)}>
         <p class="chart-meta">
           {auto && <span class="auto-label">{AUTO_AUTHOR}</span>}
           <span class="num">{formatChartDate(chart.data.date)}</span>

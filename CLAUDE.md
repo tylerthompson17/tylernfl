@@ -50,7 +50,7 @@ tylernfl/
 │   ├── components/         Panel, StatTable, StatCard, TickerItem, TeamChip, ...
 │   ├── pages/              index, scores, charts/, curated, tools/, stats/, articles/, about, 404
 │   ├── content/articles/   MDX articles (content collection)
-│   ├── content/charts/     Tyler's charts: <slug>.md entry next to <slug>.svg
+│   ├── content/charts/     Tyler's charts: <slug>.md entry next to <slug>.svg (or its images)
 │   ├── content/curated/    curated X and Bluesky posts, one .md each, added by hand
 │   └── data/               JSON consumed at build time (mock now, pipeline output later)
 ├── public/logos/           team logos, named with a hash (pipelines/build_logos.py)
@@ -473,7 +473,14 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   rows count all of them, since that is what a team's page lists. `getGalleryCharts()`
   in `src/utils/charts.ts` is the picks, `getCharts()` everything. Chart names cannot be all digits, `tag` or `team` (those URLs are taken).
   The build fails on an entry with no SVG, a script not in `mine/`, two featured, or a
-  name a kept auto chart already has. Auto charts are bylined "Auto chart" and tagged
+  name a kept auto chart already has.
+- A chart Tyler made elsewhere (a finished image with its title inside, made outside
+  `style.py`) is an entry with `images:` in place of `script:`: one or more `.webp`,
+  `.png` or `.jpg` files beside the entry, in order, each with `alt` text giving its
+  values. They show as `<img>` (Astro hashes their names), stacked on the chart's page,
+  the first alone on a gallery card, with no hover readout. The build fails on a
+  missing image, or an entry with both or neither of `script` and `images`. The rules
+  above for drawn charts (inline SVG, no title inside, site fonts) do not apply to these. Auto charts are bylined "Auto chart" and tagged
   Auto plus their kind (Win probability, EPA, Yards race), so `/charts/tag/auto/` is
   all of them. Only Tyler's can be featured.
 - A gallery card and a chart's own page show the logos of the teams it is about beside its title
