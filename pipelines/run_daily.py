@@ -1,12 +1,13 @@
 """Daily site data job: writes ticker.json, stats/, players/,
 rosters/, transactions.json, on_this_day.json, standings.json,
 schedule.json, playoff_odds.json, draft_order.json, game_excitement.json, team_stats.json,
-player_epa.json, targets/ and, once a season, performance_percentiles.json into
+player_epa.json, decisions.json, targets/ and, once a season, performance_percentiles.json into
 src/data/, then draws
 the home page's auto chart (charts/auto.json and its entry in charts/archive/)
 from them.
 
-Run from the repo root:
+Run from the repo root (decisions.json also needs Node 23.6 or newer, which
+runs the site's 4th down engine):
     pip install -r pipelines/requirements.txt
     python pipelines/run_daily.py
 Options:
@@ -14,7 +15,7 @@ Options:
     --dry-run            print the output instead of writing files
 
 Play-by-play is loaded once (pbp_cache.py) and shared by game excitement,
-team stats, player EPA, target maps and the auto charts.
+team stats, player EPA, target maps, 4th down decisions and the auto charts.
 """
 
 import argparse
@@ -26,6 +27,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import DATA_DIR, load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
+from decisions import build_decisions, load_decision_rows, report as decisions_report  # noqa: E402
 from charts.auto import build_auto_charts, season_finals, wp_plays_for, write_charts  # noqa: E402
 from draft_order import build_draft_order, load_picks, load_trade_rows, unlisted_trades  # noqa: E402
 from excitement import build_game_excitement, labels_by_game  # noqa: E402
@@ -91,9 +93,13 @@ def main() -> None:
     kept_targets, removed = target_plays(raw_targets)
     targets = build_targets(kept_targets, pbp_season, targets_week, target_plays(raw_baseline)[0])
     rosters = build_rosters(roster_rows, rosters_year, today, updated)
+    # Every 4th down and try of the same season's finals, through the site's
+    # own 4th down engine (one Node process).
+    decisions = build_decisions(load_decision_rows(pbp_season, current, schedule_rows), pbp_season, updated)
 
     week = f"week {ticker['week']}" if ticker['week'] else f"offseason, opener {ticker['nextOpener']}"
     print(f"{today}: ticker {ticker['season']} {week}, {len(ticker['games'])} games")
+    print(decisions_report(decisions))
     marked = [g for g in excitement['games'] if g['label']]
     print(f"game excitement: {len(excitement['games'])} games, {len(marked)} labelled")
     counts = sorted({t['games'] for t in team_stats['teams']})
@@ -195,6 +201,11 @@ def main() -> None:
     for name, data, volatile in logs:
         if write_json_if_changed(name, data, volatile, compact=True):
             written += 1
+    # Every decision of the season, a few MB by its end, one record a line so
+    # a day's new games are a small delta in git.
+    if write_json_if_changed('decisions.json', decisions, ('updated',), records=True):
+        written += 1
+        print('decisions.json: updated')
     # Target maps are about 600 files by the season's end, so compact too.
     changed_targets = sum(write_json_if_changed(name, data, volatile, compact=True)
                           for name, data, volatile in target_files)

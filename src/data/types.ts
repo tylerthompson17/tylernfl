@@ -717,3 +717,72 @@ export interface TargetsData {
   /** As a passer; null if he never threw one */
   throws: TargetGrid | null;
 }
+
+/**
+ * decisions.json: written daily by pipelines/decisions.py. Every 4th down and
+ * every try after a touchdown of the season's final games, with each
+ * option's win probability and the call from nfl4th (the site's engine,
+ * reproduced exactly; shown as "nfl4th's recommendation"), what the team
+ * did, and whether the choice is graded (docs/model-interface.md section 3).
+ * Probabilities are rounded to 5 places. Written one record per line.
+ */
+export interface DecisionsData {
+  season: number;
+  updated: string;
+  /** "nfl4th-ecb7293"; null when there were no plays */
+  modelVersion: string | null;
+  /** "nfl4th's recommendation": how the site names the call */
+  label: string;
+  /** Minimum WP cost for a choice to be graded, 0.02 */
+  threshold: number;
+  games: number;
+  /** Plays in each category of messy play, as each run prints them */
+  counts: Record<string, number>;
+  fourthDowns: FourthDownDecision[];
+  tries: TryDecision[];
+}
+
+interface DecisionBase {
+  gameId: string;
+  /** The snap the team ran; a punt after a delay of game is graded at the delay's spot */
+  playId: number;
+  week: number;
+  /** nflverse's text of the snap */
+  description: string;
+  /** nfl4th's call; null when the situation is not supported */
+  call: string | null;
+  /** WP of nfl4th's call minus WP of the team's choice; null when not computable */
+  wpCost: number | null;
+  /** wpCost at least threshold, and not skipped */
+  graded: boolean;
+  /** Why it is not graded beyond the threshold: 'overtime', 'endgame', 'unavailable', 'null option', 'decided' */
+  skip: string | null;
+}
+
+export interface FourthDownDecision extends DecisionBase {
+  situation: import('../lib/fourth-down').FourthDownSituation;
+  teamCall: 'go' | 'punt' | 'field goal';
+  /** A pass or run from punt or field goal formation, counted as go */
+  fake: boolean;
+  /** A delay of game by the offense before this snap; yardsBack is how far it moved them */
+  delayOfGame: { playId: number; yardsBack: number } | null;
+  /** Who called a timeout right before the snap */
+  timeoutBefore: 'offense' | 'defense' | null;
+  /** Pre-snap penalties before the snap, by nflverse type */
+  presnapPenalties: string[];
+  wpGo?: number;
+  wpPunt?: number | null;
+  wpFieldGoal?: number | null;
+  conversionProb?: number;
+  fgMakeProb?: number | null;
+  kickDistance?: number;
+}
+
+export interface TryDecision extends DecisionBase {
+  situation: import('../lib/fourth-down').TrySituation;
+  teamCall: 'kick' | 'go for 2';
+  wpKick?: number;
+  wpGoForTwo?: number;
+  patMakeProb?: number;
+  twoPointConvProb?: number;
+}

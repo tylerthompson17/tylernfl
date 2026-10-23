@@ -53,7 +53,7 @@ function renderView(view: CalculatorView): Node[] {
   if (view.kind === 'unsupported') return [el('p', 'calc-unsupported', view.message)];
 
   const head = el('div', 'calc-call');
-  head.append(el('span', 'calc-call-label', 'Recommendation'), el('strong', 'calc-call-value', view.call));
+  head.append(el('span', 'calc-call-label', "nfl4th's recommendation"), el('strong', 'calc-call-value', view.call));
   const nodes: Node[] = [head, el('p', 'calc-margin', view.margin)];
 
   const grid = el('div', 'calc-options');

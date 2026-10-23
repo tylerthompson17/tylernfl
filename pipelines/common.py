@@ -75,13 +75,33 @@ def load_with_fallback(load: Callable[[int], list[dict]], season: int) -> tuple[
     return load(season - 1), season - 1
 
 
+def dumps_records(data: dict) -> str:
+    """Indented at the top level, with each item of a list of objects on a
+    line of its own, compact: a large file of records that git can store as
+    small line deltas when a day adds a few."""
+    lines = ['{']
+    for i, (key, value) in enumerate(data.items()):
+        comma = ',' if i < len(data) - 1 else ''
+        if isinstance(value, list) and value and all(isinstance(v, dict) for v in value):
+            items = [json.dumps(v, separators=(',', ':'), ensure_ascii=False) for v in value]
+            lines.append(f'  {json.dumps(key)}: [')
+            lines += [f'    {item}{"," if j < len(items) - 1 else ""}' for j, item in enumerate(items)]
+            lines.append(f'  ]{comma}')
+        else:
+            lines.append(f'  {json.dumps(key)}: {json.dumps(value, ensure_ascii=False)}{comma}')
+    lines.append('}')
+    return '\n'.join(lines)
+
+
 def write_json_if_changed(
-    name: str, data: dict, volatile_keys: tuple[str, ...] = (), compact: bool = False
+    name: str, data: dict, volatile_keys: tuple[str, ...] = (), compact: bool = False, records: bool = False
 ) -> bool:
     """Write src/data/<name> unless only volatile keys (like a timestamp) changed.
 
     `name` may include a subdirectory, e.g. "rosters/BUF.json". `compact` writes
-    one line with no spaces, for files too large to keep readable.
+    one line with no spaces, for files too large to keep readable. `records`
+    writes each record of a list on its own line (dumps_records), for a large
+    file that grows a little each day.
 
     Returns True when the file was written. Skipping timestamp-only changes
     keeps the daily job from committing and redeploying when nothing a
@@ -94,8 +114,11 @@ def write_json_if_changed(
         if strip(existing) == strip(data):
             return False
     path.parent.mkdir(parents=True, exist_ok=True)
-    text = json.dumps(data, separators=(',', ':'), ensure_ascii=False) if compact else json.dumps(
-        data, indent=2, ensure_ascii=False
-    )
+    if records:
+        text = dumps_records(data)
+    elif compact:
+        text = json.dumps(data, separators=(',', ':'), ensure_ascii=False)
+    else:
+        text = json.dumps(data, indent=2, ensure_ascii=False)
     path.write_text(text + '\n', encoding='utf-8')
     return True

@@ -44,6 +44,12 @@ jobs:
           cache: pip
           cache-dependency-path: pipelines/requirements.txt
 
+      # decisions.json runs the site's 4th down engine (TypeScript) in Node.
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
       - name: Install pipeline dependencies
         run: pip install -r pipelines/requirements.txt
 

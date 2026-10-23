@@ -108,7 +108,7 @@ tylernfl/
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `player_epa.json`, `targets/{gsisId}.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `draft_order.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `decisions.json`, `targets/{gsisId}.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `draft_order.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
@@ -202,6 +202,16 @@ tylernfl/
   by dashed lines, and the line of scrimmage a first-down yellow line with a yellow tab
   naming it. Lines are drawn only on band and zone edges, so none crosses a cell's
   numbers (yard lines every 5 yards were tried and did). No perspective.
+- `decisions.json` is written daily by `pipelines/decisions.py`: every 4th down and try
+  of the season's finals with each option's win probability and nfl4th's call (shown as
+  "nfl4th's recommendation"), what the team did, and whether the choice is graded (the
+  contract's rules, section 3). Situations go through the site's own engine in one Node
+  process per run (`engine_batch.ts` via `engine.py`), so the workflows set up Node 24; no
+  Python port, no new Python dependencies. Messy plays (pre-snap penalties, a delay of
+  game before a kick graded at the spot before it, fakes, timeouts before the snap,
+  retaken tries) are counted in the file's `counts` and printed each run. Written one
+  record per line (`records=True`, `dumps_records` in `common.py`) so diffs stay
+  readable; packed, git stores about 7 KB per version either way. Methods and the rbsdm.com comparison: `docs/methods/decision-grades.md`.
 - There is no `leaders.json` any more. Every top 5 on the site (the stats overview, the
   home page's receiving panel, a team's stat leader appearances) comes from the boards and
   `player_epa.json` through `src/utils/overview.ts`, whose rows carry player ids.
