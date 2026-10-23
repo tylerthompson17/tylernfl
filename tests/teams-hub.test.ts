@@ -7,7 +7,8 @@ import type { ScheduleGame } from '../src/data/types.ts';
 function game(week: number, away: string, home: string, awayScore: number | null = null, homeScore: number | null = null, extra: Partial<ScheduleGame> = {}): ScheduleGame {
   return {
     id: `2026_${week}_${away}_${home}`, week, type: 'REG', kickoff: null, away, home, awayScore, homeScore,
-    overtime: false, divisional: false, neutral: false, spreadLine: null, awayMoneyline: null, homeMoneyline: null,
+    overtime: false, divisional: false, neutral: false, spreadLine: null, totalLine: null, awayMoneyline: null, homeMoneyline: null,
+    roof: null,
     ...extra,
   };
 }

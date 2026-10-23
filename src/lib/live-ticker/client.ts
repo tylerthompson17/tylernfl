@@ -13,7 +13,7 @@
 
 import { LIVE_TICKER_ENABLED } from '../../config.ts';
 import { siteNow } from '../../utils/now.ts';
-import { parseScoreboard, scoreboardUrl, type LiveGame } from './espn.ts';
+import { SCOREBOARD_EVENT, parseScoreboard, scoreboardUrl, type LiveGame, type ScoreboardEventDetail } from './espn.ts';
 import { formatKickoff, formatKickoffDate } from './kickoff.ts';
 import { scoreChanged, stripInsertIndex } from './pin.ts';
 import { applyFinals, recordText, type LiveFinal, type LiveRecordsData, type RecordField } from './records.ts';
@@ -164,8 +164,12 @@ async function getJson(url: string): Promise<unknown> {
 }
 
 async function fetchScoreboard(season: number, week: number): Promise<Map<string, LiveGame>> {
-  const games = parseScoreboard(await getJson(scoreboardUrl(season, week)), season, week);
+  const data = await getJson(scoreboardUrl(season, week));
+  const games = parseScoreboard(data, season, week);
   if (!games) throw new Error('Unexpected scoreboard response');
+  // The same response, for the live 4th down panel: no second request.
+  const detail: ScoreboardEventDetail = { data, seen: siteNow().toISOString() };
+  document.dispatchEvent(new CustomEvent(SCOREBOARD_EVENT, { detail }));
   return games;
 }
 

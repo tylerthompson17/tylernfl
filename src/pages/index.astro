@@ -23,6 +23,9 @@ import { asOfContext, through } from '../utils/as-of';
 import { draft } from '../utils/draft';
 import { draftRecord, ownerNote } from '../lib/draft/view';
 import { homeExamples } from '../utils/fourth-down-model';
+import tickerData from '../data/ticker.json';
+import type { TickerData } from '../data/types';
+import type { LiveGameInfo } from '../lib/live-fourth/situation';
 
 const receiving = leadersFor('receiving');
 
@@ -83,6 +86,23 @@ const draftTitle = draft.kind === 'missing' ? 'Draft order' : `${draft.data.draf
 // home page shows the numbers without downloading the model.
 const examples = homeExamples(asOfContext.season);
 const exampleList = [examples.fourthDown, examples.try];
+
+// The live 4th down panel's games: this week's, by ESPN id, with the lines
+// and roof the model needs from schedule.json. ESPN supplies only the state.
+const scheduleById = new Map(schedule.games.map((g) => [g.id, g]));
+const liveGames: Record<string, LiveGameInfo> = {};
+for (const g of (tickerData as TickerData).games) {
+  const s = scheduleById.get(g.id);
+  if (!g.espnId || !s) continue;
+  liveGames[g.espnId] = {
+    season: (tickerData as TickerData).season,
+    away: g.away,
+    home: g.home,
+    spreadLine: s.spreadLine,
+    totalLine: s.totalLine,
+    roof: s.roof,
+  };
+}
 
 const leaderColumns: StatTableColumn<LeaderRow>[] = [
   { key: 'rank', label: 'Rk', kind: 'number' as const },
@@ -212,7 +232,23 @@ const leaderColumns: StatTableColumn<LeaderRow>[] = [
           )
         }
       </Panel>
-      <Panel title="4th down calculator">
+      <Panel title="4th down calculator" titleId="home-calc-title">
+        <div data-live-fourth data-title-id="home-calc-title">
+        <section class="live" data-live-section hidden aria-live="polite">
+          <p class="live-game" data-live="game"></p>
+          <p class="live-down" data-live="down"></p>
+          <p class="live-timeouts" data-live="timeouts"></p>
+          <p class="live-status"><strong data-live="status"></strong> <span data-live="play"></span></p>
+          <button type="button" class="live-button" data-live-show-wp>Show win probabilities</button>
+          <div class="live-wp" data-live-wp hidden></div>
+          <p class="table-foot">
+            The latest 4th down in any live game, from the live scoreboard every 30 seconds. Win probabilities
+            are Ben Baldwin's nfl4th for each option, before the snap, with no verdict. Showing them downloads the
+            model (about 2.6 MB). They assume the home team took the opening kickoff, which the scoreboard does not
+            say; it matters only in the first half. <a href={url('fourth-down')}>Set any situation</a>
+          </p>
+        </section>
+        <div data-calc-examples>
         {
           exampleList.map((ex) => (
             <section class="example">
@@ -253,6 +289,9 @@ const leaderColumns: StatTableColumn<LeaderRow>[] = [
           Baldwin's nfl4th model, reproduced exactly; not adjusted for the teams playing.{' '}
           <a href={url('fourth-down')}>Set any situation</a>
         </p>
+        </div>
+        </div>
+        <script type="application/json" id="live-fourth-games" set:html={JSON.stringify(liveGames)} />
       </Panel>
     </div>
     <div class="col col-3">
@@ -345,6 +384,11 @@ const leaderColumns: StatTableColumn<LeaderRow>[] = [
   </div>
 </BaseLayout>
 
+<script>
+  import { initLiveFourth } from '../lib/live-fourth/dom';
+  initLiveFourth();
+</script>
+
 <style>
   /* Three independent columns: each stacks its own panels, so a short
      panel never leaves a hole beside a tall one. The chart spans the
@@ -384,6 +428,41 @@ const leaderColumns: StatTableColumn<LeaderRow>[] = [
   .col-3 {
     grid-column: 3;
     grid-row: 1 / 3;
+  }
+
+  /* The live 4th down: the situation, then the team's play, then the
+     numbers only when asked for. */
+  .live-game,
+  .live-timeouts {
+    color: var(--text-dim);
+  }
+
+  .live-down {
+    margin: var(--space-1) 0;
+    padding: var(--space-1) var(--space-2);
+    background: var(--highlight-soft);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .live-status {
+    margin: var(--space-2) 0;
+  }
+
+  .live-button {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--link);
+    color: var(--link);
+    font-weight: 700;
+  }
+
+  .live-wp {
+    margin-top: var(--space-2);
+  }
+
+  .live-wp :global(.live-wp-note) {
+    color: var(--text-dim);
   }
 
   /* The calculator's two default scenarios, each a boxed unit. */

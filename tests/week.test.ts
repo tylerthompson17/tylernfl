@@ -18,8 +18,10 @@ function game(week: number, away: string, home: string, kickoff: string): Schedu
     divisional: false,
     neutral: false,
     spreadLine: null,
+    totalLine: null,
     awayMoneyline: null,
     homeMoneyline: null,
+    roof: null,
   };
 }
 

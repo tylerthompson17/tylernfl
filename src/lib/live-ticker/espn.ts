@@ -12,6 +12,19 @@ import { liveMark, type LiveMark } from './mark.ts';
 
 export const SCOREBOARD_URL = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
 
+/**
+ * Fired on document with each scoreboard response the ticker's poll
+ * receives ({ data, seen }), so the live 4th down panel reads the same poll
+ * instead of making requests of its own.
+ */
+export const SCOREBOARD_EVENT = 'live-ticker:scoreboard';
+
+export interface ScoreboardEventDetail {
+  data: unknown;
+  /** ISO instant the response arrived (siteNow) */
+  seen: string;
+}
+
 export type LiveState = 'pre' | 'live' | 'final';
 
 export interface LiveGame {

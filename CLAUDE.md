@@ -96,6 +96,26 @@ tylernfl/
   `?url` imports in `load.ts` (`assetsInlineLimit` in `astro.config.mjs` keeps the small
   ones out of the script). About 2.6 MB gzipped; methods in
   `docs/methods/fourth-down-model.md`.
+- The home page's live 4th down panel (`src/lib/live-fourth/`) makes no request of its
+  own: the ticker's client fires `SCOREBOARD_EVENT` with each scoreboard response it
+  already fetched, and the panel reads that. It shows the latest 4th down of any live
+  game and the play that answered it, with no model; the model (the calculator's worker
+  and files, above) loads only when the visitor clicks "Show win probabilities", and the
+  button exists only while a game is live. Win probabilities are per option in a fixed
+  order (go, field goal, punt), no verdict. Lines and roof come from `schedule.json`
+  (`totalLine`, `roof`), embedded in the page; who took the opening kickoff is assumed
+  to be the home team, said on the panel. A null roof (an upcoming game at a
+  retractable roof) is sent as closed, which nfl4th treats exactly as open.
+- Live 4th down rules (`tracker.ts`, checked against all eight 4th downs of NE at CHI on
+  2026-10-22 in `tests/fixtures/espn/live-fourth-401873010.json`): field position from
+  `yardLine` (counted from the home team's goal line) and `possession` only, never
+  `yardsToEndzone` (wrong on both CHI punts that night). A 4th down stays pending through
+  timeouts, the two-minute warning, the end of a quarter and a penalty that leaves it 4th
+  down for the same team, each later poll refreshing the distance, clock and timeouts.
+  It is answered by the first other play ESPN reports, if that play starts at the 4th
+  down's spot; otherwise "outcome not seen", never inferred from later states. In that
+  game every 4th down was on the scoreboard 30 to 152 seconds before the snap, and a play
+  reached it 15 to 133 seconds after it happened (median 41).
 - Header search is not a runtime data fetch: its index (`search-index.js`, from
   `src/pages/search-index.js.ts`) is static build output, versioned per build, and the
   search box loads it as a script the first time it is used (about 50 KB gzipped). It
@@ -291,7 +311,8 @@ tylernfl/
   only with the fixtures still passing.
 - `schedule.json` is written daily by `pipelines/schedule.py`: every game of the ticker's
   season (regular season and playoffs) with kickoff, scores, overtime, divisional and
-  neutral flags, and nflverse's lines as published (`spreadLine` is points the home team
+  neutral flags, roof (null until nflverse knows; retractable roofs are set on game day),
+  and nflverse's lines as published (`totalLine` the over/under) (`spreadLine` is points the home team
   is favored by, negative when the road team is; moneylines are American odds). Lines
   appear about a week before a game and stay as they closed. Team pages and playoff odds
   read it.
@@ -569,7 +590,8 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   of `/draft`), notable performances, on this day, latest article. The split is what
   balances heights: at 1440px with a yards race chart the columns end at about 1,375,
   1,345 and 1,395px. Recheck when a panel is added or grows.
-- The calculator panel shows the calculator's two default scenarios (4th and 2 at
+- While a game is live the calculator panel becomes "Live 4th down" (see the data
+  contract); otherwise it shows the calculator's two default scenarios (4th and 2 at
   midfield; a touchdown to trail by 2) with each option's win probability, computed at
   build time through the page's own path (`homeExamples` in
   `src/utils/fourth-down-model.ts`), so the home page never downloads the model. Each

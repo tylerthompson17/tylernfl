@@ -1,0 +1,5246 @@
+{
+ "captured": "NE at CHI, 2026-10-22, ESPN scoreboard polled every 10 seconds; game summary once at the final",
+ "event": "401873010",
+ "teams": {
+  "home": {
+   "id": "3",
+   "abbr": "CHI"
+  },
+  "away": {
+   "id": "17",
+   "abbr": "NE"
+  }
+ },
+ "expectedFourthDowns": [
+  {
+   "id": "4018730101368",
+   "type": "Rush",
+   "period": 2,
+   "clock": "8:57",
+   "distance": 1,
+   "yardLine": 80,
+   "team": "3",
+   "text": "D.Swift left tackle pushed ob at NE 15 for 5 yards (C.Woodson)."
+  },
+  {
+   "id": "4018730101489",
+   "type": "Field Goal Good",
+   "period": 2,
+   "clock": "7:04",
+   "distance": 8,
+   "yardLine": 87,
+   "team": "3",
+   "text": "C.Santos 31 yard field goal is GOOD, Center-S.Daly, Holder-T.Taylor."
+  },
+  {
+   "id": "4018730102915",
+   "type": "Punt",
+   "period": 3,
+   "clock": "3:03",
+   "distance": 8,
+   "yardLine": 28,
+   "team": "3",
+   "text": "T.Taylor punts 65 yards to NE 7, Center-S.Daly. M.Jones to NE 26 for 19 yards (D.Hardy; B.Johnson)."
+  },
+  {
+   "id": "4018730103135",
+   "type": "Punt",
+   "period": 4,
+   "clock": "15:00",
+   "distance": 7,
+   "yardLine": 57,
+   "team": "17",
+   "text": "M.Wishnowsky punts 43 yards to CHI 14, Center-J.Ashby, fair catch by K.Raymond."
+  },
+  {
+   "id": "4018730103386",
+   "type": "Pass Reception",
+   "period": 4,
+   "clock": "9:40",
+   "distance": 2,
+   "yardLine": 57,
+   "team": "3",
+   "text": "(9:40) (Shotgun) C.Williams pass short middle to C.Loveland to NE 34 for 9 yards (C.Woods).\nPenalty on NE-C.Gonzalez, Il"
+  },
+  {
+   "id": "4018730103496",
+   "type": "Field Goal Missed",
+   "period": 4,
+   "clock": "8:02",
+   "distance": 11,
+   "yardLine": 65,
+   "team": "3",
+   "text": "C.Santos 53 yard field goal is No Good, Hit Right Upright, Center-S.Daly, Holder-T.Taylor."
+  },
+  {
+   "id": "4018730103592",
+   "type": "Punt",
+   "period": 4,
+   "clock": "6:28",
+   "distance": 7,
+   "yardLine": 54,
+   "team": "17",
+   "text": "M.Wishnowsky punts 45 yards to CHI 9, Center-J.Ashby, fair catch by K.Raymond."
+  },
+  {
+   "id": "4018730103945",
+   "type": "Field Goal Good",
+   "period": 4,
+   "clock": "1:34",
+   "distance": 15,
+   "yardLine": 60,
+   "team": "3",
+   "text": "C.Santos 58 yard field goal is GOOD, Center-S.Daly, Holder-T.Taylor."
+  }
+ ],
+ "chiPunts": [
+  {
+   "id": "401873010605",
+   "start": {
+    "down": 4,
+    "distance": 7,
+    "yardLine": 24,
+    "yardsToEndzone": 24,
+    "downDistanceText": "4th & 7 at CHI 24",
+    "shortDownDistanceText": "4th & 7",
+    "possessionText": "CHI 24",
+    "team": {
+     "id": "3"
+    }
+   },
+   "text": "T.Taylor punts 42 yards to NE 34, Center-S.Daly, fair catch by M.Jones."
+  },
+  {
+   "id": "4018730102915",
+   "start": {
+    "down": 4,
+    "distance": 8,
+    "yardLine": 28,
+    "yardsToEndzone": 28,
+    "downDistanceText": "4th & 8 at CHI 28",
+    "shortDownDistanceText": "4th & 8",
+    "possessionText": "CHI 28",
+    "team": {
+     "id": "3"
+    }
+   },
+   "text": "T.Taylor punts 65 yards to NE 7, Center-S.Daly. M.Jones to NE 26 for 19 yards (D.Hardy; B.Johnson)."
+  }
+ ],
+ "snapshots": [
+  {
+   "seen": "2026-10-23T00:48:22.726Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 1,
+   "clock": "1:43",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 3,
+   "awayScore": 0,
+   "down": 1,
+   "distance": 4,
+   "yardLine": 96,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "401873010820",
+    "type": "Timeout",
+    "text": "Timeout #1 by CHI at 01:43.",
+    "start": {
+     "yardLine": 96,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T00:49:35.019Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 1,
+   "clock": "1:38",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 9,
+   "awayScore": 0,
+   "down": -1,
+   "distance": 10,
+   "yardLine": 100,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "401873010832",
+    "type": "Rushing Touchdown",
+    "text": "D.Swift left end for 4 yards, TOUCHDOWN.",
+    "start": {
+     "yardLine": 96,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T00:50:05.583Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 1,
+   "clock": "1:38",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": -1,
+   "distance": 0,
+   "yardLine": 85,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "401873010870",
+    "type": "Official Timeout",
+    "text": "Official Timeout at 01:38.",
+    "start": {
+     "yardLine": 85,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T00:53:20.133Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 1,
+   "clock": "1:38",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 74,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "401873010877",
+    "type": "Kickoff",
+    "text": "C.Santos kicks 61 yards from CHI 35 to NE 4. C.Kiner to NE 26 for 22 yards (D.Hardy).",
+    "start": {
+     "yardLine": 35,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T00:53:50.653Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 1,
+   "clock": "1:32",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 2,
+   "distance": 6,
+   "yardLine": 70,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "401873010907",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short middle to R.Stevenson to NE 30 for 4 yards (N.Sewell).",
+    "start": {
+     "yardLine": 74,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T00:54:31.430Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 1,
+   "clock": "0:56",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 3,
+   "distance": 2,
+   "yardLine": 66,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "401873010932",
+    "type": "Rush",
+    "text": "R.Stevenson left end to NE 34 for 4 yards (A.Booker).",
+    "start": {
+     "yardLine": 70,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T00:55:01.756Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 1,
+   "clock": "0:13",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 3,
+   "distance": 2,
+   "yardLine": 66,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "401873010932",
+    "type": "Rush",
+    "text": "R.Stevenson left end to NE 34 for 4 yards (A.Booker).",
+    "start": {
+     "yardLine": 70,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T00:55:11.858Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "15:00",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 51,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "401873010979",
+    "type": "End Period",
+    "text": "END QUARTER 1",
+    "start": {
+     "yardLine": 51,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T00:58:35.235Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "15:00",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 2,
+   "distance": 1,
+   "yardLine": 42,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "401873010999",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short middle to R.Stevenson to CHI 42 for 9 yards (D.Bush, N.Sewell).",
+    "start": {
+     "yardLine": 51,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T00:59:15.890Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "14:26",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 3,
+   "distance": 1,
+   "yardLine": 42,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101024",
+    "type": "Rush",
+    "text": "D.Maye up the middle to CHI 42 for no gain (N.Gallimore).",
+    "start": {
+     "yardLine": 42,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:00:06.591Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "13:44",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 36,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101046",
+    "type": "Penalty",
+    "text": "(Shotgun) C.Lomu reported in as eligible.  PENALTY on CHI, Defensive Too Many Men on Field, 6 yards, enforced at CHI 42 ",
+    "start": {
+     "yardLine": 42,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:00:47.227Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "13:31",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 20,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101081",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short left to H.Henry to CHI 20 for 16 yards (T.Stevenson).",
+    "start": {
+     "yardLine": 36,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:01:18.148Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "12:54",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 1,
+   "distance": 7,
+   "yardLine": 7,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101106",
+    "type": "Rush",
+    "text": "R.Stevenson left guard to CHI 7 for 13 yards (C.Lewis; T.Stevenson).",
+    "start": {
+     "yardLine": 20,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:01:38.662Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "12:16",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 1,
+   "distance": 7,
+   "yardLine": 7,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101106",
+    "type": "Rush",
+    "text": "R.Stevenson left guard to CHI 7 for 13 yards (C.Lewis; T.Stevenson).",
+    "start": {
+     "yardLine": 20,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:01:48.881Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "12:16",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 2,
+   "distance": 7,
+   "yardLine": 7,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101128",
+    "type": "Rush",
+    "text": "R.Stevenson left end to CHI 7 for no gain (D.Jackson).",
+    "start": {
+     "yardLine": 7,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:02:09.551Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "11:37",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 2,
+   "distance": 7,
+   "yardLine": 7,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101128",
+    "type": "Rush",
+    "text": "R.Stevenson left end to CHI 7 for no gain (D.Jackson).",
+    "start": {
+     "yardLine": 7,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:02:39.755Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "11:37",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 0,
+   "down": 3,
+   "distance": 1,
+   "yardLine": 1,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101150",
+    "type": "Rush",
+    "text": "(Shotgun) D.Maye scrambles right guard to CHI 1 for 6 yards (C.Phillips).",
+    "start": {
+     "yardLine": 7,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:04:32.358Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "11:37",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 6,
+   "down": -1,
+   "distance": 10,
+   "yardLine": 0,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101150",
+    "type": "Rushing Touchdown",
+    "text": "(Shotgun) D.Maye scrambles right guard to CHI 1 for 6 yards (C.Phillips).New England challenged the short of the goal li",
+    "start": {
+     "yardLine": 7,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:06:14.188Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "11:33",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 65,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "-462615",
+    "type": "Extra Point Good",
+    "text": "(Andy Borregales Kick)",
+    "start": {
+     "yardLine": 15,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:08:47.030Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "11:33",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 57,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101228",
+    "type": "Kickoff",
+    "text": "A.Borregales kicks 60 yards from NE 35 to CHI 5. Z.Thomas pushed ob at NE 48 for 47 yards (K.Vildor).\nPENALTY on NE-D.Mu",
+    "start": {
+     "yardLine": 65,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:09:17.587Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "11:26",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 70,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101267",
+    "type": "Pass Reception",
+    "text": "C.Williams pass short left to C.Kmet pushed ob at NE 30 for 13 yards (C.Gonzalez).",
+    "start": {
+     "yardLine": 57,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:09:48.115Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "11:26",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 11,
+   "yardLine": 69,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101297",
+    "type": "Sack",
+    "text": "C.Williams sacked at NE 31 for -1 yards (L.Taylor).",
+    "start": {
+     "yardLine": 70,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:09:58.297Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "10:55",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 11,
+   "yardLine": 69,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101297",
+    "type": "Sack",
+    "text": "C.Williams sacked at NE 31 for -1 yards (L.Taylor).",
+    "start": {
+     "yardLine": 70,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:10:49.196Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "10:09",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 3,
+   "distance": 6,
+   "yardLine": 74,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101317",
+    "type": "Rush",
+    "text": "(Shotgun) D.Swift left guard to NE 26 for 5 yards (C.Elliss; R.Spillane).",
+    "start": {
+     "yardLine": 69,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:13:42.369Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "9:37",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 3,
+   "distance": 6,
+   "yardLine": 74,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101317",
+    "type": "Rush",
+    "text": "(Shotgun) D.Swift left guard to NE 26 for 5 yards (C.Elliss; R.Spillane). NE-K.Byard was injured during the play.",
+    "start": {
+     "yardLine": 69,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:13:52.567Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "9:37",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 4,
+   "distance": 1,
+   "yardLine": 79,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101339",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass short middle to R.Odunze to NE 21 for 5 yards (R.Spillane; M.Jones).  (Virtual Measurement).",
+    "start": {
+     "yardLine": 74,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:14:02.728Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "9:37",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 4,
+   "distance": 1,
+   "yardLine": 80,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101339",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass short left to R.Odunze to NE 20 for 6 yards (R.Spillane; M.Jones).  (Virtual Measurement).",
+    "start": {
+     "yardLine": 74,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:14:43.573Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "8:57",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 4,
+   "distance": 1,
+   "yardLine": 80,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101339",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass short left to R.Odunze to NE 20 for 6 yards (R.Spillane; M.Jones).  (Virtual Measurement).",
+    "start": {
+     "yardLine": 74,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:14:53.789Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "8:57",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 85,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101368",
+    "type": "Rush",
+    "text": "D.Swift left tackle pushed ob at NE 15 for 5 yards (C.Woodson).",
+    "start": {
+     "yardLine": 80,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:15:24.458Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "8:20",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 85,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101368",
+    "type": "Rush",
+    "text": "D.Swift left tackle pushed ob at NE 15 for 5 yards (C.Woodson).",
+    "start": {
+     "yardLine": 80,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:15:34.622Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "8:20",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 3,
+   "yardLine": 92,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101395",
+    "type": "Rush",
+    "text": "L.Burden left end pushed ob at NE 8 for 7 yards (C.Elliss).",
+    "start": {
+     "yardLine": 85,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:16:15.376Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "7:49",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 3,
+   "yardLine": 92,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101395",
+    "type": "Rush",
+    "text": "L.Burden left end pushed ob at NE 8 for 7 yards (C.Elliss).",
+    "start": {
+     "yardLine": 85,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:16:56.061Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "7:49",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 3,
+   "distance": 9,
+   "yardLine": 86,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101422",
+    "type": "Rush",
+    "text": "J.Thuney left guard to NE 6 for 2 yards (C.Elliss).\nPENALTY on CHI-C.Williams, Illegal Forward Handoff, 6 yards, enforce",
+    "start": {
+     "yardLine": 92,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:17:26.584Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "7:12",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 3,
+   "distance": 9,
+   "yardLine": 86,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101422",
+    "type": "Rush",
+    "text": "J.Thuney left guard to NE 6 for 2 yards (C.Elliss).\nPENALTY on CHI-C.Williams, Illegal Forward Handoff, 6 yards, enforce",
+    "start": {
+     "yardLine": 92,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:17:36.770Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "7:12",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 10,
+   "awayScore": 7,
+   "down": 4,
+   "distance": 9,
+   "yardLine": 86,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101455",
+    "type": "Pass Incompletion",
+    "text": "(7:12) (Shotgun) C.Williams pass incomplete short left to R.Odunze.\nPenalty on CHI-R.Odunze, Offensive Pass Interference",
+    "start": {
+     "yardLine": 86,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:18:17.485Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "7:04",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": -1,
+   "distance": 10,
+   "yardLine": 100,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101489",
+    "type": "Field Goal Good",
+    "text": "C.Santos 31 yard field goal is GOOD, Center-S.Daly, Holder-T.Taylor.",
+    "start": {
+     "yardLine": 86,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:18:27.649Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "7:04",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": -1,
+   "distance": 0,
+   "yardLine": 35,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101501",
+    "type": "Official Timeout",
+    "text": "Official Timeout at 07:04.",
+    "start": {
+     "yardLine": 35,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:21:40.895Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "7:04",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 68,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101512",
+    "type": "Kickoff",
+    "text": "C.Santos kicks 62 yards from CHI 35 to NE 3. C.Kiner to NE 32 for 29 yards (J.Walker; D.Thieneman).",
+    "start": {
+     "yardLine": 35,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:22:21.559Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "6:57",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 68,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101512",
+    "type": "Kickoff",
+    "text": "C.Santos kicks 62 yards from CHI 35 to NE 3. C.Kiner to NE 32 for 29 yards (J.Walker; D.Thieneman).",
+    "start": {
+     "yardLine": 35,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:22:31.723Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "6:57",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 52,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101542",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short right to E.Chism to NE 48 for 16 yards (D.Thieneman).",
+    "start": {
+     "yardLine": 68,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:22:41.935Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "6:19",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 52,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101542",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short right to E.Chism to NE 48 for 16 yards (D.Thieneman).",
+    "start": {
+     "yardLine": 68,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:22:52.092Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "6:19",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 6,
+   "yardLine": 48,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101567",
+    "type": "Rush",
+    "text": "(Shotgun) C.Kiner right guard to CHI 48 for 4 yards (A.Booker).",
+    "start": {
+     "yardLine": 52,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:23:32.738Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "5:42",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 37,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101589",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short left to E.Raridon to CHI 37 for 11 yards (D.Jackson; T.Stevenson).",
+    "start": {
+     "yardLine": 48,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:24:03.224Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "5:04",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 37,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101589",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short left to E.Raridon to CHI 37 for 11 yards (D.Jackson; T.Stevenson).",
+    "start": {
+     "yardLine": 48,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:24:13.576Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "5:04",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 3,
+   "yardLine": 30,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101614",
+    "type": "Rush",
+    "text": "C.Kiner right guard to CHI 30 for 7 yards (A.Booker).",
+    "start": {
+     "yardLine": 37,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:24:54.402Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "4:20",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 15,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730101636",
+    "type": "Rush",
+    "text": "(Shotgun) D.Maye scrambles right end to CHI 15 for 15 yards (D.Thieneman).",
+    "start": {
+     "yardLine": 30,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:25:35.141Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "3:32",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 15,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101647",
+    "type": "Timeout",
+    "text": "Timeout #1 by NE at 03:32.",
+    "start": {
+     "yardLine": 15,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:26:36.185Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "3:31",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 15,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101647",
+    "type": "Timeout",
+    "text": "Timeout #1 by NE at 03:32.",
+    "start": {
+     "yardLine": 15,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:26:46.376Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "3:25",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 20,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101658",
+    "type": "Pass Interception Return",
+    "text": "(Shotgun) D.Maye pass deep right intended for E.Raridon INTERCEPTED by D.Jackson at CHI -1. Touchback.",
+    "start": {
+     "yardLine": 15,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:26:56.530Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "3:25",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 20,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101676",
+    "type": "Official Timeout",
+    "text": "Official Timeout at 03:25.",
+    "start": {
+     "yardLine": 20,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:29:29.348Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "3:24",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 20,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101676",
+    "type": "Official Timeout",
+    "text": "Official Timeout at 03:25.",
+    "start": {
+     "yardLine": 20,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:29:49.699Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "3:25",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 4,
+   "yardLine": 26,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101693",
+    "type": "Pass Reception",
+    "text": "C.Williams pass short right to C.Kmet pushed ob at CHI 26 for 6 yards (C.Elliss).",
+    "start": {
+     "yardLine": 20,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:30:10.039Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "3:02",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 3,
+   "distance": 4,
+   "yardLine": 26,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101730",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) C.Williams pass incomplete short middle to C.Loveland.",
+    "start": {
+     "yardLine": 26,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:30:50.549Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "2:58",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 3,
+   "distance": 4,
+   "yardLine": 26,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101730",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) C.Williams pass incomplete short middle to C.Loveland.",
+    "start": {
+     "yardLine": 26,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:31:31.252Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "2:58",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 31,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101753",
+    "type": "Penalty",
+    "text": "(Shotgun) C.Williams pass incomplete deep right.\nPENALTY on NE-C.Woods, Defensive Holding, 5 yards, enforced at CHI 26 -",
+    "start": {
+     "yardLine": 26,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:31:41.414Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "2:49",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 31,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101753",
+    "type": "Penalty",
+    "text": "(Shotgun) C.Williams pass incomplete deep right.\nPENALTY on NE-C.Woods, Defensive Holding, 5 yards, enforced at CHI 26 -",
+    "start": {
+     "yardLine": 26,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:31:51.561Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "2:50",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 31,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101753",
+    "type": "Penalty",
+    "text": "(Shotgun) C.Williams pass incomplete deep right.\nPENALTY on NE-C.Woods, Defensive Holding, 5 yards, enforced at CHI 26 -",
+    "start": {
+     "yardLine": 26,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:32:01.659Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "2:50",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 10,
+   "yardLine": 31,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101787",
+    "type": "Pass Incompletion",
+    "text": "C.Williams pass incomplete short right to C.Loveland (C.Woodson) [G.Jacas].",
+    "start": {
+     "yardLine": 31,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:33:02.648Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "2:43",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 10,
+   "yardLine": 31,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101787",
+    "type": "Pass Incompletion",
+    "text": "C.Williams pass incomplete short right to C.Loveland (C.Woodson) [G.Jacas].",
+    "start": {
+     "yardLine": 31,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:33:23.054Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "2:43",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 11,
+   "yardLine": 30,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101810",
+    "type": "Rush",
+    "text": "(Shotgun) R.Johnson left end pushed ob at CHI 43 for 12 yards (C.Woodson).\nPENALTY on CHI-Z.Thomas, Offensive Holding, 1",
+    "start": {
+     "yardLine": 31,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:34:24.075Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "2:21",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 67,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101848",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass deep middle to L.Burden to NE 48 for 22 yards (C.Woods).\nPENALTY on NE-G.Jacas, Roughing the P",
+    "start": {
+     "yardLine": 30,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:34:44.431Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "2:00",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 67,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101866",
+    "type": "Two-minute warning",
+    "text": "Two-Minute Warning",
+    "start": {
+     "yardLine": 67,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:37:47.682Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "2:00",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 4,
+   "yardLine": 73,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101884",
+    "type": "Rush",
+    "text": "D.Swift right tackle to NE 27 for 6 yards (C.Durden; M.Jones).",
+    "start": {
+     "yardLine": 67,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:38:28.418Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "1:15",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 83,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101918",
+    "type": "Rush",
+    "text": "D.Swift left end to NE 17 for 10 yards (E.Ponder).",
+    "start": {
+     "yardLine": 73,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:38:58.996Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:34",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 83,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101918",
+    "type": "Rush",
+    "text": "D.Swift left end to NE 17 for 10 yards (E.Ponder).",
+    "start": {
+     "yardLine": 73,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:39:09.185Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:34",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 10,
+   "yardLine": 83,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101940",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) C.Williams pass incomplete short left.",
+    "start": {
+     "yardLine": 83,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:39:39.758Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:27",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 2,
+   "distance": 10,
+   "yardLine": 83,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101940",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) C.Williams pass incomplete short left.",
+    "start": {
+     "yardLine": 83,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:40:00.105Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:21",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 3,
+   "distance": 17,
+   "yardLine": 76,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101963",
+    "type": "Sack",
+    "text": "(Shotgun) C.Williams sacked at NE 24 for -7 yards (M.Jones).",
+    "start": {
+     "yardLine": 83,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:40:10.311Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:21",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 13,
+   "awayScore": 7,
+   "down": 3,
+   "distance": 17,
+   "yardLine": 76,
+   "possession": "3",
+   "homeTimeouts": 1,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101973",
+    "type": "Timeout",
+    "text": "Timeout #2 by CHI at 00:21.",
+    "start": {
+     "yardLine": 76,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:41:31.673Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:14",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 19,
+   "awayScore": 7,
+   "down": -1,
+   "distance": 10,
+   "yardLine": 100,
+   "possession": null,
+   "homeTimeouts": 1,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730101983",
+    "type": "Passing Touchdown",
+    "text": "(Shotgun) C.Williams pass short right to L.Burden for 24 yards, TOUCHDOWN.",
+    "start": {
+     "yardLine": 76,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:41:52.264Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:14",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 35,
+   "possession": "3",
+   "homeTimeouts": 1,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "-462784",
+    "type": "Extra Point Good",
+    "text": "(Cairo Santos Kick)",
+    "start": {
+     "yardLine": 85,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:43:34.471Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:14",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 66,
+   "possession": null,
+   "homeTimeouts": 1,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730102031",
+    "type": "Kickoff",
+    "text": "C.Santos kicks 56 yards from CHI 35 to NE 9. K.Williams to NE 34 for 25 yards (E.Hicks).",
+    "start": {
+     "yardLine": 35,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:44:25.416Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:14",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 48,
+   "possession": "17",
+   "homeTimeouts": 1,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730102054",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass deep middle to A.Brown to CHI 48 for 18 yards (M.Muhammad).",
+    "start": {
+     "yardLine": 66,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:44:35.596Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:14",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 48,
+   "possession": "17",
+   "homeTimeouts": 1,
+   "awayTimeouts": 1,
+   "lastPlay": {
+    "id": "4018730102067",
+    "type": "Timeout",
+    "text": "Timeout #2 by NE at 00:03.",
+    "start": {
+     "yardLine": 48,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:44:45.789Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:03",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 48,
+   "possession": "17",
+   "homeTimeouts": 1,
+   "awayTimeouts": 1,
+   "lastPlay": {
+    "id": "4018730102067",
+    "type": "Timeout",
+    "text": "Timeout #2 by NE at 00:03.",
+    "start": {
+     "yardLine": 48,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:45:27.041Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:03",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 7,
+   "down": -1,
+   "distance": 10,
+   "yardLine": 0,
+   "possession": null,
+   "homeTimeouts": 1,
+   "awayTimeouts": 1,
+   "lastPlay": {
+    "id": "4018730102079",
+    "type": "Passing Touchdown",
+    "text": "(Shotgun) D.Maye pass short right to R.Stevenson for 48 yards, TOUCHDOWN.",
+    "start": {
+     "yardLine": 48,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:45:47.453Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:03",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 65,
+   "possession": "17",
+   "homeTimeouts": 1,
+   "awayTimeouts": 1,
+   "lastPlay": {
+    "id": "-462799",
+    "type": "Extra Point Good",
+    "text": "(Andy Borregales Kick)",
+    "start": {
+     "yardLine": 15,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:45:57.624Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:03",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 7,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 15,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102127",
+    "type": "End of Half",
+    "text": "END QUARTER 2",
+    "start": {
+     "yardLine": 15,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:46:07.859Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:01",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 13,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 15,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102127",
+    "type": "End of Half",
+    "text": "END QUARTER 2",
+    "start": {
+     "yardLine": 15,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T01:46:18.071Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 2,
+   "clock": "0:00",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 15,
+   "possession": null,
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102127",
+    "type": "End of Half",
+    "text": "END QUARTER 2",
+    "start": {
+     "yardLine": 15,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:00:03.255Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "15:00",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 28,
+   "possession": null,
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102145",
+    "type": "Kickoff",
+    "text": "A.Borregales kicks 60 yards from NE 35 to CHI 5. Z.Thomas pushed ob at CHI 28 for 23 yards (M.Brown).",
+    "start": {
+     "yardLine": 65,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:00:34.014Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "14:54",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 2,
+   "distance": 3,
+   "yardLine": 35,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102173",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass short left to C.Loveland pushed ob at CHI 35 for 7 yards (C.Woodson).",
+    "start": {
+     "yardLine": 28,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:01:14.655Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "14:27",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 3,
+   "distance": 2,
+   "yardLine": 36,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102203",
+    "type": "Rush",
+    "text": "D.Swift left end pushed ob at CHI 36 for 1 yard (Dr.Jones).",
+    "start": {
+     "yardLine": 35,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:02:05.596Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "13:52",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 42,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102230",
+    "type": "Rush",
+    "text": "(Shotgun) C.Williams scrambles left end pushed ob at CHI 42 for 6 yards (C.Woods).",
+    "start": {
+     "yardLine": 36,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:02:36.188Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "13:12",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 41,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102230",
+    "type": "Rush",
+    "text": "(Shotgun) C.Williams scrambles left end pushed ob at CHI 41 for 5 yards (C.Woods).",
+    "start": {
+     "yardLine": 36,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:02:46.367Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "13:12",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 2,
+   "distance": 1,
+   "yardLine": 50,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102257",
+    "type": "Rush",
+    "text": "(Shotgun) D.Swift right end to 50 for 9 yards (M.Jones).",
+    "start": {
+     "yardLine": 41,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:03:27.043Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "13:12",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 62,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102279",
+    "type": "Pass Reception",
+    "text": "C.Williams pass short middle to D.Swift to NE 38 for 12 yards (K.Byard).",
+    "start": {
+     "yardLine": 50,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:03:37.205Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "12:32",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 62,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102279",
+    "type": "Pass Reception",
+    "text": "C.Williams pass short middle to D.Swift to NE 38 for 12 yards (K.Byard).",
+    "start": {
+     "yardLine": 50,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:04:17.844Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "12:32",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 20,
+   "yardLine": 52,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102304",
+    "type": "Penalty",
+    "text": "(Shotgun) C.Williams pass short right to R.Odunze to NE 35 for 3 yards (M.Jones) [G.Jacas].\nPENALTY on CHI-G.Bradbury, O",
+    "start": {
+     "yardLine": 62,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:04:28.001Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "11:52",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 20,
+   "yardLine": 51,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102304",
+    "type": "Penalty",
+    "text": "(Shotgun) C.Williams pass short right to R.Odunze to NE 35 for 3 yards (M.Jones) [G.Jacas].\nPENALTY on CHI-G.Bradbury, O",
+    "start": {
+     "yardLine": 62,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:04:48.348Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "11:27",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 20,
+   "yardLine": 51,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102304",
+    "type": "Penalty",
+    "text": "(Shotgun) C.Williams pass short right to R.Odunze to NE 35 for 4 yards (M.Jones) [G.Jacas].PENALTY on CHI-G.Bradbury, Of",
+    "start": {
+     "yardLine": 61,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:04:58.512Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "11:27",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 2,
+   "distance": 14,
+   "yardLine": 57,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102340",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass short right to C.Loveland to NE 43 for 6 yards (K.Byard).",
+    "start": {
+     "yardLine": 51,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:05:18.854Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "11:04",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 2,
+   "distance": 14,
+   "yardLine": 57,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102340",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass short right to C.Loveland to NE 43 for 6 yards (K.Byard).",
+    "start": {
+     "yardLine": 51,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:05:29.041Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "11:04",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 79,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102365",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass deep middle to C.Loveland to NE 21 for 22 yards (J.Reed).",
+    "start": {
+     "yardLine": 57,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:05:49.380Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "10:27",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 79,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102365",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass deep middle to C.Loveland to NE 21 for 22 yards (J.Reed).",
+    "start": {
+     "yardLine": 57,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:05:59.671Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "10:27",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 20,
+   "awayScore": 14,
+   "down": 2,
+   "distance": 1,
+   "yardLine": 88,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102390",
+    "type": "Rush",
+    "text": "C.Williams scrambles right end to NE 12 for 9 yards (M.Jones).",
+    "start": {
+     "yardLine": 79,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:07:00.676Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "9:41",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 26,
+   "awayScore": 14,
+   "down": -1,
+   "distance": 10,
+   "yardLine": 100,
+   "possession": null,
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102412",
+    "type": "Passing Touchdown",
+    "text": "C.Williams pass short left to C.Loveland for 12 yards, TOUCHDOWN.",
+    "start": {
+     "yardLine": 88,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:07:21.045Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "9:41",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 26,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 35,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "-462862",
+    "type": "Extra Point Good",
+    "text": "(Cairo Santos Kick)",
+    "start": {
+     "yardLine": 85,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:07:41.351Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "9:41",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 14,
+   "down": -1,
+   "distance": 0,
+   "yardLine": 85,
+   "possession": null,
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102446",
+    "type": "Official Timeout",
+    "text": "Official Timeout at 09:41.",
+    "start": {
+     "yardLine": 85,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:10:25.455Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "9:41",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 80,
+   "possession": null,
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102453",
+    "type": "Kickoff",
+    "text": "C.Santos kicks 65 yards from CHI 35 to landing zone to end zone, Touchback to the NE 20.",
+    "start": {
+     "yardLine": 35,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:11:32.520Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "9:41",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 66,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102482",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short right to H.Henry ran ob at NE 34 for 14 yards.",
+    "start": {
+     "yardLine": 80,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:11:42.617Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "9:40",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 14,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 66,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102482",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short right to H.Henry ran ob at NE 34 for 14 yards.",
+    "start": {
+     "yardLine": 80,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:12:14.177Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "9:07",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 14,
+   "down": 2,
+   "distance": 10,
+   "yardLine": 66,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102512",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) D.Maye pass incomplete deep left to A.Brown (M.Muhammad).",
+    "start": {
+     "yardLine": 66,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:13:02.402Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "8:59",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 14,
+   "down": 3,
+   "distance": 7,
+   "yardLine": 63,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102535",
+    "type": "Rush",
+    "text": "(Shotgun) R.Stevenson left guard to NE 37 for 3 yards (J.Lynch).",
+    "start": {
+     "yardLine": 66,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:21:19.919Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "3:46",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 20,
+   "down": -1,
+   "distance": 10,
+   "yardLine": 0,
+   "possession": null,
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102763",
+    "type": "Passing Touchdown",
+    "text": "(Shotgun) D.Maye pass deep right to E.Raridon for 30 yards, TOUCHDOWN.",
+    "start": {
+     "yardLine": 30,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:21:30.206Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "3:46",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 65,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "-462922",
+    "type": "Extra Point Good",
+    "text": "(Andy Borregales Kick)",
+    "start": {
+     "yardLine": 15,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:21:40.415Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "3:46",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": -1,
+   "distance": 0,
+   "yardLine": 15,
+   "possession": null,
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102797",
+    "type": "Official Timeout",
+    "text": "Official Timeout at 03:46.",
+    "start": {
+     "yardLine": 15,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:26:46.569Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "3:08",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 7,
+   "yardLine": 29,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102892",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) C.Williams pass incomplete deep right to C.Loveland.",
+    "start": {
+     "yardLine": 29,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:27:07.079Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "3:08",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 8,
+   "yardLine": 28,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102892",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) C.Williams pass incomplete deep right to C.Loveland.",
+    "start": {
+     "yardLine": 28,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:27:17.402Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "3:03",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 8,
+   "yardLine": 28,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102892",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) C.Williams pass incomplete deep right to C.Loveland.",
+    "start": {
+     "yardLine": 28,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:27:27.574Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "2:50",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 74,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102915",
+    "type": "Punt",
+    "text": "T.Taylor punts 65 yards to NE 7, Center-S.Daly. M.Jones to NE 26 for 19 yards (D.Hardy).",
+    "start": {
+     "yardLine": 28,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:29:43.103Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "2:50",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 74,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102928",
+    "type": "Official Timeout",
+    "text": "Official Timeout at 02:50.",
+    "start": {
+     "yardLine": 74,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:30:34.569Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "2:49",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 60,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102941",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short middle to H.Henry to NE 40 for 14 yards (C.Lewis).",
+    "start": {
+     "yardLine": 74,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:31:15.449Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "2:13",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 9,
+   "yardLine": 59,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102973",
+    "type": "Rush",
+    "text": "(Shotgun) R.Stevenson right guard to NE 41 for 1 yard (K.Gordon).",
+    "start": {
+     "yardLine": 60,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:31:45.882Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "2:13",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 1,
+   "yardLine": 51,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102995",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short middle to D.Douglas to NE 49 for 8 yards (D.Thieneman).",
+    "start": {
+     "yardLine": 59,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:31:56.004Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "1:33",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 1,
+   "yardLine": 51,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102995",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short middle to D.Douglas to NE 49 for 8 yards (D.Thieneman).",
+    "start": {
+     "yardLine": 59,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:32:16.240Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "0:58",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 1,
+   "yardLine": 51,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102995",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short middle to D.Douglas to NE 49 for 8 yards (D.Thieneman).",
+    "start": {
+     "yardLine": 59,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:32:56.710Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "0:55",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 1,
+   "yardLine": 51,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730102995",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short middle to D.Douglas to NE 49 for 8 yards (D.Thieneman).",
+    "start": {
+     "yardLine": 59,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:33:37.302Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "0:54",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 6,
+   "yardLine": 56,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103020",
+    "type": "Penalty",
+    "text": "C.Lomu reported in as eligible.  PENALTY on NE-W.Campbell, False Start, 5 yards, enforced at NE 49 - No Play.",
+    "start": {
+     "yardLine": 51,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:34:18.151Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "0:40",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 6,
+   "yardLine": 56,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103020",
+    "type": "Penalty",
+    "text": "C.Lomu reported in as eligible.  PENALTY on NE-W.Campbell, False Start, 5 yards, enforced at NE 49 - No Play.",
+    "start": {
+     "yardLine": 51,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:34:28.274Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 3,
+   "clock": "0:40",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 2,
+   "yardLine": 52,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103057",
+    "type": "Rush",
+    "text": "(Shotgun) D.Maye scrambles left end to NE 48 for 4 yards (D.Bush).",
+    "start": {
+     "yardLine": 56,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:34:38.384Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "15:00",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 2,
+   "yardLine": 52,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103086",
+    "type": "End Period",
+    "text": "END QUARTER 3",
+    "start": {
+     "yardLine": 52,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:38:21.270Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "15:00",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 7,
+   "yardLine": 57,
+   "possession": "17",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103106",
+    "type": "Penalty",
+    "text": "(Shotgun) PENALTY on NE-M.Pryor, False Start, 5 yards, enforced at NE 48 - No Play.",
+    "start": {
+     "yardLine": 52,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:38:51.670Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "14:53",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 14,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103135",
+    "type": "Punt",
+    "text": "M.Wishnowsky punts 43 yards to CHI 14, Center-J.Ashby, fair catch by K.Raymond.",
+    "start": {
+     "yardLine": 57,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:39:01.805Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "14:53",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 14,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103145",
+    "type": "Official Timeout",
+    "text": "Official Timeout at 14:53.",
+    "start": {
+     "yardLine": 14,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:40:22.788Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "14:48",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 15,
+   "yardLine": 9,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103155",
+    "type": "Penalty",
+    "text": "D.Swift right tackle to CHI 16 for 2 yards (G.Jacas).\nPENALTY on CHI, Illegal Shift, 5 yards, enforced at CHI 14 - No Pl",
+    "start": {
+     "yardLine": 14,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:41:03.277Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "14:29",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 8,
+   "yardLine": 16,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103195",
+    "type": "Rush",
+    "text": "(Shotgun) D.Swift right end to CHI 16 for 7 yards (M.Jones).",
+    "start": {
+     "yardLine": 9,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:41:33.652Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "13:50",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 8,
+   "yardLine": 16,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103195",
+    "type": "Rush",
+    "text": "(Shotgun) D.Swift right end to CHI 16 for 7 yards (M.Jones).",
+    "start": {
+     "yardLine": 9,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:41:43.792Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "13:50",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 11,
+   "yardLine": 13,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103217",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass short right to D.Swift pushed ob at CHI 13 for -3 yards (C.Elliss).",
+    "start": {
+     "yardLine": 16,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:42:24.294Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "13:14",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 34,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103247",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass deep middle to R.Odunze to CHI 34 for 21 yards (C.Gonzalez).",
+    "start": {
+     "yardLine": 13,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:42:54.670Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "12:36",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 34,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103247",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass deep middle to R.Odunze to CHI 34 for 21 yards (C.Gonzalez).",
+    "start": {
+     "yardLine": 13,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:43:04.825Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "12:36",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 5,
+   "yardLine": 39,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103272",
+    "type": "Rush",
+    "text": "D.Swift right tackle to CHI 39 for 5 yards (C.Woodson).",
+    "start": {
+     "yardLine": 34,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:43:25.106Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "11:54",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 5,
+   "yardLine": 39,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103272",
+    "type": "Rush",
+    "text": "D.Swift right tackle to CHI 39 for 5 yards (C.Woodson).",
+    "start": {
+     "yardLine": 34,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:43:45.382Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "11:54",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 49,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103294",
+    "type": "Rush",
+    "text": "(Shotgun) D.Swift right tackle to CHI 49 for 10 yards (K.Byard; C.Woods).",
+    "start": {
+     "yardLine": 39,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:44:05.648Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "11:10",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 49,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103294",
+    "type": "Rush",
+    "text": "(Shotgun) D.Swift right tackle to CHI 49 for 10 yards (K.Byard; C.Woods).",
+    "start": {
+     "yardLine": 39,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:44:25.873Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "11:10",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 6,
+   "yardLine": 53,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103316",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass short right to D.Swift to NE 47 for 4 yards (C.Gonzalez).",
+    "start": {
+     "yardLine": 49,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:45:06.588Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "10:29",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 2,
+   "yardLine": 57,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103341",
+    "type": "Rush",
+    "text": "R.Johnson right end to NE 43 for 4 yards (C.Elliss).",
+    "start": {
+     "yardLine": 53,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:45:47.273Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "9:44",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 2,
+   "yardLine": 57,
+   "possession": "3",
+   "homeTimeouts": 3,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103363",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) C.Williams pass incomplete short middle to C.Loveland.",
+    "start": {
+     "yardLine": 57,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:46:27.767Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "9:40",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 2,
+   "yardLine": 57,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103375",
+    "type": "Timeout",
+    "text": "Timeout #1 by CHI at 09:40.",
+    "start": {
+     "yardLine": 57,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:48:09.002Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "9:40",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 66,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103386",
+    "type": "Pass Reception",
+    "text": "(9:40) (Shotgun) C.Williams pass short middle to C.Loveland to NE 34 for 9 yards (C.Woods).\nPenalty on NE-C.Gonzalez, Il",
+    "start": {
+     "yardLine": 57,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:48:29.249Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "9:20",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 66,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103386",
+    "type": "Pass Reception",
+    "text": "(9:40) (Shotgun) C.Williams pass short middle to C.Loveland to NE 34 for 9 yards (C.Woods).\nPenalty on NE-C.Gonzalez, Il",
+    "start": {
+     "yardLine": 57,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:48:49.484Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "9:20",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 10,
+   "yardLine": 66,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103429",
+    "type": "Rush",
+    "text": "D.Swift right end to NE 34 for no gain (C.Woodson; C.Elliss).",
+    "start": {
+     "yardLine": 66,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:49:19.846Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "9:20",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 11,
+   "yardLine": 65,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103451",
+    "type": "Rush",
+    "text": "(Shotgun) D.Swift right guard to NE 35 for -1 yards (M.Jones; M.Williams).",
+    "start": {
+     "yardLine": 66,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:49:29.992Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "8:41",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 11,
+   "yardLine": 65,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103451",
+    "type": "Rush",
+    "text": "(Shotgun) D.Swift right guard to NE 35 for -1 yards (M.Jones; M.Williams).",
+    "start": {
+     "yardLine": 66,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:49:50.260Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "8:08",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 11,
+   "yardLine": 65,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103473",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) C.Williams pass incomplete deep right [C.Elliss].",
+    "start": {
+     "yardLine": 65,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:50:20.641Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "8:01",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 11,
+   "yardLine": 65,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103473",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) C.Williams pass incomplete deep right [C.Elliss].",
+    "start": {
+     "yardLine": 65,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:50:30.765Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "8:01",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 65,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103496",
+    "type": "Field Goal Missed",
+    "text": "C.Santos 53 yard field goal is No Good, Hit Right Upright, Center-S.Daly, Holder-T.Taylor.",
+    "start": {
+     "yardLine": 65,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:50:51.033Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "7:57",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 57,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103507",
+    "type": "Official Timeout",
+    "text": "Official Timeout at 07:57.",
+    "start": {
+     "yardLine": 57,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:53:43.211Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "7:57",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 10,
+   "yardLine": 57,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103517",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) D.Maye pass incomplete deep left to D.Douglas.",
+    "start": {
+     "yardLine": 57,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:54:23.745Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "7:52",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 10,
+   "yardLine": 57,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103517",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) D.Maye pass incomplete deep left to D.Douglas.",
+    "start": {
+     "yardLine": 57,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:54:33.848Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "7:52",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 19,
+   "yardLine": 66,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103547",
+    "type": "Sack",
+    "text": "(Shotgun) D.Maye sacked at NE 34 for -9 yards (sack split by D.Thieneman and G.Jarrett).",
+    "start": {
+     "yardLine": 57,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:54:43.988Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "7:10",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 19,
+   "yardLine": 66,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103547",
+    "type": "Sack",
+    "text": "(Shotgun) D.Maye sacked at NE 34 for -9 yards (sack split by D.Thieneman and G.Jarrett).",
+    "start": {
+     "yardLine": 57,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:55:14.350Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "7:10",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 7,
+   "yardLine": 54,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103567",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short middle to R.Stevenson to NE 46 for 12 yards (D.Hardy; D.Jackson).",
+    "start": {
+     "yardLine": 66,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:55:34.583Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "6:28",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 7,
+   "yardLine": 54,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103567",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short middle to R.Stevenson to NE 46 for 12 yards (D.Hardy; D.Jackson).",
+    "start": {
+     "yardLine": 66,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:55:44.707Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "6:22",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 7,
+   "yardLine": 54,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103567",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short middle to R.Stevenson to NE 46 for 12 yards (D.Hardy; D.Jackson).",
+    "start": {
+     "yardLine": 66,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:55:54.813Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "6:22",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 9,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103592",
+    "type": "Punt",
+    "text": "M.Wishnowsky punts 45 yards to CHI 9, Center-J.Ashby, fair catch by K.Raymond.",
+    "start": {
+     "yardLine": 54,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:56:04.946Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "6:22",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 9,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103602",
+    "type": "Official Timeout",
+    "text": "Official Timeout at 06:22.",
+    "start": {
+     "yardLine": 9,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:58:57.155Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "6:22",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 9,
+   "yardLine": 10,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103612",
+    "type": "Rush",
+    "text": "(Shotgun) D.Swift right tackle to CHI 10 for 1 yard (L.Taylor; C.Elliss).",
+    "start": {
+     "yardLine": 9,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:59:27.512Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "5:45",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 1,
+   "yardLine": 18,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103641",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass short right to C.Kmet to CHI 18 for 8 yards (R.Spillane; C.Gonzalez). CHI-C.Kmet was injured d",
+    "start": {
+     "yardLine": 10,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T02:59:47.763Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "5:34",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 1,
+   "yardLine": 18,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103655",
+    "type": "Official Timeout",
+    "text": "Official Timeout at 05:34.",
+    "start": {
+     "yardLine": 18,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:03:10.523Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "5:27",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 1,
+   "yardLine": 18,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103655",
+    "type": "Official Timeout",
+    "text": "Official Timeout at 05:34.",
+    "start": {
+     "yardLine": 18,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:03:20.924Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "5:27",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 9,
+   "yardLine": 10,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103669",
+    "type": "Rush",
+    "text": "L.Newman reported in as eligible.  D.Swift left end to CHI 26 for 8 yards (C.Woodson).\nPENALTY on CHI-Z.Thomas, Offensiv",
+    "start": {
+     "yardLine": 18,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:03:51.373Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "4:59",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 9,
+   "yardLine": 10,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103669",
+    "type": "Rush",
+    "text": "L.Newman reported in as eligible.  D.Swift left end to CHI 26 for 8 yards (C.Woodson).\nPENALTY on CHI-Z.Thomas, Offensiv",
+    "start": {
+     "yardLine": 18,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:04:01.526Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "4:59",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 31,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103711",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass deep right to R.Odunze to CHI 31 for 21 yards (M.Jones).",
+    "start": {
+     "yardLine": 10,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:04:32.051Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "4:12",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 12,
+   "yardLine": 29,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103736",
+    "type": "Rush",
+    "text": "D.Swift left guard to CHI 29 for -2 yards (M.Williams).",
+    "start": {
+     "yardLine": 31,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:05:12.596Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "3:32",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 12,
+   "yardLine": 29,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103736",
+    "type": "Rush",
+    "text": "D.Swift left guard to CHI 29 for -2 yards (M.Williams).",
+    "start": {
+     "yardLine": 31,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:05:22.755Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "3:32",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 50,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103758",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass short right to R.Odunze to 50 for 21 yards (C.Gonzalez; K.Byard).",
+    "start": {
+     "yardLine": 29,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:05:53.159Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "2:46",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 50,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103758",
+    "type": "Pass Reception",
+    "text": "(Shotgun) C.Williams pass short right to R.Odunze to 50 for 21 yards (C.Gonzalez; K.Byard).",
+    "start": {
+     "yardLine": 29,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:06:03.298Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "2:46",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 6,
+   "yardLine": 54,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103783",
+    "type": "Rush",
+    "text": "D.Swift left tackle to NE 46 for 4 yards (C.Woodson; R.Spillane).",
+    "start": {
+     "yardLine": 50,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:06:43.846Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "2:03",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 6,
+   "yardLine": 54,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103783",
+    "type": "Rush",
+    "text": "D.Swift left tackle to NE 46 for 4 yards (C.Woodson; R.Spillane).",
+    "start": {
+     "yardLine": 50,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:06:53.966Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:56",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 1,
+   "yardLine": 59,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103819",
+    "type": "Two-minute warning",
+    "text": "Two-Minute Warning",
+    "start": {
+     "yardLine": 59,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:08:55.807Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:56",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 65,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 3,
+   "lastPlay": {
+    "id": "4018730103832",
+    "type": "Penalty",
+    "text": "PENALTY on NE-C.Durden, Encroachment, 6 yards, enforced at NE 41 - No Play.",
+    "start": {
+     "yardLine": 59,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:09:46.691Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:51",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 7,
+   "yardLine": 68,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730103875",
+    "type": "Timeout",
+    "text": "Timeout #1 by NE at 01:51.",
+    "start": {
+     "yardLine": 68,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:10:57.954Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:46",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 5,
+   "yardLine": 70,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 2,
+   "lastPlay": {
+    "id": "4018730103887",
+    "type": "Rush",
+    "text": "L.Newman reported in as eligible.  D.Swift right tackle to NE 30 for 2 yards (C.Durden).",
+    "start": {
+     "yardLine": 68,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:11:08.136Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:46",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 5,
+   "yardLine": 70,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 1,
+   "lastPlay": {
+    "id": "4018730103903",
+    "type": "Timeout",
+    "text": "Timeout #2 by NE at 01:46.",
+    "start": {
+     "yardLine": 70,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:11:48.836Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:45",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 3,
+   "distance": 5,
+   "yardLine": 70,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 1,
+   "lastPlay": {
+    "id": "4018730103903",
+    "type": "Timeout",
+    "text": "Timeout #2 by NE at 01:46.",
+    "start": {
+     "yardLine": 70,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:11:58.977Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:39",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 15,
+   "yardLine": 60,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 1,
+   "lastPlay": {
+    "id": "4018730103918",
+    "type": "Sack",
+    "text": "(Shotgun) C.Williams sacked at NE 40 for -10 yards (C.Barmore).",
+    "start": {
+     "yardLine": 70,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:12:09.085Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:39",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 27,
+   "awayScore": 21,
+   "down": 4,
+   "distance": 15,
+   "yardLine": 60,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730103932",
+    "type": "Timeout",
+    "text": "Timeout #3 by NE at 01:39.",
+    "start": {
+     "yardLine": 60,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:14:31.457Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:34",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 21,
+   "down": -1,
+   "distance": 10,
+   "yardLine": 100,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730103945",
+    "type": "Field Goal Good",
+    "text": "C.Santos 58 yard field goal is GOOD, Center-S.Daly, Holder-T.Taylor.",
+    "start": {
+     "yardLine": 60,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:16:23.270Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:34",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 75,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730103975",
+    "type": "Kickoff",
+    "text": "C.Santos kicks 62 yards from CHI 35 to NE 3. K.Williams to NE 25 for 22 yards (B.Johnson; N.Sewell).",
+    "start": {
+     "yardLine": 35,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:16:33.386Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:28",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 75,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730103975",
+    "type": "Kickoff",
+    "text": "C.Santos kicks 62 yards from CHI 35 to NE 3. K.Williams to NE 25 for 22 yards (B.Johnson; N.Sewell).",
+    "start": {
+     "yardLine": 35,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:16:53.744Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:28",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 7,
+   "yardLine": 72,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730103998",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short right to H.Henry pushed ob at NE 28 for 3 yards (D.Thieneman).",
+    "start": {
+     "yardLine": 75,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:17:03.850Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:21",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 7,
+   "yardLine": 72,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730103998",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short right to H.Henry pushed ob at NE 28 for 3 yards (D.Thieneman; K.Gordon).",
+    "start": {
+     "yardLine": 75,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:17:34.226Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:21",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 58,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104028",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short right to A.Brown pushed ob at NE 42 for 14 yards (J.Johnson) [G.Jarrett].",
+    "start": {
+     "yardLine": 72,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:18:25.042Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:15",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 45,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104058",
+    "type": "Penalty",
+    "text": "(Shotgun) D.Maye pass incomplete deep right to E.Chism [K.Gordon].\nPENALTY on CHI-J.Johnson, Defensive Pass Interference",
+    "start": {
+     "yardLine": 58,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:18:35.156Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:08",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 45,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104058",
+    "type": "Penalty",
+    "text": "(Shotgun) D.Maye pass incomplete deep right to E.Chism [K.Gordon].\nPENALTY on CHI-J.Johnson, Defensive Pass Interference",
+    "start": {
+     "yardLine": 58,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:18:55.538Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:08",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 10,
+   "yardLine": 45,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104092",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) D.Maye pass incomplete deep left to A.Brown (T.Stevenson).",
+    "start": {
+     "yardLine": 45,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:19:25.927Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:01",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 10,
+   "yardLine": 45,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104092",
+    "type": "Pass Incompletion",
+    "text": "(Shotgun) D.Maye pass incomplete deep left to A.Brown (T.Stevenson).",
+    "start": {
+     "yardLine": 45,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:19:36.058Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "1:01",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 21,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 29,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104115",
+    "type": "Pass Reception",
+    "text": "(Shotgun) D.Maye pass short right to D.Douglas to CHI 29 for 16 yards (D.Bush) [G.Jarrett].",
+    "start": {
+     "yardLine": 45,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:19:56.402Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "0:43",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 21,
+   "down": 2,
+   "distance": 10,
+   "yardLine": 29,
+   "possession": "17",
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104140",
+    "type": "Pass Incompletion",
+    "text": "(No Huddle) D.Maye spiked the ball to stop the clock.",
+    "start": {
+     "yardLine": 29,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:20:26.910Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "0:37",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 24,
+   "down": -1,
+   "distance": 10,
+   "yardLine": 0,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104163",
+    "type": "Field Goal Good",
+    "text": "A.Borregales 47 yard field goal is GOOD, Center-J.Ashby, Holder-M.Wishnowsky.",
+    "start": {
+     "yardLine": 29,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:22:18.695Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "0:37",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 24,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 53,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104183",
+    "type": "Kickoff",
+    "text": "M.Wishnowsky kicks onside 12 yards from NE 35 to NE 47. R.Odunze (didn't try to advance) to NE 47 for no gain.",
+    "start": {
+     "yardLine": 65,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:22:38.936Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "0:36",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 24,
+   "down": 1,
+   "distance": 10,
+   "yardLine": 53,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104183",
+    "type": "Kickoff",
+    "text": "M.Wishnowsky kicks onside 12 yards from NE 35 to NE 47. R.Odunze (didn't try to advance) to NE 47 for no gain.",
+    "start": {
+     "yardLine": 65,
+     "team": "17"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:22:49.099Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "0:36",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 24,
+   "down": 2,
+   "distance": 11,
+   "yardLine": 52,
+   "possession": "3",
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104206",
+    "type": "Rush",
+    "text": "C.Williams kneels to NE 48 for -1 yards.",
+    "start": {
+     "yardLine": 53,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:23:09.336Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "0:36",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 24,
+   "down": 0,
+   "distance": 11,
+   "yardLine": 52,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104228",
+    "type": "End of Game",
+    "text": "END GAME",
+    "start": {
+     "yardLine": 52,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:23:19.475Z",
+   "event": "401873010",
+   "state": "in",
+   "period": 4,
+   "clock": "0:00",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 24,
+   "down": 0,
+   "distance": 11,
+   "yardLine": 52,
+   "possession": null,
+   "homeTimeouts": 2,
+   "awayTimeouts": 0,
+   "lastPlay": {
+    "id": "4018730104228",
+    "type": "End of Game",
+    "text": "END GAME",
+    "start": {
+     "yardLine": 52,
+     "team": "3"
+    }
+   }
+  },
+  {
+   "seen": "2026-10-23T03:23:29.594Z",
+   "event": "401873010",
+   "state": "post",
+   "period": 4,
+   "clock": "0:00",
+   "homeId": "3",
+   "awayId": "17",
+   "homeScore": 30,
+   "awayScore": 24,
+   "down": null,
+   "distance": null,
+   "yardLine": null,
+   "possession": null,
+   "homeTimeouts": null,
+   "awayTimeouts": null,
+   "lastPlay": null
+  }
+ ]
+}

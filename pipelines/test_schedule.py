@@ -9,7 +9,8 @@ def row(**fields):
     base = {'game_id': '2026_03_SEA_WAS', 'season': 2026, 'game_type': 'REG', 'week': 3,
             'gameday': '2026-09-27', 'gametime': '13:00', 'away_team': 'SEA', 'home_team': 'WAS',
             'away_score': None, 'home_score': None, 'overtime': None, 'div_game': 0, 'location': 'Home',
-            'spread_line': -7.0, 'away_moneyline': -298.0, 'home_moneyline': 240.0}
+            'spread_line': -7.0, 'total_line': 44.5, 'away_moneyline': -298.0, 'home_moneyline': 240.0,
+            'roof': 'outdoors'}
     return {**base, **fields}
 
 
@@ -19,8 +20,13 @@ class ScheduleTest(unittest.TestCase):
         self.assertEqual(game, {
             'id': '2026_03_SEA_WAS', 'week': 3, 'type': 'REG', 'kickoff': '2026-09-27T17:00:00Z',
             'away': 'SEA', 'home': 'WAS', 'awayScore': None, 'homeScore': None, 'overtime': False,
-            'divisional': False, 'neutral': False, 'spreadLine': -7.0, 'awayMoneyline': -298, 'homeMoneyline': 240,
+            'divisional': False, 'neutral': False, 'spreadLine': -7.0, 'totalLine': 44.5, 'awayMoneyline': -298,
+            'homeMoneyline': 240, 'roof': 'outdoors',
         })
+
+    def test_an_unknown_roof_is_null(self):
+        self.assertIsNone(build_schedule([row(roof=None)], 2026, 'x')['games'][0]['roof'])
+        self.assertIsNone(build_schedule([row(roof='retractable')], 2026, 'x')['games'][0]['roof'])
 
     def test_one_season_in_order_with_the_rams_as_lar_and_no_preseason(self):
         rows = [

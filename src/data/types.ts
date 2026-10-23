@@ -490,9 +490,13 @@ export interface ScheduleGame {
   neutral: boolean;
   /** Points the home team is favored by; negative when the road team is */
   spreadLine: number | null;
+  /** Pregame total (over/under) in points */
+  totalLine: number | null;
   /** American odds */
   awayMoneyline: number | null;
   homeMoneyline: number | null;
+  /** nflfastR's roof (outdoors, dome, closed, open); null when unknown */
+  roof: 'outdoors' | 'dome' | 'closed' | 'open' | null;
 }
 
 export interface ScheduleData {

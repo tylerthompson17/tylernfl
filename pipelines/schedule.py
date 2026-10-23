@@ -18,6 +18,9 @@ def _int(value):
     return None if value is None else int(value)
 
 
+ROOFS = ('outdoors', 'dome', 'closed', 'open')
+
+
 def build_schedule(schedule_rows: list[dict], season: int, updated: str) -> dict:
     """The ScheduleData shape in src/data/types.ts, for one season."""
     games = []
@@ -37,8 +40,12 @@ def build_schedule(schedule_rows: list[dict], season: int, updated: str) -> dict
             'divisional': bool(row.get('div_game')),
             'neutral': row.get('location') == 'Neutral',
             'spreadLine': row.get('spread_line'),
+            'totalLine': row.get('total_line'),
             'awayMoneyline': _int(row.get('away_moneyline')),
             'homeMoneyline': _int(row.get('home_moneyline')),
+            # nflfastR's values (outdoors, dome, closed, open), as the 4th down
+            # model reads them; null until nflverse knows.
+            'roof': row.get('roof') if row.get('roof') in ROOFS else None,
         })
     games.sort(key=lambda g: (g['week'], g['kickoff'] or '9999', g['id']))
     return {'season': season, 'updated': updated, 'games': games}
