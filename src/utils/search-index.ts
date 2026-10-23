@@ -87,6 +87,8 @@ async function pageEntries(): Promise<SearchEntry[]> {
     page('Transactions and injuries', 'transactions', 'injury report roster moves wire signings releases'),
     page('4th down calculator', 'fourth-down', 'fourth down go for it punt field goal nfl4th', 'Tools'),
     page('After a touchdown: kick or go for 2', 'fourth-down/try', 'two point conversion extra point pat try nfl4th', 'Tools'),
+    page('Coaches\' 4th down decisions', 'decisions', 'coaches 4th down decisions grades nfl4th mistakes win probability lost two point', 'Tools'),
+    page('Worst 4th down decisions', 'decisions/worst', 'worst 4th down decisions punts field goals mistakes nfl4th two point', 'Tools'),
     page('Tools', 'tools', 'calculators'),
     page('Articles', 'articles', 'writing'),
     page('Curated posts', 'curated', 'curated posts x twitter bluesky quotes'),

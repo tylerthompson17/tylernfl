@@ -738,12 +738,48 @@ export interface DecisionsData {
   games: number;
   /** Plays in each category of messy play, as each run prints them */
   counts: Record<string, number>;
+  /** The numbers the page's intro quotes, over evaluated decisions */
+  summary: {
+    fourthDowns: number;
+    nfl4thGoShare: number | null;
+    coachGoShare: number | null;
+    /** Evaluated decisions costing threshold or more, 4th downs and tries */
+    mistakes: number;
+    /** Mistakes that were kicks (punt, field goal, extra point) nfl4th would have gone for */
+    kicksModelWouldGo: number;
+    kicksModelWouldGoShare: number | null;
+    /** 0.05: a mistake is a close call when nfl4th's top two options are within this */
+    closeMargin: number;
+    closeCalls: number;
+    closeCallShare: number | null;
+  };
+  /** Head coaches by WP lost to mistakes, most first; equal shown totals share a rank */
+  coaches: CoachGrade[];
   fourthDowns: FourthDownDecision[];
   tries: TryDecision[];
 }
 
+export interface CoachGrade {
+  rank: number;
+  /** The head coach in the games counted (nflverse home_coach / away_coach) */
+  coach: string;
+  /** Teams he coached in them, in order of first decision */
+  teams: string[];
+  /** Evaluated decisions, 4th downs and tries */
+  decisions: number;
+  fourthDowns: number;
+  tries: number;
+  /** Decisions costing threshold or more */
+  mistakes: number;
+  /** Sum of the mistakes' cost, 0 to 1 per mistake */
+  wpLost: number;
+  wpLostPerDecision: number;
+}
+
 interface DecisionBase {
   gameId: string;
+  /** The team's head coach in this game */
+  coach: string;
   /** The snap the team ran; a punt after a delay of game is graded at the delay's spot */
   playId: number;
   week: number;
@@ -757,6 +793,8 @@ interface DecisionBase {
   graded: boolean;
   /** Why it is not graded beyond the threshold: 'overtime', 'endgame', 'unavailable', 'null option', 'decided' */
   skip: string | null;
+  /** WP between nfl4th's top two options; missing when not supported */
+  margin?: number | null;
 }
 
 export interface FourthDownDecision extends DecisionBase {

@@ -1,0 +1,76 @@
+---
+/**
+ * What both decision grade tabs share: the title, whose model it is, the
+ * intro (its numbers from the pipeline's summary), the mistake threshold,
+ * the model version and data date, and the tabs. Each tab is its own
+ * static page, like the standings.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Tabs from '../Tabs.astro';
+import { introLines, points } from '../../lib/decisions/view';
+import { dataDate } from '../../lib/draft/view';
+import { through } from '../../utils/as-of';
+import { decisionsData } from '../../utils/decisions';
+import { url } from '../../utils/url';
+
+export type DecisionsTab = 'coaches' | 'worst';
+
+interface Props {
+  tab: DecisionsTab;
+  title: string;
+  description: string;
+}
+
+const { tab, title, description } = Astro.props;
+const data = decisionsData;
+const intro = data ? introLines(data.summary) : null;
+const lastWeek = data ? Math.max(0, ...data.fourthDowns.map((d) => d.week), ...data.tries.map((d) => d.week)) : 0;
+
+const NFL4TH = 'https://github.com/nflverse/nfl4th';
+const LICENSE = 'https://github.com/nflverse/nfl4th/blob/master/LICENSE';
+const METHODS = 'https://github.com/tylerthompson17/tylernfl/blob/main/docs/methods/decision-grades.md';
+const tabs = [
+  { key: 'coaches', label: 'Coaches', path: 'decisions' },
+  { key: 'worst', label: 'Worst decisions', path: 'decisions/worst' },
+];
+---
+
+<BaseLayout {title} {description}>
+  <h1 class="page-title">4th down and 2-point decisions</h1>
+  <div class="intro">
+    <p>
+      Every 4th down and every try after a touchdown this season, graded against Ben Baldwin's
+      <a href={NFL4TH}>nfl4th</a> model (<a href={LICENSE}>MIT license</a>), reproduced exactly. It is nfl4th's
+      recommendation, not this site's model, and it is not adjusted for the teams playing.
+      <a href={url('fourth-down')}>Try any situation in the calculator</a>.
+    </p>
+    {intro?.map((line) => <p>{line}</p>)}
+    {
+      data && (
+        <p class="meta">
+          A mistake is a choice that cost {Number(points(data.threshold))} points of win probability or more (threshold{' '}
+          {data.threshold}), measured at the snap, whatever happened next. Model {data.modelVersion ?? 'none'}, data from{' '}
+          {dataDate(data.updated)}, {data.games} games. {lastWeek > 0 && through(data.season, lastWeek)} The whole season
+          is recomputed each morning, so a model change reaches every play. <a href={METHODS}>How it is graded</a>.
+        </p>
+      )
+    }
+  </div>
+  <Tabs label="Decision grade views" tabs={tabs} current={tab} />
+  <slot />
+</BaseLayout>
+
+<style>
+  .intro {
+    max-width: 80ch;
+    margin-bottom: var(--space-3);
+  }
+
+  .intro p + p {
+    margin-top: var(--space-2);
+  }
+
+  .meta {
+    color: var(--text-dim);
+  }
+</style>

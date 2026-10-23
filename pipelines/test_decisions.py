@@ -3,7 +3,7 @@ import shutil
 import unittest
 from pathlib import Path
 
-from decisions import THRESHOLD, build_decisions, find_decisions, grade, is_pre_snap, situation
+from decisions import THRESHOLD, build_decisions, coach_table, find_decisions, grade, is_pre_snap, situation, summary
 
 FIXTURES = Path(__file__).resolve().parent.parent / 'tests' / 'fixtures' / 'fourth-down'
 
@@ -21,6 +21,7 @@ def play(play_id: int, **kw) -> dict:
         'play_type': 'run', 'desc': '(10:00) J.Cook up the middle to KC 47 for 3 yards.', 'penalty': 0,
         'penalty_type': None, 'penalty_team': None, 'timeout': 0, 'timeout_team': None,
         'qb_kneel': 0, 'qb_spike': 0, 'extra_point_attempt': 0, 'two_point_attempt': 0,
+        'home_coach': 'Sean McDermott', 'away_coach': 'Andy Reid',
     }
     return row | kw
 
@@ -143,6 +144,17 @@ class GradeTest(unittest.TestCase):
         self.assertEqual((ot['call'], ot['skip']), (None, 'overtime'))
         self.assertEqual(counts['overtime (not supported)'], 1)
 
+    def test_the_coach_of_the_team_in_that_game(self):
+        counts = self.counts()
+        self.assertEqual(grade(self.decision('go'), fourth_result(), True, counts)['coach'], 'Sean McDermott')
+        fourth, _, _ = find_decisions([play(10, posteam='KC', defteam='BUF')])
+        self.assertEqual(grade(fourth[0], fourth_result(), True, counts)['coach'], 'Andy Reid')
+
+    def test_margin_between_the_top_two(self):
+        entry = grade(self.decision('punt'), fourth_result(), True, self.counts())
+        self.assertAlmostEqual(entry['margin'], 0.03)
+
+
 
 @unittest.skipUnless(shutil.which('node'), 'node is not installed')
 class EngineTest(unittest.TestCase):
@@ -169,6 +181,39 @@ class EngineTest(unittest.TestCase):
         self.assertEqual(entry['call'], expected['call'])
         for key in ('wpGo', 'wpPunt', 'wpFieldGoal', 'conversionProb'):
             self.assertAlmostEqual(entry[key], expected[key], places=5)
+
+
+def entry(coach: str, team: str, cost: float, team_call='punt', call='go', margin=0.1, fourth=True, skip=None) -> dict:
+    s = {'posteam': team, 'yardline100': 50} if fourth else {'posteam': team}
+    return {'coach': coach, 'situation': s, 'teamCall': team_call, 'call': call, 'wpCost': cost,
+            'graded': cost >= THRESHOLD and skip is None, 'skip': skip, 'margin': margin}
+
+
+class LeaderboardTest(unittest.TestCase):
+    def test_totals_ranked_on_their_shown_value_with_shared_ranks(self):
+        rows = coach_table([
+            entry('A', 'BUF', 0.05), entry('A', 'BUF', 0.01),
+            entry('B', 'KC', 0.04999), entry('C', 'NE', 0.03, fourth=False, team_call='kick', call='go for 2'),
+            entry('D', 'NYJ', 0.0, team_call='go'), entry('E', 'MIA', 0.9, skip='decided'),
+        ])
+        self.assertEqual([(r['coach'], r['rank']) for r in rows], [('A', 1), ('B', 1), ('C', 3), ('D', 4)])
+        a = rows[0]
+        self.assertEqual((a['decisions'], a['mistakes'], a['wpLost'], a['wpLostPerDecision']), (2, 1, 0.05, 0.025))
+        self.assertEqual((rows[2]['fourthDowns'], rows[2]['tries']), (0, 1))
+
+    def test_interim_coach_credited_for_his_own_games(self):
+        rows = coach_table([entry('Head', 'NYG', 0.05), entry('Interim', 'NYG', 0.03)])
+        self.assertEqual({r['coach']: r['teams'] for r in rows}, {'Head': ['NYG'], 'Interim': ['NYG']})
+
+    def test_intro_numbers(self):
+        fourth = [entry('A', 'BUF', 0.05, margin=0.03), entry('A', 'BUF', 0.0, team_call='go', call='go'),
+                  entry('A', 'BUF', 0.03, team_call='go', call='punt', margin=0.2), entry('A', 'BUF', 0.0, call='punt')]
+        tries = [entry('A', 'BUF', 0.02, fourth=False, team_call='kick', call='go for 2', margin=0.02)]
+        s = summary(fourth, tries)
+        self.assertEqual(s['fourthDowns'], 4)
+        self.assertEqual((s['nfl4thGoShare'], s['coachGoShare']), (0.5, 0.5))
+        self.assertEqual((s['mistakes'], s['kicksModelWouldGo'], s['closeCalls']), (3, 2, 2))
+        self.assertAlmostEqual(s['kicksModelWouldGoShare'], 0.66667)
 
 
 class RecordsFormatTest(unittest.TestCase):

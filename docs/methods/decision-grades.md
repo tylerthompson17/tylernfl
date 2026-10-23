@@ -38,6 +38,30 @@ decisions of 2026-10-22:
   remaining on the snap's row already count it (checked: "Timeout #2 by LAC", then LAC
   with 1 left on the snap).
 - A try retaken after a penalty keeps the last attempt.
+- Every run recomputes the whole season, so a model change reaches every play the next
+  morning. The file and the pages name the model version and the data date.
+
+## Coaches
+
+Each decision is credited to its team's head coach in that game (nflverse's `home_coach`
+and `away_coach`), so an interim coach is ranked for his own games. The leaderboard counts
+every evaluated decision (supported, not in a decided game, a choice the model has a
+number for), 4th downs and tries together, and sums the cost of the mistakes, the ones
+costing 2 points of win probability or more. It is sorted by that total, shown with the
+number of decisions and the average per decision so a small sample shows. Totals are
+ranked on their displayed value (one decimal place of a point), so equal totals share a
+rank.
+
+## The page's intro
+
+`summary` in decisions.json holds the numbers the page quotes, so none is typed by hand.
+Through week 6:
+
+- nfl4th says go on 41.6% of the 1,193 evaluated 4th downs; coaches went on 16.3%.
+- 103 of the 110 mistakes (93.6%) are kicks nfl4th would have gone for (punts, field goals
+  or extra points where it says go or go for 2).
+- 96 of the 110 (87.3%) had nfl4th's top two options within 5 points of win probability
+  (`closeMargin`), so most flagged calls are close ones for the model too.
 
 ## Counts, 2026 weeks 1 to 6 (93 games)
 
@@ -93,6 +117,17 @@ numbers still use the 25. A field goal is followed by a kickoff, a punt is not, 
 why only plays with a field goal in range differ. The port is the newer of the two, and
 the delay of game rule grades those two punts at the same spot rbsdm lists them.
 
+Rerun on 2026-10-22 after recomputing the season (still 93 games, weeks 1 to 6): the same
+ten numbers here, and rbsdm's unchanged ("Data updated: 10/22/2026, 01:15" on rbsdm, before
+nfl4th #63 was merged that afternoon).
+
+The fourth-down repo re-pins the port to nfl4th `395d4b9`, the same #61 merge under its
+rewritten history: identical code and outputs, so nothing here changes.
+
+rbsdm may move to a newer nfl4th than the port, for example #63's field goal changes
+(below). If it does, plays with a field goal in range may differ by more than they do now,
+and the comparison should be rerun before reading anything into a larger gap.
+
 Also seen: rbsdm lists some plays this pipeline skips by rule, such as a punt nullified by
 a defensive penalty (HOU week 6), and lists a delay of game row itself where this
 pipeline grades the kick that follows from the same spot.
@@ -101,8 +136,8 @@ pipeline grades the kick that follows from the same spot.
 
 - nfl4th merged #63 on 2026-10-22, after `ecb7293`: field goal make probability corrected
   for selection bias on long attempts (5 to 10 points lower from 55 to 61 yards) and the
-  field goal era cutoff moved to 2023. Neither is in the port. Whether to port it is the
-  fourth-down repo's decision.
+  field goal era cutoff moved to 2023. Neither is in the port; it will come as a normal
+  model change from the fourth-down repo, and the next run recomputes the season.
 - Not team-adjusted, a league-average kicker, no temperature (as the calculator).
 - The cost is at the snap. It says nothing about the play that was called.
 - decisions.json is about 1.3 MB through week 6, one record per line, and will be about

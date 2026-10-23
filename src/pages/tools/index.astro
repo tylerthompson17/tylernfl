@@ -15,11 +15,22 @@ import { url } from '../../utils/url';
       </p>
       <p class="open-link"><a href={url('fourth-down')}>Open the calculator</a></p>
     </Panel>
+    <Panel title="4th down and 2-point decisions">
+      <p>
+        Every 4th down and try this season graded against nfl4th: head coaches ranked by the win
+        probability their mistakes gave up, and the season's costliest calls.
+      </p>
+      <p class="open-link"><a href={url('decisions')}>See the coaches</a> <a href={url('decisions/worst')}>Worst decisions</a></p>
+    </Panel>
   </div>
 </BaseLayout>
 
 <style>
   .open-link {
     margin-top: var(--space-3);
+  }
+
+  .open-link a + a {
+    margin-left: var(--space-3);
   }
 </style>

@@ -1,0 +1,104 @@
+---
+/**
+ * Head coaches ranked by the win probability their 4th down and try
+ * mistakes gave up against nfl4th, from decisions.json
+ * (pipelines/decisions.py, docs/methods/decision-grades.md).
+ */
+import Panel from '../../components/Panel.astro';
+import TeamChip from '../../components/TeamChip.astro';
+import DecisionsFrame from '../../components/decisions/DecisionsFrame.astro';
+import { points } from '../../lib/decisions/view';
+import { decisionsData } from '../../utils/decisions';
+
+const coaches = decisionsData?.coaches ?? [];
+---
+
+<DecisionsFrame
+  tab="coaches"
+  title="Coaches' 4th down and 2-point decisions"
+  description="Head coaches ranked by the win probability their 4th down and 2-point decisions gave up against Ben Baldwin's nfl4th model."
+>
+  <Panel title="Win probability lost to mistakes">
+    {
+      coaches.length === 0 ? (
+        <p class="empty">No decisions graded yet. They appear the morning after the season's first games.</p>
+      ) : (
+        <>
+          <div class="stat-table-scroll" tabindex="0">
+            <table class="stat-table">
+              <caption class="visually-hidden">Head coaches by win probability lost to 4th down and 2-point mistakes</caption>
+              <thead>
+                <tr>
+                  <th scope="col" class="number">Rk</th>
+                  <th scope="col">Coach</th>
+                  <th scope="col">Team</th>
+                  <th scope="col" class="number" title="4th downs and tries graded">Decisions</th>
+                  <th scope="col" class="number">Mistakes</th>
+                  <th scope="col" class="number" title="Points of win probability lost to mistakes">WP lost</th>
+                  <th scope="col" class="number" title="WP lost divided by decisions">Per decision</th>
+                </tr>
+              </thead>
+              <tbody>
+                {coaches.map((c) => (
+                  <tr>
+                    <td class="number">{c.rank}</td>
+                    <th scope="row" class="coach">{c.coach}</th>
+                    <td>
+                      <span class="teams">
+                        {c.teams.map((t) => (
+                          <TeamChip abbr={t} size="sm" />
+                        ))}
+                      </span>
+                    </td>
+                    <td class="number">
+                      {c.decisions}
+                      <span class="split">
+                        {' '}
+                        ({c.fourthDowns} + {c.tries})
+                      </span>
+                    </td>
+                    <td class="number">{c.mistakes}</td>
+                    <td class="number">{points(c.wpLost)}</td>
+                    <td class="number">{(c.wpLostPerDecision * 100).toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="table-foot">
+            Decisions counts every graded 4th down and try (in brackets, 4th downs plus tries): supported by nfl4th,
+            not in a game already decided. WP lost adds up the mistakes, in points of win probability; per decision
+            divides it by all decisions, so a coach with few decisions shows it. Equal totals share a rank. Each game
+            counts for the head coach who coached it, so an interim coach is ranked for his own games.
+          </p>
+        </>
+      )
+    }
+  </Panel>
+</DecisionsFrame>
+
+<style>
+  .empty {
+    color: var(--text-dim);
+  }
+
+  .stat-table th.coach {
+    font-weight: 400;
+  }
+
+  .teams {
+    display: inline-flex;
+    gap: var(--space-1);
+  }
+
+  .split {
+    color: var(--text-dim);
+  }
+
+  .table-foot {
+    margin-top: var(--space-2);
+    color: var(--text-dim);
+    font-size: 12px;
+    max-width: 80ch;
+  }
+</style>

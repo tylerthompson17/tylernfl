@@ -1,0 +1,115 @@
+---
+/**
+ * The season's costliest 4th down and try mistakes against nfl4th, both
+ * kinds in one list with a type column, from decisions.json
+ * (pipelines/decisions.py, docs/methods/decision-grades.md).
+ */
+import Panel from '../../components/Panel.astro';
+import TeamChip from '../../components/TeamChip.astro';
+import DecisionsFrame from '../../components/decisions/DecisionsFrame.astro';
+import {
+  callWords,
+  chartSlug,
+  gameWords,
+  isFourthDown,
+  optionWords,
+  points,
+  situationWords,
+  worstDecisions,
+} from '../../lib/decisions/view';
+import { hasAutoChart } from '../../utils/charts';
+import { decisionsData } from '../../utils/decisions';
+import { url } from '../../utils/url';
+
+const LIMIT = 50;
+const worst = decisionsData ? worstDecisions(decisionsData, LIMIT) : { rows: [], total: 0 };
+const season = decisionsData?.season ?? 0;
+---
+
+<DecisionsFrame
+  tab="worst"
+  title="Worst 4th down and 2-point decisions"
+  description="The season's costliest 4th down and 2-point decisions against Ben Baldwin's nfl4th model, with each option's win probability."
+>
+  <Panel title="Costliest mistakes">
+    {
+      worst.rows.length === 0 ? (
+        <p class="empty">No mistakes graded yet. They appear the morning after the season's first games.</p>
+      ) : (
+        <>
+          <p class="lead">
+            {worst.total > LIMIT ? `The ${LIMIT} costliest of ${worst.total} mistakes` : `All ${worst.total} mistakes`},
+            4th downs and tries together.
+          </p>
+          <div class="stat-table-scroll" tabindex="0">
+            <table class="stat-table worst">
+              <caption class="visually-hidden">The season's costliest 4th down and 2-point mistakes against nfl4th</caption>
+              <thead>
+                <tr>
+                  <th scope="col" class="number">Rk</th>
+                  <th scope="col" class="number">Wk</th>
+                  <th scope="col">Team</th>
+                  <th scope="col">Coach</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Situation</th>
+                  <th scope="col">Team did</th>
+                  <th scope="col">nfl4th's recommendation</th>
+                  <th scope="col">Each option's WP</th>
+                  <th scope="col" class="number" title="Points of win probability">WP lost</th>
+                  <th scope="col">Game</th>
+                </tr>
+              </thead>
+              <tbody>
+                {worst.rows.map(({ rank, decision: d }) => {
+                  const slug = chartSlug(d, season);
+                  return (
+                    <tr>
+                      <td class="number">{rank}</td>
+                      <td class="number">{d.week}</td>
+                      <td>
+                        <TeamChip abbr={d.situation.posteam} size="sm" />
+                      </td>
+                      <td>{d.coach}</td>
+                      <td>{isFourthDown(d) ? '4th down' : 'Try'}</td>
+                      <td title={d.description}>{situationWords(d)}</td>
+                      <td>{callWords(d.teamCall)}{isFourthDown(d) && d.fake ? ' (fake)' : ''}</td>
+                      <td>{callWords(d.call)}</td>
+                      <td>{optionWords(d)}</td>
+                      <td class="number">{points(d.wpCost!)}</td>
+                      <td>{hasAutoChart(slug) ? <a href={url(`charts/${slug}`)}>{gameWords(d)}</a> : gameWords(d)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <p class="table-foot">
+            WP lost is nfl4th's recommendation's win probability minus the team's choice's, in points, at the snap.
+            Each option's WP is the team's chance to win after it: go for it, field goal (FG), punt; for a try, the
+            extra point (XP) or going for 2, with the score counting the touchdown. A punt or field goal after the
+            offense's delay of game is graded at the spot before it. The game links to its win probability chart.
+            Hover a situation for the play as nflverse describes it.
+          </p>
+        </>
+      )
+    }
+  </Panel>
+</DecisionsFrame>
+
+<style>
+  .empty,
+  .lead {
+    color: var(--text-dim);
+  }
+
+  .lead {
+    margin-bottom: var(--space-2);
+  }
+
+  .table-foot {
+    margin-top: var(--space-2);
+    color: var(--text-dim);
+    font-size: 12px;
+    max-width: 80ch;
+  }
+</style>

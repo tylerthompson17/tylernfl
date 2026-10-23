@@ -10,6 +10,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../Panel.astro';
 import Tabs from '../Tabs.astro';
 import { asOfContext } from '../../utils/as-of';
+import { url } from '../../utils/url';
 import { modelDownloadBytes, modelManifest as manifest } from '../../utils/fourth-down-model';
 import { QUARTERS, ROOFS, defaults, seasonsUpTo, type CalculatorKind } from '../../lib/calculator/form';
 
@@ -233,7 +234,7 @@ const description = fourth
         </p>
         <p>
           It is not adjusted for the teams playing yet. Apart from the pregame spread and total, every team is
-          treated alike.
+          treated alike. Every 4th down and try this season is <a href={url('decisions')}>graded against it</a>.
         </p>
         <p>
           nfl4th and the nflfastR models it builds on are by Ben Baldwin and Sebastian Carl, both released under

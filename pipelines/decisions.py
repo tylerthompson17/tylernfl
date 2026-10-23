@@ -30,11 +30,26 @@ Messy plays, decided by Tyler (2026-10-22):
   keeps the last attempt.
 
 Each run prints how many plays fell in each category (`counts` in the file).
+
+Every run recomputes the whole season, so a new model reaches every play the
+next morning; the file names the model version it used.
+
+Coaches are credited by game: each decision goes to its team's head coach in
+that game (nflverse's home_coach / away_coach), so an interim coach is
+ranked for his own games. The leaderboard (`coaches`) counts every
+evaluated decision (supported, not decided, a choice the model has a number
+for) and sums the cost of the mistakes, those costing THRESHOLD or more.
+Totals are ranked on their displayed value (points of WP, one place), so
+equal totals share a rank. `summary` holds the numbers the page's intro
+quotes.
 """
 
 import re
 
 THRESHOLD = 0.02
+# A flagged decision is a close call when nfl4th's top two options are
+# within this much win probability.
+CLOSE_MARGIN = 0.05
 DECIDED_LOW, DECIDED_HIGH = 0.02, 0.98
 LABEL = "nfl4th's recommendation"
 
@@ -44,6 +59,7 @@ PBP_COLUMNS = [
     'score_differential', 'posteam_timeouts_remaining', 'defteam_timeouts_remaining', 'home_opening_kickoff',
     'roof', 'temp', 'spread_line', 'total_line', 'play_type', 'desc', 'penalty', 'penalty_type', 'penalty_team',
     'timeout', 'timeout_team', 'qb_kneel', 'qb_spike', 'extra_point_attempt', 'two_point_attempt',
+    'home_coach', 'away_coach',
 ]
 
 SNAPS = {'pass', 'run', 'punt', 'field_goal', 'qb_kneel', 'qb_spike', 'kickoff', 'extra_point'}
@@ -221,8 +237,10 @@ def r5(x: float | None) -> float | None:
 def grade(decision: dict, result: dict, fourth: bool, counts: dict[str, int]) -> dict:
     """A decision's entry in the file, from its engine result."""
     row, snap = decision['row'], decision.get('snap', decision['row'])
+    home = snap['posteam'] == snap['home_team']
     entry = {
         'gameId': snap['game_id'],
+        'coach': snap.get('home_coach' if home else 'away_coach'),
         'playId': int(snap['play_id']),
         'week': int(snap['week']),
         'description': snap.get('desc'),
@@ -254,6 +272,8 @@ def grade(decision: dict, result: dict, fourth: bool, counts: dict[str, int]) ->
     else:
         entry |= {'patMakeProb': r5(result['patMakeProb']), 'twoPointConvProb': r5(result['twoPointConvProb'])}
     entry['call'] = result['call']
+    ranked = sorted((v for v in wps.values() if v is not None), reverse=True)
+    entry['margin'] = r5(ranked[0] - ranked[1]) if len(ranked) > 1 else None
 
     chosen = wps[decision['teamCall']]
     if chosen is None:
@@ -268,6 +288,66 @@ def grade(decision: dict, result: dict, fourth: bool, counts: dict[str, int]) ->
     if graded:
         counts['graded 4th downs' if fourth else 'graded tries'] += 1
     return entry | {'wpCost': r5(cost), 'graded': graded, 'skip': None}
+
+
+def evaluated(entry: dict) -> bool:
+    """A decision with a cost that counts: supported, a choice the model has a
+    number for, and the game not already decided."""
+    return entry['wpCost'] is not None and entry['skip'] is None
+
+
+KICKS = {'punt', 'field goal', 'kick'}
+GOES = {'go', 'go for 2'}
+
+
+def coach_table(entries: list[dict]) -> list[dict]:
+    """Every head coach's evaluated decisions, mistakes and WP lost, most
+    lost first; equal totals at the displayed precision share a rank."""
+    by_coach: dict[str, dict] = {}
+    for e in entries:
+        if not evaluated(e):
+            continue
+        c = by_coach.setdefault(e['coach'], {
+            'coach': e['coach'], 'teams': [], 'decisions': 0, 'fourthDowns': 0, 'tries': 0, 'mistakes': 0, 'wpLost': 0.0,
+        })
+        team = e['situation']['posteam']
+        if team not in c['teams']:
+            c['teams'].append(team)
+        c['decisions'] += 1
+        c['fourthDowns' if 'yardline100' in e['situation'] else 'tries'] += 1
+        if e['graded']:
+            c['mistakes'] += 1
+            c['wpLost'] += e['wpCost']
+    rows = sorted(by_coach.values(), key=lambda c: (-round(c['wpLost'] * 100, 1), c['coach']))
+    previous, rank = None, 0
+    for i, c in enumerate(rows, start=1):
+        shown = round(c['wpLost'] * 100, 1)
+        if shown != previous:
+            rank, previous = i, shown
+        c['rank'] = rank
+        c['wpLostPerDecision'] = r5(c['wpLost'] / c['decisions'])
+        c['wpLost'] = r5(c['wpLost'])
+    return rows
+
+
+def summary(fourth: list[dict], tries: list[dict]) -> dict:
+    """The numbers the page's intro quotes, from the evaluated decisions."""
+    downs = [e for e in fourth if evaluated(e)]
+    flagged = [e for e in fourth + tries if evaluated(e) and e['graded']]
+    share = lambda n, d: r5(n / d) if d else None  # noqa: E731
+    kicks = sum(1 for e in flagged if e['teamCall'] in KICKS and e['call'] in GOES)
+    close = sum(1 for e in flagged if e['margin'] is not None and e['margin'] < CLOSE_MARGIN)
+    return {
+        'fourthDowns': len(downs),
+        'nfl4thGoShare': share(sum(1 for e in downs if e['call'] == 'go'), len(downs)),
+        'coachGoShare': share(sum(1 for e in downs if e['teamCall'] == 'go'), len(downs)),
+        'mistakes': len(flagged),
+        'kicksModelWouldGo': kicks,
+        'kicksModelWouldGoShare': share(kicks, len(flagged)),
+        'closeMargin': CLOSE_MARGIN,
+        'closeCalls': close,
+        'closeCallShare': share(close, len(flagged)),
+    }
 
 
 def build_decisions(rows: list[dict], season: int, updated: str, run=None) -> dict:
@@ -288,6 +368,8 @@ def build_decisions(rows: list[dict], season: int, updated: str, run=None) -> di
         'threshold': THRESHOLD,
         'games': len({row['game_id'] for row in rows}),
         'counts': counts,
+        'summary': summary(graded_fourth, graded_tries),
+        'coaches': coach_table(graded_fourth + graded_tries),
         'fourthDowns': graded_fourth,
         'tries': graded_tries,
     }
@@ -325,4 +407,5 @@ def report(data: dict) -> str:
     lines = [f"decisions: {data['season']}, {data['games']} games, {len(data['fourthDowns'])} 4th downs, "
              f"{len(data['tries'])} tries"]
     lines += [f'  {key}: {n}' for key, n in data['counts'].items()]
+    lines += [f'  summary {key}: {value}' for key, value in data['summary'].items()]
     return '\n'.join(lines)

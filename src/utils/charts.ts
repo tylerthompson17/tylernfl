@@ -64,6 +64,9 @@ const archiveSvgBySlug = bySlug(archiveSvgs, /\.svg$/);
 const archiveHoverBySlug = bySlug(archiveHovers, /\.hover\.json$/);
 const archiveBySlug = bySlug(archiveEntries, /\.json$/);
 
+/** Whether the archive keeps an auto chart by this id (a game's win probability chart). */
+export const hasAutoChart = (id: string): boolean => archiveBySlug.has(id);
+
 /** The kept auto charts, as gallery entries. */
 function autoCharts(): Chart[] {
   return [...archiveBySlug].map(([id, entry]) => ({

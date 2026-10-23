@@ -648,6 +648,22 @@ point or go for 2, `recommendTry()`), a tab each (`Tabs.astro`), in the nav as "
 - Recomputes 150 ms after the last change. A model that fails to load, or is for another
   contract version, shows "unavailable" and no numbers.
 
+### Decision grades pages
+
+`/decisions/` (head coaches) and `/decisions/worst/` (the 50 costliest mistakes, 4th downs
+and tries together with a Type column), a tab each, from `decisions.json`. Linked from
+`/tools`, the calculator and search; not in the nav.
+
+- Plainly nfl4th's: Ben Baldwin's model, linked with its license, "nfl4th's
+  recommendation", never Tyler's model. The intro's numbers (go rate against coaches',
+  share of mistakes that were kicks nfl4th would have gone for, share with nfl4th's top
+  two options within 0.05) come from the file's `summary`, never typed in the page.
+- Coaches are credited per game (nflverse `home_coach` / `away_coach`), ranked by WP lost
+  to mistakes (0.02 or more, stated on the page), with decisions and mistakes counted and
+  the average per decision; ranks come from the pipeline. The worst list links each game
+  to its win probability chart when the archive has it (`hasAutoChart`). Model version
+  and data date show on both tabs. Words are in `src/lib/decisions/view.ts`.
+
 ### Curated posts
 
 `/curated` lists X and Bluesky posts Tyler picked, newest first by the post's date, each
