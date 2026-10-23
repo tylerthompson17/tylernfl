@@ -31,3 +31,6 @@ docs/methods/scripts/out/
 audit/
 # date state data sets, generated on demand by tests/fixtures/states/generate.py
 tests/fixtures/states/*/
+
+# Live 4th down captures (scripts/capture-live-fourth.ts): never committed
+/capture/

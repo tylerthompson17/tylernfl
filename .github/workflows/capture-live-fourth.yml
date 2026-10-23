@@ -1,0 +1,79 @@
+name: Capture live 4th downs
+
+# Records a slate of live games for checking the home page's live 4th down
+# detector against ESPN's game summaries (scripts/capture-live-fourth.ts),
+# then runs the comparison (scripts/compare-live-fourth.ts). Captures go to
+# a workflow artifact and are never committed.
+#
+# Scheduled once, for the 1 PM Eastern games of Sunday 2026-10-25 (17:00
+# UTC kickoff): it starts at 12:15 PM Eastern and runs until every game of
+# that slate is final, at most 5 hours. Remove the schedule after that
+# Sunday and keep the manual trigger.
+
+on:
+  schedule:
+    # 16:15 UTC on October 25 is 12:15 PM Eastern (daylight time).
+    - cron: '15 16 25 10 *'
+  workflow_dispatch:
+    inputs:
+      season:
+        description: Season
+        default: '2026'
+      week:
+        description: Week (nflverse numbering)
+        default: '7'
+      kickoff:
+        description: Kickoff of the slate, UTC (games kicking off at exactly this time)
+        default: '2026-10-25T17:00:00Z'
+      cap_hours:
+        description: Stop after this many hours
+        default: '5'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: capture-live-fourth
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    # The capture stops itself at 5 hours; this leaves room to upload.
+    timeout-minutes: 330
+    env:
+      SEASON: ${{ inputs.season || '2026' }}
+      WEEK: ${{ inputs.week || '7' }}
+      KICKOFF: ${{ inputs.kickoff || '2026-10-25T17:00:00Z' }}
+      CAP_HOURS: ${{ inputs.cap_hours || '5' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      # Exits 1 when ESPN refuses or rate-limits, requests keep failing, or
+      # the cap is reached first; what was captured is still uploaded.
+      - name: Capture
+        run: >
+          node scripts/capture-live-fourth.ts
+          --season "$SEASON" --week "$WEEK" --kickoff "$KICKOFF"
+          --cap-hours "$CAP_HOURS" --out capture
+
+      - name: Compare with ESPN's summaries
+        if: always()
+        run: |
+          node scripts/compare-live-fourth.ts --dir capture
+          cat capture/report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload capture
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: capture-live-fourth-${{ github.run_id }}
+          path: capture
+          retention-days: 30
+          if-no-files-found: warn

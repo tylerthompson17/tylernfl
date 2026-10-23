@@ -118,6 +118,16 @@ tylernfl/
   down's spot; otherwise "outcome not seen", never inferred from later states. In that
   game every 4th down was on the scoreboard 30 to 152 seconds before the snap, and a play
   reached it 15 to 133 seconds after it happened (median 41).
+- Checking the detector on real slates: `scripts/capture-live-fourth.ts` polls the
+  scoreboard (10 seconds once a game is live) for every game of one kickoff slot, records
+  each change as snapshots and each game's summary at its final, and stops when all are
+  final, at a cap (5 hours), or at once on a 403 or 429. `scripts/compare-live-fourth.ts`
+  runs the detector on the 10-second capture and on 30-second subsamples (offsets 0, 10,
+  20 seconds) and reports matches, mismatches and misses against the summaries'
+  4th down snaps. `.github/workflows/capture-live-fourth.yml` runs both and uploads the
+  capture as a workflow artifact; captures are never committed (`/capture/` is ignored).
+  On NE at CHI the 10-second capture matched 8 of 8, a 30-second poll 5 or 6: a punt or
+  field goal can be ESPN's last play for under 30 seconds.
 - Header search is not a runtime data fetch: its index (`search-index.js`, from
   `src/pages/search-index.js.ts`) is static build output, versioned per build, and the
   search box loads it as a script the first time it is used (about 50 KB gzipped). It
