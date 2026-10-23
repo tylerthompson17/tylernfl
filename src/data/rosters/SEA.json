@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "SEA",
   "week": 7,
-  "updated": "2026-10-21T14:43:13Z",
+  "updated": "2026-10-23T14:30:14Z",
   "groups": [
     {
       "key": "offense",
@@ -100,8 +100,8 @@
       "number": 26,
       "position": "RB",
       "group": "offense",
-      "status": "RES",
-      "statusLabel": "Reserve",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 73,
       "weight": 220,
       "age": 25,
@@ -355,8 +355,8 @@
       "number": 18,
       "position": "TE",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 77,
       "weight": 254,
       "age": 23,
@@ -512,21 +512,6 @@
       "age": 24,
       "experience": 1,
       "college": "Iowa"
-    },
-    {
-      "gsisId": "00-0040909",
-      "name": "Evan Beerntsen",
-      "slug": "evan-beerntsen",
-      "number": 60,
-      "position": "G",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 301,
-      "age": 26,
-      "experience": 0,
-      "college": "Northwestern; South Dakota State"
     },
     {
       "gsisId": "00-0039839",
@@ -917,6 +902,21 @@
       "age": 26,
       "experience": 2,
       "college": "Texas-El Paso; Independence Comm. College"
+    },
+    {
+      "gsisId": "00-0037184",
+      "name": "Josh Ross",
+      "slug": "josh-ross",
+      "number": 52,
+      "position": "ILB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 224,
+      "age": 26,
+      "experience": 4,
+      "college": "Michigan"
     },
     {
       "gsisId": "00-0038764",
