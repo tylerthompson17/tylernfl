@@ -65,6 +65,7 @@ const range = ([low, high]: [number, number]) => (low === high ? `${low}` : `${l
             </caption>
             <thead>
               <tr>
+                <th scope="col" class="number">Pick</th>
                 <th scope="col">Team</th>
                 <th scope="col" class="number">Projected wins</th>
                 <th scope="col" class="number">Median pick</th>
@@ -76,10 +77,11 @@ const range = ([low, high]: [number, number]) => (low === high ? `${low}` : `${l
               </tr>
             </thead>
             <tbody>
-              {projected.teams.map((t) => {
+              {projected.teams.map((t, i) => {
                 const note = projectedOwnerNote(t);
                 return (
                   <tr>
+                    <td class="number">{i + 1}</td>
                     <th scope="row" class="team-cell">
                       <TeamChip abbr={t.team} size="sm" />
                       <span>
@@ -105,7 +107,8 @@ const range = ([low, high]: [number, number]) => (low === high ? `${low}` : `${l
             {projected.simulations.toLocaleString('en-US')} simulations of the {projected.remainingGames} remaining
             regular season games and the playoffs. In each, the draft order follows that season's own records,
             strength of schedule and the NFL's tiebreakers, with any tie left at the end settled by a random coin
-            flip. Likely range is the 10th to 90th percentile pick: 8 seasons in 10 land inside it.
+            flip. Pick is each team's place in the projected order, by median pick and then mean pick. Likely
+            range is the 10th to 90th percentile pick: 8 seasons in 10 land inside it.
           </p>
           {
             projected.choices.map((c) => (
