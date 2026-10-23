@@ -2,12 +2,24 @@
  * Interface for the 4th down model: the 4th down decision and the try after a
  * touchdown. The contract is docs/model-interface.md.
  *
- * STUB: the model itself is Tyler's. This file only defines the shape the
- * site expects, so the calculator page can be built against it. Do not
- * implement decision logic here.
+ * The model is Tyler's: its decision logic lives in fourth-down-engine.ts,
+ * generated from the fourth-down repo, and is never written here. This file
+ * defines the shape the site expects and hands each call to the engine.
+ * The page loads the exported model JSON (loadFourthDownModel); until it
+ * has, or when the files do not match CONTRACT_VERSION, every call returns
+ * 'unavailable'.
  *
  * Every probability is 0 to 1; format as a percent only when displaying.
  */
+
+import {
+  loadModel,
+  recommend as engineRecommend,
+  recommendTry as engineRecommendTry,
+  type ModelFiles,
+} from './fourth-down-engine.ts';
+
+export type { ModelFiles };
 
 /** Version of docs/model-interface.md these types match */
 export const CONTRACT_VERSION = 4;
@@ -213,12 +225,17 @@ export interface ModelRecordData {
 }
 
 /**
- * STUB: replaced by Tyler's exported model (JSON in models/, run in the
- * browser). Unavailable for every situation until the real implementation
- * lands.
+ * Install the exported model (the parsed JSON in models/fourth-down/).
+ * False, leaving every call 'unavailable', when the files are not the
+ * contract version this site was built against or do not load.
  */
-export function recommend(_situation: FourthDownSituation): FourthDownResult {
-  return { supported: false, reason: 'unavailable' };
+export function loadFourthDownModel(files: ModelFiles): boolean {
+  return loadModel(files, CONTRACT_VERSION);
+}
+
+/** The 4th down decision, from the loaded model; 'unavailable' until one is. */
+export function recommend(situation: FourthDownSituation): FourthDownResult {
+  return engineRecommend(situation);
 }
 
 export type TryCall = 'kick' | 'go for 2';
@@ -293,10 +310,7 @@ export type TryResult =
   | ({ supported: true } & TryRecommendation)
   | { supported: false; reason: 'overtime' | 'unavailable' | 'endgame' };
 
-/**
- * STUB: replaced by Tyler's exported model, like recommend(). Unavailable for
- * every situation until the real implementation lands.
- */
-export function recommendTry(_situation: TrySituation): TryResult {
-  return { supported: false, reason: 'unavailable' };
+/** The try after a touchdown, from the loaded model; 'unavailable' until one is. */
+export function recommendTry(situation: TrySituation): TryResult {
+  return engineRecommendTry(situation);
 }

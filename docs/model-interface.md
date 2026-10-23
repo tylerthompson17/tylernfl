@@ -1,6 +1,6 @@
 # 4th down model interface
 
-What the 4th down calculator page (`src/pages/tools/4th-down.astro`), the live 4th down
+What the 4th down calculator page (`src/pages/fourth-down/`), the live 4th down
 page and the sidebar record expect from the model: the 4th down decision and the try
 after a touchdown (kick the extra point or go for 2). The model is Tyler's. This file
 records the contract; the decisions in it are Tyler's (2026-10-21), and anything still
@@ -10,9 +10,9 @@ open is listed at the end.
 end; bump the version with every change to a type or rule here, and `CONTRACT_VERSION`
 in `src/lib/fourth-down.ts` with it.
 
-Status on 2026-10-22: the types are in `src/lib/fourth-down.ts`. `recommend()` and
-`recommendTry()` are stubs that return `{ supported: false, reason: 'unavailable' }`, and
-the calculator page calls neither yet. The sidebar record panel and
+Status on 2026-10-22: the types are in `src/lib/fourth-down.ts`, and `recommend()` and
+`recommendTry()` hand each call to the generated engine (`src/lib/fourth-down-engine.ts`,
+the nfl4th baseline), which the calculator at `/fourth-down/` loads. The sidebar record panel and
 `model_record.json` were removed on 2026-09-22 (commit 3a116f0) and come back in the
 shape below when the model exists.
 
@@ -361,10 +361,11 @@ Which plays and which predictions it covers is Tyler's to define with the model.
 
 ## 4. Where the model runs
 
-In the browser, from exported JSON in `models/`. The calculator imports it at build time
-and ships it with the page; it is not fetched at runtime, so it stays within the data
-contract (the only runtime fetches are live scores and, later, the live 4th down page's
-game state). Its size counts toward the page's weight.
+In the browser, from exported JSON in `models/`. The files are content-hashed build
+assets of the site itself, fetched by the calculator's page only, in a Web Worker
+(`src/lib/calculator/`), since they are too large to put in its script (about 10.6 MB, 2.6
+MB gzipped). They are the site's own static files, not data from elsewhere, and no other
+page fetches them. Their size counts toward the calculator's weight.
 
 ## Site copy
 

@@ -50,7 +50,7 @@ tylernfl/
 │   ├── styles/global.css
 │   ├── layouts/            BaseLayout (ticker, header, nav bar, main and rail)
 │   ├── components/         Panel, StatTable, StatCard, TickerItem, TeamChip, ...
-│   ├── pages/              index, scores, charts/, curated, tools/, stats/, articles/, about, 404
+│   ├── pages/              index, scores, charts/, curated, fourth-down/, tools/, stats/, articles/, about, 404
 │   ├── content/articles/   MDX articles (content collection)
 │   ├── content/charts/     Tyler's charts: <slug>.md entry next to <slug>.svg (or its images)
 │   ├── content/curated/    curated X and Bluesky posts, one .md each, added by hand
@@ -79,7 +79,7 @@ tylernfl/
 ## Data contract
 
 - Pipelines write JSON into `src/data/`, commit it, and the push triggers a rebuild. Pages read data at build time.
-- Browser-side fetches are allowed in exactly two places. Nothing else fetches data at runtime.
+- Browser-side fetches of data are allowed in exactly two places. Nothing else fetches data at runtime.
   1. **Live scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates scores in place. One poll feeds every game on the page: the ticker slots and, on `/scores`, the boxes, which carry the same `data-game` hooks. After a game's window closes, ticker.json still shows it unfinished until the next daily run (a Monday night game ends near midnight; the run is at 6 AM and has started hours late), so a page loaded with a game that kicked off within the last 48 hours, past its window and not final in ticker.json, makes one scoreboard request on load to pick up the result (up to 3 tries on failure; `needsCatchUp` in `schedule.ts`). One request, never polling. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Live games also show who scored last: when a live game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (it is about 175 KB, of which the scoring plays are about 1 KB), and it is one fetch per scoring play however many places render the line. The same poll moves records: when a regular season game the build had
      not counted goes final, both teams' records change at once everywhere they show (the
      playoff picture, the standings tables' W through Strk, the team header's record and
@@ -90,6 +90,12 @@ tylernfl/
      standings' tiebreak notes are hidden. The rule is `applyFinals` in
      `src/lib/live-ticker/records.ts`. Turn it all off with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
   2. **Live 4th down page** (later): fetches game state at runtime.
+- The 4th down calculator (`/fourth-down/`) fetches the exported model files, which are
+  the site's own content-hashed build assets, not data from elsewhere: its Web Worker
+  (`src/lib/calculator/worker.ts`) loads them lazily, on that page only, through Vite
+  `?url` imports in `load.ts` (`assetsInlineLimit` in `astro.config.mjs` keeps the small
+  ones out of the script). About 2.6 MB gzipped; methods in
+  `docs/methods/fourth-down-model.md`.
 - Header search is not a runtime data fetch: its index (`search-index.js`, from
   `src/pages/search-index.js.ts`) is static build output, versioned per build, and the
   search box loads it as a script the first time it is used (about 50 KB gzipped). It
@@ -549,8 +555,7 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   shrinking at 600px); column 3 runs from the top beside it.
 - Column 1: the latest complete week's results (the week `/week` recaps, kickoff
   order, each final's excitement label with the slate bar). Column 2: transactions,
-  latest article, and the 4th down calculator as one boxed line until the model
-  exists. Column 3: playoff picture, notable performances, receiving leaders, on this
+  latest article, and the 4th down calculator as one boxed line. Column 3: playoff picture, notable performances, receiving leaders, on this
   day. The split is what balances heights: at 1440px with a WP chart the columns end
   at about 1,175, 1,165 and 1,070px. Recheck when a panel is added or grows.
 - Below 1100px: two columns, chart across the top, column 3's panels in a pair under
@@ -608,6 +613,24 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
 - Projected order: projected wins, median pick, likely range (10th to 90th
   percentile), and chances of No. 1, top 3, 5 and 10. Labelled with `oddsBasis()` plus
   `playoffBasis()`, the same wording as the team pages' odds.
+
+### 4th down calculator
+
+`/fourth-down/` (go, field goal or punt, `recommend()`) and `/fourth-down/try/` (extra
+point or go for 2, `recommendTry()`), a tab each (`Tabs.astro`), in the nav as "4th down".
+`/tools/4th-down` redirects there.
+
+- The numbers are nfl4th's, reproduced exactly (`docs/methods/fourth-down-model.md`); the
+  page says so, links nfl4th and its MIT license, and says it is not team-adjusted. It is
+  not presented as Tyler's model.
+- Inputs live as the strings the form holds, the same shape as the query string, so a
+  shared link and a typed form take one path: `decode`, `checkFourthDown` / `checkTry`
+  (`src/lib/calculator/form.ts`), the worker, then `fourthDownView` / `tryView`
+  (`format.ts`). The offense's spread is entered as a sportsbook writes it (-3 favored) and
+  converted to `spreadLine`. No team pickers: two stand-in teams and a home or away menu,
+  since the baseline reads no team identity.
+- Recomputes 150 ms after the last change. A model that fails to load, or is for another
+  contract version, shows "unavailable" and no numbers.
 
 ### Curated posts
 

@@ -85,7 +85,8 @@ async function pageEntries(): Promise<SearchEntry[]> {
       page(chart.data.title, `charts/${chart.id}`, `chart ${chart.data.tags.join(' ')}`, 'Chart')
     ),
     page('Transactions and injuries', 'transactions', 'injury report roster moves wire signings releases'),
-    page('4th down calculator', 'tools/4th-down', 'fourth down go for it punt field goal', 'Tools'),
+    page('4th down calculator', 'fourth-down', 'fourth down go for it punt field goal nfl4th', 'Tools'),
+    page('After a touchdown: kick or go for 2', 'fourth-down/try', 'two point conversion extra point pat try nfl4th', 'Tools'),
     page('Tools', 'tools', 'calculators'),
     page('Articles', 'articles', 'writing'),
     page('Curated posts', 'curated', 'curated posts x twitter bluesky quotes'),
