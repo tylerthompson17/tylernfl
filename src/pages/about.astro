@@ -10,15 +10,20 @@ import { url } from '../utils/url';
     <Panel title="About this site">
       <div class="prose">
         <p>
-          Tyler NFL is a one person analytics site. The centerpiece is a 4th down model that grades
-          go or kick decisions by win probability; around it are stat leaders, a daily history note,
-          and the occasional <a href={url('articles')}>article</a> about what the numbers say.
+          Tyler NFL is a one person analytics site. The centerpiece is the
+          <a href={url('fourth-down')}>4th down calculator</a>, which compares going for it, kicking
+          and punting by win probability; around it are stat leaders, standings and playoff odds, a
+          daily history note, and the occasional <a href={url('articles')}>article</a> about what the
+          numbers say.
         </p>
         <p>
-          Data comes from the nflverse project. The models are built and maintained by Tyler; the
-          site reports what they say and keeps a running record of graded calls: each time a coach's
-          choice gave up win probability, by how much.
+          The calculator runs Ben Baldwin's <a href="https://github.com/nflverse/nfl4th">nfl4th</a>
+          model, reproduced exactly and released under the
+          <a href="https://github.com/nflverse/nfl4th/blob/master/LICENSE">MIT license</a>. It is not
+          yet adjusted for the teams playing. A running record of graded calls is planned: each time
+          a coach's choice gave up win probability, by how much.
         </p>
+        <p>Data comes from the nflverse project.</p>
       </div>
     </Panel>
   </div>

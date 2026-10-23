@@ -7,6 +7,7 @@ draft: false
 ---
 
 import FieldStrip from '../../components/FieldStrip.astro';
+import { url as siteUrl } from '../../utils/url';
 
 Every 4th down recommendation on this site comes down to one comparison: the offense's chance of winning the game if they go for it, against their chance if they kick. Not the chance of converting. The chance of winning. Those are different questions, and the difference is where most of the arguments start.
 
@@ -24,8 +25,10 @@ So when you see a recommendation here, read the margin before the verdict. A "go
 
 ## What the record will mean
 
-Once the model is live, the sidebar will keep a record of graded calls: situations where the coach's choice differed from the model's recommendation by at least 2 points of win probability. Each one is graded by what the choice cost, the win probability the coach gave up at the moment of the decision, not by what happened next. A go that fails and a go that converts were the same decision, and a punt that works out was still the worse bet. Single plays are noisy, and grading the decision instead of the result keeps that noise out of the record.
+The site will also keep a record of graded calls: situations where the coach's choice differed from the model's recommendation by at least 2 points of win probability. Each one is graded by what the choice cost, the win probability the coach gave up at the moment of the decision, not by what happened next. A go that fails and a go that converts were the same decision, and a punt that works out was still the worse bet. Single plays are noisy, and grading the decision instead of the result keeps that noise out of the record.
 
 How well the model's win probabilities match what actually happens is a separate question, and it will get its own season-level check rather than a play-by-play scorecard.
 
-The calculator itself is in progress. When it goes live, you will be able to set any situation, down to the timeout count, and see the win probability of going for it, punting and kicking a field goal, and the margin between them.
+## Try it
+
+The <a href={siteUrl('fourth-down')}>4th down calculator</a> is live. Set any situation, down to the timeout count, and see the win probability of going for it, punting and kicking a field goal, and the margin between them; a second tab compares the extra point with going for 2. Its numbers are Ben Baldwin's [nfl4th](https://github.com/nflverse/nfl4th) model, reproduced exactly and released under the MIT license. It is not yet adjusted for the teams playing.
