@@ -278,3 +278,27 @@ export function valuesOf(s: FourthDownSituation | TrySituation): FormValues {
   }
   return values;
 }
+
+const QUARTER_WORDS: Record<string, string> = { '1': '1st quarter', '2': '2nd quarter', '3': '3rd quarter', '4': '4th quarter', OT: 'overtime' };
+
+/**
+ * A scenario in a line, for a link to it: "4th and 2 at midfield, tied,
+ * 3rd quarter, 10:00 left"; for the try, "Scored to trail by 2, 4th
+ * quarter, 5:00 left". Null when a field is wrong.
+ */
+export function scenarioLine(values: FormValues, kind: CalculatorKind): string | null {
+  const pts = integerIn(values.pts, 0, 199);
+  const opp = integerIn(values.opp, 0, 199);
+  const quarter = QUARTER_WORDS[values.q ?? ''];
+  if (pts === null || opp === null || !quarter || parseClock(values.clock) === null) return null;
+  const diff = pts - opp;
+  const when = `${quarter}, ${values.clock} left`;
+  if (kind === 'try') {
+    const score = diff === 0 ? 'tie' : `${diff > 0 ? 'lead' : 'trail'} by ${Math.abs(diff)}`;
+    return `Scored to ${score}, ${when}`;
+  }
+  const down = situationLine(values);
+  if (!down) return null;
+  const score = diff === 0 ? 'tied' : `${diff > 0 ? 'up' : 'down'} ${Math.abs(diff)}`;
+  return `${down}, ${score}, ${when}`;
+}

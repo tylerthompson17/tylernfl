@@ -554,10 +554,16 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   a hole beside a tall one. The chart spans columns 1 and 2 (a full-size chart stops
   shrinking at 600px); column 3 runs from the top beside it.
 - Column 1: the latest complete week's results (the week `/week` recaps, kickoff
-  order, each final's excitement label with the slate bar). Column 2: transactions,
-  latest article, and the 4th down calculator as one boxed line. Column 3: playoff picture, notable performances, receiving leaders, on this
-  day. The split is what balances heights: at 1440px with a WP chart the columns end
-  at about 1,175, 1,165 and 1,070px. Recheck when a panel is added or grows.
+  order, each final's excitement label with the slate bar), receiving leaders. Column 2:
+  transactions, the 4th down calculator. Column 3: playoff picture, draft order (top 10
+  of `/draft`), notable performances, on this day, latest article. The split is what
+  balances heights: at 1440px with a yards race chart the columns end at about 1,375,
+  1,345 and 1,395px. Recheck when a panel is added or grows.
+- The calculator panel shows the calculator's two default scenarios (4th and 2 at
+  midfield; a touchdown to trail by 2) with each option's win probability, computed at
+  build time through the page's own path (`homeExamples` in
+  `src/utils/fourth-down-model.ts`), so the home page never downloads the model. Each
+  scenario links to its tab with the scenario in the URL.
 - Below 1100px: two columns, chart across the top, column 3's panels in a pair under
   the rest. Below 760px: one column.
 

@@ -12,6 +12,7 @@ import {
   encode,
   isGoalToGo,
   parseClock,
+  scenarioLine,
   situationLine,
   valuesOf,
   yardline100Of,
@@ -273,4 +274,12 @@ test('recommend() and recommendTry() through the page match the fixtures', () =>
     const view = tryView(recommendTry(s), fallbacks);
     assert.equal(view.kind === 'result' && view.call, c.expected.supported && (c.expected.call === 'kick' ? 'Kick the extra point' : 'Go for 2'));
   }
+});
+
+test('scenario lines for the home page links', () => {
+  assert.equal(scenarioLine(defaults('fourth-down', SEASON), 'fourth-down'), '4th and 2 at midfield, tied, 3rd quarter, 10:00 left');
+  assert.equal(scenarioLine(defaults('try', SEASON), 'try'), 'Scored to trail by 2, 4th quarter, 5:00 left');
+  assert.equal(scenarioLine({ ...defaults('fourth-down', SEASON), pts: '17', opp: '3' }, 'fourth-down'), '4th and 2 at midfield, up 14, 3rd quarter, 10:00 left');
+  assert.equal(scenarioLine({ ...defaults('try', SEASON), pts: '22' }, 'try'), 'Scored to tie, 4th quarter, 5:00 left');
+  assert.equal(scenarioLine({ ...defaults('try', SEASON), clock: 'x' }, 'try'), null);
 });
