@@ -9,7 +9,7 @@ export type Direction = 'asc' | 'desc';
 
 export interface ColumnSpec {
   key: string;
-  format: 'integer' | 'decimal1' | 'percent1';
+  format: 'integer' | 'decimal1' | 'decimal2' | 'percent1';
   perGame: boolean;
   rate: boolean;
   better: 'high' | 'low';
@@ -34,6 +34,7 @@ export function cellValue(row: RowSpec, column: ColumnSpec, mode: Mode): number 
 export function formatCell(value: number | null, column: ColumnSpec, mode: Mode): string {
   if (value === null) return '-';
   if (column.format === 'percent1') return `${(value * 100).toFixed(1)}%`;
+  if (column.format === 'decimal2') return value.toFixed(2);
   if (column.format === 'decimal1' || (mode === 'perGame' && column.perGame)) {
     return value.toFixed(1);
   }

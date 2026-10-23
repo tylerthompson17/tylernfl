@@ -13,6 +13,10 @@
  *   per team" around byes and Thursday games.
  * - Game statuses for games still to play are mentioned only while a game
  *   of that week is still to play.
+ * - Graded decisions say how many games are graded, through which week (or
+ *   how far into a week in progress), and how many finals in the schedule
+ *   are still waiting on play-by-play, which nflverse publishes hours after
+ *   a game.
  *
  * Pure: the site's data is bound in src/utils/as-of.ts.
  */
@@ -126,4 +130,24 @@ export function recapEmpty(ctx: AsOfContext): { title: string; text: string } {
     title: 'No complete week yet',
     text: "A week's recap appears the morning after its last game, once every game's play-by-play is out.",
   };
+}
+
+/**
+ * Decision grades: "Graded through week 6: 94 games.", a week in progress
+ * as "Graded through week 7's games so far (1 of 14 played): 94 games.",
+ * plus how many finals the schedule has that play-by-play does not yet.
+ * `lastWeek` is the latest week with a graded game; `waiting` counts finals
+ * in the schedule not yet graded.
+ */
+export function gradedLabel(ctx: AsOfContext, season: number, lastWeek: number, graded: number, waiting: number): string {
+  if (season < ctx.season) return `${season} season, final: ${graded} games graded.`;
+  const wait =
+    waiting === 0
+      ? ''
+      : ` ${waiting} ${waiting === 1 ? 'final is' : 'finals are'} still waiting on play-by-play, which nflverse publishes hours after a game.`;
+  if (graded === 0 || lastWeek <= 0) return `No games graded yet.${wait}`;
+  const p = weekProgress(ctx, season, lastWeek);
+  const where =
+    p.kind === 'in-progress' ? `through week ${p.week}'s games so far (${p.played} of ${p.total} played)` : `through week ${lastWeek}`;
+  return `Graded ${where}: ${graded} ${graded === 1 ? 'game' : 'games'}.${wait}`;
 }

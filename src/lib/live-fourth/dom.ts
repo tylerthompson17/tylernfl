@@ -7,6 +7,7 @@
  * downloads the model then (about 2.6 MB), and only while a game is live.
  * They are shown per option in a fixed order, with no verdict.
  */
+import { LIVE_FOURTH_DOWN_ENABLED } from '../../config.ts';
 import type { FourthDownResult } from '../fourth-down.ts';
 import { SCOREBOARD_EVENT, type ScoreboardEventDetail } from '../live-ticker/espn.ts';
 import type { WorkerMessage, WorkerRequest } from '../calculator/worker.ts';
@@ -150,5 +151,7 @@ function setUp(root: HTMLElement): void {
 }
 
 export function initLiveFourth(): void {
+  // Off: nothing listens, so the panel keeps the examples it was built with.
+  if (!LIVE_FOURTH_DOWN_ENABLED) return;
   document.querySelectorAll<HTMLElement>('[data-live-fourth]').forEach(setUp);
 }

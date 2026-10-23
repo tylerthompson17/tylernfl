@@ -38,7 +38,9 @@ Coaches are credited by game: each decision goes to its team's head coach in
 that game (nflverse's home_coach / away_coach), so an interim coach is
 ranked for his own games. The leaderboard (`coaches`) counts every
 evaluated decision (supported, not decided, a choice the model has a number
-for) and sums the cost of the mistakes, those costing THRESHOLD or more.
+for) and sums the cost of the mistakes, those costing THRESHOLD or more. A
+clear mistake is one where nfl4th's top two options were CLOSE_MARGIN or more
+apart: the model was not torn.
 Totals are ranked on their displayed value (points of WP, one place), so
 equal totals share a rank. `summary` holds the numbers the page's intro
 quotes.
@@ -308,7 +310,8 @@ def coach_table(entries: list[dict]) -> list[dict]:
         if not evaluated(e):
             continue
         c = by_coach.setdefault(e['coach'], {
-            'coach': e['coach'], 'teams': [], 'decisions': 0, 'fourthDowns': 0, 'tries': 0, 'mistakes': 0, 'wpLost': 0.0,
+            'coach': e['coach'], 'teams': [], 'decisions': 0, 'fourthDowns': 0, 'tries': 0, 'mistakes': 0,
+            'clearMistakes': 0, 'wpLost': 0.0,
         })
         team = e['situation']['posteam']
         if team not in c['teams']:
@@ -318,6 +321,10 @@ def coach_table(entries: list[dict]) -> list[dict]:
         if e['graded']:
             c['mistakes'] += 1
             c['wpLost'] += e['wpCost']
+            # Clear: nfl4th's top two options at least CLOSE_MARGIN apart,
+            # the complement of the intro's close calls.
+            if e['margin'] is not None and e['margin'] >= CLOSE_MARGIN:
+                c['clearMistakes'] += 1
     rows = sorted(by_coach.values(), key=lambda c: (-round(c['wpLost'] * 100, 1), c['coach']))
     previous, rank = None, 0
     for i, c in enumerate(rows, start=1):

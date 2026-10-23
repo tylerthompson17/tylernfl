@@ -11,6 +11,20 @@ import { points } from '../../lib/decisions/view';
 import { decisionsData } from '../../utils/decisions';
 
 const coaches = decisionsData?.coaches ?? [];
+
+// Sortable number columns (src/lib/decisions/sort.ts): values as shown,
+// WP lost in points, so equal shown values share a rank.
+const SORT_COLUMNS = [
+  { key: 'decisions', title: 'Decisions', format: 'integer', perGame: false, rate: false, better: 'high' },
+  { key: 'mistakes', title: 'Mistakes', format: 'integer', perGame: false, rate: false, better: 'high' },
+  { key: 'clear', title: 'Clear mistakes', format: 'integer', perGame: false, rate: false, better: 'high' },
+  { key: 'lost', title: 'WP lost', format: 'decimal1', perGame: false, rate: false, better: 'high' },
+  { key: 'per', title: 'WP lost per decision', format: 'decimal2', perGame: false, rate: false, better: 'high' },
+];
+// The intro's close-call margin, from the file: a clear mistake is wider.
+const clearPoints = decisionsData ? Number(points(decisionsData.summary.closeMargin)) : null;
+const lostPoints = (c: (typeof coaches)[number]) => Number(points(c.wpLost));
+const perPoints = (c: (typeof coaches)[number]) => Number((c.wpLostPerDecision * 100).toFixed(2));
 ---
 
 <DecisionsFrame
@@ -24,24 +38,32 @@ const coaches = decisionsData?.coaches ?? [];
         <p class="empty">No decisions graded yet. They appear the morning after the season's first games.</p>
       ) : (
         <>
+          <div data-coach-table>
+          <script type="application/json" data-sort-config set:html={JSON.stringify(SORT_COLUMNS)} />
+          <p class="visually-hidden" aria-live="polite" data-sort-status></p>
           <div class="stat-table-scroll" tabindex="0">
-            <table class="stat-table">
+            <table class="stat-table coaches">
               <caption class="visually-hidden">Head coaches by win probability lost to 4th down and 2-point mistakes</caption>
               <thead>
                 <tr>
                   <th scope="col" class="number">Rk</th>
                   <th scope="col">Coach</th>
                   <th scope="col">Team</th>
-                  <th scope="col" class="number" title="4th downs and tries graded">Decisions</th>
-                  <th scope="col" class="number">Mistakes</th>
-                  <th scope="col" class="number" title="Points of win probability lost to mistakes">WP lost</th>
-                  <th scope="col" class="number" title="WP lost divided by decisions">Per decision</th>
+                  <th scope="col" class="number" data-sort="decisions" title="4th downs and tries graded">Decisions</th>
+                  <th scope="col" class="number" data-sort="mistakes">Mistakes</th>
+                  <th scope="col" class="number" data-sort="clear" title={`Mistakes where nfl4th's top two options were ${clearPoints} or more points apart`}>
+                    Clear mistakes
+                  </th>
+                  <th scope="col" class="number" data-sort="lost" aria-sort="descending" title="Points of win probability lost to mistakes">
+                    WP lost
+                  </th>
+                  <th scope="col" class="number" data-sort="per" title="WP lost divided by decisions">Per decision</th>
                 </tr>
               </thead>
               <tbody>
                 {coaches.map((c) => (
                   <tr>
-                    <td class="number">{c.rank}</td>
+                    <td class="number" data-rank>{c.rank}</td>
                     <th scope="row" class="coach">{c.coach}</th>
                     <td>
                       <span class="teams">
@@ -50,24 +72,28 @@ const coaches = decisionsData?.coaches ?? [];
                         ))}
                       </span>
                     </td>
-                    <td class="number">
+                    <td class="number" data-col="decisions" data-v={c.decisions}>
                       {c.decisions}
                       <span class="split">
                         {' '}
                         ({c.fourthDowns} + {c.tries})
                       </span>
                     </td>
-                    <td class="number">{c.mistakes}</td>
-                    <td class="number">{points(c.wpLost)}</td>
-                    <td class="number">{(c.wpLostPerDecision * 100).toFixed(2)}</td>
+                    <td class="number" data-col="mistakes" data-v={c.mistakes}>{c.mistakes}</td>
+                    <td class="number" data-col="clear" data-v={c.clearMistakes}>{c.clearMistakes}</td>
+                    <td class="number" data-col="lost" data-v={lostPoints(c)}>{points(c.wpLost)}</td>
+                    <td class="number" data-col="per" data-v={perPoints(c)}>{perPoints(c).toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          </div>
           <p class="table-foot">
             Decisions counts every graded 4th down and try (in brackets, 4th downs plus tries): supported by nfl4th,
-            not in a game already decided. WP lost adds up the mistakes, in points of win probability; per decision
+            not in a game already decided. A clear mistake is one where nfl4th's top two options were {clearPoints} or
+            more points of win probability apart, so the model was not torn. Select a column heading to sort by it. WP lost adds
+            up the mistakes, in points of win probability; per decision
             divides it by all decisions, so a coach with few decisions shows it. Equal totals share a rank. Each game
             counts for the head coach who coached it, so an interim coach is ranked for his own games.
           </p>
@@ -76,6 +102,11 @@ const coaches = decisionsData?.coaches ?? [];
     }
   </Panel>
 </DecisionsFrame>
+
+<script>
+  import { initCoachSort } from '../../lib/decisions/sort';
+  initCoachSort();
+</script>
 
 <style>
   .empty {
@@ -93,6 +124,27 @@ const coaches = decisionsData?.coaches ?? [];
 
   .split {
     color: var(--text-dim);
+  }
+
+  /* Sort buttons read as header text; the arrow marks the sorted column. */
+  .coaches :global(.sort-button) {
+    font-weight: 700;
+    padding: 0;
+    width: 100%;
+    text-align: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+    text-underline-offset: 2px;
+  }
+
+  .coaches :global(th[aria-sort='descending'] .sort-button)::after {
+    content: ' \25BC';
+    font-size: 9px;
+  }
+
+  .coaches :global(th[aria-sort='ascending'] .sort-button)::after {
+    content: ' \25B2';
+    font-size: 9px;
   }
 
   .table-foot {

@@ -3,6 +3,7 @@ import { describe, test } from 'node:test';
 
 import {
   gamesLabel,
+  gradedLabel,
   logWeekLabel,
   recapEmpty,
   seasonLabel,
@@ -115,5 +116,30 @@ describe('Offseason', () => {
     assert.equal(throughLabel(p), 'No games played yet.');
     assert.equal(seasonLabel(p), '2026 regular season, before the first game.');
     assert.equal(gamesLabel(offseason, 2026, 0, 0), 'No games played yet.');
+  });
+});
+
+describe('decision grades in all four date states', () => {
+  test('Sunday: week 2 in progress, a final still waiting on play-by-play', () => {
+    assert.equal(
+      gradedLabel(sunday, 2026, 1, 16, 1),
+      'Graded through week 1: 16 games. 1 final is still waiting on play-by-play, which nflverse publishes hours after a game.',
+    );
+    assert.equal(gradedLabel(sunday, 2026, 2, 17, 0), "Graded through week 2's games so far (1 of 16 played): 17 games.");
+  });
+
+  test('Tuesday: week 3 complete, Monday night not yet in play-by-play', () => {
+    assert.equal(gradedLabel(tuesday, 2026, 3, 48, 0), 'Graded through week 3: 48 games.');
+    assert.match(gradedLabel(tuesday, 2026, 3, 47, 1), /^Graded through week 3: 47 games\. 1 final is still waiting/);
+    assert.match(gradedLabel(tuesday, 2026, 3, 46, 2), /2 finals are still waiting/);
+  });
+
+  test('Wednesday: the ticker looks ahead, the grades stay on the last week played', () => {
+    assert.equal(gradedLabel(wednesday, 2026, 2, 32, 0), 'Graded through week 2: 32 games.');
+  });
+
+  test('offseason: last season named as final; nothing graded yet', () => {
+    assert.equal(gradedLabel(offseason, 2025, 22, 285, 0), '2025 season, final: 285 games graded.');
+    assert.equal(gradedLabel(offseason, 2026, 0, 0, 0), 'No games graded yet.');
   });
 });

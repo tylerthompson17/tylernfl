@@ -102,7 +102,9 @@ tylernfl/
   game and the play that answered it, with no model; the model (the calculator's worker
   and files, above) loads only when the visitor clicks "Show win probabilities", and the
   button exists only while a game is live. Win probabilities are per option in a fixed
-  order (go, field goal, punt), no verdict. Lines and roof come from `schedule.json`
+  order (go, field goal, punt), no verdict. `LIVE_FOURTH_DOWN_ENABLED` in `src/config.ts`
+  turns off just the panel (the home page keeps the examples; the ticker is unchanged);
+  `LIVE_TICKER_ENABLED` false stops the poll, so the panel never shows either. Lines and roof come from `schedule.json`
   (`totalLine`, `roof`), embedded in the page; who took the opening kickoff is assumed
   to be the home team, said on the panel. A null roof (an upcoming game at a
   retractable roof) is sent as closed, which nfl4th treats exactly as open.
@@ -682,9 +684,13 @@ and tries together with a Type column), a tab each, from `decisions.json`. Linke
   two options within 0.05) come from the file's `summary`, never typed in the page.
 - Coaches are credited per game (nflverse `home_coach` / `away_coach`), ranked by WP lost
   to mistakes (0.02 or more, stated on the page), with decisions and mistakes counted and
-  the average per decision; ranks come from the pipeline. The worst list links each game
-  to its win probability chart when the archive has it (`hasAutoChart`). Model version
-  and data date show on both tabs. Words are in `src/lib/decisions/view.ts`.
+  the average per decision; ranks come from the pipeline. "Clear mistakes" counts mistakes
+  where nfl4th's top two options were `closeMargin` (0.05) or more apart, computed in the
+  pipeline. The number columns sort in the browser (`src/lib/decisions/sort.ts`, the
+  stats boards' `arrange`). The worst list links each game to its win probability chart
+  when the archive has it (`hasAutoChart`). Both tabs show the model version and an as-of
+  line from `gradedThrough` in `as-of.ts` (graded through which week, how many games, and
+  any finals still waiting on play-by-play). Words are in `src/lib/decisions/view.ts`.
 
 ### Curated posts
 

@@ -775,6 +775,8 @@ export interface CoachGrade {
   tries: number;
   /** Decisions costing threshold or more */
   mistakes: number;
+  /** Mistakes where nfl4th's top two options were closeMargin (0.05) or more apart */
+  clearMistakes: number;
   /** Sum of the mistakes' cost, 0 to 1 per mistake */
   wpLost: number;
   wpLostPerDecision: number;

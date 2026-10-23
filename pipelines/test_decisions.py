@@ -201,6 +201,13 @@ class LeaderboardTest(unittest.TestCase):
         self.assertEqual((a['decisions'], a['mistakes'], a['wpLost'], a['wpLostPerDecision']), (2, 1, 0.05, 0.025))
         self.assertEqual((rows[2]['fourthDowns'], rows[2]['tries']), (0, 1))
 
+    def test_clear_mistakes_have_a_wide_margin(self):
+        rows = coach_table([
+            entry('A', 'BUF', 0.06, margin=0.06), entry('A', 'BUF', 0.03, margin=0.05),
+            entry('A', 'BUF', 0.03, margin=0.0499), entry('A', 'BUF', 0.01, margin=0.2),
+        ])
+        self.assertEqual((rows[0]['mistakes'], rows[0]['clearMistakes']), (3, 2))
+
     def test_interim_coach_credited_for_his_own_games(self):
         rows = coach_table([entry('Head', 'NYG', 0.05), entry('Interim', 'NYG', 0.03)])
         self.assertEqual({r['coach']: r['teams'] for r in rows}, {'Head': ['NYG'], 'Interim': ['NYG']})

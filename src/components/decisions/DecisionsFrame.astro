@@ -8,8 +8,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Tabs from '../Tabs.astro';
 import { introLines, points } from '../../lib/decisions/view';
-import { dataDate } from '../../lib/draft/view';
-import { through } from '../../utils/as-of';
+import { gradedThrough } from '../../utils/as-of';
 import { decisionsData } from '../../utils/decisions';
 import { url } from '../../utils/url';
 
@@ -49,9 +48,9 @@ const tabs = [
       data && (
         <p class="meta">
           A mistake is a choice that cost {Number(points(data.threshold))} points of win probability or more (threshold{' '}
-          {data.threshold}), measured at the snap, whatever happened next. Model {data.modelVersion ?? 'none'}, data from{' '}
-          {dataDate(data.updated)}, {data.games} games. {lastWeek > 0 && through(data.season, lastWeek)} The whole season
-          is recomputed each morning, so a model change reaches every play. <a href={METHODS}>How it is graded</a>.
+          {data.threshold}), measured at the snap, whatever happened next. {gradedThrough(data.season, lastWeek, data.games)}{' '}
+          Model {data.modelVersion ?? 'none'}; the whole season is recomputed each morning, so a model change reaches
+          every play. <a href={METHODS}>How it is graded</a>.
         </p>
       )
     }

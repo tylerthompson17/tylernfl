@@ -7,6 +7,7 @@ import scheduleData from '../data/schedule.json';
 import type { ScheduleData } from '../data/types';
 import {
   gamesLabel,
+  gradedLabel,
   logWeekLabel,
   recapEmpty,
   seasonLabel,
@@ -45,3 +46,13 @@ export const gameStatusLine = (week: number | null, summary: string | null) => s
 export const logWeek = (season: number, week: number) => logWeekLabel(asOfContext, season, week);
 
 export const emptyRecap = () => recapEmpty(asOfContext);
+
+/**
+ * Decision grades as of now: graded games through which week, and any
+ * finals in schedule.json (regular season and playoffs, the same games the
+ * pipeline grades) not graded yet.
+ */
+export function gradedThrough(season: number, lastWeek: number, graded: number): string {
+  const finals = season === schedule.season ? schedule.games.filter((g) => g.awayScore !== null && g.homeScore !== null).length : graded;
+  return gradedLabel(asOfContext, season, lastWeek, graded, Math.max(0, finals - graded));
+}

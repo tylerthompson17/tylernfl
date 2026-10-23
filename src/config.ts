@@ -6,6 +6,14 @@
 export const LIVE_TICKER_ENABLED = true;
 
 /**
+ * The home page's live 4th down panel, which reads the ticker's poll. Set to
+ * false to turn off just the panel: the home page keeps the calculator's
+ * examples, and the ticker is unchanged. With LIVE_TICKER_ENABLED false
+ * there is no poll, so the panel never shows either way.
+ */
+export const LIVE_FOURTH_DOWN_ENABLED = true;
+
+/**
  * Ranks built on fewer games than this carry a small-sample note. Early
  * in the season a single game can swing a team 20 places.
  */
