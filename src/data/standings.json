@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 7,
-  "updated": "2026-10-25T20:04:30Z",
+  "updated": "2026-10-25T20:15:24Z",
   "teams": [
     {
       "team": "BUF",
@@ -62,25 +62,25 @@
       "conference": "AFC",
       "division": "AFC East",
       "wins": 2,
-      "losses": 4,
+      "losses": 5,
       "ties": 0,
-      "pct": 0.333,
-      "pointsFor": 112,
-      "pointsAgainst": 122,
-      "diff": -10,
+      "pct": 0.286,
+      "pointsFor": 137,
+      "pointsAgainst": 150,
+      "diff": -13,
       "divisionRecord": [
         0,
-        1,
+        2,
         0
       ],
       "conferenceRecord": [
         2,
-        1,
+        2,
         0
       ],
-      "streak": "L1",
+      "streak": "L2",
       "divisionRank": 3,
-      "conferenceRank": 11,
+      "conferenceRank": 12,
       "divisionTiebreak": null,
       "conferenceTiebreak": "conference_record"
     },
@@ -88,28 +88,55 @@
       "team": "MIA",
       "conference": "AFC",
       "division": "AFC East",
-      "wins": 0,
+      "wins": 1,
       "losses": 5,
       "ties": 0,
-      "pct": 0.0,
-      "pointsFor": 70,
-      "pointsAgainst": 132,
-      "diff": -62,
+      "pct": 0.167,
+      "pointsFor": 98,
+      "pointsAgainst": 157,
+      "diff": -59,
       "divisionRecord": [
-        0,
+        1,
         0,
         0
       ],
       "conferenceRecord": [
-        0,
+        1,
         3,
         0
       ],
-      "streak": "L5",
+      "streak": "W1",
       "divisionRank": 4,
-      "conferenceRank": 15,
+      "conferenceRank": 14,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "strength_of_schedule"
+      "conferenceTiebreak": null
+    },
+    {
+      "team": "CLE",
+      "conference": "AFC",
+      "division": "AFC North",
+      "wins": 5,
+      "losses": 2,
+      "ties": 0,
+      "pct": 0.714,
+      "pointsFor": 133,
+      "pointsAgainst": 146,
+      "diff": -13,
+      "divisionRecord": [
+        2,
+        0,
+        0
+      ],
+      "conferenceRecord": [
+        3,
+        2,
+        0
+      ],
+      "streak": "W2",
+      "divisionRank": 1,
+      "conferenceRank": 3,
+      "divisionTiebreak": "head_to_head",
+      "conferenceTiebreak": null
     },
     {
       "team": "PIT",
@@ -133,37 +160,10 @@
         0
       ],
       "streak": "W3",
-      "divisionRank": 1,
-      "conferenceRank": 3,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
-    },
-    {
-      "team": "CLE",
-      "conference": "AFC",
-      "division": "AFC North",
-      "wins": 4,
-      "losses": 2,
-      "ties": 0,
-      "pct": 0.667,
-      "pointsFor": 106,
-      "pointsAgainst": 122,
-      "diff": -16,
-      "divisionRecord": [
-        2,
-        0,
-        0
-      ],
-      "conferenceRecord": [
-        2,
-        2,
-        0
-      ],
-      "streak": "W1",
       "divisionRank": 2,
-      "conferenceRank": 6,
-      "divisionTiebreak": "division_record",
-      "conferenceTiebreak": "division_order"
+      "conferenceRank": 5,
+      "divisionTiebreak": "head_to_head",
+      "conferenceTiebreak": null
     },
     {
       "team": "CIN",
@@ -189,8 +189,8 @@
       "streak": "W2",
       "divisionRank": 3,
       "conferenceRank": 7,
-      "divisionTiebreak": "division_record",
-      "conferenceTiebreak": "division_order"
+      "divisionTiebreak": null,
+      "conferenceTiebreak": null
     },
     {
       "team": "BAL",
@@ -269,7 +269,7 @@
       ],
       "streak": "W2",
       "divisionRank": 2,
-      "conferenceRank": 12,
+      "conferenceRank": 11,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -305,12 +305,12 @@
       "conference": "AFC",
       "division": "AFC South",
       "wins": 1,
-      "losses": 5,
+      "losses": 6,
       "ties": 0,
-      "pct": 0.167,
-      "pointsFor": 84,
-      "pointsAgainst": 129,
-      "diff": -45,
+      "pct": 0.143,
+      "pointsFor": 108,
+      "pointsAgainst": 156,
+      "diff": -48,
       "divisionRecord": [
         1,
         1,
@@ -318,12 +318,12 @@
       ],
       "conferenceRecord": [
         1,
-        3,
+        4,
         0
       ],
-      "streak": "W1",
+      "streak": "L1",
       "divisionRank": 4,
-      "conferenceRank": 14,
+      "conferenceRank": 15,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -377,7 +377,7 @@
       ],
       "streak": "W2",
       "divisionRank": 2,
-      "conferenceRank": 5,
+      "conferenceRank": 6,
       "divisionTiebreak": null,
       "conferenceTiebreak": "conference_record"
     },
