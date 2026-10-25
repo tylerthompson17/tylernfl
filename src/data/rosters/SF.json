@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "SF",
   "week": 7,
-  "updated": "2026-10-24T13:41:32Z",
+  "updated": "2026-10-25T13:59:41Z",
   "groups": [
     {
       "key": "offense",
@@ -59,7 +59,7 @@
       "statusLabel": "Active",
       "heightInches": 76,
       "weight": 223,
-      "age": 25,
+      "age": 26,
       "experience": 1,
       "college": "Indiana"
     },
@@ -175,8 +175,8 @@
       "number": 3,
       "position": "WR",
       "group": "offense",
-      "status": "RES",
-      "statusLabel": "Reserve",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 71,
       "weight": 200,
       "age": 29,
@@ -694,6 +694,21 @@
       "college": "Indiana; James Madison"
     },
     {
+      "gsisId": "00-0034807",
+      "name": "Ogbo Okoronkwo",
+      "slug": "ogbo-okoronkwo",
+      "number": 59,
+      "position": "DE",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 74,
+      "weight": 253,
+      "age": 31,
+      "experience": 8,
+      "college": "Oklahoma"
+    },
+    {
       "gsisId": "00-0038575",
       "name": "Viliami Fehoko Jr.",
       "slug": "viliami-fehoko-jr",
@@ -985,8 +1000,8 @@
       "number": 41,
       "position": "MLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 220,
       "age": 25,

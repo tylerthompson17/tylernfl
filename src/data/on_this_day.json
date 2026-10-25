@@ -1,77 +1,77 @@
 {
   "month": 10,
-  "day": 24,
-  "gamesOnDate": 56,
+  "day": 25,
+  "gamesOnDate": 43,
   "items": [
     {
-      "year": 2021,
-      "gameId": "2021_07_NYJ_NE",
-      "text": "The Patriots beat the Jets 54-13.",
+      "year": 2020,
+      "gameId": "2020_07_SEA_ARI",
+      "text": "The Cardinals beat the Seahawks 37-34 in overtime with 71 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Patriots",
-          "team": "NE"
+          "text": "Cardinals",
+          "team": "ARI"
         },
         {
           "text": " beat the "
+        },
+        {
+          "text": "Seahawks",
+          "team": "SEA"
+        },
+        {
+          "text": " 37-34 in overtime with 71 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2010,
+      "gameId": "2010_07_NYG_DAL",
+      "text": "The Giants beat the Cowboys 41-35 with 76 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Giants",
+          "team": "NYG"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Cowboys",
+          "team": "DAL"
+        },
+        {
+          "text": " 41-35 with 76 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2009,
+      "gameId": "2009_07_NYJ_OAK",
+      "text": "The Jets shut out the Raiders 38-0.",
+      "parts": [
+        {
+          "text": "The "
         },
         {
           "text": "Jets",
           "team": "NYJ"
         },
         {
-          "text": " 54-13."
-        }
-      ]
-    },
-    {
-      "year": 2010,
-      "gameId": "2010_07_OAK_DEN",
-      "text": "The Raiders beat the Broncos 59-14 as 7-point underdogs with 73 combined points.",
-      "parts": [
-        {
-          "text": "The "
+          "text": " shut out the "
         },
         {
           "text": "Raiders",
           "team": "LV"
         },
         {
-          "text": " beat the "
-        },
-        {
-          "text": "Broncos",
-          "team": "DEN"
-        },
-        {
-          "text": " 59-14 as 7-point underdogs with 73 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2004,
-      "gameId": "2004_07_ATL_KC",
-      "text": "The Chiefs beat the Falcons 56-10.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Chiefs",
-          "team": "KC"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Falcons",
-          "team": "ATL"
-        },
-        {
-          "text": " 56-10."
+          "text": " 38-0."
         }
       ]
     }
