@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 7,
-  "updated": "2026-10-25T23:37:42Z",
+  "updated": "2026-10-25T23:48:37Z",
   "teams": [
     {
       "team": "BUF",
@@ -386,12 +386,12 @@
       "conference": "AFC",
       "division": "AFC West",
       "wins": 3,
-      "losses": 3,
+      "losses": 4,
       "ties": 0,
-      "pct": 0.5,
-      "pointsFor": 162,
-      "pointsAgainst": 162,
-      "diff": 0,
+      "pct": 0.429,
+      "pointsFor": 183,
+      "pointsAgainst": 197,
+      "diff": -14,
       "divisionRecord": [
         1,
         1,
@@ -402,7 +402,7 @@
         3,
         0
       ],
-      "streak": "L3",
+      "streak": "L4",
       "divisionRank": 3,
       "conferenceRank": 10,
       "divisionTiebreak": null,
@@ -703,7 +703,7 @@
       "divisionRank": 2,
       "conferenceRank": 9,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "TB",
@@ -817,13 +817,13 @@
       "team": "LAR",
       "conference": "NFC",
       "division": "NFC West",
-      "wins": 2,
+      "wins": 3,
       "losses": 4,
       "ties": 0,
-      "pct": 0.333,
-      "pointsFor": 135,
-      "pointsAgainst": 138,
-      "diff": -3,
+      "pct": 0.429,
+      "pointsFor": 170,
+      "pointsAgainst": 159,
+      "diff": 11,
       "divisionRecord": [
         0,
         2,
@@ -834,11 +834,11 @@
         2,
         0
       ],
-      "streak": "L2",
+      "streak": "W1",
       "divisionRank": 3,
       "conferenceRank": 10,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "head_to_head_sweep"
+      "conferenceTiebreak": null
     },
     {
       "team": "ARI",
