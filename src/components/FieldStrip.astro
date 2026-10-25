@@ -1,89 +1,25 @@
 ---
 /**
- * The yardline strip: a thin slice of the field as a boxed unit. Dark
- * line of scrimmage, the distance to gain shaded in first-down yellow
- * (background only, per the design spec), slate line to gain, hash
- * ticks every 10 yards. It only renders real state; it is never
- * decoration.
- *
- * Convention: the offense always drives left to right. Positions are
- * yards from the offense's own goal line (0) to the opponent's (100).
+ * A 4th down on the field strip (src/lib/field/strip.ts, which the
+ * calculator's script also draws from): offense driving left to right,
+ * both end zones, the line of scrimmage, the line to gain and, when a field
+ * goal is an option, its distance. One image to a screen reader, described
+ * in words.
  */
+import { fieldStripHtml } from '../lib/field/strip';
+
 interface Props {
-  /** Line of scrimmage, 0 to 100 */
-  ballOn: number;
-  /** First down line, 0 to 100 */
-  lineToGain: number;
-  /** Situation text, e.g. "4th & 3 at DET 42" */
+  /** Yards from the opponent's goal line, 1 to 99 */
+  yardline100: number;
+  /** Yards to go; at or past the goal line is goal to go */
+  distance: number;
+  /** The field goal's distance when one is an option */
+  kick?: number | null;
+  /** Shown above the field, e.g. "4th and 3" */
   label: string;
 }
 
-const { ballOn, lineToGain, label } = Astro.props;
-
-const spot = Math.min(Math.max(ballOn, 0), 100);
-const line = Math.min(Math.max(lineToGain, spot), 100);
+const { yardline100, distance, kick = null, label } = Astro.props;
 ---
 
-<figure class="strip">
-  <figcaption class="label num">{label}</figcaption>
-  <div class="field" role="img" aria-label={`${label}: ${Math.round(line - spot)} yards to gain`}>
-    <div class="togo" style={`left: ${spot}%; width: ${line - spot}%;`}></div>
-    <div class="scrimmage" style={`left: ${spot}%;`}></div>
-    <div class="first-down" style={`left: ${line}%;`}></div>
-  </div>
-</figure>
-
-<style>
-  .strip {
-    margin: 0;
-  }
-
-  .label {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 14px;
-    margin-bottom: var(--space-1);
-  }
-
-  .field {
-    position: relative;
-    height: 32px;
-    background: var(--panel);
-    /* Hash ticks every 10 yards */
-    background-image: repeating-linear-gradient(
-      90deg,
-      var(--rule-soft) 0,
-      var(--rule-soft) 1px,
-      transparent 1px,
-      transparent 10%
-    );
-    border: 1px solid var(--rule);
-    overflow: hidden;
-  }
-
-  /* Distance to gain: first-down yellow as background */
-  .togo {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    background: var(--highlight);
-  }
-
-  .scrimmage {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    margin-left: -1px;
-    background: var(--text);
-  }
-
-  .first-down {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    margin-left: -1px;
-    background: var(--header);
-  }
-</style>
+<Fragment set:html={fieldStripHtml({ yardline100, distance, kick, label })} />

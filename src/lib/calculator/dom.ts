@@ -12,10 +12,12 @@ import {
   encode,
   fieldsOf,
   situationLine,
+  yardline100Of,
   type CalculatorKind,
   type FieldErrors,
   type FormValues,
 } from './form.ts';
+import { fieldGoalKick, fieldStripHtml } from '../field/strip.ts';
 import { fourthDownView, tryView, unsupportedView, type CalculatorView, type Fallbacks } from './format.ts';
 import type { FourthDownResult, TryResult } from '../fourth-down.ts';
 import type { WorkerMessage, WorkerRequest } from './worker.ts';
@@ -100,6 +102,9 @@ function setUp(root: HTMLElement): void {
   const output = root.querySelector<HTMLElement>('[data-calc-output]')!;
   const announce = root.querySelector<HTMLElement>('[data-calc-announce]')!;
   const situation = root.querySelector<HTMLElement>('[data-calc-situation]');
+  const field = root.querySelector<HTMLElement>('[data-calc-field]');
+  const kickOffset = Number(root.dataset.kickOffset);
+  const kickLongest = Number(root.dataset.kickLongest);
 
   let state: 'loading' | 'ready' | 'failed' = 'loading';
   let fallbacks: Fallbacks | null = null;
@@ -124,7 +129,16 @@ function setUp(root: HTMLElement): void {
     const values = readForm(form, kind);
     const query = encode(values, kind);
     if (query !== window.location.search) history.replaceState(null, '', `${window.location.pathname}${query}`);
-    if (situation) situation.textContent = situationLine(values) ?? '';
+    const line = situationLine(values);
+    if (situation) situation.textContent = line ?? '';
+    if (field) {
+      field.hidden = line === null;
+      if (line !== null) {
+        const yardline100 = yardline100Of(values.side, Number(values.yl));
+        const kick = fieldGoalKick(yardline100, kickOffset, kickLongest);
+        field.innerHTML = fieldStripHtml({ yardline100, distance: Number(values.togo), kick, label: line });
+      }
+    }
 
     let request: WorkerRequest | null = null;
     let errors: FieldErrors;

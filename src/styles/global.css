@@ -214,3 +214,166 @@ th,
   font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
+
+/* The field strip (src/lib/field/strip.ts): global because the calculator
+   draws its markup from a script. Offense drives left to right. */
+.field-strip {
+  container: field / inline-size;
+  margin: 0;
+}
+
+.field-strip .fs-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+.field-strip .fs-label {
+  font-size: 15px;
+}
+
+.field-strip .fs-drive {
+  font-size: 13px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.field-strip .fs-field {
+  position: relative;
+  height: 64px;
+  background: var(--panel);
+  border: 1px solid var(--text-dim);
+  overflow: hidden;
+}
+
+.field-strip .fs-field > span,
+.field-strip .fs-sides > span,
+.field-strip .fs-kick > span {
+  position: absolute;
+}
+
+.field-strip .fs-ez {
+  top: 0;
+  bottom: 0;
+  background: var(--header);
+  color: var(--header-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.field-strip .fs-ez span {
+  writing-mode: vertical-rl;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.field-strip .fs-own span {
+  transform: rotate(180deg);
+}
+
+.field-strip .fs-line {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--rule-soft);
+}
+
+.field-strip .fs-line.fs-ten {
+  background: var(--rule);
+  /* Stops above its number, so no line crosses the digits */
+  bottom: 20px;
+}
+
+.field-strip .fs-gap {
+  top: 0;
+  bottom: 0;
+  background: var(--highlight-soft);
+}
+
+.field-strip .fs-gain,
+.field-strip .fs-scrimmage {
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  margin-left: -1px;
+}
+
+.field-strip .fs-gain {
+  background: var(--highlight);
+}
+
+.field-strip .fs-scrimmage {
+  background: var(--scrimmage);
+}
+
+.field-strip .fs-num {
+  bottom: var(--space-1);
+  transform: translateX(-50%);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.field-strip .fs-sides,
+.field-strip .fs-kick {
+  position: relative;
+  height: 16px;
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--text-dim);
+}
+
+.field-strip .fs-sides > span {
+  text-align: center;
+  border-top: 2px solid var(--rule);
+}
+
+.field-strip .fs-sides > span + span {
+  border-left: 1px solid var(--rule);
+}
+
+.field-strip .fs-kick {
+  height: 30px;
+  margin-top: var(--space-1);
+}
+
+.field-strip .fs-bracket {
+  top: 0;
+  height: 8px;
+  background: var(--rule-soft);
+  border: 1px solid var(--text-dim);
+  border-top: none;
+}
+
+.field-strip .fs-kick-label {
+  top: 10px;
+  white-space: nowrap;
+  color: var(--text);
+  font-weight: 700;
+}
+
+@container field (max-width: 420px) {
+  .field-strip .fs-num.fs-odd {
+    display: none;
+  }
+
+  .field-strip .fs-line.fs-odd {
+    bottom: 0;
+  }
+
+  .field-strip .fs-field {
+    height: 56px;
+  }
+}

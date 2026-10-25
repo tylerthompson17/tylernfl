@@ -12,7 +12,8 @@ import Tabs from '../Tabs.astro';
 import { asOfContext } from '../../utils/as-of';
 import { url } from '../../utils/url';
 import { modelDownloadBytes, modelManifest as manifest } from '../../utils/fourth-down-model';
-import { QUARTERS, ROOFS, defaults, seasonsUpTo, type CalculatorKind } from '../../lib/calculator/form';
+import { QUARTERS, ROOFS, defaults, seasonsUpTo, situationLine, yardline100Of, type CalculatorKind } from '../../lib/calculator/form';
+import { fieldGoalKick, fieldStripHtml, type FieldState } from '../../lib/field/strip';
 
 interface Props {
   kind: CalculatorKind;
@@ -23,6 +24,13 @@ const season = asOfContext.season;
 const d = defaults(kind, season);
 const fourth = kind === 'fourth-down';
 const team = fourth ? { us: 'Offense', them: 'Defense' } : { us: 'Scoring team', them: 'Opponent' };
+
+// The default situation drawn before the script runs; the script redraws it as the inputs change.
+const line = fourth ? situationLine(d) : null;
+const ydsToGoal = yardline100Of(d.side, Number(d.yl));
+const field: FieldState | null = line
+  ? { yardline100: ydsToGoal, distance: Number(d.togo), label: line, kick: fieldGoalKick(ydsToGoal, manifest.kickDistanceOffset, manifest.maxFieldGoalDistance) }
+  : null;
 
 const downloadMb = (modelDownloadBytes / 1e6).toFixed(1);
 
@@ -48,7 +56,13 @@ const description = fourth
   </p>
   <Tabs label="Calculator decisions" tabs={tabs} current={kind} />
 
-  <div class="calc" data-calculator={kind} data-season={season}>
+  <div
+    class="calc"
+    data-calculator={kind}
+    data-season={season}
+    data-kick-offset={manifest.kickDistanceOffset}
+    data-kick-longest={manifest.maxFieldGoalDistance}
+  >
     <Panel title={fourth ? 'Situation' : 'Game state after the touchdown'} class="calc-inputs">
       <form novalidate>
         {
@@ -91,7 +105,8 @@ const description = fourth
                   <p class="field-error" id="calc-togo-error" data-error-for="togo" hidden />
                 </div>
               </div>
-              <p class="situation" data-calc-situation aria-live="polite">4th and 2 at midfield</p>
+              <div class="calc-field" data-calc-field set:html={field ? fieldStripHtml(field) : ''} />
+              <p class="visually-hidden" data-calc-situation aria-live="polite">{field?.label}</p>
             </fieldset>
           )
         }
@@ -351,17 +366,8 @@ const description = fourth
     font-size: 12px;
   }
 
-  .situation {
-    margin-top: var(--space-2);
-    padding: var(--space-1) var(--space-2);
-    background: var(--highlight-soft);
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 15px;
-  }
-
-  .situation:empty {
-    display: none;
+  .calc-field {
+    margin-top: var(--space-3);
   }
 
   .loading,

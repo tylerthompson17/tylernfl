@@ -483,6 +483,7 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 | `--link` | `#1A56B5` | all links, underlined |
 | `--highlight` | `#F2D22E` | first-down yellow, background only |
 | `--highlight-soft` | `#FCF5D4` | pale yellow tint on a marked live ticker slot, background only |
+| `--scrimmage` | `#1E5BD8` | line of scrimmage on the field strip |
 | `--win` | `#1E7A4C` | positive values |
 | `--loss` | `#B3363B` | negative values |
 
@@ -747,6 +748,29 @@ and tries together with a Type column), a tab each, from `decisions.json`. Linke
   when the archive has it (`hasAutoChart`). Both tabs show the model version and an as-of
   line from `gradedThrough` in `as-of.ts` (graded through which week, how many games, and
   any finals still waiting on play-by-play). Words are in `src/lib/decisions/view.ts`.
+
+### Field strip
+
+A 4th down on a flat field, drawn by `fieldStripHtml` in `src/lib/field/strip.ts`: at build
+time through `FieldStrip.astro` (the daily game, articles), and from the calculator's
+script as its inputs change, so both draw the same markup (styles `.field-strip` in
+`global.css`, global for that reason).
+
+- The offense always drives left to right ("Driving →"); both end zones in slate, the
+  right one labelled Opponent. Yard lines every 5, numbers every 10 reading 10 to 50 to 10
+  with "Own side" and "Opponent's side" under the halves; numbers every 20 when the strip
+  is under 420px (a container query, so a narrow panel on a wide screen counts too). The
+  10-yard lines stop above their numbers.
+- Line of scrimmage in `--scrimmage`, line to gain in `--highlight`, the gap between them
+  `--highlight-soft`; goal to go puts the line to gain on the goal line.
+- When a field goal is an option, a shaded bracket from the spot of the kick to the
+  goalposts with "52-yard attempt": yard line plus the model manifest's
+  `kickDistanceOffset` (18), and in the calculator only up to `maxFieldGoalDistance` (70);
+  in the daily game whenever the field goal's WP is not null.
+- The field is one image to a screen reader, named by `fieldDescription()` ("4th and 7 at
+  the opponent's 34. Driving left to right toward the opponent's end zone, ball on the
+  opponent's 34, line to gain the opponent's 27. A field goal would be a 52-yard
+  attempt.").
 
 ### 4th down daily
 

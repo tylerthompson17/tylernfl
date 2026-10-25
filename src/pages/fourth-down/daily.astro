@@ -12,6 +12,7 @@ import Panel from '../../components/Panel.astro';
 import FieldStrip from '../../components/FieldStrip.astro';
 import type { DailyFourthData } from '../../data/types';
 import { url } from '../../utils/url';
+import { modelManifest } from '../../utils/fourth-down-model';
 import {
   callWords,
   clockWords,
@@ -76,7 +77,12 @@ const embedded = ready
                 <h2 class="play-title">
                   Play {i + 1} of {game.plays.length}
                 </h2>
-                <FieldStrip ballOn={100 - p.yardline100} lineToGain={100 - p.yardline100 + p.distance} label={downWords(p)} />
+                <FieldStrip
+                  yardline100={p.yardline100}
+                  distance={p.distance}
+                  kick={p.wp['field goal'] === null ? null : p.yardline100 + modelManifest.kickDistanceOffset}
+                  label={downWords(p)}
+                />
                 <dl class="situation">
                   <div>
                     <dt>Ball on</dt>
