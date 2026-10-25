@@ -4,7 +4,7 @@
  * last play changes. Shown once today's game has kicked off: a 4th down of
  * the team's waiting for the snap first, then every one so far, newest
  * first, as items (item.ts), the same as the home panel and the live page.
- * The model starts while the game is live.
+ * The model loads for today's game whether it is live or final.
  */
 import { LIVE_FOURTH_PAGE_ENABLED } from '../../config.ts';
 import { siteNow } from '../../utils/now.ts';
@@ -34,7 +34,6 @@ function setUp(root: HTMLElement): void {
   });
 
   function render(): void {
-    if (state?.anyLive) model.start();
     const offense = (homeBall: boolean, g: FeedGame) => (homeBall ? g.home : g.away);
     const mine = (state?.entries ?? [])
       .filter((e) => offense(e.play.teamId === e.homeId, e.game) === team)
@@ -46,6 +45,8 @@ function setUp(root: HTMLElement): void {
     status.hidden = status.textContent === '';
   }
 
+  // Today's game, live or final: the numbers are worth having either way.
+  model.start();
   feed.start();
 }
 

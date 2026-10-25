@@ -37,8 +37,9 @@ function modelWaiting(model: ModelLike): string {
   return "Computing nfl4th's numbers…";
 }
 
-/** The grade for a played 4th down, asking the model when it is running. */
+/** The grade for a played 4th down, asking the model when it is running; null when nullified. */
 export function entryGrade(e: FeedEntry, model: ModelLike): LiveGrade | null {
+  if (e.play.nullified) return null;
   const situation = situationFromSummary(e.play, e.homeId, e.game, e.timeouts);
   if (!situation) return null;
   if (model.state() !== 'off') model.ask(entryKey(e), situation);
@@ -54,10 +55,15 @@ export function entryItem(e: FeedEntry, model: ModelLike): HTMLLIElement {
   const play = line('live-play', playSummary(e.play.type, e.play.text, e.play.distance, call, fake));
   play.title = e.play.text;
   li.append(
-    line('live-when', `${e.game.away} at ${e.game.home}, ${clockWords(e.play)}`),
+    line('live-when', `${e.game.away} at ${e.game.home}, ${clockWords(e.play)}${e.final ? ' · Final' : ''}`),
     line('live-down', situationWords(e.play, e.homeId, e.game)),
     play,
   );
+  if (e.play.nullified) {
+    li.classList.add('nullified');
+    li.append(line('live-verdict', `Nullified by penalty (${e.play.nullified.toLowerCase()}), not graded`));
+    return li;
+  }
   const grade = entryGrade(e, model);
   if (grade) {
     li.append(line('live-verdict', verdictLine(grade, call)));

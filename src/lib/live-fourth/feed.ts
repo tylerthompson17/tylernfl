@@ -32,6 +32,8 @@ export interface FeedEntry {
   play: SummaryFourthDown;
   /** The scoreboard's, when the page saw this 4th down live; else null (counted from the summary) */
   timeouts: Timeouts | null;
+  /** The game is over */
+  final: boolean;
 }
 
 /** A 4th down the scoreboard shows now, not yet snapped (tracker.ts). */
@@ -48,8 +50,9 @@ export interface FeedState {
   /** Any of today's games live in the latest poll */
   anyLive: boolean;
   /**
-   * A game day still on: a game of today's is live, or one has kicked off
-   * and another is still to come. False once every game today is final.
+   * A game day still on: a game of today's has kicked off and not every game
+   * today is final (between games too). From today's kickoffs and each
+   * game's final status (its summary or the poll), so it holds without a poll.
    */
   gameDay: boolean;
   /** Games whose summary has loaded at least once */
@@ -91,7 +94,7 @@ export function createFeed(games: Record<string, FeedGame>, onChange: (state: Fe
   const timeouts = new Map<string, Timeouts>();
   let tracks = new Map<string, GameTrack>();
   let anyLive = false;
-  let gameDay = false;
+  const finals = new Set<string>();
   let pending: PendingFourthDown[] = [];
   let started = false;
 
@@ -100,9 +103,11 @@ export function createFeed(games: Record<string, FeedGame>, onChange: (state: Fe
     for (const [event, byId] of plays) {
       const homeId = homeIds.get(event)!;
       for (const play of byId.values()) {
-        entries.push({ event, game: games[event], homeId, play, timeouts: timeouts.get(play.id) ?? null });
+        entries.push({ event, game: games[event], homeId, play, timeouts: timeouts.get(play.id) ?? null, final: finals.has(event) });
       }
     }
+    const now = siteNow();
+    const gameDay = startedToday(games, now).length > 0 && todaysGames(games, now).some((id) => !finals.has(id));
     onChange({ entries, pending, anyLive, gameDay, loaded: plays.size, started: startedToday(games, siteNow()).length, failed: failed.size });
   }
 
@@ -119,6 +124,7 @@ export function createFeed(games: Record<string, FeedGame>, onChange: (state: Fe
       const game = parseSummary(await response.json(), event);
       if (!game) throw new Error('unexpected summary');
       homeIds.set(event, game.homeId);
+      if (game.final) finals.add(event);
       const byId = plays.get(event) ?? new Map<string, SummaryFourthDown>();
       for (const play of game.fourthDowns) byId.set(play.id, play);
       plays.set(event, byId);
@@ -136,9 +142,7 @@ export function createFeed(games: Record<string, FeedGame>, onChange: (state: Fe
     const { data, seen } = (event as CustomEvent<ScoreboardEventDetail>).detail;
     const snapshots = parseSnapshots(data, seen).filter((s) => s.event in games);
     anyLive = snapshots.some((s) => s.state === 'in');
-    const todays = new Set(todaysGames(games, siteNow()));
-    const states = snapshots.filter((s) => todays.has(s.event)).map((s) => s.state);
-    gameDay = anyLive || (states.includes('post') && states.includes('pre'));
+    for (const s of snapshots) if (s.state === 'post') finals.add(s.event);
 
     // The scoreboard's timeouts for 4th downs seen live, by the play that answered them.
     tracks = stepAll(tracks, snapshots);
@@ -174,6 +178,8 @@ export function createFeed(games: Record<string, FeedGame>, onChange: (state: Fe
   }
 
   document.addEventListener(SCOREBOARD_EVENT, onScoreboard);
+  // A first state from today's kickoffs alone, before any poll arrives.
+  queueMicrotask(emit);
 
   return {
     /** Fetch today's started games once, then follow the poll. Idempotent. */

@@ -108,3 +108,20 @@ test("timeouts counted from the summary match the scoreboard at Thursday's eight
   const goal = pitno.fourthDowns.find((d) => d.type === 'Passing Touchdown')!;
   assert.equal(goal.awayTimeouts, 1);
 });
+
+test('a 4th down nullified by a penalty after the snap is listed, a pre-snap foul is not', async () => {
+  const { nullifyingFoul } = await import('../src/lib/live-fourth/summary.ts');
+  const game = parseSummary(read('summary-401873011-final-plays.json'), '401873011')!;
+  assert.equal(game.final, true);
+  const nullified = game.fourthDowns.filter((d) => d.nullified);
+  assert.equal(nullified.length, 1);
+  assert.equal(nullified[0].nullified, 'Defensive Offside');
+  assert.deepEqual([nullified[0].period, nullified[0].clock, nullified[0].distance, nullified[0].yardline100], [4, '1:04', 3, 19]);
+  // The 11 snaps that stood (as the live page showed them) plus the nullified field goal.
+  assert.equal(game.fourthDowns.length, 12);
+  // NE's false start before its 4th down punt on Thursday is a pre-snap foul.
+  assert.equal(nullifyingFoul('(Shotgun) PENALTY on NE-M.Pryor, False Start, 5 yards, enforced at NE 48 - No Play.'), null);
+  assert.equal(nullifyingFoul('(3:21) (Run formation) 79-L.Borom reported in as eligible. PENALTY on DET, Delay of Game, 5 yards - No Play.'), null);
+  const thursday = parseSummary(read('summary-401873010-final-plays.json'), '401873010')!;
+  assert.ok(thursday.fourthDowns.every((d) => !/False Start/.test(d.text)));
+});

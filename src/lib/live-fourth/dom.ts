@@ -49,9 +49,9 @@ function setUp(root: HTMLElement): void {
   const newestFirst = () => [...(state?.entries ?? [])].sort((a, b) => entryOrder(b) - entryOrder(a));
 
   function render(): void {
-    // Up the moment a game is live; down only when the game day is over.
-    if (state?.anyLive) shown = true;
-    else if (state && !state.gameDay) shown = false;
+    // Up the moment a game is live and between games on a game day; down
+    // only once every game today is final.
+    shown = Boolean(state?.anyLive || state?.gameDay);
     panel.hidden = !shown;
     line.hidden = shown;
     if (!shown) return;

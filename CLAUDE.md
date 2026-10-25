@@ -118,7 +118,9 @@ tylernfl/
   challenge, is not counted), checked equal to the scoreboard's at all eight captured 4th
   downs of NE at CHI. The home panel: one line linking the calculator until a poll shows
   any of today's games live; then "Live 4th downs", which stays up for the whole game day
-  (between games too) and gives way to the line only once every game today is final:
+  (between games too, items of finished games marked "Final"; worked out from today's
+  kickoffs and each game's final status, from its summary or the poll, so it holds without
+  a poll) and gives way to the line only once every game today is final:
   today's 4th downs newest first, three at a time with Previous (newer) and Next (older)
   buttons, no rotation, an older page anchored on its first 4th down as new ones arrive
   (`paging.ts`); the model loads by itself once the panel is in view while a game is live
@@ -131,9 +133,11 @@ tylernfl/
   points)", or "A close call" when nfl4th's top two options are under 0.02 apart; then
   each option's WP, smaller. A 4th down still to be played comes first ("nfl4th says: Go
   for it, by 3.1 points. Waiting for the snap.", from the scoreboard detector) and is the
-  only item with the yellow background. Team pages
+  only item with the yellow background. A 4th down wiped out by a penalty after the snap
+  is listed too, "Nullified by penalty (defensive offside), not graded", with no verdict
+  (a pre-snap foul is not listed; `nullifyingFoul` in `summary.ts`). Team pages
   have a "4th downs" tab: today's game live from the same feed given only that game (the
-  model loads while the game is live), then every game this season from `decisions.json`, newest first, with the
+  model loads for today's game, live or final), then every game this season from `decisions.json`, newest first, with the
   team's questionable calls and its three biggest (widest gap between nfl4th's top two
   options), each game linked to its chart (`src/lib/decisions/team.ts`). Tables on the
   4th down pages hover in `--row-hover` (`.neutral-hover`), not yellow, since yellow
