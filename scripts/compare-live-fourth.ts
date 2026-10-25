@@ -19,6 +19,11 @@
  * - miss: no 4th down answered by that play, split into "not seen" (the
  *   detector had a 4th down there but its answer never showed) and "never
  *   on the scoreboard" (no poll showed the 4th down at all).
+ * When the capture has live summary fetches (<event>/summary-plays.jsonl),
+ * it also times each 4th down snap: from ESPN's wallclock for the play to
+ * its first appearance as the scoreboard's last play, and to its first
+ * appearance in a summary fetched the way the site fetches it (whenever
+ * the game's last play changes), with each game's fetch count and bytes.
  * Writes <dir>/report.md and prints it. Reads only.
  */
 import { readdirSync, readFileSync, existsSync, writeFileSync } from 'node:fs';
@@ -135,6 +140,22 @@ const games = readdirSync(dir, { withFileTypes: true })
   .sort();
 
 const lines: string[] = [`# Live 4th down detector against ESPN summaries`, ``, `Capture: ${dir}, ${games.length} games.`, ``];
+
+/** Seconds between two ISO instants. */
+const secondsBetween = (from: string, to: string) => (Date.parse(to) - Date.parse(from)) / 1000;
+
+/** "n 12, min 15 s, median 41 s, p90 59 s, max 133 s". */
+function spread(values: number[]): string {
+  if (values.length === 0) return 'none';
+  const v = [...values].sort((a, b) => a - b);
+  const at = (q: number) => v[Math.min(v.length - 1, Math.floor(q * v.length))];
+  const s = (x: number) => `${Math.round(x)} s`;
+  return `n ${v.length}, min ${s(v[0])}, median ${s(at(0.5))}, p90 ${s(at(0.9))}, max ${s(v.at(-1)!)}`;
+}
+
+const lag = { summaryAfterPlay: [] as number[], scoreboardAfterPlay: [] as number[], summaryAfterScoreboard: [] as number[], allSummaryAfterPlay: [] as number[] };
+const lagRows: string[] = [];
+const fetchRows: string[] = [];
 const totals = runs.map(() => ({ expected: 0, match: 0, mismatch: 0, notSeen: 0, neverShown: 0 }));
 const details: string[] = [];
 
@@ -150,6 +171,35 @@ for (const event of games) {
   const name = `${teams.find((t) => t.homeAway === 'away')?.team.abbreviation} at ${teams.find((t) => t.homeAway === 'home')?.team.abbreviation}`;
   const expected = expectedOf(summary, changes[0].seen);
   details.push(`## ${name} (${event}): ${expected.length} 4th down snaps`, '');
+
+  // Live summary timing, when the capture fetched summaries while the game was on.
+  const livePath = join(dir, event, 'summary-plays.jsonl');
+  if (existsSync(livePath)) {
+    const fetches = readFileSync(livePath, 'utf8').trim().split('\n').filter(Boolean).map((l) => JSON.parse(l));
+    const inSummary = new Map<string, string>();
+    for (const f of fetches) for (const p of f.newPlays) if (!inSummary.has(p.id)) inSummary.set(p.id, f.fetched);
+    const onScoreboard = new Map<string, string>();
+    for (const c of changes) if (c.lastPlay && !onScoreboard.has(c.lastPlay.id)) onScoreboard.set(c.lastPlay.id, c.seen);
+    const bytes = fetches.reduce((sum: number, f: { bytes: number }) => sum + f.bytes, 0);
+    const wire = fetches.reduce((sum: number, f: { contentLength: number | null }) => sum + (f.contentLength ?? 0), 0);
+    fetchRows.push(`| ${name} | ${fetches.length} | ${(bytes / 1e6).toFixed(1)} MB | ${wire ? `${(wire / 1e6).toFixed(1)} MB` : 'not given'} |`);
+    const plays = (summary.drives?.previous ?? []).flatMap((d: { plays: SummaryPlay[] }) => d.plays);
+    for (const p of plays) {
+      const f = inSummary.get(p.id);
+      if (p.wallclock && f && p.wallclock >= changes[0].seen) lag.allSummaryAfterPlay.push(secondsBetween(p.wallclock, f));
+    }
+    for (const p of expected) {
+      const f = inSummary.get(p.id);
+      const s = onScoreboard.get(p.id);
+      if (p.wallclock && f) lag.summaryAfterPlay.push(secondsBetween(p.wallclock, f));
+      if (p.wallclock && s) lag.scoreboardAfterPlay.push(secondsBetween(p.wallclock, s));
+      if (s && f) lag.summaryAfterScoreboard.push(secondsBetween(s, f));
+      const cell = (from: string | undefined, to: string | undefined) => (from && to ? `${Math.round(secondsBetween(from, to))} s` : 'n/a');
+      lagRows.push(
+        `| ${name} | Q${p.period.number} ${p.clock.displayValue} ${p.type.text} | ${cell(p.wallclock, s)} | ${cell(p.wallclock, f)} | ${cell(s, f)} |`,
+      );
+    }
+  }
   runs.forEach((run, i) => {
     const tally = compare(detect(run.pick(changes)), expected);
     const t = totals[i];
@@ -174,6 +224,27 @@ runs.forEach((run, i) => {
   const t = totals[i];
   lines.push(`| ${run.name} | ${t.expected} | ${t.match} | ${t.mismatch} | ${t.notSeen} | ${t.neverShown} |`);
 });
+if (lagRows.length) {
+  lines.push(
+    '',
+    '## When 4th downs reach the summary',
+    '',
+    "Seconds from ESPN's wallclock for the play to its first appearance as the scoreboard's last play, and to its first appearance in a summary fetched the way the site fetches it (whenever the game's last play changes).",
+    '',
+    `- Summary after the play: ${spread(lag.summaryAfterPlay)}`,
+    `- Scoreboard after the play: ${spread(lag.scoreboardAfterPlay)}`,
+    `- Summary after the scoreboard: ${spread(lag.summaryAfterScoreboard)} (negative: the summary had it first)`,
+    `- Every play, summary after the play: ${spread(lag.allSummaryAfterPlay)}`,
+    '',
+    '| Game | 4th down | Scoreboard after play | Summary after play | Summary after scoreboard |',
+    '|---|---|---|---|---|',
+    ...lagRows,
+    '',
+    '| Game | Live summary fetches | Uncompressed | Compressed (as sent) |',
+    '|---|---|---|---|',
+    ...fetchRows,
+  );
+}
 lines.push('', ...details);
 const report = lines.join('\n');
 writeFileSync(join(dir, 'report.md'), `${report}\n`);

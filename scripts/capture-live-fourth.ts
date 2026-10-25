@@ -14,6 +14,14 @@
  *   <out>/<event>/snapshots.jsonl  every change in the game's state, as
  *                                  snapshot.ts parses it, with the time seen
  *   <out>/<event>/summary.json     the game summary, fetched once at its final
+ *   <out>/<event>/summary-plays.jsonl  while the game is live, its summary
+ *                                  fetched whenever its last play changes
+ *                                  (as the site does: one fetch at a time,
+ *                                  a change during one queues one more):
+ *                                  per fetch, the time, the response size
+ *                                  and only the plays new since the last
+ *                                  fetch, so a play's first appearance in
+ *                                  the summary can be timed
  * and <out>/polls.jsonl (every poll: time and HTTP status) and
  * <out>/meta.json (what ran and why it stopped).
  *
@@ -70,12 +78,77 @@ async function get(href: string): Promise<{ status: number; data: unknown }> {
 }
 
 /** What counts as a change worth a line: everything the detector reads. */
+interface SummaryPlay {
+  id: string;
+  type?: { text?: string };
+  text?: string;
+  period?: { number?: number };
+  clock?: { displayValue?: string };
+  start?: { down?: number };
+  wallclock?: string;
+}
+
+/** A game's live summary fetches: what each one added. */
+const summaryState = new Map<string, { known: Set<string>; inFlight: boolean; again: boolean; fetches: number; bytes: number }>();
+let refused: Refused | null = null;
+
+async function fetchLiveSummary(event: string, trigger: string | null): Promise<void> {
+  const state = summaryState.get(event) ?? { known: new Set<string>(), inFlight: false, again: false, fetches: 0, bytes: 0 };
+  summaryState.set(event, state);
+  if (state.inFlight) {
+    state.again = true;
+    return;
+  }
+  state.inFlight = true;
+  const fetched = new Date().toISOString();
+  try {
+    const response = await fetch(`${SUMMARY_URL}?event=${event}`, { signal: AbortSignal.timeout(15_000) });
+    if (response.status === 403 || response.status === 429) throw new Refused(`ESPN returned ${response.status} for the ${event} summary`);
+    if (!response.ok) throw new Error(`ESPN returned ${response.status}`);
+    const text = await response.text();
+    const data = JSON.parse(text) as { drives?: { previous?: { plays?: SummaryPlay[] }[]; current?: { plays?: SummaryPlay[] } } };
+    const plays = [...(data.drives?.previous ?? []).flatMap((d) => d.plays ?? []), ...(data.drives?.current?.plays ?? [])];
+    const fresh = plays.filter((p) => !state.known.has(p.id));
+    for (const p of fresh) state.known.add(p.id);
+    state.fetches += 1;
+    state.bytes += text.length;
+    const line = {
+      fetched,
+      trigger,
+      bytes: text.length,
+      // Compressed size as sent, when ESPN gives one.
+      contentLength: Number(response.headers.get('content-length')) || null,
+      plays: state.known.size,
+      newPlays: fresh.map((p) => ({
+        id: p.id,
+        type: p.type?.text ?? '',
+        down: p.start?.down ?? null,
+        period: p.period?.number ?? null,
+        clock: p.clock?.displayValue ?? null,
+        wallclock: p.wallclock ?? null,
+        text: (p.text ?? '').trim().slice(0, 80),
+      })),
+    };
+    await appendFile(join(out, event, 'summary-plays.jsonl'), `${JSON.stringify(line)}\n`);
+  } catch (error) {
+    if (error instanceof Refused) refused = error;
+    else log(`summary ${event} failed: ${error}`);
+  } finally {
+    state.inFlight = false;
+    if (state.again && !refused) {
+      state.again = false;
+      void fetchLiveSummary(event, trigger);
+    }
+  }
+}
+
 const keyOf = (s: Snapshot) =>
   JSON.stringify([s.state, s.period, s.clock, s.homeScore, s.awayScore, s.down, s.distance, s.yardLine, s.possession,
     s.homeTimeouts, s.awayTimeouts, s.lastPlay?.id]);
 
 await mkdir(out, { recursive: true });
 const last = new Map<string, string>();
+const lastPlay = new Map<string, string | null>();
 const summarized = new Set<string>();
 let slate: string[] = [];
 let failures = 0;
@@ -119,17 +192,23 @@ try {
       }
     }
 
+    if (refused) throw refused;
     let anyLive = false;
     for (const event of events) {
       const s = parseSnapshot(event, seen);
       if (!s) continue;
       if (s.state === 'in') anyLive = true;
       const key = keyOf(s);
+      const previous = lastPlay.get(s.event);
       if (last.get(s.event) !== key) {
         last.set(s.event, key);
         await mkdir(join(out, s.event), { recursive: true });
         await appendFile(join(out, s.event, 'snapshots.jsonl'), `${JSON.stringify(s)}\n`);
       }
+      // Like the site: the summary again whenever the game's last play changes.
+      const playId = s.lastPlay?.id ?? null;
+      lastPlay.set(s.event, playId);
+      if (s.state === 'in' && playId !== previous) void fetchLiveSummary(s.event, playId);
       if (s.state === 'post' && !summarized.has(s.event)) {
         const summary = await get(`${SUMMARY_URL}?event=${s.event}`);
         await writeFile(join(out, s.event, 'summary.json'), JSON.stringify(summary.data));
@@ -154,6 +233,7 @@ const meta = {
   started: new Date(started).toISOString(), ended: new Date().toISOString(),
   intervals: { liveSeconds: LIVE_INTERVAL_MS / 1000, waitingSeconds: WAIT_INTERVAL_MS / 1000 },
   polls, slate, summarized: [...summarized], stopped,
+  liveSummaries: Object.fromEntries([...summaryState].map(([event, s]) => [event, { fetches: s.fetches, bytes: s.bytes }])),
 };
 await writeFile(join(out, 'meta.json'), `${JSON.stringify(meta, null, 2)}\n`);
 log(`done: ${stopped}; ${polls} polls, ${summarized.size} of ${slate.length} games summarized`);

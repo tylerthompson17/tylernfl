@@ -5,15 +5,13 @@ name: Capture live 4th downs
 # then runs the comparison (scripts/compare-live-fourth.ts). Captures go to
 # a workflow artifact and are never committed.
 #
-# Scheduled once, for the 1 PM Eastern games of Sunday 2026-10-25 (17:00
-# UTC kickoff): it starts at 12:15 PM Eastern and runs until every game of
-# that slate is final, at most 5 hours. Remove the schedule after that
-# Sunday and keep the manual trigger.
+# Manual only (GitHub started the one scheduled run, 2026-10-25, 2h44m
+# late). Start it before kickoff: it waits for the slate, then runs until
+# every game of it is final, at most cap_hours. While a game is live it
+# also fetches the summary whenever the last play changes, as the site does,
+# so the report can time how long a play takes to reach the summary.
 
 on:
-  schedule:
-    # 16:15 UTC on October 25 is 12:15 PM Eastern (daylight time).
-    - cron: '15 16 25 10 *'
   workflow_dispatch:
     inputs:
       season:
@@ -21,10 +19,10 @@ on:
         default: '2026'
       week:
         description: Week (nflverse numbering)
-        default: '7'
+        default: '8'
       kickoff:
         description: Kickoff of the slate, UTC (games kicking off at exactly this time)
-        default: '2026-10-25T17:00:00Z'
+        default: '2026-10-30T00:15:00Z'
       cap_hours:
         description: Stop after this many hours
         default: '5'
@@ -43,8 +41,8 @@ jobs:
     timeout-minutes: 330
     env:
       SEASON: ${{ inputs.season || '2026' }}
-      WEEK: ${{ inputs.week || '7' }}
-      KICKOFF: ${{ inputs.kickoff || '2026-10-25T17:00:00Z' }}
+      WEEK: ${{ inputs.week || '8' }}
+      KICKOFF: ${{ inputs.kickoff || '2026-10-30T00:15:00Z' }}
       CAP_HOURS: ${{ inputs.cap_hours || '5' }}
     steps:
       - name: Checkout
