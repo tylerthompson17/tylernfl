@@ -5,6 +5,7 @@
  * what it had to assume. Pure; dom.ts only puts these into the page.
  */
 import type { FourthDownCall, FourthDownResult, TryCall, TryResult } from '../fourth-down.ts';
+import { KICK_LABEL_OFFSET } from '../field/strip.ts';
 
 export interface Part {
   label: string;
@@ -37,6 +38,11 @@ export type CalculatorView =
 /** What the model fell back to for a missing total (the manifest's fallbackTotalLine). */
 export interface Fallbacks {
   total: { value: number; season: number };
+  /**
+   * nfl4th's kick distance offset (yards to the goal line plus this, 18):
+   * labels convert its kickDistance to the conventional plus 17.
+   */
+  kickOffset?: number;
 }
 
 const OPTION_LABEL: Record<FourthDownCall | TryCall, string> = {
@@ -96,6 +102,8 @@ function linesNote(fallbacks: Fallbacks): string {
 /** The 4th down result as the page shows it. */
 export function fourthDownView(result: FourthDownResult, fallbacks: Fallbacks): CalculatorView {
   if (!result.supported) return unsupportedView(result.reason);
+  // The model's distance is yards plus its own offset; labels use plus 17.
+  const fgYards = result.kickDistance - (fallbacks.kickOffset ?? 18) + KICK_LABEL_OFFSET;
   const go = result.breakdown.go.outcomes;
   const fg = result.breakdown.fieldGoal?.outcomes ?? null;
 
@@ -121,7 +129,7 @@ export function fourthDownView(result: FourthDownResult, fallbacks: Fallbacks): 
       key: 'field goal',
       wp: result.wpFieldGoal,
       parts: [
-        { label: 'Kick', value: `${result.kickDistance} yards` },
+        { label: 'Kick', value: `${fgYards} yards` },
         { label: 'Good', value: pct(fg.makeProb) },
         { label: 'Win prob. if good', value: pct(fg.wpIfMake) },
         { label: 'Win prob. if missed', value: pct(fg.wpIfMiss) },
@@ -138,7 +146,7 @@ export function fourthDownView(result: FourthDownResult, fallbacks: Fallbacks): 
   if (result.wpFieldGoal === null) {
     skipped.push({
       label: OPTION_LABEL['field goal'],
-      reason: `A ${result.kickDistance}-yard kick is too long to attempt, so the model leaves the field goal out.`,
+      reason: `A ${fgYards}-yard kick is too long to attempt, so the model leaves the field goal out.`,
     });
   }
   if (result.wpPunt === null) {
@@ -154,7 +162,13 @@ export function fourthDownView(result: FourthDownResult, fallbacks: Fallbacks): 
     kind: 'result',
     call: OPTION_LABEL[result.call],
     margin: marginLine(best, next, 'an exact tie goes to the first of going for it, a field goal and a punt.'),
-    options: options.map((o) => ({ key: o.key, label: OPTION_LABEL[o.key], wp: pct(o.wp), best: o === best, parts: o.parts })),
+    options: options.map((o) => ({
+      key: o.key,
+      label: o.key === 'field goal' ? `Field goal, ${fgYards} yards` : OPTION_LABEL[o.key],
+      wp: pct(o.wp),
+      best: o === best,
+      parts: o.parts,
+    })),
     skipped,
     notes: result.flags.linesUnknown ? [linesNote(fallbacks)] : [],
   };

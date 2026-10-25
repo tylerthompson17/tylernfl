@@ -170,7 +170,7 @@ test('format: percents, margin, null options, n/a and the tie rule', () => {
   assert.equal(ifConvert.value, 'n/a');
   assert.match(ifConvert.note!, /No gain can reach/);
   assert.deepEqual(view.skipped.map((s) => s.label), ['Field goal']);
-  assert.match(view.skipped[0].reason, /108-yard kick/);
+  assert.match(view.skipped[0].reason, /107-yard kick/);
   assert.match(view.notes[0], /44\.5, the median total of the 2025 season/);
 
   assert.deepEqual(fourthDownView({ supported: false, reason: 'unavailable' }, fallbacks).kind, 'unsupported');

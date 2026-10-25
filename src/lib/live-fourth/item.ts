@@ -67,7 +67,7 @@ export function entryItem(e: FeedEntry, model: ModelLike): HTMLLIElement {
   const grade = entryGrade(e, model);
   if (grade) {
     li.append(line('live-verdict', verdictLine(grade, call)));
-    if (grade.kind === 'graded') li.append(line('live-wp', optionWords(grade)));
+    if (grade.kind === 'graded') li.append(line('live-wp', optionWords(grade, e.play.yardline100)));
   } else {
     const waiting = modelWaiting(model);
     if (waiting) li.append(line('live-wp', waiting));
@@ -90,7 +90,7 @@ export function pendingItem(p: PendingFourthDown, model: ModelLike): HTMLLIEleme
   if (result) {
     const grade = gradeOf(result, null);
     li.append(line('live-verdict', pendingLine(grade)));
-    if (grade.kind === 'graded') li.append(line('live-wp', optionWords(grade)));
+    if (grade.kind === 'graded' && situation) li.append(line('live-wp', optionWords(grade, situation.yardline100)));
   } else {
     li.append(line('live-verdict', 'Waiting for the snap.'));
     const waiting = modelWaiting(model);

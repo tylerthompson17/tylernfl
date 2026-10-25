@@ -724,6 +724,13 @@ point or go for 2, `recommendTry()`), a tab each (`Tabs.astro`), in the nav as "
 - The numbers are nfl4th's, reproduced exactly (`docs/methods/fourth-down-model.md`); the
   page says so, links nfl4th and its MIT license, and says it is not team-adjusted. It is
   not presented as Tyler's model.
+- Field goal distances in labels are the conventional yards to the goal line plus 17
+  (`fieldGoalYards` in `src/lib/field/strip.ts`), on the calculator's option ("Field goal,
+  51 yards"), its Kick line and too-long note, the daily game's choices and table, the
+  live items and the field strip. nfl4th's own `kickDistance` is plus 18
+  (`kickDistanceOffset` in the model manifest), used only for its 70-yard cutoff; the make
+  chance is read by yard line, so the label changes no number. Wherever choices are
+  shown: "nfl4th assumes a league-average kicker and doesn't know who's kicking."
 - Inputs live as the strings the form holds, the same shape as the query string, so a
   shared link and a typed form take one path: `decode`, `checkFourthDown` / `checkTry`
   (`src/lib/calculator/form.ts`), the worker, then `fourthDownView` / `tryView`

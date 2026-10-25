@@ -84,8 +84,21 @@ export function fieldStripHtml(s: FieldState): string {
   );
 }
 
-/** The field goal's distance from this spot, or null past the model's longest kick. */
+/**
+ * Field goal distance as the game states it: yards to the goal line plus 17
+ * (the end zone's 10 and about 7 for the snap and hold). Every label uses
+ * this. nfl4th's own kickDistance is yards plus 18 (kickDistanceOffset in
+ * models/fourth-down/manifest.json), used only for its 70-yard cutoff; its
+ * make chance is read by yard line, so the label changes no number.
+ */
+export const KICK_LABEL_OFFSET = 17;
+export const fieldGoalYards = (yardline100: number): number => yardline100 + KICK_LABEL_OFFSET;
+
+/**
+ * The field goal's distance from this spot for a label, or null when the
+ * model leaves the kick out (its own distance, yards plus `offset`, over
+ * `longest`).
+ */
 export function fieldGoalKick(yardline100: number, offset: number, longest: number): number | null {
-  const kick = yardline100 + offset;
-  return kick <= longest ? kick : null;
+  return yardline100 + offset <= longest ? fieldGoalYards(yardline100) : null;
 }

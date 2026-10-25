@@ -213,7 +213,8 @@ const leaderColumns: StatTableColumn<LeaderRow>[] = [
       </Panel>
       <div class="calc-live" data-live-fourth>
         <p class="soon" data-calc-line>
-          <a href={url('fourth-down')}>4th down calculator</a>: go, kick or punt for any situation, from nfl4th.
+          <a href={url('fourth-down')}>4th down calculator</a>: go, kick or punt for any situation, from nfl4th. Or
+          play the <a href={url('fourth-down/daily')}>daily 4th down game</a>.
         </p>
         <div data-live-panel hidden>
           <Panel title="Live 4th downs">
@@ -227,7 +228,7 @@ const leaderColumns: StatTableColumn<LeaderRow>[] = [
             <p class="table-foot">
               Today's 4th downs, from ESPN's play-by-play, each against Ben Baldwin's nfl4th: its recommendation
               before the snap and every option's win probability (the model, about 2.6 MB, loads on game days once
-              this panel is in view). Calls are preliminary.{' '}
+              this panel is in view). Calls are preliminary. nfl4th assumes a league-average kicker and doesn't know who's kicking.{' '}
               {
                 LIVE_FOURTH_PAGE_ENABLED ? (
                   <a href={url('fourth-down/live')}>Every 4th down today, with nfl4th's calls and preliminary grades</a>

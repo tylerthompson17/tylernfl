@@ -52,7 +52,8 @@ const description = fourth
   <h1 class="page-title">4th down calculator</h1>
   <p class="page-intro">
     Ben Baldwin's <a href={NFL4TH}>nfl4th</a> model, reproduced exactly and run in your browser. It is not adjusted
-    for the teams playing yet. <a href="#about-model">More on the model</a>.
+    for the teams playing yet. <a href="#about-model">More on the model</a>. Test your calls against it in the{' '}
+    <a href={url('fourth-down/daily')}>daily 4th down game</a>.
   </p>
   <Tabs label="Calculator decisions" tabs={tabs} current={kind} />
 
@@ -233,7 +234,7 @@ const description = fourth
         Win probability is the {fourth ? 'offense' : 'scoring team'}'s chance to win the game after each choice.
         {
           fourth
-            ? 'The kicker is league average and temperature is not used.'
+            ? "nfl4th assumes a league-average kicker and doesn't know who's kicking. Temperature is not used."
             : "The extra point is nfl4th's league-average 33 yard kick."
         }
       </p>

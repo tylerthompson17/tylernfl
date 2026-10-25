@@ -8,7 +8,9 @@
  *   "Went against nfl4th: it said Go for it (by 3.1 points)", or "A close
  *   call" when nfl4th's top two options are under 0.02 apart;
  * - for a 4th down still to be played: "nfl4th says: Go for it, by 3.1
- *   points. Waiting for the snap."
+ *   points. Waiting for the snap.", or "A close call (nfl4th leans Punt, by
+ *   0.1 points)" under 0.02;
+ * - a muffed punt says so: "Punted 36 yards, muffed, recovered by TB".
  * "By" is points of win probability: for an agreed call, how far ahead
  * nfl4th's choice was of the next option; for one against it, what the
  * team's choice gave up.
@@ -41,7 +43,10 @@ export function playSummary(type: string, text: string, distance: number, call: 
   if (call === 'punt' || t.includes('punt')) {
     if (/blocked/i.test(text) || t.includes('blocked')) return 'Punt blocked';
     const m = /punts (\d+) yards?/i.exec(text);
-    return m ? `Punted ${m[1]} yards` : 'Punted';
+    const punted = m ? `Punted ${m[1]} yards` : 'Punted';
+    if (!/muffs/i.test(text) && !t.includes('muff')) return punted;
+    const by = /recovered by ([A-Z]{2,4})-/i.exec(text);
+    return `${punted}, muffed${by ? `, recovered by ${by[1]}` : ''}`;
   }
   if (call === 'field goal' || t.includes('field goal')) {
     const m = /(\d+) yard field goal/i.exec(text);
@@ -78,5 +83,6 @@ export function verdictLine(grade: LiveGrade, teamCall: TeamCall | null): string
 /** For a 4th down still to be played. */
 export function pendingLine(grade: LiveGrade): string {
   if (grade.kind === 'unsupported') return `${grade.message} Waiting for the snap.`;
+  if (grade.margin < CLOSE) return `A close call (nfl4th leans ${callWords(grade.call)}, by ${by(grade.margin)}). Waiting for the snap.`;
   return `nfl4th says: ${callWords(grade.call)}, by ${by(grade.margin)}. Waiting for the snap.`;
 }

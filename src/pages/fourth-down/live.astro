@@ -33,8 +33,10 @@ const NFL4TH = 'https://github.com/nflverse/nfl4th';
             <strong>These grades are preliminary.</strong> The final grades, from nflverse's play-by-play the next
             morning, are on <a href={url('decisions')}>4th down and 2-point decisions</a>. A questionable call cost
             2 points of win probability or more; a clear one also had nfl4th's top two options 5 or more points
-            apart. Not graded: overtime, the last 15 seconds, and games already decided.
+            apart. Not graded: overtime, the last 15 seconds, and games already decided. Test your own calls in the{' '}
+            <a href={url('fourth-down/daily')}>daily 4th down game</a>.
           </p>
+          <p class="dim">nfl4th assumes a league-average kicker and doesn't know who's kicking.</p>
           <p class="dim" data-live-status aria-live="polite">Loading today's games…</p>
         </div>
 
@@ -50,8 +52,7 @@ const NFL4TH = 'https://github.com/nflverse/nfl4th';
           <p class="empty" data-live-empty>No 4th downs yet today.</p>
         </Panel>
         <p class="foot">
-          Win probability is the offense's chance to win after each choice, before the snap; the kicker is league
-          average. "By" is points of win probability: how far nfl4th's choice was ahead of the next option, or what
+          Win probability is the offense's chance to win after each choice, before the snap. "By" is points of win probability: how far nfl4th's choice was ahead of the next option, or what
           the team's choice gave up. A close call is under 2 points either way. Timeouts come from the live
           scoreboard when this page saw the 4th down happen, otherwise they are counted from the play-by-play.
           Hover what happened for the play as ESPN describes it.

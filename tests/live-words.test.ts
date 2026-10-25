@@ -42,3 +42,15 @@ test('a or an before a yardage', async () => {
   assert.equal(playSummary('Pass Reception', 'pass short left to C.Olave for 11 yards', 2, 'go', false), 'Converted with an 11-yard pass');
   assert.equal(playSummary('Field Goal Good', '18 yard field goal is GOOD', 1, 'field goal', false), 'Made an 18-yard field goal');
 });
+
+test("a pending close call, a muffed punt, and the field goal's distance on its option", async () => {
+  const { optionWords } = await import('../src/lib/live-fourth/grade.ts');
+  assert.equal(pendingLine(graded('punt', 0.001, null)), 'A close call (nfl4th leans Punt, by 0.1 points). Waiting for the snap.');
+  assert.equal(pendingLine(graded('go', 0.031, null)), 'nfl4th says: Go for it, by 3.1 points. Waiting for the snap.');
+  // TB at CAR, 2026-10-25: ESPN's text for the play.
+  const muff = '(:59) R.Dixon punts 36 yards to CAR 14, Center-E.Deckers. D.Moore MUFFS catch, RECOVERED by TB-K.Kieft at CAR 18.';
+  assert.equal(playSummary('Muffed Punt Recovery (Opponent)', muff, 5, 'punt', false), 'Punted 36 yards, muffed, recovered by TB');
+  const g = { ...graded('punt', 0.03, 0), wpGo: 0.52, wpFieldGoal: 0.413, wpPunt: 0.49 } as LiveGrade & { kind: 'graded' };
+  // 34 yards to the goal line: a 51-yard attempt as the game states it (plus 17).
+  assert.equal(optionWords(g, 34), 'Go 52.0%; Field goal, 51 yards: 41.3%; Punt 49.0%');
+});

@@ -19,6 +19,7 @@ import type { FourthDownResult, FourthDownSituation } from '../fourth-down.ts';
 import { clockSeconds, parseClock } from '../calculator/form.ts';
 import { pct } from '../calculator/format.ts';
 import { scoreWords, spotWords } from '../decisions/view.ts';
+import { fieldGoalYards } from '../field/strip.ts';
 import type { LiveGameInfo } from './situation.ts';
 import type { SummaryFourthDown } from './summary.ts';
 import { callOf, type TeamCall } from './tracker.ts';
@@ -150,8 +151,15 @@ export function situationWords(d: SummaryFourthDown, homeId: string, game: LiveG
 /** "Q2 4:41", "OT 6:10". */
 export const clockWords = (d: SummaryFourthDown): string => (d.period > 4 ? `OT ${d.clock}` : `Q${d.period} ${d.clock}`);
 
-/** "Go 52.0%, FG 41.3%, Punt 49.1%": every option the model considers, fixed order. */
-export function optionWords(g: Extract<LiveGrade, { kind: 'graded' }>): string {
-  const parts: [string, number | null][] = [['Go', g.wpGo], ['FG', g.wpFieldGoal], ['Punt', g.wpPunt]];
-  return parts.filter((p): p is [string, number] => p[1] !== null).map(([l, v]) => `${l} ${pct(v)}`).join(', ');
+/**
+ * "Go 52.0%; Field goal, 51 yards: 41.3%; Punt 49.1%": every option the
+ * model considers, fixed order, the field goal with its distance.
+ */
+export function optionWords(g: Extract<LiveGrade, { kind: 'graded' }>, yardline100: number): string {
+  const parts: [string, number | null][] = [
+    ['Go', g.wpGo],
+    [`Field goal, ${fieldGoalYards(yardline100)} yards:`, g.wpFieldGoal],
+    ['Punt', g.wpPunt],
+  ];
+  return parts.filter((p): p is [string, number] => p[1] !== null).map(([l, v]) => `${l} ${pct(v)}`).join('; ');
 }

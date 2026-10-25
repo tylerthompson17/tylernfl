@@ -12,7 +12,7 @@ import Panel from '../../components/Panel.astro';
 import FieldStrip from '../../components/FieldStrip.astro';
 import type { DailyFourthData } from '../../data/types';
 import { url } from '../../utils/url';
-import { modelManifest } from '../../utils/fourth-down-model';
+import { fieldGoalYards } from '../../lib/field/strip';
 import {
   callWords,
   clockWords,
@@ -80,7 +80,7 @@ const embedded = ready
                 <FieldStrip
                   yardline100={p.yardline100}
                   distance={p.distance}
-                  kick={p.wp['field goal'] === null ? null : p.yardline100 + modelManifest.kickDistanceOffset}
+                  kick={p.wp['field goal'] === null ? null : fieldGoalYards(p.yardline100)}
                   label={downWords(p)}
                 />
                 <dl class="situation">
@@ -122,10 +122,11 @@ const embedded = ready
                 <div class="choices" role="group" aria-label={`Your call on play ${i + 1}`}>
                   {optionsOf(p).map((c) => (
                     <button type="button" class="choice" data-pick={c}>
-                      {callWords(c)}
+                      {c === 'field goal' ? `Field goal, ${fieldGoalYards(p.yardline100)} yards` : callWords(c)}
                     </button>
                   ))}
                 </div>
+                <p class="kicker-note">nfl4th assumes a league-average kicker and doesn't know who's kicking.</p>
                 <div class="reveal" data-reveal hidden>
                   <p class="you" data-you tabindex="-1" />
                   <p class="said">{nfl4thLine(p)}</p>
@@ -141,7 +142,7 @@ const embedded = ready
                     <tbody>
                       {optionsOf(p).map((c) => (
                         <tr data-option={c} class:list={{ top: c === p.call }}>
-                          <th scope="row">{callWords(c)}</th>
+                          <th scope="row">{c === 'field goal' ? `Field goal, ${fieldGoalYards(p.yardline100)} yards` : callWords(c)}</th>
                           <td class="number">{points(p.wp[c]!)}%</td>
                           <td class="who" data-who={c}>
                             {[c === p.call ? 'nfl4th' : null, c === p.teamCall ? 'Coach' : null].filter(Boolean).join(', ')}
@@ -372,6 +373,12 @@ const embedded = ready
 
   .daily.names .anon {
     display: none;
+  }
+
+  .kicker-note {
+    margin-top: var(--space-1);
+    color: var(--text-dim);
+    font-size: 12px;
   }
 
   .choices {

@@ -22,7 +22,7 @@ export type WorkerMessage =
 const post = (message: WorkerMessage) => self.postMessage(message);
 
 fetchModelFiles()
-  .then((files) => post({ type: 'ready', ok: loadFourthDownModel(files), fallbacks: { total: files.manifest.fallbackTotalLine } }))
+  .then((files) => post({ type: 'ready', ok: loadFourthDownModel(files), fallbacks: { total: files.manifest.fallbackTotalLine, kickOffset: files.manifest.kickDistanceOffset } }))
   .catch(() => post({ type: 'ready', ok: false, fallbacks: null }));
 
 self.onmessage = (event: MessageEvent<WorkerRequest>) => {

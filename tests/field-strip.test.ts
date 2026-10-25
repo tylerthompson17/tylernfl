@@ -9,8 +9,10 @@ test('spots from the offense side', () => {
 });
 
 test('field goal only within the longest kick', () => {
-  assert.equal(fieldGoalKick(34, 18, 70), 52);
-  assert.equal(fieldGoalKick(52, 18, 70), 70);
+  // Labelled the conventional way (plus 17); available by the model's rule (plus 18, at most 70).
+  assert.equal(fieldGoalKick(34, 18, 70), 51);
+  assert.equal(fieldGoalKick(52, 18, 70), 69);
+  assert.equal(fieldGoalKick(53, 18, 70), null);
   assert.equal(fieldGoalKick(56, 18, 70), null);
 });
 
