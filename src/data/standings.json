@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 7,
-  "updated": "2026-10-25T19:58:35Z",
+  "updated": "2026-10-25T20:04:30Z",
   "teams": [
     {
       "team": "BUF",
@@ -53,9 +53,9 @@
       ],
       "streak": "L1",
       "divisionRank": 2,
-      "conferenceRank": 9,
+      "conferenceRank": 8,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "NYJ",
@@ -162,7 +162,34 @@
       "streak": "W1",
       "divisionRank": 2,
       "conferenceRank": 6,
-      "divisionTiebreak": "head_to_head",
+      "divisionTiebreak": "division_record",
+      "conferenceTiebreak": "division_order"
+    },
+    {
+      "team": "CIN",
+      "conference": "AFC",
+      "division": "AFC North",
+      "wins": 4,
+      "losses": 2,
+      "ties": 0,
+      "pct": 0.667,
+      "pointsFor": 163,
+      "pointsAgainst": 122,
+      "diff": 41,
+      "divisionRecord": [
+        1,
+        1,
+        0
+      ],
+      "conferenceRecord": [
+        3,
+        2,
+        0
+      ],
+      "streak": "W2",
+      "divisionRank": 3,
+      "conferenceRank": 7,
+      "divisionTiebreak": "division_record",
       "conferenceTiebreak": "division_order"
     },
     {
@@ -170,42 +197,15 @@
       "conference": "AFC",
       "division": "AFC North",
       "wins": 4,
-      "losses": 2,
+      "losses": 3,
       "ties": 0,
-      "pct": 0.667,
-      "pointsFor": 156,
-      "pointsAgainst": 132,
-      "diff": 24,
+      "pct": 0.571,
+      "pointsFor": 169,
+      "pointsAgainst": 167,
+      "diff": 2,
       "divisionRecord": [
         0,
-        1,
-        0
-      ],
-      "conferenceRecord": [
         2,
-        1,
-        0
-      ],
-      "streak": "L1",
-      "divisionRank": 3,
-      "conferenceRank": 7,
-      "divisionTiebreak": "head_to_head",
-      "conferenceTiebreak": "division_order"
-    },
-    {
-      "team": "CIN",
-      "conference": "AFC",
-      "division": "AFC North",
-      "wins": 3,
-      "losses": 2,
-      "ties": 0,
-      "pct": 0.6,
-      "pointsFor": 128,
-      "pointsAgainst": 109,
-      "diff": 19,
-      "divisionRecord": [
-        0,
-        1,
         0
       ],
       "conferenceRecord": [
@@ -213,9 +213,9 @@
         2,
         0
       ],
-      "streak": "W1",
+      "streak": "L2",
       "divisionRank": 4,
-      "conferenceRank": 8,
+      "conferenceRank": 9,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -458,7 +458,7 @@
       ],
       "streak": "L1",
       "divisionRank": 1,
-      "conferenceRank": 4,
+      "conferenceRank": 3,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -539,7 +539,7 @@
       ],
       "streak": "L1",
       "divisionRank": 4,
-      "conferenceRank": 15,
+      "conferenceRank": 16,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -656,25 +656,25 @@
       "conference": "NFC",
       "division": "NFC South",
       "wins": 3,
-      "losses": 2,
+      "losses": 3,
       "ties": 0,
-      "pct": 0.6,
-      "pointsFor": 146,
-      "pointsAgainst": 123,
-      "diff": 23,
+      "pct": 0.5,
+      "pointsFor": 159,
+      "pointsAgainst": 166,
+      "diff": -7,
       "divisionRecord": [
         1,
-        0,
+        1,
         0
       ],
       "conferenceRecord": [
         3,
-        1,
+        2,
         0
       ],
-      "streak": "W2",
+      "streak": "L1",
       "divisionRank": 1,
-      "conferenceRank": 3,
+      "conferenceRank": 4,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -706,6 +706,33 @@
       "conferenceTiebreak": "conference_record"
     },
     {
+      "team": "TB",
+      "conference": "NFC",
+      "division": "NFC South",
+      "wins": 2,
+      "losses": 5,
+      "ties": 0,
+      "pct": 0.286,
+      "pointsFor": 162,
+      "pointsAgainst": 151,
+      "diff": 11,
+      "divisionRecord": [
+        1,
+        0,
+        0
+      ],
+      "conferenceRecord": [
+        2,
+        2,
+        0
+      ],
+      "streak": "W1",
+      "divisionRank": 3,
+      "conferenceRank": 14,
+      "divisionTiebreak": "division_record",
+      "conferenceTiebreak": "division_order"
+    },
+    {
       "team": "NO",
       "conference": "NFC",
       "division": "NFC South",
@@ -727,37 +754,10 @@
         0
       ],
       "streak": "L1",
-      "divisionRank": 3,
-      "conferenceRank": 14,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
-    },
-    {
-      "team": "TB",
-      "conference": "NFC",
-      "division": "NFC South",
-      "wins": 1,
-      "losses": 5,
-      "ties": 0,
-      "pct": 0.167,
-      "pointsFor": 119,
-      "pointsAgainst": 138,
-      "diff": -19,
-      "divisionRecord": [
-        0,
-        0,
-        0
-      ],
-      "conferenceRecord": [
-        1,
-        2,
-        0
-      ],
-      "streak": "L1",
       "divisionRank": 4,
-      "conferenceRank": 16,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceRank": 15,
+      "divisionTiebreak": "division_record",
+      "conferenceTiebreak": "division_order"
     },
     {
       "team": "SF",
