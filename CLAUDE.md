@@ -80,7 +80,7 @@ tylernfl/
 
 - Pipelines write JSON into `src/data/`, commit it, and the push triggers a rebuild. Pages read data at build time.
 - Browser-side fetches of data are allowed in exactly two places. Nothing else fetches data at runtime.
-  1. **Live scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates scores in place. One poll feeds every game on the page: the ticker slots and, on `/scores`, the boxes, which carry the same `data-game` hooks. After a game's window closes, ticker.json still shows it unfinished until the next daily run (a Monday night game ends near midnight; the run is at 6 AM and has started hours late), so a page loaded with a game that kicked off within the last 48 hours, past its window and not final in ticker.json, makes one scoreboard request on load to pick up the result (up to 3 tries on failure; `needsCatchUp` in `schedule.ts`). One request, never polling. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Live games also show who scored last: when a live game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (it is about 175 KB, of which the scoring plays are about 1 KB), and it is one fetch per scoring play however many places render the line. The same poll moves records: when a regular season game the build had
+  1. **Live scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates scores in place. One poll feeds every game on the page: the ticker slots and, on `/scores`, the boxes, which carry the same `data-game` hooks. After a game's window closes, ticker.json still shows it unfinished until the next daily run (a Monday night game ends near midnight; the run is at 6 AM and has started hours late), so a page loaded with a game that kicked off within the last 48 hours, past its window and not final in ticker.json, makes one scoreboard request on load to pick up the result (up to 3 tries on failure; `needsCatchUp` in `schedule.ts`). One request, never polling. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Live games also show who scored last: when a live game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (a finished game's is 566 KB, 52 KB gzipped; the scoring plays are about 1 KB), and it is one fetch per scoring play however many places render the line. The same poll moves records: when a regular season game the build had
      not counted goes final, both teams' records change at once everywhere they show (the
      playoff picture, the standings tables' W through Strk, the team header's record and
      differential), from each team's standing as built, which every page embeds as JSON
@@ -89,26 +89,63 @@ tylernfl/
      tiebreakers; a note says they catch up within the hour (the game day job) and the
      standings' tiebreak notes are hidden. The rule is `applyFinals` in
      `src/lib/live-ticker/records.ts`. Turn it all off with `LIVE_TICKER_ENABLED` in `src/config.ts`. Requests must stay plain GETs with no custom headers (ESPN rejects CORS preflight). The API is unofficial and can change or disappear without notice.
-  2. **Live 4th down page** (later): fetches game state at runtime.
+  2. **Live 4th downs** (`/fourth-down/live/` and the home panel, `src/lib/live-fourth/`):
+     ESPN's game summary is the source of truth (`summary.ts`, `feed.ts`); the ticker's
+     scoreboard poll is only the trigger, read through `SCOREBOARD_EVENT`, with no poll of
+     its own. Each of today's games that has kicked off (Eastern date of kickoff) gets its
+     summary fetched once when the page starts (the home panel: once the panel scrolls into
+     view), then again only when a poll shows that game's last play changed: one fetch per
+     game at a time, a change during a fetch queues one more, never on a timer. 4th downs
+     are keyed by ESPN play id. A summary is up to about 50 KB gzipped late in a game, and
+     a game's last play changes every 40 seconds or so, so a viewer watching a full slate
+     reads a few MB an hour.
 - The 4th down calculator (`/fourth-down/`) fetches the exported model files, which are
   the site's own content-hashed build assets, not data from elsewhere: its Web Worker
   (`src/lib/calculator/worker.ts`) loads them lazily, on that page only, through Vite
   `?url` imports in `load.ts` (`assetsInlineLimit` in `astro.config.mjs` keeps the small
   ones out of the script). About 2.6 MB gzipped; methods in
   `docs/methods/fourth-down-model.md`.
-- The home page's live 4th down panel (`src/lib/live-fourth/`) makes no request of its
-  own: the ticker's client fires `SCOREBOARD_EVENT` with each scoreboard response it
-  already fetched, and the panel reads that. It shows the latest 4th down of any live
-  game and the play that answered it, with no model; the model (the calculator's worker
-  and files, above) loads only when the visitor clicks "Show win probabilities", and the
-  button exists only while a game is live. Win probabilities are per option in a fixed
-  order (go, field goal, punt), no verdict. `LIVE_FOURTH_DOWN_ENABLED` in `src/config.ts`
-  turns off just the panel (the home page keeps the examples; the ticker is unchanged);
-  `LIVE_TICKER_ENABLED` false stops the poll, so the panel never shows either. Lines and roof come from `schedule.json`
-  (`totalLine`, `roof`), embedded in the page; who took the opening kickoff is assumed
-  to be the home team, said on the panel. A null roof (an upcoming game at a
-  retractable roof) is sent as closed, which nfl4th treats exactly as open.
-- Live 4th down rules (`tracker.ts`, checked against all eight 4th downs of NE at CHI on
+- Live 4th downs, what shows: `/fourth-down/live/` lists every 4th down of today's games,
+  newest first, with nfl4th's recommendation before the snap, each option's WP, what the
+  team did and WP lost, the model loaded with the page (the calculator's worker and
+  files); a "Questionable calls" tab on the same URL (`?tab=questionable`): WP lost 0.02
+  or more, sorted by it, "Clear" when nfl4th's top two options were 0.05 or more apart.
+  Grades are labelled preliminary and link `/decisions/`, which links back. The rules are
+  `grade.ts`, the pipeline's where they can be today; not yet (this week): a delay of game
+  before a kick graded at the earlier spot. Timeouts are the scoreboard's when the page
+  saw the 4th down live (`tracker.ts`), else counted from the summary ("Timeout #n by
+  TEAM" is that team's nth of the half; a timeout charged inside another play, a lost
+  challenge, is not counted), checked equal to the scoreboard's at all eight captured 4th
+  downs of NE at CHI. The home panel: one line linking the calculator until a poll shows
+  any of today's games live; then "Live 4th downs", which stays up for the whole game day
+  (between games too) and gives way to the line only once every game today is final:
+  today's 4th downs newest first, three at a time with Previous (newer) and Next (older)
+  buttons, no rotation, an older page anchored on its first 4th down as new ones arrive
+  (`paging.ts`); the model loads by itself once the panel is in view while a game is live
+  (never with no game live); a link to the page. Every live 4th down shows as the same
+  item on the home panel, the live page and team pages (`item.ts`, styles `.live-item` in
+  `global.css`): game and clock; the situation; a plain summary of the play from ESPN's
+  text ("Punted 54 yards", "Missed a 52-yard field goal", "Converted with an 11-yard
+  pass", `words.ts`), never the raw text (it is the tooltip); the verdict, "Agreed with
+  nfl4th: Punt (by 4.7 points)", "Went against nfl4th: it said Go for it (by 3.1
+  points)", or "A close call" when nfl4th's top two options are under 0.02 apart; then
+  each option's WP, smaller. A 4th down still to be played comes first ("nfl4th says: Go
+  for it, by 3.1 points. Waiting for the snap.", from the scoreboard detector) and is the
+  only item with the yellow background. Team pages
+  have a "4th downs" tab: today's game live from the same feed given only that game (the
+  model loads while the game is live), then every game this season from `decisions.json`, newest first, with the
+  team's questionable calls and its three biggest (widest gap between nfl4th's top two
+  options), each game linked to its chart (`src/lib/decisions/team.ts`). Tables on the
+  4th down pages hover in `--row-hover` (`.neutral-hover`), not yellow, since yellow
+  means live there. Flags in
+  `src/config.ts`: `LIVE_FOURTH_PAGE_ENABLED` (the page says it is off and links the final
+  grades; the panel stops linking it) and `LIVE_FOURTH_DOWN_ENABLED` (the panel; the home
+  page keeps its one line); `LIVE_TICKER_ENABLED` false stops the poll, so neither updates.
+  Lines and roof come from `schedule.json` (`totalLine`, `roof`), embedded in the page
+  (`src/utils/live-games.ts`); who took the opening kickoff is assumed to be the home
+  team. A null roof (an upcoming game at a retractable roof) is sent as closed, which
+  nfl4th treats exactly as open.
+- The scoreboard detector (`tracker.ts`, now only the source of live timeouts; checked against all eight 4th downs of NE at CHI on
   2026-10-22 in `tests/fixtures/espn/live-fourth-401873010.json`): field position from
   `yardLine` (counted from the home team's goal line) and `possession` only, never
   `yardsToEndzone` (wrong on both CHI punts that night). A 4th down stays pending through
@@ -598,16 +635,12 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   shrinking at 600px); column 3 runs from the top beside it.
 - Column 1: the latest complete week's results (the week `/week` recaps, kickoff
   order, each final's excitement label with the slate bar), receiving leaders. Column 2:
-  transactions, the 4th down calculator. Column 3: playoff picture, draft order (top 10
+  transactions, the 4th down calculator line (live 4th downs during games). Column 3: playoff picture, draft order (top 10
   of `/draft`), notable performances, on this day, latest article. The split is what
   balances heights: at 1440px with a yards race chart the columns end at about 1,375,
   1,345 and 1,395px. Recheck when a panel is added or grows.
-- While a game is live the calculator panel becomes "Live 4th down" (see the data
-  contract); otherwise it shows the calculator's two default scenarios (4th and 2 at
-  midfield; a touchdown to trail by 2) with each option's win probability, computed at
-  build time through the page's own path (`homeExamples` in
-  `src/utils/fourth-down-model.ts`), so the home page never downloads the model. Each
-  scenario links to its tab with the scenario in the URL.
+- Column 2 ends with one line linking the 4th down calculator, which becomes the "Live 4th
+  downs" panel while any game is live (see the data contract).
 - Below 1100px: two columns, chart across the top, column 3's panels in a pair under
   the rest. Below 760px: one column.
 

@@ -1,0 +1,126 @@
+---
+/**
+ * Every 4th down of today's games, with nfl4th's recommendation, each
+ * option's win probability and what the team's choice cost: preliminary
+ * grades from ESPN's live game summaries (src/lib/live-fourth/page.ts).
+ * The final grades are /decisions/, from nflverse the next morning.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import { LIVE_FOURTH_PAGE_ENABLED } from '../../config';
+import { liveGames } from '../../utils/live-games';
+import { url } from '../../utils/url';
+
+const games = liveGames();
+const NFL4TH = 'https://github.com/nflverse/nfl4th';
+---
+
+<BaseLayout
+  title="Live 4th downs"
+  description="Every 4th down of today's NFL games with nfl4th's recommendation, each option's win probability and preliminary grades."
+>
+  <h1 class="page-title">Live 4th downs</h1>
+  {
+    LIVE_FOURTH_PAGE_ENABLED ? (
+      <div class="live-page neutral-hover" data-live-page>
+        <div class="intro">
+          <p>
+            Every 4th down of today's games, newest first, read from ESPN's play-by-play as plays are reported. Each
+            has Ben Baldwin's <a href={NFL4TH}>nfl4th</a> recommendation before the snap, every option's win
+            probability, what the team did, and the win probability its choice gave up (WP lost, in points).
+          </p>
+          <p>
+            <strong>These grades are preliminary.</strong> The final grades, from nflverse's play-by-play the next
+            morning, are on <a href={url('decisions')}>4th down and 2-point decisions</a>. A questionable call cost
+            2 points of win probability or more; a clear one also had nfl4th's top two options 5 or more points
+            apart. Not graded: overtime, the last 15 seconds, and games already decided.
+          </p>
+          <p class="dim" data-live-status aria-live="polite">Loading today's games…</p>
+        </div>
+
+        <nav class="tabs" aria-label="Live 4th down views">
+          <ul>
+            <li><a href="?" data-tab="all">All 4th downs</a></li>
+            <li><a href="?tab=questionable" data-tab="questionable">Questionable calls</a></li>
+          </ul>
+        </nav>
+
+        <Panel title="Today's 4th downs">
+          <ol class="live-items live-page-items" data-live-rows hidden />
+          <p class="empty" data-live-empty>No 4th downs yet today.</p>
+        </Panel>
+        <p class="foot">
+          Win probability is the offense's chance to win after each choice, before the snap; the kicker is league
+          average. "By" is points of win probability: how far nfl4th's choice was ahead of the next option, or what
+          the team's choice gave up. A close call is under 2 points either way. Timeouts come from the live
+          scoreboard when this page saw the 4th down happen, otherwise they are counted from the play-by-play.
+          Hover what happened for the play as ESPN describes it.
+        </p>
+        <script type="application/json" id="live-fourth-games" set:html={JSON.stringify(games)} />
+      </div>
+    ) : (
+      <Panel title="Off for now">
+        <p>
+          The live 4th down page is off right now. Final grades for every 4th down this season are on{' '}
+          <a href={url('decisions')}>4th down and 2-point decisions</a>.
+        </p>
+      </Panel>
+    )
+  }
+</BaseLayout>
+
+<script>
+  import { initLivePage } from '../../lib/live-fourth/page';
+  initLivePage();
+</script>
+
+<style>
+  .intro {
+    max-width: 80ch;
+    margin-bottom: var(--space-3);
+  }
+
+  .intro p + p {
+    margin-top: var(--space-2);
+  }
+
+  .dim,
+  .foot,
+  .empty {
+    color: var(--text-dim);
+  }
+
+  .live-page-items {
+    max-width: 70ch;
+  }
+
+  .foot {
+    margin-top: var(--space-2);
+    font-size: 12px;
+    max-width: 80ch;
+  }
+
+  .tabs ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-3);
+    border-bottom: 2px solid var(--header);
+  }
+
+  .tabs a {
+    display: block;
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--link);
+  }
+
+  .tabs a[aria-current='page'] {
+    background: var(--header);
+    color: var(--header-text);
+    text-decoration: none;
+  }
+
+</style>

@@ -11,6 +11,7 @@ import { introLines, points } from '../../lib/decisions/view';
 import { gradedThrough } from '../../utils/as-of';
 import { decisionsData } from '../../utils/decisions';
 import { url } from '../../utils/url';
+import { LIVE_FOURTH_PAGE_ENABLED } from '../../config';
 
 export type DecisionsTab = 'coaches' | 'worst';
 
@@ -42,6 +43,12 @@ const tabs = [
       <a href={NFL4TH}>nfl4th</a> model (<a href={LICENSE}>MIT license</a>), reproduced exactly. It is nfl4th's
       recommendation, not this site's model, and it is not adjusted for the teams playing.
       <a href={url('fourth-down')}>Try any situation in the calculator</a>.
+      {LIVE_FOURTH_PAGE_ENABLED && (
+        <>
+          {' '}During games, <a href={url('fourth-down/live')}>live 4th downs</a> grades today's calls as they happen
+          (preliminary until these final grades the next morning).
+        </>
+      )}
     </p>
     {intro?.map((line) => <p>{line}</p>)}
     {
@@ -56,7 +63,9 @@ const tabs = [
     }
   </div>
   <Tabs label="Decision grade views" tabs={tabs} current={tab} />
-  <slot />
+  <div class="neutral-hover">
+    <slot />
+  </div>
 </BaseLayout>
 
 <style>

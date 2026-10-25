@@ -14,7 +14,7 @@ import { easternDate, headerFacts, oddsBasisNow, oddsOf } from '../../utils/team
 import { formatChance } from '../../lib/teams/odds';
 import { url } from '../../utils/url';
 
-export type TeamTab = 'overview' | 'schedule' | 'roster' | 'stats' | 'transactions';
+export type TeamTab = 'overview' | 'schedule' | 'roster' | 'stats' | 'transactions' | 'fourth-downs';
 
 interface Props {
   team: Team;
@@ -30,6 +30,7 @@ const tabs: { key: TeamTab; label: string; path: string }[] = [
   { key: 'roster', label: 'Roster', path: `teams/${team.abbr}/roster` },
   { key: 'stats', label: 'Stats', path: `teams/${team.abbr}/stats` },
   { key: 'transactions', label: 'Transactions', path: `teams/${team.abbr}/transactions` },
+  { key: 'fourth-downs', label: '4th downs', path: `teams/${team.abbr}/fourth-downs` },
 ];
 const current = tabs.find((t) => t.key === tab)!;
 const title = tab === 'overview' ? team.name : `${team.name} ${current.label.toLowerCase()}`;

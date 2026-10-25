@@ -94,3 +94,22 @@ test('the intro quotes the pipeline numbers', () => {
   assert.match(lines[1], /87\.3% had nfl4th's top two options within 5 points/);
   assert.equal(introLines({ ...data([]).summary, fourthDowns: 0 }), null);
 });
+
+test("a team's calls by game: questionable ones and its three biggest, newest game first", async () => {
+  const { teamGameCalls } = await import('../src/lib/decisions/team.ts');
+  const d = (playId: number, week: number, margin: number, graded: boolean, posteam = 'SEA') =>
+    fourth({ playId, week, gameId: `2026_0${week}_SEA_SF`, margin, graded, wpCost: graded ? 0.03 : 0.0 }, { posteam });
+  const games = teamGameCalls(
+    data([d(1, 5, 0.01, false), d(2, 5, 0.2, false), d(3, 5, 0.1, false), d(4, 5, 0.06, true), d(5, 5, 0.02, false), d(6, 6, 0.01, true), d(7, 6, 0.3, false, 'SF')]),
+    'SEA',
+  );
+  assert.deepEqual(games.map((g) => g.week), [6, 5]);
+  const week5 = games[1];
+  assert.deepEqual(week5.rows.map((r) => [r.decision.playId, r.questionable, r.clear, r.big]), [
+    [2, false, false, true],
+    [3, false, false, true],
+    [4, true, true, true],
+  ]);
+  assert.equal(week5.decisions, 5);
+  assert.deepEqual(games[0].rows.map((r) => [r.decision.playId, r.questionable, r.clear]), [[6, true, false]]);
+});

@@ -1,0 +1,160 @@
+---
+/**
+ * A team's 4th downs: today's live game from ESPN's summaries (the live
+ * feed filtered to this team, src/lib/live-fourth/team.ts), then every game
+ * this season from decisions.json, newest first: the team's questionable
+ * calls and its three biggest calls, each against nfl4th, linked to the
+ * game's win probability chart.
+ */
+import TeamHub from '../../../components/team/TeamHub.astro';
+import Panel from '../../../components/Panel.astro';
+import teamsData from '../../../data/teams.json';
+import type { Team, TeamsData } from '../../../data/types';
+import { LIVE_FOURTH_PAGE_ENABLED } from '../../../config';
+import { teamGameCalls } from '../../../lib/decisions/team';
+import { callWords, chartSlug, gameWords, isFourthDown, optionWords, points, situationWords } from '../../../lib/decisions/view';
+import { hasAutoChart } from '../../../utils/charts';
+import { decisionsData } from '../../../utils/decisions';
+import { gradedThrough } from '../../../utils/as-of';
+import { liveGames } from '../../../utils/live-games';
+import { url } from '../../../utils/url';
+
+export function getStaticPaths() {
+  return (teamsData as TeamsData).map((team) => ({ params: { abbr: team.abbr }, props: { team } }));
+}
+
+const { team } = Astro.props as { team: Team };
+const games = decisionsData ? teamGameCalls(decisionsData, team.abbr) : [];
+const season = decisionsData?.season ?? 0;
+const lastWeek = decisionsData ? Math.max(0, ...decisionsData.fourthDowns.map((d) => d.week)) : 0;
+// This team's games of the ticker's week, for the live section.
+const mine = Object.fromEntries(Object.entries(liveGames()).filter(([, g]) => g.home === team.abbr || g.away === team.abbr));
+const NFL4TH = 'https://github.com/nflverse/nfl4th';
+---
+
+<TeamHub team={team} tab="fourth-downs">
+  <div class="content-grid neutral-hover">
+    {
+      LIVE_FOURTH_PAGE_ENABLED && (
+        <div data-team-live={team.abbr} hidden>
+          <Panel title="Today's game, live">
+            <p class="dim" data-team-live-status>Reading today's game…</p>
+            <ol class="live-items team-live-list" data-team-live-list />
+            <p class="foot">
+              {team.abbr}'s 4th downs so far, newest first, from ESPN's play-by-play, each against nfl4th (the model,
+              about 2.6 MB, loads while the game is live). Calls are preliminary; every game today:{' '}
+              <a href={url('fourth-down/live')}>live 4th downs</a>.
+            </p>
+          </Panel>
+          <script type="application/json" id="live-fourth-games" set:html={JSON.stringify(mine)} />
+        </div>
+      )
+    }
+
+    <Panel title="4th down and 2-point calls by game">
+      <p class="lead">
+        Each game's questionable calls (the choice gave up 2 points of win probability or more against Ben Baldwin's{' '}
+        <a href={NFL4TH}>nfl4th</a>; clear when its top two options were 5 or more apart) and its three biggest
+        calls, where nfl4th's top two options were furthest apart. {decisionsData && gradedThrough(season, lastWeek, decisionsData.games)}{' '}
+        <a href={url('decisions')}>Every coach and the season's worst calls</a>.
+      </p>
+      {
+        games.length === 0 ? (
+          <p class="dim">No graded games yet this season.</p>
+        ) : (
+          games.map((g) => {
+            const slug = chartSlug(g.sample, season);
+            return (
+              <section class="game">
+                <h3 class="game-title">
+                  Week {g.week}: {hasAutoChart(slug) ? <a href={url(`charts/${slug}`)}>{gameWords(g.sample)}</a> : gameWords(g.sample)}
+                  <span class="dim"> {g.decisions} graded calls</span>
+                </h3>
+                <div class="stat-table-scroll" tabindex="0">
+                  <table class="stat-table">
+                    <caption class="visually-hidden">
+                      {team.abbr}'s questionable and biggest calls, week {g.week}
+                    </caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Situation</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Team did</th>
+                        <th scope="col">nfl4th's recommendation</th>
+                        <th scope="col">Each option's WP</th>
+                        <th scope="col" class="number" title="Points of win probability between nfl4th's top two options">Gap</th>
+                        <th scope="col" class="number" title="Points of win probability">WP lost</th>
+                        <th scope="col">Mark</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {g.rows.map((r) => (
+                        <tr class:list={{ questionable: r.questionable }}>
+                          <td title={r.decision.description}>{situationWords(r.decision)}</td>
+                          <td>{isFourthDown(r.decision) ? '4th down' : 'Try'}</td>
+                          <td>{callWords(r.decision.teamCall)}</td>
+                          <td>{callWords(r.decision.call)}</td>
+                          <td>{optionWords(r.decision)}</td>
+                          <td class="number">{points(r.decision.margin ?? 0)}</td>
+                          <td class="number">{points(r.decision.wpCost ?? 0)}</td>
+                          <td class:list={{ clear: r.clear }}>
+                            {[r.clear ? 'Clear' : r.questionable ? 'Questionable' : null, r.big ? 'Big call' : null].filter(Boolean).join(', ')}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            );
+          })
+        )
+      }
+    </Panel>
+  </div>
+</TeamHub>
+
+<script>
+  import { initTeamLive } from '../../../lib/live-fourth/team';
+  initTeamLive();
+</script>
+
+<style>
+  .lead,
+  .dim,
+  .foot {
+    color: var(--text-dim);
+  }
+
+  .lead {
+    margin-bottom: var(--space-3);
+    max-width: 80ch;
+  }
+
+  .foot {
+    margin-top: var(--space-2);
+    font-size: 12px;
+  }
+
+  .game + .game {
+    margin-top: var(--space-4);
+  }
+
+  .game-title {
+    font-size: 15px;
+    margin-bottom: var(--space-1);
+  }
+
+  tr.questionable td:first-child {
+    border-left: var(--mark-bar) solid var(--header);
+  }
+
+  td.clear {
+    font-weight: 700;
+  }
+
+  .team-live-list {
+    margin-top: var(--space-2);
+    max-width: 70ch;
+  }
+</style>

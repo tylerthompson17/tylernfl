@@ -137,6 +137,12 @@ th,
   background: var(--highlight);
 }
 
+/* On the 4th down pages yellow means live, so their tables hover in a
+   neutral gray (more specific, so it wins). */
+.neutral-hover .stat-table tbody tr:hover {
+  background: var(--row-hover);
+}
+
 .stat-table-empty {
   color: var(--text-dim);
 }
@@ -161,4 +167,50 @@ th,
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Live 4th down items (src/lib/live-fourth/item.ts), on the home panel, the
+   live page and team pages: built by script, so styled here. Only a 4th
+   down still to be played has the yellow background: yellow means live. */
+.live-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.live-item + .live-item {
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px dotted var(--rule-soft);
+}
+
+.live-item p {
+  margin: 0;
+}
+
+.live-item .live-when {
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+.live-item .live-down {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.live-item.pending .live-down {
+  margin: 2px 0;
+  padding: var(--space-1) var(--space-2);
+  background: var(--highlight-soft);
+}
+
+.live-item .live-verdict {
+  font-weight: 600;
+}
+
+.live-item .live-wp {
+  color: var(--text-dim);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
 }
