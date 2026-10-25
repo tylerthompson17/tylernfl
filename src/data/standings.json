@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 7,
-  "updated": "2026-10-25T16:51:31Z",
+  "updated": "2026-10-25T19:58:35Z",
   "teams": [
     {
       "team": "BUF",
@@ -247,33 +247,6 @@
       "conferenceTiebreak": null
     },
     {
-      "team": "IND",
-      "conference": "AFC",
-      "division": "AFC South",
-      "wins": 2,
-      "losses": 4,
-      "ties": 0,
-      "pct": 0.333,
-      "pointsFor": 144,
-      "pointsAgainst": 164,
-      "diff": -20,
-      "divisionRecord": [
-        1,
-        1,
-        0
-      ],
-      "conferenceRecord": [
-        1,
-        4,
-        0
-      ],
-      "streak": "L2",
-      "divisionRank": 2,
-      "conferenceRank": 12,
-      "divisionTiebreak": "head_to_head",
-      "conferenceTiebreak": "division_order"
-    },
-    {
       "team": "HOU",
       "conference": "AFC",
       "division": "AFC South",
@@ -295,10 +268,37 @@
         0
       ],
       "streak": "W2",
+      "divisionRank": 2,
+      "conferenceRank": 12,
+      "divisionTiebreak": null,
+      "conferenceTiebreak": null
+    },
+    {
+      "team": "IND",
+      "conference": "AFC",
+      "division": "AFC South",
+      "wins": 2,
+      "losses": 5,
+      "ties": 0,
+      "pct": 0.286,
+      "pointsFor": 154,
+      "pointsAgainst": 180,
+      "diff": -26,
+      "divisionRecord": [
+        1,
+        1,
+        0
+      ],
+      "conferenceRecord": [
+        1,
+        4,
+        0
+      ],
+      "streak": "L3",
       "divisionRank": 3,
       "conferenceRank": 13,
-      "divisionTiebreak": "head_to_head",
-      "conferenceTiebreak": "division_order"
+      "divisionTiebreak": null,
+      "conferenceTiebreak": null
     },
     {
       "team": "TEN",
@@ -547,13 +547,13 @@
       "team": "MIN",
       "conference": "NFC",
       "division": "NFC North",
-      "wins": 5,
+      "wins": 6,
       "losses": 0,
       "ties": 0,
       "pct": 1.0,
-      "pointsFor": 109,
-      "pointsAgainst": 64,
-      "diff": 45,
+      "pointsFor": 125,
+      "pointsAgainst": 74,
+      "diff": 51,
       "divisionRecord": [
         2,
         0,
@@ -564,7 +564,7 @@
         0,
         0
       ],
-      "streak": "W5",
+      "streak": "W6",
       "divisionRank": 1,
       "conferenceRank": 1,
       "divisionTiebreak": null,
