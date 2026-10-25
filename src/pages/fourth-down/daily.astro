@@ -1,0 +1,489 @@
+---
+/**
+ * The daily 4th down game: five real 4th downs of the season, the same for
+ * everyone on a date, from daily_fourth.json (pipelines/daily_fourth.py).
+ * Every play is drawn here at build time, both with team names and
+ * without, and the reveal is drawn too; the script
+ * (src/lib/daily-fourth/dom.ts) only steps through them, records picks and
+ * keeps the visitor's history in localStorage. Nothing is fetched.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import FieldStrip from '../../components/FieldStrip.astro';
+import type { DailyFourthData } from '../../data/types';
+import { url } from '../../utils/url';
+import {
+  callWords,
+  clockWords,
+  coachLine,
+  dateWords,
+  downWords,
+  fieldWords,
+  gameWords,
+  nfl4thLine,
+  optionsOf,
+  points,
+  scoreWords,
+  timeoutWords,
+} from '../../lib/daily-fourth/game';
+
+const files = import.meta.glob<DailyFourthData>('../../data/daily_fourth.json', { eager: true, import: 'default' });
+const game: DailyFourthData | null = Object.values(files)[0] ?? null;
+const ready = game !== null && game.plays.length > 0;
+
+const NFL4TH = 'https://github.com/nflverse/nfl4th';
+const LICENSE = 'https://github.com/nflverse/nfl4th/blob/master/LICENSE';
+const link = new URL(url('fourth-down/daily'), Astro.site).href;
+// Only what the script needs; the words are already on the page.
+const embedded = ready
+  ? { date: game.date, number: game.number, link, plays: game.plays.map(({ wp, call, coachWpLost }) => ({ wp, call, coachWpLost })) }
+  : null;
+---
+
+<BaseLayout
+  title="4th down daily"
+  description="Five real 4th downs from this NFL season every day: make the call, then see nfl4th's win probability for each option and what the coach did."
+>
+  <h1 class="page-title">4th down daily</h1>
+  <p class="page-intro">
+    Five real 4th downs from this season, the same for everyone today. Make each call, then see what Ben Baldwin's
+    <a href={NFL4TH}>nfl4th</a> estimates each option was worth in win probability, what the coach did and what
+    happened. Your score is the win probability your calls give up against nfl4th's estimates, next to the coaches' on
+    the same plays.
+  </p>
+
+  {
+    ready ? (
+      <div class="daily" data-daily>
+        <Panel title={`Game ${game.number}: ${dateWords(game.date)}`}>
+          <p class="stale" data-stale hidden>
+            This is the game for {dateWords(game.date)}. Today's game is not out yet; it comes with the morning's data.
+          </p>
+          <div class="bar">
+            <p class="progress" data-progress aria-live="polite">
+              {game.plays.length} plays
+            </p>
+            <button type="button" class="toggle" data-names aria-pressed="false">
+              Show teams
+            </button>
+          </div>
+          <noscript>
+            <p class="dim">The game needs JavaScript to record your calls.</p>
+          </noscript>
+          <ol class="plays">
+            {game.plays.map((p, i) => (
+              <li class="play" data-play={i} hidden={i > 0}>
+                <h2 class="play-title">
+                  Play {i + 1} of {game.plays.length}
+                </h2>
+                <FieldStrip ballOn={100 - p.yardline100} lineToGain={100 - p.yardline100 + p.distance} label={downWords(p)} />
+                <dl class="situation">
+                  <div>
+                    <dt>Ball on</dt>
+                    <dd>
+                      <span class="anon">{fieldWords(p, false)}</span>
+                      <span class="named">{fieldWords(p, true)}</span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Score</dt>
+                    <dd>
+                      <span class="anon">{scoreWords(p, false)}</span>
+                      <span class="named">{scoreWords(p, true)}</span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Clock</dt>
+                    <dd>{clockWords(p)}</dd>
+                  </div>
+                  <div>
+                    <dt>Timeouts</dt>
+                    <dd>
+                      <span class="anon">{timeoutWords(p, false)}</span>
+                      <span class="named">{timeoutWords(p, true)}</span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Game</dt>
+                    <dd>
+                      <span class="anon">Hidden</span>
+                      <span class="named">
+                        {gameWords(p)}, {p.offense} has the ball
+                      </span>
+                    </dd>
+                  </div>
+                </dl>
+                <div class="choices" role="group" aria-label={`Your call on play ${i + 1}`}>
+                  {optionsOf(p).map((c) => (
+                    <button type="button" class="choice" data-pick={c}>
+                      {callWords(c)}
+                    </button>
+                  ))}
+                </div>
+                <div class="reveal" data-reveal hidden>
+                  <p class="you" data-you tabindex="-1" />
+                  <p class="said">{nfl4thLine(p)}</p>
+                  <table class="stat-table wp">
+                    <caption class="visually-hidden">nfl4th's win probability for each option</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Option</th>
+                        <th scope="col" class="number">nfl4th WP</th>
+                        <th scope="col">Who</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {optionsOf(p).map((c) => (
+                        <tr data-option={c} class:list={{ top: c === p.call }}>
+                          <th scope="row">{callWords(c)}</th>
+                          <td class="number">{points(p.wp[c]!)}%</td>
+                          <td class="who" data-who={c}>
+                            {[c === p.call ? 'nfl4th' : null, c === p.teamCall ? 'Coach' : null].filter(Boolean).join(', ')}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <p class="coach">
+                    {gameWords(p)}. {coachLine(p)}
+                  </p>
+                  <p class="result">
+                    What happened: <span title={p.description}>{p.result}</span>
+                  </p>
+                  <button type="button" class="next" data-next>
+                    {i + 1 < game.plays.length ? 'Next play' : 'See your score'}
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </Panel>
+
+        <Panel title="Your score" class="score-panel">
+          <div data-score hidden>
+            <p data-score-line />
+            <table class="stat-table summary">
+              <thead>
+                <tr>
+                  <th scope="col">Play</th>
+                  <th scope="col">Game</th>
+                  <th scope="col">You</th>
+                  <th scope="col">nfl4th</th>
+                  <th scope="col">Coach</th>
+                  <th scope="col" class="number">You gave up</th>
+                  <th scope="col" class="number">Coach gave up</th>
+                </tr>
+              </thead>
+              <tbody>
+                {game.plays.map((p, i) => (
+                  <tr data-summary={i}>
+                    <td class="number">{i + 1}</td>
+                    <td>
+                      {p.away} at {p.home}
+                    </td>
+                    <td data-summary-pick />
+                    <td>{callWords(p.call)}</td>
+                    <td>{callWords(p.teamCall)}</td>
+                    <td class="number" data-summary-lost />
+                    <td class="number">{points(p.coachWpLost)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <h3 class="sub">Share</h3>
+            <textarea class="share" data-share readonly rows="8" aria-label="Your result as text" />
+            <div class="share-bar">
+              <button type="button" class="next" data-copy>
+                Copy result
+              </button>
+              <span class="dim" data-copied aria-live="polite" />
+            </div>
+          </div>
+          <p class="dim" data-score-empty>
+            Your score shows once you have made all {game.plays.length} calls.
+          </p>
+        </Panel>
+
+        <Panel title="Your history">
+          <p data-streak>No games played on this device yet.</p>
+          <table class="stat-table history" data-history hidden>
+            <thead>
+              <tr>
+                <th scope="col">Game</th>
+                <th scope="col">Date</th>
+                <th scope="col" class="number">You gave up</th>
+                <th scope="col" class="number">Coaches gave up</th>
+              </tr>
+            </thead>
+            <tbody data-history-rows />
+          </table>
+          <p class="foot">Kept in this browser only. Clearing site data resets it.</p>
+        </Panel>
+      </div>
+    ) : (
+      <Panel title="No game today">
+        <p>
+          There is no game right now: it needs at least five 4th downs from this season's games. Try the{' '}
+          <a href={url('fourth-down')}>4th down calculator</a>, or see how coaches did on{' '}
+          <a href={url('decisions')}>4th down and 2-point decisions</a>.
+        </p>
+      </Panel>
+    )
+  }
+
+  <Panel title="How it works" class="about">
+    <ul class="notes">
+      <li>
+        Every number is nfl4th's estimate: the offense's chance to win after each option, before the snap, with a
+        league average kicker and no adjustment for the teams playing. The page compares your calls with it; it does not
+        say any call was right.
+      </li>
+      <li>
+        "By" is points of win probability: how far nfl4th's choice was ahead of the next option. A close call is under
+        {ready ? ` ${points(game.closeMargin)}` : ' 2.0'} points, when either choice is reasonable. Options the model leaves
+        out (a field goal from your own side of the field) are not offered.
+      </li>
+      <li>
+        Plays are picked each morning from the season's finals: some where the coach went against nfl4th, at most one
+        close call, a mix of teams, field position and quarters, and only games still in doubt. Teams are hidden until
+        you show them; the answer names the game.
+      </li>
+      <li>
+        The model is Ben Baldwin's <a href={NFL4TH}>nfl4th</a> (<a href={LICENSE}>MIT license</a>), reproduced exactly
+        {ready && game.modelVersion ? ` (${game.modelVersion})` : ''}. The same numbers grade every coach on{' '}
+        <a href={url('decisions')}>4th down and 2-point decisions</a>, and you can set any situation in the{' '}
+        <a href={url('fourth-down')}>4th down calculator</a>.
+      </li>
+    </ul>
+  </Panel>
+
+  {embedded && <script type="application/json" id="daily-fourth" set:html={JSON.stringify(embedded)} />}
+</BaseLayout>
+
+<script>
+  import { initDailyFourth } from '../../lib/daily-fourth/dom';
+  initDailyFourth();
+</script>
+
+<style>
+  .page-intro {
+    max-width: 80ch;
+    margin-bottom: var(--space-3);
+  }
+
+  .daily,
+  .about {
+    max-width: 760px;
+  }
+
+  .daily {
+    display: grid;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .dim,
+  .foot {
+    color: var(--text-dim);
+  }
+
+  .foot {
+    font-size: 12px;
+    margin-top: var(--space-2);
+  }
+
+  .stale {
+    background: var(--highlight-soft);
+    border: 1px solid var(--rule);
+    padding: var(--space-1) var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .progress {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .plays {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .play + .play {
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px dotted var(--rule-soft);
+  }
+
+  .play-title,
+  .sub {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 16px;
+    margin: 0 0 var(--space-2);
+  }
+
+  .situation {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    border: 1px solid var(--rule);
+    margin: var(--space-2) 0;
+  }
+
+  .situation div {
+    padding: var(--space-1) var(--space-2);
+    border-bottom: 1px dotted var(--rule-soft);
+  }
+
+  .situation dt {
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  .situation dd {
+    margin: 0;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .named {
+    display: none;
+  }
+
+  .daily.names .named {
+    display: inline;
+  }
+
+  .daily.names .anon {
+    display: none;
+  }
+
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .choice,
+  .next,
+  .toggle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 15px;
+    border: 1px solid var(--header);
+    background: var(--panel);
+    color: var(--header);
+    padding: var(--space-1) var(--space-3);
+    min-height: 36px;
+  }
+
+  .choice {
+    flex: 1 1 0;
+    min-width: 96px;
+  }
+
+  .toggle {
+    font-size: 13px;
+    min-height: 30px;
+    padding: 0 var(--space-2);
+  }
+
+  .toggle[aria-pressed='true'],
+  .choice[aria-pressed='true'],
+  .next {
+    background: var(--header);
+    color: var(--header-text);
+  }
+
+  .choice:disabled {
+    cursor: default;
+  }
+
+  .choice:disabled:not([aria-pressed='true']) {
+    color: var(--text-dim);
+    border-color: var(--rule);
+  }
+
+  .choice:focus-visible,
+  .next:focus-visible,
+  .toggle:focus-visible {
+    outline-offset: 2px;
+  }
+
+  .reveal[hidden] {
+    display: none;
+  }
+
+  .reveal {
+    margin-top: var(--space-2);
+    display: grid;
+    gap: var(--space-2);
+    justify-items: start;
+  }
+
+  .you,
+  .said {
+    font-weight: 700;
+  }
+
+  .wp {
+    min-width: 260px;
+  }
+
+  .wp tr.top th,
+  .wp tr.top td {
+    font-weight: 700;
+  }
+
+  .summary,
+  .history {
+    margin: var(--space-2) 0;
+  }
+
+  .share {
+    display: block;
+    width: 100%;
+    font: 12px/1.35 ui-monospace, monospace;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    padding: var(--space-2);
+    resize: vertical;
+  }
+
+  .share-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+  }
+
+  .notes {
+    margin: 0;
+    padding-left: var(--space-4);
+    max-width: 80ch;
+  }
+
+  .notes li + li {
+    margin-top: var(--space-1);
+  }
+
+  @media (max-width: 480px) {
+    .summary th:nth-child(5),
+    .summary td:nth-child(5),
+    .summary th:nth-child(4),
+    .summary td:nth-child(4) {
+      display: none;
+    }
+  }
+</style>

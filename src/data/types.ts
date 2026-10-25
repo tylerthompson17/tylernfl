@@ -830,3 +830,64 @@ export interface TryDecision extends DecisionBase {
   patMakeProb?: number;
   twoPointConvProb?: number;
 }
+
+/**
+ * daily_fourth.json: written daily by pipelines/daily_fourth.py. The daily
+ * 4th down game (/fourth-down/daily/): five real 4th downs of the season
+ * from decisions.json, the same for everyone on a date, with everything
+ * the page shows baked in. A date already written is never changed.
+ */
+export interface DailyFourthData {
+  /** US Eastern date the game is for */
+  date: string;
+  /** 1 on the game's first day, counting every day since */
+  number: number;
+  season: number;
+  modelVersion: string | null;
+  /** Under this gap between nfl4th's top two options, a play is a close call */
+  closeMargin: number;
+  /** Five plays in the order they are played; empty when too few were available */
+  plays: DailyFourthPlay[];
+  /** Sum of the coaches' WP lost on the five plays */
+  coachWpLost: number;
+  /** The last 21 days' plays, newest first, so they are not used again soon */
+  history: { date: string; keys: string[] }[];
+}
+
+export interface DailyFourthPlay {
+  /** gameId:playId */
+  key: string;
+  gameId: string;
+  week: number;
+  away: string;
+  home: string;
+  offense: string;
+  defense: string;
+  /** The offense's head coach */
+  coach: string;
+  quarter: 1 | 2 | 3 | 4;
+  /** Seconds left on the quarter's clock */
+  clock: number;
+  distance: number;
+  /** Yards from the opponent's goal line */
+  yardline100: number;
+  /** Offense's score minus the defense's */
+  scoreDiff: number;
+  timeoutsOffense: number;
+  timeoutsDefense: number;
+  /** nfl4th's WP for each option; null for one the model leaves out */
+  wp: Record<import('../lib/fourth-down').FourthDownCall, number | null>;
+  /** nfl4th's call */
+  call: import('../lib/fourth-down').FourthDownCall;
+  /** WP between nfl4th's top two options */
+  margin: number;
+  /** margin under closeMargin */
+  close: boolean;
+  teamCall: import('../lib/fourth-down').FourthDownCall;
+  /** WP of nfl4th's call minus WP of the team's choice */
+  coachWpLost: number;
+  /** What happened, in a few plain words ("Punted 41 yards") */
+  result: string;
+  /** nflverse's text of the snap */
+  description: string;
+}

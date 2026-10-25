@@ -28,6 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import DATA_DIR, load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
 from decisions import build_decisions, load_decision_rows, report as decisions_report  # noqa: E402
+from daily_fourth import update_daily_fourth  # noqa: E402
 from charts.auto import build_auto_charts, season_finals, wp_plays_for, write_charts  # noqa: E402
 from draft_order import build_draft_order, load_picks, load_trade_rows, unlisted_trades  # noqa: E402
 from excitement import build_game_excitement, labels_by_game  # noqa: E402
@@ -206,6 +207,7 @@ def main() -> None:
     if write_json_if_changed('decisions.json', decisions, ('updated',), records=True):
         written += 1
         print('decisions.json: updated')
+    print(update_daily_fourth(decisions, today))
     # Target maps are about 600 files by the season's end, so compact too.
     changed_targets = sum(write_json_if_changed(name, data, volatile, compact=True)
                           for name, data, volatile in target_files)

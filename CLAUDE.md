@@ -177,7 +177,7 @@ tylernfl/
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `player_epa.json`, `decisions.json`, `targets/{gsisId}.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `draft_order.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `decisions.json`, `daily_fourth.json`, `targets/{gsisId}.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `draft_order.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
@@ -281,6 +281,19 @@ tylernfl/
   retaken tries) are counted in the file's `counts` and printed each run. Written one
   record per line (`records=True`, `dumps_records` in `common.py`) so diffs stay
   readable; packed, git stores about 7 KB per version either way. Methods and the rbsdm.com comparison: `docs/methods/decision-grades.md`.
+- `daily_fourth.json` is written daily by `pipelines/daily_fourth.py` (one call at the end
+  of `run_daily.py`'s decisions step): the daily 4th down game's five plays, picked from
+  `decisions.json`, with each option's WP, nfl4th's call and margin, what the team did
+  and what happened (`play_summary`, the live items' wording on nflverse's text) baked in.
+  Selection is deterministic by date (sha256 of the date and each play's key, no clock and
+  no `random`): evaluated 4th downs only (`skip` null), no fakes, games still in doubt
+  (nfl4th's best option 5% to 95%); two where the coach went against nfl4th, one close call
+  (margin under 0.02) on about half of days and never more, the rest 0.02 or more; no team
+  or game twice, at most 2 of one nfl4th call, field zone or quarter, at most 1 routine
+  punt, dropped in the order of `RELAX` when the pool runs short. Plays used in the last
+  21 days (`history` in the file) rank after unused ones. A date already in the file is
+  never changed, so game day reruns keep the day's game. Fewer than 5 plays writes an
+  empty day. The selection rules are in the module's docstring.
 - There is no `leaders.json` any more. Every top 5 on the site (the stats overview, the
   home page's receiving panel, a team's stat leader appearances) comes from the boards and
   `player_epa.json` through `src/utils/overview.ts`, whose rows carry player ids.
@@ -734,6 +747,30 @@ and tries together with a Type column), a tab each, from `decisions.json`. Linke
   when the archive has it (`hasAutoChart`). Both tabs show the model version and an as-of
   line from `gradedThrough` in `as-of.ts` (graded through which week, how many games, and
   any finals still waiting on play-by-play). Words are in `src/lib/decisions/view.ts`.
+
+### 4th down daily
+
+`/fourth-down/daily/`, from `daily_fourth.json`: five real 4th downs of the season, the
+same for everyone on a date. Linked from `/tools` and search; not in the nav or the
+calculator's tabs.
+
+- Every play and its reveal are drawn at build time, the situation both with team names
+  and without (a "Show teams" toggle switches them with a class, remembered); the reveal
+  always names the game and coach. The page script (`src/lib/daily-fourth/dom.ts`) only
+  steps through plays, records picks and fills the score. No model, no fetches.
+- Only options the model allows are offered (an option with null WP is left out).
+- Words are nfl4th's estimate, never "correct" or "wrong": "nfl4th says Go for it, by 3.1
+  points.", "A close call: nfl4th leaned Punt, by 0.4 points.", "You picked Punt: 3.1
+  points of win probability below nfl4th's estimate for Go for it." Rules and words are
+  in `src/lib/daily-fourth/game.ts`.
+- Score: WP given up against nfl4th's call over the five picks, beside the coaches' on the
+  same plays (`coachWpLost`, the file's `wpCost`). The share text lists only how each pick
+  compared, never the plays or teams.
+- Picks in progress, finished days, streaks (by game number; the current streak counts
+  back from yesterday until today is played) and the team toggle live in localStorage
+  (`tylernfl.daily-fourth`), every access in try/catch. A page whose game date is before
+  the visitor's Eastern date says today's game is not out yet.
+- Credits Ben Baldwin's nfl4th with its license; never presented as Tyler's model.
 
 ### Curated posts
 
