@@ -5,7 +5,8 @@
  * in global.css, since the calculator sets this markup itself.
  *
  * The offense always drives left to right: its own end zone on the left,
- * the opponent's on the right. Yard lines every 5, numbers every 10 reading
+ * the opponent's on the right, both a light slate tint labelled across
+ * ("Opp" when the strip is too narrow for "Opponent"). Yard lines every 5, numbers every 10 reading
  * 10 to 50 to 10 (every 20 when the strip is narrow), the line of scrimmage
  * in --scrimmage blue, the line to gain in first-down yellow with the gap
  * between them shaded (the goal line when it is goal to go), and when a
@@ -69,8 +70,8 @@ export function fieldStripHtml(s: FieldState): string {
     `<figure class="field-strip">` +
     `<figcaption class="fs-top"><span class="fs-label">${escape(s.label)}</span><span class="fs-drive" aria-hidden="true">Driving →</span></figcaption>` +
     `<div class="fs-field" role="img" aria-label="${escape(fieldDescription(s))}">` +
-    `<span class="fs-ez fs-own" style="left:0;width:${x(0)}%"><span>Own</span></span>` +
-    `<span class="fs-ez fs-opp" style="left:${x(100)}%;right:0"><span>Opponent</span></span>` +
+    `<span class="fs-ez fs-own" style="left:0;width:${x(0)}%">Own</span>` +
+    `<span class="fs-ez fs-opp" style="left:${x(100)}%;right:0"><span class="fs-ez-full">Opponent</span><span class="fs-ez-short">Opp</span></span>` +
     lines.join('') +
     `<span class="fs-gap" style="left:${x(ballOn)}%;width:${Math.round((x(toGain) - x(ballOn)) * 100) / 100}%"></span>` +
     `<span class="fs-gain" style="left:${x(toGain)}%"></span>` +

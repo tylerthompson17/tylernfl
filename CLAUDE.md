@@ -308,8 +308,21 @@ tylernfl/
   or game twice, at most 2 of one nfl4th call, field zone or quarter, at most 1 routine
   punt, dropped in the order of `RELAX` when the pool runs short. Plays used in the last
   21 days (`history` in the file) rank after unused ones. A date already in the file is
-  never changed, so game day reruns keep the day's game. Fewer than 5 plays writes an
-  empty day. The selection rules are in the module's docstring.
+  never changed, so game day reruns keep the day's game; the one exception is a field
+  added later, which a kept day's plays get filled in with nothing else changed (how
+  `next` reached 2026-10-25). Fewer than 5 plays writes an empty day. The selection rules
+  are in the module's docstring.
+- Each play's `next` is what happened after it, from nflverse play-by-play through
+  `pbp_cache.py` (only the picked games are read): possessions are nflfastR's
+  `fixed_drive` and `fixed_drive_result`, plays, net yards and start spot nflverse's own
+  drive fields (`drive_play_count`, `ydsnet`, `drive_start_yard_line`), summed over the
+  NFL drives inside one possession (the NFL counts a kickoff as its own empty drive).
+  After a conversion, the offense's drive; after a punt, a field goal or a failed
+  attempt, the next possession, whoever has it (a muffed punt the kicking team recovered
+  gives it the ball again), or `ended` when the half, regulation or game ended first or
+  the defense scored on the play. Plus the final score and overtime. Checked on every
+  4th down of 2026 as of 2026-10-25: all 1,339 resolve with a start, plays and a result.
+  Rules in `what_next`, tests in `test_daily_fourth.py`.
 - There is no `leaders.json` any more. Every top 5 on the site (the stats overview, the
   home page's receiving panel, a team's stat leader appearances) comes from the boards and
   `player_epa.json` through `src/utils/overview.ts`, whose rows carry player ids.
@@ -779,8 +792,11 @@ time through `FieldStrip.astro` (the daily game, articles), and from the calcula
 script as its inputs change, so both draw the same markup (styles `.field-strip` in
 `global.css`, global for that reason).
 
-- The offense always drives left to right ("Driving →"); both end zones in slate, the
-  right one labelled Opponent. Yard lines every 5, numbers every 10 reading 10 to 50 to 10
+- The offense always drives left to right ("Driving →"); both end zones a light slate
+  tint (`--endzone`, `--header` text on it 10.9:1) with the goal lines drawn, labelled
+  across, Own and Opponent ("Opp" when the strip is under 540px, where "Opponent" no
+  longer fits the end zone). They were solid slate blocks with vertical labels until
+  2026-10-25. Yard lines every 5, numbers every 10 reading 10 to 50 to 10
   with "Own side" and "Opponent's side" under the halves; numbers every 20 when the strip
   is under 420px (a container query, so a narrow panel on a wide screen counts too). The
   10-yard lines stop above their numbers.
@@ -805,6 +821,14 @@ calculator's tabs.
   and without (a "Show teams" toggle switches them with a class, remembered); the reveal
   always names the game and coach. The page script (`src/lib/daily-fourth/dom.ts`) only
   steps through plays, records picks and fills the score. No model, no fetches.
+- The game takes the full main column. From 1024px a play is two columns: the field
+  strip, situation and choices on the left (3fr), the reveal on the right (2fr, a line
+  saying what it will show until a call is made); below 1024px they stack.
+- The reveal ends with "What happened next", a boxed unit from the file's `next`
+  (`nextLine` and `finalLine` in `game.ts`): "KC took over at the KC 16: 5 plays, 61
+  yards, field goal.", or after a conversion "The drive ended in a touchdown: 12 plays,
+  75 yards in all.", then "Final: IND 30, KC 33 in overtime." and always "Outcomes are
+  noisy: a good call can still go badly." A play with no `next` shows none of it.
 - Only options the model allows are offered (an option with null WP is left out).
 - Words are nfl4th's estimate, never "correct" or "wrong": "nfl4th says Go for it, by 3.1
   points.", "A close call: nfl4th leaned Punt, by 0.4 points.", "You picked Punt: 3.1

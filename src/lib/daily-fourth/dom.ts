@@ -83,6 +83,7 @@ export function initDailyFourth(): void {
     const who = el.querySelector<HTMLElement>(`[data-who="${CSS.escape(pick)}"]`);
     if (who) who.textContent = ['You', who.textContent].filter(Boolean).join(', ');
     el.querySelector<HTMLElement>('[data-reveal]')!.hidden = false;
+    el.querySelector<HTMLElement>('[data-waiting]')!.hidden = true;
   };
 
   const calls = (n: number) => (progress.textContent = `Calls made: ${n} of ${plays.length}`);

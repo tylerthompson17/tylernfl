@@ -259,25 +259,29 @@ th,
 .field-strip .fs-ez {
   top: 0;
   bottom: 0;
-  background: var(--header);
-  color: var(--header-text);
+  background: var(--endzone);
+  color: var(--header);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-}
-
-.field-strip .fs-ez span {
-  writing-mode: vertical-rl;
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  line-height: 1;
 }
 
-.field-strip .fs-own span {
-  transform: rotate(180deg);
+/* The goal lines */
+.field-strip .fs-own {
+  border-right: 1px solid var(--text-dim);
+}
+
+.field-strip .fs-opp {
+  border-left: 1px solid var(--text-dim);
+}
+
+.field-strip .fs-ez-short {
+  display: none;
 }
 
 .field-strip .fs-line {
@@ -362,6 +366,17 @@ th,
   white-space: nowrap;
   color: var(--text);
   font-weight: 700;
+}
+
+/* Under about 44px of end zone, "Opponent" no longer fits across it. */
+@container field (max-width: 540px) {
+  .field-strip .fs-ez-full {
+    display: none;
+  }
+
+  .field-strip .fs-ez-short {
+    display: inline;
+  }
 }
 
 @container field (max-width: 420px) {

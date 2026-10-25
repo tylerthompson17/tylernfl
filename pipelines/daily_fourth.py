@@ -21,15 +21,29 @@ Read only from decisions.json, the same morning's file. Selection:
   quarter, and at most 1 routine punt. When the pool cannot satisfy them
   they are dropped one at a time in RELAX order; distinct games never are.
 - A date already in the file is kept as it is, so the game day reruns never
-  change a game people are partway through.
+  change a game people are partway through. The one exception is a field
+  added later (what happened next, below): a kept day's plays get it
+  filled in, and nothing else about them changes.
+
+What happened next (`next` on each play) is read from nflverse play-by-play
+(through pbp_cache.py), not from decisions.json. Possessions are nflfastR's
+`fixed_drive`, with its `fixed_drive_result`; each possession's plays, net
+yards and starting spot are nflverse's own drive fields (`drive_play_count`,
+`ydsnet`, `drive_start_yard_line`), summed over the NFL drives inside it
+(about 1 in 200 possessions spans two). After a punt, a field goal or a
+failed attempt it is the next possession; after a conversion, the offense's
+own drive. A possession that starts after halftime (or in overtime) is not
+the next one: the half ended first. A touchdown the defense scored on the
+play itself has no next possession.
 """
 
 import hashlib
 import json
 import re
+from collections.abc import Callable
 from datetime import date
 
-from common import DATA_DIR, write_json_if_changed
+from common import DATA_DIR, normalize_team, write_json_if_changed
 
 FILE = 'daily_fourth.json'
 PLAYS = 5
@@ -46,6 +60,23 @@ CALLS = ('go', 'punt', 'field goal')
 WP_FIELDS = {'go': 'wpGo', 'punt': 'wpPunt', 'field goal': 'wpFieldGoal'}
 # Constraints in the order they are dropped when the pool runs short.
 RELAX = ('routine punt', 'quarter', 'zone', 'call', 'team')
+# nflfastR's fixed_drive_result as the page words it.
+RESULTS = {
+    'Touchdown': 'touchdown',
+    'Field goal': 'field goal',
+    'Missed field goal': 'missed field goal',
+    'Punt': 'punt',
+    'Turnover': 'turnover',
+    'Turnover on downs': 'turnover on downs',
+    'Opp touchdown': 'opponent touchdown',
+    'Safety': 'safety',
+    'End of half': 'end of half',
+}
+# Play-by-play columns what happened next reads.
+NEXT_COLUMNS = [
+    'game_id', 'play_id', 'qtr', 'posteam', 'play_type', 'fixed_drive', 'fixed_drive_result', 'drive', 'drive_play_count',
+    'ydsnet', 'drive_start_yard_line', 'fourth_down_converted', 'home_score', 'away_score',
+]
 
 
 def rank(day: date, key: str) -> str:
@@ -212,14 +243,137 @@ def baked(r: dict) -> dict:
     }
 
 
-def build_daily_fourth(decisions: dict, day: date, previous: dict | None) -> dict:
-    """The day's game, or the previous file unchanged when it is already for this date."""
+def half(qtr: int) -> int:
+    """1 or 2 for regulation, 3 for overtime."""
+    return 1 if qtr <= 2 else 2 if qtr <= 4 else 3
+
+
+def spot(text: str | None, team: str) -> int | None:
+    """nflverse's "KC 16" or "50" as yards from the opponent's goal line for team."""
+    if not text:
+        return None
+    parts = text.split()
+    if len(parts) == 1:
+        return int(parts[0])
+    side, yards = normalize_team(parts[0]), int(parts[1])
+    return 100 - yards if side == team else yards
+
+
+def possessions(rows: list[dict]) -> dict[int, dict]:
+    """Every possession of one game by fixed_drive: team, start, plays,
+    yards, result and the quarters it ran in."""
+    by: dict[int, list[dict]] = {}
+    for r in rows:
+        # Marker rows (END GAME and the like) have no play_type but can carry a posteam.
+        if r['fixed_drive'] is not None and r['posteam'] and r['play_type'] is not None:
+            by.setdefault(int(r['fixed_drive']), []).append(r)
+    out = {}
+    for n, plays in by.items():
+        plays.sort(key=lambda r: r['play_id'])
+        teams = [normalize_team(r['posteam']) for r in plays]
+        team = max(set(teams), key=teams.count)
+        drives: dict[float, dict] = {}
+        for r in plays:
+            if r['drive'] is not None and r['drive'] not in drives:
+                drives[r['drive']] = r
+        firsts = [drives[d] for d in sorted(drives)]
+        # The NFL counts a kickoff as a drive of its own, with no start spot.
+        starts = [r['drive_start_yard_line'] for r in firsts if r['drive_start_yard_line']]
+        quarters = [int(r['qtr']) for r in plays if r['qtr'] is not None]
+        out[n] = {
+            'team': team,
+            'startYardline100': spot(starts[0], team) if starts else None,
+            'plays': sum(int(r['drive_play_count'] or 0) for r in firsts),
+            'yards': sum(int(r['ydsnet'] or 0) for r in firsts),
+            'result': plays[-1]['fixed_drive_result'],
+            'firstQuarter': min(quarters),
+            'lastQuarter': max(quarters),
+        }
+    return out
+
+
+def drive_words(p: dict, later: bool) -> dict:
+    """A possession as the page reads it, with the result in its words."""
+    result = RESULTS.get(p['result'])
+    if result == 'end of half' and p['lastQuarter'] >= 4:
+        result = 'end of regulation' if later else 'end of game'
+    return {'team': p['team'], 'startYardline100': p['startYardline100'], 'plays': p['plays'],
+            'yards': p['yards'], 'result': result}
+
+
+def what_next(rows: list[dict], play_id: int, team_call: str) -> dict | None:
+    """What followed one 4th down, from its game's play-by-play rows: the
+    offense's drive after a conversion, else the next possession, and the
+    final score. None when the play is not in the rows."""
+    play = next((r for r in rows if int(r['play_id']) == play_id), None)
+    if play is None or play['fixed_drive'] is None:
+        return None
+    drives = possessions(rows)
+    this = int(play['fixed_drive'])
+    later = sorted(n for n in drives if n > this)
+    final = {
+        'away': int(play['away_score']),
+        'home': int(play['home_score']),
+        'overtime': any((r['qtr'] or 0) >= 5 for r in rows),
+    }
+    converted = team_call == 'go' and play['fourth_down_converted'] == 1
+    drive, ended = None, None
+    if converted:
+        drive = drive_words(drives[this], bool(later))
+    elif drives[this]['result'] == 'Opp touchdown':
+        ended = 'touchdown'
+    elif not later:
+        ended = 'game'
+    elif half(drives[later[0]]['firstQuarter']) != half(int(play['qtr'])):
+        ended = 'half' if half(int(play['qtr'])) == 1 else 'regulation'
+    else:
+        drive = drive_words(drives[later[0]], len(later) > 1)
+    return {'converted': converted, 'drive': drive, 'ended': ended, 'final': final}
+
+
+def load_next_rows(season: int, current_season: int, game_ids: set[str]) -> dict[str, list[dict]]:
+    """Play-by-play rows of the given games, by game, for what_next."""
+    import polars as pl
+
+    from pbp_cache import load_pbp
+
+    pbp = load_pbp(season, current_season)
+    if pbp is None or not game_ids:
+        return {}
+    rows = pbp.filter(pl.col('game_id').is_in(list(game_ids))).select(NEXT_COLUMNS).to_dicts()
+    games: dict[str, list[dict]] = {}
+    for r in rows:
+        games.setdefault(r['game_id'], []).append(r)
+    return games
+
+
+Rows = Callable[[set[str]], dict[str, list[dict]]]
+
+
+def with_next(play: dict, games: dict[str, list[dict]]) -> dict:
+    rows = games.get(play['gameId'])
+    if rows is None:
+        return play | {'next': play.get('next')}
+    return play | {'next': what_next(rows, int(play['key'].split(':')[1]), play['teamCall'])}
+
+
+def build_daily_fourth(decisions: dict, day: date, previous: dict | None, rows_for: Rows | None = None) -> dict:
+    """The day's game, or the previous file when it is already for this date:
+    unchanged, except that plays without what happened next get it, when
+    rows_for (game ids to their play-by-play rows) is given."""
     if previous and previous.get('date') == day.isoformat():
-        return previous
+        missing = [p for p in previous['plays'] if p.get('next') is None]
+        if rows_for is None or not missing:
+            return previous
+        games = rows_for({p['gameId'] for p in missing})
+        return previous | {'plays': [p if p.get('next') is not None else with_next(p, games)
+                                     for p in previous['plays']]}
     history = [h for h in (previous or {}).get('history', [])
                if 0 < (day - date.fromisoformat(h['date'])).days <= REUSE_DAYS]
     recent = {k for h in history for k in h['keys']}
-    plays = [baked(r) for r in select(decisions['fourthDowns'], day, recent)]
+    picked = select(decisions['fourthDowns'], day, recent)
+    games = rows_for({r['gameId'] for r in picked}) if rows_for and picked else {}
+    plays = [with_next(baked(r), games) for r in picked]
     if plays:
         history = [{'date': day.isoformat(), 'keys': [p['key'] for p in plays]}] + history
     return {
@@ -234,11 +388,12 @@ def build_daily_fourth(decisions: dict, day: date, previous: dict | None) -> dic
     }
 
 
-def update_daily_fourth(decisions: dict, day: date) -> str:
+def update_daily_fourth(decisions: dict, day: date, current_season: int) -> str:
     """Build and write the day's game; the line the daily run prints."""
     path = DATA_DIR / FILE
     previous = json.loads(path.read_text()) if path.exists() else None
-    game = build_daily_fourth(decisions, day, previous)
+    game = build_daily_fourth(decisions, day, previous,
+                              lambda ids: load_next_rows(decisions['season'], current_season, ids))
     changed = write_json_if_changed(FILE, game)
     kinds = ', '.join(f"{p['offense']} {p['call']}{' (close)' if p['close'] else ''}"
                       f"{' against' if p['teamCall'] != p['call'] else ''}" for p in game['plays'])

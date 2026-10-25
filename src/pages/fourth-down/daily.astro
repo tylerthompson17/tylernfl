@@ -20,7 +20,10 @@ import {
   dateWords,
   downWords,
   fieldWords,
+  finalLine,
   gameWords,
+  nextLine,
+  NOISY,
   nfl4thLine,
   optionsOf,
   points,
@@ -77,89 +80,104 @@ const embedded = ready
                 <h2 class="play-title">
                   Play {i + 1} of {game.plays.length}
                 </h2>
-                <FieldStrip
-                  yardline100={p.yardline100}
-                  distance={p.distance}
-                  kick={p.wp['field goal'] === null ? null : fieldGoalYards(p.yardline100)}
-                  label={downWords(p)}
-                />
-                <dl class="situation">
-                  <div>
-                    <dt>Ball on</dt>
-                    <dd>
-                      <span class="anon">{fieldWords(p, false)}</span>
-                      <span class="named">{fieldWords(p, true)}</span>
-                    </dd>
+                <div class="ask">
+                  <FieldStrip
+                    yardline100={p.yardline100}
+                    distance={p.distance}
+                    kick={p.wp['field goal'] === null ? null : fieldGoalYards(p.yardline100)}
+                    label={downWords(p)}
+                  />
+                  <dl class="situation">
+                    <div>
+                      <dt>Ball on</dt>
+                      <dd>
+                        <span class="anon">{fieldWords(p, false)}</span>
+                        <span class="named">{fieldWords(p, true)}</span>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Score</dt>
+                      <dd>
+                        <span class="anon">{scoreWords(p, false)}</span>
+                        <span class="named">{scoreWords(p, true)}</span>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Clock</dt>
+                      <dd>{clockWords(p)}</dd>
+                    </div>
+                    <div>
+                      <dt>Timeouts</dt>
+                      <dd>
+                        <span class="anon">{timeoutWords(p, false)}</span>
+                        <span class="named">{timeoutWords(p, true)}</span>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Game</dt>
+                      <dd>
+                        <span class="anon">Hidden</span>
+                        <span class="named">
+                          {gameWords(p)}, {p.offense} has the ball
+                        </span>
+                      </dd>
+                    </div>
+                  </dl>
+                  <div class="choices" role="group" aria-label={`Your call on play ${i + 1}`}>
+                    {optionsOf(p).map((c) => (
+                      <button type="button" class="choice" data-pick={c}>
+                        {c === 'field goal' ? `Field goal, ${fieldGoalYards(p.yardline100)} yards` : callWords(c)}
+                      </button>
+                    ))}
                   </div>
-                  <div>
-                    <dt>Score</dt>
-                    <dd>
-                      <span class="anon">{scoreWords(p, false)}</span>
-                      <span class="named">{scoreWords(p, true)}</span>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Clock</dt>
-                    <dd>{clockWords(p)}</dd>
-                  </div>
-                  <div>
-                    <dt>Timeouts</dt>
-                    <dd>
-                      <span class="anon">{timeoutWords(p, false)}</span>
-                      <span class="named">{timeoutWords(p, true)}</span>
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Game</dt>
-                    <dd>
-                      <span class="anon">Hidden</span>
-                      <span class="named">
-                        {gameWords(p)}, {p.offense} has the ball
-                      </span>
-                    </dd>
-                  </div>
-                </dl>
-                <div class="choices" role="group" aria-label={`Your call on play ${i + 1}`}>
-                  {optionsOf(p).map((c) => (
-                    <button type="button" class="choice" data-pick={c}>
-                      {c === 'field goal' ? `Field goal, ${fieldGoalYards(p.yardline100)} yards` : callWords(c)}
-                    </button>
-                  ))}
+                  <p class="kicker-note">nfl4th assumes a league-average kicker and doesn't know who's kicking.</p>
                 </div>
-                <p class="kicker-note">nfl4th assumes a league-average kicker and doesn't know who's kicking.</p>
-                <div class="reveal" data-reveal hidden>
-                  <p class="you" data-you tabindex="-1" />
-                  <p class="said">{nfl4thLine(p)}</p>
-                  <table class="stat-table wp">
-                    <caption class="visually-hidden">nfl4th's win probability for each option</caption>
-                    <thead>
-                      <tr>
-                        <th scope="col">Option</th>
-                        <th scope="col" class="number">nfl4th WP</th>
-                        <th scope="col">Who</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {optionsOf(p).map((c) => (
-                        <tr data-option={c} class:list={{ top: c === p.call }}>
-                          <th scope="row">{c === 'field goal' ? `Field goal, ${fieldGoalYards(p.yardline100)} yards` : callWords(c)}</th>
-                          <td class="number">{points(p.wp[c]!)}%</td>
-                          <td class="who" data-who={c}>
-                            {[c === p.call ? 'nfl4th' : null, c === p.teamCall ? 'Coach' : null].filter(Boolean).join(', ')}
-                          </td>
+                <div class="side">
+                  <p class="waiting" data-waiting>
+                    Make your call to see nfl4th's estimate for each option, what the coach did and what happened.
+                  </p>
+                  <div class="reveal" data-reveal hidden>
+                    <p class="you" data-you tabindex="-1" />
+                    <p class="said">{nfl4thLine(p)}</p>
+                    <table class="stat-table wp">
+                      <caption class="visually-hidden">nfl4th's win probability for each option</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Option</th>
+                          <th scope="col" class="number">nfl4th WP</th>
+                          <th scope="col">Who</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  <p class="coach">
-                    {gameWords(p)}. {coachLine(p)}
-                  </p>
-                  <p class="result">
-                    What happened: <span title={p.description}>{p.result}</span>
-                  </p>
-                  <button type="button" class="next" data-next>
-                    {i + 1 < game.plays.length ? 'Next play' : 'See your score'}
-                  </button>
+                      </thead>
+                      <tbody>
+                        {optionsOf(p).map((c) => (
+                          <tr data-option={c} class:list={{ top: c === p.call }}>
+                            <th scope="row">{c === 'field goal' ? `Field goal, ${fieldGoalYards(p.yardline100)} yards` : callWords(c)}</th>
+                            <td class="number">{points(p.wp[c]!)}%</td>
+                            <td class="who" data-who={c}>
+                              {[c === p.call ? 'nfl4th' : null, c === p.teamCall ? 'Coach' : null].filter(Boolean).join(', ')}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <p class="coach">
+                      {gameWords(p)}. {coachLine(p)}
+                    </p>
+                    <p class="result">
+                      What happened: <span title={p.description}>{p.result}</span>
+                    </p>
+                    {p.next && (
+                      <div class="after">
+                        <h3 class="sub">What happened next</h3>
+                        <p>{nextLine(p)}</p>
+                        <p>{finalLine(p)}</p>
+                        <p class="dim">{NOISY}</p>
+                      </div>
+                    )}
+                    <button type="button" class="next" data-next>
+                      {i + 1 < game.plays.length ? 'Next play' : 'See your score'}
+                    </button>
+                  </div>
                 </div>
               </li>
             ))}
@@ -278,11 +296,6 @@ const embedded = ready
     margin-bottom: var(--space-3);
   }
 
-  .daily,
-  .about {
-    max-width: 760px;
-  }
-
   .daily {
     display: grid;
     gap: var(--space-3);
@@ -324,6 +337,56 @@ const embedded = ready
     list-style: none;
     margin: 0;
     padding: 0;
+  }
+
+  /* Wide: the field and choices on the left, the reveal beside them. */
+  @media (min-width: 1024px) {
+    .play:not([hidden]) {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      column-gap: var(--space-4);
+      align-items: start;
+    }
+
+    .play-title {
+      grid-column: 1 / -1;
+    }
+
+    .side {
+      border-left: 1px dotted var(--rule-soft);
+      padding-left: var(--space-4);
+    }
+
+    .side .reveal {
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .waiting {
+      display: none;
+    }
+  }
+
+  .waiting {
+    color: var(--text-dim);
+  }
+
+  .waiting[hidden] {
+    display: none;
+  }
+
+  .after {
+    border: 1px solid var(--rule);
+    padding: var(--space-2);
+    display: grid;
+    gap: var(--space-1);
+    width: 100%;
+  }
+
+  .after .sub {
+    font-size: 14px;
+    margin: 0;
   }
 
   .play + .play {

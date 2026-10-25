@@ -5,6 +5,8 @@ import {
   downWords,
   emptyStore,
   fieldWords,
+  finalLine,
+  nextLine,
   nfl4thLine,
   optionsOf,
   parseStore,
@@ -25,7 +27,14 @@ const play = (over: Partial<DailyFourthPlay> = {}): DailyFourthPlay => ({
   defense: 'KC', coach: 'Shane Steichen', quarter: 4, clock: 34, distance: 4, yardline100: 51, scoreDiff: 0,
   timeoutsOffense: 1, timeoutsDefense: 3, wp: { go: 0.43649, punt: 0.35233, 'field goal': 0.22108 }, call: 'go',
   margin: 0.08416, close: false, teamCall: 'punt', coachWpLost: 0.08416, result: 'Punted 41 yards',
-  description: '(0:34) punts 41 yards', ...over,
+  description: '(0:34) punts 41 yards',
+  next: {
+    converted: false,
+    drive: { team: 'KC', startYardline100: 84, plays: 5, yards: 61, result: 'end of regulation' },
+    ended: null,
+    final: { away: 30, home: 33, overtime: true },
+  },
+  ...over,
 });
 
 const game = (n = 1, plays = [play(), play({ wp: { go: 0.6, punt: 0.5, 'field goal': null }, call: 'go', teamCall: 'go', coachWpLost: 0 })]): ScoredGame => ({
@@ -105,4 +114,39 @@ test('streaks run back from today, or from yesterday until today is played', () 
   assert.deepEqual(streaks(store, 6), { current: 2, best: 3, played: 5 });
   assert.deepEqual(streaks(store, 7), { current: 2, best: 3, played: 5 });
   assert.deepEqual(streaks(store, 8), { current: 0, best: 3, played: 5 });
+});
+
+test('what happened next: the next possession after a punt, field goal or failed attempt', () => {
+  assert.equal(nextLine(play()), 'KC took over at the KC 16: 5 plays, 61 yards, end of regulation.');
+  const drive = (d: object) => play({ next: { ...play().next!, drive: { ...play().next!.drive!, ...d } } });
+  assert.equal(nextLine(drive({ startYardline100: 38, plays: 1, yards: -1, result: 'field goal' })),
+    'KC took over at the IND 38: 1 play, -1 yard, field goal.');
+  assert.equal(nextLine(drive({ startYardline100: 50, result: 'opponent touchdown' })),
+    'KC took over at midfield: 5 plays, 61 yards, IND touchdown.');
+  // A muffed punt the kicking team recovered: the offense has it again.
+  assert.equal(nextLine(drive({ team: 'IND', startYardline100: 28, result: 'touchdown' })),
+    'IND took over at the KC 28: 5 plays, 61 yards, touchdown.');
+  assert.equal(nextLine(drive({ startYardline100: null, plays: 0, yards: 0, result: 'touchdown' })),
+    'KC had the ball next: 0 plays, 0 yards, touchdown.');
+});
+
+test('what happened next: the offense drive after a conversion', () => {
+  const conv = (result: string) =>
+    play({ teamCall: 'go', next: { converted: true, drive: { team: 'IND', startYardline100: 75, plays: 12, yards: 75, result: result as never }, ended: null, final: { away: 27, home: 24, overtime: false } } });
+  assert.equal(nextLine(conv('touchdown')), 'The drive ended in a touchdown: 12 plays, 75 yards in all.');
+  assert.equal(nextLine(conv('turnover on downs')), 'The drive ended in a turnover on downs: 12 plays, 75 yards in all.');
+  assert.equal(nextLine(conv('opponent touchdown')), 'The drive ended in a KC touchdown: 12 plays, 75 yards in all.');
+  assert.equal(nextLine(conv('end of half')), 'The drive ran to the end of the half: 12 plays, 75 yards in all.');
+  assert.equal(finalLine(conv('touchdown')), 'Final: IND 27, KC 24.');
+});
+
+test('what happened next: no next possession', () => {
+  const ended = (e: 'half' | 'regulation' | 'game' | 'touchdown') => play({ next: { ...play().next!, drive: null, ended: e } });
+  assert.equal(nextLine(ended('half')), 'The half ended before KC had the ball.');
+  assert.equal(nextLine(ended('regulation')), 'Regulation ended before KC had the ball.');
+  assert.equal(nextLine(ended('game')), 'The game ended before KC had the ball.');
+  assert.equal(nextLine(ended('touchdown')), 'KC scored a touchdown on the return.');
+  assert.equal(finalLine(play()), 'Final: IND 30, KC 33 in overtime.');
+  assert.equal(nextLine(play({ next: null })), null);
+  assert.equal(finalLine(play({ next: null })), null);
 });

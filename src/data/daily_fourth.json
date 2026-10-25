@@ -32,7 +32,23 @@
       "teamCall": "punt",
       "coachWpLost": 0.08416,
       "result": "Punted 41 yards",
-      "description": "(:34) 8-R.Sanchez punts 41 yards to KC 10, Center-46-L.Rhodes. 81-N.Remigio to KC 16 for 6 yards (80-D.Burks; 29-C.Taylor-Britt)."
+      "description": "(:34) 8-R.Sanchez punts 41 yards to KC 10, Center-46-L.Rhodes. 81-N.Remigio to KC 16 for 6 yards (80-D.Burks; 29-C.Taylor-Britt).",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "KC",
+          "startYardline100": 84,
+          "plays": 5,
+          "yards": 61,
+          "result": "end of regulation"
+        },
+        "ended": null,
+        "final": {
+          "away": 30,
+          "home": 33,
+          "overtime": true
+        }
+      }
     },
     {
       "key": "2026_01_NO_DET:4687",
@@ -61,7 +77,23 @@
       "teamCall": "punt",
       "coachWpLost": 0.1065,
       "result": "Punted 56 yards",
-      "description": "(:37) 3-J.Fox punts 56 yards to end zone, Center-49-H.Hatten, Touchback."
+      "description": "(:37) 3-J.Fox punts 56 yards to end zone, Center-49-H.Hatten, Touchback.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "NO",
+          "startYardline100": 80,
+          "plays": 5,
+          "yards": 36,
+          "result": "missed field goal"
+        },
+        "ended": null,
+        "final": {
+          "away": 30,
+          "home": 31,
+          "overtime": true
+        }
+      }
     },
     {
       "key": "2026_01_MIA_LV:295",
@@ -90,7 +122,23 @@
       "teamCall": "punt",
       "coachWpLost": 0.0,
       "result": "Punted 37 yards",
-      "description": "(10:38) 48-B.Pinion punts 37 yards to LV 7, Center-46-T.Addington, fair catch by 23-D.Laube."
+      "description": "(10:38) 48-B.Pinion punts 37 yards to LV 7, Center-46-T.Addington, fair catch by 23-D.Laube.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "LV",
+          "startYardline100": 93,
+          "plays": 16,
+          "yards": 93,
+          "result": "touchdown"
+        },
+        "ended": null,
+        "final": {
+          "away": 13,
+          "home": 27,
+          "overtime": false
+        }
+      }
     },
     {
       "key": "2026_05_TB_DAL:2060",
@@ -119,7 +167,23 @@
       "teamCall": "field goal",
       "coachWpLost": 0.0,
       "result": "Made a 41-yard field goal",
-      "description": "(:26) 17-B.Aubrey 41 yard field goal is GOOD, Center-44-T.Sieg, Holder-5-B.Anger."
+      "description": "(:26) 17-B.Aubrey 41 yard field goal is GOOD, Center-44-T.Sieg, Holder-5-B.Anger.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "TB",
+          "startYardline100": 71,
+          "plays": 3,
+          "yards": 34,
+          "result": "end of half"
+        },
+        "ended": null,
+        "final": {
+          "away": 24,
+          "home": 16,
+          "overtime": false
+        }
+      }
     },
     {
       "key": "2026_04_JAX_CIN:1552",
@@ -148,7 +212,23 @@
       "teamCall": "field goal",
       "coachWpLost": 0.0,
       "result": "Made a 28-yard field goal",
-      "description": "(4:19) 39-C.Little 28 yard field goal is GOOD, Center-46-R.Matiscik, Holder-9-L.Cooke."
+      "description": "(4:19) 39-C.Little 28 yard field goal is GOOD, Center-46-R.Matiscik, Holder-9-L.Cooke.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "CIN",
+          "startYardline100": 65,
+          "plays": 5,
+          "yards": 20,
+          "result": "turnover"
+        },
+        "ended": null,
+        "final": {
+          "away": 22,
+          "home": 17,
+          "overtime": false
+        }
+      }
     }
   ],
   "coachWpLost": 0.19066,

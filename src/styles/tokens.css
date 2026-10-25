@@ -14,6 +14,7 @@
   --highlight: #f2d22e; /* first-down yellow, background only, never text */
   --highlight-soft: #fcf5d4; /* pale first-down yellow, background only: a live game worth watching */
   --scrimmage: #1e5bd8; /* line of scrimmage on the field strip, 6:1 on white */
+  --endzone: #e1e5ea; /* field strip end zones, a light slate tint: --header text on it 10.9:1, --text-dim 4.7:1 */
   --row-hover: #eef0f3; /* neutral row hover where yellow means live (4th down pages) */
   --win: #1e7a4c; /* positive values */
   --loss: #b3363b; /* negative values */

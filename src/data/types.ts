@@ -890,4 +890,41 @@ export interface DailyFourthPlay {
   result: string;
   /** nflverse's text of the snap */
   description: string;
+  /** What followed, from nflverse play-by-play; null when it was not available */
+  next: DailyFourthNext | null;
+}
+
+/** How a possession ended: nflfastR's fixed_drive_result, in the page's words */
+export type DriveResult =
+  | 'touchdown'
+  | 'field goal'
+  | 'missed field goal'
+  | 'punt'
+  | 'turnover'
+  | 'turnover on downs'
+  | 'opponent touchdown'
+  | 'safety'
+  | 'end of half'
+  | 'end of regulation'
+  | 'end of game';
+
+export interface DailyFourthDrive {
+  /** The team with the ball */
+  team: string;
+  /** Yards from that team's opponent's goal line where it started; null when nflverse has no spot */
+  startYardline100: number | null;
+  /** nflverse's drive play count and net yards, summed over the NFL drives in the possession */
+  plays: number;
+  yards: number;
+  result: DriveResult | null;
+}
+
+export interface DailyFourthNext {
+  /** The offense went for it and converted: drive is its own drive */
+  converted: boolean;
+  /** After a conversion the offense's drive, else the next possession; null when ended says why there was none */
+  drive: DailyFourthDrive | null;
+  /** No next possession: the half, regulation or game ended first, or the defense scored on the play */
+  ended: 'half' | 'regulation' | 'game' | 'touchdown' | null;
+  final: { away: number; home: number; overtime: boolean };
 }

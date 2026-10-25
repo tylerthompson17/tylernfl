@@ -6,7 +6,7 @@
  * from the visitor's own record. Every number is nfl4th's estimate, so the
  * words never say a pick was correct or wrong: only how it compares.
  */
-import type { DailyFourthData, DailyFourthPlay } from '../../data/types';
+import type { DailyFourthData, DailyFourthPlay, DriveResult } from '../../data/types';
 import type { FourthDownCall } from '../fourth-down';
 
 export const CALLS: FourthDownCall[] = ['go', 'punt', 'field goal'];
@@ -98,6 +98,67 @@ export function coachLine(p: DailyFourthPlay): string {
   const vs = p.teamCall === p.call ? ', the same as nfl4th' : `, ${pointsWords(p.coachWpLost)} below nfl4th's estimate`;
   return `${did}${vs}.`;
 }
+
+const RESULT_WORDS: Record<DriveResult, string> = {
+  touchdown: 'touchdown',
+  'field goal': 'field goal',
+  'missed field goal': 'missed field goal',
+  punt: 'punt',
+  turnover: 'turnover',
+  'turnover on downs': 'turnover on downs',
+  'opponent touchdown': 'touchdown',
+  safety: 'safety',
+  'end of half': 'end of the half',
+  'end of regulation': 'end of regulation',
+  'end of game': 'end of game',
+};
+
+const count = (n: number, word: string): string => `${n} ${word}${Math.abs(n) === 1 ? '' : 's'}`;
+
+/** "KC 16" or "midfield", from yards to the other team's goal line. */
+function spotOf(yardline100: number, team: string, other: string): string {
+  if (yardline100 === 50) return 'midfield';
+  return yardline100 > 50 ? `the ${team} ${100 - yardline100}` : `the ${other} ${yardline100}`;
+}
+
+/**
+ * What happened after the 4th down, from the file's `next`: the offense's
+ * drive after a conversion, else the next possession. "KC took over at the
+ * KC 16: 5 plays, 61 yards, field goal." Null when the file has none.
+ */
+export function nextLine(p: DailyFourthPlay): string | null {
+  const n = p.next;
+  if (!n) return null;
+  const d = n.drive;
+  if (!d) {
+    const other = p.defense;
+    if (n.ended === 'touchdown') return `${other} scored a touchdown on the return.`;
+    if (n.ended === 'half') return `The half ended before ${other} had the ball.`;
+    if (n.ended === 'regulation') return `Regulation ended before ${other} had the ball.`;
+    if (n.ended === 'game') return `The game ended before ${other} had the ball.`;
+    return null;
+  }
+  const other = d.team === p.offense ? p.defense : p.offense;
+  const result =
+    d.result === null ? null : d.result === 'opponent touchdown' ? `${other} touchdown` : RESULT_WORDS[d.result];
+  const stats = `${count(d.plays, 'play')}, ${count(d.yards, 'yard')}`;
+  if (n.converted) {
+    const end =
+      result === null ? 'The drive' : d.result!.startsWith('end of') ? `The drive ran to the ${result}` : `The drive ended in a ${result}`;
+    return `${end}: ${stats} in all.`;
+  }
+  const at = d.startYardline100 === null ? 'had the ball next' : `took over at ${spotOf(d.startYardline100, d.team, other)}`;
+  return `${d.team} ${at}: ${stats}${result === null ? '' : `, ${result}`}.`;
+}
+
+/** "Final: IND 30, KC 33 in overtime." */
+export function finalLine(p: DailyFourthPlay): string | null {
+  if (!p.next) return null;
+  const f = p.next.final;
+  return `Final: ${p.away} ${f.away}, ${p.home} ${f.home}${f.overtime ? ' in overtime' : ''}.`;
+}
+
+export const NOISY = 'Outcomes are noisy: a good call can still go badly.';
 
 export interface Score {
   /** Your WP lost against nfl4th's call over the plays picked */

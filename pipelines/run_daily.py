@@ -207,7 +207,7 @@ def main() -> None:
     if write_json_if_changed('decisions.json', decisions, ('updated',), records=True):
         written += 1
         print('decisions.json: updated')
-    print(update_daily_fourth(decisions, today))
+    print(update_daily_fourth(decisions, today, current))
     # Target maps are about 600 files by the season's end, so compact too.
     changed_targets = sum(write_json_if_changed(name, data, volatile, compact=True)
                           for name, data, volatile in target_files)
