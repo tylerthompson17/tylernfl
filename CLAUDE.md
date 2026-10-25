@@ -152,7 +152,15 @@ tylernfl/
 - The scoreboard detector (`tracker.ts`, now only the source of live timeouts; checked against all eight 4th downs of NE at CHI on
   2026-10-22 in `tests/fixtures/espn/live-fourth-401873010.json`): field position from
   `yardLine` (counted from the home team's goal line) and `possession` only, never
-  `yardsToEndzone` (wrong on both CHI punts that night). A 4th down stays pending through
+  `yardsToEndzone` (wrong on both CHI punts that night). A second quirk, in ESPN's game
+  summaries: field goal plays start a yard short of where the scoreboard and the play's
+  own text put them, distance to go a yard short with it (CHI's 31-yarder on 2026-10-22:
+  summary 4th and 8 at the NE 13, scoreboard 4th and 9 at the 14; PIT's 28-yarder and
+  TB's 44- and 22-yarders on 2026-10-25 the same). So a field goal's spot is the
+  scoreboard's when the page saw it live, else the stated kick distance minus 17 (the
+  distance moving with it, goal to go staying goal to go), else the summary's, marked on
+  the item as possibly a yard off; never derived for a blocked kick or a play with no
+  stated distance (`fieldGoalSpot` in `summary.ts`, tests in `live-summary.test.ts`). A 4th down stays pending through
   timeouts, the two-minute warning, the end of a quarter and a penalty that leaves it 4th
   down for the same team, each later poll refreshing the distance, clock and timeouts.
   It is answered by the first other play ESPN reports, if that play starts at the 4th

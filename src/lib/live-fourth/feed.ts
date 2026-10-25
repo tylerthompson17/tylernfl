@@ -16,7 +16,7 @@ import { SCOREBOARD_EVENT, type ScoreboardEventDetail } from '../live-ticker/esp
 import { summaryUrl } from '../live-ticker/scoring.ts';
 import type { Timeouts } from './grade.ts';
 import type { LiveGameInfo } from './situation.ts';
-import { parseSnapshots } from './snapshot.ts';
+import { parseSnapshots, yardline100 } from './snapshot.ts';
 import { parseSummary, type SummaryFourthDown } from './summary.ts';
 import { stepAll, type GameTrack, type LiveFourthDown } from './tracker.ts';
 
@@ -92,6 +92,8 @@ export function createFeed(games: Record<string, FeedGame>, onChange: (state: Fe
   const again = new Set<string>();
   const failed = new Set<string>();
   const timeouts = new Map<string, Timeouts>();
+  /** The scoreboard's spot and distance before the snap, for 4th downs seen live */
+  const spots = new Map<string, { yardline100: number; distance: number }>();
   let tracks = new Map<string, GameTrack>();
   let anyLive = false;
   const finals = new Set<string>();
@@ -102,7 +104,10 @@ export function createFeed(games: Record<string, FeedGame>, onChange: (state: Fe
     const entries: FeedEntry[] = [];
     for (const [event, byId] of plays) {
       const homeId = homeIds.get(event)!;
-      for (const play of byId.values()) {
+      for (const summaryPlay of byId.values()) {
+        // A field goal seen live takes the scoreboard's spot (summary.ts says why).
+        const live = /field goal/i.test(summaryPlay.type) ? spots.get(summaryPlay.id) : undefined;
+        const play = live ? { ...summaryPlay, ...live, spot: 'scoreboard' as const, spotUncertain: false } : summaryPlay;
         entries.push({ event, game: games[event], homeId, play, timeouts: timeouts.get(play.id) ?? null, final: finals.has(event) });
       }
     }
@@ -157,6 +162,8 @@ export function createFeed(games: Record<string, FeedGame>, onChange: (state: Fe
       const off = home ? d.before.homeTimeouts : d.before.awayTimeouts;
       const def = home ? d.before.awayTimeouts : d.before.homeTimeouts;
       if (off !== null && def !== null) timeouts.set(d.outcome.play.id, { offense: off, defense: def });
+      const yl = yardline100(d.before.yardLine, d.before.possession, d.before.homeId);
+      if (yl !== null && d.before.distance !== null) spots.set(d.outcome.play.id, { yardline100: yl, distance: d.before.distance });
     }
 
     if (started) {

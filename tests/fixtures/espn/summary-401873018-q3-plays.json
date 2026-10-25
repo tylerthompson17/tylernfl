@@ -1,0 +1,3832 @@
+{
+"note": "TB at CAR 2026-10-25, captured in the 3rd quarter; trimmed like the other summaries. Both TB field goals start a yard short of the distance their text states.",
+"header": {
+"competitions": [
+{
+"status": {
+"type": {
+"completed": false
+}
+},
+"competitors": [
+{
+"homeAway": "home",
+"team": {
+"id": "29",
+"abbreviation": "CAR"
+}
+},
+{
+"homeAway": "away",
+"team": {
+"id": "27",
+"abbreviation": "TB"
+}
+}
+]
+}
+]
+},
+"drives": {
+"previous": [
+{
+"plays": [
+{
+"id": "40187301841",
+"sequenceNumber": "4100",
+"type": {
+"text": "Kickoff"
+},
+"text": "R.Fitzgerald kicks 59 yards from CAR 35 to TB 6. K.Johnson to TB 30 for 24 yards (I.Simmons).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "15:00"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 35,
+"yardsToEndzone": 65,
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:02:49Z"
+},
+{
+"id": "40187301864",
+"sequenceNumber": "6400",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) B.Mayfield pass incomplete short left to C.Godwin.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "14:55"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 70,
+"yardsToEndzone": 70,
+"downDistanceText": "1st & 10 at TB 30",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "TB 30",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:03:38Z"
+},
+{
+"id": "40187301887",
+"sequenceNumber": "8700",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) B.Irving right tackle to TB 45 for 15 yards (W.Lee).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "14:52"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 70,
+"yardsToEndzone": 70,
+"downDistanceText": "2nd & 10 at TB 30",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "TB 30",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:04:18Z"
+},
+{
+"id": "401873018109",
+"sequenceNumber": "10900",
+"type": {
+"text": "Rush"
+},
+"text": "B.Irving right tackle to TB 48 for 3 yards (T.Moehrig).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "14:13"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 55,
+"yardsToEndzone": 55,
+"downDistanceText": "1st & 10 at TB 45",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "TB 45",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:04:58Z"
+},
+{
+"id": "401873018131",
+"sequenceNumber": "13100",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) B.Irving left end to CAR 45 for 7 yards (A.Evans).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "13:29"
+},
+"start": {
+"down": 2,
+"distance": 7,
+"yardLine": 52,
+"yardsToEndzone": 52,
+"downDistanceText": "2nd & 7 at TB 48",
+"shortDownDistanceText": "2nd & 7",
+"possessionText": "TB 48",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:05:41Z"
+},
+{
+"id": "401873018153",
+"sequenceNumber": "15300",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "B.Mayfield pass incomplete short middle to B.Irving (D.Brown) [D.Lloyd].",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "12:50"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 45,
+"yardsToEndzone": 45,
+"downDistanceText": "1st & 10 at CAR 45",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 45",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:06:21Z"
+},
+{
+"id": "401873018176",
+"sequenceNumber": "17600",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) B.Irving left end to CAR 45 for no gain (B.Okereke).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "12:43"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 45,
+"yardsToEndzone": 45,
+"downDistanceText": "2nd & 10 at CAR 45",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "CAR 45",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:07:06Z"
+},
+{
+"id": "401873018198",
+"sequenceNumber": "19800",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) B.Mayfield pass deep right to T.Johnson pushed ob at CAR 26 for 19 yards (A.Evans).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "12:00"
+},
+"start": {
+"down": 3,
+"distance": 10,
+"yardLine": 45,
+"yardsToEndzone": 45,
+"downDistanceText": "3rd & 10 at CAR 45",
+"shortDownDistanceText": "3rd & 10",
+"possessionText": "CAR 45",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:07:51Z"
+},
+{
+"id": "401873018228",
+"sequenceNumber": "22800",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) B.Irving right end to CAR 21 for 5 yards (B.Okereke).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "11:21"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 26,
+"yardsToEndzone": 26,
+"downDistanceText": "1st & 10 at CAR 26",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 26",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:08:39Z"
+},
+{
+"id": "401873018250",
+"sequenceNumber": "25000",
+"type": {
+"text": "Rush"
+},
+"text": "B.Irving up the middle to CAR 17 for 4 yards (N.Scott; L.Ransom).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "10:35"
+},
+"start": {
+"down": 2,
+"distance": 5,
+"yardLine": 21,
+"yardsToEndzone": 21,
+"downDistanceText": "2nd & 5 at CAR 21",
+"shortDownDistanceText": "2nd & 5",
+"possessionText": "CAR 21",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:09:26Z"
+},
+{
+"id": "401873018272",
+"sequenceNumber": "27200",
+"type": {
+"text": "Rush"
+},
+"text": "D.Feeney reported in as eligible.  B.Irving right guard to CAR 15 for 2 yards (B.Okereke).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "9:50"
+},
+"start": {
+"down": 3,
+"distance": 1,
+"yardLine": 17,
+"yardsToEndzone": 17,
+"downDistanceText": "3rd & 1 at CAR 17",
+"shortDownDistanceText": "3rd & 1",
+"possessionText": "CAR 17",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:10:11Z"
+},
+{
+"id": "401873018296",
+"sequenceNumber": "29600",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) B.Mayfield pass short right to B.Irving to CAR 11 for 4 yards (B.Brown; T.Moehrig).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "9:08"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 15,
+"yardsToEndzone": 15,
+"downDistanceText": "1st & 10 at CAR 15",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 15",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:10:52Z"
+},
+{
+"id": "401873018321",
+"sequenceNumber": "32100",
+"type": {
+"text": "Rush"
+},
+"text": "B.Irving right tackle to CAR 6 for 5 yards (T.Gipson).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "8:28"
+},
+"start": {
+"down": 2,
+"distance": 6,
+"yardLine": 11,
+"yardsToEndzone": 11,
+"downDistanceText": "2nd & 6 at CAR 11",
+"shortDownDistanceText": "2nd & 6",
+"possessionText": "CAR 11",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:11:33Z"
+},
+{
+"id": "401873018343",
+"sequenceNumber": "34300",
+"type": {
+"text": "Rush"
+},
+"text": "(No Huddle, Shotgun) B.Irving up the middle to CAR 4 for 2 yards (B.Okereke).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "8:05"
+},
+"start": {
+"down": 3,
+"distance": 1,
+"yardLine": 6,
+"yardsToEndzone": 6,
+"downDistanceText": "3rd & 1 at CAR 6",
+"shortDownDistanceText": "3rd & 1",
+"possessionText": "CAR 6",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T17:11:57Z"
+},
+{
+"id": "401873018365",
+"sequenceNumber": "36500",
+"type": {
+"text": "Rushing Touchdown"
+},
+"text": "B.Irving up the middle for 4 yards, TOUCHDOWN. C.McLaughlin extra point is GOOD, Center-E.Deckers, Holder-R.Dixon.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "7:22"
+},
+"start": {
+"down": 1,
+"distance": 4,
+"yardLine": 4,
+"yardsToEndzone": 4,
+"downDistanceText": "1st & Goal at CAR 4",
+"shortDownDistanceText": "1st & Goal",
+"possessionText": "CAR 4",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:12:35Z"
+},
+{
+"id": "401873018396",
+"sequenceNumber": "39600",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 07:22.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "7:22"
+},
+"start": {
+"down": -1,
+"distance": 0,
+"yardLine": 15,
+"yardsToEndzone": 0,
+"downDistanceText": " & Goal at CAR 15",
+"shortDownDistanceText": " & Goal",
+"possessionText": "CAR 15",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:13:27Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "401873018403",
+"sequenceNumber": "40300",
+"type": {
+"text": "Kickoff"
+},
+"text": "C.McLaughlin kicks 61 yards from TB 35 to CAR 4. T.Etienne pushed ob at CAR 25 for 21 yards (S.Dennis).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "7:22"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:16:14Z"
+},
+{
+"id": "401873018438",
+"sequenceNumber": "43800",
+"type": {
+"text": "Pass Reception"
+},
+"text": "B.Young pass short right to C.Hubbard ran ob at CAR 31 for 6 yards (Z.McCollum; R.Bain).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "7:16"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 25,
+"yardsToEndzone": 75,
+"downDistanceText": "1st & 10 at CAR 25",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 25",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:16:57Z"
+},
+{
+"id": "401873018468",
+"sequenceNumber": "46800",
+"type": {
+"text": "Rush"
+},
+"text": "C.Hubbard left tackle to CAR 34 for 3 yards (A.Anzalone).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "6:51"
+},
+"start": {
+"down": 2,
+"distance": 4,
+"yardLine": 31,
+"yardsToEndzone": 69,
+"downDistanceText": "2nd & 4 at CAR 31",
+"shortDownDistanceText": "2nd & 4",
+"possessionText": "CAR 31",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:17:31Z"
+},
+{
+"id": "401873018490",
+"sequenceNumber": "49000",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) C.Hubbard up the middle to CAR 40 for 6 yards (T.Smith; J.Trotter).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "6:19"
+},
+"start": {
+"down": 3,
+"distance": 1,
+"yardLine": 34,
+"yardsToEndzone": 66,
+"downDistanceText": "3rd & 1 at CAR 34",
+"shortDownDistanceText": "3rd & 1",
+"possessionText": "CAR 34",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:18:03Z"
+},
+{
+"id": "401873018512",
+"sequenceNumber": "51200",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "B.Young pass incomplete short left to T.Tremble.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "5:44"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 40,
+"yardsToEndzone": 60,
+"downDistanceText": "1st & 10 at CAR 40",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 40",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:18:38Z"
+},
+{
+"id": "401873018535",
+"sequenceNumber": "53500",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) B.Young pass short left to J.Metchie to CAR 44 for 4 yards (J.Parrish).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "5:39"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 40,
+"yardsToEndzone": 60,
+"downDistanceText": "2nd & 10 at CAR 40",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "CAR 40",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:19:11Z"
+},
+{
+"id": "401873018560",
+"sequenceNumber": "56000",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) B.Young pass incomplete short middle to T.McMillan.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "4:56"
+},
+"start": {
+"down": 3,
+"distance": 6,
+"yardLine": 44,
+"yardsToEndzone": 56,
+"downDistanceText": "3rd & 6 at CAR 44",
+"shortDownDistanceText": "3rd & 6",
+"possessionText": "CAR 44",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:19:55Z"
+},
+{
+"id": "401873018583",
+"sequenceNumber": "58300",
+"type": {
+"text": "Punt"
+},
+"text": "S.Martin punts 38 yards to TB 18, Center-J.Jansen, fair catch by T.Johnson.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "4:52"
+},
+"start": {
+"down": 4,
+"distance": 6,
+"yardLine": 44,
+"yardsToEndzone": 44,
+"downDistanceText": "4th & 6 at CAR 44",
+"shortDownDistanceText": "4th & 6",
+"possessionText": "CAR 44",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:20:33Z"
+},
+{
+"id": "401873018593",
+"sequenceNumber": "59300",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 04:45.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "4:45"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 82,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at TB 18",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "TB 18",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:21:00Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "401873018603",
+"sequenceNumber": "60300",
+"type": {
+"text": "Rush"
+},
+"text": "K.Gainwell left guard to TB 21 for 3 yards (P.Jones).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "4:45"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 82,
+"yardsToEndzone": 82,
+"downDistanceText": "1st & 10 at TB 18",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "TB 18",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:23:26Z"
+},
+{
+"id": "401873018632",
+"sequenceNumber": "63200",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) B.Irving up the middle to TB 24 for 3 yards (N.Scott).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "4:02"
+},
+"start": {
+"down": 2,
+"distance": 7,
+"yardLine": 79,
+"yardsToEndzone": 79,
+"downDistanceText": "2nd & 7 at TB 21",
+"shortDownDistanceText": "2nd & 7",
+"possessionText": "TB 21",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:24:10Z"
+},
+{
+"id": "401873018643",
+"sequenceNumber": "64300",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #1 by TB at 03:20.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "3:20"
+},
+"start": {
+"down": 3,
+"distance": 4,
+"yardLine": 76,
+"yardsToEndzone": 0,
+"downDistanceText": "3rd & 4 at TB 24",
+"shortDownDistanceText": "3rd & 4",
+"possessionText": "TB 24",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:24:54Z"
+},
+{
+"id": "401873018654",
+"sequenceNumber": "65400",
+"type": {
+"text": "Penalty"
+},
+"text": "(Shotgun) B.Mayfield pass incomplete deep right to T.Hurst (A.Evans).PENALTY on CAR-A.Evans, Defensive Pass Interference, 21 yards, enforced at TB 24 - No Play.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "3:20"
+},
+"start": {
+"down": 3,
+"distance": 4,
+"yardLine": 76,
+"yardsToEndzone": 76,
+"downDistanceText": "3rd & 4 at TB 24",
+"shortDownDistanceText": "3rd & 4",
+"possessionText": "TB 24",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:25:49Z"
+},
+{
+"id": "401873018695",
+"sequenceNumber": "69500",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) K.Gainwell up the middle to TB 49 for 4 yards (N.Hampton).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "3:14"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 55,
+"yardsToEndzone": 55,
+"downDistanceText": "1st & 10 at TB 45",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "TB 45",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:26:47Z"
+},
+{
+"id": "401873018717",
+"sequenceNumber": "71700",
+"type": {
+"text": "Rush"
+},
+"text": "K.Gainwell right tackle to CAR 47 for 4 yards (D.Brown; A.Hall).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "2:32"
+},
+"start": {
+"down": 2,
+"distance": 6,
+"yardLine": 51,
+"yardsToEndzone": 51,
+"downDistanceText": "2nd & 6 at TB 49",
+"shortDownDistanceText": "2nd & 6",
+"possessionText": "TB 49",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:27:30Z"
+},
+{
+"id": "401873018739",
+"sequenceNumber": "73900",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) K.Gainwell right end to 50 for -3 yards (B.Okereke).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "1:48"
+},
+"start": {
+"down": 3,
+"distance": 2,
+"yardLine": 47,
+"yardsToEndzone": 47,
+"downDistanceText": "3rd & 2 at CAR 47",
+"shortDownDistanceText": "3rd & 2",
+"possessionText": "CAR 47",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:28:14Z"
+},
+{
+"id": "401873018761",
+"sequenceNumber": "76100",
+"type": {
+"text": "Muffed Punt Recovery (Opponent)"
+},
+"text": "(:59) R.Dixon punts 36 yards to CAR 14, Center-E.Deckers. D.Moore MUFFS catch, RECOVERED by TB-K.Kieft at CAR 18.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "0:59"
+},
+"start": {
+"down": 4,
+"distance": 5,
+"yardLine": 50,
+"yardsToEndzone": 50,
+"downDistanceText": "4th & 5 at 50",
+"shortDownDistanceText": "4th & 5",
+"possessionText": "50",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:29:03Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "401873018791",
+"sequenceNumber": "79100",
+"type": {
+"text": "Rush"
+},
+"text": "T.Johnson left end to CAR 4 for 14 yards (Z.Wheatley).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "0:47"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 18,
+"yardsToEndzone": 18,
+"downDistanceText": "1st & 10 at CAR 18",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 18",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:30:13Z"
+},
+{
+"id": "401873018813",
+"sequenceNumber": "81300",
+"type": {
+"text": "Rush"
+},
+"text": "(No Huddle, Shotgun) B.Mayfield right tackle to CAR 3 for 1 yard (D.Lloyd; B.Okereke).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "0:22"
+},
+"start": {
+"down": 1,
+"distance": 4,
+"yardLine": 4,
+"yardsToEndzone": 4,
+"downDistanceText": "1st & Goal at CAR 4",
+"shortDownDistanceText": "1st & Goal",
+"possessionText": "CAR 4",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:30:38Z"
+},
+{
+"id": "401873018835",
+"sequenceNumber": "83500",
+"type": {
+"text": "End Period"
+},
+"text": "END QUARTER 1",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "0:00"
+},
+"start": {
+"down": 2,
+"distance": 3,
+"yardLine": 3,
+"yardsToEndzone": 3,
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:30:38Z"
+},
+{
+"id": "401873018855",
+"sequenceNumber": "85500",
+"type": {
+"text": "Rush"
+},
+"text": "D.Feeney reported in as eligible.  S.Tucker right guard to CAR 4 for -1 yards (T.Gipson).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "15:00"
+},
+"start": {
+"down": 2,
+"distance": 3,
+"yardLine": 3,
+"yardsToEndzone": 3,
+"downDistanceText": "2nd & Goal at CAR 3",
+"shortDownDistanceText": "2nd & Goal",
+"possessionText": "CAR 3",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:33:56Z"
+},
+{
+"id": "401873018879",
+"sequenceNumber": "87900",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) B.Mayfield pass incomplete short right to T.Hurst (B.Okereke).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "14:18"
+},
+"start": {
+"down": 3,
+"distance": 4,
+"yardLine": 4,
+"yardsToEndzone": 4,
+"downDistanceText": "3rd & Goal at CAR 4",
+"shortDownDistanceText": "3rd & Goal",
+"possessionText": "CAR 4",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 7,
+"wallclock": "2026-10-25T17:34:39Z"
+},
+{
+"id": "401873018902",
+"sequenceNumber": "90200",
+"type": {
+"text": "Field Goal Good"
+},
+"text": "C.McLaughlin 22 yard field goal is GOOD, Center-E.Deckers, Holder-R.Dixon.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "14:12"
+},
+"start": {
+"down": 4,
+"distance": 4,
+"yardLine": 4,
+"yardsToEndzone": 4,
+"downDistanceText": "4th & Goal at CAR 4",
+"shortDownDistanceText": "4th & Goal",
+"possessionText": "CAR 4",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 10,
+"wallclock": "2026-10-25T17:35:21Z"
+},
+{
+"id": "401873018912",
+"sequenceNumber": "91200",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 14:12.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "14:12"
+},
+"start": {
+"down": -1,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 0,
+"downDistanceText": " & Goal at TB 35",
+"shortDownDistanceText": " & Goal",
+"possessionText": "TB 35",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 10,
+"wallclock": "2026-10-25T17:35:43Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "401873018922",
+"sequenceNumber": "92200",
+"type": {
+"text": "Kickoff"
+},
+"text": "C.McLaughlin kicks 61 yards from TB 35 to CAR 4. A.Tyus to CAR 31 for 27 yards (B.Sharp; K.Knowles).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "14:12"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 10,
+"wallclock": "2026-10-25T17:38:15Z"
+},
+{
+"id": "401873018952",
+"sequenceNumber": "95200",
+"type": {
+"text": "Rush"
+},
+"text": "C.Hubbard right end to CAR 35 for 4 yards (D.Walker).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "14:06"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 31,
+"yardsToEndzone": 69,
+"downDistanceText": "1st & 10 at CAR 31",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 31",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 10,
+"wallclock": "2026-10-25T17:39:00Z"
+},
+{
+"id": "401873018974",
+"sequenceNumber": "97400",
+"type": {
+"text": "Pass Reception"
+},
+"text": "B.Young pass short left to C.Hubbard pushed ob at CAR 44 for 9 yards (D.Walker).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "13:30"
+},
+"start": {
+"down": 2,
+"distance": 6,
+"yardLine": 35,
+"yardsToEndzone": 65,
+"downDistanceText": "2nd & 6 at CAR 35",
+"shortDownDistanceText": "2nd & 6",
+"possessionText": "CAR 35",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 10,
+"wallclock": "2026-10-25T17:39:37Z"
+},
+{
+"id": "4018730181004",
+"sequenceNumber": "100400",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) B.Young pass short right to T.McMillan to TB 49 for 7 yards (J.Trotter; T.Smith).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "13:00"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 44,
+"yardsToEndzone": 56,
+"downDistanceText": "1st & 10 at CAR 44",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 44",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 10,
+"wallclock": "2026-10-25T17:40:16Z"
+},
+{
+"id": "4018730181029",
+"sequenceNumber": "102900",
+"type": {
+"text": "Penalty"
+},
+"text": "C.Hubbard left end pushed ob at TB 19 for 30 yards (I.Melifonwu).PENALTY on CAR-T.Tremble, Offensive Holding, 10 yards, enforced at TB 49 - No Play.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "12:21"
+},
+"start": {
+"down": 2,
+"distance": 3,
+"yardLine": 51,
+"yardsToEndzone": 49,
+"downDistanceText": "2nd & 3 at TB 49",
+"shortDownDistanceText": "2nd & 3",
+"possessionText": "TB 49",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 10,
+"wallclock": "2026-10-25T17:40:54Z"
+},
+{
+"id": "4018730181067",
+"sequenceNumber": "106700",
+"type": {
+"text": "Sack"
+},
+"text": "(Shotgun) B.Young sacked at CAR 40 for -1 yards (Y.Diaby).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "11:55"
+},
+"start": {
+"down": 2,
+"distance": 13,
+"yardLine": 41,
+"yardsToEndzone": 59,
+"downDistanceText": "2nd & 13 at CAR 41",
+"shortDownDistanceText": "2nd & 13",
+"possessionText": "CAR 41",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 10,
+"wallclock": "2026-10-25T17:42:29Z"
+},
+{
+"id": "4018730181087",
+"sequenceNumber": "108700",
+"type": {
+"text": "Sack Opp Fumble Recovery"
+},
+"text": "(Shotgun) B.Young sacked at CAR 31 for -9 yards (A.Muhammad). FUMBLES (A.Muhammad) [A.Muhammad], RECOVERED by TB-C.Kancey at CAR 32. C.Kancey for 32 yards, TOUCHDOWN. C.McLaughlin extra point is GOOD,",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "11:05"
+},
+"start": {
+"down": 3,
+"distance": 14,
+"yardLine": 40,
+"yardsToEndzone": 60,
+"downDistanceText": "3rd & 14 at CAR 40",
+"shortDownDistanceText": "3rd & 14",
+"possessionText": "CAR 40",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 17,
+"wallclock": "2026-10-25T17:43:08Z"
+},
+{
+"id": "4018730181126",
+"sequenceNumber": "112600",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 11:05.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "11:05"
+},
+"start": {
+"down": -1,
+"distance": 0,
+"yardLine": 15,
+"yardsToEndzone": 0,
+"downDistanceText": " & Goal at CAR 15",
+"shortDownDistanceText": " & Goal",
+"possessionText": "CAR 15",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 17,
+"wallclock": "2026-10-25T17:44:24Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730181133",
+"sequenceNumber": "113300",
+"type": {
+"text": "Kickoff"
+},
+"text": "C.McLaughlin kicks 61 yards from TB 35 to CAR 4. A.Tyus to CAR 28 for 24 yards (K.Scott; B.Sharp).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "11:05"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"team": {
+"id": "27"
+}
+},
+"homeScore": 0,
+"awayScore": 17,
+"wallclock": "2026-10-25T17:47:05Z"
+},
+{
+"id": "4018730181163",
+"sequenceNumber": "116300",
+"type": {
+"text": "Pass Reception"
+},
+"text": "B.Young pass short right to J.Coker to CAR 37 for 9 yards (I.Melifonwu).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "11:00"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 28,
+"yardsToEndzone": 72,
+"downDistanceText": "1st & 10 at CAR 28",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 28",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 17,
+"wallclock": "2026-10-25T17:47:52Z"
+},
+{
+"id": "4018730181188",
+"sequenceNumber": "118800",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "B.Young pass incomplete short left to D.Waller.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "10:27"
+},
+"start": {
+"down": 2,
+"distance": 1,
+"yardLine": 37,
+"yardsToEndzone": 63,
+"downDistanceText": "2nd & 1 at CAR 37",
+"shortDownDistanceText": "2nd & 1",
+"possessionText": "CAR 37",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 17,
+"wallclock": "2026-10-25T17:48:25Z"
+},
+{
+"id": "4018730181211",
+"sequenceNumber": "121100",
+"type": {
+"text": "Rush"
+},
+"text": "C.Hubbard right end pushed ob at CAR 45 for 8 yards (Z.McCollum).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "10:20"
+},
+"start": {
+"down": 3,
+"distance": 1,
+"yardLine": 37,
+"yardsToEndzone": 63,
+"downDistanceText": "3rd & 1 at CAR 37",
+"shortDownDistanceText": "3rd & 1",
+"possessionText": "CAR 37",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 17,
+"wallclock": "2026-10-25T17:49:06Z"
+},
+{
+"id": "4018730181238",
+"sequenceNumber": "123800",
+"type": {
+"text": "Rush"
+},
+"text": "T.Etienne right guard to 50 for 5 yards (A.Nelson; E.Roberts).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "9:54"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 45,
+"yardsToEndzone": 55,
+"downDistanceText": "1st & 10 at CAR 45",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 45",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 0,
+"awayScore": 17,
+"wallclock": "2026-10-25T17:49:42Z"
+},
+{
+"id": "4018730181260",
+"sequenceNumber": "126000",
+"type": {
+"text": "Passing Touchdown"
+},
+"text": "(Shotgun) B.Young pass deep middle to D.Waller for 50 yards, TOUCHDOWN. Pat blocked. Z. McCollum returned for defensive Two-point conversion",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "9:09"
+},
+"start": {
+"down": 2,
+"distance": 5,
+"yardLine": 50,
+"yardsToEndzone": 50,
+"downDistanceText": "2nd & 5 at 50",
+"shortDownDistanceText": "2nd & 5",
+"possessionText": "50",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 19,
+"wallclock": "2026-10-25T17:50:18Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730181317",
+"sequenceNumber": "131700",
+"type": {
+"text": "Kickoff"
+},
+"text": "R.Fitzgerald kicks 69 yards from CAR 20 to TB 11. K.Gainwell to TB 41 for 30 yards (N.Hampton).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "9:09"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 20,
+"yardsToEndzone": 80,
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 19,
+"wallclock": "2026-10-25T17:55:48Z"
+},
+{
+"id": "4018730181347",
+"sequenceNumber": "134700",
+"type": {
+"text": "Rush"
+},
+"text": "B.Irving up the middle to CAR 48 for 11 yards (B.Okereke).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "9:01"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 59,
+"yardsToEndzone": 59,
+"downDistanceText": "1st & 10 at TB 41",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "TB 41",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 19,
+"wallclock": "2026-10-25T17:56:46Z"
+},
+{
+"id": "4018730181369",
+"sequenceNumber": "136900",
+"type": {
+"text": "Rush"
+},
+"text": "B.Irving left tackle to CAR 43 for 5 yards (B.Okereke; D.Lloyd).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "8:17"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 48,
+"yardsToEndzone": 48,
+"downDistanceText": "1st & 10 at CAR 48",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 48",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 19,
+"wallclock": "2026-10-25T17:57:30Z"
+},
+{
+"id": "4018730181391",
+"sequenceNumber": "139100",
+"type": {
+"text": "Fumble Recovery (Own)"
+},
+"text": "B.Irving left tackle to CAR 37 for 6 yards (W.Lee; D.Lloyd). FUMBLES (W.Lee), recovered by TB-D.Sills at CAR 37. D.Sills ran ob at CAR 37 for no gain.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "7:33"
+},
+"start": {
+"down": 2,
+"distance": 5,
+"yardLine": 43,
+"yardsToEndzone": 43,
+"downDistanceText": "2nd & 5 at CAR 43",
+"shortDownDistanceText": "2nd & 5",
+"possessionText": "CAR 43",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 19,
+"wallclock": "2026-10-25T17:58:14Z"
+},
+{
+"id": "4018730181418",
+"sequenceNumber": "141800",
+"type": {
+"text": "Penalty"
+},
+"text": "PENALTY on TB, Delay of Game, 5 yards, enforced at CAR 37 - No Play.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "6:55"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 37,
+"yardsToEndzone": 37,
+"downDistanceText": "1st & 10 at CAR 37",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 37",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 19,
+"wallclock": "2026-10-25T17:59:05Z"
+},
+{
+"id": "4018730181442",
+"sequenceNumber": "144200",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) K.Gainwell right tackle to CAR 13 for 29 yards (D.Brown).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "6:32"
+},
+"start": {
+"down": 1,
+"distance": 15,
+"yardLine": 42,
+"yardsToEndzone": 42,
+"downDistanceText": "1st & 15 at CAR 42",
+"shortDownDistanceText": "1st & 15",
+"possessionText": "CAR 42",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 19,
+"wallclock": "2026-10-25T17:59:44Z"
+},
+{
+"id": "4018730181464",
+"sequenceNumber": "146400",
+"type": {
+"text": "Rush"
+},
+"text": "K.Gainwell left guard to CAR 11 for 2 yards (T.Wharton).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "5:46"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 13,
+"yardsToEndzone": 13,
+"downDistanceText": "1st & 10 at CAR 13",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 13",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 19,
+"wallclock": "2026-10-25T18:00:29Z"
+},
+{
+"id": "4018730181486",
+"sequenceNumber": "148600",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) B.Mayfield pass short right to C.Godwin to CAR 4 for 7 yards (N.Scott).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "5:04"
+},
+"start": {
+"down": 2,
+"distance": 8,
+"yardLine": 11,
+"yardsToEndzone": 11,
+"downDistanceText": "2nd & 8 at CAR 11",
+"shortDownDistanceText": "2nd & 8",
+"possessionText": "CAR 11",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 19,
+"wallclock": "2026-10-25T18:01:12Z"
+},
+{
+"id": "4018730181511",
+"sequenceNumber": "151100",
+"type": {
+"text": "Rush"
+},
+"text": "(No Huddle) B.Irving right tackle to CAR 1 for 3 yards (W.Lee; N.Scott).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "4:41"
+},
+"start": {
+"down": 3,
+"distance": 1,
+"yardLine": 4,
+"yardsToEndzone": 4,
+"downDistanceText": "3rd & 1 at CAR 4",
+"shortDownDistanceText": "3rd & 1",
+"possessionText": "CAR 4",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 19,
+"wallclock": "2026-10-25T18:01:35Z"
+},
+{
+"id": "4018730181533",
+"sequenceNumber": "153300",
+"type": {
+"text": "Rushing Touchdown"
+},
+"text": "J.Skule reported in as eligible.  B.Irving left tackle for 1 yard, TOUCHDOWN. C.McLaughlin extra point is GOOD, Center-E.Deckers, Holder-R.Dixon.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "3:53"
+},
+"start": {
+"down": 1,
+"distance": 1,
+"yardLine": 1,
+"yardsToEndzone": 1,
+"downDistanceText": "1st & Goal at CAR 1",
+"shortDownDistanceText": "1st & Goal",
+"possessionText": "CAR 1",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:02:18Z"
+},
+{
+"id": "4018730181566",
+"sequenceNumber": "156600",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 03:53.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "3:53"
+},
+"start": {
+"down": -1,
+"distance": 0,
+"yardLine": 15,
+"yardsToEndzone": 0,
+"downDistanceText": " & Goal at CAR 15",
+"shortDownDistanceText": " & Goal",
+"possessionText": "CAR 15",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:03:16Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730181573",
+"sequenceNumber": "157300",
+"type": {
+"text": "Kickoff"
+},
+"text": "C.McLaughlin kicks 60 yards from TB 35 to CAR 5. T.Etienne to CAR 29 for 24 yards (D.Walker).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "3:53"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:05:58Z"
+},
+{
+"id": "4018730181603",
+"sequenceNumber": "160300",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) B.Young pass short middle to T.McMillan to CAR 39 for 10 yards (J.Parrish).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "3:49"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 29,
+"yardsToEndzone": 71,
+"downDistanceText": "1st & 10 at CAR 29",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 29",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:06:42Z"
+},
+{
+"id": "4018730181628",
+"sequenceNumber": "162800",
+"type": {
+"text": "Rush"
+},
+"text": "C.Hubbard right end to CAR 41 for 2 yards (K.Scott).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "3:16"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 39,
+"yardsToEndzone": 61,
+"downDistanceText": "1st & 10 at CAR 39",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 39",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:07:15Z"
+},
+{
+"id": "4018730181650",
+"sequenceNumber": "165000",
+"type": {
+"text": "Pass Interception Return"
+},
+"text": "(Shotgun) B.Young pass short right intended for J.Coker INTERCEPTED by Z.McCollum at 50. Z.McCollum to CAR 32 for 18 yards (C.Hubbard).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "2:39"
+},
+"start": {
+"down": 2,
+"distance": 8,
+"yardLine": 41,
+"yardsToEndzone": 59,
+"downDistanceText": "2nd & 8 at CAR 41",
+"shortDownDistanceText": "2nd & 8",
+"possessionText": "CAR 41",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:07:53Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730181677",
+"sequenceNumber": "167700",
+"type": {
+"text": "Rush"
+},
+"text": "K.Gainwell up the middle to CAR 24 for 8 yards (T.Moehrig).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "2:30"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 32,
+"yardsToEndzone": 32,
+"downDistanceText": "1st & 10 at CAR 32",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 32",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:08:57Z"
+},
+{
+"id": "4018730181688",
+"sequenceNumber": "168800",
+"type": {
+"text": "Two-minute warning"
+},
+"text": "Two-Minute Warning",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "2:00"
+},
+"start": {
+"down": 2,
+"distance": 2,
+"yardLine": 24,
+"yardsToEndzone": 0,
+"downDistanceText": "2nd & 2 at CAR 24",
+"shortDownDistanceText": "2nd & 2",
+"possessionText": "CAR 24",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:09:31Z"
+},
+{
+"id": "4018730181699",
+"sequenceNumber": "169900",
+"type": {
+"text": "Rush"
+},
+"text": "K.Gainwell left tackle to CAR 24 for no gain (N.Scott).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "2:00"
+},
+"start": {
+"down": 2,
+"distance": 2,
+"yardLine": 24,
+"yardsToEndzone": 24,
+"downDistanceText": "2nd & 2 at CAR 24",
+"shortDownDistanceText": "2nd & 2",
+"possessionText": "CAR 24",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:12:17Z"
+},
+{
+"id": "4018730181725",
+"sequenceNumber": "172500",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #1 by CAR at 01:55.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:55"
+},
+"start": {
+"down": 3,
+"distance": 2,
+"yardLine": 24,
+"yardsToEndzone": 0,
+"downDistanceText": "3rd & 2 at CAR 24",
+"shortDownDistanceText": "3rd & 2",
+"possessionText": "CAR 24",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:12:37Z"
+},
+{
+"id": "4018730181750",
+"sequenceNumber": "175000",
+"type": {
+"text": "Rush"
+},
+"text": "K.Gainwell left guard to CAR 22 for 2 yards (B.Brown).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:55"
+},
+"start": {
+"down": 3,
+"distance": 2,
+"yardLine": 24,
+"yardsToEndzone": 24,
+"downDistanceText": "3rd & 2 at CAR 24",
+"shortDownDistanceText": "3rd & 2",
+"possessionText": "CAR 24",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:13:17Z"
+},
+{
+"id": "4018730181765",
+"sequenceNumber": "176500",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #2 by CAR at 01:49.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:49"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 22,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at CAR 22",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 22",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:13:38Z"
+},
+{
+"id": "4018730181779",
+"sequenceNumber": "177900",
+"type": {
+"text": "Rush"
+},
+"text": "B.Irving right tackle to CAR 18 for 4 yards (N.Hampton; L.Hunter).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:49"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 22,
+"yardsToEndzone": 22,
+"downDistanceText": "1st & 10 at CAR 22",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 22",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:14:28Z"
+},
+{
+"id": "4018730181794",
+"sequenceNumber": "179400",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #3 by CAR at 01:45.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:45"
+},
+"start": {
+"down": 2,
+"distance": 6,
+"yardLine": 18,
+"yardsToEndzone": 0,
+"downDistanceText": "2nd & 6 at CAR 18",
+"shortDownDistanceText": "2nd & 6",
+"possessionText": "CAR 18",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:14:47Z"
+},
+{
+"id": "4018730181808",
+"sequenceNumber": "180800",
+"type": {
+"text": "Rush"
+},
+"text": "B.Irving up the middle to CAR 14 for 4 yards (D.Brown).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:45"
+},
+"start": {
+"down": 2,
+"distance": 6,
+"yardLine": 18,
+"yardsToEndzone": 18,
+"downDistanceText": "2nd & 6 at CAR 18",
+"shortDownDistanceText": "2nd & 6",
+"possessionText": "CAR 18",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:15:39Z"
+},
+{
+"id": "4018730181837",
+"sequenceNumber": "183700",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) B.Mayfield pass short left to C.Godwin to CAR 9 for 5 yards (B.Okereke).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:59"
+},
+"start": {
+"down": 3,
+"distance": 2,
+"yardLine": 14,
+"yardsToEndzone": 14,
+"downDistanceText": "3rd & 2 at CAR 14",
+"shortDownDistanceText": "3rd & 2",
+"possessionText": "CAR 14",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:16:24Z"
+},
+{
+"id": "4018730181850",
+"sequenceNumber": "185000",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #2 by TB at 00:22.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:22"
+},
+"start": {
+"down": 1,
+"distance": 9,
+"yardLine": 9,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 9 at CAR 9",
+"shortDownDistanceText": "1st & 9",
+"possessionText": "CAR 9",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:17:08Z"
+},
+{
+"id": "4018730181862",
+"sequenceNumber": "186200",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) B.Mayfield pass incomplete short right to C.Otton (Z.Wheatley).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:22"
+},
+"start": {
+"down": 1,
+"distance": 9,
+"yardLine": 9,
+"yardsToEndzone": 9,
+"downDistanceText": "1st & Goal at CAR 9",
+"shortDownDistanceText": "1st & Goal",
+"possessionText": "CAR 9",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:18:01Z"
+},
+{
+"id": "4018730181892",
+"sequenceNumber": "189200",
+"type": {
+"text": "Penalty"
+},
+"text": "(Shotgun) B.Mayfield pass short right to C.Godwin for 9 yards, TOUCHDOWN NULLIFIED by Penalty.PENALTY on TB-B.Irving, Illegal Shift, 5 yards, enforced at CAR 9 - No Play.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:16"
+},
+"start": {
+"down": 2,
+"distance": 9,
+"yardLine": 9,
+"yardsToEndzone": 9,
+"downDistanceText": "2nd & Goal at CAR 9",
+"shortDownDistanceText": "2nd & Goal",
+"possessionText": "CAR 9",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 26,
+"wallclock": "2026-10-25T18:18:47Z"
+},
+{
+"id": "4018730181929",
+"sequenceNumber": "192900",
+"type": {
+"text": "Passing Touchdown"
+},
+"text": "(Shotgun) B.Mayfield pass short right to T.Johnson for 14 yards, TOUCHDOWN. C.McLaughlin extra point is GOOD, Center-E.Deckers, Holder-R.Dixon.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:04"
+},
+"start": {
+"down": 2,
+"distance": 14,
+"yardLine": 14,
+"yardsToEndzone": 14,
+"downDistanceText": "2nd & Goal at CAR 14",
+"shortDownDistanceText": "2nd & Goal",
+"possessionText": "CAR 14",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:20:00Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730181970",
+"sequenceNumber": "197000",
+"type": {
+"text": "Kickoff"
+},
+"text": "C.McLaughlin kicks 62 yards from TB 35 to CAR 3. A.Tyus to CAR 31 for 28 yards (K.Scott; J.Trotter).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:04"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:22:23Z"
+},
+{
+"id": "4018730181993",
+"sequenceNumber": "199300",
+"type": {
+"text": "End of Half"
+},
+"text": "END QUARTER 2",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:00"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 31,
+"yardsToEndzone": 0,
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:22:23Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730182013",
+"sequenceNumber": "201300",
+"type": {
+"text": "Kickoff"
+},
+"text": "C.McLaughlin kicks 58 yards from TB 35 to CAR 7. A.Tyus to CAR 26 for 19 yards (K.Scott; S.Dennis).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "15:00"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:37:29Z"
+},
+{
+"id": "4018730182036",
+"sequenceNumber": "203600",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) B.Young pass short right to T.McMillan to CAR 38 for 12 yards (T.Smith; I.Melifonwu).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "14:54"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 26,
+"yardsToEndzone": 74,
+"downDistanceText": "1st & 10 at CAR 26",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 26",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:38:15Z"
+},
+{
+"id": "4018730182061",
+"sequenceNumber": "206100",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "B.Young pass incomplete short right.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "14:18"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 38,
+"yardsToEndzone": 62,
+"downDistanceText": "1st & 10 at CAR 38",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 38",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:38:51Z"
+},
+{
+"id": "4018730182084",
+"sequenceNumber": "208400",
+"type": {
+"text": "Sack"
+},
+"text": "(Shotgun) B.Young sacked at CAR 29 for -9 yards (Y.Diaby). CAR-T.Moton was injured during the play.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "14:13"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 38,
+"yardsToEndzone": 62,
+"downDistanceText": "2nd & 10 at CAR 38",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "CAR 38",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:39:26Z"
+},
+{
+"id": "4018730182096",
+"sequenceNumber": "209600",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 14:00.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "14:00"
+},
+"start": {
+"down": 3,
+"distance": 19,
+"yardLine": 29,
+"yardsToEndzone": 0,
+"downDistanceText": "3rd & 19 at CAR 29",
+"shortDownDistanceText": "3rd & 19",
+"possessionText": "CAR 29",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:40:08Z"
+},
+{
+"id": "4018730182107",
+"sequenceNumber": "210700",
+"type": {
+"text": "Sack"
+},
+"text": "(Shotgun) B.Young sacked at CAR 18 for -11 yards (Y.Diaby).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "13:50"
+},
+"start": {
+"down": 3,
+"distance": 19,
+"yardLine": 29,
+"yardsToEndzone": 71,
+"downDistanceText": "3rd & 19 at CAR 29",
+"shortDownDistanceText": "3rd & 19",
+"possessionText": "CAR 29",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:42:42Z"
+},
+{
+"id": "4018730182134",
+"sequenceNumber": "213400",
+"type": {
+"text": "Punt"
+},
+"text": "S.Martin punts 49 yards to TB 33, Center-J.Jansen. T.Johnson to CAR 45 for 22 yards (J.Kuwatch).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "13:09"
+},
+"start": {
+"down": 4,
+"distance": 30,
+"yardLine": 18,
+"yardsToEndzone": 18,
+"downDistanceText": "4th & 30 at CAR 18",
+"shortDownDistanceText": "4th & 30",
+"possessionText": "CAR 18",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:43:24Z"
+},
+{
+"id": "4018730182147",
+"sequenceNumber": "214700",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 12:57.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "12:57"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 45,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at CAR 45",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 45",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:43:56Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730182160",
+"sequenceNumber": "216000",
+"type": {
+"text": "Rush"
+},
+"text": "B.Irving left end to CAR 40 for 5 yards (W.Lee; D.Lloyd).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "12:57"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 45,
+"yardsToEndzone": 45,
+"downDistanceText": "1st & 10 at CAR 45",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 45",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:46:23Z"
+},
+{
+"id": "4018730182194",
+"sequenceNumber": "219400",
+"type": {
+"text": "Rush"
+},
+"text": "B.Irving left guard to CAR 41 for -1 yards (P.Jones).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "12:17"
+},
+"start": {
+"down": 2,
+"distance": 5,
+"yardLine": 40,
+"yardsToEndzone": 40,
+"downDistanceText": "2nd & 5 at CAR 40",
+"shortDownDistanceText": "2nd & 5",
+"possessionText": "CAR 40",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:47:04Z"
+},
+{
+"id": "4018730182216",
+"sequenceNumber": "221600",
+"type": {
+"text": "Penalty"
+},
+"text": "(Shotgun) PENALTY on TB-G.Barton, False Start, 5 yards, enforced at CAR 41 - No Play.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "11:32"
+},
+"start": {
+"down": 3,
+"distance": 6,
+"yardLine": 41,
+"yardsToEndzone": 41,
+"downDistanceText": "3rd & 6 at CAR 41",
+"shortDownDistanceText": "3rd & 6",
+"possessionText": "CAR 41",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:47:52Z"
+},
+{
+"id": "4018730182240",
+"sequenceNumber": "224000",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) B.Irving left tackle to CAR 43 for 3 yards (D.Brown).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "11:08"
+},
+"start": {
+"down": 3,
+"distance": 11,
+"yardLine": 46,
+"yardsToEndzone": 46,
+"downDistanceText": "3rd & 11 at CAR 46",
+"shortDownDistanceText": "3rd & 11",
+"possessionText": "CAR 46",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:48:36Z"
+},
+{
+"id": "4018730182262",
+"sequenceNumber": "226200",
+"type": {
+"text": "Punt"
+},
+"text": "R.Dixon punts 43 yards to end zone, Center-E.Deckers, Touchback.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "10:42"
+},
+"start": {
+"down": 4,
+"distance": 8,
+"yardLine": 43,
+"yardsToEndzone": 43,
+"downDistanceText": "4th & 8 at CAR 43",
+"shortDownDistanceText": "4th & 8",
+"possessionText": "CAR 43",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:49:03Z"
+},
+{
+"id": "4018730182271",
+"sequenceNumber": "227100",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 10:33.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "10:33"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 20,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at CAR 20",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 20",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:49:19Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730182280",
+"sequenceNumber": "228000",
+"type": {
+"text": "Sack"
+},
+"text": "B.Young sacked at CAR 17 for -3 yards (V.Vea).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "10:33"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 20,
+"yardsToEndzone": 80,
+"downDistanceText": "1st & 10 at CAR 20",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 20",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:51:53Z"
+},
+{
+"id": "4018730182312",
+"sequenceNumber": "231200",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) B.Young pass short middle to C.Hubbard to CAR 20 for 3 yards (J.Trotter).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "9:52"
+},
+"start": {
+"down": 2,
+"distance": 13,
+"yardLine": 17,
+"yardsToEndzone": 83,
+"downDistanceText": "2nd & 13 at CAR 17",
+"shortDownDistanceText": "2nd & 13",
+"possessionText": "CAR 17",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:52:34Z"
+},
+{
+"id": "4018730182337",
+"sequenceNumber": "233700",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(No Huddle, Shotgun) B.Young pass short middle to T.McMillan to CAR 31 for 11 yards (I.Melifonwu).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "9:32"
+},
+"start": {
+"down": 3,
+"distance": 10,
+"yardLine": 20,
+"yardsToEndzone": 80,
+"downDistanceText": "3rd & 10 at CAR 20",
+"shortDownDistanceText": "3rd & 10",
+"possessionText": "CAR 20",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:52:54Z"
+},
+{
+"id": "4018730182362",
+"sequenceNumber": "236200",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(No Huddle, Shotgun) B.Young pass incomplete short left to T.McMillan.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "9:09"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 31,
+"yardsToEndzone": 69,
+"downDistanceText": "1st & 10 at CAR 31",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 31",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:53:17Z"
+},
+{
+"id": "4018730182385",
+"sequenceNumber": "238500",
+"type": {
+"text": "Pass Interception Return"
+},
+"text": "(Shotgun) B.Young pass short right intended for J.Metchie INTERCEPTED by T.Smith (K.Scott) at CAR 32. T.Smith to CAR 32 for no gain (J.Metchie).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "9:03"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 31,
+"yardsToEndzone": 69,
+"downDistanceText": "2nd & 10 at CAR 31",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "CAR 31",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:53:57Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730182412",
+"sequenceNumber": "241200",
+"type": {
+"text": "Rush"
+},
+"text": "B.Irving left guard to CAR 31 for 1 yard (D.Brown; L.Hunter).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "8:59"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 32,
+"yardsToEndzone": 32,
+"downDistanceText": "1st & 10 at CAR 32",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 32",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:54:59Z"
+},
+{
+"id": "4018730182434",
+"sequenceNumber": "243400",
+"type": {
+"text": "Penalty"
+},
+"text": "(Shotgun) B.Irving left tackle to CAR 26 for 5 yards (D.Brown).PENALTY on TB-C.Mauch, Offensive Holding, 10 yards, enforced at CAR 31 - No Play.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "8:18"
+},
+"start": {
+"down": 2,
+"distance": 9,
+"yardLine": 31,
+"yardsToEndzone": 31,
+"downDistanceText": "2nd & 9 at CAR 31",
+"shortDownDistanceText": "2nd & 9",
+"possessionText": "CAR 31",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:55:40Z"
+},
+{
+"id": "4018730182467",
+"sequenceNumber": "246700",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) B.Mayfield pass short right to C.Godwin pushed ob at CAR 35 for 6 yards (N.Hampton).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "7:51"
+},
+"start": {
+"down": 2,
+"distance": 19,
+"yardLine": 41,
+"yardsToEndzone": 41,
+"downDistanceText": "2nd & 19 at CAR 41",
+"shortDownDistanceText": "2nd & 19",
+"possessionText": "CAR 41",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:56:36Z"
+},
+{
+"id": "4018730182497",
+"sequenceNumber": "249700",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) B.Mayfield pass short left to C.Godwin to CAR 26 for 9 yards (T.Wharton). ** Injury Update: TB-K.Gainwell has returned to the game.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "7:15"
+},
+"start": {
+"down": 3,
+"distance": 13,
+"yardLine": 35,
+"yardsToEndzone": 35,
+"downDistanceText": "3rd & 13 at CAR 35",
+"shortDownDistanceText": "3rd & 13",
+"possessionText": "CAR 35",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 33,
+"wallclock": "2026-10-25T18:57:19Z"
+},
+{
+"id": "4018730182522",
+"sequenceNumber": "252200",
+"type": {
+"text": "Field Goal Good"
+},
+"text": "C.McLaughlin 44 yard field goal is GOOD, Center-E.Deckers, Holder-R.Dixon.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "6:30"
+},
+"start": {
+"down": 4,
+"distance": 4,
+"yardLine": 26,
+"yardsToEndzone": 26,
+"downDistanceText": "4th & 4 at CAR 26",
+"shortDownDistanceText": "4th & 4",
+"possessionText": "CAR 26",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T18:58:00Z"
+},
+{
+"id": "4018730182538",
+"sequenceNumber": "253800",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 06:30.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "6:30"
+},
+"start": {
+"down": -1,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 0,
+"downDistanceText": " & Goal at TB 35",
+"shortDownDistanceText": " & Goal",
+"possessionText": "TB 35",
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T18:58:19Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730182554",
+"sequenceNumber": "255400",
+"type": {
+"text": "Kickoff"
+},
+"text": "C.McLaughlin kicks 58 yards from TB 35 to CAR 7. A.Tyus to CAR 31 for 24 yards (I.Melifonwu).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "6:30"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:00:55Z"
+},
+{
+"id": "4018730182584",
+"sequenceNumber": "258400",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) B.Young pass incomplete short right to J.Coker (J.Trotter).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "6:24"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 31,
+"yardsToEndzone": 69,
+"downDistanceText": "1st & 10 at CAR 31",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 31",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:01:41Z"
+},
+{
+"id": "4018730182607",
+"sequenceNumber": "260700",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) B.Young pass incomplete short left to J.Metchie (J.Parrish).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "6:21"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 31,
+"yardsToEndzone": 69,
+"downDistanceText": "2nd & 10 at CAR 31",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "CAR 31",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:02:17Z"
+},
+{
+"id": "4018730182630",
+"sequenceNumber": "263000",
+"type": {
+"text": "Pass Reception"
+},
+"text": " (Shotgun) B.Young pass short middle to J.Metchie to CAR 47 for 16 yards (A.Anzalone) [A.Nelson].",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "6:17"
+},
+"start": {
+"down": 3,
+"distance": 10,
+"yardLine": 31,
+"yardsToEndzone": 69,
+"downDistanceText": "3rd & 10 at CAR 31",
+"shortDownDistanceText": "3rd & 10",
+"possessionText": "CAR 31",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:02:57Z"
+},
+{
+"id": "4018730182655",
+"sequenceNumber": "265500",
+"type": {
+"text": "Rush"
+},
+"text": " (No Huddle, Shotgun) C.Hubbard left guard to TB 48 for 5 yards (T.Smith; J.Trotter).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "5:51"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 47,
+"yardsToEndzone": 53,
+"downDistanceText": "1st & 10 at CAR 47",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 47",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:03:22Z"
+},
+{
+"id": "4018730182677",
+"sequenceNumber": "267700",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": " (No Huddle, Shotgun) B.Young pass incomplete deep right to J.Coker.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "5:22"
+},
+"start": {
+"down": 2,
+"distance": 5,
+"yardLine": 52,
+"yardsToEndzone": 48,
+"downDistanceText": "2nd & 5 at TB 48",
+"shortDownDistanceText": "2nd & 5",
+"possessionText": "TB 48",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:03:51Z"
+},
+{
+"id": "4018730182700",
+"sequenceNumber": "270000",
+"type": {
+"text": "Rush"
+},
+"text": " (Shotgun) Direct snap to C.Hubbard.  C.Hubbard up the middle to TB 43 for 5 yards (E.Roberts).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "5:16"
+},
+"start": {
+"down": 3,
+"distance": 5,
+"yardLine": 52,
+"yardsToEndzone": 48,
+"downDistanceText": "3rd & 5 at TB 48",
+"shortDownDistanceText": "3rd & 5",
+"possessionText": "TB 48",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:04:36Z"
+},
+{
+"id": "4018730182724",
+"sequenceNumber": "272400",
+"type": {
+"text": "Pass Reception"
+},
+"text": " (No Huddle, Shotgun) B.Young pass short middle to C.Hubbard to TB 34 for 9 yards (A.Anzalone; T.Smith).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "4:52"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 57,
+"yardsToEndzone": 43,
+"downDistanceText": "1st & 10 at TB 43",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "TB 43",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:05:00Z"
+},
+{
+"id": "4018730182749",
+"sequenceNumber": "274900",
+"type": {
+"text": "Pass Reception"
+},
+"text": " (Shotgun) B.Young pass short middle to T.Etienne to TB 25 for 9 yards (K.Scott; J.Trotter).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "4:13"
+},
+"start": {
+"down": 2,
+"distance": 1,
+"yardLine": 66,
+"yardsToEndzone": 34,
+"downDistanceText": "2nd & 1 at TB 34",
+"shortDownDistanceText": "2nd & 1",
+"possessionText": "TB 34",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:05:38Z"
+},
+{
+"id": "4018730182774",
+"sequenceNumber": "277400",
+"type": {
+"text": "Pass Reception"
+},
+"text": " (No Huddle, Shotgun) B.Young pass short middle to T.Etienne to TB 17 for 8 yards (A.Anzalone; T.Smith).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "3:46"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 75,
+"yardsToEndzone": 25,
+"downDistanceText": "1st & 10 at TB 25",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "TB 25",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:06:06Z"
+}
+]
+}
+],
+"current": {
+"plays": [
+{
+"id": "4018730182554",
+"sequenceNumber": "255400",
+"type": {
+"text": "Kickoff"
+},
+"text": "C.McLaughlin kicks 58 yards from TB 35 to CAR 7. A.Tyus to CAR 31 for 24 yards (I.Melifonwu).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "6:30"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"team": {
+"id": "27"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:00:55Z"
+},
+{
+"id": "4018730182584",
+"sequenceNumber": "258400",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) B.Young pass incomplete short right to J.Coker (J.Trotter).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "6:24"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 31,
+"yardsToEndzone": 69,
+"downDistanceText": "1st & 10 at CAR 31",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 31",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:01:41Z"
+},
+{
+"id": "4018730182607",
+"sequenceNumber": "260700",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) B.Young pass incomplete short left to J.Metchie (J.Parrish).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "6:21"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 31,
+"yardsToEndzone": 69,
+"downDistanceText": "2nd & 10 at CAR 31",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "CAR 31",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:02:17Z"
+},
+{
+"id": "4018730182630",
+"sequenceNumber": "263000",
+"type": {
+"text": "Pass Reception"
+},
+"text": " (Shotgun) B.Young pass short middle to J.Metchie to CAR 47 for 16 yards (A.Anzalone) [A.Nelson].",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "6:17"
+},
+"start": {
+"down": 3,
+"distance": 10,
+"yardLine": 31,
+"yardsToEndzone": 69,
+"downDistanceText": "3rd & 10 at CAR 31",
+"shortDownDistanceText": "3rd & 10",
+"possessionText": "CAR 31",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:02:57Z"
+},
+{
+"id": "4018730182655",
+"sequenceNumber": "265500",
+"type": {
+"text": "Rush"
+},
+"text": " (No Huddle, Shotgun) C.Hubbard left guard to TB 48 for 5 yards (T.Smith; J.Trotter).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "5:51"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 47,
+"yardsToEndzone": 53,
+"downDistanceText": "1st & 10 at CAR 47",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "CAR 47",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:03:22Z"
+},
+{
+"id": "4018730182677",
+"sequenceNumber": "267700",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": " (No Huddle, Shotgun) B.Young pass incomplete deep right to J.Coker.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "5:22"
+},
+"start": {
+"down": 2,
+"distance": 5,
+"yardLine": 52,
+"yardsToEndzone": 48,
+"downDistanceText": "2nd & 5 at TB 48",
+"shortDownDistanceText": "2nd & 5",
+"possessionText": "TB 48",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:03:51Z"
+},
+{
+"id": "4018730182700",
+"sequenceNumber": "270000",
+"type": {
+"text": "Rush"
+},
+"text": " (Shotgun) Direct snap to C.Hubbard.  C.Hubbard up the middle to TB 43 for 5 yards (E.Roberts).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "5:16"
+},
+"start": {
+"down": 3,
+"distance": 5,
+"yardLine": 52,
+"yardsToEndzone": 48,
+"downDistanceText": "3rd & 5 at TB 48",
+"shortDownDistanceText": "3rd & 5",
+"possessionText": "TB 48",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:04:36Z"
+},
+{
+"id": "4018730182724",
+"sequenceNumber": "272400",
+"type": {
+"text": "Pass Reception"
+},
+"text": " (No Huddle, Shotgun) B.Young pass short middle to C.Hubbard to TB 34 for 9 yards (A.Anzalone; T.Smith).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "4:52"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 57,
+"yardsToEndzone": 43,
+"downDistanceText": "1st & 10 at TB 43",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "TB 43",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:05:00Z"
+},
+{
+"id": "4018730182749",
+"sequenceNumber": "274900",
+"type": {
+"text": "Pass Reception"
+},
+"text": " (Shotgun) B.Young pass short middle to T.Etienne to TB 25 for 9 yards (K.Scott; J.Trotter).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "4:13"
+},
+"start": {
+"down": 2,
+"distance": 1,
+"yardLine": 66,
+"yardsToEndzone": 34,
+"downDistanceText": "2nd & 1 at TB 34",
+"shortDownDistanceText": "2nd & 1",
+"possessionText": "TB 34",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:05:38Z"
+},
+{
+"id": "4018730182774",
+"sequenceNumber": "277400",
+"type": {
+"text": "Pass Reception"
+},
+"text": " (No Huddle, Shotgun) B.Young pass short middle to T.Etienne to TB 17 for 8 yards (A.Anzalone; T.Smith).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "3:46"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 75,
+"yardsToEndzone": 25,
+"downDistanceText": "1st & 10 at TB 25",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "TB 25",
+"team": {
+"id": "29"
+}
+},
+"homeScore": 6,
+"awayScore": 36,
+"wallclock": "2026-10-25T19:06:06Z"
+}
+]
+}
+}
+}

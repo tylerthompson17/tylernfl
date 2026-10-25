@@ -377,3 +377,8 @@ th,
     height: 56px;
   }
 }
+
+.live-item .live-note {
+  color: var(--text-dim);
+  font-size: 11px;
+}

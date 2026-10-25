@@ -125,3 +125,41 @@ test('a 4th down nullified by a penalty after the snap is listed, a pre-snap fou
   const thursday = parseSummary(read('summary-401873010-final-plays.json'), '401873010')!;
   assert.ok(thursday.fourthDowns.every((d) => !/False Start/.test(d.text)));
 });
+
+test("field goal spots: the text's distance minus 17 over the summary's, the scoreboard's when seen live", async () => {
+  const { fieldGoalSpot } = await import('../src/lib/live-fourth/summary.ts');
+  const { stepAll } = await import('../src/lib/live-fourth/tracker.ts');
+  const { yardline100: fromScoreboard } = await import('../src/lib/live-fourth/snapshot.ts');
+  const pick = (file: string, event: string, id: string) => parseSummary(read(file), event)!.fourthDowns.find((d) => d.id === id)!;
+
+  // CHI, Thursday Q2 7:04: "31 yard field goal". Summary 4th and 8 at the NE 13; really 4th and 9 at the 14.
+  const chiKick = pick('summary-401873010-final-plays.json', '401873010', '4018730101489');
+  assert.deepEqual([chiKick.yardline100, chiKick.distance, chiKick.spot, chiKick.spotUncertain], [14, 9, 'text', false]);
+  // The scoreboard saw the same spot before the snap.
+  const capture = read('live-fourth-401873010.json');
+  let tracks = new Map();
+  let before: { yardLine: number; possession: string; homeId: string; distance: number } | null = null;
+  for (const s of capture.snapshots) {
+    tracks = stepAll(tracks, [s]);
+    const d = tracks.get(s.event)?.current;
+    if (d?.outcome.kind === 'played' && d.outcome.play.id === '4018730101489') before = d.before;
+  }
+  assert.ok(before);
+  assert.deepEqual([fromScoreboard(before.yardLine, before.possession, before.homeId), before.distance], [14, 9]);
+
+  // PIT's 28-yarder, Q1 10:51: summary 4th and 5 at the NO 10; text says 28, so the 11, 4th and 6.
+  const pitKick = pick('summary-401873011-final-plays.json', '401873011', '401873011231');
+  assert.deepEqual([pitKick.yardline100, pitKick.distance, pitKick.spot], [11, 6, 'text']);
+
+  // TB's 44-yarder today, Q3 6:30: summary 4th and 4 at the CAR 26; really the 27, 4th and 5.
+  const tbKick = pick('summary-401873018-q3-plays.json', '401873018', '4018730182522');
+  assert.deepEqual([tbKick.yardline100, tbKick.distance, tbKick.spot], [27, 5, 'text']);
+  // And its 22-yarder on 4th and goal at the 4: the 5, still goal to go.
+  const tbGoal = pick('summary-401873018-q3-plays.json', '401873018', '401873018902');
+  assert.deepEqual([tbGoal.yardline100, tbGoal.distance], [5, 5]);
+
+  // Never derived for a blocked kick or a play with no stated distance; never for other plays.
+  assert.deepEqual(fieldGoalSpot('Blocked Field Goal', '44 yard field goal is BLOCKED', 26, 4), { yardline100: 26, distance: 4, spot: 'summary', spotUncertain: true });
+  assert.deepEqual(fieldGoalSpot('Field Goal Missed', 'Bad snap, holder falls on it', 26, 4), { yardline100: 26, distance: 4, spot: 'summary', spotUncertain: true });
+  assert.deepEqual(fieldGoalSpot('Pass Reception', '(Field Goal formation) 44 yard field goal fake, pass to X', 26, 4), { yardline100: 26, distance: 4, spot: 'summary', spotUncertain: false });
+});

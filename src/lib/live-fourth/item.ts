@@ -19,7 +19,7 @@ export interface ModelLike {
 }
 
 export const entryKey = (e: FeedEntry) =>
-  `${e.play.id}|${e.timeouts ? `${e.timeouts.offense}-${e.timeouts.defense}` : 'counted'}`;
+  `${e.play.id}|${e.play.yardline100}-${e.play.distance}|${e.timeouts ? `${e.timeouts.offense}-${e.timeouts.defense}` : 'counted'}`;
 export const pendingKey = (p: PendingFourthDown) => `pending|${p.event}|${p.down.firstSeen}|${p.down.before.seen}`;
 
 function line(className: string, text: string): HTMLParagraphElement {
@@ -57,8 +57,9 @@ export function entryItem(e: FeedEntry, model: ModelLike): HTMLLIElement {
   li.append(
     line('live-when', `${e.game.away} at ${e.game.home}${e.final ? ' (final)' : ''}, ${clockWords(e.play)}`),
     line('live-down', situationWords(e.play, e.homeId, e.game)),
-    play,
   );
+  if (e.play.spotUncertain) li.append(line('live-note', "Spot from ESPN's summary, which can be a yard off for kicks."));
+  li.append(play);
   if (e.play.nullified) {
     li.classList.add('nullified');
     li.append(line('live-verdict', `Nullified by penalty (${e.play.nullified.toLowerCase()}), not graded`));

@@ -51,6 +51,15 @@ export interface SummaryFourthDown {
   wallclock: string | null;
   /** The foul that wiped the play out ("Defensive Offside"); null for a play that stood */
   nullified: string | null;
+  /**
+   * Where the spot came from. ESPN's summary starts field goal plays a yard
+   * short of where the scoreboard and the play text put them, so a kick's
+   * spot is the scoreboard's when the page saw it live (feed.ts), else its
+   * stated distance minus 17, else the summary's, marked uncertain.
+   */
+  spot: 'summary' | 'text' | 'scoreboard';
+  /** A field goal play whose spot is the summary's alone: possibly a yard off */
+  spotUncertain: boolean;
 }
 
 export interface SummaryGame {
@@ -84,6 +93,33 @@ export function nullifyingFoul(text: string): string | null {
   if (/^penalty/i.test(rest)) return null;
   const m = /PENALTY on [^,]+, ([^,]+?),/i.exec(text);
   return m ? m[1].trim() : null;
+}
+
+/**
+ * A field goal play's spot and distance to go, from the kick distance its
+ * text states ("44 yard field goal": yards to the goal line plus 17), when
+ * the summary's spot is a yard or two off from it. Never for a blocked kick
+ * or a play without a stated distance (a bad snap); those keep the
+ * summary's spot, marked uncertain. Other plays are unchanged.
+ */
+export function fieldGoalSpot(
+  type: string,
+  text: string,
+  yardline100: number,
+  distance: number,
+): { yardline100: number; distance: number; spot: 'summary' | 'text'; spotUncertain: boolean } {
+  if (!/field goal/i.test(type)) return { yardline100, distance, spot: 'summary', spotUncertain: false };
+  const stated = /(\d+) yard field goal/i.exec(text);
+  if (/blocked/i.test(type) || /blocked/i.test(text) || !stated) {
+    return { yardline100, distance, spot: 'summary', spotUncertain: true };
+  }
+  const fromText = Number(stated[1]) - 17;
+  const shift = fromText - yardline100;
+  if (Math.abs(shift) > 2 || fromText < 1 || fromText > 99) return { yardline100, distance, spot: 'summary', spotUncertain: true };
+  // The line to gain is where it was: the distance moves with the spot,
+  // and goal to go stays goal to go.
+  const goal = distance >= yardline100;
+  return { yardline100: fromText, distance: goal ? fromText : distance + shift, spot: 'text', spotUncertain: false };
 }
 
 /** Whether a play type is a snap (not a stoppage, penalty or kick after a score). */
@@ -149,6 +185,7 @@ export function parseSummary(data: unknown, event: string): SummaryGame | null {
     const text = typeof p.text === 'string' ? p.text.trim() : '';
     const foul = /^penalty$/i.test(type) ? nullifyingFoul(text) : null;
     if (num(start.down) === 4 && (isSnapType(type) || foul) && teamId && yl !== null && distance && period && clock) {
+      const fg = fieldGoalSpot(type, text, yl, distance);
       fourthDowns.push({
         id: p.id as string,
         event,
@@ -158,8 +195,10 @@ export function parseSummary(data: unknown, event: string): SummaryGame | null {
         type,
         text,
         teamId,
-        yardline100: yl,
-        distance,
+        yardline100: fg.yardline100,
+        distance: fg.distance,
+        spot: fg.spot,
+        spotUncertain: fg.spotUncertain,
         homeScore,
         awayScore,
         homeTimeouts: Math.max(0, perHalf - used.home),
