@@ -14,6 +14,9 @@
  *   `yardsToEndzone` is never read.
  * - A play's scores are after it, so the score before the snap is the
  *   previous play's.
+ * - A play on 4th down wiped out by a penalty after the snap is listed too,
+ *   with the foul (`nullified`), and is never graded; a pre-snap foul (no
+ *   play described before the penalty) is not a decision and is left out.
  * - Timeouts are counted from the plays: "Timeout #2 by PIT" is PIT's
  *   second of the half, so it has 3 minus the highest number so far in that
  *   half (2 in overtime). A timeout charged inside another play's text (a
@@ -46,10 +49,14 @@ export interface SummaryFourthDown {
   awayTimeouts: number;
   /** ISO time ESPN gives the play, if any */
   wallclock: string | null;
+  /** The foul that wiped the play out ("Defensive Offside"); null for a play that stood */
+  nullified: string | null;
 }
 
 export interface SummaryGame {
   event: string;
+  /** The game is over (the header's status) */
+  final: boolean;
   homeId: string;
   awayId: string;
   fourthDowns: SummaryFourthDown[];
@@ -62,6 +69,22 @@ const num = (v: unknown): number | null => {
   const n = typeof v === 'string' ? Number.parseInt(v, 10) : typeof v === 'number' ? v : NaN;
   return Number.isFinite(n) ? n : null;
 };
+
+// "(4:17) (Punt formation) " and the like, and announcements that are not
+// plays ("79-L.Borom reported in as eligible."), before a play's text.
+const LEADING_TAGS = /^(\s*\([^)]*\))*\s*/;
+const ANNOUNCEMENTS = /^(.*?reported in as eligible\.\s*)+/i;
+
+/**
+ * The foul that wiped out a penalty play's snap, or null for a pre-snap
+ * foul (nothing happened before the penalty) or text without one.
+ */
+export function nullifyingFoul(text: string): string | null {
+  const rest = text.replace(LEADING_TAGS, '').replace(ANNOUNCEMENTS, '');
+  if (/^penalty/i.test(rest)) return null;
+  const m = /PENALTY on [^,]+, ([^,]+?),/i.exec(text);
+  return m ? m[1].trim() : null;
+}
 
 /** Whether a play type is a snap (not a stoppage, penalty or kick after a score). */
 export const isSnapType = (type: string): boolean => SNAP.test(type) && !NOT_SNAP.test(type);
@@ -123,7 +146,9 @@ export function parseSummary(data: unknown, event: string): SummaryGame | null {
     const distance = num(start.distance);
     const period = isObject(p.period) ? num(p.period.number) : null;
     const clock = isObject(p.clock) && typeof p.clock.displayValue === 'string' ? p.clock.displayValue : null;
-    if (num(start.down) === 4 && isSnapType(type) && teamId && yl !== null && distance && period && clock) {
+    const text = typeof p.text === 'string' ? p.text.trim() : '';
+    const foul = /^penalty$/i.test(type) ? nullifyingFoul(text) : null;
+    if (num(start.down) === 4 && (isSnapType(type) || foul) && teamId && yl !== null && distance && period && clock) {
       fourthDowns.push({
         id: p.id as string,
         event,
@@ -131,7 +156,7 @@ export function parseSummary(data: unknown, event: string): SummaryGame | null {
         period,
         clock,
         type,
-        text: typeof p.text === 'string' ? p.text.trim() : '',
+        text,
         teamId,
         yardline100: yl,
         distance,
@@ -140,6 +165,7 @@ export function parseSummary(data: unknown, event: string): SummaryGame | null {
         homeTimeouts: Math.max(0, perHalf - used.home),
         awayTimeouts: Math.max(0, perHalf - used.away),
         wallclock: typeof p.wallclock === 'string' ? p.wallclock : null,
+        nullified: foul,
       });
     }
     homeScore = num(p.homeScore) ?? homeScore;
@@ -148,5 +174,6 @@ export function parseSummary(data: unknown, event: string): SummaryGame | null {
     const side = timeout ? sideOfAbbr.get(timeout[2]) : undefined;
     if (timeout && (side === 'home' || side === 'away')) used[side] = Math.max(used[side], Number(timeout[1]));
   }
-  return { event, homeId, awayId, fourthDowns };
+  const status = isObject(competition.status) && isObject(competition.status.type) ? competition.status.type : {};
+  return { event, final: status.completed === true, homeId, awayId, fourthDowns };
 }

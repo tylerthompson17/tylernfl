@@ -8,8 +8,8 @@
  * too, and gives way to the line once every game today is final.
  *
  * Nothing is read until the panel scrolls into view: then the summaries
- * (feed.ts), and, while a game is live, the model, so each item says what
- * nfl4th recommends. With no game live the model stays off.
+ * (feed.ts) and the model, so every item says what nfl4th recommends, live
+ * or between games. Off a game day the panel never shows, so neither loads.
  */
 import { LIVE_FOURTH_DOWN_ENABLED } from '../../config.ts';
 import { createFeed, type FeedGame, type FeedState } from './feed.ts';
@@ -49,15 +49,15 @@ function setUp(root: HTMLElement): void {
   const newestFirst = () => [...(state?.entries ?? [])].sort((a, b) => entryOrder(b) - entryOrder(a));
 
   function render(): void {
-    // Up the moment a game is live; down only when the game day is over.
-    if (state?.anyLive) shown = true;
-    else if (state && !state.gameDay) shown = false;
+    // Up the moment a game is live and between games on a game day; down
+    // only once every game today is final.
+    shown = Boolean(state?.anyLive || state?.gameDay);
     panel.hidden = !shown;
     line.hidden = shown;
     if (!shown) return;
     if (!watching) watch();
-    // The model only while a game is live and the panel has been seen.
-    if (inView && state?.anyLive) model.start();
+    // The model once the panel has been seen; it only shows on a game day.
+    if (inView) model.start();
 
     const all = newestFirst();
     const ids = all.map((e) => e.play.id);

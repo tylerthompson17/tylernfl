@@ -1,0 +1,4925 @@
+{
+"note": "PIT at NO 2026-10-25 (neutral site), final; trimmed to the header teams and final status, and each play's id, sequence, type, text (200 chars), period, clock, start, scores and wallclock. Has a field goal nullified by a defensive offside on 4th down.",
+"header": {
+"competitions": [
+{
+"status": {
+"type": {
+"completed": true
+}
+},
+"competitors": [
+{
+"homeAway": "home",
+"team": {
+"id": "18",
+"abbreviation": "NO"
+}
+},
+{
+"homeAway": "away",
+"team": {
+"id": "23",
+"abbreviation": "PIT"
+}
+}
+]
+}
+]
+},
+"drives": {
+"previous": [
+{
+"plays": [
+{
+"id": "40187301139",
+"sequenceNumber": "3900",
+"type": {
+"text": "Kickoff"
+},
+"text": "D.Carlson kicks 61 yards from NO 35 to PIT 4. K.Wetjen to PIT 39 for 35 yards (A.Jennings).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "15:00"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 35,
+"yardsToEndzone": 65,
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T13:32:50Z"
+},
+{
+"id": "40187301162",
+"sequenceNumber": "6200",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short middle to J.Warren to PIT 42 for 3 yards (K.Elliss).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "14:55"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 61,
+"yardsToEndzone": 61,
+"downDistanceText": "1st & 10 at PIT 39",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 39",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T13:33:41Z"
+},
+{
+"id": "40187301187",
+"sequenceNumber": "8700",
+"type": {
+"text": "Rush"
+},
+"text": "S.Anderson reported in as eligible.  J.Warren up the middle pushed ob at NO 29 for 29 yards (K.McKinstry).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "14:20"
+},
+"start": {
+"down": 2,
+"distance": 7,
+"yardLine": 58,
+"yardsToEndzone": 58,
+"downDistanceText": "2nd & 7 at PIT 42",
+"shortDownDistanceText": "2nd & 7",
+"possessionText": "PIT 42",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T13:34:18Z"
+},
+{
+"id": "401873011116",
+"sequenceNumber": "11600",
+"type": {
+"text": "Rush"
+},
+"text": "S.Anderson reported in as eligible.  J.Warren left guard to NO 20 for 9 yards (J.Blackmon).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "13:42"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 29,
+"yardsToEndzone": 29,
+"downDistanceText": "1st & 10 at NO 29",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 29",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T13:35:02Z"
+},
+{
+"id": "401873011140",
+"sequenceNumber": "14000",
+"type": {
+"text": "Rush"
+},
+"text": "S.Anderson reported in as eligible.  J.Warren right guard to NO 15 for 5 yards (V.Broughton).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "13:05"
+},
+"start": {
+"down": 2,
+"distance": 1,
+"yardLine": 20,
+"yardsToEndzone": 20,
+"downDistanceText": "2nd & 1 at NO 20",
+"shortDownDistanceText": "2nd & 1",
+"possessionText": "NO 20",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T13:35:39Z"
+},
+{
+"id": "401873011164",
+"sequenceNumber": "16400",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) R.Dowdle left guard to NO 11 for 4 yards (J.Sanker; C.Wooden).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "12:26"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 15,
+"yardsToEndzone": 15,
+"downDistanceText": "1st & 10 at NO 15",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 15",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T13:36:18Z"
+},
+{
+"id": "401873011186",
+"sequenceNumber": "18600",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) R.Dowdle left end to NO 10 for 1 yard (K.Elliss).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "11:43"
+},
+"start": {
+"down": 2,
+"distance": 6,
+"yardLine": 11,
+"yardsToEndzone": 11,
+"downDistanceText": "2nd & 6 at NO 11",
+"shortDownDistanceText": "2nd & 6",
+"possessionText": "NO 11",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T13:37:01Z"
+},
+{
+"id": "401873011208",
+"sequenceNumber": "20800",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) A.Rodgers pass incomplete short left to D.Metcalf (K.McKinstry).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "10:58"
+},
+"start": {
+"down": 3,
+"distance": 5,
+"yardLine": 10,
+"yardsToEndzone": 10,
+"downDistanceText": "3rd & 5 at NO 10",
+"shortDownDistanceText": "3rd & 5",
+"possessionText": "NO 10",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 0,
+"wallclock": "2026-10-25T13:37:46Z"
+},
+{
+"id": "401873011231",
+"sequenceNumber": "23100",
+"type": {
+"text": "Field Goal Good"
+},
+"text": " C.Boswell 28 yard field goal is GOOD, Center-C.Kuntz, Holder-C.Johnston.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "10:51"
+},
+"start": {
+"down": 4,
+"distance": 5,
+"yardLine": 10,
+"yardsToEndzone": 10,
+"downDistanceText": "4th & 5 at NO 10",
+"shortDownDistanceText": "4th & 5",
+"possessionText": "NO 10",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:38:29Z"
+},
+{
+"id": "401873011241",
+"sequenceNumber": "24100",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 10:51.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "10:51"
+},
+"start": {
+"down": -1,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 0,
+"downDistanceText": " & Goal at PIT 35",
+"shortDownDistanceText": " & Goal",
+"possessionText": "PIT 35",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:38:51Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "401873011251",
+"sequenceNumber": "25100",
+"type": {
+"text": "Kickoff"
+},
+"text": "C.Boswell kicks 62 yards from PIT 35 to NO 3. B.Lance pushed ob at NO 25 for 22 yards (D.Slaughter).PENALTY on NO-A.Jennings, Offensive Holding, 10 yards, enforced at NO 25.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "10:51"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:41:46Z"
+},
+{
+"id": "401873011295",
+"sequenceNumber": "29500",
+"type": {
+"text": "Rush"
+},
+"text": "A.Kamara left guard to NO 18 for 3 yards (P.Queen).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "10:45"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 15,
+"yardsToEndzone": 85,
+"downDistanceText": "1st & 10 at NO 15",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 15",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:43:01Z"
+},
+{
+"id": "401873011317",
+"sequenceNumber": "31700",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short right to B.Lance to NO 26 for 8 yards (A.Samuel).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "10:08"
+},
+"start": {
+"down": 2,
+"distance": 7,
+"yardLine": 18,
+"yardsToEndzone": 82,
+"downDistanceText": "2nd & 7 at NO 18",
+"shortDownDistanceText": "2nd & 7",
+"possessionText": "NO 18",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:43:38Z"
+},
+{
+"id": "401873011342",
+"sequenceNumber": "34200",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) T.Shough pass incomplete short right to K.Miller (K.Benton).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "9:29"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 26,
+"yardsToEndzone": 74,
+"downDistanceText": "1st & 10 at NO 26",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 26",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:44:17Z"
+},
+{
+"id": "401873011365",
+"sequenceNumber": "36500",
+"type": {
+"text": "Rush"
+},
+"text": "A.Kamara up the middle to NO 29 for 3 yards (R.Spears-Jennings; C.Heyward).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "9:25"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 26,
+"yardsToEndzone": 74,
+"downDistanceText": "2nd & 10 at NO 26",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "NO 26",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:44:57Z"
+},
+{
+"id": "401873011387",
+"sequenceNumber": "38700",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short left to C.Olave to NO 39 for 10 yards (R.Spears-Jennings).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "8:40"
+},
+"start": {
+"down": 3,
+"distance": 7,
+"yardLine": 29,
+"yardsToEndzone": 71,
+"downDistanceText": "3rd & 7 at NO 29",
+"shortDownDistanceText": "3rd & 7",
+"possessionText": "NO 29",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:45:42Z"
+},
+{
+"id": "401873011412",
+"sequenceNumber": "41200",
+"type": {
+"text": "Pass Reception"
+},
+"text": " (No Huddle, Shotgun) T.Shough pass short left to C.Olave to NO 44 for 5 yards (J.Dean).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "8:14"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 39,
+"yardsToEndzone": 61,
+"downDistanceText": "1st & 10 at NO 39",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 39",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:46:08Z"
+},
+{
+"id": "401873011437",
+"sequenceNumber": "43700",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short middle to B.Brown to NO 43 for -1 yards (J.Sawyer, N.Herbig).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "7:39"
+},
+"start": {
+"down": 2,
+"distance": 5,
+"yardLine": 44,
+"yardsToEndzone": 56,
+"downDistanceText": "2nd & 5 at NO 44",
+"shortDownDistanceText": "2nd & 5",
+"possessionText": "NO 44",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:46:43Z"
+},
+{
+"id": "401873011462",
+"sequenceNumber": "46200",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short left to D.Vele to PIT 43 for 14 yards (J.Brisker; J.Dean).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "7:01"
+},
+"start": {
+"down": 3,
+"distance": 6,
+"yardLine": 43,
+"yardsToEndzone": 57,
+"downDistanceText": "3rd & 6 at NO 43",
+"shortDownDistanceText": "3rd & 6",
+"possessionText": "NO 43",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:47:21Z"
+},
+{
+"id": "401873011487",
+"sequenceNumber": "48700",
+"type": {
+"text": "Rush"
+},
+"text": "A.Kamara left guard to PIT 43 for no gain (P.Wilson; K.Benton).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "6:20"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 57,
+"yardsToEndzone": 43,
+"downDistanceText": "1st & 10 at PIT 43",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 43",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:48:02Z"
+},
+{
+"id": "401873011509",
+"sequenceNumber": "50900",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) T.Shough pass incomplete deep left to C.Olave [T.Watt].",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "5:39"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 57,
+"yardsToEndzone": 43,
+"downDistanceText": "2nd & 10 at PIT 43",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "PIT 43",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:48:44Z"
+},
+{
+"id": "401873011532",
+"sequenceNumber": "53200",
+"type": {
+"text": "Penalty"
+},
+"text": "(Shotgun) PENALTY on NO, Delay of Game, 5 yards, enforced at PIT 43 - No Play.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "5:33"
+},
+"start": {
+"down": 3,
+"distance": 10,
+"yardLine": 57,
+"yardsToEndzone": 43,
+"downDistanceText": "3rd & 10 at PIT 43",
+"shortDownDistanceText": "3rd & 10",
+"possessionText": "PIT 43",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:49:29Z"
+},
+{
+"id": "401873011556",
+"sequenceNumber": "55600",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) T.Shough pass incomplete short right to C.Olave (P.Queen).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "5:33"
+},
+"start": {
+"down": 3,
+"distance": 15,
+"yardLine": 52,
+"yardsToEndzone": 48,
+"downDistanceText": "3rd & 15 at PIT 48",
+"shortDownDistanceText": "3rd & 15",
+"possessionText": "PIT 48",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:50:09Z"
+},
+{
+"id": "401873011579",
+"sequenceNumber": "57900",
+"type": {
+"text": "Punt"
+},
+"text": "R.Wright punts 41 yards to PIT 7, Center-Z.Wood, fair catch by K.Wetjen.PENALTY on PIT-S.Murphy-Bunting, Offensive Holding, 3 yards, enforced at PIT 7.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "5:28"
+},
+"start": {
+"down": 4,
+"distance": 15,
+"yardLine": 52,
+"yardsToEndzone": 52,
+"downDistanceText": "4th & 15 at PIT 48",
+"shortDownDistanceText": "4th & 15",
+"possessionText": "PIT 48",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:50:51Z"
+},
+{
+"id": "401873011595",
+"sequenceNumber": "59500",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 05:21.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "5:21"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 97,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at PIT 3",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 3",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:52:09Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "401873011610",
+"sequenceNumber": "61000",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short right to J.Warren to PIT 11 for 7 yards (C.Wooden; P.Werner).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "5:21"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 96,
+"yardsToEndzone": 96,
+"downDistanceText": "1st & 10 at PIT 4",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 4",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:54:17Z"
+},
+{
+"id": "401873011642",
+"sequenceNumber": "64200",
+"type": {
+"text": "Rush"
+},
+"text": "S.Anderson reported in as eligible.  J.Warren up the middle to PIT 12 for 1 yard (J.Sanker).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "4:38"
+},
+"start": {
+"down": 2,
+"distance": 3,
+"yardLine": 89,
+"yardsToEndzone": 89,
+"downDistanceText": "2nd & 3 at PIT 11",
+"shortDownDistanceText": "2nd & 3",
+"possessionText": "PIT 11",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:55:00Z"
+},
+{
+"id": "401873011666",
+"sequenceNumber": "66600",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) J.Warren up the middle to PIT 18 for 6 yards (J.Blackmon; J.Reid).PENALTY on PIT-B.Smith, Unnecessary Roughness, 9 yards, enforced at PIT 18.",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "4:00"
+},
+"start": {
+"down": 3,
+"distance": 2,
+"yardLine": 88,
+"yardsToEndzone": 88,
+"downDistanceText": "3rd & 2 at PIT 12",
+"shortDownDistanceText": "3rd & 2",
+"possessionText": "PIT 12",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:55:38Z"
+},
+{
+"id": "401873011699",
+"sequenceNumber": "69900",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short right to D.Metcalf to PIT 14 for 5 yards (M.Emerson).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "3:39"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 91,
+"yardsToEndzone": 91,
+"downDistanceText": "1st & 10 at PIT 9",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 9",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:56:58Z"
+},
+{
+"id": "401873011724",
+"sequenceNumber": "72400",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short left to R.Dowdle to PIT 18 for 4 yards (J.Sanker).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "3:08"
+},
+"start": {
+"down": 2,
+"distance": 5,
+"yardLine": 86,
+"yardsToEndzone": 86,
+"downDistanceText": "2nd & 5 at PIT 14",
+"shortDownDistanceText": "2nd & 5",
+"possessionText": "PIT 14",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:57:29Z"
+},
+{
+"id": "401873011749",
+"sequenceNumber": "74900",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) J.Warren up the middle to PIT 21 for 3 yards (C.Wooden; J.Reid).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "2:30"
+},
+"start": {
+"down": 3,
+"distance": 1,
+"yardLine": 82,
+"yardsToEndzone": 82,
+"downDistanceText": "3rd & 1 at PIT 18",
+"shortDownDistanceText": "3rd & 1",
+"possessionText": "PIT 18",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:58:07Z"
+},
+{
+"id": "401873011771",
+"sequenceNumber": "77100",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short right to R.Dowdle to PIT 22 for 1 yard (J.Sanker).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "1:54"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 79,
+"yardsToEndzone": 79,
+"downDistanceText": "1st & 10 at PIT 21",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 21",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:58:43Z"
+},
+{
+"id": "401873011796",
+"sequenceNumber": "79600",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short middle to G.Bernard to PIT 28 for 6 yards (J.Sanker).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "1:10"
+},
+"start": {
+"down": 2,
+"distance": 9,
+"yardLine": 78,
+"yardsToEndzone": 78,
+"downDistanceText": "2nd & 9 at PIT 22",
+"shortDownDistanceText": "2nd & 9",
+"possessionText": "PIT 22",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T13:59:28Z"
+},
+{
+"id": "401873011821",
+"sequenceNumber": "82100",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) J.Warren right guard to PIT 32 for 4 yards (V.Broughton; C.Miller).",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "0:30"
+},
+"start": {
+"down": 3,
+"distance": 3,
+"yardLine": 72,
+"yardsToEndzone": 72,
+"downDistanceText": "3rd & 3 at PIT 28",
+"shortDownDistanceText": "3rd & 3",
+"possessionText": "PIT 28",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:00:07Z"
+},
+{
+"id": "401873011843",
+"sequenceNumber": "84300",
+"type": {
+"text": "End Period"
+},
+"text": "END QUARTER 1",
+"period": {
+"number": 1
+},
+"clock": {
+"displayValue": "0:00"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 68,
+"yardsToEndzone": 68,
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:00:07Z"
+},
+{
+"id": "401873011863",
+"sequenceNumber": "86300",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short left to R.Dowdle to PIT 45 for 13 yards (M.Emerson).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "15:00"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 68,
+"yardsToEndzone": 68,
+"downDistanceText": "1st & 10 at PIT 32",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 32",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:03:48Z"
+},
+{
+"id": "401873011888",
+"sequenceNumber": "88800",
+"type": {
+"text": "Rush"
+},
+"text": "R.Dowdle up the middle to PIT 47 for 2 yards (C.Miller; C.Granderson).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "14:17"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 55,
+"yardsToEndzone": 55,
+"downDistanceText": "1st & 10 at PIT 45",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 45",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:04:31Z"
+},
+{
+"id": "401873011915",
+"sequenceNumber": "91500",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) A.Rodgers pass incomplete short left to P.Freiermuth.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "13:33"
+},
+"start": {
+"down": 2,
+"distance": 8,
+"yardLine": 53,
+"yardsToEndzone": 53,
+"downDistanceText": "2nd & 8 at PIT 47",
+"shortDownDistanceText": "2nd & 8",
+"possessionText": "PIT 47",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:05:16Z"
+},
+{
+"id": "401873011938",
+"sequenceNumber": "93800",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) A.Rodgers pass incomplete deep right to G.Bernard.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "13:29"
+},
+"start": {
+"down": 3,
+"distance": 8,
+"yardLine": 53,
+"yardsToEndzone": 53,
+"downDistanceText": "3rd & 8 at PIT 47",
+"shortDownDistanceText": "3rd & 8",
+"possessionText": "PIT 47",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:06:00Z"
+},
+{
+"id": "401873011961",
+"sequenceNumber": "96100",
+"type": {
+"text": "Punt"
+},
+"text": "C.Johnston punts 35 yards to NO 18, Center-C.Kuntz, fair catch by B.Brown.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "13:24"
+},
+"start": {
+"down": 4,
+"distance": 8,
+"yardLine": 53,
+"yardsToEndzone": 53,
+"downDistanceText": "4th & 8 at PIT 47",
+"shortDownDistanceText": "4th & 8",
+"possessionText": "PIT 47",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:06:36Z"
+},
+{
+"id": "401873011971",
+"sequenceNumber": "97100",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 13:17.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "13:17"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 18,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at NO 18",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 18",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:07:31Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "401873011981",
+"sequenceNumber": "98100",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass deep middle to B.Brown to PIT 33 for 49 yards (J.Dean).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "13:17"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 18,
+"yardsToEndzone": 82,
+"downDistanceText": "1st & 10 at NO 18",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 18",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:09:50Z"
+},
+{
+"id": "401873011997",
+"sequenceNumber": "99700",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #1 by NO at 12:41.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "12:41"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 67,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at PIT 33",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 33",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:10:34Z"
+},
+{
+"id": "4018730111013",
+"sequenceNumber": "101300",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) K.Miller up the middle to PIT 31 for 2 yards (C.Heyward).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "12:41"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 67,
+"yardsToEndzone": 33,
+"downDistanceText": "1st & 10 at PIT 33",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 33",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:13:37Z"
+},
+{
+"id": "4018730111042",
+"sequenceNumber": "104200",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short middle to K.Miller to PIT 18 for 13 yards (J.Ramsey; P.Wilson).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "12:02"
+},
+"start": {
+"down": 2,
+"distance": 8,
+"yardLine": 69,
+"yardsToEndzone": 31,
+"downDistanceText": "2nd & 8 at PIT 31",
+"shortDownDistanceText": "2nd & 8",
+"possessionText": "PIT 31",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:14:15Z"
+},
+{
+"id": "4018730111067",
+"sequenceNumber": "106700",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) T.Shough pass incomplete short right to C.Olave.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "11:17"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 82,
+"yardsToEndzone": 18,
+"downDistanceText": "1st & 10 at PIT 18",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 18",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:15:01Z"
+},
+{
+"id": "4018730111090",
+"sequenceNumber": "109000",
+"type": {
+"text": "Sack"
+},
+"text": "(Shotgun) T.Shough sacked at PIT 25 for -7 yards (T.Watt). FUMBLES (T.Watt) [T.Watt], RECOVERED by PIT-T.Watt at PIT 26.The Replay Official reviewed the passer was not down by contact ruling, and the ",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "11:13"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 82,
+"yardsToEndzone": 18,
+"downDistanceText": "2nd & 10 at PIT 18",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "PIT 18",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:15:42Z"
+},
+{
+"id": "4018730111130",
+"sequenceNumber": "113000",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 11:11.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "11:11"
+},
+"start": {
+"down": 3,
+"distance": 18,
+"yardLine": 75,
+"yardsToEndzone": 0,
+"downDistanceText": "3rd & 18 at PIT 25",
+"shortDownDistanceText": "3rd & 18",
+"possessionText": "PIT 25",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:18:18Z"
+},
+{
+"id": "4018730111169",
+"sequenceNumber": "116900",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short right to N.Fant to PIT 20 for 5 yards (R.Spears-Jennings; J.Ramsey).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "11:03"
+},
+"start": {
+"down": 3,
+"distance": 17,
+"yardLine": 75,
+"yardsToEndzone": 25,
+"downDistanceText": "3rd & 17 at PIT 25",
+"shortDownDistanceText": "3rd & 17",
+"possessionText": "PIT 25",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 0,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:19:14Z"
+},
+{
+"id": "4018730111201",
+"sequenceNumber": "120100",
+"type": {
+"text": "Field Goal Good"
+},
+"text": "D.Carlson 38 yard field goal is GOOD, Center-Z.Wood, Holder-R.Wright.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "10:17"
+},
+"start": {
+"down": 4,
+"distance": 12,
+"yardLine": 80,
+"yardsToEndzone": 20,
+"downDistanceText": "4th & 12 at PIT 20",
+"shortDownDistanceText": "4th & 12",
+"possessionText": "PIT 20",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:19:56Z"
+},
+{
+"id": "4018730111211",
+"sequenceNumber": "121100",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 10:17.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "10:17"
+},
+"start": {
+"down": -1,
+"distance": 0,
+"yardLine": 35,
+"yardsToEndzone": 0,
+"downDistanceText": " & Goal at NO 35",
+"shortDownDistanceText": " & Goal",
+"possessionText": "NO 35",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:20:18Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730111221",
+"sequenceNumber": "122100",
+"type": {
+"text": "Kickoff"
+},
+"text": "D.Carlson kicks 64 yards from NO 35 to PIT 1. L.Nichols to PIT 23 for 22 yards (J.Ford; A.Jennings).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "10:17"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 35,
+"yardsToEndzone": 65,
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:22:55Z"
+},
+{
+"id": "4018730111251",
+"sequenceNumber": "125100",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short left to J.Warren to PIT 49 for 26 yards (J.Sanker).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "10:09"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 77,
+"yardsToEndzone": 77,
+"downDistanceText": "1st & 10 at PIT 23",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 23",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 3,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:23:48Z"
+},
+{
+"id": "4018730111276",
+"sequenceNumber": "127600",
+"type": {
+"text": "Penalty"
+},
+"text": "A.Rodgers pass incomplete short right to J.Warren.PENALTY on PIT-D.Metcalf, Offensive Pass Interference, 10 yards, enforced at PIT 49 - No Play.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "9:26"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 51,
+"yardsToEndzone": 51,
+"downDistanceText": "1st & 10 at PIT 49",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 49",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 3,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:24:31Z"
+},
+{
+"id": "4018730111310",
+"sequenceNumber": "131000",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) J.Warren left tackle to PIT 45 for 6 yards (P.Werner).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "9:22"
+},
+"start": {
+"down": 1,
+"distance": 20,
+"yardLine": 61,
+"yardsToEndzone": 61,
+"downDistanceText": "1st & 20 at PIT 39",
+"shortDownDistanceText": "1st & 20",
+"possessionText": "PIT 39",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 3,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:25:35Z"
+},
+{
+"id": "4018730111332",
+"sequenceNumber": "133200",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) A.Rodgers pass incomplete deep right to D.Metcalf [P.Werner].",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "8:38"
+},
+"start": {
+"down": 2,
+"distance": 14,
+"yardLine": 55,
+"yardsToEndzone": 55,
+"downDistanceText": "2nd & 14 at PIT 45",
+"shortDownDistanceText": "2nd & 14",
+"possessionText": "PIT 45",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 3,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:26:18Z"
+},
+{
+"id": "4018730111355",
+"sequenceNumber": "135500",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass deep left to D.Metcalf to NO 4 for 51 yards (J.Sanker).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "8:34"
+},
+"start": {
+"down": 3,
+"distance": 14,
+"yardLine": 55,
+"yardsToEndzone": 55,
+"downDistanceText": "3rd & 14 at PIT 45",
+"shortDownDistanceText": "3rd & 14",
+"possessionText": "PIT 45",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 3,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:27:02Z"
+},
+{
+"id": "4018730111380",
+"sequenceNumber": "138000",
+"type": {
+"text": "Penalty"
+},
+"text": "PENALTY on PIT, Delay of Game, 5 yards, enforced at NO 4 - No Play.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "7:42"
+},
+"start": {
+"down": 1,
+"distance": 4,
+"yardLine": 4,
+"yardsToEndzone": 4,
+"downDistanceText": "1st & Goal at NO 4",
+"shortDownDistanceText": "1st & Goal",
+"possessionText": "NO 4",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 3,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:27:53Z"
+},
+{
+"id": "4018730111404",
+"sequenceNumber": "140400",
+"type": {
+"text": "Rush"
+},
+"text": "R.Dowdle left guard to NO 4 for 5 yards (P.Werner).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "7:29"
+},
+"start": {
+"down": 1,
+"distance": 9,
+"yardLine": 9,
+"yardsToEndzone": 9,
+"downDistanceText": "1st & Goal at NO 9",
+"shortDownDistanceText": "1st & Goal",
+"possessionText": "NO 9",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 3,
+"awayScore": 3,
+"wallclock": "2026-10-25T14:28:37Z"
+},
+{
+"id": "4018730111426",
+"sequenceNumber": "142600",
+"type": {
+"text": "Passing Touchdown"
+},
+"text": "(Shotgun) A.Rodgers pass short left to D.Washington for 4 yards, TOUCHDOWN. C.Boswell extra point is GOOD, Center-C.Kuntz, Holder-C.Johnston.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "6:45"
+},
+"start": {
+"down": 2,
+"distance": 4,
+"yardLine": 4,
+"yardsToEndzone": 4,
+"downDistanceText": "2nd & Goal at NO 4",
+"shortDownDistanceText": "2nd & Goal",
+"possessionText": "NO 4",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:29:15Z"
+},
+{
+"id": "4018730111460",
+"sequenceNumber": "146000",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 06:45.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "6:45"
+},
+"start": {
+"down": -1,
+"distance": 0,
+"yardLine": 15,
+"yardsToEndzone": 0,
+"downDistanceText": " & Goal at NO 15",
+"shortDownDistanceText": " & Goal",
+"possessionText": "NO 15",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:30:36Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730111467",
+"sequenceNumber": "146700",
+"type": {
+"text": "Kickoff"
+},
+"text": "C.Boswell kicks 59 yards from PIT 35 to NO 6. B.Brown to NO 48 for 42 yards (C.Bruener).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "6:45"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"team": {
+"id": "23"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:33:31Z"
+},
+{
+"id": "4018730111497",
+"sequenceNumber": "149700",
+"type": {
+"text": "Rush"
+},
+"text": "K.Miller left tackle to NO 49 for 1 yard (P.Wilson; G.Rubio).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "6:37"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 48,
+"yardsToEndzone": 52,
+"downDistanceText": "1st & 10 at NO 48",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 48",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:34:16Z"
+},
+{
+"id": "4018730111519",
+"sequenceNumber": "151900",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short right to D.Vele to PIT 49 for 2 yards (P.Queen).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "5:57"
+},
+"start": {
+"down": 2,
+"distance": 9,
+"yardLine": 49,
+"yardsToEndzone": 51,
+"downDistanceText": "2nd & 9 at NO 49",
+"shortDownDistanceText": "2nd & 9",
+"possessionText": "NO 49",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:34:55Z"
+},
+{
+"id": "4018730111544",
+"sequenceNumber": "154400",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short left to A.Kamara pushed ob at PIT 44 for 5 yards (A.Samuel).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "5:16"
+},
+"start": {
+"down": 3,
+"distance": 7,
+"yardLine": 51,
+"yardsToEndzone": 49,
+"downDistanceText": "3rd & 7 at PIT 49",
+"shortDownDistanceText": "3rd & 7",
+"possessionText": "PIT 49",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:35:36Z"
+},
+{
+"id": "4018730111574",
+"sequenceNumber": "157400",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short left to C.Olave ran ob at PIT 33 for 11 yards (J.Ramsey).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "4:41"
+},
+"start": {
+"down": 4,
+"distance": 2,
+"yardLine": 56,
+"yardsToEndzone": 44,
+"downDistanceText": "4th & 2 at PIT 44",
+"shortDownDistanceText": "4th & 2",
+"possessionText": "PIT 44",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:36:19Z"
+},
+{
+"id": "4018730111604",
+"sequenceNumber": "160400",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(No Huddle, Shotgun) T.Shough pass short right to D.Vele pushed ob at PIT 20 for 13 yards (A.Samuel).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "4:18"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 67,
+"yardsToEndzone": 33,
+"downDistanceText": "1st & 10 at PIT 33",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 33",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:36:50Z"
+},
+{
+"id": "4018730111634",
+"sequenceNumber": "163400",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(No Huddle, Shotgun) T.Shough pass short right to B.Lance ran ob at PIT 16 for 4 yards (J.Dean).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "3:59"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 80,
+"yardsToEndzone": 20,
+"downDistanceText": "1st & 10 at PIT 20",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 20",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:37:17Z"
+},
+{
+"id": "4018730111664",
+"sequenceNumber": "166400",
+"type": {
+"text": "Rush"
+},
+"text": "(No Huddle, Shotgun) A.Kamara up the middle to PIT 15 for 1 yard (J.Brisker; P.Queen).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "3:36"
+},
+"start": {
+"down": 2,
+"distance": 6,
+"yardLine": 84,
+"yardsToEndzone": 16,
+"downDistanceText": "2nd & 6 at PIT 16",
+"shortDownDistanceText": "2nd & 6",
+"possessionText": "PIT 16",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:37:47Z"
+},
+{
+"id": "4018730111686",
+"sequenceNumber": "168600",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short right to A.Kamara pushed ob at PIT 2 for 13 yards (J.Ramsey).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "2:54"
+},
+"start": {
+"down": 3,
+"distance": 5,
+"yardLine": 85,
+"yardsToEndzone": 15,
+"downDistanceText": "3rd & 5 at PIT 15",
+"shortDownDistanceText": "3rd & 5",
+"possessionText": "PIT 15",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:38:29Z"
+},
+{
+"id": "4018730111716",
+"sequenceNumber": "171600",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) T.Shough right end to PIT 1 for 1 yard (J.Dean). FUMBLES (J.Dean), ball out of bounds at PIT 1.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "2:21"
+},
+"start": {
+"down": 1,
+"distance": 2,
+"yardLine": 98,
+"yardsToEndzone": 2,
+"downDistanceText": "1st & Goal at PIT 2",
+"shortDownDistanceText": "1st & Goal",
+"possessionText": "PIT 2",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:39:10Z"
+},
+{
+"id": "4018730111732",
+"sequenceNumber": "173200",
+"type": {
+"text": "Two-minute warning"
+},
+"text": "Two-Minute Warning",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "2:00"
+},
+"start": {
+"down": 2,
+"distance": 1,
+"yardLine": 99,
+"yardsToEndzone": 0,
+"downDistanceText": "2nd & 1 at PIT 1",
+"shortDownDistanceText": "2nd & 1",
+"possessionText": "PIT 1",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:39:45Z"
+},
+{
+"id": "4018730111747",
+"sequenceNumber": "174700",
+"type": {
+"text": "Rush"
+},
+"text": "T.Shough left guard to PIT 1 for no gain (J.Ramsey; C.Holcomb).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "2:00"
+},
+"start": {
+"down": 2,
+"distance": 1,
+"yardLine": 99,
+"yardsToEndzone": 1,
+"downDistanceText": "2nd & Goal at PIT 1",
+"shortDownDistanceText": "2nd & Goal",
+"possessionText": "PIT 1",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:42:45Z"
+},
+{
+"id": "4018730111762",
+"sequenceNumber": "176200",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #1 by PIT at 01:50.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:50"
+},
+"start": {
+"down": 3,
+"distance": 1,
+"yardLine": 99,
+"yardsToEndzone": 0,
+"downDistanceText": "3rd & 1 at PIT 1",
+"shortDownDistanceText": "3rd & 1",
+"possessionText": "PIT 1",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:43:17Z"
+},
+{
+"id": "4018730111776",
+"sequenceNumber": "177600",
+"type": {
+"text": "Rush"
+},
+"text": "K.Miller right tackle to PIT 1 for no gain (P.Queen, C.Holcomb). FUMBLES (C.Holcomb), RECOVERED by PIT-J.Brisker at PIT 1.The Replay Official reviewed the runner was not down by contact ruling, and th",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:50"
+},
+"start": {
+"down": 3,
+"distance": 1,
+"yardLine": 99,
+"yardsToEndzone": 1,
+"downDistanceText": "3rd & Goal at PIT 1",
+"shortDownDistanceText": "3rd & Goal",
+"possessionText": "PIT 1",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:44:18Z"
+},
+{
+"id": "4018730111799",
+"sequenceNumber": "179900",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #2 by PIT at 01:48.  10-second runoff avoided.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:48"
+},
+"start": {
+"down": 4,
+"distance": 1,
+"yardLine": 99,
+"yardsToEndzone": 0,
+"downDistanceText": "4th & 1 at PIT 1",
+"shortDownDistanceText": "4th & 1",
+"possessionText": "PIT 1",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 3,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:47:09Z"
+},
+{
+"id": "4018730111821",
+"sequenceNumber": "182100",
+"type": {
+"text": "Passing Touchdown"
+},
+"text": "(Shotgun) T.Shough pass short left to D.Vele for 1 yard, TOUCHDOWN. D.Carlson extra point is GOOD, Center-Z.Wood, Holder-R.Wright.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:45"
+},
+"start": {
+"down": 4,
+"distance": 1,
+"yardLine": 99,
+"yardsToEndzone": 1,
+"downDistanceText": "4th & Goal at PIT 1",
+"shortDownDistanceText": "4th & Goal",
+"possessionText": "PIT 1",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:48:13Z"
+},
+{
+"id": "4018730111907",
+"sequenceNumber": "190700",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 01:45.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:45"
+},
+"start": {
+"down": -1,
+"distance": 0,
+"yardLine": 85,
+"yardsToEndzone": 0,
+"downDistanceText": " & Goal at PIT 15",
+"shortDownDistanceText": " & Goal",
+"possessionText": "PIT 15",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:49:13Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730111914",
+"sequenceNumber": "191400",
+"type": {
+"text": "Kickoff"
+},
+"text": "D.Carlson kicks 59 yards from NO 35 to PIT 6. K.Wetjen to PIT 31 for 25 yards (A.Jennings).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:45"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 35,
+"yardsToEndzone": 65,
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:51:56Z"
+},
+{
+"id": "4018730111944",
+"sequenceNumber": "194400",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short left to R.Dowdle pushed ob at PIT 42 for 11 yards (J.Reid).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:40"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 69,
+"yardsToEndzone": 69,
+"downDistanceText": "1st & 10 at PIT 31",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 31",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:52:50Z"
+},
+{
+"id": "4018730111974",
+"sequenceNumber": "197400",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) A.Rodgers pass incomplete deep left to D.Metcalf.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:34"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 58,
+"yardsToEndzone": 58,
+"downDistanceText": "1st & 10 at PIT 42",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 42",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:53:32Z"
+},
+{
+"id": "4018730111997",
+"sequenceNumber": "199700",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short middle to P.Freiermuth to NO 49 for 9 yards (K.Elliss; P.Werner).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:29"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 58,
+"yardsToEndzone": 58,
+"downDistanceText": "2nd & 10 at PIT 42",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "PIT 42",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:54:16Z"
+},
+{
+"id": "4018730112022",
+"sequenceNumber": "202200",
+"type": {
+"text": "Rush"
+},
+"text": "(No Huddle, Shotgun) J.Warren up the middle pushed ob at NO 34 for 15 yards (J.Reid).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:08"
+},
+"start": {
+"down": 3,
+"distance": 1,
+"yardLine": 49,
+"yardsToEndzone": 49,
+"downDistanceText": "3rd & 1 at NO 49",
+"shortDownDistanceText": "3rd & 1",
+"possessionText": "NO 49",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:54:37Z"
+},
+{
+"id": "4018730112049",
+"sequenceNumber": "204900",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) A.Rodgers pass incomplete short middle to J.Warren.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "1:01"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 34,
+"yardsToEndzone": 34,
+"downDistanceText": "1st & 10 at NO 34",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 34",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:55:23Z"
+},
+{
+"id": "4018730112072",
+"sequenceNumber": "207200",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) A.Rodgers pass incomplete short left to D.Metcalf (K.McKinstry).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:57"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 34,
+"yardsToEndzone": 34,
+"downDistanceText": "2nd & 10 at NO 34",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "NO 34",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:56:05Z"
+},
+{
+"id": "4018730112095",
+"sequenceNumber": "209500",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short middle to G.Bernard to NO 14 for 20 yards (J.Sanker; P.Werner).PENALTY on PIT-M.McCormick, Unnecessary Roughness, 15 yards, enforced at NO 14.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:54"
+},
+"start": {
+"down": 3,
+"distance": 10,
+"yardLine": 34,
+"yardsToEndzone": 34,
+"downDistanceText": "3rd & 10 at NO 34",
+"shortDownDistanceText": "3rd & 10",
+"possessionText": "NO 34",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:56:46Z"
+},
+{
+"id": "4018730112113",
+"sequenceNumber": "211300",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #3 by PIT at 00:43.  10-second runoff avoided.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:43"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 29,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at NO 29",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 29",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T14:58:05Z"
+},
+{
+"id": "4018730112131",
+"sequenceNumber": "213100",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) A.Rodgers pass incomplete short right.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:43"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 29,
+"yardsToEndzone": 29,
+"downDistanceText": "1st & 10 at NO 29",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 29",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T15:01:34Z"
+},
+{
+"id": "4018730112163",
+"sequenceNumber": "216300",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short right to B.Smith to NO 25 for 4 yards (Q.Riley).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:39"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 29,
+"yardsToEndzone": 29,
+"downDistanceText": "2nd & 10 at NO 29",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "NO 29",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T15:02:19Z"
+},
+{
+"id": "4018730112188",
+"sequenceNumber": "218800",
+"type": {
+"text": "Sack"
+},
+"text": "(No Huddle, Shotgun) A.Rodgers sacked at NO 29 for -4 yards (C.Granderson).",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:23"
+},
+"start": {
+"down": 3,
+"distance": 6,
+"yardLine": 25,
+"yardsToEndzone": 25,
+"downDistanceText": "3rd & 6 at NO 25",
+"shortDownDistanceText": "3rd & 6",
+"possessionText": "NO 25",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 10,
+"wallclock": "2026-10-25T15:02:38Z"
+},
+{
+"id": "4018730112208",
+"sequenceNumber": "220800",
+"type": {
+"text": "Field Goal Good"
+},
+"text": "C.Boswell 47 yard field goal is GOOD, Center-C.Kuntz, Holder-C.Johnston.",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:00"
+},
+"start": {
+"down": 4,
+"distance": 10,
+"yardLine": 29,
+"yardsToEndzone": 29,
+"downDistanceText": "4th & 10 at NO 29",
+"shortDownDistanceText": "4th & 10",
+"possessionText": "NO 29",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:02:55Z"
+},
+{
+"id": "4018730112228",
+"sequenceNumber": "222800",
+"type": {
+"text": "End of Half"
+},
+"text": "END QUARTER 2",
+"period": {
+"number": 2
+},
+"clock": {
+"displayValue": "0:00"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 0,
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:02:55Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730112246",
+"sequenceNumber": "224600",
+"type": {
+"text": "Kickoff"
+},
+"text": "C.Boswell kicks 64 yards from PIT 35 to NO 1. B.Brown to NO 22 for 21 yards (T.Homer).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "15:00"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:20:40Z"
+},
+{
+"id": "4018730112274",
+"sequenceNumber": "227400",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short right to C.Olave to NO 27 for 5 yards (J.Dean).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "14:52"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 22,
+"yardsToEndzone": 78,
+"downDistanceText": "1st & 10 at NO 22",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 22",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:21:42Z"
+},
+{
+"id": "4018730112299",
+"sequenceNumber": "229900",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short left to A.Kamara pushed ob at NO 35 for 8 yards (A.Samuel).PENALTY on NO-J.Wright, Unnecessary Roughness, 15 yards, enforced at NO 35.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "14:08"
+},
+"start": {
+"down": 2,
+"distance": 5,
+"yardLine": 27,
+"yardsToEndzone": 73,
+"downDistanceText": "2nd & 5 at NO 27",
+"shortDownDistanceText": "2nd & 5",
+"possessionText": "NO 27",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:22:26Z"
+},
+{
+"id": "4018730112340",
+"sequenceNumber": "234000",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short left to A.Kamara pushed ob at NO 26 for 6 yards (P.Wilson).PENALTY on PIT-P.Wilson, Unnecessary Roughness, 15 yards, enforced at NO 26.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "13:43"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 20,
+"yardsToEndzone": 80,
+"downDistanceText": "1st & 10 at NO 20",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 20",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:23:47Z"
+},
+{
+"id": "4018730112381",
+"sequenceNumber": "238100",
+"type": {
+"text": "Rush"
+},
+"text": "K.Miller left guard to NO 40 for -1 yards (K.Benton).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "13:26"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 41,
+"yardsToEndzone": 59,
+"downDistanceText": "1st & 10 at NO 41",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 41",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:24:46Z"
+},
+{
+"id": "4018730112403",
+"sequenceNumber": "240300",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) T.Shough pass incomplete short right to K.Miller [A.Highsmith].",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "12:59"
+},
+"start": {
+"down": 2,
+"distance": 11,
+"yardLine": 40,
+"yardsToEndzone": 60,
+"downDistanceText": "2nd & 11 at NO 40",
+"shortDownDistanceText": "2nd & 11",
+"possessionText": "NO 40",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:25:13Z"
+},
+{
+"id": "4018730112426",
+"sequenceNumber": "242600",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass deep right to D.Vele to PIT 36 for 24 yards (D.Elliott).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "12:53"
+},
+"start": {
+"down": 3,
+"distance": 11,
+"yardLine": 40,
+"yardsToEndzone": 60,
+"downDistanceText": "3rd & 11 at NO 40",
+"shortDownDistanceText": "3rd & 11",
+"possessionText": "NO 40",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:25:59Z"
+},
+{
+"id": "4018730112451",
+"sequenceNumber": "245100",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(No Huddle, Shotgun) T.Shough pass short middle to K.Miller to PIT 32 for 4 yards (P.Wilson).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "12:24"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 64,
+"yardsToEndzone": 36,
+"downDistanceText": "1st & 10 at PIT 36",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 36",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:26:29Z"
+},
+{
+"id": "4018730112476",
+"sequenceNumber": "247600",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) K.Miller left tackle to PIT 31 for 1 yard (P.Queen).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "11:43"
+},
+"start": {
+"down": 2,
+"distance": 6,
+"yardLine": 68,
+"yardsToEndzone": 32,
+"downDistanceText": "2nd & 6 at PIT 32",
+"shortDownDistanceText": "2nd & 6",
+"possessionText": "PIT 32",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:27:11Z"
+},
+{
+"id": "4018730112498",
+"sequenceNumber": "249800",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) T.Shough scrambles left end pushed ob at PIT 25 for 6 yards (D.Everette; G.Rubio).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "11:03"
+},
+"start": {
+"down": 3,
+"distance": 5,
+"yardLine": 69,
+"yardsToEndzone": 31,
+"downDistanceText": "3rd & 5 at PIT 31",
+"shortDownDistanceText": "3rd & 5",
+"possessionText": "PIT 31",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:27:50Z"
+},
+{
+"id": "4018730112525",
+"sequenceNumber": "252500",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short right to N.Fant pushed ob at PIT 19 for 6 yards (N.Herbig).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "10:23"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 75,
+"yardsToEndzone": 25,
+"downDistanceText": "1st & 10 at PIT 25",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 25",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:28:38Z"
+},
+{
+"id": "4018730112555",
+"sequenceNumber": "255500",
+"type": {
+"text": "Rush"
+},
+"text": "K.Miller left guard to PIT 20 for -1 yards (Y.Black).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "9:47"
+},
+"start": {
+"down": 2,
+"distance": 4,
+"yardLine": 81,
+"yardsToEndzone": 19,
+"downDistanceText": "2nd & 4 at PIT 19",
+"shortDownDistanceText": "2nd & 4",
+"possessionText": "PIT 19",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:29:23Z"
+},
+{
+"id": "4018730112577",
+"sequenceNumber": "257700",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short middle to J.Johnson to PIT 13 for 7 yards (P.Queen).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "9:08"
+},
+"start": {
+"down": 3,
+"distance": 5,
+"yardLine": 80,
+"yardsToEndzone": 20,
+"downDistanceText": "3rd & 5 at PIT 20",
+"shortDownDistanceText": "3rd & 5",
+"possessionText": "PIT 20",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:30:01Z"
+},
+{
+"id": "4018730112602",
+"sequenceNumber": "260200",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) A.Kamara up the middle to PIT 10 for 3 yards (A.Highsmith; K.Benton).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "8:22"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 87,
+"yardsToEndzone": 13,
+"downDistanceText": "1st & 10 at PIT 13",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 13",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:30:47Z"
+},
+{
+"id": "4018730112624",
+"sequenceNumber": "262400",
+"type": {
+"text": "Pass Interception Return"
+},
+"text": "(Shotgun) T.Shough pass short right intended for C.Olave INTERCEPTED by P.Wilson at PIT 11. P.Wilson to PIT 29 for 18 yards (B.Lance).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "7:43"
+},
+"start": {
+"down": 2,
+"distance": 7,
+"yardLine": 90,
+"yardsToEndzone": 10,
+"downDistanceText": "2nd & 7 at PIT 10",
+"shortDownDistanceText": "2nd & 7",
+"possessionText": "PIT 10",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:31:26Z"
+},
+{
+"id": "4018730112638",
+"sequenceNumber": "263800",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 07:32.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "7:32"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 71,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at PIT 29",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 29",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:32:09Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730112651",
+"sequenceNumber": "265100",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) A.Rodgers pass incomplete deep middle to G.Bernard.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "7:32"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 71,
+"yardsToEndzone": 71,
+"downDistanceText": "1st & 10 at PIT 29",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 29",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:35:00Z"
+},
+{
+"id": "4018730112691",
+"sequenceNumber": "269100",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) R.Dowdle up the middle to PIT 30 for 1 yard (V.Broughton; C.Granderson).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "7:27"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 71,
+"yardsToEndzone": 71,
+"downDistanceText": "2nd & 10 at PIT 29",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "PIT 29",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:35:41Z"
+},
+{
+"id": "4018730112713",
+"sequenceNumber": "271300",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short middle to P.Freiermuth to PIT 41 for 11 yards (P.Werner; J.Blackmon).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "6:44"
+},
+"start": {
+"down": 3,
+"distance": 9,
+"yardLine": 70,
+"yardsToEndzone": 70,
+"downDistanceText": "3rd & 9 at PIT 30",
+"shortDownDistanceText": "3rd & 9",
+"possessionText": "PIT 30",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:36:24Z"
+},
+{
+"id": "4018730112738",
+"sequenceNumber": "273800",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) J.Warren right tackle to PIT 46 for 5 yards (P.Werner; K.Elliss).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "6:01"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 59,
+"yardsToEndzone": 59,
+"downDistanceText": "1st & 10 at PIT 41",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 41",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:37:07Z"
+},
+{
+"id": "4018730112760",
+"sequenceNumber": "276000",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short left to G.Bernard to PIT 47 for 1 yard (M.Emerson).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "5:22"
+},
+"start": {
+"down": 2,
+"distance": 5,
+"yardLine": 54,
+"yardsToEndzone": 54,
+"downDistanceText": "2nd & 5 at PIT 46",
+"shortDownDistanceText": "2nd & 5",
+"possessionText": "PIT 46",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:37:46Z"
+},
+{
+"id": "4018730112785",
+"sequenceNumber": "278500",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) J.Warren up the middle to NO 48 for 5 yards (J.Howden).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "4:42"
+},
+"start": {
+"down": 3,
+"distance": 4,
+"yardLine": 53,
+"yardsToEndzone": 53,
+"downDistanceText": "3rd & 4 at PIT 47",
+"shortDownDistanceText": "3rd & 4",
+"possessionText": "PIT 47",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:38:26Z"
+},
+{
+"id": "4018730112807",
+"sequenceNumber": "280700",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short left to R.Dowdle pushed ob at NO 38 for 10 yards (M.Emerson).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "3:56"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 48,
+"yardsToEndzone": 48,
+"downDistanceText": "1st & 10 at NO 48",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 48",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:39:13Z"
+},
+{
+"id": "4018730112837",
+"sequenceNumber": "283700",
+"type": {
+"text": "Rush"
+},
+"text": "S.Anderson reported in as eligible.  R.Dowdle up the middle to NO 34 for 4 yards (J.Blackmon; C.Jordan).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "3:21"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 38,
+"yardsToEndzone": 38,
+"downDistanceText": "1st & 10 at NO 38",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 38",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:39:56Z"
+},
+{
+"id": "4018730112861",
+"sequenceNumber": "286100",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "A.Rodgers pass incomplete deep left to P.Freiermuth.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "2:37"
+},
+"start": {
+"down": 2,
+"distance": 6,
+"yardLine": 34,
+"yardsToEndzone": 34,
+"downDistanceText": "2nd & 6 at NO 34",
+"shortDownDistanceText": "2nd & 6",
+"possessionText": "NO 34",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:40:40Z"
+},
+{
+"id": "4018730112884",
+"sequenceNumber": "288400",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) A.Rodgers pass short middle to B.Smith to NO 14 for 20 yards (J.Howden).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "2:31"
+},
+"start": {
+"down": 3,
+"distance": 6,
+"yardLine": 34,
+"yardsToEndzone": 34,
+"downDistanceText": "3rd & 6 at NO 34",
+"shortDownDistanceText": "3rd & 6",
+"possessionText": "NO 34",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:41:25Z"
+},
+{
+"id": "4018730112909",
+"sequenceNumber": "290900",
+"type": {
+"text": "Rush"
+},
+"text": "S.Anderson reported in as eligible.  J.Warren up the middle to NO 14 for no gain (K.Boyd).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "1:43"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 14,
+"yardsToEndzone": 14,
+"downDistanceText": "1st & 10 at NO 14",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 14",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:42:17Z"
+},
+{
+"id": "4018730112933",
+"sequenceNumber": "293300",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) A.Rodgers pass incomplete short left.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "0:56"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 14,
+"yardsToEndzone": 14,
+"downDistanceText": "2nd & 10 at NO 14",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "NO 14",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:42:59Z"
+},
+{
+"id": "4018730112956",
+"sequenceNumber": "295600",
+"type": {
+"text": "Sack"
+},
+"text": "(Shotgun) A.Rodgers sacked at NO 20 for -6 yards (sack split by C.Young and C.Granderson).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "0:50"
+},
+"start": {
+"down": 3,
+"distance": 10,
+"yardLine": 14,
+"yardsToEndzone": 14,
+"downDistanceText": "3rd & 10 at NO 14",
+"shortDownDistanceText": "3rd & 10",
+"possessionText": "NO 14",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 13,
+"wallclock": "2026-10-25T15:43:46Z"
+},
+{
+"id": "4018730112976",
+"sequenceNumber": "297600",
+"type": {
+"text": "Field Goal Good"
+},
+"text": " C.Boswell 39 yard field goal is GOOD, Center-C.Kuntz, Holder-C.Johnston.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "0:14"
+},
+"start": {
+"down": 4,
+"distance": 16,
+"yardLine": 20,
+"yardsToEndzone": 20,
+"downDistanceText": "4th & 16 at NO 20",
+"shortDownDistanceText": "4th & 16",
+"possessionText": "NO 20",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:45:57Z"
+},
+{
+"id": "4018730112986",
+"sequenceNumber": "298600",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 00:14.",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "0:14"
+},
+"start": {
+"down": -1,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 0,
+"downDistanceText": " & Goal at PIT 35",
+"shortDownDistanceText": " & Goal",
+"possessionText": "PIT 35",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:46:21Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730112996",
+"sequenceNumber": "299600",
+"type": {
+"text": "Kickoff"
+},
+"text": "C.Boswell kicks 60 yards from PIT 35 to NO 5. B.Brown to NO 19 for 14 yards (T.Homer).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "0:14"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:48:46Z"
+},
+{
+"id": "4018730113026",
+"sequenceNumber": "302600",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short middle to A.Kamara to NO 27 for 8 yards (J.Ramsey).",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "0:07"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 19,
+"yardsToEndzone": 81,
+"downDistanceText": "1st & 10 at NO 19",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 19",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:49:36Z"
+},
+{
+"id": "4018730113051",
+"sequenceNumber": "305100",
+"type": {
+"text": "End Period"
+},
+"text": "END QUARTER 3",
+"period": {
+"number": 3
+},
+"clock": {
+"displayValue": "0:00"
+},
+"start": {
+"down": 2,
+"distance": 2,
+"yardLine": 27,
+"yardsToEndzone": 73,
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:49:36Z"
+},
+{
+"id": "4018730113071",
+"sequenceNumber": "307100",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) K.Miller right tackle to NO 30 for 3 yards (J.Brisker).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "15:00"
+},
+"start": {
+"down": 2,
+"distance": 2,
+"yardLine": 27,
+"yardsToEndzone": 73,
+"downDistanceText": "2nd & 2 at NO 27",
+"shortDownDistanceText": "2nd & 2",
+"possessionText": "NO 27",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:52:48Z"
+},
+{
+"id": "4018730113093",
+"sequenceNumber": "309300",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(No Huddle, Shotgun) T.Shough pass short right to B.Brown pushed ob at NO 39 for 9 yards (J.Dean).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "14:35"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 30,
+"yardsToEndzone": 70,
+"downDistanceText": "1st & 10 at NO 30",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 30",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:53:14Z"
+},
+{
+"id": "4018730113123",
+"sequenceNumber": "312300",
+"type": {
+"text": "Rush"
+},
+"text": "(No Huddle) K.Miller left tackle to NO 40 for 1 yard (P.Queen).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "14:14"
+},
+"start": {
+"down": 2,
+"distance": 1,
+"yardLine": 39,
+"yardsToEndzone": 61,
+"downDistanceText": "2nd & 1 at NO 39",
+"shortDownDistanceText": "2nd & 1",
+"possessionText": "NO 39",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:53:42Z"
+},
+{
+"id": "4018730113145",
+"sequenceNumber": "314500",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short right to A.Kamara pushed ob at 50 for 10 yards (P.Queen; A.Samuel) [N.Herbig].",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "13:22"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 40,
+"yardsToEndzone": 60,
+"downDistanceText": "1st & 10 at NO 40",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 40",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:54:34Z"
+},
+{
+"id": "4018730113175",
+"sequenceNumber": "317500",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short left to O.Delp to PIT 48 for 2 yards (A.Highsmith).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "12:44"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 50,
+"yardsToEndzone": 50,
+"downDistanceText": "1st & 10 at 50",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "50",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:55:19Z"
+},
+{
+"id": "4018730113200",
+"sequenceNumber": "320000",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short right to C.Olave to PIT 37 for 11 yards (A.Samuel).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "12:01"
+},
+"start": {
+"down": 2,
+"distance": 8,
+"yardLine": 52,
+"yardsToEndzone": 48,
+"downDistanceText": "2nd & 8 at PIT 48",
+"shortDownDistanceText": "2nd & 8",
+"possessionText": "PIT 48",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:56:03Z"
+},
+{
+"id": "4018730113225",
+"sequenceNumber": "322500",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(No Huddle, Shotgun) T.Shough pass short right to K.Miller pushed ob at PIT 32 for 5 yards (P.Wilson).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "11:34"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 63,
+"yardsToEndzone": 37,
+"downDistanceText": "1st & 10 at PIT 37",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 37",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:56:29Z"
+},
+{
+"id": "4018730113255",
+"sequenceNumber": "325500",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) A.Kamara up the middle to PIT 37 for -5 yards (K.Benton, T.Watt).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "11:01"
+},
+"start": {
+"down": 2,
+"distance": 5,
+"yardLine": 68,
+"yardsToEndzone": 32,
+"downDistanceText": "2nd & 5 at PIT 32",
+"shortDownDistanceText": "2nd & 5",
+"possessionText": "PIT 32",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:57:10Z"
+},
+{
+"id": "4018730113277",
+"sequenceNumber": "327700",
+"type": {
+"text": "Penalty"
+},
+"text": "(Shotgun) PENALTY on NO-A.Richards, False Start, 4 yards, enforced at PIT 37 - No Play.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "10:15"
+},
+"start": {
+"down": 3,
+"distance": 10,
+"yardLine": 63,
+"yardsToEndzone": 37,
+"downDistanceText": "3rd & 10 at PIT 37",
+"shortDownDistanceText": "3rd & 10",
+"possessionText": "PIT 37",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:57:55Z"
+},
+{
+"id": "4018730113301",
+"sequenceNumber": "330100",
+"type": {
+"text": "Pass Reception"
+},
+"text": "(Shotgun) T.Shough pass short left to A.Kamara to PIT 34 for 7 yards (J.Ramsey; P.Queen).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "10:15"
+},
+"start": {
+"down": 3,
+"distance": 14,
+"yardLine": 59,
+"yardsToEndzone": 41,
+"downDistanceText": "3rd & 14 at PIT 41",
+"shortDownDistanceText": "3rd & 14",
+"possessionText": "PIT 41",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:58:42Z"
+},
+{
+"id": "4018730113326",
+"sequenceNumber": "332600",
+"type": {
+"text": "Field Goal Missed"
+},
+"text": "D.Carlson 52 yard field goal is No Good, Wide Right, Center-Z.Wood, Holder-R.Wright.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "9:32"
+},
+"start": {
+"down": 4,
+"distance": 7,
+"yardLine": 66,
+"yardsToEndzone": 34,
+"downDistanceText": "4th & 7 at PIT 34",
+"shortDownDistanceText": "4th & 7",
+"possessionText": "PIT 34",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T15:59:26Z"
+},
+{
+"id": "4018730113337",
+"sequenceNumber": "333700",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 09:27.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "9:27"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 58,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at PIT 42",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 42",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:00:24Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730113347",
+"sequenceNumber": "334700",
+"type": {
+"text": "Rush"
+},
+"text": "J.Warren left tackle to PIT 41 for -1 yards (C.Jordan).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "9:27"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 58,
+"yardsToEndzone": 58,
+"downDistanceText": "1st & 10 at PIT 42",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 42",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:02:53Z"
+},
+{
+"id": "4018730113376",
+"sequenceNumber": "337600",
+"type": {
+"text": "Rush"
+},
+"text": "J.Warren left tackle to PIT 47 for 6 yards (J.Sanker).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "8:45"
+},
+"start": {
+"down": 2,
+"distance": 11,
+"yardLine": 59,
+"yardsToEndzone": 59,
+"downDistanceText": "2nd & 11 at PIT 41",
+"shortDownDistanceText": "2nd & 11",
+"possessionText": "PIT 41",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:03:35Z"
+},
+{
+"id": "4018730113398",
+"sequenceNumber": "339800",
+"type": {
+"text": "Sack"
+},
+"text": "(Shotgun) A.Rodgers sacked at PIT 40 for -7 yards (C.Young).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "7:58"
+},
+"start": {
+"down": 3,
+"distance": 5,
+"yardLine": 53,
+"yardsToEndzone": 53,
+"downDistanceText": "3rd & 5 at PIT 47",
+"shortDownDistanceText": "3rd & 5",
+"possessionText": "PIT 47",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:04:21Z"
+},
+{
+"id": "4018730113418",
+"sequenceNumber": "341800",
+"type": {
+"text": "Punt"
+},
+"text": "C.Johnston punts 54 yards to NO 6, Center-C.Kuntz. B.Brown to NO 26 for 20 yards (T.Homer).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "7:15"
+},
+"start": {
+"down": 4,
+"distance": 12,
+"yardLine": 60,
+"yardsToEndzone": 60,
+"downDistanceText": "4th & 12 at PIT 40",
+"shortDownDistanceText": "4th & 12",
+"possessionText": "PIT 40",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:05:05Z"
+},
+{
+"id": "4018730113431",
+"sequenceNumber": "343100",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 07:04.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "7:04"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 25,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at NO 25",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 25",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:05:38Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730113444",
+"sequenceNumber": "344400",
+"type": {
+"text": "Pass Reception"
+},
+"text": "T.Shough pass incomplete short left to C.Olave (A.Samuel).New Orleans challenged the incomplete pass ruling, and the play was REVERSED.T.Shough pass short left to C.Olave pushed ob at NO 40 for 14 yar",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "7:04"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 26,
+"yardsToEndzone": 74,
+"downDistanceText": "1st & 10 at NO 26",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 26",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:08:32Z"
+},
+{
+"id": "4018730113474",
+"sequenceNumber": "347400",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) T.Shough pass incomplete short right to J.Johnson (Y.Black).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "6:49"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 40,
+"yardsToEndzone": 60,
+"downDistanceText": "1st & 10 at NO 40",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 40",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:12:30Z"
+},
+{
+"id": "4018730113547",
+"sequenceNumber": "354700",
+"type": {
+"text": "Pass Incompletion"
+},
+"text": "(Shotgun) T.Shough pass incomplete short middle to J.Johnson (C.Heyward).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "6:45"
+},
+"start": {
+"down": 2,
+"distance": 10,
+"yardLine": 40,
+"yardsToEndzone": 60,
+"downDistanceText": "2nd & 10 at NO 40",
+"shortDownDistanceText": "2nd & 10",
+"possessionText": "NO 40",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:13:06Z"
+},
+{
+"id": "4018730113570",
+"sequenceNumber": "357000",
+"type": {
+"text": "Sack"
+},
+"text": "(Shotgun) T.Shough sacked at NO 32 for -8 yards (P.Queen).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "6:41"
+},
+"start": {
+"down": 3,
+"distance": 10,
+"yardLine": 40,
+"yardsToEndzone": 60,
+"downDistanceText": "3rd & 10 at NO 40",
+"shortDownDistanceText": "3rd & 10",
+"possessionText": "NO 40",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:13:46Z"
+},
+{
+"id": "4018730113590",
+"sequenceNumber": "359000",
+"type": {
+"text": "Punt"
+},
+"text": "R.Wright punts 46 yards to PIT 22, Center-Z.Wood. K.Wetjen to PIT 35 for 13 yards (D.Stutsman).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "6:02"
+},
+"start": {
+"down": 4,
+"distance": 18,
+"yardLine": 32,
+"yardsToEndzone": 32,
+"downDistanceText": "4th & 18 at NO 32",
+"shortDownDistanceText": "4th & 18",
+"possessionText": "NO 32",
+"team": {
+"id": "18"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:14:25Z"
+},
+{
+"id": "4018730113603",
+"sequenceNumber": "360300",
+"type": {
+"text": "Official Timeout"
+},
+"text": "Official Timeout at 05:52.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "5:52"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 65,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at PIT 35",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 35",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:14:55Z"
+}
+]
+},
+{
+"plays": [
+{
+"id": "4018730113616",
+"sequenceNumber": "361600",
+"type": {
+"text": "Rush"
+},
+"text": "S.Anderson reported in as eligible.  R.Dowdle right tackle to NO 49 for 16 yards (C.Miller).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "5:52"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 65,
+"yardsToEndzone": 65,
+"downDistanceText": "1st & 10 at PIT 35",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "PIT 35",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:17:45Z"
+},
+{
+"id": "4018730113647",
+"sequenceNumber": "364700",
+"type": {
+"text": "Pass Reception"
+},
+"text": "S.Anderson reported in as eligible.  A.Rodgers pass short middle to R.Dowdle to NO 43 for 6 yards (K.Elliss).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "5:08"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 49,
+"yardsToEndzone": 49,
+"downDistanceText": "1st & 10 at NO 49",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 49",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:18:29Z"
+},
+{
+"id": "4018730113674",
+"sequenceNumber": "367400",
+"type": {
+"text": "Rush"
+},
+"text": "S.Anderson reported in as eligible.  R.Dowdle left tackle to NO 38 for 5 yards (J.Blackmon).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "4:25"
+},
+"start": {
+"down": 2,
+"distance": 4,
+"yardLine": 43,
+"yardsToEndzone": 43,
+"downDistanceText": "2nd & 4 at NO 43",
+"shortDownDistanceText": "2nd & 4",
+"possessionText": "NO 43",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:19:12Z"
+},
+{
+"id": "4018730113698",
+"sequenceNumber": "369800",
+"type": {
+"text": "Rush"
+},
+"text": "S.Anderson reported in as eligible.  J.Warren left tackle to NO 37 for 1 yard (C.Jordan).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "3:41"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 38,
+"yardsToEndzone": 38,
+"downDistanceText": "1st & 10 at NO 38",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 38",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:19:56Z"
+},
+{
+"id": "4018730113710",
+"sequenceNumber": "371000",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #1 by PIT at 02:55.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "2:55"
+},
+"start": {
+"down": 2,
+"distance": 9,
+"yardLine": 37,
+"yardsToEndzone": 0,
+"downDistanceText": "2nd & 9 at NO 37",
+"shortDownDistanceText": "2nd & 9",
+"possessionText": "NO 37",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:20:44Z"
+},
+{
+"id": "4018730113722",
+"sequenceNumber": "372200",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) S.Anderson reported in as eligible.  J.Warren up the middle to NO 34 for 3 yards (M.Emerson).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "2:55"
+},
+"start": {
+"down": 2,
+"distance": 9,
+"yardLine": 37,
+"yardsToEndzone": 37,
+"downDistanceText": "2nd & 9 at NO 37",
+"shortDownDistanceText": "2nd & 9",
+"possessionText": "NO 37",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:22:11Z"
+},
+{
+"id": "4018730113738",
+"sequenceNumber": "373800",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #1 by NO at 02:49.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "2:49"
+},
+"start": {
+"down": 3,
+"distance": 6,
+"yardLine": 34,
+"yardsToEndzone": 0,
+"downDistanceText": "3rd & 6 at NO 34",
+"shortDownDistanceText": "3rd & 6",
+"possessionText": "NO 34",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:22:31Z"
+},
+{
+"id": "4018730113753",
+"sequenceNumber": "375300",
+"type": {
+"text": "Rush"
+},
+"text": "(Shotgun) A.Rodgers scrambles left tackle to NO 26 for 8 yards (P.Werner).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "2:49"
+},
+"start": {
+"down": 3,
+"distance": 6,
+"yardLine": 34,
+"yardsToEndzone": 34,
+"downDistanceText": "3rd & 6 at NO 34",
+"shortDownDistanceText": "3rd & 6",
+"possessionText": "NO 34",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:23:36Z"
+},
+{
+"id": "4018730113768",
+"sequenceNumber": "376800",
+"type": {
+"text": "Two-minute warning"
+},
+"text": "Two-Minute Warning",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "2:00"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 26,
+"yardsToEndzone": 0,
+"downDistanceText": "1st & 10 at NO 26",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 26",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:24:31Z"
+},
+{
+"id": "4018730113782",
+"sequenceNumber": "378200",
+"type": {
+"text": "Rush"
+},
+"text": "R.Dowdle left tackle to NO 23 for 3 yards (D.Godchaux; V.Broughton).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "2:00"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 26,
+"yardsToEndzone": 26,
+"downDistanceText": "1st & 10 at NO 26",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 26",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:27:26Z"
+},
+{
+"id": "4018730113797",
+"sequenceNumber": "379700",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #2 by NO at 01:55.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "1:55"
+},
+"start": {
+"down": 2,
+"distance": 7,
+"yardLine": 23,
+"yardsToEndzone": 0,
+"downDistanceText": "2nd & 7 at NO 23",
+"shortDownDistanceText": "2nd & 7",
+"possessionText": "NO 23",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:27:57Z"
+},
+{
+"id": "4018730113811",
+"sequenceNumber": "381100",
+"type": {
+"text": "Rush"
+},
+"text": "S.Anderson reported in as eligible.  J.Warren right guard to NO 19 for 4 yards (J.Blackmon).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "1:55"
+},
+"start": {
+"down": 2,
+"distance": 7,
+"yardLine": 23,
+"yardsToEndzone": 23,
+"downDistanceText": "2nd & 7 at NO 23",
+"shortDownDistanceText": "2nd & 7",
+"possessionText": "NO 23",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:28:45Z"
+},
+{
+"id": "4018730113827",
+"sequenceNumber": "382700",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #3 by NO at 01:49.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "1:49"
+},
+"start": {
+"down": 3,
+"distance": 3,
+"yardLine": 19,
+"yardsToEndzone": 0,
+"downDistanceText": "3rd & 3 at NO 19",
+"shortDownDistanceText": "3rd & 3",
+"possessionText": "NO 19",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:29:09Z"
+},
+{
+"id": "4018730113842",
+"sequenceNumber": "384200",
+"type": {
+"text": "Rush"
+},
+"text": "S.Anderson reported in as eligible.  J.Warren left tackle to NO 19 for no gain (K.Elliss).",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "1:49"
+},
+"start": {
+"down": 3,
+"distance": 3,
+"yardLine": 19,
+"yardsToEndzone": 19,
+"downDistanceText": "3rd & 3 at NO 19",
+"shortDownDistanceText": "3rd & 3",
+"possessionText": "NO 19",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:30:03Z"
+},
+{
+"id": "4018730113858",
+"sequenceNumber": "385800",
+"type": {
+"text": "Timeout"
+},
+"text": "Timeout #2 by PIT at 01:04.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "1:04"
+},
+"start": {
+"down": 4,
+"distance": 3,
+"yardLine": 19,
+"yardsToEndzone": 0,
+"downDistanceText": "4th & 3 at NO 19",
+"shortDownDistanceText": "4th & 3",
+"possessionText": "NO 19",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:30:57Z"
+},
+{
+"id": "4018730113873",
+"sequenceNumber": "387300",
+"type": {
+"text": "Penalty"
+},
+"text": "C.Boswell 37 yard field goal is GOOD, NULLIFIED by Penalty, Center-C.Kuntz, Holder-C.Johnston.PENALTY on NO-I.Stalbird, Defensive Offside, 5 yards, enforced at NO 19 - No Play.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "1:04"
+},
+"start": {
+"down": 4,
+"distance": 3,
+"yardLine": 19,
+"yardsToEndzone": 19,
+"downDistanceText": "4th & 3 at NO 19",
+"shortDownDistanceText": "4th & 3",
+"possessionText": "NO 19",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:31:47Z"
+},
+{
+"id": "4018730113919",
+"sequenceNumber": "391900",
+"type": {
+"text": "Rush"
+},
+"text": "A.Rodgers kneels to NO 15 for -1 yards.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "1:01"
+},
+"start": {
+"down": 1,
+"distance": 10,
+"yardLine": 14,
+"yardsToEndzone": 14,
+"downDistanceText": "1st & 10 at NO 14",
+"shortDownDistanceText": "1st & 10",
+"possessionText": "NO 14",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:33:19Z"
+},
+{
+"id": "4018730113941",
+"sequenceNumber": "394100",
+"type": {
+"text": "Rush"
+},
+"text": " A.Rodgers kneels to NO 16 for -1 yards.",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "0:34"
+},
+"start": {
+"down": 2,
+"distance": 11,
+"yardLine": 15,
+"yardsToEndzone": 15,
+"downDistanceText": "2nd & 11 at NO 15",
+"shortDownDistanceText": "2nd & 11",
+"possessionText": "NO 15",
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:33:45Z"
+},
+{
+"id": "4018730113963",
+"sequenceNumber": "396300",
+"type": {
+"text": "End of Game"
+},
+"text": "END GAME",
+"period": {
+"number": 4
+},
+"clock": {
+"displayValue": "0:00"
+},
+"start": {
+"down": 0,
+"distance": 0,
+"yardLine": 16,
+"yardsToEndzone": 0,
+"team": {
+"id": "23"
+}
+},
+"homeScore": 10,
+"awayScore": 16,
+"wallclock": "2026-10-25T16:33:45Z"
+}
+]
+}
+]
+}
+}
