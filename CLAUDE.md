@@ -118,13 +118,13 @@ tylernfl/
   challenge, is not counted), checked equal to the scoreboard's at all eight captured 4th
   downs of NE at CHI. The home panel: one line linking the calculator until a poll shows
   any of today's games live; then "Live 4th downs", which stays up for the whole game day
-  (between games too, items of finished games marked "Final"; worked out from today's
+  (between games too, items of finished games marked "(final)" after the teams; worked out from today's
   kickoffs and each game's final status, from its summary or the poll, so it holds without
   a poll) and gives way to the line only once every game today is final:
   today's 4th downs newest first, three at a time with Previous (newer) and Next (older)
   buttons, no rotation, an older page anchored on its first 4th down as new ones arrive
-  (`paging.ts`); the model loads by itself once the panel is in view while a game is live
-  (never with no game live); a link to the page. Every live 4th down shows as the same
+  (`paging.ts`); the model loads by itself once the panel is in view, live or between games
+  (the panel only shows on a game day); a link to the page. Every live 4th down shows as the same
   item on the home panel, the live page and team pages (`item.ts`, styles `.live-item` in
   `global.css`): game and clock; the situation; a plain summary of the play from ESPN's
   text ("Punted 54 yards", "Missed a 52-yard field goal", "Converted with an 11-yard

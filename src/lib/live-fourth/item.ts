@@ -55,7 +55,7 @@ export function entryItem(e: FeedEntry, model: ModelLike): HTMLLIElement {
   const play = line('live-play', playSummary(e.play.type, e.play.text, e.play.distance, call, fake));
   play.title = e.play.text;
   li.append(
-    line('live-when', `${e.game.away} at ${e.game.home}, ${clockWords(e.play)}${e.final ? ' · Final' : ''}`),
+    line('live-when', `${e.game.away} at ${e.game.home}${e.final ? ' (final)' : ''}, ${clockWords(e.play)}`),
     line('live-down', situationWords(e.play, e.homeId, e.game)),
     play,
   );
