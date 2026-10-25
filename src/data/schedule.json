@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "updated": "2026-10-25T20:15:24Z",
+  "updated": "2026-10-25T20:31:20Z",
   "games": [
     {
       "id": "2026_01_NE_SEA",
@@ -1791,9 +1791,9 @@
       "kickoff": "2026-10-25T17:00:00Z",
       "away": "NYG",
       "home": "HOU",
-      "awayScore": null,
-      "homeScore": null,
-      "overtime": false,
+      "awayScore": 27,
+      "homeScore": 21,
+      "overtime": true,
       "divisional": false,
       "neutral": false,
       "spreadLine": 10.0,
@@ -1809,8 +1809,8 @@
       "kickoff": "2026-10-25T17:00:00Z",
       "away": "SF",
       "home": "ATL",
-      "awayScore": null,
-      "homeScore": null,
+      "awayScore": 20,
+      "homeScore": 29,
       "overtime": false,
       "divisional": false,
       "neutral": false,
@@ -1818,7 +1818,7 @@
       "totalLine": 49.5,
       "awayMoneyline": -155,
       "homeMoneyline": 130,
-      "roof": null
+      "roof": "open"
     },
     {
       "id": "2026_07_TB_CAR",
