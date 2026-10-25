@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 7,
-  "updated": "2026-10-23T03:31:26Z",
+  "updated": "2026-10-25T16:51:31Z",
   "teams": [
     {
       "team": "BUF",
@@ -112,6 +112,33 @@
       "conferenceTiebreak": "strength_of_schedule"
     },
     {
+      "team": "PIT",
+      "conference": "AFC",
+      "division": "AFC North",
+      "wins": 5,
+      "losses": 2,
+      "ties": 0,
+      "pct": 0.714,
+      "pointsFor": 153,
+      "pointsAgainst": 138,
+      "diff": 15,
+      "divisionRecord": [
+        1,
+        1,
+        0
+      ],
+      "conferenceRecord": [
+        2,
+        2,
+        0
+      ],
+      "streak": "W3",
+      "divisionRank": 1,
+      "conferenceRank": 3,
+      "divisionTiebreak": null,
+      "conferenceTiebreak": null
+    },
+    {
       "team": "CLE",
       "conference": "AFC",
       "division": "AFC North",
@@ -133,36 +160,9 @@
         0
       ],
       "streak": "W1",
-      "divisionRank": 1,
-      "conferenceRank": 4,
-      "divisionTiebreak": "head_to_head",
-      "conferenceTiebreak": null
-    },
-    {
-      "team": "PIT",
-      "conference": "AFC",
-      "division": "AFC North",
-      "wins": 4,
-      "losses": 2,
-      "ties": 0,
-      "pct": 0.667,
-      "pointsFor": 137,
-      "pointsAgainst": 128,
-      "diff": 9,
-      "divisionRecord": [
-        1,
-        1,
-        0
-      ],
-      "conferenceRecord": [
-        2,
-        2,
-        0
-      ],
-      "streak": "W2",
       "divisionRank": 2,
       "conferenceRank": 6,
-      "divisionTiebreak": "division_record",
+      "divisionTiebreak": "head_to_head",
       "conferenceTiebreak": "division_order"
     },
     {
@@ -189,7 +189,7 @@
       "streak": "L1",
       "divisionRank": 3,
       "conferenceRank": 7,
-      "divisionTiebreak": "division_record",
+      "divisionTiebreak": "head_to_head",
       "conferenceTiebreak": "division_order"
     },
     {
@@ -242,9 +242,9 @@
       ],
       "streak": "L1",
       "divisionRank": 1,
-      "conferenceRank": 3,
+      "conferenceRank": 4,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "head_to_head_sweep"
+      "conferenceTiebreak": null
     },
     {
       "team": "IND",
@@ -485,7 +485,7 @@
       ],
       "streak": "L4",
       "divisionRank": 2,
-      "conferenceRank": 11,
+      "conferenceRank": 10,
       "divisionTiebreak": "division_record",
       "conferenceTiebreak": "conference_record"
     },
@@ -512,7 +512,7 @@
       ],
       "streak": "L2",
       "divisionRank": 3,
-      "conferenceRank": 12,
+      "conferenceRank": 11,
       "divisionTiebreak": "division_record",
       "conferenceTiebreak": "conference_record"
     },
@@ -702,7 +702,7 @@
       "streak": "L2",
       "divisionRank": 2,
       "conferenceRank": 9,
-      "divisionTiebreak": "head_to_head",
+      "divisionTiebreak": null,
       "conferenceTiebreak": "conference_record"
     },
     {
@@ -710,12 +710,12 @@
       "conference": "NFC",
       "division": "NFC South",
       "wins": 2,
-      "losses": 4,
+      "losses": 5,
       "ties": 0,
-      "pct": 0.333,
-      "pointsFor": 152,
-      "pointsAgainst": 178,
-      "diff": -26,
+      "pct": 0.286,
+      "pointsFor": 162,
+      "pointsAgainst": 194,
+      "diff": -32,
       "divisionRecord": [
         0,
         1,
@@ -726,11 +726,11 @@
         3,
         0
       ],
-      "streak": "W1",
+      "streak": "L1",
       "divisionRank": 3,
-      "conferenceRank": 10,
-      "divisionTiebreak": "head_to_head",
-      "conferenceTiebreak": "strength_of_victory"
+      "conferenceRank": 14,
+      "divisionTiebreak": null,
+      "conferenceTiebreak": null
     },
     {
       "team": "TB",
@@ -836,7 +836,7 @@
       ],
       "streak": "W1",
       "divisionRank": 3,
-      "conferenceRank": 13,
+      "conferenceRank": 12,
       "divisionTiebreak": "head_to_head",
       "conferenceTiebreak": "division_order"
     },
@@ -863,7 +863,7 @@
       ],
       "streak": "L2",
       "divisionRank": 4,
-      "conferenceRank": 14,
+      "conferenceRank": 13,
       "divisionTiebreak": "head_to_head",
       "conferenceTiebreak": "division_order"
     }
