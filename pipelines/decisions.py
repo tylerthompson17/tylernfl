@@ -52,7 +52,11 @@ grades, coaches and the summary are nfl4th's alone. A play gets one only when
   the previous decisions.json (`previous`), whatever the tables or the
   season are now. games.py keeps it in the game file the same way.
 
-`experimentalCounts` says how many plays fell each way.
+`experimentalCounts` says how many plays fell each way. A final with 4th
+downs but no stored result, whose week the run's tables are not from before
+(their snapshots can no longer be taken), is listed in `experimentalMissed`
+and printed as a warning each run (missed_games): the weekly model PR was
+merged before the daily run had that week's games.
 
 Coaches are credited by game: each decision goes to its team's head coach in
 that game (nflverse's home_coach / away_coach), so an interim coach is
@@ -443,6 +447,24 @@ def experimental_snapshot(result: dict, season: int, week: int) -> tuple[dict | 
     return r5_all(x), 'stored this run'
 
 
+def missed_games(entries: list[dict], results: list[dict], season: int) -> dict:
+    """{"tablesAsOf": the run's experimental dataAsOf or None, "games": game ids
+    with 4th downs and no stored result whose week is not after the tables'}."""
+    as_of = next((r['experimental']['dataAsOf'] for r in results
+                  if r.get('supported') and r['experimental']['supported']), None)
+    if as_of is None:
+        return {'tablesAsOf': None, 'games': []}
+    weeks: dict[str, int] = {}
+    stored: set[str] = set()
+    for e in entries:
+        weeks[e['gameId']] = e['week']
+        if 'experimental' in e:
+            stored.add(e['gameId'])
+    games = [g for g, week in sorted(weeks.items())
+             if g not in stored and (as_of['season'], as_of['week']) >= (season, week)]
+    return {'tablesAsOf': as_of, 'games': games}
+
+
 def build_decisions(rows: list[dict], season: int, updated: str, run=None, previous: dict | None = None,
                     punter=None) -> dict:
     """decisions.json for one season's plays (every final game's rows).
@@ -489,6 +511,7 @@ def build_decisions(rows: list[dict], season: int, updated: str, run=None, previ
         'games': len({row['game_id'] for row in rows}),
         'counts': counts,
         'experimentalCounts': experimental_counts,
+        'experimentalMissed': missed_games(graded_fourth, results[: len(fourth)], season),
         'summary': summary(graded_fourth, graded_tries),
         'coaches': coach_table(graded_fourth + graded_tries),
         'fourthDowns': graded_fourth,
@@ -552,5 +575,9 @@ def report(data: dict) -> str:
              f"{len(data['tries'])} tries"]
     lines += [f'  {key}: {n}' for key, n in data['counts'].items()]
     lines += [f'  experimental {key}: {n}' for key, n in data.get('experimentalCounts', {}).items()]
+    missed = data.get('experimentalMissed') or {'games': []}
+    lines += [f"decisions: WARNING {game} has 4th downs but no experimental results stored, and the tables "
+              f"(data as of {missed['tablesAsOf']['season']} week {missed['tablesAsOf']['week']}) are not from "
+              f"before its week, so they can no longer be stored" for game in missed['games']]
     lines += [f'  summary {key}: {value}' for key, value in data['summary'].items()]
     return '\n'.join(lines)

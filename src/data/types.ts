@@ -744,6 +744,8 @@ export interface DecisionsData {
   counts: Record<string, number>;
   /** 4th downs by what happened to their experimental result this run (decisions.py) */
   experimentalCounts: Record<string, number>;
+  /** Finals with 4th downs but no stored experimental result, whose week the run's tables are not from before */
+  experimentalMissed: { tablesAsOf: { season: number; week: number } | null; games: string[] };
   /** The numbers the page's intro quotes, over evaluated decisions */
   summary: {
     fourthDowns: number;

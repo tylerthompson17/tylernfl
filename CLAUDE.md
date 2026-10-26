@@ -334,7 +334,13 @@ tylernfl/
   game (this season or last; nflverse gsis ids mapped to ESPN ids through
   `load_players`); a play with no punter gets none. Once stored it is copied from the
   previous file and never replaced. How many plays fell each way is
-  `experimentalCounts`. On 2026-10-25 all 1,339 4th downs had a mapped punter. Written one
+  `experimentalCounts`. On 2026-10-25 all 1,339 4th downs had a mapped punter. A final
+  with 4th downs and nothing stored, whose week the tables are not from before, is
+  listed in `experimentalMissed` and printed as a warning naming the game each run
+  (`missed_games`; weeks 1 to 6 of 2026, before the model arrived, are all listed).
+  So merge the weekly model PR only after the daily run has processed every game of
+  that week, including Monday night: its new tables cover that week, and a game the
+  run has not reached by then can never get its snapshot. Written one
   record per line (`records=True`, `dumps_records` in `common.py`) so diffs stay
   readable; packed, git stores about 7 KB per version either way. Methods and the rbsdm.com comparison: `docs/methods/decision-grades.md`.
 - `daily_fourth.json` is written daily by `pipelines/daily_fourth.py` (one call at the end

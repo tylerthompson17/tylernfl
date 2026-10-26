@@ -519,7 +519,7 @@ content-hashed like them; the site needs no logic of its own for them:
   team-season part is refreshed weekly from earlier weeks' punts.
 - `teamPunters.json`: each team's most recent punter, refreshed weekly.
 
-Each week's tables arrive in the weekly model delivery PR.
+Each week's tables arrive in the weekly model delivery PR. Merge it only after the daily run has processed every game of that week, including Monday night: the site stores a game's experimental results only from tables older than its week (CLAUDE.md, decisions.json).
 
 ## Site copy
 
