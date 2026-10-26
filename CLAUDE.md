@@ -822,9 +822,10 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
     calls, notable performances, transactions | article, coach grades, daily game,
     playoff picture, draft top 8, replay, on this day.
   - preview (nothing on and little just played: midweek, a game day morning, the day
-    after a lone Thursday game): the week's questionable calls, transactions, chart,
-    results | daily game, article, coach grades, playoff picture, draft top 8, replay,
-    on this day.
+    after a lone Thursday game): the Retro Replay first (Tyler asked for it on
+    2026-10-26: the replay leads on quiet days), the week's questionable calls, chart,
+    results | daily game, article, transactions, coach grades, playoff picture, draft
+    top 8, on this day. Here the sidebar's transactions list takes up the slack.
   - offseason (no ticker games): articles, last season's coach grades, the chart | daily
     game, last season's final seeding, replay, on this day. Draft order, results and
     transactions are empty then, so they are left out rather than shown empty.
@@ -858,7 +859,7 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   30px at 1440 and 1024. Rerun the audit in all five states when a panel changes; change
   the counts, not the layout, to fix a flag.
 - Phones: one list in the order a visitor wants it (each panel's `--order`): the lead
-  (live 4th downs, or the chart on a recap), the calls, then the daily game and the
+  (live 4th downs, the chart on a recap, the replay on a quiet day), the calls, then the daily game and the
   article, then the rest. Keyboard order follows the desktop columns.
 - The live 4th downs panel holds about 340px from load (a page of three items and the
   pager fit it exactly), so it is blank under its "Reading today's games" line until
@@ -1068,18 +1069,21 @@ game).
   description, page and scene URLs, about 5 KB raw); the scene and player load once the
   panel is near the screen (see the data contract). The first frame waits for Play;
   under reduced motion the last frame shows. The layout follows the panel's own width
-  (a container query): from 760px, the field (at most 540 by 360px) with Play, Restart
-  and the scrubber on the left, and on the right the title, the description (five
-  lines, clamped), a scorebug of two set lines (each cut with an ellipsis), the replay
-  page's speed buttons and Stats, Routes and Debug toggles, links to the play's page
-  and all replays, and "Another play" (454px tall at 1440 and 1024); below 760px, the
+  (a container query): from 760px, the field (at most 540 by 360px) on the left, and on
+  the right the title, the description (five lines, clamped), a scorebug of two set
+  lines (each cut with an ellipsis), Play, Restart and the scrubber, the replay page's
+  speed buttons and Stats, Routes and Debug toggles, then links to the play's page and
+  all replays and "Another play" level with the field's foot (416px tall in the home
+  page's main column at 1440; Play and the scrubber were under the field until
+  2026-10-26, which left the right column empty under the toggles); below 760px, the
   title with "Another play", the field, the controls, speed and toggles, and the links,
   the description and scorebug left to the replay page (392px at 375). Each play starts
   at 1x with the player's default toggles. Every part has its
   size before anything loads, so the height depends only on the panel's width and
   nothing shifts (checked on all 15 plays at 375, 1024 and 1440). `initReplay` takes
-  the scene and returns a function that stops it. On the home page it sits in the
-  sidebar, so it always takes the layout below 760px.
+  the scene and returns a function that stops it. On the home page it leads the main
+  column on quiet days (preview, see Home page), wide from 1101px and the narrow layout
+  below, and sits in the sidebar, narrow, the rest of the time.
 
 ### Curated posts
 

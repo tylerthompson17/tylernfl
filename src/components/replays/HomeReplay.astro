@@ -8,9 +8,12 @@
  *
  * Two layouts, chosen by the panel's own width (a container query), so the
  * reserved height depends on nothing else and filling it shifts nothing:
- * from 760px, the field (at most 540px wide, 360px tall) and its controls
- * on the left, and the title, description, scoreline, speed and toggles,
- * links and "Another play" on the right, every one of fixed height; below
+ * from 760px, the field (at most 540px wide, 360px tall) on the left, and
+ * the title, description, scoreline, Play and the scrubber, speed and
+ * toggles, then links and "Another play" level with the field's foot on the
+ * right, every one of fixed height, so the panel is the field's height
+ * (Play and the scrubber were under the field until 2026-10-26, which left
+ * the right column empty under the toggles); below
  * that, the title with "Another play", the field, the controls, speed and
  * toggles, and the links, with the description and scoreline left to the
  * replay page.
@@ -146,18 +149,19 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
     border-left: none;
   }
 
-  /* Wide: the field and controls left, everything about the play right. */
+  /* Wide: the field left, everything about the play and its controls right. */
   @container (min-width: 760px) {
     .home-replay {
       grid-template-columns: minmax(0, 540px) minmax(280px, 1fr);
-      grid-template-rows: auto auto auto auto 1fr auto;
+      grid-template-rows: auto auto auto auto auto 1fr auto;
       grid-template-areas:
         'stage title'
         'stage description'
         'stage scoreline'
+        'stage controls'
         'stage options'
         'stage .'
-        'controls foot';
+        'stage foot';
       align-items: start;
       column-gap: var(--space-3);
       row-gap: var(--space-2);

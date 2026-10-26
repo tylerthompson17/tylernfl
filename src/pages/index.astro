@@ -9,8 +9,9 @@
  * - recap: the best game's chart, results, the week's calls, notable
  *   performances, transactions | article, coach grades, daily game,
  *   playoff picture, draft, archive.
- * - preview: the week's calls, transactions, chart, results | daily game,
- *   article, coach grades, playoff picture, draft, archive.
+ * - preview (quiet days): the Retro Replay, the week's calls, chart, results |
+ *   daily game, article, transactions, coach grades, playoff picture, draft,
+ *   on this day. The sidebar's transactions take up the slack here.
  * - offseason: articles, last season's coach grades, the chart | daily game,
  *   last season's final seeding, archive. (The draft order is empty then.)
  *
@@ -99,18 +100,18 @@ const list = (wide: number, mid: number): Rows => ({ wide, mid, phone: Math.min(
       state === 'preview' && (
         <>
           <div class="home-col" data-balance="main">
-            <div style="--order: 1"><QuestionableCalls rows={calls(6)} /></div>
-            <div style="--order: 4"><HomeWire rows={list(tall ? 13 : 17, tall ? 19 : 22)} /></div>
+            {replays.length > 0 && <div style="--order: 1"><HomeReplay replays={replays} /></div>}
+            <div style="--order: 2"><QuestionableCalls rows={calls(6)} /></div>
             <div style="--order: 6"><HomeChart /></div>
             <div style="--order: 7"><WeekResults /></div>
           </div>
           <div class="home-col" data-balance="side">
-            <div style="--order: 2"><DailyGame /></div>
-            <div style="--order: 3"><LatestArticles limit={2} /></div>
-            <div style="--order: 5"><CoachGrades rows={list(5, 5)} /></div>
-            <div style="--order: 8"><PlayoffPicture /></div>
-            <div style="--order: 9"><DraftTop rows={list(8, 8)} /></div>
-            {replays.length > 0 && <div style="--order: 10"><HomeReplay replays={replays} /></div>}
+            <div style="--order: 3"><DailyGame /></div>
+            <div style="--order: 4"><LatestArticles limit={2} /></div>
+            <div style="--order: 5"><HomeWire rows={list(tall ? 12 : 8, tall ? 9 : 6)} /></div>
+            <div style="--order: 8"><CoachGrades rows={list(5, 5)} /></div>
+            <div style="--order: 9"><PlayoffPicture /></div>
+            <div style="--order: 10"><DraftTop rows={list(8, 8)} /></div>
             <div style="--order: 11"><OnThisDay /></div>
           </div>
         </>
