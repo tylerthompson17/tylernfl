@@ -792,8 +792,8 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   of `/draft`), notable performances, on this day, latest article. The split is what
   balances heights: at 1440px with a yards race chart the columns end at about 1,375,
   1,345 and 1,395px. Recheck when a panel is added or grows. Since the replay panel
-  (843px at 1440) they do not: on 2026-10-25 with the EPA scatter, columns 1 and 2 end
-  about 2,340 and 2,130px down, column 3 at 1,379.
+  (454px at 1440) they do not: on 2026-10-25 with the EPA scatter, columns 1, 2 and 3
+  end about 2,128, 1,914 and 1,555px down the page.
 - Column 2 ends with one line linking the 4th down calculator, which becomes the "Live 4th
   downs" panel while any game is live (see the data contract).
 - Below 1100px: two columns, chart across the top, column 3's panels in a pair under
@@ -998,11 +998,16 @@ game).
   localStorage, every access in try/catch). The page ships only the list (key, game,
   description, page and scene URLs, about 5 KB raw); the scene and player load once the
   panel is near the screen (see the data contract). The first frame waits for Play;
-  under reduced motion the last frame shows. Title, description (two lines, clamped),
-  a scorebug line (one line from 640px of panel, else two set lines, each cut with an
-  ellipsis), the canvas, Play, Restart and the scrubber, links to the play's page and
-  all replays, and "Another play". Every part has its size before anything loads, so
-  nothing shifts. `initReplay` takes the scene and returns a function that stops it.
+  under reduced motion the last frame shows. The layout follows the panel's own width
+  (a container query): from 760px, the field (at most 540 by 360px) with Play, Restart
+  and the scrubber on the left, and on the right the title, the description (five
+  lines, clamped), a scorebug of two set lines (each cut with an ellipsis), links to the
+  play's page and all replays, and "Another play" (454px tall at 1440 and 1024); below
+  760px, the title with "Another play", the field, the controls and the links, the
+  description and scorebug left to the replay page (358px at 375). Every part has its
+  size before anything loads, so the height depends only on the panel's width and
+  nothing shifts (checked on all 15 plays at 375, 1024 and 1440). `initReplay` takes
+  the scene and returns a function that stops it.
 
 ### Curated posts
 

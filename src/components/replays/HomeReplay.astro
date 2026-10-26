@@ -3,10 +3,16 @@
  * The home page's Retro Replay: one of the featured replays at random on
  * each visit, picked in the browser (src/lib/replays/home.ts), which loads
  * that play's scene and the player only then. The page carries the short
- * list alone. Every part has its size before anything loads (one title
- * line, two description lines, the scoreline's lines, the 3:2 canvas, the
- * controls), so nothing shifts. The caller renders this only when the
- * build has featured replays.
+ * list alone. The caller renders this only when the build has featured
+ * replays.
+ *
+ * Two layouts, chosen by the panel's own width (a container query), so the
+ * reserved height depends on nothing else and filling it shifts nothing:
+ * from 760px, the field (at most 540px wide, 360px tall) and its controls
+ * on the left, and the title, description, scoreline, links and "Another
+ * play" on the right, every one of fixed height; below that, the title
+ * with "Another play", the field, the controls and the links, with the
+ * description and scoreline left to the replay page.
  */
 import Panel from '../Panel.astro';
 import type { FeaturedReplay } from '../../lib/replays/pick';
@@ -21,35 +27,37 @@ const { replays } = Astro.props;
 const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
 ---
 
-<Panel title="Retro Replay">
-  <div class="home-replay" data-home-replay>
-    <p class="replay-title" data-replay-title></p>
-    <p class="replay-description" data-replay-description></p>
-    <div class="scoreline" data-replay-scoreline></div>
-    <div class="stage">
-      <canvas class="replay-canvas" width="504" height="336" data-canvas role="img" aria-label="Pixel art replay drawn from player tracking"
-      ></canvas>
-      <div class="layer" aria-hidden="true">
-        <p class="caption" data-caption hidden></p>
-        <span class="tag" data-tag="speed" hidden></span>
-        <span class="tag" data-tag="air" hidden></span>
-        <span class="tag" data-tag="separation" hidden></span>
+<Panel title="Retro Replay" flush>
+  <div class="frame" data-home-replay>
+    <div class="home-replay">
+      <p class="replay-title" data-replay-title></p>
+      <p class="replay-description" data-replay-description></p>
+      <div class="scoreline" data-replay-scoreline></div>
+      <div class="stage">
+        <canvas class="replay-canvas" width="504" height="336" data-canvas role="img" aria-label="Pixel art replay drawn from player tracking"
+        ></canvas>
+        <div class="layer" aria-hidden="true">
+          <p class="caption" data-caption hidden></p>
+          <span class="tag" data-tag="speed" hidden></span>
+          <span class="tag" data-tag="air" hidden></span>
+          <span class="tag" data-tag="separation" hidden></span>
+        </div>
+        <p class="status" data-replay-status role="status">Loading the replay…</p>
+        <noscript><p class="status">The replay needs JavaScript.</p></noscript>
       </div>
-      <p class="status" data-replay-status role="status">Loading the replay…</p>
-      <noscript><p class="status">The replay needs JavaScript.</p></noscript>
-    </div>
-    <div class="controls">
-      <button type="button" class="control primary" data-play disabled>Play</button>
-      <button type="button" class="control" data-restart disabled>Restart</button>
-      <input class="scrub" type="range" min="0" max="0" step="0.01" value="0" data-scrub disabled aria-label="Position in the play" />
-      <span class="time num" data-time></span>
-    </div>
-    <div class="foot">
-      <p class="links">
-        <a href={url('replays')} data-replay-page>Replay page</a>
-        <a href={url('replays/all')}>All replays</a>
-      </p>
-      <button type="button" class="control" data-replay-another>Another play</button>
+      <div class="controls">
+        <button type="button" class="control primary" data-play disabled>Play</button>
+        <button type="button" class="control" data-restart disabled>Restart</button>
+        <input class="scrub" type="range" min="0" max="0" step="0.01" value="0" data-scrub disabled aria-label="Position in the play" />
+        <span class="time num" data-time></span>
+      </div>
+      <div class="foot">
+        <p class="links">
+          <a href={url('replays')} data-replay-page>Replay page</a>
+          <a href={url('replays/all')}>All replays</a>
+        </p>
+        <button type="button" class="control another" data-replay-another>Another play</button>
+      </div>
     </div>
     <script type="application/json" data-replay-list set:html={embedded} />
   </div>
@@ -61,6 +69,90 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
 </script>
 
 <style>
+  .frame {
+    container-type: inline-size;
+  }
+
+  /* Narrow: title and "Another play", the field, the controls, the links. */
+  .home-replay {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'title another'
+      'stage stage'
+      'controls controls'
+      'links links';
+    align-items: center;
+    gap: var(--space-1) var(--space-2);
+    padding: var(--space-2);
+  }
+
+  .replay-description,
+  .scoreline {
+    display: none;
+  }
+
+  .foot {
+    display: contents;
+  }
+
+  .replay-title {
+    grid-area: title;
+  }
+
+  .another {
+    grid-area: another;
+  }
+
+  .stage {
+    grid-area: stage;
+  }
+
+  .controls {
+    grid-area: controls;
+  }
+
+  .links {
+    grid-area: links;
+  }
+
+  /* Wide: the field and controls left, everything about the play right. */
+  @container (min-width: 760px) {
+    .home-replay {
+      grid-template-columns: minmax(0, 540px) minmax(280px, 1fr);
+      grid-template-rows: auto auto auto 1fr auto;
+      grid-template-areas:
+        'stage title'
+        'stage description'
+        'stage scoreline'
+        'stage .'
+        'controls foot';
+      align-items: start;
+      column-gap: var(--space-3);
+      row-gap: var(--space-2);
+      padding: var(--space-3);
+    }
+
+    .replay-description {
+      display: -webkit-box;
+      grid-area: description;
+    }
+
+    .scoreline {
+      display: flex;
+      grid-area: scoreline;
+    }
+
+    .foot {
+      grid-area: foot;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+      align-self: center;
+    }
+  }
+
   .replay-title {
     font-family: var(--font-heading);
     font-weight: 700;
@@ -72,29 +164,21 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
     text-overflow: ellipsis;
   }
 
-  /* Two lines, held whether the play's description takes one or five. */
+  /* Five lines, held whether the play's description takes one or eight. */
   .replay-description {
     color: var(--text-dim);
-    height: calc(2 * 1.35em);
-    margin-bottom: var(--space-2);
-    display: -webkit-box;
+    line-height: 1.35;
+    height: calc(5 * 1.35em);
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
     overflow: hidden;
   }
 
-  .home-replay {
-    container-type: inline-size;
-  }
-
-  /* The replay page's scorebug as a slate bar: one line from 640px of
-     panel (the widest featured play's needs 515px), else score, clock and
-     situation on one and win probability on the next. Its height depends
-     only on the panel's width, so filling it shifts nothing; a line too
-     long for it is cut with an ellipsis. */
+  /* The replay page's scorebug as a slate bar of two set lines: score,
+     clock and situation, then win probability, each cut with an ellipsis
+     if it runs long. */
   .scoreline {
-    display: flex;
     flex-direction: column;
     justify-content: center;
     height: calc(2 * 1.35em + 2 * var(--space-1));
@@ -105,21 +189,6 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
     font-weight: 700;
     font-size: 15px;
     line-height: 1.35;
-  }
-
-  @container (min-width: 640px) {
-    .scoreline {
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: center;
-      gap: var(--space-3);
-      height: calc(1.35em + 2 * var(--space-1));
-    }
-
-    .scoreline :global(.group + .group) {
-      padding-left: var(--space-3);
-      border-left: 1px solid var(--text-dim);
-    }
   }
 
   .scoreline :global(.group) {
@@ -227,22 +296,16 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
     }
   }
 
-  .controls,
-  .foot {
+  .controls {
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    margin-top: var(--space-2);
-  }
-
-  .foot {
-    justify-content: space-between;
-    padding-top: var(--space-2);
-    border-top: 1px dotted var(--rule-soft);
+    min-width: 0;
   }
 
   .links {
     font-size: 12px;
+    line-height: 1.35;
   }
 
   .links a + a {
@@ -254,7 +317,7 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 13px;
-    min-height: 30px;
+    height: 30px;
     padding: 0 var(--space-2);
     border: 1px solid var(--header);
     background: var(--panel);
