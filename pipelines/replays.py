@@ -932,6 +932,18 @@ def pbp_lookup(season: int):
     return {(r['old_game_id'], r['play_id']): r for r in frame.iter_rows(named=True)}
 
 
+def publish_report(report: dict) -> None:
+    """The validation report to the log and, in GitHub Actions, the job
+    summary, with a warning annotation for each featured play dropped."""
+    lines = report_lines(report)
+    print('\n'.join(lines))
+    if summary := os.environ.get('GITHUB_STEP_SUMMARY'):
+        with open(summary, 'a', encoding='utf-8') as fh:
+            fh.write('\n'.join(lines) + '\n')
+    for key in report['featuredDropped']:
+        print(f'::warning title=Featured replay dropped::{key} failed its checks; see the job summary')
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
     parser.add_argument('keys', nargs='*', help='play keys to build scenes for, e.g. 2018_ARI_2018092311_141')
@@ -939,12 +951,15 @@ def main() -> None:
                         help='rewrite index.json from the whole highlights index, with stats from every cached play file')
     parser.add_argument('--fetch-all', action='store_true',
                         help='first download every play file not yet cached (about 1.3 GB) so --index has stats for all')
+    parser.add_argument('--report', action='store_true',
+                        help='print validation.json again, to the job summary too (the deploy, when the scenes came '
+                             'from its cache)')
     parser.add_argument('--all', action='store_true',
                         help='index.json, a scene for every play that passes the checks, and validation.json '
                              '(what the deploy runs)')
     args = parser.parse_args()
-    if not args.keys and not args.index and not args.fetch_all and not args.all:
-        parser.error('give play keys, --index, --fetch-all, --all, or a mix')
+    if not (args.keys or args.index or args.fetch_all or args.all or args.report):
+        parser.error('give play keys, --index, --fetch-all, --all, --report, or a mix')
 
     lookups: dict[int, dict] = {}
 
@@ -983,15 +998,9 @@ def main() -> None:
                     print(f'  {done} of {len(missing)}')
 
     if args.all:
-        report = build_all(lookup, colors)
-        lines = report_lines(report)
-        print('\n'.join(lines))
-        if summary := os.environ.get('GITHUB_STEP_SUMMARY'):
-            with open(summary, 'a', encoding='utf-8') as fh:
-                fh.write('\n'.join(lines) + '\n')
-        if report['featuredDropped']:
-            for key in report['featuredDropped']:
-                print(f'::warning title=Featured replay dropped::{key} failed its checks; see the job summary')
+        publish_report(build_all(lookup, colors))
+    elif args.report:
+        publish_report(json.loads((DATA_DIR / OUT_DIR / 'validation.json').read_text(encoding='utf-8')))
 
     if args.index and not args.all:
         rows = read_rows(fetch('ngs_highlights_index.tsv').read_text(encoding='utf-8'))
