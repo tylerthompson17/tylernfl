@@ -1,0 +1,589 @@
+---
+/**
+ * One final's page, /games/<season>/<week>/<away>-at-<home>/, from its
+ * games/{gameId}.json (pipelines/games.py): the result and line score
+ * with the closing lines, the win probability chart with every 4th down
+ * and try marked (each mark links to its item below), the five biggest
+ * swings, every 4th down and try against nfl4th in the live items'
+ * wording (from the game file's copy of its decisions.json records), and
+ * the box score. Win probability is nflfastR's as
+ * published; the calls are Ben Baldwin's nfl4th, never Tyler's model.
+ * Words are in src/lib/games/view.ts.
+ */
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Panel from '../../../../components/Panel.astro';
+import TeamChip from '../../../../components/TeamChip.astro';
+import ChartFigure, { type ChartMark } from '../../../../components/ChartFigure.astro';
+import teamsData from '../../../../data/teams.json';
+import type { BoardColumn, GameData, TeamsData } from '../../../../data/types';
+import { toSvg } from '../../../../lib/charts/hover';
+import { formatCell } from '../../../../lib/leaderboard/arrange';
+import {
+  decisionItem,
+  gamePath,
+  markLabel,
+  periodLabels,
+  playText,
+  quarterClock,
+  spreadResult,
+  spreadText,
+  swingOf,
+  teamBoxRows,
+  totalResult,
+} from '../../../../lib/games/view';
+import { formatStat } from '../../../../utils/format';
+import { getCharts, hoverFor, svgFor } from '../../../../utils/charts';
+import { gamePages } from '../../../../utils/games';
+import { leaderboards } from '../../../../utils/leaderboards';
+import { playerPages, slugForPlayer } from '../../../../utils/players';
+import { easternDate } from '../../../../utils/teams';
+import { url } from '../../../../utils/url';
+import { weekLabel } from '../../../../utils/week';
+import excitementData from '../../../../data/game_excitement.json';
+import scheduleData from '../../../../data/schedule.json';
+import type { GameExcitementData, ScheduleData } from '../../../../data/types';
+import { completeWeeks } from '../../../../lib/week/recap';
+
+export function getStaticPaths() {
+  return gamePages.map((game) => {
+    const [, season, week, matchup] = gamePath(game).split('/');
+    return { params: { season, week, matchup }, props: { game } };
+  });
+}
+
+const { game } = Astro.props as { game: GameData };
+const teamName = new Map((teamsData as TeamsData).map((t) => [t.abbr, t.name]));
+const nameOf = (abbr: string) => teamName.get(abbr) ?? abbr;
+const at = game.neutral ? 'vs' : 'at';
+const round = weekLabel(game.week)!;
+const awayWon = game.awayScore > game.homeScore;
+const homeWon = game.homeScore > game.awayScore;
+const title = `${game.away} ${game.awayScore}, ${game.home} ${game.homeScore}: ${round}, ${game.season}`;
+
+// Line score: periods, then the final.
+const periods = game.lineScore ? periodLabels(game.lineScore.away.length) : [];
+const sides = [
+  { key: 'away' as const, abbr: game.away, score: game.awayScore, won: awayWon },
+  { key: 'home' as const, abbr: game.home, score: game.homeScore, won: homeWon },
+];
+
+// The calls, from the game file's copy of its decisions.json records.
+const NFL4TH = 'https://github.com/nflverse/nfl4th';
+const LICENSE = 'https://github.com/nflverse/nfl4th/blob/master/LICENSE.md';
+const NFLFASTR = 'https://www.nflfastr.com/';
+const calls = game.decisions;
+const records = calls ? [...calls.fourthDowns, ...calls.tries].sort((a, b) => a.playId - b.playId) : [];
+const items = records.map((d) => decisionItem(d, calls!.closeMargin));
+const questionable = items.filter((i) => i.questionable).length;
+
+// The game's win probability chart, with each call marked on its line.
+const chartId = `auto-${game.season}-week-${game.week}-${game.away}-at-${game.home}-win-probability`.toLowerCase();
+const chart = (await getCharts()).find((c) => c.id === chartId);
+const hover = chart ? hoverFor(chart) : null;
+const spots = new Map(game.decisionSpots.map((s) => [s.playId, s]));
+const marks: ChartMark[] = hover
+  ? items.flatMap((item) => {
+      const spot = spots.get(item.playId);
+      if (!spot) return [];
+      const pos = toSvg(hover, { x: spot.x, y: spot.y, lines: [] });
+      return [{ x: pos.x, y: pos.y!, href: `#${item.anchor}`, label: markLabel(item), shape: item.fourthDown ? 'circle' : 'square', strong: item.questionable }];
+    })
+  : [];
+
+// Box score.
+const boxRows = teamBoxRows(game.teams.away, game.teams.home);
+const BOARDS = ['passing', 'rushing', 'receiving', 'defense', 'kicking'] as const;
+const boardColumns = (key: string): BoardColumn[] => leaderboards.find((b) => b.key === key)?.columns.filter((c) => c.key !== 'games') ?? [];
+const boardLabel = (key: string) => leaderboards.find((b) => b.key === key)?.label ?? key;
+const playerHref = (id: string, name: string) => {
+  const slug = slugForPlayer(id, name);
+  return playerPages.has(slug) ? url(`players/${slug}`) : null;
+};
+const spread = spreadText(game);
+// The week's recap, when /week has a page for it (complete weeks of the current season).
+const schedule = scheduleData as ScheduleData;
+const excitement = excitementData as GameExcitementData;
+const recapWeeks = schedule.season === game.season && excitement.season === schedule.season ? completeWeeks(schedule.games, excitement.games) : [];
+const recapHref = recapWeeks.includes(game.week) ? url(`week/${game.season}/${game.week}`) : null;
+const total = game.totalLine;
+---
+
+<BaseLayout
+  title={title}
+  description={`${nameOf(game.away)} ${at} ${nameOf(game.home)}, ${round.toLowerCase()} of ${game.season}: line score, win probability, every 4th down against nfl4th, and the box score.`}
+>
+  <h1 class="page-title">
+    {nameOf(game.away)} {at} {nameOf(game.home)}
+  </h1>
+
+  <div class="content-grid neutral-hover">
+    <Panel title="Final">
+      <div class:list={['result', { marked: game.excitement?.label }]}>
+        <div class="stat-table-scroll" tabindex="0">
+          <table class="stat-table line-score">
+            <caption class="visually-hidden">Score by quarter</caption>
+            <thead>
+              <tr>
+                <th scope="col">Team</th>
+                {periods.map((p) => <th scope="col" class="number">{p}</th>)}
+                <th scope="col" class="number">Final</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                sides.map((side) => (
+                  <tr class:list={{ won: side.won }}>
+                    <th scope="row">
+                      <span class="team">
+                        <TeamChip abbr={side.abbr} size="sm" />
+                        <a href={url(`teams/${side.abbr}`)}>{nameOf(side.abbr)}</a>
+                      </span>
+                    </th>
+                    {game.lineScore?.[side.key].map((points) => <td class="number">{points}</td>)}
+                    <td class="number total">{side.score}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+        <dl class="facts">
+          <div>
+            <dt>Played</dt>
+            <dd>{easternDate(game.kickoff, 'date')}, {round.toLowerCase()}{game.overtime ? ', in overtime' : ''}{game.neutral ? ', at a neutral site' : ''}</dd>
+          </div>
+          {
+            game.excitement && (
+              <div>
+                <dt>Excitement</dt>
+                <dd>
+                  {game.excitement.label && <strong class="label">{game.excitement.label}. </strong>}
+                  Index {game.excitement.index.toFixed(2)} (how far win probability swung), the winner's low point{' '}
+                  {game.excitement.winnerLowWp === null ? 'none (a tie)' : formatStat(game.excitement.winnerLowWp, 'percent1')}.{' '}
+                  {recapHref && <a href={recapHref}>The week ranked</a>}
+                </dd>
+              </div>
+            )
+          }
+          <div>
+            <dt>Spread</dt>
+            <dd>{spread ? `${spread}. ${spreadResult(game)}` : 'No line published.'}</dd>
+          </div>
+          <div>
+            <dt>Total</dt>
+            <dd>{total !== null ? `${total}. ${totalResult(game)}` : 'No line published.'}</dd>
+          </div>
+        </dl>
+        <p class="note">Closing lines as nflverse publishes them.{!game.lineScore && ' The score by quarter is not available for this game.'}</p>
+      </div>
+    </Panel>
+
+    <Panel title="Win probability" titleId="game-chart-title">
+      {
+        chart && svgFor(chart) ? (
+          <>
+            <ChartFigure
+              svg={svgFor(chart)}
+              titleId="game-chart-title"
+              note={chart.data.note}
+              id="game-chart"
+              hover={hover}
+              marks={marks}
+              marksLabel="4th downs and tries, each linking to the call below"
+            >
+              {marks.length > 0 && (
+                <p class="legend">
+                  <span class="key"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.5" class="k-fourth" /></svg>4th down</span>
+                  <span class="key"><svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="2" width="8" height="8" class="k-try" /></svg>Try after a touchdown</span>
+                  <span class="key"><svg viewBox="0 0 24 24" aria-hidden="true" class="wide"><circle cx="12" cy="12" r="10" class="k-ring" /><circle cx="12" cy="12" r="6" class="k-strong" /></svg>Questionable call (ringed, in red)</span>
+                  <span>Each mark sits at the snap and links to the call below.</span>
+                </p>
+              )}
+              <p class="source">
+                Win probability is the <a href={NFLFASTR}>nflfastR</a> model's, as published in nflverse play-by-play,
+                not a model of this site's. <a href={url(`charts/${chart.id}`)}>Chart page</a>
+              </p>
+            </ChartFigure>
+          </>
+        ) : (
+          <p class="placeholder-note">
+            No win probability chart yet. The daily job draws one for every final once nflverse publishes its
+            play-by-play.
+          </p>
+        )
+      }
+    </Panel>
+
+    <Panel title="Biggest plays">
+      <p class="lead">The five plays that moved win probability most, either way (nflfastR's model).</p>
+      <div class="stat-table-scroll" tabindex="0">
+        <table class="stat-table big-plays">
+          <caption class="visually-hidden">The five biggest swings in win probability, in game order</caption>
+          <thead>
+            <tr>
+              <th scope="col">Time</th>
+              <th scope="col">Offense</th>
+              <th scope="col">Play</th>
+              <th scope="col" class="number" title="Points of win probability gained by the team named">Swing</th>
+              <th scope="col">Its chance</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              game.bigPlays.map((p) => {
+                const swing = swingOf(p, game);
+                return (
+                  <tr>
+                    <td class="nowrap">{quarterClock(p.quarter, p.clock)}</td>
+                    <td>{p.offense ?? ''}</td>
+                    <td class="play">{playText(p.description)}</td>
+                    <td class="number nowrap">{swing.team} +{swing.points}</td>
+                    <td class="nowrap num">{swing.wp}</td>
+                  </tr>
+                );
+              })
+            }
+          </tbody>
+        </table>
+      </div>
+    </Panel>
+
+    <Panel title="4th downs and tries">
+      <p class="lead">
+        Every 4th down and try after a touchdown, against Ben Baldwin's <a href={NFL4TH}>nfl4th</a> (<a href={LICENSE}>MIT license</a>):
+        what it recommended before the snap, what the team did, and each option's win probability. A questionable call gave
+        up 2 points of win probability or more; clear when nfl4th's top two options were 5 points or more apart. nfl4th assumes a
+        league-average kicker and doesn't know who's kicking. Every coach's calls: <a href={url('decisions')}>decision grades</a>.
+      </p>
+      {
+        items.length === 0 ? (
+          <p class="placeholder-note">
+            {calls ? 'No 4th downs or tries in this game.' : "This game's calls are graded with the next daily run."}
+          </p>
+        ) : (
+          <>
+            <p class="count">
+              {items.filter((i) => i.fourthDown).length} 4th downs and {items.filter((i) => !i.fourthDown).length} tries,{' '}
+              {questionable === 0 ? 'no questionable calls' : questionable === 1 ? '1 questionable call' : `${questionable} questionable calls`}.
+            </p>
+            <ol class="live-items calls">
+              {items.map((item) => (
+                <li class:list={['live-item', { questionable: item.questionable }]} id={item.anchor}>
+                  <p class="live-when">{item.when}</p>
+                  <p class="live-down">{item.down}</p>
+                  <p class="live-play" title={item.description}>{item.play}</p>
+                  {item.questionable && <p class="live-mark">{item.clear ? 'Questionable call, clear' : 'Questionable call'}</p>}
+                  <p class="live-verdict">{item.verdict}</p>
+                  {item.wp && <p class="live-wp">{item.wp}</p>}
+                </li>
+              ))}
+            </ol>
+          </>
+        )
+      }
+    </Panel>
+
+    <Panel title="Box score">
+      <h3 class="box-title">Team stats</h3>
+      <div class="stat-table-scroll" tabindex="0">
+        <table class="stat-table team-box">
+          <caption class="visually-hidden">Team stats, {game.away} and {game.home}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Stat</th>
+              <th scope="col" class="number">{game.away}</th>
+              <th scope="col" class="number">{game.home}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              boxRows.map((r) => (
+                <tr class:list={{ sub: r.label === 'Passing' || r.label === 'Rushing' }}>
+                  <th scope="row" title={r.title}>{r.label}</th>
+                  <td class="number">{r.away}</td>
+                  <td class="number">{r.home}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        From nflverse play-by-play. EPA per play and success rate count dropbacks and designed runs, as on{' '}
+        <a href={url('stats/teams')}>team stats</a>; red zone trips are drives that got inside the opponent's 20.
+      </p>
+
+      {
+        game.players === null ? (
+          <p class="placeholder-note">Player stats appear once nflverse publishes the week's stats, usually within a day.</p>
+        ) : (
+          BOARDS.map((key) => {
+            const columns = boardColumns(key);
+            const rows = [...game.players![key]].sort((a, b) => Number(a[2] === game.home) - Number(b[2] === game.home));
+            return rows.length === 0 ? null : (
+              <>
+                <h3 class="box-title">{boardLabel(key)}</h3>
+                <div class="stat-table-scroll" tabindex="0">
+                  <table class="stat-table players">
+                    <caption class="visually-hidden">{boardLabel(key)}, {game.away} then {game.home}</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Player</th>
+                        <th scope="col">Team</th>
+                        {columns.map((c) => (
+                          <th scope="col" class="number" title={c.title}>
+                            {c.label}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rows.map((row, i) => {
+                        const [id, name, team, ...values] = row;
+                        const href = playerHref(id, name);
+                        return (
+                          <tr class:list={{ split: i > 0 && rows[i - 1][2] !== team }}>
+                            <th scope="row">{href ? <a href={href}>{name}</a> : name}</th>
+                            <td>{team}</td>
+                            {columns.map((c, j) => (
+                              <td class="number">{formatCell(values[j] ?? null, { ...c, perGame: false, rate: false }, 'totals')}</td>
+                            ))}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            );
+          })
+        )
+      }
+      {game.players && <p class="note">nflverse's player stats for the game, counted the way the <a href={url('stats')}>stat leaders</a> are.</p>}
+    </Panel>
+  </div>
+</BaseLayout>
+
+<style>
+  .lead,
+  .note,
+  .count,
+  .source,
+  .legend {
+    color: var(--text-dim);
+  }
+
+  .lead {
+    margin-bottom: var(--space-2);
+    max-width: 80ch;
+  }
+
+  .note,
+  .source,
+  .legend {
+    margin-top: var(--space-2);
+    font-size: 12px;
+  }
+
+  .result {
+    display: grid;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    gap: var(--space-2) var(--space-4);
+    align-items: start;
+  }
+
+  /* An excitement labelled game carries the ticker's slate bar. */
+  .result.marked {
+    padding-left: var(--space-2);
+    border-left: var(--mark-bar) solid var(--header);
+  }
+
+  .result .note {
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+
+  .line-score .team {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    white-space: nowrap;
+  }
+
+  .line-score tbody th {
+    font-weight: 400;
+    text-align: left;
+  }
+
+  .line-score .won th,
+  .line-score .won .total {
+    font-weight: 700;
+  }
+
+  .line-score .total {
+    font-size: 15px;
+  }
+
+  .facts {
+    margin: 0;
+  }
+
+  .facts div {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .facts div + div {
+    margin-top: var(--space-1);
+    padding-top: var(--space-1);
+    border-top: 1px dotted var(--rule-soft);
+  }
+
+  .facts dt {
+    flex: 0 0 80px;
+    color: var(--text-dim);
+  }
+
+  .facts dd {
+    margin: 0;
+  }
+
+  .label {
+    font-family: var(--font-heading);
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    align-items: center;
+  }
+
+  .key {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .key svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .k-fourth {
+    fill: var(--header);
+  }
+
+  .k-try {
+    fill: var(--panel);
+    stroke: var(--header);
+    stroke-width: 2;
+  }
+
+  .k-strong {
+    fill: var(--loss);
+  }
+
+  .k-ring {
+    fill: none;
+    stroke: var(--text);
+    stroke-width: 1.5;
+  }
+
+  .key svg.wide {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* nflverse's play text wraps, so the table fits the panel. */
+  .big-plays td.play {
+    min-width: 200px;
+    white-space: normal;
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .count {
+    margin-bottom: var(--space-2);
+  }
+
+  /* Two columns where they fit, read top to bottom, so a game's 20 or so
+     calls stay in game order without one long strip. */
+  .calls {
+    columns: 2 320px;
+    column-gap: var(--space-5);
+  }
+
+  .calls .live-item {
+    break-inside: avoid;
+    scroll-margin-top: var(--space-3);
+  }
+
+  /* The live items' dotted rule, on every item, since a column can start
+     with any of them. */
+  .calls .live-item,
+  .calls .live-item + .live-item {
+    margin: 0 0 var(--space-2);
+    padding: var(--space-2) 0 0;
+    border-top: 1px dotted var(--rule-soft);
+  }
+
+  /* A questionable call carries the slate bar the team pages' tables use. */
+  .calls .live-item.questionable,
+  .calls .live-item + .live-item.questionable {
+    padding-left: var(--space-2);
+    border-left: var(--mark-bar) solid var(--header);
+  }
+
+  .calls .live-mark {
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  /* Reached from a chart mark: the call is outlined, not tinted (yellow means live here). */
+  .calls :target {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+  }
+
+  .box-title {
+    font-size: 15px;
+    margin: var(--space-3) 0 var(--space-1);
+  }
+
+  .box-title:first-child {
+    margin-top: 0;
+  }
+
+  .team-box,
+  .players {
+    width: auto;
+  }
+
+  .team-box td {
+    white-space: nowrap;
+  }
+
+  .team-box tbody th,
+  .players tbody th {
+    font-weight: 400;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .team-box .sub th {
+    padding-left: var(--space-4);
+  }
+
+  .players .split > * {
+    border-top: 2px solid var(--header);
+  }
+
+  @media (max-width: 759px) {
+    .result {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

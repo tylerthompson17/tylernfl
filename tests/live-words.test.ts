@@ -32,6 +32,9 @@ test('verdicts against nfl4th', () => {
   assert.equal(verdictLine(graded('punt', 0.047, 0), 'punt'), 'Agreed with nfl4th: Punt (by 4.7 points)');
   assert.equal(verdictLine(graded('go', 0.031, 0.031), 'punt'), 'Went against nfl4th: it said Go for it (by 3.1 points)');
   assert.equal(verdictLine(graded('go', 0.012, 0.012), 'punt'), 'A close call (nfl4th leaned Go for it, by 1.2 points)');
+  // Top two close, but the team took the third option and gave up 2.1 points.
+  assert.equal(verdictLine(graded('field goal', 0.006, 0.021), 'punt'), 'Went against nfl4th: it said Field goal (by 2.1 points)');
+  assert.equal(verdictLine(graded('go', 0.0004, 0.0004), 'punt'), 'A close call (nfl4th leaned Go for it, by less than 0.1 points)');
   assert.equal(verdictLine({ kind: 'unsupported', message: "Not graded: nfl4th doesn't compute overtime." }, 'go'), "Not graded: nfl4th doesn't compute overtime.");
   assert.equal(pendingLine(graded('go', 0.031, null)), 'nfl4th says: Go for it, by 3.1 points. Waiting for the snap.');
 });

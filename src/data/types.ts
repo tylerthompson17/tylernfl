@@ -928,3 +928,77 @@ export interface DailyFourthNext {
   ended: 'half' | 'regulation' | 'game' | 'touchdown' | null;
   final: { away: number; home: number; overtime: boolean };
 }
+
+/** One team's box stats in one game (pipelines/games.py, definitions in its docstring). */
+export interface GameTeamBox {
+  plays: number;
+  yards: number;
+  passYards: number;
+  rushYards: number;
+  firstDowns: number;
+  epaPerPlay: number | null;
+  successRate: number | null;
+  /** [converted, attempts] */
+  thirdDowns: [number, number];
+  fourthDowns: [number, number];
+  /** [touchdowns, trips inside the 20] */
+  redZone: [number, number];
+  turnovers: number;
+  /** Seconds */
+  timeOfPossession: number;
+}
+
+/** A player's line: gsis id, name, team, then the board's columns without games played, in order. */
+export type GamePlayerRow = [string, string, string, ...(number | null)[]];
+
+export interface GameBigPlay {
+  /** nflverse play_id */
+  playId: number;
+  quarter: number;
+  /** "13:37", game clock at the snap */
+  clock: string;
+  offense: string | null;
+  /** nflverse's play description, as published */
+  description: string;
+  homeWpBefore: number;
+  homeWpAfter: number;
+}
+
+/** games/{gameId}.json: one final, for its game page (pipelines/games.py). */
+export interface GameData {
+  /** nflverse game id; the Rams are LA in it */
+  id: string;
+  season: number;
+  week: number;
+  type: ScheduleGame['type'];
+  kickoff: string | null;
+  away: string;
+  home: string;
+  awayScore: number;
+  homeScore: number;
+  overtime: boolean;
+  neutral: boolean;
+  /** Points the home team was favored by at the close; negative when the road team was */
+  spreadLine: number | null;
+  totalLine: number | null;
+  excitement: Pick<GameExcitement, 'index' | 'winnerLowWp' | 'label'> | null;
+  /** Points per period, overtime after the fourth; null when they would not add up to the final */
+  lineScore: { away: number[]; home: number[] } | null;
+  teams: { away: GameTeamBox; home: GameTeamBox };
+  /** Board key to rows, most of the main stat first; null until nflverse publishes the week's stats */
+  players: Record<'passing' | 'rushing' | 'receiving' | 'defense' | 'kicking', GamePlayerRow[]> | null;
+  /** The five largest swings in home win probability, in game order */
+  bigPlays: GameBigPlay[];
+  /**
+   * The game's records from decisions.json, copied as they are when the game
+   * was last built, so a past season keeps its calls; null before any
+   */
+  decisions: {
+    modelVersion: string | null;
+    closeMargin: number;
+    fourthDowns: FourthDownDecision[];
+    tries: TryDecision[];
+  } | null;
+  /** Each of those decisions on the WP chart: minutes since kickoff, home WP before the snap */
+  decisionSpots: { playId: number; x: number; y: number }[];
+}

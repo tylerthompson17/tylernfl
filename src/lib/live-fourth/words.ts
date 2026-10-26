@@ -68,16 +68,28 @@ export function playSummary(type: string, text: string, distance: number, call: 
   return `${fakeWord}Stopped: ${yards > 0 ? `${aYards(yards)} ${how}` : yards === 0 ? `no gain on a ${how}` : `a loss of ${plural(-yards)} on a ${how}`}, short of the line`;
 }
 
-const by = (wp: number) => `${(wp * 100).toFixed(1)} points`;
+// Under 0.05 points the margin rounds to 0.0, which reads as no lean at all.
+const by = (wp: number) => (wp < 0.0005 ? 'less than 0.1 points' : `${(wp * 100).toFixed(1)} points`);
+
+/**
+ * The verdict in words, given nfl4th's call already said ("Punt", "Go for
+ * 2"); shared with the game pages' tries, which have no LiveGrade. A close
+ * margin between nfl4th's top two options makes it a close call, unless
+ * the team took neither and gave up CLOSE or more (its third option): that
+ * is going against nfl4th, however close the top two were.
+ */
+export function verdictWords(said: string, agreed: boolean, margin: number, wpLost: number | null): string {
+  const lostMuch = !agreed && wpLost !== null && wpLost >= CLOSE;
+  if (margin < CLOSE && !lostMuch) return `A close call (nfl4th leaned ${said}, by ${by(margin)})`;
+  if (agreed) return `Agreed with nfl4th: ${said} (by ${by(margin)})`;
+  const lost = wpLost === null ? '' : ` (by ${by(wpLost)})`;
+  return `Went against nfl4th: it said ${said}${lost}`;
+}
 
 /** The verdict against nfl4th for a 4th down that was played. */
 export function verdictLine(grade: LiveGrade, teamCall: TeamCall | null): string {
   if (grade.kind === 'unsupported') return grade.message;
-  const said = callWords(grade.call);
-  if (grade.margin < CLOSE) return `A close call (nfl4th leaned ${said}, by ${by(grade.margin)})`;
-  if (teamCall === grade.call) return `Agreed with nfl4th: ${said} (by ${by(grade.margin)})`;
-  const lost = grade.wpLost === null ? '' : ` (by ${by(grade.wpLost)})`;
-  return `Went against nfl4th: it said ${said}${lost}`;
+  return verdictWords(callWords(grade.call), teamCall === grade.call, grade.margin, grade.wpLost);
 }
 
 /** For a 4th down still to be played. */
