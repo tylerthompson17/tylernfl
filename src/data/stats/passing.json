@@ -435,6 +435,26 @@
     },
     {
       "rank": 18,
+      "playerId": "00-0033873",
+      "player": "Patrick Mahomes",
+      "team": "KC",
+      "position": "QB",
+      "teamGames": 6,
+      "qualified": true,
+      "values": {
+        "games": 6,
+        "completions": 124,
+        "attempts": 191,
+        "passing_yards": 1474,
+        "passing_tds": 9,
+        "passing_interceptions": 4,
+        "sacks_suffered": 7,
+        "cmp_pct": 0.649,
+        "pass_ypa": 7.7
+      }
+    },
+    {
+      "rank": 19,
       "playerId": "00-0035710",
       "player": "Daniel Jones",
       "team": "IND",
@@ -454,27 +474,27 @@
       }
     },
     {
-      "rank": 19,
-      "playerId": "00-0033873",
-      "player": "Patrick Mahomes",
-      "team": "KC",
+      "rank": 20,
+      "playerId": "00-0034869",
+      "player": "Sam Darnold",
+      "team": "SEA",
       "position": "QB",
-      "teamGames": 5,
+      "teamGames": 7,
       "qualified": true,
       "values": {
-        "games": 5,
-        "completions": 105,
-        "attempts": 158,
-        "passing_yards": 1309,
-        "passing_tds": 9,
-        "passing_interceptions": 3,
-        "sacks_suffered": 6,
-        "cmp_pct": 0.665,
-        "pass_ypa": 8.3
+        "games": 6,
+        "completions": 110,
+        "attempts": 177,
+        "passing_yards": 1290,
+        "passing_tds": 8,
+        "passing_interceptions": 8,
+        "sacks_suffered": 14,
+        "cmp_pct": 0.621,
+        "pass_ypa": 7.3
       }
     },
     {
-      "rank": 20,
+      "rank": 21,
       "playerId": "00-0039732",
       "player": "Bo Nix",
       "team": "DEN",
@@ -494,7 +514,7 @@
       }
     },
     {
-      "rank": 21,
+      "rank": 22,
       "playerId": "00-0040676",
       "player": "Cam Ward",
       "team": "TEN",
@@ -514,7 +534,7 @@
       }
     },
     {
-      "rank": 22,
+      "rank": 23,
       "playerId": "00-0039917",
       "player": "Michael Penix Jr.",
       "team": "ATL",
@@ -534,7 +554,7 @@
       }
     },
     {
-      "rank": 23,
+      "rank": 24,
       "playerId": "00-0036355",
       "player": "Justin Herbert",
       "team": "LAC",
@@ -554,7 +574,7 @@
       }
     },
     {
-      "rank": 24,
+      "rank": 25,
       "playerId": "00-0038128",
       "player": "Malik Willis",
       "team": "MIA",
@@ -571,26 +591,6 @@
         "sacks_suffered": 16,
         "cmp_pct": 0.576,
         "pass_ypa": 7.0
-      }
-    },
-    {
-      "rank": 25,
-      "playerId": "00-0034869",
-      "player": "Sam Darnold",
-      "team": "SEA",
-      "position": "QB",
-      "teamGames": 6,
-      "qualified": true,
-      "values": {
-        "games": 5,
-        "completions": 90,
-        "attempts": 149,
-        "passing_yards": 1033,
-        "passing_tds": 7,
-        "passing_interceptions": 7,
-        "sacks_suffered": 14,
-        "cmp_pct": 0.604,
-        "pass_ypa": 6.9
       }
     },
     {
@@ -799,7 +799,7 @@
       "player": "Drew Lock",
       "team": "SEA",
       "position": "QB",
-      "teamGames": 6,
+      "teamGames": 7,
       "qualified": false,
       "values": {
         "games": 2,
@@ -1099,10 +1099,10 @@
       "player": "Jaxon Smith-Njigba",
       "team": "SEA",
       "position": "WR",
-      "teamGames": 6,
+      "teamGames": 7,
       "qualified": false,
       "values": {
-        "games": 6,
+        "games": 7,
         "completions": 1,
         "attempts": 1,
         "passing_yards": 14,

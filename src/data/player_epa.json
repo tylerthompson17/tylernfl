@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 7,
-  "updated": "2026-10-26T03:25:33Z",
+  "updated": "2026-10-26T16:20:59Z",
   "categories": [
     {
       "key": "epa_per_dropback",
@@ -88,15 +88,6 @@
         },
         {
           "rank": 9,
-          "playerId": "00-0033873",
-          "player": "Patrick Mahomes",
-          "team": "KC",
-          "value": 0.187,
-          "plays": 174,
-          "teamGames": 5
-        },
-        {
-          "rank": 10,
           "playerId": "00-0029604",
           "player": "Kirk Cousins",
           "team": "LV",
@@ -105,7 +96,7 @@
           "teamGames": 7
         },
         {
-          "rank": 11,
+          "rank": 10,
           "playerId": "00-0039910",
           "player": "Jayden Daniels",
           "team": "WAS",
@@ -114,7 +105,7 @@
           "teamGames": 6
         },
         {
-          "rank": 12,
+          "rank": 11,
           "playerId": "00-0033077",
           "player": "Dak Prescott",
           "team": "DAL",
@@ -123,7 +114,7 @@
           "teamGames": 6
         },
         {
-          "rank": 13,
+          "rank": 12,
           "playerId": "00-0039163",
           "player": "C.J. Stroud",
           "team": "HOU",
@@ -132,13 +123,22 @@
           "teamGames": 7
         },
         {
-          "rank": 14,
+          "rank": 13,
           "playerId": "00-0039917",
           "player": "Michael Penix Jr.",
           "team": "ATL",
           "value": 0.135,
           "plays": 156,
           "teamGames": 7
+        },
+        {
+          "rank": 13,
+          "playerId": "00-0033873",
+          "player": "Patrick Mahomes",
+          "team": "KC",
+          "value": 0.135,
+          "plays": 210,
+          "teamGames": 6
         },
         {
           "rank": 15,
@@ -223,6 +223,15 @@
         },
         {
           "rank": 24,
+          "playerId": "00-0034869",
+          "player": "Sam Darnold",
+          "team": "SEA",
+          "value": -0.008,
+          "plays": 196,
+          "teamGames": 7
+        },
+        {
+          "rank": 25,
           "playerId": "00-0033119",
           "player": "Jacoby Brissett",
           "team": "ARI",
@@ -231,7 +240,7 @@
           "teamGames": 7
         },
         {
-          "rank": 25,
+          "rank": 26,
           "playerId": "00-0036389",
           "player": "Jalen Hurts",
           "team": "PHI",
@@ -240,7 +249,7 @@
           "teamGames": 6
         },
         {
-          "rank": 26,
+          "rank": 27,
           "playerId": "00-0039732",
           "player": "Bo Nix",
           "team": "DEN",
@@ -249,7 +258,7 @@
           "teamGames": 7
         },
         {
-          "rank": 27,
+          "rank": 28,
           "playerId": "00-0031503",
           "player": "Jameis Winston",
           "team": "NYG",
@@ -258,22 +267,13 @@
           "teamGames": 7
         },
         {
-          "rank": 28,
+          "rank": 29,
           "playerId": "00-0023459",
           "player": "Aaron Rodgers",
           "team": "PIT",
           "value": -0.08,
           "plays": 286,
           "teamGames": 7
-        },
-        {
-          "rank": 29,
-          "playerId": "00-0034869",
-          "player": "Sam Darnold",
-          "team": "SEA",
-          "value": -0.102,
-          "plays": 166,
-          "teamGames": 6
         },
         {
           "rank": 30,
@@ -353,15 +353,6 @@
         },
         {
           "rank": 3,
-          "playerId": "00-0038134",
-          "player": "Kenneth Walker III",
-          "team": "KC",
-          "value": 0.118,
-          "plays": 106,
-          "teamGames": 5
-        },
-        {
-          "rank": 4,
           "playerId": "00-0036555",
           "player": "Chuba Hubbard",
           "team": "CAR",
@@ -370,7 +361,7 @@
           "teamGames": 6
         },
         {
-          "rank": 5,
+          "rank": 4,
           "playerId": "00-0037228",
           "player": "Jaylen Warren",
           "team": "PIT",
@@ -379,13 +370,22 @@
           "teamGames": 7
         },
         {
-          "rank": 6,
+          "rank": 5,
           "playerId": "00-0040236",
           "player": "Kyle Monangai",
           "team": "CHI",
           "value": 0.097,
           "plays": 60,
           "teamGames": 7
+        },
+        {
+          "rank": 6,
+          "playerId": "00-0038134",
+          "player": "Kenneth Walker III",
+          "team": "KC",
+          "value": 0.096,
+          "plays": 120,
+          "teamGames": 6
         },
         {
           "rank": 7,
@@ -596,6 +596,15 @@
         },
         {
           "rank": 30,
+          "playerId": "00-0038797",
+          "player": "Emanuel Wilson",
+          "team": "SEA",
+          "value": -0.148,
+          "plays": 111,
+          "teamGames": 7
+        },
+        {
+          "rank": 31,
           "playerId": "00-0036158",
           "player": "J.K. Dobbins",
           "team": "DEN",
@@ -604,7 +613,7 @@
           "teamGames": 7
         },
         {
-          "rank": 31,
+          "rank": 32,
           "playerId": "00-0038120",
           "player": "Breece Hall",
           "team": "NYJ",
@@ -613,7 +622,7 @@
           "teamGames": 7
         },
         {
-          "rank": 32,
+          "rank": 33,
           "playerId": "00-0040583",
           "player": "Woody Marks",
           "team": "HOU",
@@ -622,7 +631,7 @@
           "teamGames": 7
         },
         {
-          "rank": 33,
+          "rank": 34,
           "playerId": "00-0040784",
           "player": "Quinshon Judkins",
           "team": "CLE",
@@ -631,21 +640,12 @@
           "teamGames": 7
         },
         {
-          "rank": 34,
+          "rank": 35,
           "playerId": "00-0033293",
           "player": "Aaron Jones",
           "team": "MIN",
           "value": -0.189,
           "plays": 105,
-          "teamGames": 6
-        },
-        {
-          "rank": 35,
-          "playerId": "00-0038797",
-          "player": "Emanuel Wilson",
-          "team": "SEA",
-          "value": -0.192,
-          "plays": 87,
           "teamGames": 6
         },
         {

@@ -1,12 +1,60 @@
 {
   "month": 10,
-  "day": 25,
-  "gamesOnDate": 43,
+  "day": 26,
+  "gamesOnDate": 55,
   "items": [
     {
-      "year": 2020,
-      "gameId": "2020_07_SEA_ARI",
-      "text": "The Cardinals beat the Seahawks 37-34 in overtime with 71 combined points.",
+      "year": 2017,
+      "gameId": "2017_08_MIA_BAL",
+      "text": "The Ravens shut out the Dolphins 40-0.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Ravens",
+          "team": "BAL"
+        },
+        {
+          "text": " shut out the "
+        },
+        {
+          "text": "Dolphins",
+          "team": "MIA"
+        },
+        {
+          "text": " 40-0."
+        }
+      ]
+    },
+    {
+      "year": 2014,
+      "gameId": "2014_08_IND_PIT",
+      "text": "The Steelers beat the Colts 51-34 with 85 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Steelers",
+          "team": "PIT"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Colts",
+          "team": "IND"
+        },
+        {
+          "text": " 51-34 with 85 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2003,
+      "gameId": "2003_08_SF_ARI",
+      "text": "The Cardinals beat the 49ers 16-13 in overtime as 7-point underdogs.",
       "parts": [
         {
           "text": "The "
@@ -19,59 +67,11 @@
           "text": " beat the "
         },
         {
-          "text": "Seahawks",
-          "team": "SEA"
+          "text": "49ers",
+          "team": "SF"
         },
         {
-          "text": " 37-34 in overtime with 71 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2010,
-      "gameId": "2010_07_NYG_DAL",
-      "text": "The Giants beat the Cowboys 41-35 with 76 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Giants",
-          "team": "NYG"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Cowboys",
-          "team": "DAL"
-        },
-        {
-          "text": " 41-35 with 76 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2009,
-      "gameId": "2009_07_NYJ_OAK",
-      "text": "The Jets shut out the Raiders 38-0.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Jets",
-          "team": "NYJ"
-        },
-        {
-          "text": " shut out the "
-        },
-        {
-          "text": "Raiders",
-          "team": "LV"
-        },
-        {
-          "text": " 38-0."
+          "text": " 16-13 in overtime as 7-point underdogs."
         }
       ]
     }

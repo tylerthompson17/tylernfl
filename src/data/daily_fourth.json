@@ -1,238 +1,248 @@
 {
-  "date": "2026-10-25",
-  "number": 1,
+  "date": "2026-10-26",
+  "number": 2,
   "season": 2026,
   "modelVersion": "nfl4th-ecb7293",
   "closeMargin": 0.02,
   "plays": [
     {
-      "key": "2026_02_IND_KC:3975",
-      "gameId": "2026_02_IND_KC",
-      "week": 2,
-      "away": "IND",
-      "home": "KC",
-      "offense": "IND",
-      "defense": "KC",
-      "coach": "Shane Steichen",
-      "quarter": 4,
-      "clock": 34,
-      "distance": 4,
-      "yardline100": 51,
-      "scoreDiff": 0,
-      "timeoutsOffense": 1,
+      "key": "2026_07_PIT_NO:1201",
+      "gameId": "2026_07_PIT_NO",
+      "week": 7,
+      "away": "PIT",
+      "home": "NO",
+      "offense": "NO",
+      "defense": "PIT",
+      "coach": "Kellen Moore",
+      "quarter": 2,
+      "clock": 620,
+      "distance": 12,
+      "yardline100": 20,
+      "scoreDiff": -3,
+      "timeoutsOffense": 2,
       "timeoutsDefense": 3,
       "wp": {
-        "go": 0.43649,
-        "punt": 0.35233,
-        "field goal": 0.22108
+        "go": 0.32652,
+        "punt": null,
+        "field goal": 0.37643
       },
-      "call": "go",
-      "margin": 0.08416,
+      "call": "field goal",
+      "margin": 0.04992,
       "close": false,
-      "teamCall": "punt",
-      "coachWpLost": 0.08416,
-      "result": "Punted 41 yards",
-      "description": "(:34) 8-R.Sanchez punts 41 yards to KC 10, Center-46-L.Rhodes. 81-N.Remigio to KC 16 for 6 yards (80-D.Burks; 29-C.Taylor-Britt).",
-      "next": {
-        "converted": false,
-        "drive": {
-          "team": "KC",
-          "startYardline100": 84,
-          "plays": 5,
-          "yards": 61,
-          "result": "end of regulation"
-        },
-        "ended": null,
-        "final": {
-          "away": 30,
-          "home": 33,
-          "overtime": true
-        }
-      }
-    },
-    {
-      "key": "2026_01_NO_DET:4687",
-      "gameId": "2026_01_NO_DET",
-      "week": 1,
-      "away": "NO",
-      "home": "DET",
-      "offense": "DET",
-      "defense": "NO",
-      "coach": "Dan Campbell",
-      "quarter": 4,
-      "clock": 37,
-      "distance": 1,
-      "yardline100": 56,
-      "scoreDiff": 0,
-      "timeoutsOffense": 3,
-      "timeoutsDefense": 1,
-      "wp": {
-        "go": 0.67506,
-        "punt": 0.56856,
-        "field goal": null
-      },
-      "call": "go",
-      "margin": 0.1065,
-      "close": false,
-      "teamCall": "punt",
-      "coachWpLost": 0.1065,
-      "result": "Punted 56 yards",
-      "description": "(:37) 3-J.Fox punts 56 yards to end zone, Center-49-H.Hatten, Touchback.",
-      "next": {
-        "converted": false,
-        "drive": {
-          "team": "NO",
-          "startYardline100": 80,
-          "plays": 5,
-          "yards": 36,
-          "result": "missed field goal"
-        },
-        "ended": null,
-        "final": {
-          "away": 30,
-          "home": 31,
-          "overtime": true
-        }
-      }
-    },
-    {
-      "key": "2026_01_MIA_LV:295",
-      "gameId": "2026_01_MIA_LV",
-      "week": 1,
-      "away": "MIA",
-      "home": "LV",
-      "offense": "MIA",
-      "defense": "LV",
-      "coach": "Jeff Hafley",
-      "quarter": 1,
-      "clock": 638,
-      "distance": 9,
-      "yardline100": 44,
-      "scoreDiff": 0,
-      "timeoutsOffense": 3,
-      "timeoutsDefense": 3,
-      "wp": {
-        "go": 0.40224,
-        "punt": 0.4023,
-        "field goal": 0.4005
-      },
-      "call": "punt",
-      "margin": 5e-05,
-      "close": true,
-      "teamCall": "punt",
+      "teamCall": "field goal",
       "coachWpLost": 0.0,
-      "result": "Punted 37 yards",
-      "description": "(10:38) 48-B.Pinion punts 37 yards to LV 7, Center-46-T.Addington, fair catch by 23-D.Laube.",
+      "result": "Made a 38-yard field goal",
+      "description": "(10:20) 10-D.Carlson 38 yard field goal is GOOD, Center-49-Z.Wood, Holder-17-R.Wright.",
       "next": {
         "converted": false,
         "drive": {
-          "team": "LV",
-          "startYardline100": 93,
-          "plays": 16,
-          "yards": 93,
+          "team": "PIT",
+          "startYardline100": 77,
+          "plays": 6,
+          "yards": 77,
           "result": "touchdown"
         },
         "ended": null,
         "final": {
-          "away": 13,
-          "home": 27,
+          "away": 16,
+          "home": 10,
           "overtime": false
         }
       }
     },
     {
-      "key": "2026_05_TB_DAL:2060",
-      "gameId": "2026_05_TB_DAL",
-      "week": 5,
-      "away": "TB",
-      "home": "DAL",
-      "offense": "DAL",
-      "defense": "TB",
-      "coach": "Brian Schottenheimer",
-      "quarter": 2,
-      "clock": 26,
-      "distance": 6,
-      "yardline100": 23,
-      "scoreDiff": 0,
+      "key": "2026_07_DEN_ARI:1068",
+      "gameId": "2026_07_DEN_ARI",
+      "week": 7,
+      "away": "DEN",
+      "home": "ARI",
+      "offense": "DEN",
+      "defense": "ARI",
+      "coach": "Sean Payton",
+      "quarter": 1,
+      "clock": 73,
+      "distance": 11,
+      "yardline100": 25,
+      "scoreDiff": 3,
       "timeoutsOffense": 1,
       "timeoutsDefense": 3,
       "wp": {
-        "go": 0.73739,
+        "go": 0.72137,
         "punt": null,
-        "field goal": 0.76908
+        "field goal": 0.75164
       },
       "call": "field goal",
-      "margin": 0.03169,
+      "margin": 0.03026,
       "close": false,
       "teamCall": "field goal",
       "coachWpLost": 0.0,
-      "result": "Made a 41-yard field goal",
-      "description": "(:26) 17-B.Aubrey 41 yard field goal is GOOD, Center-44-T.Sieg, Holder-5-B.Anger.",
+      "result": "Made a 43-yard field goal",
+      "description": "(1:13) 3-W.Lutz 43 yard field goal is GOOD, Center-48-M.Fraboni, Holder-16-J.Crawshaw.",
       "next": {
         "converted": false,
         "drive": {
-          "team": "TB",
+          "team": "ARI",
           "startYardline100": 71,
-          "plays": 3,
-          "yards": 34,
-          "result": "end of half"
+          "plays": 5,
+          "yards": 60,
+          "result": "field goal"
         },
         "ended": null,
         "final": {
-          "away": 24,
+          "away": 30,
           "home": 16,
           "overtime": false
         }
       }
     },
     {
-      "key": "2026_04_JAX_CIN:1552",
-      "gameId": "2026_04_JAX_CIN",
-      "week": 4,
-      "away": "JAX",
-      "home": "CIN",
-      "offense": "JAX",
-      "defense": "CIN",
-      "coach": "Liam Coen",
+      "key": "2026_05_CLE_NYJ:2000",
+      "gameId": "2026_05_CLE_NYJ",
+      "week": 5,
+      "away": "CLE",
+      "home": "NYJ",
+      "offense": "NYJ",
+      "defense": "CLE",
+      "coach": "Aaron Glenn",
       "quarter": 2,
-      "clock": 259,
-      "distance": 10,
-      "yardline100": 10,
-      "scoreDiff": 0,
+      "clock": 90,
+      "distance": 12,
+      "yardline100": 48,
+      "scoreDiff": 1,
       "timeoutsOffense": 3,
-      "timeoutsDefense": 2,
+      "timeoutsDefense": 3,
       "wp": {
-        "go": 0.49842,
-        "punt": null,
-        "field goal": 0.53923
+        "go": 0.56193,
+        "punt": 0.5953,
+        "field goal": 0.53075
       },
-      "call": "field goal",
-      "margin": 0.04081,
+      "call": "punt",
+      "margin": 0.03337,
       "close": false,
-      "teamCall": "field goal",
+      "teamCall": "punt",
       "coachWpLost": 0.0,
-      "result": "Made a 28-yard field goal",
-      "description": "(4:19) 39-C.Little 28 yard field goal is GOOD, Center-46-R.Matiscik, Holder-9-L.Cooke.",
+      "result": "Punted 37 yards",
+      "description": "(1:30) 14-A.McNamara punts 37 yards to CLE 11, Center-42-T.Hennessy, fair catch by 12-D.Boston.",
       "next": {
         "converted": false,
         "drive": {
-          "team": "CIN",
-          "startYardline100": 65,
+          "team": "CLE",
+          "startYardline100": 89,
           "plays": 5,
-          "yards": 20,
+          "yards": 26,
+          "result": "punt"
+        },
+        "ended": null,
+        "final": {
+          "away": 12,
+          "home": 17,
+          "overtime": false
+        }
+      }
+    },
+    {
+      "key": "2026_07_NE_CHI:3592",
+      "gameId": "2026_07_NE_CHI",
+      "week": 7,
+      "away": "NE",
+      "home": "CHI",
+      "offense": "NE",
+      "defense": "CHI",
+      "coach": "Mike Vrabel",
+      "quarter": 4,
+      "clock": 388,
+      "distance": 7,
+      "yardline100": 54,
+      "scoreDiff": -6,
+      "timeoutsOffense": 3,
+      "timeoutsDefense": 2,
+      "wp": {
+        "go": 0.16742,
+        "punt": 0.12749,
+        "field goal": null
+      },
+      "call": "go",
+      "margin": 0.03992,
+      "close": false,
+      "teamCall": "punt",
+      "coachWpLost": 0.03992,
+      "result": "Punted 45 yards",
+      "description": "(6:28) 19-M.Wishnowsky punts 45 yards to CHI 9, Center-47-J.Ashby, fair catch by 14-K.Raymond.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "CHI",
+          "startYardline100": 91,
+          "plays": 12,
+          "yards": 51,
+          "result": "field goal"
+        },
+        "ended": null,
+        "final": {
+          "away": 24,
+          "home": 30,
+          "overtime": false
+        }
+      }
+    },
+    {
+      "key": "2026_05_SF_SEA:130",
+      "gameId": "2026_05_SF_SEA",
+      "week": 5,
+      "away": "SF",
+      "home": "SEA",
+      "offense": "SF",
+      "defense": "SEA",
+      "coach": "Kyle Shanahan",
+      "quarter": 1,
+      "clock": 844,
+      "distance": 1,
+      "yardline100": 62,
+      "scoreDiff": 0,
+      "timeoutsOffense": 3,
+      "timeoutsDefense": 3,
+      "wp": {
+        "go": 0.40744,
+        "punt": 0.36856,
+        "field goal": null
+      },
+      "call": "go",
+      "margin": 0.03888,
+      "close": false,
+      "teamCall": "punt",
+      "coachWpLost": 0.03888,
+      "result": "Punted 51 yards",
+      "description": "(14:04) 15-C.Waitman punts 51 yards to SEA 11, Center-46-J.Weeks, fair catch by 22-R.Shaheed.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "SEA",
+          "startYardline100": 89,
+          "plays": 3,
+          "yards": 0,
           "result": "turnover"
         },
         "ended": null,
         "final": {
-          "away": 22,
-          "home": 17,
+          "away": 32,
+          "home": 29,
           "overtime": false
         }
       }
     }
   ],
-  "coachWpLost": 0.19066,
+  "coachWpLost": 0.0788,
   "history": [
+    {
+      "date": "2026-10-26",
+      "keys": [
+        "2026_07_PIT_NO:1201",
+        "2026_07_DEN_ARI:1068",
+        "2026_05_CLE_NYJ:2000",
+        "2026_07_NE_CHI:3592",
+        "2026_05_SF_SEA:130"
+      ]
+    },
     {
       "date": "2026-10-25",
       "keys": [
