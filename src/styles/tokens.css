@@ -35,6 +35,27 @@
      with --on-brand-light text (7:1). */
   --chip-unknown: #4a5a6a;
 
+  /* Retro Replays: the pixel art field and sprites inside the replay canvas
+     only (src/lib/replays/). A muted sage turf, kept apart from --win so
+     green never reads as "better" on the page around it. The line of
+     scrimmage and line to gain reuse --scrimmage and --highlight. */
+  --replay-turf: #7f9577;
+  --replay-turf-mow: #849a7c;
+  --replay-turf-out: #6f8468;
+  --replay-paint: #e3e8de;
+  --replay-outline: #14161a;
+  --replay-visor: #2b3340;
+  --replay-mask: #c9ced6;
+  --replay-pants: #e4e0d4;
+  --replay-road-jersey: #f4f4f0;
+  --replay-shoe: #2a2d33;
+  --replay-ball: #8a4b22;
+  --replay-shadow: rgba(0, 0, 0, 0.28);
+  /* The debug layer: a panel behind its text, and a color nothing else uses for its marks */
+  --replay-debug-panel: rgba(0, 0, 0, 0.7);
+  --replay-debug-text: #ffffff;
+  --replay-debug: #ff2bd6;
+
   /* Spacing scale */
   --space-1: 4px;
   --space-2: 8px;

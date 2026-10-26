@@ -1,0 +1,93 @@
+---
+/**
+ * One Retro Replay: a famous play redrawn as pixel art from Next Gen Stats
+ * tracking, one page per scene in src/data/replays/plays/
+ * (pipelines/replays.py). The scene is embedded at build time and drawn
+ * by src/lib/replays/; nothing is fetched. It moves only when the visitor
+ * presses play.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import ReplayPlayer from '../../components/replays/ReplayPlayer.astro';
+import type { ReplayScene, Team } from '../../data/types';
+import teamsData from '../../data/teams.json';
+import { url } from '../../utils/url';
+import { dateText, gameWords, situationText, wpSwingText } from '../../lib/replays/words';
+
+export function getStaticPaths() {
+  const files = import.meta.glob<ReplayScene>('../../data/replays/plays/*.json', { eager: true, import: 'default' });
+  return Object.values(files).map((scene) => ({ params: { key: scene.key }, props: { scene } }));
+}
+
+interface Props {
+  scene: ReplayScene;
+}
+
+const { scene } = Astro.props;
+const { play } = scene;
+const known = new Set((teamsData as Team[]).map((t) => t.abbr));
+// Retired abbreviations link today's franchise.
+const FRANCHISE: Record<string, string> = { OAK: 'LV', SD: 'LAC', STL: 'LAR' };
+const teamHref = (abbr: string) => {
+  const current = FRANCHISE[abbr] ?? abbr;
+  return known.has(current) ? url(`teams/${current}`) : null;
+};
+const goalToGo = scene.field.firstDown !== null && scene.field.firstDown >= 110;
+const title = gameWords(play);
+const date = dateText(play.date);
+const swing = wpSwingText(play);
+const NGS = 'https://github.com/asonty/ngs_highlights';
+---
+
+<BaseLayout title={`Retro Replay: ${title}`} description={`A pixel art replay of ${play.description}`}>
+  <h1 class="page-title">Retro Replay: {title}</h1>
+  <p class="page-intro">{play.description}</p>
+
+  <ReplayPlayer scene={scene} />
+
+  <Panel title="The play">
+    <dl class="facts">
+      <dt>Game</dt>
+      <dd>{[play.away, play.home].map((abbr, i) => <>{i === 1 && ' at '}{teamHref(abbr) ? <a href={teamHref(abbr)!}>{abbr}</a> : abbr}</>)}{date && `, ${date}`}</dd>
+      <dt>Situation</dt>
+      <dd>{situationText(play, goalToGo)}</dd>
+      <dt>Score before</dt>
+      <dd>{play.away} {play.scoreBefore.away}, {play.home} {play.scoreBefore.home}</dd>
+      {
+        swing && (
+          <>
+            <dt>{play.offense} win probability</dt>
+            <dd>{swing}</dd>
+          </>
+        )
+      }
+    </dl>
+    <p class="source">
+      Tracking: NFL Next Gen Stats highlights, collected in <a href={NGS}>asonty/ngs_highlights</a>. Play
+      description and win probability: nflverse play-by-play (nflfastR's model). Players and field drawn by this
+      site.
+    </p>
+  </Panel>
+</BaseLayout>
+
+<style>
+  .facts {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--space-1) var(--space-3);
+    margin: 0 0 var(--space-3);
+  }
+
+  .facts dt {
+    color: var(--text-dim);
+  }
+
+  .facts dd {
+    margin: 0;
+  }
+
+  .source {
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+</style>

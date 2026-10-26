@@ -1002,3 +1002,116 @@ export interface GameData {
   /** Each of those decisions on the WP chart: minutes since kickoff, home WP before the snap */
   decisionSpots: { playId: number; x: number; y: number }[];
 }
+
+/** A team in a Retro Replays scene: colors from teams.json (retired abbreviations take today's franchise's). */
+export interface ReplayTeam {
+  abbr: string;
+  primary: string;
+  secondary: string;
+}
+
+/**
+ * One player's track in a scene. Positions are in tenths of a yard (the
+ * scene's `scale`), null in a frame the player has no position for. The
+ * offense always drives left to right.
+ */
+export interface ReplayPlayer {
+  id: string;
+  side: 'offense' | 'defense';
+  jersey: number | null;
+  position: string | null;
+  name: string;
+  x: (number | null)[];
+  y: (number | null)[];
+  /** Direction of travel, whole degrees clockwise from +y */
+  dir?: (number | null)[];
+  /** Orientation (which way the body faces), same convention */
+  o?: (number | null)[];
+  /** Reserved for later phases: an action per frame (diving, tackled) */
+  state?: (string | null)[];
+}
+
+export interface ReplayPlay {
+  season: number;
+  seasonType: string;
+  week: number;
+  gameId: string;
+  playId: number;
+  quarter: number;
+  /** Game clock at the snap, MM:SS */
+  clock: string;
+  down: number | null;
+  yardsToGo: number | null;
+  yardline: string | null;
+  scoreBefore: { home: number; away: number };
+  scoreAfter: { home: number; away: number } | null;
+  description: string;
+  date: string | null;
+  nflverseGameId: string | null;
+  /** nflfastR's win probability for the offense before and after the play */
+  wpBefore: number | null;
+  wpAfter: number | null;
+  type: string;
+  /** The team whose side the replay takes: the receiving team on kicks */
+  offense: string;
+  defense: string;
+  home: string;
+  away: string;
+  /** The kicking team on a kickoff or punt, else null */
+  kicking: string | null;
+}
+
+/**
+ * replays/plays/{key}.json: one Retro Replays scene (pipelines/replays.py;
+ * the format is in src/data/replays/README.md). The ball's path is the one
+ * required track: a scene drawn from play-by-play alone has no players.
+ */
+export interface ReplayScene {
+  version: number;
+  key: string;
+  source: string;
+  /** Frames a second */
+  hz: number;
+  /** Stored positions are yards times this */
+  scale: number;
+  frameCount: number;
+  play: ReplayPlay;
+  /** Yards from the offense's end line (0 to 120), null when unknown or a kick */
+  field: { lineOfScrimmage: number | null; firstDown: number | null };
+  teams: { offense: ReplayTeam; defense: ReplayTeam };
+  events: { frame: number; name: string }[];
+  /** The ball in the air, frame to frame, drawn as an arc unless `ball.z` is given */
+  flights: { kind: string; from: number; to: number }[];
+  ball: { x: number[]; y: number[]; z?: (number | null)[] };
+  /** Index into `players` of whoever has the ball, per frame */
+  carrier?: (number | null)[];
+  players?: ReplayPlayer[];
+}
+
+/** replays/index.json: one line per scene built. */
+export interface ReplayIndexEntry {
+  key: string;
+  date: string | null;
+  season: number;
+  seasonType: string;
+  week: number;
+  away: string;
+  home: string;
+  offense: string;
+  defense: string;
+  type: string;
+  quarter: number;
+  clock: string;
+  down: number | null;
+  yardsToGo: number | null;
+  description: string;
+  touchdown: boolean;
+  wpBefore: number | null;
+  wpAfter: number | null;
+  seconds: number;
+}
+
+export interface ReplayIndexData {
+  version: number;
+  plays: ReplayIndexEntry[];
+}
