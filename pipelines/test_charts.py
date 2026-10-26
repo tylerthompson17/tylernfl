@@ -252,11 +252,55 @@ class WinProbabilityLineTests(unittest.TestCase):
         self.assertEqual(auto.clock_label(5.0, 313.0), 'OT 5:13')
 
     def test_the_line_shows_each_play_where_it_happened(self):
-        plays = [moment(1, 1, 3600, 0.50, 0.52), moment(2, 2, 2400, 0.52, 0.80), moment(3, 4, 10, 0.80, None)]
+        plays = [moment(1, 1, 3600, 0.50, 0.52, play_type='kickoff'), moment(2, 2, 2400, 0.52, 0.80, play_type='pass'),
+                 moment(3, 4, 10, 0.80, None, play_type='qb_kneel')]
         points = auto.wp_points(plays, 20, 24)
         self.assertEqual(points[0], (0.0, 0.50))
         self.assertEqual(points[2], (20.0, 0.80))
         self.assertEqual(points[3][1], 0.80)  # no after value: the before value stands
+
+    def test_a_timeout_holds_the_play_before_it(self):
+        # 2026_05_BUF_LA in overtime: the run at 4:51 took LAR from 65% to
+        # 78%, then both teams' timeouts at 4:51 carried the run's before
+        # value (one with no after value, as nflverse has most of them).
+        # The line and the readout stay at 78% until the field goal.
+        plays = [
+            moment(4787, 5, 337, 0.738, 0.6527, play_type='pass'),
+            moment(4812, 5, 291, 0.6527, 0.776, play_type='run'),
+            moment(4824, 5, 291, 0.6527, None, play_type='no_play', timeout=1.0, timeout_team='LA'),
+            moment(4831, 5, 291, 0.6527, 0.6527, play_type='no_play', timeout=1.0, timeout_team='BUF'),
+            moment(4848, 5, 256, 0.776, 0.5888, play_type='field_goal', field_goal_result='blocked',
+                   kick_distance=48.0, kicker_player_name='H.Mevis'),
+        ]
+        self.assertEqual([y for _, y in auto.wp_points(plays, 27, 30)[1:-1]], [0.6527, 0.776, 0.776, 0.776, 0.5888])
+        game = {'away_team': 'BUF', 'home_team': 'LAR', 'away_score': 27, 'home_score': 30, 'overtime': 1}
+        points = auto.wp_hover(game, plays, ax=None)['points'][1:-1]
+        self.assertEqual([p['y'] for p in points], [0.6527, 0.776, 0.776, 0.776, 0.5888])
+        self.assertEqual(points[2]['lines'], ['OT 4:51 · LAR 78%', 'Timeout, LAR'])
+        self.assertEqual(points[3]['lines'], ['OT 4:51 · LAR 78%', 'Timeout, BUF'])
+
+    def test_a_play_with_no_after_value_shows_where_the_next_snap_starts(self):
+        # 2026_06_DAL_GB: a delay of game, then a timeout, then the field
+        # goal. The foul's effect first shows in the kick's before value.
+        plays = [
+            moment(1533, 2, 2206, 0.866, 0.8437, play_type='pass'),
+            moment(1558, 2, 2161, 0.8437, None, play_type='no_play', penalty=1.0),
+            moment(1570, 2, 2161, 0.8437, None, play_type='no_play', timeout=1.0, timeout_team='DAL'),
+            moment(1589, 2, 2161, 0.8243, 0.8229, play_type='field_goal'),
+        ]
+        self.assertEqual([y for _, y in auto.wp_points(plays, 20, 24)[1:5]], [0.8437, 0.8243, 0.8243, 0.8229])
+
+    def test_a_kneel_ending_the_half_does_not_reach_into_the_next(self):
+        plays = [moment(1, 2, 1810, 0.70, 0.72, play_type='pass'),
+                 moment(2, 2, 1805, 0.72, None, play_type='qb_kneel'),
+                 moment(3, 2, 1800, 0.72, None),
+                 moment(4, 3, 1800, 0.60, 0.61, play_type='kickoff')]
+        self.assertEqual([y for _, y in auto.wp_points(plays, 20, 24)[1:5]], [0.72, 0.72, 0.72, 0.61])
+
+    def test_a_real_play_with_a_timeout_on_it_keeps_its_after_value(self):
+        plays = [moment(1, 4, 100, 0.40, 0.45, play_type='pass'),
+                 moment(2, 4, 95, 0.45, 0.30, play_type='pass', timeout=1.0, timeout_team='KC')]
+        self.assertEqual([y for _, y in auto.wp_points(plays, 20, 24)[1:3]], [0.45, 0.30])
 
 
 class DescribePlayTests(unittest.TestCase):
@@ -584,13 +628,13 @@ class HoverTests(unittest.TestCase):
         plays = [
             {'play_id': 1, 'qtr': 1, 'game_seconds_remaining': 3600, 'home_wp': 0.55, 'home_wp_post': 0.55,
              'play_type': 'kickoff', 'total_away_score': 0, 'total_home_score': 0},
-            {'play_id': 2, 'qtr': 2, 'game_seconds_remaining': 1881, 'home_wp': 0.60, 'home_wp_post': 0.60,
+            {'play_id': 2, 'qtr': 2, 'game_seconds_remaining': 1881, 'home_wp': 0.55, 'home_wp_post': 0.55,
              'play_type': 'no_play', 'timeout': 1.0, 'timeout_team': 'KC',
              'total_away_score': 3, 'total_home_score': 17},
         ]
         game = {'away_team': 'IND', 'home_team': 'KC', 'away_score': 30, 'home_score': 33}
         points = auto.wp_hover(game, plays, ax=None)['points']
-        self.assertEqual(points[2]['lines'], ['Q2 1:21 · KC 60%', 'IND 3, KC 17', 'Timeout, KC'])
+        self.assertEqual(points[2]['lines'], ['Q2 1:21 · KC 55%', 'IND 3, KC 17', 'Timeout, KC'])
 
     def test_a_scoring_play_says_what_it_scored_without_repeating_it(self):
         def lines(**fields):

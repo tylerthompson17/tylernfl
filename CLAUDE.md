@@ -687,6 +687,13 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   at least 1%; marker rows and unnamed stoppages left out, timeouts named), plus kickoff
   and the result; the EPA scatter, each team's values and ranks; the yards race, each
   week's totals.
+- nflverse lists a timeout after the play it follows, at the same clock, with the WP from
+  before that play. So on the WP line and in its readout a timeout or marker row holds the
+  value the play before it left, and a play with no after value (a kneel, a pre-snap foul)
+  takes the next snap's before value in the same half (`line_wps` in `auto.py`). The
+  values are all nflfastR's; only which row's value the line holds changed. Checked on
+  2026-10-25: all 1,817 4th down and try marks on the game pages sit within 0.005 of the
+  line.
 - A play that scored says so on its score line ("Touchdown · NYG 0, LAR 6", from
   nflverse's `sp`), and then does not repeat it: the play reads "M.Stafford to D.Adams,
   31 yds", and an extra point or a safety, which the score line already tells in full,

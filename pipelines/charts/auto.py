@@ -39,7 +39,7 @@ import json
 from datetime import date, datetime, timedelta
 
 from common import DATA_DIR, normalize_team
-from excitement import GAME_SCORE, play_minutes, winner_low, wp_after, wp_plays
+from excitement import GAME_SCORE, play_minutes, winner_low, wp_plays
 
 from charts import style
 
@@ -118,12 +118,46 @@ def clock_label(quarter: float, remaining: float) -> str:
     return f"{period} {left // 60}:{left % 60:02d}"
 
 
+def is_stoppage(play: dict) -> bool:
+    """A row where no play was run: a timeout or one of nflverse's marker
+    rows (game start, end of a quarter). nflverse lists a timeout right
+    after the play it follows, at the same clock, but with the home_wp from
+    before that play, so its own value is stale."""
+    play_type = play.get('play_type')
+    return play_type is None or (bool(play.get('timeout')) and play_type == 'no_play')
+
+
+def _half(play: dict) -> int:
+    quarter = int(play['qtr'])
+    return (quarter + 1) // 2 if quarter <= 4 else quarter
+
+
+def line_wps(plays: list[dict]) -> list[float]:
+    """Home win probability after each of wp_plays(), as the line holds it.
+    A play's after value; at a stoppage, whatever the play before it left,
+    so the line neither dips at a timeout nor sits at a stale level until
+    the next snap. A play with no after value (a kneel, a pre-snap foul)
+    takes the next snap's before value in the same half, where its effect
+    first shows. The values themselves are all nflfastR's."""
+    values = []
+    for i, play in enumerate(plays):
+        if is_stoppage(play):
+            values.append(values[-1] if values else play['home_wp'])
+        elif play.get('home_wp_post') is not None:
+            values.append(play['home_wp_post'])
+        else:
+            following = next((p for p in plays[i + 1:] if not is_stoppage(p)), None)
+            same_half = following is not None and _half(following) == _half(play)
+            values.append(following['home_wp'] if same_half else play['home_wp'])
+    return values
+
+
 def wp_points(plays: list[dict], away_score: int, home_score: int) -> list[tuple[float, float]]:
     """(minutes elapsed, home win probability) through the game, from
     wp_plays(), ending on the result. Each point is the probability after
     that play, so a swing shows at the play that caused it, where the hover
     readout names it, rather than at the next snap."""
-    points = [(play_minutes(p), wp_after(p)) for p in plays]
+    points = [(play_minutes(p), wp) for p, wp in zip(plays, line_wps(plays))]
     if points:
         points.insert(0, (0.0, plays[0]['home_wp']))
     end = points[-1][0] if points else 60.0
@@ -155,11 +189,6 @@ def wp_note(game: dict, plays: list[dict]) -> str:
 
 
 # ---------------------------------------------------------------- plays
-
-
-def swing(play: dict) -> float:
-    """How far the play moved the home team's win probability."""
-    return wp_after(play) - play['home_wp']
 
 
 def _yards(value) -> int:
@@ -351,7 +380,7 @@ def wp_hover(game: dict, plays: list[dict], ax) -> dict:
     if plays:
         points.append({'x': 0.0, 'y': plays[0]['home_wp'],
                        'lines': [f"Kickoff · {_chance(home, away, plays[0]['home_wp'])}"]})
-    for play in plays:
+    for play, after in zip(plays, line_wps(plays)):
         # nflverse's marker rows (game start, end of a quarter) are in the
         # line but are not plays: nothing to read out.
         if not play.get('play_type'):
@@ -360,14 +389,13 @@ def wp_hover(game: dict, plays: list[dict], ax) -> dict:
         what = describe_play(play, scored=kind is not None)
         if what == 'No play':
             continue  # a stoppage nflverse does not name
-        after = wp_after(play)
         lines = [f"{clock_label(play['qtr'], play['game_seconds_remaining'])} · {_chance(home, away, after)}"]
         score = score_line(game, play, kind)
         if score:
             lines.append(score)
         if what:
             lines.append(what)
-        change = swing(play)
+        change = 0.0 if is_stoppage(play) else after - play['home_wp']
         if abs(change) >= 0.005:
             lines.append(f"{home if change > 0 else away} +{round(abs(change) * 100)}% on the play")
         points.append({'x': play_minutes(play), 'y': after, 'lines': lines})
