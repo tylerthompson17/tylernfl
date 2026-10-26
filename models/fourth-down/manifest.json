@@ -1,5 +1,5 @@
 {
-  "contractVersion": 4,
+  "contractVersion": 5,
   "modelVersion": "nfl4th-ecb7293",
   "kickDistanceOffset": 18,
   "maxFieldGoalDistance": 70,
@@ -19,6 +19,20 @@
     "xgboost": "3.2.1.1"
   },
   "license": "Model files derived from nfl4th (Ben Baldwin, MIT License) and nflfastR / fastrmodels (Sebastian Carl and Ben Baldwin, MIT License). Copyright notices: https://github.com/nflverse/nfl4th/blob/master/LICENSE and https://github.com/nflverse/nflfastR/blob/master/LICENSE.",
+  "experimental": {
+    "modelId": "fd-experimental-1",
+    "season": 2026,
+    "dataAsOf": {
+      "season": 2026,
+      "week": 6
+    },
+    "bundleCommit": "cfdbd74",
+    "puntCommits": {
+      "src/decisions/fourth_down/terms/punter.py": "8a1fea1",
+      "src/decisions/fourth_down/terms/coverage.py": "b3b2536"
+    },
+    "fdModelSha256": "33f7c925a6d85fb6a24be57a834983472116128676383f21d7319222ddbc5d2b"
+  },
   "files": {
     "fd_model": {
       "path": "fd_model.json",
@@ -52,8 +66,28 @@
     },
     "terms": {
       "path": "terms.json",
-      "sha256": "e310fe2515486190cd0ac76f877df40471580b5d65c50f949bf6da1cdbdc6dd4",
-      "bytes": 71
+      "sha256": "378f0788692a9e80dd2333d59065761065496319bd187312d90247814293f3c9",
+      "bytes": 381
+    },
+    "sneak": {
+      "path": "sneak.json",
+      "sha256": "7b01e566973627d4f38e4feca3b8d6875207615737cef132cc292627976127b3",
+      "bytes": 4118
+    },
+    "punter": {
+      "path": "punter.json",
+      "sha256": "13b4f1e04f703d8650110a4d872139e148251403793fd087a6b5974096ffdebb",
+      "bytes": 7681
+    },
+    "coverage": {
+      "path": "coverage.json",
+      "sha256": "84de070926a7ef6b2405895127b776111c81aaf51fde2e6fde7ce375c6e87cc1",
+      "bytes": 4207
+    },
+    "teamPunters": {
+      "path": "teamPunters.json",
+      "sha256": "df9567f9ffd69dd31c8aba0db397d2d306d88f1ebd4c632324c1f89614321cb9",
+      "bytes": 1621
     }
   }
 }

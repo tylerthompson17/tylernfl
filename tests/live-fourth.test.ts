@@ -140,6 +140,8 @@ test('words, the model situation and fixed-order options for a live 4th down', (
     manifest: read('manifest.json'), fdModel: read('fd_model.json'), epModel: read('ep_model.json'),
     homeWpModel: read('home_wp_model.json'), wpSpreadModel: read('wp_spread_model.json'),
     twoPtModel: read('two_pt_model.json'), tables: read('tables.json'), terms: read('terms.json'),
+    sneak: read('sneak.json'), punter: read('punter.json'), coverage: read('coverage.json'),
+    teamPunters: read('teamPunters.json'),
   };
   assert.equal(loadFourthDownModel(files), true);
   const options = optionRows(recommend(s));

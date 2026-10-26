@@ -14,6 +14,10 @@ import wpSpreadModelUrl from '../../../models/fourth-down/wp_spread_model.json?u
 import twoPtModelUrl from '../../../models/fourth-down/two_pt_model.json?url';
 import tablesUrl from '../../../models/fourth-down/tables.json?url';
 import termsUrl from '../../../models/fourth-down/terms.json?url';
+import sneakUrl from '../../../models/fourth-down/sneak.json?url';
+import punterUrl from '../../../models/fourth-down/punter.json?url';
+import coverageUrl from '../../../models/fourth-down/coverage.json?url';
+import teamPuntersUrl from '../../../models/fourth-down/teamPunters.json?url';
 import type { ModelFiles } from '../fourth-down.ts';
 
 const URLS: Record<keyof ModelFiles, string> = {
@@ -25,6 +29,10 @@ const URLS: Record<keyof ModelFiles, string> = {
   twoPtModel: twoPtModelUrl,
   tables: tablesUrl,
   terms: termsUrl,
+  sneak: sneakUrl,
+  punter: punterUrl,
+  coverage: coverageUrl,
+  teamPunters: teamPuntersUrl,
 };
 
 /** Every model file, fetched in parallel and parsed. Rejects if any fails. */

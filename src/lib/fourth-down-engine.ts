@@ -4,8 +4,16 @@
  * is tested against the Python model.
  *
  * Browser engine for the 4th down model: recommend() and recommendTry() from
- * docs/model-interface.md (contract version 4), evaluated from the exported
+ * docs/model-interface.md (contract version 5), evaluated from the exported
  * model JSON (scripts/export_model.py).
+ *
+ * Contract v5 adds the experimental model next to nfl4th (recommend()'s
+ * `experimental`): nfl4th plus four correction terms, ported from
+ * src/decisions/fourth_down/experimental.py (recommend_experimental_many).
+ * It reads its own files (sneak.json, punter.json, coverage.json,
+ * teamPunters.json and terms.json's `experimental`); if they are missing or
+ * fail to load, `experimental` is 'unavailable' and nfl4th's result is
+ * unchanged.
  *
  * The model is the decision baseline, nfl4th at commit ecb7293. This file
  * ports the same code the Python port does (src/core/nfl4th/,
@@ -20,7 +28,7 @@
  */
 
 /** Contract version this engine implements */
-export const ENGINE_CONTRACT_VERSION = 4;
+export const ENGINE_CONTRACT_VERSION = 5;
 
 // ---------------------------------------------------------------------------
 // Contract types (structurally identical to src/lib/fourth-down.ts)
@@ -45,6 +53,8 @@ export interface EngineFourthDownSituation {
   roof: Roof;
   temp: number | null;
   kickerId?: string;
+  /** ESPN athlete id of the punter; only the experimental model reads it */
+  punterId?: string;
   spreadLine: number | null;
   totalLine: number | null;
 }
@@ -93,8 +103,56 @@ export type EngineFourthDownResult =
         punt: { outcomes: { wpAfterPunt: number }; terms: TermBreakdown } | null;
         fieldGoal: { outcomes: { makeProb: number; wpIfMake: number; wpIfMiss: number }; terms: TermBreakdown } | null;
       };
+      experimental: ExperimentalResult;
     }
   | Unsupported;
+
+type OptionKey = 'go' | 'punt' | 'fieldGoal';
+
+interface ChangedInput {
+  id: string;
+  label: string;
+  unit: 'probability' | 'yards';
+  nfl4th: number;
+  experimental: number;
+}
+
+interface ExperimentalOption<O> {
+  wp: number;
+  wpAllTermsOff: number;
+  outcomes: O;
+  changedInputs: ChangedInput[];
+  residual: number;
+}
+
+interface ExperimentalTerm {
+  id: string;
+  label: string;
+  options: OptionKey[];
+  applies: boolean;
+  notApplicableText: string | null;
+  wpDelta: Partial<Record<OptionKey, number>>;
+}
+
+export type ExperimentalResult =
+  | {
+      supported: true;
+      modelId: string;
+      label: string;
+      dataAsOf: { season: number; week: number };
+      call: 'go' | 'punt' | 'field goal';
+      wpGo: number;
+      wpPunt: number | null;
+      wpFieldGoal: number | null;
+      options: {
+        go: ExperimentalOption<{ conversionProb: number; wpIfConvert: number | null; wpIfFail: number }>;
+        punt: ExperimentalOption<{ wpAfterPunt: number }> | null;
+        fieldGoal: ExperimentalOption<{ makeProb: number; wpIfMake: number; wpIfMiss: number }> | null;
+      };
+      terms: ExperimentalTerm[];
+      flags: { punterUnknown: boolean; punterNoHistory: boolean; coverageNoHistory: boolean };
+    }
+  | { supported: false; reason: 'unavailable' | 'season' };
 
 interface TryOutcomes {
   successProb: number;
@@ -155,7 +213,43 @@ export interface ModelFiles {
     fgMakeProb: Record<string, number[]>;
     punt: { yardline100: number[]; yardlineAfter: number[]; pct: number[]; muff: number[] };
   };
-  terms: { modelVersion: string; fourthDown: unknown[]; try: unknown[]; kickers: Record<string, unknown> };
+  terms: {
+    modelVersion: string;
+    fourthDown: unknown[];
+    try: unknown[];
+    kickers: Record<string, unknown>;
+    /** The experimental model (contract v5) */
+    experimental: {
+      modelId: string;
+      label: string;
+      season: number;
+      dataAsOf: { season: number; week: number };
+      terms: string[];
+    };
+  };
+  sneak: ExperimentalTable<{ usage: number; leagueUsage: number; beta: number; offset: number }> & { forWeek: number };
+  punter: {
+    modelVersion: string;
+    season: number;
+    zones: Zone[];
+    punters: Record<string, { name: string | null; effect: number }>;
+  };
+  coverage: ExperimentalTable<{ franchise: number; teamSeason: number; effect: number; noHistory: boolean }> & { zones: Zone[] };
+  teamPunters: ExperimentalTable<{ punterId: string | null; name: string | null }>;
+}
+
+interface Zone {
+  name: string;
+  yardline100Min: number;
+  yardline100Max: number;
+  multiplier: number;
+}
+
+interface ExperimentalTable<T> {
+  modelVersion: string;
+  season: number;
+  dataAsOf: { season: number; week: number };
+  teams: Record<string, T>;
 }
 
 // ---------------------------------------------------------------------------
@@ -287,7 +381,28 @@ interface Model {
   twoPt: Booster;
   fgMakeProb: Record<string, number[]>;
   /** yardline100 -> that yardline's punt outcome rows, in table order */
-  punt: Map<number, { after: number; pct: number; muff: number }[]>;
+  punt: Map<number, PuntRow[]>;
+  /** The experimental model, or null when its files are missing or broken */
+  experimental: Experimental | null;
+}
+
+interface PuntRow {
+  after: number;
+  pct: number;
+  muff: number;
+}
+
+interface Experimental {
+  modelId: string;
+  label: string;
+  season: number;
+  dataAsOf: { season: number; week: number };
+  sneak: ModelFiles['sneak']['teams'];
+  punterZones: Zone[];
+  punters: ModelFiles['punter']['punters'];
+  coverageZones: Zone[];
+  coverage: ModelFiles['coverage']['teams'];
+  teamPunters: ModelFiles['teamPunters']['teams'];
 }
 
 /** kickoff_yardline: own 30 from 2024 (new kickoff rules), own 25 before. */
@@ -483,6 +598,8 @@ interface GoWp {
   pConvert: number;
   wpConvert: number;
   wpFail: number;
+  /** fd_model's 76 class probabilities (down = 4), for the experimental model */
+  probs: number[];
 }
 
 /** get_go_wp */
@@ -559,7 +676,7 @@ function goWp(m: Model, d: State): GoWp {
   }
   // No gain reaches the line to gain: no convert branch (nfl4th's NaN), so
   // the conversion probability is 0 (model.branch_inputs_from_nfl4th).
-  return hasS ? { pConvert: pctS, wpConvert: wpS, wpFail: wpF } : { pConvert: 0, wpConvert: NaN, wpFail: wpF };
+  return hasS ? { pConvert: pctS, wpConvert: wpS, wpFail: wpF, probs } : { pConvert: 0, wpConvert: NaN, wpFail: wpF, probs };
 }
 
 /** get_fg_wp */
@@ -586,9 +703,11 @@ function fgWp(m: Model, d: State): { pMake: number; wpMake: number; wpMiss: numb
   return { pMake, wpMake, wpMiss };
 }
 
-/** get_punt_wp: NaN where nfl4th has no punt outcomes for the yardline. */
-function puntWp(m: Model, d: State): number {
-  const rows = m.punt.get(d.yardline100);
+/**
+ * get_punt_wp: NaN where nfl4th has no punt outcomes for the yardline.
+ * `rows` replaces nfl4th's rows for this yardline (the experimental shift).
+ */
+function puntWp(m: Model, d: State, rows: PuntRow[] | undefined = m.punt.get(d.yardline100)): number {
   if (!rows) return NaN;
   let total = 0;
   for (const r of rows) {
@@ -607,6 +726,261 @@ function puntWp(m: Model, d: State): number {
     total += r.pct * endGame(p, winProbability(m, p));
   }
   return total;
+}
+
+
+// ---------------------------------------------------------------------------
+// Experimental model (src/decisions/fourth_down/experimental.py)
+
+/** Term ids in display order (experimental.TERM_IDS). */
+const TERM_IDS = ['conversionFix', 'qbSneak', 'punter', 'puntCoverage'];
+
+/**
+ * Every term on. scripts/check_engine_mutations.py switches one off at a
+ * time in a scratch copy of this file and requires the fixtures to fail.
+ */
+const TERMS_ON = { conversionFix: true, qbSneak: true, punter: true, puntCoverage: true };
+
+/**
+ * fd_convert.fd_convert_prob: P(gain >= ydstogo) from fd_model's classes,
+ * gains capped at the goal line. `probs` are the classes for the down asked.
+ */
+function fdConvertProb(probs: number[], d: State): number {
+  let p = 0;
+  for (let k = 0; k < N_GAINS; k++) if (Math.min(GAIN_MIN + k, d.yardline100) >= d.ydstogo) p += probs[k];
+  return p;
+}
+
+/** fd_model's classes with `down` in place of the play's (penalty_removal: down = 3). */
+function fdProbs(m: Model, d: State, down: number): number[] {
+  return predict(m.fd, [
+    down,
+    d.ydstogo,
+    d.yardline100,
+    d.era3,
+    d.era4,
+    +(d.modelRoof === 'outdoors'),
+    +(d.modelRoof === 'retractable'),
+    +(d.modelRoof === 'dome'),
+    d.posteamSpread,
+    d.totalLine,
+    d.posteamTotal,
+  ]);
+}
+
+const logit = (p: number) => Math.log(p / (1 - p));
+const expit = (x: number) => 1 / (1 + Math.exp(-x));
+
+/** experimental.shift_convert (model B): a zero offset, or p of 0 or 1, keeps p. */
+function shiftConvert(p: number, off: number): number {
+  return off === 0 || p === 0 || p === 1 ? p : expit(logit(p) + off);
+}
+
+/** The zone's multiplier for a yardline (punts.ZONES); 0 outside every zone. */
+function zoneValue(zones: Zone[], yl: number): number {
+  for (const z of zones) if (yl >= z.yardline100Min && yl <= z.yardline100Max) return z.multiplier;
+  return 0;
+}
+
+/**
+ * punts.shift_table for one play (build choice C, entry 024): landing spots
+ * and their muff copies move `shift` yards toward the receiving team's goal
+ * line, a fractional shift splitting a row's mass between the two
+ * neighbouring yardlines; mass at or past the goal line becomes a touchback
+ * at the 20 (no muff); a negative shift stops at the 99. Blocks (the non-muff
+ * row at the line of scrimmage), return TDs (100) and touchbacks (the 20)
+ * stay put. Rows are not merged as in Python: WP is linear in the rows.
+ */
+function shiftRows(rows: PuntRow[], yl: number, shift: number): PuntRow[] {
+  const out: PuntRow[] = [];
+  for (const r of rows) {
+    const block = r.muff === 0 && r.after === yl;
+    if (shift === 0 || block || r.after === 100 || r.after === 20) {
+      out.push(r);
+      continue;
+    }
+    const target = r.after - shift;
+    const lo = Math.floor(target);
+    const wHi = target - lo;
+    for (const [spot, w] of [[lo, 1 - wHi], [lo + 1, wHi]] as const) {
+      const pct = r.pct * w;
+      if (!(pct > 0)) continue;
+      const pastGoal = spot <= 0;
+      out.push({ after: pastGoal ? 20 : Math.min(spot, 99), pct, muff: pastGoal ? 0 : r.muff });
+    }
+  }
+  return out;
+}
+
+/** The punt WP with nfl4th's rows shifted; a zero shift is nfl4th's own WP. */
+function shiftedPuntWp(m: Model, d: State, base: number, shift: number): number {
+  if (shift === 0) return base;
+  return puntWp(m, d, shiftRows(m.punt.get(d.yardline100)!, d.yardline100, shift));
+}
+
+interface BaseFourthDown {
+  wpGo: number;
+  go: GoWp;
+  hasPunt: boolean;
+  punt: number;
+  fgOk: boolean;
+  wpKick: number;
+  fg: { pMake: number; wpMake: number; wpMiss: number };
+}
+
+/** experimental._resolve_punter: a given punterId, else the team's latest punter (D4). */
+function resolvePunter(x: Experimental, s: EngineFourthDownSituation) {
+  let pid: string | null = typeof s.punterId === 'string' && s.punterId !== '' ? s.punterId : null;
+  let fallbackName: string | null = null;
+  if (pid === null) {
+    const tp = Object.hasOwn(x.teamPunters, s.posteam) ? x.teamPunters[s.posteam] : undefined;
+    if (!tp || !tp.punterId) return { name: null as string | null, u: null as number | null, unknown: true, noHistory: false };
+    pid = tp.punterId;
+    fallbackName = tp.name;
+  }
+  const row = Object.hasOwn(x.punters, pid) ? x.punters[pid] : undefined;
+  if (!row) return { name: fallbackName, u: null, unknown: false, noHistory: true };
+  return { name: row.name, u: row.effect, unknown: false, noHistory: false };
+}
+
+function term(id: string, label: string, option: OptionKey, applies: boolean, delta: number, naText: string): ExperimentalTerm {
+  return { id, label, options: [option], applies, notApplicableText: applies ? null : naText, wpDelta: { [option]: applies ? delta : 0 } };
+}
+
+/** experimental.recommend_experimental_many, for one supported situation. */
+function experimentalResult(m: Model, s: EngineFourthDownSituation, d: State, b: BaseFourthDown): ExperimentalResult {
+  const x = m.experimental;
+  if (!x) return { supported: false, reason: 'unavailable' };
+  if (Math.trunc(s.season) !== x.season) return { supported: false, reason: 'season' };
+
+  // Go: the conversion fix and the sneak offset, added in log-odds and
+  // applied once to fd_model's P(convert) (down = 4), as model B does.
+  const p4 = fdConvertProb(b.go.probs, d);
+  const p3 = fdConvertProb(fdProbs(m, d, 3), d);
+  const fixApplies = TERMS_ON.conversionFix && p4 > 0 && p4 < 1 && p3 > 0 && p3 < 1;
+  const penOff = fixApplies ? logit(p3) - logit(p4) : 0;
+  const sneakApplies = TERMS_ON.qbSneak && s.distance === 1;
+  const sneakRow = Object.hasOwn(x.sneak, s.posteam) ? x.sneak[s.posteam] : undefined;
+  const sneakOff = sneakApplies && sneakRow ? sneakRow.offset : 0;
+  const pAll = shiftConvert(p4, penOff + sneakOff);
+  const goAll = mix(pAll, b.go.wpConvert, b.go.wpFail);
+  const dFix = fixApplies ? goAll - mix(shiftConvert(p4, sneakOff), b.go.wpConvert, b.go.wpFail) : 0;
+  const dSneak = sneakApplies ? goAll - mix(shiftConvert(p4, penOff), b.go.wpConvert, b.go.wpFail) : 0;
+  const go: ExperimentalOption<{ conversionProb: number; wpIfConvert: number | null; wpIfFail: number }> = {
+    wp: goAll,
+    wpAllTermsOff: b.wpGo,
+    outcomes: { conversionProb: pAll, wpIfConvert: Number.isNaN(b.go.wpConvert) ? null : b.go.wpConvert, wpIfFail: b.go.wpFail },
+    changedInputs: fixApplies || sneakApplies
+      ? [{ id: 'conversionProb', label: 'Conversion chance', unit: 'probability', nfl4th: b.go.pConvert, experimental: pAll }]
+      : [],
+    residual: goAll - b.wpGo - dFix - dSneak,
+  };
+
+  // Punt: punter (m * u) plus coverage (k * (f + s)) yards, summed and
+  // applied once through the shift rule.
+  const yl = d.yardline100;
+  const pu = resolvePunter(x, s);
+  const mz = zoneValue(x.punterZones, yl);
+  const kz = zoneValue(x.coverageZones, yl);
+  const team = Object.hasOwn(x.coverage, s.posteam) ? x.coverage[s.posteam] : undefined;
+  const punterShift = b.hasPunt && pu.u !== null && TERMS_ON.punter ? mz * pu.u : 0;
+  const covShift = b.hasPunt && TERMS_ON.puntCoverage ? kz * (team ? team.effect : 0) : 0;
+  const punterApplies = TERMS_ON.punter && b.hasPunt && pu.u !== null && mz > 0;
+  const covApplies = TERMS_ON.puntCoverage && b.hasPunt && kz > 0;
+  let punt: ExperimentalOption<{ wpAfterPunt: number }> | null = null;
+  let dPunter = 0;
+  let dCov = 0;
+  if (b.hasPunt) {
+    const total = punterShift + covShift;
+    const full = shiftedPuntWp(m, d, b.punt, total);
+    if (punterApplies) dPunter = full - shiftedPuntWp(m, d, b.punt, covShift);
+    if (covApplies) dCov = full - shiftedPuntWp(m, d, b.punt, punterShift);
+    punt = {
+      wp: full,
+      wpAllTermsOff: b.punt,
+      outcomes: { wpAfterPunt: full },
+      changedInputs: punterApplies || covApplies
+        ? [{ id: 'puntShift', label: 'Punt net yards vs nfl4th', unit: 'yards', nfl4th: 0, experimental: total }]
+        : [],
+      residual: full - b.punt - dPunter - dCov,
+    };
+  }
+  const fieldGoal = b.fgOk
+    ? {
+        wp: b.wpKick,
+        wpAllTermsOff: b.wpKick,
+        outcomes: { makeProb: b.fg.pMake, wpIfMake: b.fg.wpMake, wpIfMiss: b.fg.wpMiss },
+        changedInputs: [],
+        residual: 0,
+      }
+    : null;
+
+  let call: 'go' | 'punt' | 'field goal' = 'go';
+  let best = go.wp;
+  if (fieldGoal && fieldGoal.wp > best) {
+    call = 'field goal';
+    best = fieldGoal.wp;
+  }
+  if (punt && punt.wp > best) call = 'punt';
+
+  const punterNa = !b.hasPunt
+    ? 'No punt option'
+    : pu.unknown
+      ? 'Punter unknown: league average'
+      : pu.noHistory
+        ? 'No punts before 2023: league average'
+        : 'No punter adjustment in opponent territory';
+  const values = [go.wp, pAll, ...(punt ? [punt.wp] : [])];
+  if (values.some((v) => !Number.isFinite(v))) return { supported: false, reason: 'unavailable' };
+  return {
+    supported: true,
+    modelId: x.modelId,
+    label: x.label,
+    dataAsOf: { ...x.dataAsOf },
+    call,
+    wpGo: go.wp,
+    wpPunt: punt ? punt.wp : null,
+    wpFieldGoal: fieldGoal ? fieldGoal.wp : null,
+    options: { go, punt, fieldGoal },
+    terms: [
+      term('conversionFix', '4th-down conversion fix', 'go', fixApplies, dFix, 'No conversion chance to adjust'),
+      term('qbSneak', `QB sneak usage (${s.posteam})`, 'go', sneakApplies, dSneak, 'Only on 4th and 1'),
+      term('punter', pu.name ? `Punter (${pu.name})` : 'Punter', 'punt', punterApplies, dPunter, punterNa),
+      term('puntCoverage', `Punt coverage (${s.posteam})`, 'punt', covApplies, dCov, 'No punt option'),
+    ],
+    flags: {
+      punterUnknown: b.hasPunt && pu.unknown,
+      punterNoHistory: b.hasPunt && pu.noHistory,
+      coverageNoHistory: b.hasPunt && (team ? team.noHistory : true),
+    },
+  };
+}
+
+/** The experimental model's files, checked; null when any is missing or inconsistent. */
+function loadExperimental(files: ModelFiles, version: string): Experimental | null {
+  try {
+    const e = files.terms.experimental;
+    const tables = [files.sneak, files.punter, files.coverage, files.teamPunters];
+    if (!e || tables.some((t) => !t || t.modelVersion !== version || t.season !== e.season)) return null;
+    if (e.terms.join() !== TERM_IDS.join() || typeof e.modelId !== 'string' || typeof e.label !== 'string') return null;
+    // The weekly tables come from one export run.
+    const asOf = (a: { season: number; week: number }) => `${a.season}-${a.week}`;
+    if ([files.sneak, files.coverage, files.teamPunters].some((t) => asOf(t.dataAsOf) !== asOf(e.dataAsOf))) return null;
+    return {
+      modelId: e.modelId,
+      label: e.label,
+      season: e.season,
+      dataAsOf: { season: e.dataAsOf.season, week: e.dataAsOf.week },
+      sneak: files.sneak.teams,
+      punterZones: files.punter.zones,
+      punters: files.punter.punters,
+      coverageZones: files.coverage.zones,
+      coverage: files.coverage.teams,
+      teamPunters: files.teamPunters.teams,
+    };
+  } catch {
+    return null;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -738,6 +1112,14 @@ function recommendWith(m: Model, s: EngineFourthDownSituation): EngineFourthDown
   const values = [wpGo, go.pConvert, go.wpFail, ...(fgOk ? [wpKick, fg.pMake, fg.wpMake, fg.wpMiss] : []), ...(hasPunt ? [punt] : [])];
   if (values.some((v) => !Number.isFinite(v))) return { supported: false, reason: 'unavailable' };
 
+  // The experimental model never changes or breaks nfl4th's result.
+  let experimental: ExperimentalResult;
+  try {
+    experimental = experimentalResult(m, s, d, { wpGo, go, hasPunt, punt, fgOk, wpKick, fg });
+  } catch {
+    experimental = { supported: false, reason: 'unavailable' };
+  }
+
   return {
     supported: true,
     call,
@@ -761,6 +1143,7 @@ function recommendWith(m: Model, s: EngineFourthDownSituation): EngineFourthDown
         ? { outcomes: { makeProb: fg.pMake, wpIfMake: fg.wpMake, wpIfMiss: fg.wpMiss }, terms: noTerms(wpKick) }
         : null,
     },
+    experimental,
   };
 }
 
@@ -806,11 +1189,11 @@ export function loadModel(files: ModelFiles, siteContractVersion: number): boole
     const v = man.modelVersion;
     const parts = [files.fdModel, files.epModel, files.homeWpModel, files.wpSpreadModel, files.twoPtModel, files.tables, files.terms];
     if (parts.some((f) => !f || f.modelVersion !== v)) return false;
-    // This engine implements the baseline only; exported correction terms
-    // need an engine that knows their format.
+    // nfl4th's own result has no correction terms; the experimental model's
+    // live in terms.experimental and their own files (loadExperimental).
     if (files.terms.fourthDown.length || files.terms.try.length || Object.keys(files.terms.kickers).length) return false;
     const pt = files.tables.punt;
-    const punt = new Map<number, { after: number; pct: number; muff: number }[]>();
+    const punt = new Map<number, PuntRow[]>();
     for (let i = 0; i < pt.yardline100.length; i++) {
       const rows = punt.get(pt.yardline100[i]) ?? [];
       rows.push({ after: pt.yardlineAfter[i], pct: pt.pct[i], muff: pt.muff[i] });
@@ -828,6 +1211,7 @@ export function loadModel(files: ModelFiles, siteContractVersion: number): boole
       twoPt: toBooster(files.twoPtModel),
       fgMakeProb: files.tables.fgMakeProb,
       punt,
+      experimental: loadExperimental(files, v),
     };
     return true;
   } catch {

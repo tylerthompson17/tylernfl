@@ -50,6 +50,8 @@ test('preliminary grades: cost, questionable and clear, null options, unsupporte
     manifest: r('manifest.json'), fdModel: r('fd_model.json'), epModel: r('ep_model.json'),
     homeWpModel: r('home_wp_model.json'), wpSpreadModel: r('wp_spread_model.json'),
     twoPtModel: r('two_pt_model.json'), tables: r('tables.json'), terms: r('terms.json'),
+    sneak: r('sneak.json'), punter: r('punter.json'), coverage: r('coverage.json'),
+    teamPunters: r('teamPunters.json'),
   };
   assert.equal(loadFourthDownModel(files), true);
   const game = parseSummary(read('summary-401873010-final-plays.json'), '401873010')!;
@@ -64,7 +66,10 @@ test('preliminary grades: cost, questionable and clear, null options, unsupporte
     assert.equal(grade.questionable, !grade.decided && (grade.wpLost ?? 0) >= 0.02);
     if (grade.clear) assert.ok(grade.questionable);
   }
-  const fake = { supported: true, call: 'go', wpGo: 0.5, wpPunt: 0.44, wpFieldGoal: null } as const;
+  const fake = {
+    supported: true, call: 'go', wpGo: 0.5, wpPunt: 0.44, wpFieldGoal: null,
+    experimental: { supported: false, reason: 'unavailable' },
+  } as const;
   const g = gradeOf({ ...fake, conversionProb: 0.5, fgMakeProb: null, kickDistance: 70, kickerId: null, flags: { temperatureUnknown: false, kickerUnknown: false, linesUnknown: false }, breakdown: {} as never }, 'punt');
   assert.ok(g.kind === 'graded' && Math.abs(g.wpLost! - 0.06) < 1e-9 && g.questionable && g.clear);
   const fg = gradeOf({ ...fake, conversionProb: 0.5, fgMakeProb: null, kickDistance: 70, kickerId: null, flags: { temperatureUnknown: false, kickerUnknown: false, linesUnknown: false }, breakdown: {} as never }, 'field goal');

@@ -21,12 +21,8 @@ import {
 
 export type { ModelFiles };
 
-/**
- * Version of docs/model-interface.md the engine and export are checked against.
- * The types below already include v5's additions; this becomes 5 with the v5
- * engine delivery, since the v4 engine refuses any other version.
- */
-export const CONTRACT_VERSION = 4;
+/** Version of docs/model-interface.md the engine and export are checked against. */
+export const CONTRACT_VERSION = 5;
 
 export type FourthDownCall = 'go' | 'punt' | 'field goal';
 
@@ -175,11 +171,8 @@ export interface FourthDownRecommendation {
   kickerId: string | null;
   flags: FourthDownFlags;
   breakdown: FourthDownBreakdown;
-  /**
-   * The experimental model on the same situation (contract v5). Present on every
-   * supported result once the v5 engine is delivered; absent from the v4 engine.
-   */
-  experimental?: ExperimentalResult;
+  /** The experimental model on the same situation (contract v5). Present on every supported result. */
+  experimental: ExperimentalResult;
 }
 
 export type OptionKey = 'go' | 'punt' | 'fieldGoal';
