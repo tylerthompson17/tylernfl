@@ -5,6 +5,7 @@ the highlights collection with its facts but no tracking, to pick from.
     python pipelines/replays.py 2018_ARI_2018092311_141 [more keys]   scenes
     python pipelines/replays.py --index                                index.json
     python pipelines/replays.py --fetch-all --index                    index.json with stats for every play
+    python pipelines/replays.py --all                                  everything the site needs (the deploy)
 
 A key is a file name in asonty/ngs_highlights' play_data/ without .tsv
 (season_team_gameId_playId; the team is whose highlight it is, not always
@@ -786,6 +787,136 @@ def write_index(entries: list[dict]) -> None:
     write_json_if_changed(f'{OUT_DIR}/index.json', {'version': FORMAT_VERSION, 'plays': entries}, records=True)
 
 
+# Checks --------------------------------------------------------------------
+
+CARRIER_GAP = 1.5  # seconds with nobody holding a live ball, outside flights and loose balls
+OFF_FIELD = 5.0  # yards outside the field
+CHECKS = {
+    'repeats': 'tracking repeats the play',
+    'no-pbp': 'no play-by-play match',
+    'carrier-gap': f'nobody holds the ball for over {CARRIER_GAP:g} s',
+    'off-field': f'the ball goes over {OFF_FIELD:g} yards off the field',
+    'speed': f'a player moves faster than {TOP_SPEED * MPH_PER_YARD_PER_SECOND:.1f} mph in one frame',
+}
+
+
+def check_scene(scene: dict, snaps: int | None, joined: bool) -> list[str]:
+    """Why a scene should not ship (CHECKS keys), empty when it passes. The
+    play's action runs from the snap (or kick) to its terminal event. In it:
+    nobody holds the ball for over CARRIER_GAP while it is live (in the air,
+    loose after a fumble, muff or landed kick until an event says who has it,
+    or dead after an incompletion do not count); the ball goes OFF_FIELD
+    yards outside the field; a player moves faster than TOP_SPEED between
+    frames. Also a file that repeats the play, and a play nflverse lacks."""
+    reasons = []
+    if (snaps or 0) > 1:
+        reasons.append('repeats')
+    if not joined:
+        reasons.append('no-pbp')
+    n, hz = scene['frameCount'], scene['hz']
+    events = [(e['frame'], e['name']) for e in scene['events']]
+    frames = list(range(n))
+    snap = first_event(events, START_EVENTS)
+    start = snap[0] if snap else 0
+    over = action_end(events, start)
+    end = n - 1 if over is None else over
+    flights = scene['flights']
+    loose = loose_frames(events, frames)
+    dead = first_event(events, DEAD_BALL, after=start)
+    carrier = scene.get('carrier') or [None] * n
+    run = gap = 0
+    for f in range(start, end + 1):
+        exempt = any(fl['from'] <= f < fl['to'] for fl in flights) or f in loose or (dead and f >= dead[0])
+        run = run + 1 if carrier[f] is None and not exempt else 0
+        gap = max(gap, run)
+    if gap / hz > CARRIER_GAP:
+        reasons.append('carrier-gap')
+    scale = scene['scale']
+    bx, by = scene['ball']['x'], scene['ball']['y']
+    if any(max(-bx[f], bx[f] - FIELD_LENGTH * scale, -by[f], by[f] - FIELD_WIDTH * scale) > OFF_FIELD * scale
+           for f in range(start, end + 1)):
+        reasons.append('off-field')
+    for p in scene.get('players') or []:
+        xs, ys = p['x'], p['y']
+        if any(xs[f - 1] is not None and xs[f] is not None
+               and math.hypot(xs[f] - xs[f - 1], ys[f] - ys[f - 1]) / scale * hz > TOP_SPEED
+               for f in range(max(1, start), end + 1)):
+            reasons.append('speed')
+            break
+    return reasons
+
+
+def featured_keys() -> list[str]:
+    path = DATA_DIR / OUT_DIR / 'featured.json'
+    return json.loads(path.read_text(encoding='utf-8'))['keys'] if path.exists() else []
+
+
+def build_all(lookup, colors) -> dict:
+    """Every play in the highlights index once: index.json, a scene for each
+    that passes check_scene, and validation.json with the counts and every
+    excluded play's reasons. Scene files of plays no longer kept are removed.
+    Featured plays that fail are reported, not shipped."""
+    rows = read_rows(fetch('ngs_highlights_index.tsv').read_text(encoding='utf-8'))
+    tracking: dict[str, list[dict]] = {}
+
+    def stats(key: str) -> dict | None:
+        tracking[key] = read_rows(fetch(f'{key}.tsv').read_text(encoding='utf-8'))
+        return play_stats(tracking[key])
+
+    entries = index_entries(rows, lookup, stats)
+    write_index(entries)
+    plays_dir = DATA_DIR / OUT_DIR / 'plays'
+    kept: set[str] = set()
+    excluded: dict[str, list[str]] = {}
+    for entry in entries:
+        key = entry['key']
+        play_rows = tracking[key]
+        first = play_rows[0]
+        pbp_row = lookup(int(first['season']), first['gameId'], int(first['playId']))
+        if (entry['snaps'] or 0) > 1:
+            excluded[key] = check_scene({'frameCount': 0, 'hz': HZ, 'scale': SCALE, 'events': [], 'flights': [],
+                                         'ball': {'x': [], 'y': []}}, entry['snaps'], pbp_row is not None)
+            continue
+        scene = build_scene(key, play_rows, pbp_row, colors)
+        reasons = check_scene(scene, entry['snaps'], pbp_row is not None)
+        if reasons:
+            excluded[key] = reasons
+        else:
+            write_scene(scene)
+            kept.add(key)
+    if plays_dir.exists():
+        for path in plays_dir.glob('*.json'):
+            if path.stem not in kept:
+                path.unlink()
+    counts = {code: sum(1 for r in excluded.values() if code in r) for code in CHECKS}
+    featured = featured_keys()
+    report = {
+        'version': FORMAT_VERSION,
+        'ngsSha': NGS_SHA,
+        'kept': len(kept),
+        'excluded': len(excluded),
+        'reasons': {code: {'words': CHECKS[code], 'plays': counts[code]} for code in CHECKS},
+        'excludedPlays': dict(sorted(excluded.items())),
+        'featuredDropped': {k: excluded.get(k, ['not in the highlights index']) for k in featured if k not in kept},
+    }
+    write_json_if_changed(f'{OUT_DIR}/validation.json', report)
+    return report
+
+
+def report_lines(report: dict) -> list[str]:
+    """validation.json in words, for the run's log and the job summary."""
+    lines = [f'Retro Replays: {report["kept"]} replays built, {report["excluded"]} plays excluded.', '',
+             '| Check | Plays excluded |', '|---|---|']
+    lines += [f'| {r["words"]} | {r["plays"]} |' for r in report['reasons'].values()]
+    lines.append('')
+    if report['featuredDropped']:
+        lines.append('**Warning: featured plays dropped from Featured**')
+        lines += [f'- `{k}`: {", ".join(CHECKS.get(c, c) for c in reasons)}' for k, reasons in report['featuredDropped'].items()]
+    else:
+        lines.append('All featured plays passed.')
+    return lines
+
+
 def pbp_lookup(season: int):
     """(old_game_id, play_id) -> play-by-play row for one season."""
     import polars as pl
@@ -807,10 +938,13 @@ def main() -> None:
     parser.add_argument('--index', action='store_true',
                         help='rewrite index.json from the whole highlights index, with stats from every cached play file')
     parser.add_argument('--fetch-all', action='store_true',
-                        help='first download every play file not yet cached (about 1.4 GB) so --index has stats for all')
+                        help='first download every play file not yet cached (about 1.3 GB) so --index has stats for all')
+    parser.add_argument('--all', action='store_true',
+                        help='index.json, a scene for every play that passes the checks, and validation.json '
+                             '(what the deploy runs)')
     args = parser.parse_args()
-    if not args.keys and not args.index and not args.fetch_all:
-        parser.error('give play keys, --index, --fetch-all, or a mix')
+    if not args.keys and not args.index and not args.fetch_all and not args.all:
+        parser.error('give play keys, --index, --fetch-all, --all, or a mix')
 
     lookups: dict[int, dict] = {}
 
@@ -848,7 +982,18 @@ def main() -> None:
                 if done % 50 == 0:
                     print(f'  {done} of {len(missing)}')
 
-    if args.index:
+    if args.all:
+        report = build_all(lookup, colors)
+        lines = report_lines(report)
+        print('\n'.join(lines))
+        if summary := os.environ.get('GITHUB_STEP_SUMMARY'):
+            with open(summary, 'a', encoding='utf-8') as fh:
+                fh.write('\n'.join(lines) + '\n')
+        if report['featuredDropped']:
+            for key in report['featuredDropped']:
+                print(f'::warning title=Featured replay dropped::{key} failed its checks; see the job summary')
+
+    if args.index and not args.all:
         rows = read_rows(fetch('ngs_highlights_index.tsv').read_text(encoding='utf-8'))
 
         def stats(key: str) -> dict | None:

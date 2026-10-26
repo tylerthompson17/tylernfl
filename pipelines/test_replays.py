@@ -412,6 +412,54 @@ class SceneTests(unittest.TestCase):
         self.assertEqual(replays.team_entry('LA', {'LAR': colors['LV']})['abbr'], 'LAR')
 
 
+class CheckTests(unittest.TestCase):
+    def scene(self, carrier, events, flights=(), ball=None, players=None, n=30):
+        return {'frameCount': n, 'hz': 10, 'scale': 10, 'events': [{'frame': f, 'name': e} for f, e in events],
+                'flights': [dict(fl) for fl in flights], 'carrier': carrier,
+                'ball': ball or {'x': [600] * n, 'y': [266] * n},
+                'players': players or [{'x': [600] * n, 'y': [266] * n}]}
+
+    def test_a_clean_play_passes(self):
+        scene = self.scene([None] * 2 + [0] * 28, [(2, 'ball_snap'), (25, 'tackle')])
+        self.assertEqual(replays.check_scene(scene, 1, True), [])
+
+    def test_repeats_and_missing_play_by_play(self):
+        scene = self.scene([None] * 2 + [0] * 28, [(2, 'ball_snap'), (25, 'tackle')])
+        self.assertEqual(replays.check_scene(scene, 2, False), ['repeats', 'no-pbp'])
+
+    def test_a_long_carrier_gap_fails(self):
+        carrier = [None] * 2 + [0] * 5 + [None] * 16 + [0] * 7  # 1.6 s with nobody
+        self.assertIn('carrier-gap', replays.check_scene(self.scene(carrier, [(2, 'ball_snap'), (28, 'tackle')]), 1, True))
+
+    def test_flights_and_loose_balls_do_not_count_as_gaps(self):
+        carrier = [None] * 2 + [0] * 5 + [None] * 20 + [0] * 3
+        in_air = self.scene(carrier, [(2, 'ball_snap'), (7, 'pass_forward'), (27, 'pass_arrived'), (29, 'tackle')],
+                            flights=[{'kind': 'pass', 'from': 7, 'to': 27}])
+        fumble = self.scene(carrier, [(2, 'ball_snap'), (7, 'fumble'), (27, 'fumble_offense_recovered'), (29, 'tackle')])
+        punt = self.scene(carrier, [(2, 'ball_snap'), (7, 'punt_land'), (27, 'punt_received'), (29, 'tackle')])
+        for scene in (in_air, fumble, punt):
+            self.assertEqual(replays.check_scene(scene, 1, True), [])
+
+    def test_the_ball_far_off_the_field_fails(self):
+        ball = {'x': [600] * 10 + [-60] + [600] * 19, 'y': [266] * 30}  # 6 yards behind the end line
+        scene = self.scene([None] * 2 + [0] * 28, [(2, 'ball_snap'), (25, 'tackle')], ball=ball)
+        self.assertEqual(replays.check_scene(scene, 1, True), ['off-field'])
+
+    def test_a_tracking_jump_in_the_play_fails_but_not_after_it(self):
+        jump = lambda at: [{'x': [600] * at + [800] * (30 - at), 'y': [266] * 30}]  # 20 yards in a frame
+        during = self.scene([None] * 2 + [0] * 28, [(2, 'ball_snap'), (25, 'tackle')], players=jump(10))
+        after = self.scene([None] * 2 + [0] * 28, [(2, 'ball_snap'), (25, 'tackle')], players=jump(27))
+        self.assertEqual(replays.check_scene(during, 1, True), ['speed'])
+        self.assertEqual(replays.check_scene(after, 1, True), [])
+
+    def test_the_report_names_dropped_featured_plays(self):
+        report = {'kept': 1, 'excluded': 1, 'reasons': {c: {'words': w, 'plays': 0} for c, w in replays.CHECKS.items()},
+                  'featuredDropped': {'2018_X_1_1': ['speed']}}
+        lines = replays.report_lines(report)
+        self.assertIn('**Warning: featured plays dropped from Featured**', lines)
+        self.assertTrue(any('2018_X_1_1' in line and 'mph' in line for line in lines))
+
+
 class StatsTests(unittest.TestCase):
     def test_top_speed_is_the_carriers_and_air_yards_the_passes(self):
         # The QB (1 yd/s) holds it, then the WR (8 yd/s) catches it 14 yards past the line.
