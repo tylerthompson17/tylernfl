@@ -50,14 +50,16 @@ tylernfl/
 │   ├── styles/global.css
 │   ├── layouts/            BaseLayout (ticker, header, nav bar, main and rail)
 │   ├── components/         Panel, StatTable, StatCard, TickerItem, TeamChip, ...
-│   ├── pages/              index, scores, games/, charts/, curated, fourth-down/, tools/, stats/, articles/, about, 404
+│   ├── pages/              index, scores, games/, charts/, replays/, curated, fourth-down/, tools/, stats/, articles/, about, 404
 │   ├── content/articles/   MDX articles (content collection)
 │   ├── content/charts/     Tyler's charts: <slug>.md entry next to <slug>.svg (or its images)
 │   ├── content/curated/    curated X and Bluesky posts, one .md each, added by hand
+│   ├── lib/replays/        Retro Replays: scene math, pixel sprites and font, field, renderer, page script
 │   └── data/               JSON consumed at build time (mock now, pipeline output later)
 ├── public/logos/           team logos, named with a hash (pipelines/build_logos.py)
 ├── pipelines/              Python jobs: run_daily.py (every data file), build_teams.py
 │   ├── gameday.py          game day check: new finals, keep watching (gameday.yml)
+│   ├── replays.py          Retro Replays scenes and highlights index, run by hand
 │   └── charts/             style.py (shared chart style), auto.py (auto chart), build.py
 │       └── mine/           Tyler's chart scripts (his; do not edit)
 ├── models/                 exported model files (empty for now)
@@ -194,7 +196,14 @@ tylernfl/
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `player_epa.json`, `decisions.json`, `daily_fourth.json`, `games/{gameId}.json`, `targets/{gsisId}.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `draft_order.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `decisions.json`, `daily_fourth.json`, `games/{gameId}.json`, `targets/{gsisId}.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `draft_order.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, the auto chart in `charts/`, and `replays/index.json` and `replays/plays/{key}.json`.
+- `replays/` is Retro Replays' data, written by hand with `pipelines/replays.py`, never by
+  the daily job: `plays/{key}.json` is one scene per replay (NFL Next Gen Stats tracking from
+  asonty/ngs_highlights at a pinned commit, plus nflverse play-by-play for the facts),
+  `index.json` every play in that highlights collection, facts only, to pick from. The
+  rules and the scene format are in `src/data/replays/README.md` and the module's
+  docstring. A replay page embeds its scene at build time, so it is not a runtime fetch.
+  The tracking cache (`pipelines/.cache/ngs/`, about 1.3 GB) is gitignored.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
@@ -535,7 +544,8 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 | `--loss` | `#B3363B` | negative values |
 
 - Radius 0, no shadows, no gradients.
-- No motion, with two exceptions, both in the score ticker:
+- No motion, with three exceptions: two in the score ticker, and the Retro Replays
+  player (below), which moves only when the visitor presses Play.
   - A ticker group is a looping carousel, a slow continuous glide. It pauses
     on hover and keyboard focus, and stays a static, swipeable strip on touch
     devices, for reduced motion, and when its games fit. Games glide out of
@@ -906,6 +916,40 @@ calculator's tabs.
   the visitor's Eastern date says today's game is not out yet.
 - Credits Ben Baldwin's nfl4th with its license; never presented as Tyler's model.
 
+### Retro Replays
+
+Famous 2017 to 2019 plays redrawn as pixel art from Next Gen Stats tracking, built in
+step 16. The pixel art stays inside the replay canvas; everything around it is the
+site's design (Tyler rejected a Retro Bowl style in-canvas scoreboard as too close to a
+game).
+
+- `/replays/` lists the plays that have a replay (`HighlightsTable.astro`), filterable by
+  team and play type, sortable by date, type and WP swing, each play linking to its
+  page. Replays is in the nav after Charts. The whole collection with picks and "Copy
+  picked keys" is `/replays/dev/catalog/`, rendered only under `astro dev`
+  (`getStaticPaths` returns nothing in a build) and linked from nowhere.
+- `/replays/<key>/` (`ReplayPlayer.astro`, `src/lib/replays/`): the scorebug is the
+  panel's header bar (team chips with a light outline, score, running clock, situation,
+  the featured team's win probability, and "→ 70% (+8)" fading in at the last frame);
+  then a canvas drawn at native resolution and scaled up pixelated: All-22 framing,
+  sideline to sideline at 504 by 336 with a slow pan along the field, and 240 by 160
+  following the ball across too below 600px so the 13 by 21 sprites stay legible. Muted
+  sage turf (`--replay-*` tokens, kept apart from `--win`), small yard numbers, the line
+  of scrimmage and line to gain in `--scrimmage` and `--highlight`. Original sprites, 8
+  facings from five drawings, a run cycle driven by distance, a `--highlight` ring under
+  the carrier, the ball's height as an upward offset with a shadow.
+- Captions (Pass, Catch, Touchdown) are HTML in the heading face over the canvas, a
+  touchdown or a penalty on a `--highlight` background. Stats (on at desktop width, off
+  on phones): the carrier's speed in mph, air yards and the throw's track, and the
+  separation when the ball arrives (as Next Gen Stats measures it), fading 1 s after the
+  catch. Labels never overlap: a later one steps down past an earlier one and keeps its
+  step while it stays up. Routes and Debug toggles (raw dots, carrier, frame, events).
+- A scene follows the team whose win probability rose, so the swing always reads as a
+  gain and returns and pick-sixes are seen from the team that made them. Win
+  probability is nflfastR's, cited on the page with the tracking source.
+- No autoplay; playback pauses when the tab is hidden; the fade is off under reduced
+  motion.
+
 ### Curated posts
 
 `/curated` lists X and Bluesky posts Tyler picked, newest first by the post's date, each
@@ -1032,6 +1076,10 @@ a panel's own version. Name things by what the user sees ("Stat leaders", "4th d
     point, a label), the ticker and `/scores` marked with a 4px slate bar and the label
     word, and a `/week` page ranking the week's games by `GAME_SCORE` (done; see Week recap page). The spoiler-free
     version of `/week` is designed and waiting in `docs/week-recap-spoilers.md`.
+16. Retro Replays: `pipelines/replays.py` (scenes and the highlights index), the pixel
+    art player and `/replays/` pages, 15 replays picked by Tyler (done; see Retro Replays
+    under Design direction and `src/data/replays/README.md`). Later phases add
+    video-derived tracking, action states and ball height in the same scene format.
 
 ## Pending
 
