@@ -1141,3 +1141,22 @@ export interface ReplayIndexData {
   version: number;
   plays: ReplayIndexEntry[];
 }
+
+/** replays/validation.json: what pipelines/replays.py --all built and why it left plays out. */
+export interface ReplayValidation {
+  version: number;
+  ngsSha: string;
+  kept: number;
+  excluded: number;
+  /** Check key to its words and how many plays it excluded */
+  reasons: Record<string, { words: string; plays: number }>;
+  /** Excluded play key to the checks it failed */
+  excludedPlays: Record<string, string[]>;
+  /** Featured keys that are not built, with why */
+  featuredDropped: Record<string, string[]>;
+}
+
+/** replays/featured.json: Tyler's featured replays, in display order. */
+export interface ReplayFeatured {
+  keys: string[];
+}

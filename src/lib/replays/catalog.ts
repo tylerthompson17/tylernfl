@@ -108,6 +108,8 @@ export function initCatalog(root: HTMLElement): void {
   const copyStatus = root.querySelector<HTMLElement>('[data-copy-status]');
   const clear = root.querySelector<HTMLButtonElement>('[data-clear]');
 
+  // Featured keeps its order: no filters, no sorting.
+  const ordered = root.hasAttribute('data-ordered');
   const trs = [...tbody.rows];
   const rows: CatalogRow[] = trs.map((tr, order) => ({
     key: tr.dataset.key!,
@@ -155,7 +157,7 @@ export function initCatalog(root: HTMLElement): void {
   function update() {
     const fragment = document.createDocumentFragment();
     let shown = 0;
-    for (const row of sortRows(rows, sortKey, direction)) {
+    for (const row of ordered ? rows : sortRows(rows, sortKey, direction)) {
       const tr = trOf.get(row.key)!;
       const visible = matches(row, team, type) && (!pickedOnly?.checked || picks.has(row.key));
       tr.hidden = !visible;

@@ -1,18 +1,20 @@
 ---
 /**
- * Retro Replays: the plays that have a replay (replays/plays/), from the
- * highlights index (replays/index.json). The full collection, for picking
- * which to build next, is the dev-only catalog at /replays/dev/catalog/.
+ * Retro Replays: Tyler's featured replays (replays/featured.json, in his
+ * order), and a link to every replay at /replays/all/, a page of its own
+ * so this one stays light. A featured play whose replay failed its checks
+ * is left out (the deploy's job summary warns). The scenes and index are
+ * generated (pipelines/replays.py --all), so this reads them only if present.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
 import HighlightsTable from '../../components/replays/HighlightsTable.astro';
-import type { ReplayIndexData } from '../../data/types';
-import indexData from '../../data/replays/index.json';
-import { builtKeys } from '../../utils/replays';
+import { builtKeys, featuredKeys, replayIndex } from '../../utils/replays';
+import { url } from '../../utils/url';
 
 const built = builtKeys();
-const plays = (indexData as ReplayIndexData).plays.filter((p) => built.has(p.key));
+const byKey = new Map(replayIndex().map((p) => [p.key, p]));
+const featured = featuredKeys(built).flatMap((key) => byKey.get(key) ?? []);
 ---
 
 <BaseLayout
@@ -24,7 +26,20 @@ const plays = (indexData as ReplayIndexData).plays.filter((p) => built.has(p.key
     Famous plays from the 2017 to 2019 seasons, redrawn as pixel art from Next Gen Stats player tracking. Pick a play
     to watch it.
   </p>
-  <Panel title="Replays">
-    {plays.length > 0 ? <HighlightsTable plays={plays} built={built} /> : <p class="stat-table-empty">No replays yet.</p>}
+  <Panel title="Featured">
+    {featured.length > 0 ? <HighlightsTable plays={featured} built={built} ordered /> : <p class="stat-table-empty">No replays yet.</p>}
   </Panel>
+  {
+    built.size > 0 && (
+      <p class="browse">
+        <a href={url('replays/all')}>Browse all {built.size} replays</a>, by team and play type.
+      </p>
+    )
+  }
 </BaseLayout>
+
+<style>
+  .browse {
+    margin-top: var(--space-3);
+  }
+</style>

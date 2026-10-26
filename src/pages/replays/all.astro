@@ -1,0 +1,30 @@
+---
+/**
+ * Every Retro Replay: each play in the highlights collection that passed
+ * its checks (pipelines/replays.py --all), filterable by team and play
+ * type and sortable, linking to its replay. Its own page, so /replays/
+ * stays light and this loads only when opened.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Panel from '../../components/Panel.astro';
+import HighlightsTable from '../../components/replays/HighlightsTable.astro';
+import { builtKeys, replayIndex } from '../../utils/replays';
+import { url } from '../../utils/url';
+
+const built = builtKeys();
+const plays = replayIndex().filter((p) => built.has(p.key));
+---
+
+<BaseLayout
+  title="All replays"
+  description="Every Retro Replay: NFL highlights from 2017 to 2019 redrawn as pixel art from Next Gen Stats tracking."
+>
+  <h1 class="page-title">All replays</h1>
+  <p class="page-intro">
+    Every play from the Next Gen Stats highlights collection that could be redrawn, biggest win probability swing
+    first. <a href={url('replays')}>Featured replays</a>.
+  </p>
+  <Panel title="Replays">
+    {plays.length > 0 ? <HighlightsTable plays={plays} built={built} /> : <p class="stat-table-empty">No replays yet.</p>}
+  </Panel>
+</BaseLayout>

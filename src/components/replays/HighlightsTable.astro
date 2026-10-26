@@ -1,11 +1,12 @@
 ---
 /**
  * A table of highlight plays (replays/index.json entries) with filters by
- * team and play type and sortable columns. On the public /replays/ page it
- * lists the plays that have a replay, each play linking to it. With
- * `picks` (the dev-only catalog, /replays/dev/catalog/) it is every play,
- * with a box to pick each, "Copy picked keys", and a Replay column saying
- * which are built. Facts only; nothing is fetched. The script
+ * team and play type and sortable columns, each play linking to its
+ * replay: /replays/all/. With `ordered` (Featured on /replays/) it keeps
+ * the order given, with no filters or sorting. With `picks` (the dev-only
+ * catalog, /replays/dev/catalog/) it is every play, with a box to pick
+ * each, "Copy picked keys", and a Replay column saying which are built or
+ * why the checks left a play out. Facts only; nothing is fetched. The script
  * (src/lib/replays/catalog.ts) adds the filters, sorting and picks. Its
  * styles are global under .catalog: scoped styles would stamp an attribute
  * on each of the table's 5,000 or so elements.
@@ -20,9 +21,13 @@ interface Props {
   /** Keys of the plays that have a replay */
   built: Set<string>;
   picks?: boolean;
+  /** Keep the order given: no filters, no sorting (Featured) */
+  ordered?: boolean;
+  /** Excluded play key to the words of the checks it failed (the dev catalog) */
+  excluded?: Record<string, string>;
 }
 
-const { plays, built, picks = false } = Astro.props;
+const { plays, built, picks = false, ordered = false, excluded = {} } = Astro.props;
 const teams = teamsData as Team[];
 const known = new Map(teams.map((t) => [t.abbr, t.name]));
 // Retired abbreviations: their own name in the filter, today's franchise for the link.
@@ -59,8 +64,9 @@ function swingText(p: ReplayIndexEntry): string {
   const s = swingOf(p.wpBefore, p.wpAfter);
   return s === null ? '' : `${s >= 0 ? '+' : ''}${s.toFixed(1)}`;
 }
-// Biggest swing either way first, as the script sorts it; plays without one last.
-const rows = [...plays].sort((a, b) => {
+// Biggest swing either way first, as the script sorts it; plays without one
+// last. Featured keeps Tyler's order.
+const rows = ordered ? plays : [...plays].sort((a, b) => {
   const sa = swingOf(a.wpBefore, a.wpAfter), sb = swingOf(b.wpBefore, b.wpAfter);
   if (sa === null || sb === null) return sa === sb ? 0 : sa === null ? 1 : -1;
   return Math.abs(sb) - Math.abs(sa);
@@ -68,8 +74,8 @@ const rows = [...plays].sort((a, b) => {
 const NGS = 'https://github.com/asonty/ngs_highlights';
 ---
 
-<div class="catalog" data-catalog>
-  <div class="controls" data-controls hidden>
+<div class="catalog" data-catalog data-ordered={ordered ? '' : undefined}>
+  {!ordered && <div class="controls" data-controls hidden>
     <div class="row">
       <label>
         Team
@@ -107,21 +113,21 @@ const NGS = 'https://github.com/asonty/ngs_highlights';
         </div>
       )
     }
-  </div>
-  <p class="status" data-status aria-live="polite">{playCount(plays.length)}.</p>
+  </div>}
+  {!ordered && <p class="status" data-status aria-live="polite">{playCount(plays.length)}.</p>}
   <p class="visually-hidden" aria-live="polite" data-sort-status></p>
   <div class="stat-table-scroll" tabindex="0">
     <table class="stat-table">
-      <caption class="visually-hidden">Next Gen Stats highlight plays, biggest win probability swing first</caption>
+      <caption class="visually-hidden">{ordered ? 'Featured replays' : 'Next Gen Stats highlight plays, biggest win probability swing first'}</caption>
       <thead>
         <tr>
           {picks && <th scope="col"><span class="visually-hidden">Pick</span></th>}
-          <th scope="col" data-sort="date">Date</th>
+          <th scope="col" data-sort={ordered ? undefined : 'date'}>Date</th>
           <th scope="col">Game</th>
-          <th scope="col" data-sort="type">Type</th>
+          <th scope="col" data-sort={ordered ? undefined : 'type'}>Type</th>
           <th scope="col">Situation</th>
           <th scope="col">Play</th>
-          <th scope="col" class="number" data-sort="swing" aria-sort="descending" title="Points of win probability gained on the play by the team it helped (nflfastR)">WP swing</th>
+          <th scope="col" class="number" data-sort={ordered ? undefined : 'swing'} aria-sort={ordered ? undefined : 'descending'} title="Points of win probability gained on the play by the team it helped (nflfastR)">WP swing</th>
           {picks && <th scope="col" class="number" data-sort="speed" title="The ball carrier's top speed, from tracking">Top mph</th>}
           {picks && <th scope="col" class="number" data-sort="air" title="Where the first forward pass arrived, past the line of scrimmage">Air yds</th>}
           {picks && <th scope="col">Replay</th>}
@@ -173,7 +179,15 @@ const NGS = 'https://github.com/asonty/ngs_highlights';
                 {picks && <td class="number">{p.topSpeed?.toFixed(1) ?? ''}</td>}
                 {picks && <td class="number">{p.airYards ?? ''}</td>}
                 {picks ? (
-                  <td>{built.has(p.key) ? <a href={url(`replays/${p.key}`)}>Watch</a> : <span class="dim">Not yet</span>}</td>
+                  <td>
+                    {built.has(p.key) ? (
+                      <a href={url(`replays/${p.key}`)}>Watch</a>
+                    ) : excluded[p.key] ? (
+                      <span class="excluded">Excluded: {excluded[p.key]}</span>
+                    ) : (
+                      <span class="dim">Not yet</span>
+                    )}
+                  </td>
                 ) : null}
               </tr>
             );
@@ -284,6 +298,11 @@ const NGS = 'https://github.com/asonty/ngs_highlights';
     color: var(--loss);
     font-size: 10px;
     font-weight: 700;
+  }
+
+  .catalog .excluded {
+    color: var(--loss);
+    white-space: normal;
   }
 
   .catalog tr[hidden] {
