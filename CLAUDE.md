@@ -1053,6 +1053,17 @@ a panel's own version. Name things by what the user sees ("Stat leaders", "4th d
 - Playoff box scores need postseason player stats: `games.py` takes player rows from
   `load_player_week_rows`, which keeps the regular season only, so a playoff game's page
   would have no player tables.
+- Fourth-down delivery PR checklist. Whoever merges the v5 engine does all of these in
+  the same PR (contract v5, `docs/model-interface.md`):
+  - Bump `CONTRACT_VERSION` to 5.
+  - Make `experimental` required on supported results in `src/lib/fourth-down.ts`.
+  - Snapshot each call's experimental result (with `dataAsOf`) into the game files in
+    `src/data/games/`, so past seasons keep it after the experimental model stops
+    supporting them.
+  - Until the confirmation ends: the `/fourth-down/` feed shows nfl4th calls only. The
+    experimental model appears on the calculator, game pages and live items, per play,
+    with no outcome-based records, accuracy or WP-cost tallies.
+  - Live items that use the punter fallback say which punter was assumed.
 
 ## Articles
 
