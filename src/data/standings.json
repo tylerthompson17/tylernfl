@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 7,
-  "updated": "2026-10-25T23:48:37Z",
+  "updated": "2026-10-26T03:25:33Z",
   "teams": [
     {
       "team": "BUF",
@@ -332,12 +332,12 @@
       "conference": "AFC",
       "division": "AFC West",
       "wins": 5,
-      "losses": 0,
+      "losses": 1,
       "ties": 0,
-      "pct": 1.0,
-      "pointsFor": 140,
-      "pointsAgainst": 83,
-      "diff": 57,
+      "pct": 0.833,
+      "pointsFor": 143,
+      "pointsAgainst": 103,
+      "diff": 40,
       "divisionRecord": [
         3,
         0,
@@ -348,11 +348,11 @@
         0,
         0
       ],
-      "streak": "W5",
+      "streak": "L1",
       "divisionRank": 1,
       "conferenceRank": 1,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "DEN",
@@ -649,7 +649,7 @@
       "divisionRank": 4,
       "conferenceRank": 7,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "CAR",
@@ -790,13 +790,13 @@
       "team": "SEA",
       "conference": "NFC",
       "division": "NFC West",
-      "wins": 3,
+      "wins": 4,
       "losses": 3,
       "ties": 0,
-      "pct": 0.5,
-      "pointsFor": 148,
-      "pointsAgainst": 122,
-      "diff": 26,
+      "pct": 0.571,
+      "pointsFor": 168,
+      "pointsAgainst": 125,
+      "diff": 43,
       "divisionRecord": [
         1,
         1,
@@ -807,7 +807,7 @@
         2,
         0
       ],
-      "streak": "L2",
+      "streak": "W1",
       "divisionRank": 2,
       "conferenceRank": 8,
       "divisionTiebreak": null,
