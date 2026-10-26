@@ -1,7 +1,7 @@
 """Daily site data job: writes ticker.json, stats/, players/,
 rosters/, transactions.json, on_this_day.json, standings.json,
 schedule.json, playoff_odds.json, draft_order.json, game_excitement.json, team_stats.json,
-player_epa.json, decisions.json, targets/ and, once a season, performance_percentiles.json into
+player_epa.json, decisions.json, targets/, games/ and, once a season, performance_percentiles.json into
 src/data/, then draws
 the home page's auto chart (charts/auto.json and its entry in charts/archive/)
 from them.
@@ -15,7 +15,8 @@ Options:
     --dry-run            print the output instead of writing files
 
 Play-by-play is loaded once (pbp_cache.py) and shared by game excitement,
-team stats, player EPA, target maps, 4th down decisions and the auto charts.
+team stats, player EPA, target maps, 4th down decisions, game pages and the auto
+charts.
 """
 
 import argparse
@@ -33,6 +34,7 @@ from charts.auto import build_auto_charts, season_finals, wp_plays_for, write_ch
 from draft_order import build_draft_order, load_picks, load_trade_rows, unlisted_trades  # noqa: E402
 from excitement import build_game_excitement, labels_by_game  # noqa: E402
 from game_logs import build_game_logs  # noqa: E402
+from games import build_games, check as games_check, file_name as game_file, kept_decisions, load_game_plays  # noqa: E402
 from leaderboards import build_leaderboards, load_player_week_rows  # noqa: E402
 from on_this_day import build_on_this_day, load_on_this_day_input  # noqa: E402
 from performance_percentiles import build_performance_percentiles, last_completed_season  # noqa: E402
@@ -97,10 +99,22 @@ def main() -> None:
     # Every 4th down and try of the same season's finals, through the site's
     # own 4th down engine (one Node process).
     decisions = build_decisions(load_decision_rows(pbp_season, current, schedule_rows), pbp_season, updated)
+    # A page's data for every final of the ticker's season with play-by-play.
+    # Player stats only when the boards are that season's (weekly stats can
+    # trail the play-by-play; those games get theirs on a later run).
+    game_plays = load_game_plays(season_finals(schedule_rows, ticker['season']), ticker['season'], current)
+    # Each game's calls are copied in from decisions.json; a game it has none
+    # for keeps the snapshot its file already has.
+    games = build_games(game_plays, player_rows if stats_year == ticker['season'] else [],
+                        decisions if decisions['season'] == ticker['season'] else None,
+                        excitement, kept_decisions([row['game_id'] for row, _ in game_plays]))
 
     week = f"week {ticker['week']}" if ticker['week'] else f"offseason, opener {ticker['nextOpener']}"
     print(f"{today}: ticker {ticker['season']} {week}, {len(ticker['games'])} games")
     print(decisions_report(decisions))
+    print(f"games: {len(games)} finals, {sum(1 for g in games.values() if g['players'])} with player stats")
+    for line in games_check(games):
+        print(f'games: WARNING {line}')
     marked = [g for g in excitement['games'] if g['label']]
     print(f"game excitement: {len(excitement['games'])} games, {len(marked)} labelled")
     counts = sorted({t['games'] for t in team_stats['teams']})
@@ -176,6 +190,7 @@ def main() -> None:
     files += [(f'stats/{key}.json', board, ()) for key, board in boards.items()]
     logs = [(f'players/{team}.json', data, ()) for team, data in sorted(game_logs.items())]
     target_files = [(f'targets/{pid}.json', data, ()) for pid, data in targets.items()]
+    game_files = [(game_file(game_id), data, ()) for game_id, data in sorted(games.items())]
     files.append(('transactions.json', transactions, ('updated',)))
     files.append(('on_this_day.json', on_this_day, ()))
     files.append(('standings.json', standings, ('updated',)))
@@ -190,7 +205,7 @@ def main() -> None:
         files.append(('performance_percentiles.json', percentiles, ()))
 
     if args.dry_run:
-        print(json.dumps({name: data for name, data, _ in files + logs + target_files}, indent=2))
+        print(json.dumps({name: data for name, data, _ in files + logs + target_files + game_files}, indent=2))
         return
 
     written = 0
@@ -215,6 +230,11 @@ def main() -> None:
     stale = stale_files(existing_files(), set(targets), pbp_season if kept_targets else None)
     remove_files(stale)
     print(f'targets: {changed_targets} of {len(target_files)} files updated, {len(stale)} removed')
+    # One small file per final, compact like the other large sets; earlier
+    # seasons' files are kept, since their pages stay up.
+    changed_games = sum(write_json_if_changed(name, data, volatile, compact=True)
+                        for name, data, volatile in game_files)
+    print(f'games: {changed_games} of {len(game_files)} files updated')
     print(f'{written} of {len(files) + len(logs)} other files updated')
 
     # Drawn last: they read the files just written (boards, game logs,
