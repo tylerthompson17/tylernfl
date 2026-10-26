@@ -76,6 +76,23 @@ class BigPlaysTest(unittest.TestCase):
         self.assertEqual([p['playId'] for p in big_plays(plays)], [2, 3, 4, 5, 6])
         self.assertEqual(big_plays(plays)[0]['homeWpAfter'], 0.2)
 
+    def test_a_foul_with_no_after_value_counts_and_markers_never_do(self):
+        # 2026_01_ATL_PIT: pass interference on ATL has no after value; its
+        # effect shows at PIT's next snap, past PIT's timeout (stale, as
+        # nflverse lists them). 2026_05_NYG_WAS: the END GAME marker row
+        # carries a swing of its own and is not a play.
+        plays = [
+            play(1042, home_wp=0.394, home_wp_post=0.363),
+            play(1064, home_wp=0.363, home_wp_post=None, play_type='no_play', desc='PENALTY on ATL, DPI'),
+            play(1076, home_wp=0.363, home_wp_post=None, play_type='no_play', timeout=1.0,
+                 desc='Timeout #1 by PIT at 14:24.'),
+            play(1105, home_wp=0.507, home_wp_post=0.490),
+            play(5158, home_wp=0.5, home_wp_post=0.0, play_type=None, desc='END GAME'),
+        ]
+        top = big_plays(plays)
+        self.assertEqual([p['playId'] for p in top], [1042, 1064, 1105])
+        self.assertEqual((top[1]['homeWpBefore'], top[1]['homeWpAfter']), (0.363, 0.507))
+
     def test_spots_use_minutes_and_wp_before(self):
         plays = [play(10, qtr=2, game_seconds_remaining=2700, home_wp=0.61)]
         self.assertEqual(decision_spots(plays, {10, 11}), [{'playId': 10, 'x': 15.0, 'y': 0.61}])

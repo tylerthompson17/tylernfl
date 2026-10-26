@@ -5,7 +5,8 @@ For every final of the season nflverse has play-by-play for:
 
 - index: the excitement index, the sum of every play's change in win
   probability, either way, scaled to 60 minutes so overtime's extra plays
-  do not count as extra excitement.
+  do not count as extra excitement. Timeouts and marker rows add nothing
+  (line_wps).
 - winnerLowWp: the eventual winner's lowest win probability. Null for a
   tie, which has no winner.
 - score: what GAME_SCORE gives it. /week ranks by it and the auto chart's
@@ -33,10 +34,20 @@ from common import normalize_team
 # The cutoffs were set against every 2019 to 2025 regular season game
 # (1,871, all but the cancelled 2022 BUF at CIN), aiming for about two
 # marked games a week so that a mark still means something. Together they
-# mark 13.7% (Comeback 116, Thriller 74, Shootout 67), 2.1 a week.
+# mark 13.7% (Comeback 117, Thriller 78, Shootout 62), 2.1 a week, counted
+# as label() reads the numbers: the low point rounded to 3 places, so
+# 2022 DEN at BAL (0.10005) is a Comeback.
 # Recent seasons run wilder than 2019, so expect somewhat more than that.
+#
+# 2026-10-25: the index used to take every row's after value, and nflverse
+# lists a timeout right after the play it follows with the win probability
+# from before that play, so each timeout added a false swing down and back
+# (0.25 a game on average, up to 2.4). It now runs over line_wps, as the WP
+# chart's line does; kneels and pre-snap fouls with no after value now count
+# too, which moves it far less. The Thriller cutoff was reset to the new
+# top 5%, 6.88 to 6.20 (Thriller 74 to 78, Shootout 67 to 62).
 COMEBACK_WP = 0.10          # the winner was down to a 1 in 10 chance or less
-THRILLER_INDEX = 6.88       # the top 5% of excitement index in 2019 to 2025 (/week says so)
+THRILLER_INDEX = 6.20       # the top 5% of excitement index in 2019 to 2025 (/week says so)
 SHOOTOUT_POINTS = 65        # both teams' points together
 SHOOTOUT_MARGIN = 8         # and still a one-score game at the end
 
@@ -87,6 +98,40 @@ def wp_after(play: dict) -> float:
     return play['home_wp'] if after is None else after
 
 
+def is_stoppage(play: dict) -> bool:
+    """A row where no play was run: a timeout or one of nflverse's marker
+    rows (game start, end of a quarter). nflverse lists a timeout right
+    after the play it follows, at the same clock, but with the home_wp from
+    before that play, so its own value is stale."""
+    play_type = play.get('play_type')
+    return play_type is None or (bool(play.get('timeout')) and play_type == 'no_play')
+
+
+def _half(play: dict) -> int:
+    quarter = int(play['qtr'])
+    return (quarter + 1) // 2 if quarter <= 4 else quarter
+
+
+def line_wps(plays: list[dict]) -> list[float]:
+    """Home win probability after each of wp_plays(), as the line holds it.
+    A play's after value; at a stoppage, whatever the play before it left,
+    so the line neither dips at a timeout nor sits at a stale level until
+    the next snap. A play with no after value (a kneel, a pre-snap foul)
+    takes the next snap's before value in the same half, where its effect
+    first shows. The values themselves are all nflfastR's."""
+    values = []
+    for i, play in enumerate(plays):
+        if is_stoppage(play):
+            values.append(values[-1] if values else play['home_wp'])
+        elif play.get('home_wp_post') is not None:
+            values.append(play['home_wp_post'])
+        else:
+            following = next((p for p in plays[i + 1:] if not is_stoppage(p)), None)
+            same_half = following is not None and _half(following) == _half(play)
+            values.append(following['home_wp'] if same_half else play['home_wp'])
+    return values
+
+
 def winner_low(plays: list[dict], home_won: bool) -> tuple[float, dict]:
     """The winner's lowest win probability before the result, and the play
     it came after. The first low point wins a tie, the earliest scare."""
@@ -100,11 +145,13 @@ def winner_low(plays: list[dict], home_won: bool) -> tuple[float, dict]:
 
 def excitement_index(plays: list[dict]) -> float:
     """Every change in home win probability, either way, added up from
-    before the first snap to after the last play, per 60 minutes. A game
-    that went to overtime is scaled down by the time it took."""
+    before the first snap to after the last play, per 60 minutes, over the
+    values the WP chart's line holds (line_wps), so a stale timeout row
+    adds no swing. A game that went to overtime is scaled down by the time
+    it took."""
     if not plays:
         return 0.0
-    series = [plays[0]['home_wp'], *(wp_after(p) for p in plays)]
+    series = [plays[0]['home_wp'], *line_wps(plays)]
     swing = sum(abs(b - a) for a, b in zip(series, series[1:]))
     minutes = max(60.0, play_minutes(plays[-1]))
     return swing * 60 / minutes

@@ -485,15 +485,23 @@ tylernfl/
   after the last play, scaled to 60 minutes when a game goes to overtime; overtime
   periods are 10 minutes in the regular season and 15 in the playoffs, each counted
   down from its full length in nflfastR, which `overtime_seconds` reads from
-  `season_type`, and the WP charts' time axis uses the same),
+  `season_type`, and the WP charts' time axis uses the same; taken over the values the
+  WP chart's line holds, `line_wps`, so timeouts and marker rows add nothing),
   `winnerLowWp` the eventual winner's lowest win probability (null for a tie),
   `score` what `GAME_SCORE` gives it, and `label` the first rule it clears:
-  Comeback (winner down to 10% or less), Thriller (index 6.88 or more, the top 5% of
+  Comeback (winner down to 10% or less), Thriller (index 6.20 or more, the top 5% of
   2019 to 2025), Shootout (65 or more points and a margin of 8 or less), or null.
   The cutoffs were set against all 1,871 regular season games of 2019 to 2025, aiming
-  at about two marked games a week: together they mark 13.7% (Comeback 116, Thriller
-  74, Shootout 67). Recent seasons run wilder, so expect somewhat more. Each ticker
+  at about two marked games a week: together they mark 13.7% (Comeback 117, Thriller
+  78, Shootout 62). Recent seasons run wilder, so expect somewhat more. Each ticker
   game carries its `label`, copied from this file.
+- 2026-10-25: the index took every row's after value, and nflverse lists a timeout
+  after the play it follows with the WP from before that play, so each timeout added a
+  false swing down and back (0.25 a game on average, up to 2.4). It now uses
+  `line_wps`, and the Thriller cutoff went from 6.88 to 6.20, the same top 5% of the
+  new index. All 2026 games were relabelled; past daily picks were kept, as a redrawn
+  chart keeps its pick. The game pages' Biggest plays use the same values (an END GAME
+  marker row had made one top 5; pre-snap fouls with no after value now count).
 - There is no placeholder data left. The 4th down model record panel and
   `model_record.json` were removed until the model exists; restore them from git history
   (commit "Replace the rail's model record placeholder") when it does.

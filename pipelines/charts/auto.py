@@ -39,7 +39,7 @@ import json
 from datetime import date, datetime, timedelta
 
 from common import DATA_DIR, normalize_team
-from excitement import GAME_SCORE, play_minutes, winner_low, wp_plays
+from excitement import GAME_SCORE, is_stoppage, line_wps, play_minutes, winner_low, wp_plays
 
 from charts import style
 
@@ -116,40 +116,6 @@ def clock_label(quarter: float, remaining: float) -> str:
     left = int(remaining - (4 - quarter) * 900) if quarter <= 4 else int(remaining)
     period = f'Q{quarter}' if quarter <= 4 else 'OT' if quarter == 5 else f'{quarter - 4}OT'
     return f"{period} {left // 60}:{left % 60:02d}"
-
-
-def is_stoppage(play: dict) -> bool:
-    """A row where no play was run: a timeout or one of nflverse's marker
-    rows (game start, end of a quarter). nflverse lists a timeout right
-    after the play it follows, at the same clock, but with the home_wp from
-    before that play, so its own value is stale."""
-    play_type = play.get('play_type')
-    return play_type is None or (bool(play.get('timeout')) and play_type == 'no_play')
-
-
-def _half(play: dict) -> int:
-    quarter = int(play['qtr'])
-    return (quarter + 1) // 2 if quarter <= 4 else quarter
-
-
-def line_wps(plays: list[dict]) -> list[float]:
-    """Home win probability after each of wp_plays(), as the line holds it.
-    A play's after value; at a stoppage, whatever the play before it left,
-    so the line neither dips at a timeout nor sits at a stale level until
-    the next snap. A play with no after value (a kneel, a pre-snap foul)
-    takes the next snap's before value in the same half, where its effect
-    first shows. The values themselves are all nflfastR's."""
-    values = []
-    for i, play in enumerate(plays):
-        if is_stoppage(play):
-            values.append(values[-1] if values else play['home_wp'])
-        elif play.get('home_wp_post') is not None:
-            values.append(play['home_wp_post'])
-        else:
-            following = next((p for p in plays[i + 1:] if not is_stoppage(p)), None)
-            same_half = following is not None and _half(following) == _half(play)
-            values.append(following['home_wp'] if same_half else play['home_wp'])
-    return values
 
 
 def wp_points(plays: list[dict], away_score: int, home_score: int) -> list[tuple[float, float]]:

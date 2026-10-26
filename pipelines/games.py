@@ -30,7 +30,9 @@ score, lines and label after schedule.json moves on), from nflverse only:
   arrays in the board's column order. Null until nflverse publishes the
   week's stats, which can trail the play-by-play.
 - the five plays with the largest change in nflfastR's home win
-  probability, either way (`home_wp` before, excitement.wp_after after);
+  probability, either way (`home_wp` before, after as the WP chart's line
+  holds it, excitement.line_wps, so a play with no after value such as a
+  pre-snap foul counts, and a timeout or marker row never does);
 - the game's 4th down and try records from decisions.json, copied as they
   are (with the file's model version and closeMargin), so a past season's
   page keeps its calls after decisions.json moves on; and where each sits
@@ -46,7 +48,7 @@ alone, and files of earlier seasons are kept.
 from collections import defaultdict
 
 from common import normalize_team
-from excitement import play_minutes, wp_after, wp_plays
+from excitement import is_stoppage, line_wps, play_minutes, wp_plays
 from leaderboards import BOARDS, STAT_COLUMNS, board_values
 from team_stats import is_epa_play
 
@@ -58,7 +60,7 @@ PBP_COLUMNS = [
     'qb_kneel', 'qb_spike', 'epa', 'yards_gained', 'first_down', 'third_down_converted', 'third_down_failed',
     'fourth_down_converted', 'fourth_down_failed', 'fixed_drive', 'drive', 'drive_inside20',
     'drive_time_of_possession', 'touchdown', 'td_team', 'interception', 'fumble_lost', 'fumbled_1_team',
-    'two_point_attempt', 'desc',
+    'two_point_attempt', 'desc', 'timeout',
 ]
 
 SNAPS = ('pass', 'run', 'qb_kneel', 'qb_spike')
@@ -159,10 +161,10 @@ def team_box(plays: list[dict], team: str) -> dict:
 def big_plays(plays: list[dict]) -> list[dict]:
     """The plays that moved home win probability most, either way, in game order."""
     swings = []
-    for p in wp_plays(plays):
-        after = wp_after(p)
+    ordered = wp_plays(plays)
+    for p, after in zip(ordered, line_wps(ordered)):
         swing = after - p['home_wp']
-        if not p.get('desc') or abs(swing) < 0.005:
+        if is_stoppage(p) or not p.get('desc') or abs(swing) < 0.005:
             continue
         swings.append((abs(swing), p, after))
     top = sorted(swings, key=lambda s: (-s[0], s[1]['play_id']))[:BIG_PLAYS]

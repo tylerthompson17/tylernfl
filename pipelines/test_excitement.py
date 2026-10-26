@@ -9,10 +9,10 @@ import excitement
 from ticker import with_labels
 
 
-def play(qtr, remaining, before, after=None):
+def play(qtr, remaining, before, after=None, **fields):
     """A play with home win probability before the snap and after it."""
     return {'qtr': qtr, 'game_seconds_remaining': remaining, 'home_wp': before,
-            'home_wp_post': before if after is None else after}
+            'home_wp_post': before if after is None else after, 'play_type': 'pass', **fields}
 
 
 def row(away, home, away_score, home_score, week=4):
@@ -50,6 +50,21 @@ class IndexTests(unittest.TestCase):
         plays = [play(1, 3500, 0.5), play(2, 1800, 0.7)]
         self.assertAlmostEqual(excitement.excitement_index(plays), 0.2)
 
+    def test_a_timeout_adds_no_swing(self):
+        # nflverse lists a timeout after the play it follows, carrying the
+        # win probability from before that play (2026_05_BUF_LA, OT 4:51).
+        # In regulation here, so nothing is scaled.
+        plays = [play(4, 337, 0.738, 0.6527), play(4, 291, 0.6527, 0.776),
+                 play(4, 291, 0.6527, None, play_type='no_play', timeout=1.0),
+                 play(4, 256, 0.776, 0.5888, play_type='field_goal')]
+        self.assertAlmostEqual(excitement.excitement_index(plays), 0.0853 + 0.1233 + 0.1872)
+
+    def test_a_foul_with_no_after_value_counts_at_the_next_snap(self):
+        plays = [play(2, 2206, 0.866, 0.8437),
+                 dict(play(2, 2161, 0.8437), home_wp_post=None, play_type='no_play', penalty=1.0),
+                 play(2, 2161, 0.8243, 0.8229, play_type='field_goal')]
+        self.assertAlmostEqual(excitement.excitement_index(plays), 0.0223 + 0.0194 + 0.0014)
+
     def test_overtime_is_scaled_to_60_minutes(self):
         # The last play ends overtime at 5:00 left: 65 minutes played.
         plays = [play(1, 3500, 0.5, 1.0), play(5, 300, 1.0, 0.0)]
@@ -74,8 +89,8 @@ class LabelTests(unittest.TestCase):
         self.assertEqual(excitement.label(1.0, 0.10, 20, 30), 'Comeback')
 
     def test_thriller_before_shootout(self):
-        self.assertEqual(excitement.label(6.88, 0.101, 3, 70), 'Thriller')
-        self.assertEqual(excitement.label(6.87, 0.5, 3, 70), 'Shootout')
+        self.assertEqual(excitement.label(6.20, 0.101, 3, 70), 'Thriller')
+        self.assertEqual(excitement.label(6.19, 0.5, 3, 70), 'Shootout')
 
     def test_a_shootout_is_high_scoring_and_close(self):
         self.assertEqual(excitement.label(2.0, 0.4, 8, 65), 'Shootout')
@@ -95,7 +110,7 @@ class BuildTests(unittest.TestCase):
             [(row('LA', 'SF', 20, 23), comeback), (row('NYJ', 'NE', 17, 17), tie)], 2026, '2026-09-29T10:00:00Z')
 
         self.assertEqual(data['season'], 2026)
-        self.assertEqual(data['cutoffs'], {'comebackWp': 0.10, 'thrillerIndex': 6.88,
+        self.assertEqual(data['cutoffs'], {'comebackWp': 0.10, 'thrillerIndex': 6.20,
                                            'shootoutPoints': 65, 'shootoutMargin': 8})
         first, second = data['games']
         self.assertEqual(first, {
