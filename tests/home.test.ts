@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { callsWeek, homeState, homeWeek } from '../src/lib/home/state.ts';
+import { callsWeek, homeState, homeWeek, kickoffToday } from '../src/lib/home/state.ts';
 import { allWidths, moreCounts, rendered, rowsClass } from '../src/lib/home/rows.ts';
 
 // Week 7 of 2026: Thursday night, Sunday, Monday night; week 6 complete.
@@ -73,4 +73,10 @@ test('rows: classes, what to render, and how many more at each width', () => {
   assert.deepEqual(moreCounts(r, 4, 30), { wide: 26, mid: 26, phone: 27 });
   assert.deepEqual(moreCounts(r, 4, 4), { wide: 0, mid: 0, phone: 1 });
   assert.deepEqual(allWidths(5), { wide: 5, mid: 5, phone: 5 });
+});
+
+test('a quiet day has no kickoff on its Eastern date', () => {
+  const schedule = [{ kickoff: '2026-10-27T00:15:00Z' }]; // Monday 8:15 PM Eastern
+  assert.equal(kickoffToday(new Date('2026-10-26T15:00:00Z'), schedule), true); // Monday 11 AM
+  assert.equal(kickoffToday(new Date('2026-10-27T14:00:00Z'), schedule), false); // Tuesday 10 AM
 });

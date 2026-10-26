@@ -6,7 +6,7 @@ import excitementData from '../data/game_excitement.json';
 import scheduleData from '../data/schedule.json';
 import tickerData from '../data/ticker.json';
 import type { GameExcitementData, ScheduleData, TickerData } from '../data/types';
-import { callsWeek, homeState, homeWeek } from '../lib/home/state';
+import { callsWeek, homeState, homeWeek, kickoffToday } from '../lib/home/state';
 import { getAutoChart, getFeaturedChart } from './charts';
 import { decisionsData } from './decisions';
 import { siteNow } from './now';
@@ -22,6 +22,8 @@ const decisionWeeks =
 
 export const homeData = {
   state: homeState(siteNow(), schedule.games, (tickerData as TickerData).games),
+  /** No game kicks off today: the Retro Replay leads a recap (Tuesday), as it does a preview */
+  quiet: !kickoffToday(siteNow(), schedule.games),
   schedule,
   excitement,
   /** The week results, calls and performances all name */

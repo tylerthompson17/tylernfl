@@ -820,10 +820,13 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   - recap (no game on, and 3 or more finals with kickoffs in the last 48 hours: the
     morning after a Sunday or Monday night): the chart, results, the week's questionable
     calls, notable performances, transactions | article, coach grades, daily game,
-    playoff picture, draft top 8, replay, on this day.
+    playoff picture, draft top 8, replay, on this day. On a quiet recap, no kickoff
+    that Eastern date (`kickoffToday`; Tuesday, not Monday morning before the night
+    game), the Retro Replay leads the main column instead (Tyler, 2026-10-26) and
+    transactions move to the sidebar as its slack list.
   - preview (nothing on and little just played: midweek, a game day morning, the day
     after a lone Thursday game): the Retro Replay first (Tyler asked for it on
-    2026-10-26: the replay leads on quiet days), the week's questionable calls, chart,
+    2026-10-26: the replay leads on quiet days, a game day morning included), the week's questionable calls, chart,
     results | daily game, article, transactions, coach grades, playoff picture, draft
     top 8, on this day. Here the sidebar's transactions list takes up the slack.
   - offseason (no ticker games): articles, last season's coach grades, the chart | daily

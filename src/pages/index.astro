@@ -8,7 +8,8 @@
  *   picture, archive.
  * - recap: the best game's chart, results, the week's calls, notable
  *   performances, transactions | article, coach grades, daily game,
- *   playoff picture, draft, archive.
+ *   playoff picture, draft, archive. On a quiet recap (no kickoff today,
+ *   Tuesday) the Retro Replay leads and transactions move to the sidebar.
  * - preview (quiet days): the Retro Replay, the week's calls, chart, results |
  *   daily game, article, transactions, coach grades, playoff picture, draft,
  *   on this day. The sidebar's transactions take up the slack here.
@@ -42,7 +43,7 @@ import { homeData, tallChart } from '../utils/home';
 import { homeReplays } from '../utils/replays';
 import type { Rows } from '../lib/home/rows';
 
-const { state } = homeData;
+const { state, quiet } = homeData;
 const tall = await tallChart();
 const replays = await homeReplays();
 
@@ -75,7 +76,7 @@ const list = (wide: number, mid: number): Rows => ({ wide, mid, phone: Math.min(
       )
     }
     {
-      state === 'recap' && (
+      state === 'recap' && !(quiet && replays.length > 0) && (
         <>
           <div class="home-col" data-balance="main">
             <div style="--order: 1"><HomeChart /></div>
@@ -91,6 +92,28 @@ const list = (wide: number, mid: number): Rows => ({ wide, mid, phone: Math.min(
             <div style="--order: 9"><PlayoffPicture /></div>
             <div style="--order: 10"><DraftTop rows={list(8, 8)} /></div>
             {replays.length > 0 && <div style="--order: 11"><HomeReplay replays={replays} /></div>}
+            <div style="--order: 12"><OnThisDay /></div>
+          </div>
+        </>
+      )
+    }
+    {
+      state === 'recap' && quiet && replays.length > 0 && (
+        <>
+          <div class="home-col" data-balance="main">
+            <div style="--order: 1"><HomeReplay replays={replays} /></div>
+            <div style="--order: 2"><HomeChart /></div>
+            <div style="--order: 3"><WeekResults /></div>
+            <div style="--order: 4"><QuestionableCalls rows={calls(6)} /></div>
+            <div style="--order: 9"><NotablePanel /></div>
+          </div>
+          <div class="home-col" data-balance="side">
+            <div style="--order: 5"><LatestArticles limit={2} /></div>
+            <div style="--order: 6"><CoachGrades rows={list(5, 5)} /></div>
+            <div style="--order: 7"><DailyGame /></div>
+            <div style="--order: 8"><HomeWire rows={list(tall ? 14 : 18, tall ? 13 : 16)} /></div>
+            <div style="--order: 10"><PlayoffPicture /></div>
+            <div style="--order: 11"><DraftTop rows={list(8, 8)} /></div>
             <div style="--order: 12"><OnThisDay /></div>
           </div>
         </>

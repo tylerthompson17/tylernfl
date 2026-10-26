@@ -45,6 +45,13 @@ export function homeState(now: Date, schedule: Game[], ticker: Pick<TickerGame, 
   return recent.length >= RECAP_GAMES ? 'recap' : 'preview';
 }
 
+/** Whether any game kicks off on `now`'s Eastern calendar date. */
+export function kickoffToday(now: Date, schedule: Pick<ScheduleGame, 'kickoff'>[]): boolean {
+  const day = (d: Date) => d.toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+  const today = day(now);
+  return schedule.some((g) => g.kickoff !== null && day(new Date(g.kickoff)) === today);
+}
+
 /**
  * The week the home page calls "the week": the latest one that is complete
  * or has at least RECAP_GAMES finals. So the morning after a Sunday it is
