@@ -50,7 +50,7 @@ tylernfl/
 │   ├── styles/global.css
 │   ├── layouts/            BaseLayout (ticker, header, nav bar, main and rail)
 │   ├── components/         Panel, StatTable, StatCard, TickerItem, TeamChip, ...
-│   ├── pages/              index, scores, charts/, curated, fourth-down/, tools/, stats/, articles/, about, 404
+│   ├── pages/              index, scores, games/, charts/, curated, fourth-down/, tools/, stats/, articles/, about, 404
 │   ├── content/articles/   MDX articles (content collection)
 │   ├── content/charts/     Tyler's charts: <slug>.md entry next to <slug>.svg (or its images)
 │   ├── content/curated/    curated X and Bluesky posts, one .md each, added by hand
@@ -130,7 +130,8 @@ tylernfl/
   text ("Punted 54 yards", "Missed a 52-yard field goal", "Converted with an 11-yard
   pass", `words.ts`), never the raw text (it is the tooltip); the verdict, "Agreed with
   nfl4th: Punt (by 4.7 points)", "Went against nfl4th: it said Go for it (by 3.1
-  points)", or "A close call" when nfl4th's top two options are under 0.02 apart; then
+  points)", or "A close call" when nfl4th's top two options are under 0.02 apart (unless
+  the team took a third option that gave up 0.02 or more: that went against nfl4th); then
   each option's WP, smaller. A 4th down still to be played comes first ("nfl4th says: Go
   for it, by 3.1 points. Waiting for the snap.", from the scoreboard detector) and is the
   only item with the yellow background. A 4th down wiped out by a penalty after the snap
@@ -193,7 +194,7 @@ tylernfl/
   next quarter at 15:00 instead) and live overtime. Add a capture when one happens.
 - Mock JSON files must match the real schemas exactly, so pipelines can overwrite them without touching site code. Define a TypeScript type for each file in `src/data/types.ts`.
 - Files: `ticker.json`, `stats/{board}.json`, `players/{TEAM}.json`, `rosters/{TEAM}.json`,
-  `transactions.json`, `team_stats.json`, `player_epa.json`, `decisions.json`, `daily_fourth.json`, `targets/{gsisId}.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `draft_order.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
+  `transactions.json`, `team_stats.json`, `player_epa.json`, `decisions.json`, `daily_fourth.json`, `games/{gameId}.json`, `targets/{gsisId}.json`, `on_this_day.json`, `standings.json`, `schedule.json`, `playoff_odds.json`, `draft_order.json`, `game_excitement.json`, `performance_percentiles.json`, `teams.json`, `logos.json`, and the auto chart in `charts/`.
 - `teams.json` (abbr, name, conference, division, primary/secondary colors) should be generated from nflverse team data, not typed from memory. If that is not possible yet, leave colors as neutral placeholders and flag it.
 - `ticker.json`, `stats/`, `players/`, `rosters/`, `transactions.json` and `on_this_day.json` are real data written by
   `pipelines/run_daily.py` (nflreadpy), run by `.github/workflows/daily.yml` every morning
@@ -323,6 +324,23 @@ tylernfl/
   the defense scored on the play. Plus the final score and overtime. Checked on every
   4th down of 2026 as of 2026-10-25: all 1,339 resolve with a start, plays and a result.
   Rules in `what_next`, tests in `test_daily_fourth.py`.
+- `games/{gameId}.json` is written daily by `pipelines/games.py` (from `run_daily.py`), one
+  per final of the ticker's season that nflverse has play-by-play for, named by the nflverse
+  game id (the Rams are `LA` in it), for its game page. Each file stands on its own, so an
+  older season's page keeps its score, lines and label: kickoff, scores, overtime, neutral
+  site, the closing lines, the excitement entry, the line score (each period's points from
+  the running score; null if they would not add up to the final), team box stats from
+  play-by-play (`team_stats.py`'s definitions where it has one; the rest in the module's
+  docstring), player stats per board from nflverse weekly stats through `board_values`, so
+  a game's line is its game log row (null until nflverse publishes the week), the five
+  largest swings in nflfastR's home WP, the game's `decisions.json` records copied as they
+  are (with `modelVersion` and `closeMargin`; a run with none for a game keeps the copy
+  its file has, `kept_decisions`), and where each sits on the WP chart (`play_minutes`,
+  home WP before the snap). So a past season keeps its calls and marks after
+  `decisions.json` moves on. Written compactly, about 20 KB each; earlier seasons' files
+  are kept. Checked on all 102 finals as of 2026-10-25: rushing yards
+  equal the players' sum in all 204 team games, and time of possession adds to 60:00 in
+  every regulation game (`check` warns in the run's log when either fails).
 - There is no `leaders.json` any more. Every top 5 on the site (the stats overview, the
   home page's receiving panel, a team's stat leader appearances) comes from the boards and
   `player_epa.json` through `src/utils/overview.ts`, whose rows carry player ids.
@@ -578,6 +596,51 @@ linked from the ticker's week label.
 - Boxes stay in kickoff order. Unlike the ticker, live games are not moved to
   the front: the value here is a stable week, and a slate kicking off together
   already groups them.
+
+### Game pages
+
+`/games/<season>/<week>/<away>-at-<home>/` (lower case, `gamePath` in
+`src/lib/games/view.ts`), one per file in `src/data/games/`, so a final whose play-by-play
+nflverse has not published has no page yet. Every link to one goes through `gameHref`
+(`src/utils/games.ts`), which is null for a game without a page, so none 404s. Words are
+in `src/lib/games/view.ts`, tested in `tests/games.test.ts`. Phase 2 (live game pages from
+ESPN's summary) is not built.
+
+- Panels, top to bottom: Final (line score with the winner in bold, the date, the
+  excitement label with the slate bar, the closing spread and total and the result
+  against each: "LAC -8.5. ARI covered by 20.5.", "47.5. 40 points: under by 7.5.");
+  Win probability (the archive's auto chart through `ChartFigure`, with its hover);
+  Biggest plays (nflverse's text, the team the swing helped and its chance before and
+  after); 4th downs and tries; Box score (team stats side by side, then a table per board,
+  the away team's players first, the columns and formats the stat leaders use).
+- Every `decisions.json` play of the game is a mark on the WP line at its snap: a slate
+  circle for a 4th down, a white square for a try, larger, in `--loss` and ringed in
+  `--text` when questionable (the ring is the cue that does not rely on color; the
+  legend says "ringed, in red"). Each mark has an invisible target of radius 15 in viewBox
+  units (about 25px wide at a phone's 600px chart), which also carries its blue focus
+  ring. The marks are a second SVG with the chart's viewBox laid over it
+  (`marks` on `ChartFigure`), outside the chart's `role="img"`, each a link named in
+  words to its item (`#play-<playId>`). They take the pointer only on the marks, so the
+  hover readout still works around them.
+- The calls are the live items (`.live-item`), rendered at build time from the records
+  (`decisionItem`): clock, situation, what happened (`playSummary` on nflverse's text, a
+  try's from `trySummary`), the verdict in `verdictWords` (shared with `verdictLine`),
+  each option's WP. A questionable call has the slate bar and says "Questionable call",
+  ", clear" at `closeMargin`. Overtime and the last 15 seconds say they are not graded,
+  as live. Two columns where they fit, in game order top to bottom. Read from the game
+  file's copy of its records, never from `decisions.json` (moving the page to the copy
+  left all 102 pages byte-identical).
+- Credits on the page: nflfastR's win probability (not a model of this site's) and Ben
+  Baldwin's nfl4th with its license; never Tyler's model.
+- Linked from: a final's status in the ticker and on `/scores` (the status becomes the
+  link; final stays final, so the live client only rewrites its text), team schedules'
+  results, the team 4th downs tab's game titles, `/week`'s Details column (the WP chart
+  until a game has a page), `/decisions/worst/` and the daily game's reveal (both to the
+  call's anchor), and live 4th down items once the build has the game's page (`page` in
+  the embedded live games). Not in search or the nav.
+- Weight on 2026-10-25: about 180 KB raw, 27 KB gzipped per page (the chart about 10 KB
+  of that), plus the site's shared scripts; 102 pages added 18.6 MB to `dist/`, and the
+  links added a median 0.7 KB raw to every other page.
 
 ### Week recap page
 
@@ -969,6 +1032,12 @@ a panel's own version. Name things by what the user sees ("Stat leaders", "4th d
     point, a label), the ticker and `/scores` marked with a 4px slate bar and the label
     word, and a `/week` page ranking the week's games by `GAME_SCORE` (done; see Week recap page). The spoiler-free
     version of `/week` is designed and waiting in `docs/week-recap-spoilers.md`.
+
+## Pending
+
+- Playoff box scores need postseason player stats: `games.py` takes player rows from
+  `load_player_week_rows`, which keeps the regular season only, so a playoff game's page
+  would have no player tables.
 
 ## Articles
 
