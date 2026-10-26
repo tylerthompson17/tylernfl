@@ -1,0 +1,23 @@
+---
+/**
+ * The experimental model next to nfl4th on one 4th down: both calls, the
+ * disagreement mark, each option's WP, the label and dataAsOf. Give it a
+ * recommend() result or a decisions.json record; the browser draws the same
+ * markup with comparisonHtml (src/lib/model-compare/html.ts).
+ */
+import '../../styles/model-compare.css';
+import { comparisonHtml } from '../../lib/model-compare/html';
+import { comparisonView, type Comparable } from '../../lib/model-compare/view';
+import { modelManifest } from '../../utils/fourth-down-model';
+
+interface Props {
+  result: Comparable;
+  /** The offense, for the flags' words */
+  team: string;
+}
+
+const { result, team } = Astro.props;
+const html = comparisonHtml(comparisonView(result, { team, kickOffset: modelManifest.kickDistanceOffset }));
+---
+
+<Fragment set:html={html} />

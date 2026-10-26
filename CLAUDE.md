@@ -947,6 +947,34 @@ point or go for 2, `recommendTry()`), a tab each (`Tabs.astro`), in the nav as "
 - Recomputes 150 ms after the last change. A model that fails to load, or is for another
   contract version, shows "unavailable" and no numbers.
 
+### Experimental model page (unlisted)
+
+`/fourth-down/experimental/` shows the experimental model (contract v5) next to nfl4th.
+It is unlisted: no link to it from the nav or any page, not in `search-index.ts`, a
+`robots` noindex tag (`noindex` on `BaseLayout`), and the site has no sitemap to leave
+it out of. Keep it that way until Tyler says otherwise.
+
+- A calculator with the 4th down calculator's inputs plus offense, defense and punter
+  (the experimental model reads them; nfl4th does not), in the same query string
+  (`src/lib/model-compare/form.ts`). The punter menu defaults to the offense's most
+  recent punter, named from `punter.json`, else from `teamPunters.json`
+  (`punters.ts`). It runs the calculator's worker with the experimental files.
+- Experimental first, nfl4th beside it: each call and margin, every option's WP under
+  both and the difference, the label as is, dataAsOf, the flags in words, then the
+  per-term breakdown in WP points (nfl4th's WP, each term, the residual, the
+  experimental WP). A disagreement is the slate bar and "The models disagree", never
+  yellow.
+- Below it, the latest week's 4th downs with a stored pre-game result in
+  `decisions.json`, newest first, a "models disagree" filter, an outcome-free count of
+  disagreements, a link to each call on its game page and a button that loads it into
+  the calculator (a test checks every stored play gives its stored numbers there). No
+  play text, team call, outcomes, accuracy, records or WP-cost tallies.
+- The result and breakdown are reusable: `comparisonView` / `breakdownView`
+  (`src/lib/model-compare/view.ts`, pure, reading a `recommend()` result or a
+  `decisions.json` record), `comparisonHtml` / `breakdownHtml` (`html.ts`, strings for
+  build time and the browser), `ModelComparison.astro` and `TermBreakdown.astro`
+  (`src/components/fourth-down/`), styles in `src/styles/model-compare.css`.
+
 ### Decision grades pages
 
 `/decisions/` (head coaches) and `/decisions/worst/` (the 50 costliest mistakes, 4th downs

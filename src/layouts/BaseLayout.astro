@@ -68,12 +68,15 @@ interface Props {
   description?: string;
   /** false on a page that places the rail's panels itself (the home page) */
   rail?: boolean;
+  /** true on an unlisted page: a robots noindex tag (/fourth-down/experimental/) */
+  noindex?: boolean;
 }
 
 const {
   title,
   description = 'Personal NFL analytics: 4th down model, stat leaders, and daily features.',
   rail = true,
+  noindex = false,
 } = Astro.props;
 
 const navItems = [
@@ -105,6 +108,7 @@ function isActive(href: string): boolean {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <title>{title} | Tyler NFL</title>
   </head>
   <body>

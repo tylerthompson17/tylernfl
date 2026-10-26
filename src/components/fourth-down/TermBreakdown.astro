@@ -1,0 +1,22 @@
+---
+/**
+ * The experimental model's per-term breakdown for one 4th down: nfl4th's WP
+ * for each option, each term's change, the residual and the experimental
+ * WP, in points of win probability. Nothing when the result has no
+ * experimental numbers. The browser draws the same markup with breakdownHtml.
+ */
+import '../../styles/model-compare.css';
+import { breakdownHtml } from '../../lib/model-compare/html';
+import { breakdownView, type Comparable } from '../../lib/model-compare/view';
+import { modelManifest } from '../../utils/fourth-down-model';
+
+interface Props {
+  result: Comparable;
+}
+
+const { result } = Astro.props;
+const e = result.experimental;
+const html = e?.supported ? breakdownHtml(breakdownView(e, result, modelManifest.kickDistanceOffset)) : '';
+---
+
+<Fragment set:html={html} />
