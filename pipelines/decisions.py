@@ -34,6 +34,15 @@ Each run prints how many plays fell in each category (`counts` in the file).
 Every run recomputes the whole season, so a new model reaches every play the
 next morning; the file names the model version it used.
 
+Each supported 4th down also carries the experimental model's result on the
+same situation (`experimental`, contract v5), as the engine returns it with
+numbers at five places. It is never graded, counted or summed: grades,
+coaches and the summary are nfl4th's alone. It runs on the weekly tables in
+models/fourth-down/ as they stand on the day of the run (their `dataAsOf`
+week), for every play of the season, and with no punterId, so the punter is
+the team's most recent one in teamPunters.json. games.py keeps each play's
+last supported result once the model stops supporting the season.
+
 Coaches are credited by game: each decision goes to its team's head coach in
 that game (nflverse's home_coach / away_coach), so an interim coach is
 ranked for his own games. The leaderboard (`coaches`) counts every
@@ -236,6 +245,17 @@ def r5(x: float | None) -> float | None:
     return None if x is None else round(x, 5)
 
 
+def r5_all(value):
+    """Every float in a JSON value at five places, the rest unchanged."""
+    if isinstance(value, float):
+        return round(value, 5)
+    if isinstance(value, dict):
+        return {k: r5_all(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [r5_all(v) for v in value]
+    return value
+
+
 def grade(decision: dict, result: dict, fourth: bool, counts: dict[str, int]) -> dict:
     """A decision's entry in the file, from its engine result."""
     row, snap = decision['row'], decision.get('snap', decision['row'])
@@ -270,6 +290,7 @@ def grade(decision: dict, result: dict, fourth: bool, counts: dict[str, int]) ->
             'conversionProb': r5(result['conversionProb']),
             'fgMakeProb': r5(result['fgMakeProb']),
             'kickDistance': result['kickDistance'],
+            'experimental': r5_all(result['experimental']),
         }
     else:
         entry |= {'patMakeProb': r5(result['patMakeProb']), 'twoPointConvProb': r5(result['twoPointConvProb'])}

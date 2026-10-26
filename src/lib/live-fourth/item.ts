@@ -9,7 +9,7 @@ import type { FourthDownResult, FourthDownSituation } from '../fourth-down.ts';
 import type { FeedEntry, PendingFourthDown } from './feed.ts';
 import { clockWords, gradeOf, optionWords, situationFromSummary, situationWords, teamCallOf, type LiveGrade } from './grade.ts';
 import { liveWords, situationOf } from './situation.ts';
-import { pendingLine, playSummary, verdictLine } from './words.ts';
+import { pendingLine, playSummary, punterLine, verdictLine } from './words.ts';
 
 /** What the item needs from the model: a cached result, and a way to ask. */
 export interface ModelLike {
@@ -37,13 +37,18 @@ function modelWaiting(model: ModelLike): string {
   return "Computing nfl4th's numbers…";
 }
 
-/** The grade for a played 4th down, asking the model when it is running; null when nullified. */
-export function entryGrade(e: FeedEntry, model: ModelLike): LiveGrade | null {
+/** A played 4th down's situation and cached result, asking the model when it is running. */
+function entryResult(e: FeedEntry, model: ModelLike): { situation: FourthDownSituation; result?: FourthDownResult } | null {
   if (e.play.nullified) return null;
   const situation = situationFromSummary(e.play, e.homeId, e.game, e.timeouts);
   if (!situation) return null;
   if (model.state() !== 'off') model.ask(entryKey(e), situation);
-  const result = model.result(entryKey(e));
+  return { situation, result: model.result(entryKey(e)) };
+}
+
+/** The grade for a played 4th down, asking the model when it is running; null when nullified. */
+export function entryGrade(e: FeedEntry, model: ModelLike): LiveGrade | null {
+  const result = entryResult(e, model)?.result;
   return result ? gradeOf(result, teamCallOf(e.play).call) : null;
 }
 
@@ -71,10 +76,13 @@ export function entryItem(e: FeedEntry, model: ModelLike): HTMLLIElement {
     li.append(line('live-verdict', `Nullified by penalty (${e.play.nullified.toLowerCase()}), not graded`));
     return li;
   }
-  const grade = entryGrade(e, model);
-  if (grade) {
+  const computed = entryResult(e, model);
+  const grade = computed?.result ? gradeOf(computed.result, call) : null;
+  if (grade && computed) {
     li.append(line('live-verdict', verdictLine(grade, call)));
     if (grade.kind === 'graded') li.append(line('live-wp', optionWords(grade, e.play.yardline100)));
+    const punter = punterLine(computed.result, computed.situation);
+    if (punter) li.append(line('live-note', punter));
   } else {
     const waiting = modelWaiting(model);
     if (waiting) li.append(line('live-wp', waiting));
@@ -98,6 +106,8 @@ export function pendingItem(p: PendingFourthDown, model: ModelLike): HTMLLIEleme
     const grade = gradeOf(result, null);
     li.append(line('live-verdict', pendingLine(grade)));
     if (grade.kind === 'graded' && situation) li.append(line('live-wp', optionWords(grade, situation.yardline100)));
+    const punter = situation && punterLine(result, situation);
+    if (punter) li.append(line('live-note', punter));
   } else {
     li.append(line('live-verdict', 'Waiting for the snap.'));
     const waiting = modelWaiting(model);

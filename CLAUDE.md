@@ -144,7 +144,9 @@ tylernfl/
   nfl4th: Punt (by 4.7 points)", "Went against nfl4th: it said Go for it (by 3.1
   points)", or "A close call" when nfl4th's top two options are under 0.02 apart (unless
   the team took a third option that gave up 0.02 or more: that went against nfl4th); then
-  each option's WP, smaller. A 4th down still to be played comes first ("nfl4th says: Go
+  each option's WP, smaller; then, when punting is an option, which punter the
+  experimental model assumed (a live situation never names one: "Experimental model:
+  assumed KC's most recent punter, Punter (M. Araiza).", `punterLine` in `words.ts`). A 4th down still to be played comes first ("nfl4th says: Go
   for it, by 3.1 points. Waiting for the snap.", from the scoreboard detector) and is the
   only item with the yellow background. A 4th down wiped out by a penalty after the snap
   is listed too, "Nullified by penalty (defensive offside), not graded", with no verdict
@@ -324,7 +326,11 @@ tylernfl/
   process per run (`engine_batch.ts` via `engine.py`), so the workflows set up Node 24; no
   Python port, no new Python dependencies. Messy plays (pre-snap penalties, a delay of
   game before a kick graded at the spot before it, fakes, timeouts before the snap,
-  retaken tries) are counted in the file's `counts` and printed each run. Written one
+  retaken tries) are counted in the file's `counts` and printed each run. Each
+  supported 4th down also carries the experimental model's result (`experimental`,
+  contract v5, numbers at 5 places), never graded or counted: run on the weekly tables
+  as they stand that day (their `dataAsOf`), with no `punterId`, so the punter is the
+  team's most recent in `teamPunters.json`. Written one
   record per line (`records=True`, `dumps_records` in `common.py`) so diffs stay
   readable; packed, git stores about 7 KB per version either way. Methods and the rbsdm.com comparison: `docs/methods/decision-grades.md`.
 - `daily_fourth.json` is written daily by `pipelines/daily_fourth.py` (one call at the end
@@ -366,7 +372,10 @@ tylernfl/
   are (with `modelVersion` and `closeMargin`; a run with none for a game keeps the copy
   its file has, `kept_decisions`), and where each sits on the WP chart (`play_minutes`,
   home WP before the snap). So a past season keeps its calls and marks after
-  `decisions.json` moves on. Written compactly, about 20 KB each; earlier seasons' files
+  `decisions.json` moves on. A 4th down whose experimental result is not supported in a
+  run (tables for another season, or not loading) keeps the supported one its file has,
+  with that result's `dataAsOf` (`keep_experimental`). Written compactly, about 38 KB
+  each with the experimental results; earlier seasons' files
   are kept. Checked on all 102 finals as of 2026-10-25: rushing yards
   equal the players' sum in all 204 team games, and time of possession adds to 60:00 in
   every regulation game (`check` warns in the run's log when either fails).
@@ -1151,17 +1160,12 @@ a panel's own version. Name things by what the user sees ("Stat leaders", "4th d
 - Playoff box scores need postseason player stats: `games.py` takes player rows from
   `load_player_week_rows`, which keeps the regular season only, so a playoff game's page
   would have no player tables.
-- Fourth-down delivery PR checklist. Whoever merges the v5 engine does all of these in
-  the same PR (contract v5, `docs/model-interface.md`):
-  - Bump `CONTRACT_VERSION` to 5.
-  - Make `experimental` required on supported results in `src/lib/fourth-down.ts`.
-  - Snapshot each call's experimental result (with `dataAsOf`) into the game files in
-    `src/data/games/`, so past seasons keep it after the experimental model stops
-    supporting them.
+- Fourth-down delivery checklist, what is left after the v5 engine merged (contract v5,
+  `docs/model-interface.md`; the version bump, `experimental` required, the game file
+  snapshots and the live items' assumed punter landed with it):
   - Until the confirmation ends: the `/fourth-down/` feed shows nfl4th calls only. The
     experimental model appears on the calculator, game pages and live items, per play,
     with no outcome-based records, accuracy or WP-cost tallies.
-  - Live items that use the punter fallback say which punter was assumed.
 
 ## Articles
 

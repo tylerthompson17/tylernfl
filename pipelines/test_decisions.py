@@ -3,7 +3,9 @@ import shutil
 import unittest
 from pathlib import Path
 
-from decisions import THRESHOLD, build_decisions, coach_table, find_decisions, grade, is_pre_snap, situation, summary
+from decisions import (
+    THRESHOLD, build_decisions, coach_table, find_decisions, grade, is_pre_snap, r5_all, situation, summary,
+)
 
 FIXTURES = Path(__file__).resolve().parent.parent / 'tests' / 'fixtures' / 'fourth-down'
 
@@ -110,6 +112,7 @@ def fourth_result(**kw) -> dict:
     base = {
         'supported': True, 'call': 'go', 'wpGo': 0.52, 'wpPunt': 0.49, 'wpFieldGoal': 0.41, 'conversionProb': 0.56,
         'fgMakeProb': 0.12, 'kickDistance': 68, 'kickerId': None, 'flags': {}, 'breakdown': {},
+        'experimental': {'supported': False, 'reason': 'unavailable'},
     }
     return base | kw
 
@@ -154,6 +157,18 @@ class GradeTest(unittest.TestCase):
         entry = grade(self.decision('punt'), fourth_result(), True, self.counts())
         self.assertAlmostEqual(entry['margin'], 0.03)
 
+    def test_the_experimental_result_is_kept_and_never_graded(self):
+        experimental = {'supported': True, 'modelId': 'fd-experimental-1', 'dataAsOf': {'season': 2026, 'week': 6},
+                        'call': 'punt', 'wpGo': 0.4812345678, 'wpPunt': 0.6, 'wpFieldGoal': None, 'terms': []}
+        plain = grade(self.decision('punt'), fourth_result(), True, self.counts())
+        entry = grade(self.decision('punt'), fourth_result(experimental=experimental), True, self.counts())
+        self.assertEqual(entry['experimental'], experimental | {'wpGo': 0.48123})
+        self.assertEqual({k: v for k, v in entry.items() if k != 'experimental'},
+                         {k: v for k, v in plain.items() if k != 'experimental'})
+        self.assertEqual(plain['experimental'], {'supported': False, 'reason': 'unavailable'})
+        ot = grade(self.decision('go'), {'supported': False, 'reason': 'overtime'}, True, self.counts())
+        self.assertNotIn('experimental', ot)
+
 
 
 @unittest.skipUnless(shutil.which('node'), 'node is not installed')
@@ -181,6 +196,9 @@ class EngineTest(unittest.TestCase):
         self.assertEqual(entry['call'], expected['call'])
         for key in ('wpGo', 'wpPunt', 'wpFieldGoal', 'conversionProb'):
             self.assertAlmostEqual(entry[key], expected[key], places=5)
+        self.assertNotIn('punterId', s)
+        self.assertTrue(entry['experimental']['supported'])
+        self.assertEqual(entry['experimental'], r5_all(expected['experimental']))
 
 
 def entry(coach: str, team: str, cost: float, team_call='punt', call='go', margin=0.1, fourth=True, skip=None) -> dict:

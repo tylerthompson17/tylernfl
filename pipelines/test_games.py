@@ -161,6 +161,26 @@ class BuildGamesTest(unittest.TestCase):
         self.assertEqual([s['playId'] for s in g['decisionSpots']], [1])
         self.assertIsNone(build_games([(schedule, plays)], [], None, {'games': []})['2025_01_AAA_BBB']['decisions'])
 
+    def test_a_play_keeps_its_supported_experimental_result(self):
+        schedule = {'game_id': '2026_08_AAA_BBB', 'season': 2026, 'week': 8, 'game_type': 'REG',
+                    'away_team': 'AAA', 'home_team': 'BBB', 'away_score': 7, 'home_score': 0}
+        plays = [play(1, game_id='2026_08_AAA_BBB', qtr=4, total_away_score=7)]
+        old = {'supported': True, 'modelId': 'fd-experimental-1', 'dataAsOf': {'season': 2026, 'week': 7}}
+        new = {'supported': True, 'modelId': 'fd-experimental-1', 'dataAsOf': {'season': 2026, 'week': 9}}
+        season = {'supported': False, 'reason': 'season'}
+        record = lambda pid, e: {'gameId': '2026_08_AAA_BBB', 'playId': pid, 'call': 'go', 'experimental': e}  # noqa: E731
+        snapshot = {'modelVersion': 'old', 'closeMargin': 0.05, 'tries': [],
+                    'fourthDowns': [record(1, old), record(2, old), record(3, season)]}
+        decisions = {'modelVersion': 'nfl4th-x', 'summary': {'closeMargin': 0.05}, 'tries': [],
+                     'fourthDowns': [record(1, season), record(2, new), record(3, season), record(4, season),
+                                     {'gameId': '2026_08_AAA_BBB', 'playId': 5, 'call': None}]}
+        g = build_games([(schedule, plays)], [], decisions, {'games': []},
+                        {'2026_08_AAA_BBB': snapshot})['2026_08_AAA_BBB']
+        # Unsupported now: the snapshot's supported one stays. Supported now:
+        # the new one. Nothing supported to keep: this run's, as it is.
+        self.assertEqual([d.get('experimental') for d in g['decisions']['fourthDowns']], [old, new, season, season, None])
+        self.assertEqual(g['decisions']['modelVersion'], 'nfl4th-x')
+
 
 if __name__ == '__main__':
     unittest.main()

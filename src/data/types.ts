@@ -820,6 +820,12 @@ export interface FourthDownDecision extends DecisionBase {
   conversionProb?: number;
   fgMakeProb?: number | null;
   kickDistance?: number;
+  /**
+   * The experimental model on the same situation (contract v5), numbers at five
+   * places; on supported 4th downs only. Never graded, counted or summed. In a
+   * game file, a play keeps its last supported result (with its dataAsOf).
+   */
+  experimental?: import('../lib/fourth-down').ExperimentalResult;
 }
 
 export interface TryDecision extends DecisionBase {
