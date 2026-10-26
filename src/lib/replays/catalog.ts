@@ -6,7 +6,7 @@
  * which ones get a replay built. Rows move rather than being rebuilt.
  */
 
-export type SortKey = 'date' | 'swing' | 'type';
+export type SortKey = 'date' | 'swing' | 'type' | 'speed' | 'air';
 export type Direction = 'asc' | 'desc';
 
 export interface CatalogRow {
@@ -16,6 +16,9 @@ export interface CatalogRow {
   type: string;
   /** Points of the offense's win probability gained (negative: lost), null without both numbers */
   swing: number | null;
+  /** The carrier's top speed (mph) and the pass's air yards, from tracking; the dev catalog shows them */
+  speed?: number | null;
+  air?: number | null;
   /** Position in the page as built, for stable ties */
   order: number;
 }
@@ -50,8 +53,12 @@ export function matches(row: CatalogRow, team: string, type: string): boolean {
  */
 export function sortRows(rows: CatalogRow[], key: SortKey, direction: Direction): CatalogRow[] {
   const sign = direction === 'desc' ? -1 : 1;
-  const value = (r: CatalogRow): string | number | null =>
-    key === 'swing' ? (r.swing === null ? null : Math.abs(r.swing)) : key === 'date' ? r.date || null : typeLabel(r.type);
+  const value = (r: CatalogRow): string | number | null => {
+    if (key === 'swing') return r.swing === null ? null : Math.abs(r.swing);
+    if (key === 'speed') return r.speed ?? null;
+    if (key === 'air') return r.air ?? null;
+    return key === 'date' ? r.date || null : typeLabel(r.type);
+  };
   return [...rows].sort((a, b) => {
     const va = value(a), vb = value(b);
     if (va === null || vb === null) return va === vb ? a.order - b.order : va === null ? 1 : -1;
@@ -83,6 +90,8 @@ const SORT_WORDS: Record<SortKey, [string, string]> = {
   date: ['newest first', 'oldest first'],
   swing: ['biggest swing first', 'smallest swing first'],
   type: ['play type, Z to A', 'play type, A to Z'],
+  speed: ['fastest carrier first', 'slowest carrier first'],
+  air: ['deepest pass first', 'shortest pass first'],
 };
 
 export function initCatalog(root: HTMLElement): void {
@@ -106,6 +115,8 @@ export function initCatalog(root: HTMLElement): void {
     teams: (tr.dataset.teams ?? '').split(' ').filter(Boolean),
     type: tr.dataset.playType ?? '',
     swing: tr.dataset.swing ? Number(tr.dataset.swing) : null,
+    speed: tr.dataset.speed ? Number(tr.dataset.speed) : null,
+    air: tr.dataset.air ? Number(tr.dataset.air) : null,
     order,
   }));
   const trOf = new Map(rows.map((r, i) => [r.key, trs[i]!]));

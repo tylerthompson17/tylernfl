@@ -4,6 +4,7 @@ the highlights collection with its facts but no tracking, to pick from.
 
     python pipelines/replays.py 2018_ARI_2018092311_141 [more keys]   scenes
     python pipelines/replays.py --index                                index.json
+    python pipelines/replays.py --fetch-all --index                    index.json with stats for every play
 
 A key is a file name in asonty/ngs_highlights' play_data/ without .tsv
 (season_team_gameId_playId; the team is whose highlight it is, not always
@@ -38,7 +39,9 @@ The rules, in the order they run:
   first event that ends it (FLIGHTS), and from a lateral to the first frame
   the ball is within CATCH_REACH of someone other than the tosser (NGS has
   no event for a lateral's catch).
-- Start: LEAD_FRAMES before the snap (or the kick on a kickoff).
+- Start: LEAD_FRAMES before the snap (or the kick on a kickoff). A direct
+  snap is a snap; nobody is pinned to it, and the ball's flight from the
+  center goes to whoever catches it, as a lateral's does.
 - End: TAIL_FRAMES after the first terminal event (TERMINAL_EVENTS). With
   none, STOP_TAIL frames after the carrier's speed first drops under
   STOP_SPEED following first contact. Failing both, the last frame.
@@ -90,7 +93,11 @@ CATCH_REACH = 1.0  # a lateral is caught once the ball is this close to a new pl
 LATERAL_WINDOW = 30  # frames; a lateral nobody catches within 3 s is a loose ball, not a flight
 
 KICK_TYPES = {'kickoff', 'punt'}
-START_EVENTS = ('ball_snap', 'kickoff', 'onside_kick')
+START_EVENTS = ('ball_snap', 'snap_direct', 'kickoff', 'onside_kick')
+SNAP_EVENTS = {'ball_snap', 'snap_direct'}
+# Tosses NGS marks without a catch: a lateral, and a direct snap (to someone
+# other than the quarterback, wildcat style), each a flight to whoever gets it.
+TOSSES = {'lateral': 'lateral', 'snap_direct': 'snap'}
 TERMINAL_EVENTS = {
     'touchdown', 'tackle', 'out_of_bounds', 'qb_sack', 'qb_strip_sack', 'qb_slide', 'qb_kneel', 'qb_spike',
     'pass_outcome_incomplete', 'fair_catch', 'touchback', 'punt_downed', 'safety', 'field_goal',
@@ -215,14 +222,15 @@ def flights_of(events) -> list[dict]:
 
 
 def lateral_flights(events, players, ball, frames: list[int]) -> list[dict]:
-    """A lateral's flight. NGS marks the toss but not the catch, so it runs
-    from the lateral to the first frame the ball is within CATCH_REACH of a
-    player other than the one who tossed it (the player nearest the ball
-    two frames before)."""
+    """A lateral's or direct snap's flight (TOSSES). NGS marks the toss but
+    not the catch, so it runs from the toss to the first frame the ball is
+    within CATCH_REACH of a player other than the one who tossed it (the
+    player nearest the ball two frames before: on a direct snap, the
+    center)."""
     flights = []
     order = {f: i for i, f in enumerate(frames)}
     for frame, name in events:
-        if name != 'lateral' or frame not in order:
+        if name not in TOSSES or frame not in order:
             continue
         i = order[frame]
         before = frames[max(0, i - 2)]
@@ -230,13 +238,13 @@ def lateral_flights(events, players, ball, frames: list[int]) -> list[dict]:
         for f in frames[i + 1:i + 1 + LATERAL_WINDOW]:
             catcher = nearest(players, ball[f], f, CATCH_REACH)
             if catcher is not None and catcher != tosser:
-                flights.append({'kind': 'lateral', 'from': frame, 'to': f})
+                flights.append({'kind': TOSSES[name], 'from': frame, 'to': f})
                 break
     return flights
 
 
 def all_flights(events, players, ball, frames: list[int]) -> list[dict]:
-    """Passes and kicks from their events, laterals from where the ball goes."""
+    """Passes and kicks from their events, laterals and direct snaps from where the ball goes."""
     return sorted(flights_of(events) + lateral_flights(events, players, ball, frames), key=lambda fl: fl['from'])
 
 
@@ -451,6 +459,45 @@ def build_scene(key: str, rows: list[dict], pbp_row: dict | None, colors: dict[s
     }
 
 
+MPH_PER_YARD_PER_SECOND = 3600 / 1760
+
+
+def play_stats(rows: list[dict]) -> dict:
+    """Numbers from a play's tracking for the catalog, by the scenes'
+    rules: how many snaps the file has, the carrier's top speed (mph, NGS's
+    `s`, over the frames a scene keeps) and the first forward pass's air
+    yards (where the ball arrived, past the line of scrimmage); null when
+    the play has no carrier or no pass. 21 files repeat the play (two snaps,
+    the second copy's events offset, some of them mislabelled); no rule
+    picks the right copy for all of them, so they get no numbers."""
+    first = rows[0]
+    players, ball, frames = frames_of(rows)
+    events = events_of(rows)
+    snaps = sum(1 for _, name in events if name in SNAP_EVENTS)
+    if snaps > 1:
+        return {'snaps': snaps, 'topSpeed': None, 'airYards': None}
+    play_type = first['playType'].removeprefix('play_type_')
+    snapping = next(r['teamAbbr'] for r in rows if num(r['possessionFlag']) == 1)
+    carriers = carriers_of(players, ball, frames, events, snapping, play_type)
+    snap = first_event(events, START_EVENTS)
+    start = start_frame(events, frames)
+    end = end_frame(events, frames, snap[0] if snap else frames[0], carriers, players)
+    speeds = [speed_at(players[c], f) for f in frames if start <= f <= end and (c := carriers.get(f))]
+    speeds = [v for v in speeds if v is not None]
+    air = None
+    pass_flight = next((fl for fl in flights_of(events) if fl['kind'] == 'pass'), None)
+    los = num(first['absoluteYardlineNumber'])
+    if pass_flight and los is not None and pass_flight['to'] in ball:
+        # Passes are the snapping team's, which goes the way playDirection says.
+        sign = 1 if first['playDirection'] == 'right' else -1
+        air = round(sign * (float(ball[pass_flight['to']]['x']) - los))
+    return {
+        'snaps': snaps,
+        'topSpeed': round(max(speeds) * MPH_PER_YARD_PER_SECOND, 1) if speeds else None,
+        'airYards': air,
+    }
+
+
 def play_facts(first: dict, pbp_row: dict | None, offense: str, home: str) -> dict:
     """What the scoreboard shows: NGS's situation before the snap, nflverse's
     description, date, score after and win probability."""
@@ -497,7 +544,7 @@ def situation_mismatch(first: dict, pbp_row: dict) -> str | None:
     return None
 
 
-def index_entry(row: dict, pbp_row: dict | None) -> dict:
+def index_entry(row: dict, pbp_row: dict | None, stats: dict | None = None) -> dict:
     """One highlight's line in index.json, from the highlights index and
     nflverse play-by-play: who, when, the situation, the description and
     the offense's win probability, with the scenes' rule for kicks (the
@@ -528,6 +575,10 @@ def index_entry(row: dict, pbp_row: dict | None) -> dict:
         'touchdown': 'TOUCHDOWN' in row['play.playDescription'].upper(),
         'wpBefore': None,
         'wpAfter': None,
+        # From the play's tracking file when it is cached (play_stats), else null.
+        'snaps': (stats or {}).get('snaps'),
+        'topSpeed': (stats or {}).get('topSpeed'),
+        'airYards': (stats or {}).get('airYards'),
     }
     if pbp_row is None:
         return entry
@@ -549,7 +600,7 @@ def index_entry(row: dict, pbp_row: dict | None) -> dict:
     return entry
 
 
-def index_entries(rows: list[dict], lookup) -> list[dict]:
+def index_entries(rows: list[dict], lookup, stats=lambda key: None) -> list[dict]:
     """Every highlight once, oldest first. The highlights index lists a few
     plays twice (the same play as two teams' highlight, or the same row
     repeated); the first key in key order stands for the play."""
@@ -560,7 +611,8 @@ def index_entries(rows: list[dict], lookup) -> list[dict]:
         if play in seen:
             continue
         seen.add(play)
-        entries.append(index_entry(row, lookup(int(row['season']), row['gameId'], int(row['playId']))))
+        key = f'{row["season"]}_{row["teamAbbr"]}_{row["gameId"]}_{row["playId"]}'
+        entries.append(index_entry(row, lookup(int(row['season']), row['gameId'], int(row['playId'])), stats(key)))
     entries.sort(key=lambda e: (e['date'] or '', e['gameId'], e['playId']))
     return entries
 
@@ -596,10 +648,13 @@ def pbp_lookup(season: int):
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
     parser.add_argument('keys', nargs='*', help='play keys to build scenes for, e.g. 2018_ARI_2018092311_141')
-    parser.add_argument('--index', action='store_true', help='rewrite index.json from the whole highlights index')
+    parser.add_argument('--index', action='store_true',
+                        help='rewrite index.json from the whole highlights index, with stats from every cached play file')
+    parser.add_argument('--fetch-all', action='store_true',
+                        help='first download every play file not yet cached (about 1.4 GB) so --index has stats for all')
     args = parser.parse_args()
-    if not args.keys and not args.index:
-        parser.error('give play keys, --index, or both')
+    if not args.keys and not args.index and not args.fetch_all:
+        parser.error('give play keys, --index, --fetch-all, or a mix')
 
     lookups: dict[int, dict] = {}
 
@@ -626,12 +681,30 @@ def main() -> None:
     if args.keys:
         print(f'{len(args.keys)} scenes written ({total / 1024:.0f} KB)')
 
+    if args.fetch_all:
+        from concurrent.futures import ThreadPoolExecutor
+        rows = read_rows(fetch('ngs_highlights_index.tsv').read_text(encoding='utf-8'))
+        names = sorted({f'{r["season"]}_{r["teamAbbr"]}_{r["gameId"]}_{r["playId"]}.tsv' for r in rows})
+        missing = [n for n in names if not (CACHE_DIR / n).exists()]
+        print(f'fetching {len(missing)} of {len(names)} play files')
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            for done, _ in enumerate(pool.map(fetch, missing), 1):
+                if done % 50 == 0:
+                    print(f'  {done} of {len(missing)}')
+
     if args.index:
         rows = read_rows(fetch('ngs_highlights_index.tsv').read_text(encoding='utf-8'))
-        entries = index_entries(rows, lookup)
+
+        def stats(key: str) -> dict | None:
+            path = CACHE_DIR / f'{key}.tsv'
+            return play_stats(read_rows(path.read_text(encoding='utf-8'))) if path.exists() else None
+
+        entries = index_entries(rows, lookup, stats)
         write_index(entries)
         joined = sum(1 for e in entries if e['date'])
-        print(f'index.json: {len(entries)} plays from {len(rows)} index rows, {joined} joined to play-by-play')
+        tracked = sum(1 for e in entries if e['topSpeed'] is not None or e['airYards'] is not None)
+        print(f'index.json: {len(entries)} plays from {len(rows)} index rows, {joined} joined to play-by-play, '
+              f'{tracked} with tracking stats')
         for e in entries:
             if not e['date']:
                 print(f'  {e["key"]}: not in nflverse play-by-play', file=sys.stderr)

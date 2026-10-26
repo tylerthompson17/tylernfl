@@ -16,7 +16,7 @@ export const GRAVITY = 10.7;
 /** A pass or kick arrives at this height (yards), and a pass leaves the passer's hand at it */
 export const FLIGHT_END_HEIGHT = 2;
 /** Where a flight starts, by kind (yards): a kickoff off the tee, a punt off the foot, a pass from the hand */
-export const FLIGHT_START_HEIGHT: Record<string, number> = { kick: 0, punt: 1, pass: FLIGHT_END_HEIGHT };
+export const FLIGHT_START_HEIGHT: Record<string, number> = { kick: 0, punt: 1, snap: 0.5, pass: FLIGHT_END_HEIGHT };
 /** A carried ball's height (yards): about the hands of a sprite */
 export const CARRY_HEIGHT = 1.5;
 /** Faster than this (yards a second), a player faces where he is going; slower, where his body points */
@@ -61,7 +61,7 @@ export interface Prepared {
   clockFrame: number;
 }
 
-const START_EVENTS = new Set(['ball_snap', 'kickoff', 'onside_kick']);
+const START_EVENTS = new Set(['ball_snap', 'snap_direct', 'kickoff', 'onside_kick']);
 
 function scaled(values: Series | undefined, scale: number, length: number): Series {
   if (!values) return new Array(length).fill(null);

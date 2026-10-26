@@ -164,6 +164,21 @@ class CarrierTests(unittest.TestCase):
         self.assertEqual([carriers[f] for f in (8, 9, 10)], [None] * 3)  # in the air: nobody
         self.assertEqual(carriers[11], 'rb')  # caught: at once
 
+    def test_a_direct_snap_goes_to_whoever_takes_it(self):
+        # The RB stands over the ball as the center; it is snapped direct at
+        # 2 and reaches the WR (not the QB) at 4.
+        frames = {}
+        for f in range(10):
+            ball = (75.0, 25.0, 0) if f <= 2 else ((76.5, 23.5, 0) if f == 3 else (78.0, 22.0, 4.0))
+            frames[f] = {'ball': ball, 'rb': (75.0, 25.2, 0), 'qb': (74.0, 28.0, 0), 'wr': (78.0, 22.0, 4.0)}
+        rows = play(frames, {2: 'snap_direct'}, playType='play_type_rush')
+        players, ball, frames_ = replays.frames_of(rows)
+        events = replays.events_of(rows)
+        self.assertEqual(replays.all_flights(events, players, ball, frames_), [{'kind': 'snap', 'from': 2, 'to': 4}])
+        carriers = self.carriers(rows, 'rush')
+        self.assertEqual([carriers[f] for f in (1, 2, 3)], [None, None, None])  # not the QB, not the center
+        self.assertEqual(carriers[4], 'wr')
+
     def test_a_lateral_nobody_catches_is_not_a_flight(self):
         rows = [r for r in self.lateral_play() if not (r['displayName'] == 'RB')]
         players, ball, frames = replays.frames_of(rows)
@@ -271,6 +286,26 @@ class SceneTests(unittest.TestCase):
         self.assertEqual(replays.team_entry('LA', {'LAR': colors['LV']})['abbr'], 'LAR')
 
 
+class StatsTests(unittest.TestCase):
+    def test_top_speed_is_the_carriers_and_air_yards_the_passes(self):
+        # The QB (1 yd/s) holds it, then the WR (8 yd/s) catches it 14 yards past the line.
+        self.assertEqual(replays.play_stats(pass_play()), {'snaps': 1, 'topSpeed': 16.4, 'airYards': 14})
+
+    def test_a_play_going_left_measures_the_same(self):
+        rows = [dict(r, playDirection='left', absoluteYardlineNumber='45', x=str(120 - float(r['x'])),
+                     y=str(53.3 - float(r['y']))) for r in pass_play()]
+        self.assertEqual(replays.play_stats(rows), {'snaps': 1, 'topSpeed': 16.4, 'airYards': 14})
+
+    def test_a_file_that_repeats_the_play_gets_no_numbers(self):
+        rows = pass_play()
+        repeat = [dict(r, frame=str(int(r['frame']) + 20)) for r in rows]
+        self.assertEqual(replays.play_stats(rows + repeat), {'snaps': 2, 'topSpeed': None, 'airYards': None})
+
+    def test_a_run_has_no_air_yards(self):
+        rows = [r for r in pass_play() if r['event'] != 'pass_forward']
+        self.assertIsNone(replays.play_stats(rows)['airYards'])
+
+
 class IndexTests(unittest.TestCase):
     def row(self, team='SF', game='2020020200', play='3406', play_type='pass', desc='P.Mahomes pass deep right'):
         return {'season': '2019', 'seasonType': 'POST', 'week': '21', 'teamAbbr': team, 'gameId': game, 'playId': play,
@@ -289,6 +324,9 @@ class IndexTests(unittest.TestCase):
         self.assertEqual((entry['wpBefore'], entry['wpAfter']), (0.455, 0.659))
         self.assertEqual((entry['down'], entry['yardsToGo'], entry['quarter'], entry['clock']), (2, 7, 4, '03:44'))
         self.assertFalse(entry['touchdown'])
+        self.assertEqual((entry['topSpeed'], entry['airYards']), (None, None))  # no tracking file cached
+        stats = {'topSpeed': 19.9, 'airYards': 38}
+        self.assertEqual(replays.index_entry(self.row(), self.pbp(), stats)['airYards'], 38)
 
     def test_a_punt_takes_the_receiving_teams_side(self):
         # KC punts at home; nflverse's posteam is the punting team, so HOU (away) is the offense.

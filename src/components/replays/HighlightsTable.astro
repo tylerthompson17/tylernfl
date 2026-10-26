@@ -122,6 +122,8 @@ const NGS = 'https://github.com/asonty/ngs_highlights';
           <th scope="col">Situation</th>
           <th scope="col">Play</th>
           <th scope="col" class="number" data-sort="swing" aria-sort="descending" title="Points of the offense's win probability gained or lost on the play (nflfastR)">WP swing</th>
+          {picks && <th scope="col" class="number" data-sort="speed" title="The ball carrier's top speed, from tracking">Top mph</th>}
+          {picks && <th scope="col" class="number" data-sort="air" title="Where the first forward pass arrived, past the line of scrimmage">Air yds</th>}
           {picks && <th scope="col">Replay</th>}
         </tr>
       </thead>
@@ -136,6 +138,8 @@ const NGS = 'https://github.com/asonty/ngs_highlights';
                 data-teams={[p.away, p.home].filter(Boolean).join(' ')}
                 data-play-type={p.type}
                 data-swing={swing ?? undefined}
+                data-speed={picks ? (p.topSpeed ?? undefined) : undefined}
+                data-air={picks ? (p.airYards ?? undefined) : undefined}
               >
                 {picks && (
                   <td>
@@ -157,6 +161,7 @@ const NGS = 'https://github.com/asonty/ngs_highlights';
                 <td>{situation(p)}</td>
                 <td class="play" id={`play-${p.key}`}>
                   {p.touchdown && <span class="td">TD</span>}
+                  {picks && (p.snaps ?? 0) > 1 && <span class="flag">Tracking repeats the play</span>}
                   {!picks && built.has(p.key) ? <a href={url(`replays/${p.key}`)}>{p.description}</a> : p.description}
                 </td>
                 <td
@@ -165,6 +170,8 @@ const NGS = 'https://github.com/asonty/ngs_highlights';
                 >
                   {swingText(p)}
                 </td>
+                {picks && <td class="number">{p.topSpeed?.toFixed(1) ?? ''}</td>}
+                {picks && <td class="number">{p.airYards ?? ''}</td>}
                 {picks ? (
                   <td>{built.has(p.key) ? <a href={url(`replays/${p.key}`)}>Watch</a> : <span class="dim">Not yet</span>}</td>
                 ) : null}
@@ -267,6 +274,16 @@ const NGS = 'https://github.com/asonty/ngs_highlights';
     background: var(--highlight);
     font-weight: 700;
     font-size: 10px;
+  }
+
+  .catalog .flag {
+    display: inline-block;
+    margin-right: var(--space-1);
+    padding: 0 3px;
+    border: 1px solid var(--loss);
+    color: var(--loss);
+    font-size: 10px;
+    font-weight: 700;
   }
 
   .catalog tr[hidden] {

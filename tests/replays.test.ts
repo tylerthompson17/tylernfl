@@ -312,3 +312,10 @@ test('the highlights list filters by team and type and sorts by swing, date or t
   assert.equal(swingOf(0.89, 0.388), -50.2);
   assert.equal(swingOf(null, 0.5), null);
 });
+
+test('the dev catalog sorts by top speed and air yards, plays without them last', () => {
+  const row = (key: string, speed: number | null, air: number | null, order: number): CatalogRow => ({ key, date: '', teams: [], type: 'pass', swing: null, speed, air, order });
+  const rows = [row('a', 19.2, 12, 0), row('b', null, null, 1), row('c', 21.7, 45, 2), row('d', 15.0, -3, 3)];
+  assert.deepEqual(sortRows(rows, 'speed', 'desc').map((r) => r.key), ['c', 'a', 'd', 'b']);
+  assert.deepEqual(sortRows(rows, 'air', 'asc').map((r) => r.key), ['d', 'a', 'c', 'b']);
+});

@@ -1117,6 +1117,12 @@ export interface ReplayIndexEntry {
   touchdown: boolean;
   wpBefore: number | null;
   wpAfter: number | null;
+  /** Snaps in the play's tracking file: 2 when NGS repeated the play (its numbers are then null); null without the file */
+  snaps: number | null;
+  /** From the play's tracking when it was cached for --index: the carrier's top speed (mph) */
+  topSpeed: number | null;
+  /** The first forward pass's air yards, from tracking */
+  airYards: number | null;
 }
 
 export interface ReplayIndexData {
