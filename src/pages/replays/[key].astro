@@ -12,7 +12,7 @@ import ReplayPlayer from '../../components/replays/ReplayPlayer.astro';
 import type { ReplayScene, Team } from '../../data/types';
 import teamsData from '../../data/teams.json';
 import { url } from '../../utils/url';
-import { dateText, gameWords, situationText, wpSwingText } from '../../lib/replays/words';
+import { dateText, gameWords, goalToGo as isGoalToGo, penaltyText, situationText, wpSwingText } from '../../lib/replays/words';
 
 export function getStaticPaths() {
   const files = import.meta.glob<ReplayScene>('../../data/replays/plays/*.json', { eager: true, import: 'default' });
@@ -32,7 +32,8 @@ const teamHref = (abbr: string) => {
   const current = FRANCHISE[abbr] ?? abbr;
   return known.has(current) ? url(`teams/${current}`) : null;
 };
-const goalToGo = scene.field.firstDown !== null && scene.field.firstDown >= 110;
+const goalToGo = isGoalToGo(scene.field);
+const penalty = penaltyText(play.penalty);
 const title = gameWords(play);
 const date = dateText(play.date);
 const swing = wpSwingText(play);
@@ -56,8 +57,16 @@ const NGS = 'https://github.com/asonty/ngs_highlights';
       {
         swing && (
           <>
-            <dt>{play.offense} win probability</dt>
+            <dt>{play.featured} win probability</dt>
             <dd>{swing}</dd>
+          </>
+        )
+      }
+      {
+        penalty && (
+          <>
+            <dt>Penalty</dt>
+            <dd>{penalty}, part of the swing</dd>
           </>
         )
       }

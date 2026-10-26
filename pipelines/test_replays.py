@@ -67,12 +67,19 @@ class AngleAndSideTests(unittest.TestCase):
         self.assertEqual(replays.flip_angle(10.0), 190.0)
         self.assertEqual(replays.flip_angle(350.0), 170.0)
 
-    def test_win_probability_is_the_offenses(self):
+    def test_win_probability_from_either_side(self):
         # DAL's two point try at NYJ, 2019 week 6: home_wp 0.802, DAL's wp 0.198.
-        self.assertEqual(replays.offense_wp(0.8023656890392303, 'DAL', 'NYJ'), 0.198)
-        self.assertEqual(replays.offense_wp(0.6205621957778931, 'ARI', 'ARI'), 0.621)
-        self.assertIsNone(replays.offense_wp(None, 'ARI', 'ARI'))
-        self.assertIsNone(replays.offense_wp(float('nan'), 'ARI', 'CHI'))
+        self.assertEqual(replays.team_wp(0.8023656890392303, 'DAL', 'NYJ'), 0.198)
+        self.assertEqual(replays.team_wp(0.6205621957778931, 'ARI', 'ARI'), 0.621)
+        self.assertIsNone(replays.team_wp(None, 'ARI', 'ARI'))
+        self.assertIsNone(replays.team_wp(float('nan'), 'ARI', 'CHI'))
+
+    def test_the_featured_team_is_the_one_whose_win_probability_rose(self):
+        self.assertEqual(replays.featured_team('SF', 'SEA', 0.11, 0.61, 'SEA'), 'SF')  # SEA threw the pick
+        self.assertEqual(replays.featured_team('SF', 'SEA', 0.61, 0.11, 'SEA'), 'SEA')
+        self.assertEqual(replays.featured_team('SF', 'SEA', 0.5, 0.5, 'SEA'), 'SEA')  # no change: the fallback
+        self.assertEqual(replays.featured_team('SF', 'SEA', None, 0.5, 'SEA'), 'SEA')
+        self.assertEqual(replays.featured_team('SF', 'SEA', float('nan'), 0.5, 'SF'), 'SF')
 
     def test_rounding(self):
         self.assertEqual(replays.tenths(52.33), 523)
@@ -220,7 +227,7 @@ class SceneTests(unittest.TestCase):
         rows = [dict(r, playDirection='left', absoluteYardlineNumber='45') for r in pass_play()]
         rows = [dict(r, x=str(120 - float(r['x'])), y=str(53.3 - float(r['y']))) for r in rows]
         scene = replays.build_scene('2018_ARI_2018092311_141', rows, self.PBP, self.COLORS)
-        self.assertEqual(scene['field'], {'lineOfScrimmage': 75.0, 'firstDown': 81.0})
+        self.assertEqual(scene['field'], {'lineOfScrimmage': 75.0, 'firstDown': 81.0, 'attack': 1})
         self.assertEqual(scene['ball']['x'][0], 750)
         self.assertEqual(scene['ball']['y'][0], 250)
         self.assertEqual(scene['players'][0]['dir'][0], 270)
@@ -228,8 +235,8 @@ class SceneTests(unittest.TestCase):
     def test_scene_layout(self):
         scene = replays.build_scene('2018_ARI_2018092311_141', pass_play(), self.PBP, self.COLORS)
         self.assertEqual(scene['frameCount'], 13)  # snap at 2, under LEAD_FRAMES from frame 0
-        self.assertEqual([p['side'] for p in scene['players']], ['offense'] * 3 + ['defense'])
-        self.assertEqual(scene['teams']['offense'], {'abbr': 'ARI', 'primary': '#97233f', 'secondary': '#000000'})
+        self.assertEqual([p['side'] for p in scene['players']], ['featured'] * 3 + ['opponent'])
+        self.assertEqual(scene['teams']['featured'], {'abbr': 'ARI', 'primary': '#97233f', 'secondary': '#000000'})
         self.assertEqual(scene['flights'], [{'kind': 'pass', 'from': 4, 'to': 7}])
         slots = {p['id']: i for i, p in enumerate(scene['players'])}
         self.assertEqual(scene['carrier'][2], slots['qb'])
@@ -238,11 +245,35 @@ class SceneTests(unittest.TestCase):
         play = scene['play']
         self.assertEqual((play['wpBefore'], play['wpAfter']), (0.62, 0.697))
         self.assertEqual(play['scoreAfter'], {'home': 6, 'away': 0})
-        self.assertEqual((play['offense'], play['home'], play['away']), ('ARI', 'ARI', 'CHI'))
+        self.assertEqual((play['featured'], play['opponent'], play['possession']), ('ARI', 'CHI', 'ARI'))
+        self.assertEqual((play['home'], play['away'], play['penalty']), ('ARI', 'CHI', None))
 
-    def kickoff(self, direction):
+    def test_a_pick_six_is_seen_from_the_defense(self):
+        # ARI (home) snaps going right; the pass is intercepted and CHI's win
+        # probability rises (ARI's 0.62 to 0.40): CHI is featured and moves
+        # left to right, so ARI, which snapped, now goes right to left.
+        pbp = {**self.PBP, 'home_wp_post': 0.40}
+        scene = replays.build_scene('2018_CHI_2018092311_141', pass_play(), pbp, self.COLORS)
+        play = scene['play']
+        self.assertEqual((play['featured'], play['opponent'], play['possession']), ('CHI', 'ARI', 'ARI'))
+        self.assertEqual((play['wpBefore'], play['wpAfter']), (0.38, 0.6))  # always a gain
+        self.assertEqual(scene['field'], {'lineOfScrimmage': 45.0, 'firstDown': 39.0, 'attack': -1})
+        self.assertEqual(scene['players'][0]['side'], 'featured')
+        self.assertEqual(scene['players'][0]['id'], 'cb')
+        self.assertEqual(scene['ball']['x'][0], 1200 - 750)  # turned round
+
+    def test_a_penalty_comes_from_nflverse(self):
+        pbp = {**self.PBP, 'penalty': 1.0, 'penalty_team': 'CHI', 'penalty_player_name': 'M.Williams',
+               'penalty_yards': 14.0, 'penalty_type': 'Face Mask'}
+        scene = replays.build_scene('2018_ARI_2018092311_141', pass_play(), pbp, self.COLORS)
+        self.assertEqual(scene['play']['penalty'], {'team': 'CHI', 'player': 'M.Williams', 'type': 'Face Mask', 'yards': 14})
+        self.assertIsNone(replays.penalty_of({**self.PBP, 'penalty': 0.0}))
+        self.assertIsNone(replays.penalty_of({**self.PBP, 'penalty': float('nan')}))
+
+    def kickoff(self, direction, pbp=None):
         """ARI (home, flagged in possession) kicks at frame 2; CHI's returner
-        catches it at 6 and runs it back."""
+        catches it at 6 and runs it back. By default the return helps CHI:
+        ARI's win probability falls from 0.62 to 0.55."""
         frames = {}
         for f in range(12):
             if f < 2:
@@ -258,14 +289,15 @@ class SceneTests(unittest.TestCase):
                     absoluteYardlineNumber='65' if direction == 'left' else '55')
         if direction == 'right':
             rows = [dict(r, x=str(120 - float(r['x'])), y=str(53.3 - float(r['y']))) for r in rows]
-        return replays.build_scene('2019_CHI_2019100600_1', rows, self.PBP, self.COLORS)
+        pbp = pbp if pbp is not None else {**self.PBP, 'home_wp_post': 0.55}
+        return replays.build_scene('2019_CHI_2019100600_1', rows, pbp, self.COLORS)
 
-    def test_kicks_take_the_receiving_teams_side(self):
+    def test_a_return_is_seen_from_the_returning_team(self):
         for direction in ('left', 'right'):
             scene = self.kickoff(direction)
             play = scene['play']
-            self.assertEqual((play['offense'], play['defense'], play['kicking']), ('CHI', 'ARI', 'ARI'))
-            self.assertEqual(scene['field'], {'lineOfScrimmage': 65.0, 'firstDown': None})
+            self.assertEqual((play['featured'], play['opponent'], play['kicking']), ('CHI', 'ARI', 'ARI'))
+            self.assertEqual(scene['field'], {'lineOfScrimmage': 65.0, 'firstDown': None, 'attack': -1})
             # The return runs left to right whichever way the kicking team went.
             returner = scene['players'][0]
             self.assertEqual(returner['id'], 'cb')
@@ -273,12 +305,27 @@ class SceneTests(unittest.TestCase):
             self.assertEqual(scene['flights'], [{'kind': 'kick', 'from': 2, 'to': 6}])
             self.assertEqual(scene['carrier'][7], 0)
             # ARI is home: CHI's win probability is the other side of home_wp.
-            self.assertEqual((play['wpBefore'], play['wpAfter']), (0.38, 0.303))
+            self.assertEqual((play['wpBefore'], play['wpAfter']), (0.38, 0.45))
+
+    def test_a_kick_that_helps_the_kicking_team_is_seen_from_it(self):
+        scene = self.kickoff('left', {**self.PBP, 'home_wp_post': 0.70})
+        self.assertEqual((scene['play']['featured'], scene['field']['attack']), ('ARI', 1))
+        self.assertEqual((scene['play']['wpBefore'], scene['play']['wpAfter']), (0.62, 0.7))
+
+    def test_a_kick_with_no_change_falls_back_to_the_receiving_team(self):
+        for pbp in ({**self.PBP, 'home_wp_post': 0.62}, {**self.PBP, 'home_wp': None, 'home_wp_post': None}):
+            self.assertEqual(self.kickoff('left', pbp)['play']['featured'], 'CHI')
 
     def test_scenes_store_no_speed(self):
         scene = replays.build_scene('2018_ARI_2018092311_141', pass_play(), self.PBP, self.COLORS)
         self.assertEqual(set(scene['players'][0]), {'id', 'side', 'jersey', 'position', 'name', 'x', 'y', 'dir', 'o'})
         self.assertIsNone(scene['play']['kicking'])
+
+    def test_an_oakland_play_matches_nflverses_las_vegas(self):
+        rows = [dict(r, teamAbbr='OAK' if r['teamAbbr'] == 'ARI' else r['teamAbbr']) for r in pass_play()]
+        scene = replays.build_scene('2018_OAK_2018092311_141', rows, {**self.PBP, 'home_team': 'LV'},
+                                    {**self.COLORS, 'LV': self.COLORS['ARI']})
+        self.assertEqual((scene['play']['home'], scene['teams']['featured']['abbr']), ('OAK', 'OAK'))
 
     def test_retired_abbreviations_keep_their_name_and_take_todays_colors(self):
         colors = {'LV': {'primary': '#000000', 'secondary': '#a5acaf'}}
@@ -320,7 +367,7 @@ class IndexTests(unittest.TestCase):
     def test_an_entry_takes_its_facts_from_play_by_play(self):
         entry = replays.index_entry(self.row(), self.pbp())
         self.assertEqual(entry['key'], '2019_SF_2020020200_3406')
-        self.assertEqual((entry['away'], entry['home'], entry['offense'], entry['defense']), ('SF', 'KC', 'KC', 'SF'))
+        self.assertEqual((entry['away'], entry['home'], entry['featured'], entry['opponent']), ('SF', 'KC', 'KC', 'SF'))
         self.assertEqual((entry['wpBefore'], entry['wpAfter']), (0.455, 0.659))
         self.assertEqual((entry['down'], entry['yardsToGo'], entry['quarter'], entry['clock']), (2, 7, 4, '03:44'))
         self.assertFalse(entry['touchdown'])
@@ -328,22 +375,33 @@ class IndexTests(unittest.TestCase):
         stats = {'topSpeed': 19.9, 'airYards': 38}
         self.assertEqual(replays.index_entry(self.row(), self.pbp(), stats)['airYards'], 38)
 
-    def test_a_punt_takes_the_receiving_teams_side(self):
-        # KC punts at home; nflverse's posteam is the punting team, so HOU (away) is the offense.
+    def test_an_interception_is_seen_from_the_defense(self):
+        # KC passes at home and its win probability falls: SF is featured, its swing a gain.
+        entry = replays.index_entry(self.row(), self.pbp(home_wp=0.6, home_wp_post=0.4))
+        self.assertEqual((entry['featured'], entry['opponent'], entry['wpBefore'], entry['wpAfter']), ('SF', 'KC', 0.4, 0.6))
+
+    def test_a_punt_with_no_change_takes_the_receiving_teams_side(self):
         row = self.row(team='HOU', game='2020011200', play='346', play_type='punt')
-        entry = replays.index_entry(row, self.pbp(posteam='KC', defteam='HOU', home_wp=0.8, home_wp_post=0.7))
-        self.assertEqual((entry['offense'], entry['defense']), ('HOU', 'KC'))
+        entry = replays.index_entry(row, self.pbp(posteam='KC', defteam='HOU', home_wp=0.8, home_wp_post=0.8))
+        self.assertEqual(entry['featured'], 'HOU')
+
+    def test_a_punt_takes_the_receiving_teams_side(self):
+        # KC punts at home and its win probability falls: HOU, the receiving team, is featured.
+        row = self.row(team='HOU', game='2020011200', play='346', play_type='punt')
+        entry = replays.index_entry(row, {**self.pbp(posteam='KC', defteam='HOU', home_wp=0.8, home_wp_post=0.7),
+                                          'away_team': 'HOU'})
+        self.assertEqual((entry['featured'], entry['opponent']), ('HOU', 'KC'))
         self.assertEqual((entry['wpBefore'], entry['wpAfter']), (0.2, 0.3))
 
     def test_a_kickoff_keeps_nflverses_posteam_the_receiving_team(self):
         row = self.row(team='KC', game='2020011200', play='1287', play_type='kickoff')
         entry = replays.index_entry(row, self.pbp(posteam='KC', defteam='HOU', home_wp=0.045, home_wp_post=0.053))
-        self.assertEqual((entry['offense'], entry['wpBefore']), ('KC', 0.045))
+        self.assertEqual((entry['featured'], entry['wpBefore']), ('KC', 0.045))
         self.assertEqual((entry['down'], entry['yardsToGo']), (2, 7))
 
     def test_without_play_by_play_it_keeps_the_index_facts(self):
         entry = replays.index_entry(self.row(desc='Mahomes 1 yard run, TOUCHDOWN.'), None)
-        self.assertEqual((entry['date'], entry['offense'], entry['wpBefore']), (None, None, None))
+        self.assertEqual((entry['date'], entry['featured'], entry['wpBefore']), (None, None, None))
         self.assertTrue(entry['touchdown'])
         self.assertEqual(entry['description'], 'Mahomes 1 yard run, TOUCHDOWN.')
 

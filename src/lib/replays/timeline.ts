@@ -3,7 +3,7 @@
  * where everything is at a fractional frame, how fast players move, which
  * way a sprite faces, how high the ball is, where the camera looks, and
  * what the scoreboard says. Positions are yards on the 120 by 53.3 field,
- * the offense driving toward +x; +y is up the screen.
+ * the featured team driving toward +x; +y is up the screen.
  *
  * A scene needs only the ball's path. Players, the carrier and the ball's
  * height are optional, so a play drawn from play-by-play alone (no
@@ -34,7 +34,7 @@ export type Series = (number | null)[];
 
 export interface PreparedPlayer {
   id: string;
-  side: 'offense' | 'defense';
+  side: 'featured' | 'opponent';
   jersey: number | null;
   name: string;
   position: string | null;
@@ -213,7 +213,7 @@ export function facing(p: PreparedPlayer, f: number): number {
   const body = sampleAngle(p.o, f);
   const angle = speed > MOVING_SPEED ? (travel ?? body) : (body ?? travel);
   if (angle !== null) return octant(angle);
-  return p.side === 'offense' ? 2 : 6;
+  return p.side === 'featured' ? 2 : 6;
 }
 
 /** Run cycle frame: 0 standing, 1 to 4 running, advanced by distance so speed drives it. */
@@ -290,7 +290,7 @@ export interface ThrowInfo {
   to: number;
   release: { x: number; y: number };
   arrival: { x: number; y: number };
-  /** Yards past the line of scrimmage where the ball arrived; null without a line */
+  /** Yards past the line of scrimmage where the ball arrived, the way the passing team goes; null without a line */
   airYards: number | null;
   /** Who has the ball once it arrives (index into players), if anyone */
   receiver: number | null;
@@ -324,7 +324,7 @@ export function throwOf(prep: Prepared): ThrowInfo | null {
     to: flight.to,
     release: { x: prep.ball.x[flight.from]!, y: prep.ball.y[flight.from]! },
     arrival,
-    airYards: los === null ? null : Math.round(arrival.x - los),
+    airYards: los === null ? null : Math.round(prep.scene.field.attack * (arrival.x - los)),
     receiver,
     catchFrame: caught && receiver !== null ? caught.frame : null,
   };

@@ -71,8 +71,8 @@ export function paintField(scene: ReplayScene, colors: FieldColors): HTMLCanvasE
     ctx.fillRect(Math.round(fx(x)), top, Math.round(fx(x + 5)) - Math.round(fx(x)), height);
   }
   const zones: [number, { abbr: string; primary: string }, number][] = [
-    [0, scene.teams.offense, -Math.PI / 2],
-    [110, scene.teams.defense, Math.PI / 2],
+    [0, scene.teams.featured, -Math.PI / 2],
+    [110, scene.teams.opponent, Math.PI / 2],
   ];
   for (const [x, team, turn] of zones) {
     ctx.fillStyle = mixHex(colors.turf, team.primary, 0.45);

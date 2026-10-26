@@ -123,7 +123,7 @@ function pixelLine(ctx: CanvasRenderingContext2D, x0: number, y0: number, x1: nu
 export class ReplayRenderer {
   private readonly ctx: CanvasRenderingContext2D;
   private readonly field: HTMLCanvasElement;
-  private readonly sheets: Record<'offense' | 'defense', HTMLCanvasElement>;
+  private readonly sheets: Record<'featured' | 'opponent', HTMLCanvasElement>;
   private readonly thrown: ThrowInfo | null;
   private origin = { x: 0, y: 0 };
 
@@ -140,8 +140,8 @@ export class ReplayRenderer {
     const { scene } = prep;
     this.field = paintField(scene, colors);
     this.sheets = {
-      offense: buildSheet(teamPalette(scene.teams.offense, scene.play.home === scene.play.offense, colors)),
-      defense: buildSheet(teamPalette(scene.teams.defense, scene.play.home === scene.play.defense, colors)),
+      featured: buildSheet(teamPalette(scene.teams.featured, scene.play.home === scene.play.featured, colors)),
+      opponent: buildSheet(teamPalette(scene.teams.opponent, scene.play.home === scene.play.opponent, colors)),
     };
     this.thrown = throwOf(prep);
   }
@@ -152,7 +152,7 @@ export class ReplayRenderer {
   }
 
   /** Jersey color by side, for trails. */
-  private sideColor(side: 'offense' | 'defense'): string {
+  private sideColor(side: 'featured' | 'opponent'): string {
     const { scene } = this.prep;
     const team = scene.teams[side];
     const home = scene.play.home === scene.play[side];
@@ -277,7 +277,7 @@ export class ReplayRenderer {
       const px = Math.round(point.x), py = Math.round(point.y);
       ctx.fillStyle = colors.outline;
       ctx.fillRect(px - 2, py - 2, 5, 5);
-      ctx.fillStyle = p.side === 'offense' ? colors.paint : colors.debug;
+      ctx.fillStyle = p.side === 'featured' ? colors.paint : colors.debug;
       ctx.fillRect(px - 1, py - 1, 3, 3);
       if (p.jersey !== null) drawText(ctx, String(p.jersey), px + 3, py + 1, small(colors.paint));
     });

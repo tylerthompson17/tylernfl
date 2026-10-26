@@ -1013,11 +1013,11 @@ export interface ReplayTeam {
 /**
  * One player's track in a scene. Positions are in tenths of a yard (the
  * scene's `scale`), null in a frame the player has no position for. The
- * offense always drives left to right.
+ * featured team always moves left to right.
  */
 export interface ReplayPlayer {
   id: string;
-  side: 'offense' | 'defense';
+  side: 'featured' | 'opponent';
   jersey: number | null;
   position: string | null;
   name: string;
@@ -1048,17 +1048,25 @@ export interface ReplayPlay {
   description: string;
   date: string | null;
   nflverseGameId: string | null;
-  /** nflfastR's win probability for the offense before and after the play */
+  /** nflfastR's win probability for the featured team before and after the play: a gain unless it did not move */
   wpBefore: number | null;
   wpAfter: number | null;
   type: string;
-  /** The team whose side the replay takes: the receiving team on kicks */
-  offense: string;
-  defense: string;
+  /**
+   * The team the replay follows, moving left to right: the one whose win
+   * probability rose (a returner's, a pick-six's defense). With no change,
+   * the receiving team on a kick, else the team that snapped.
+   */
+  featured: string;
+  opponent: string;
+  /** The team that snapped (or kicked off): the offense in the usual sense */
+  possession: string;
   home: string;
   away: string;
   /** The kicking team on a kickoff or punt, else null */
   kicking: string | null;
+  /** A penalty on the play, as nflverse records it (yards as enforced) */
+  penalty: { team: string | null; player: string | null; type: string | null; yards: number | null } | null;
 }
 
 /**
@@ -1076,9 +1084,13 @@ export interface ReplayScene {
   scale: number;
   frameCount: number;
   play: ReplayPlay;
-  /** Yards from the offense's end line (0 to 120), null when unknown or a kick */
-  field: { lineOfScrimmage: number | null; firstDown: number | null };
-  teams: { offense: ReplayTeam; defense: ReplayTeam };
+  /**
+   * Yards from the featured team's end line (0 to 120); the line to gain
+   * is null when unknown or a kick. `attack` is which way the team that
+   * snapped moves: 1 right, -1 left (when the other team is featured).
+   */
+  field: { lineOfScrimmage: number | null; firstDown: number | null; attack: 1 | -1 };
+  teams: { featured: ReplayTeam; opponent: ReplayTeam };
   events: { frame: number; name: string }[];
   /** The ball in the air, frame to frame, drawn as an arc unless `ball.z` is given */
   flights: { kind: string; from: number; to: number }[];
@@ -1105,9 +1117,9 @@ export interface ReplayIndexEntry {
   playId: number;
   away: string | null;
   home: string | null;
-  /** The receiving team on kicks, as in the scenes */
-  offense: string | null;
-  defense: string | null;
+  /** The team a scene would follow, as in the scenes (the one whose win probability rose) */
+  featured: string | null;
+  opponent: string | null;
   type: string;
   quarter: number | null;
   clock: string | null;

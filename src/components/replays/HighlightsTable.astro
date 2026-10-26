@@ -121,7 +121,7 @@ const NGS = 'https://github.com/asonty/ngs_highlights';
           <th scope="col" data-sort="type">Type</th>
           <th scope="col">Situation</th>
           <th scope="col">Play</th>
-          <th scope="col" class="number" data-sort="swing" aria-sort="descending" title="Points of the offense's win probability gained or lost on the play (nflfastR)">WP swing</th>
+          <th scope="col" class="number" data-sort="swing" aria-sort="descending" title="Points of win probability gained on the play by the team it helped (nflfastR)">WP swing</th>
           {picks && <th scope="col" class="number" data-sort="speed" title="The ball carrier's top speed, from tracking">Top mph</th>}
           {picks && <th scope="col" class="number" data-sort="air" title="Where the first forward pass arrived, past the line of scrimmage">Air yds</th>}
           {picks && <th scope="col">Replay</th>}
@@ -166,7 +166,7 @@ const NGS = 'https://github.com/asonty/ngs_highlights';
                 </td>
                 <td
                   class="number"
-                  title={swing === null ? undefined : `${p.offense} ${Math.round(p.wpBefore! * 100)}% to ${Math.round(p.wpAfter! * 100)}%`}
+                  title={swing === null ? undefined : `${p.featured} ${Math.round(p.wpBefore! * 100)}% to ${Math.round(p.wpAfter! * 100)}%`}
                 >
                   {swingText(p)}
                 </td>
@@ -184,8 +184,8 @@ const NGS = 'https://github.com/asonty/ngs_highlights';
   </div>
   <p class="source">
     Plays: NFL Next Gen Stats highlights, collected in <a href={NGS}>asonty/ngs_highlights</a>. Teams, descriptions
-    and win probability: nflverse play-by-play (nflfastR's model). WP swing is the offense's (on kicks, the receiving
-    team's), in points.{picks && ' Picks stay in this browser.'}
+    and win probability: nflverse play-by-play (nflfastR's model). WP swing is in points, for the team the play
+    helped.{picks && ' Picks stay in this browser.'}
   </p>
 </div>
 

@@ -8,7 +8,7 @@
  */
 import TeamChip from '../TeamChip.astro';
 import type { ReplayScene } from '../../data/types';
-import { scorebugSituation, wpNumbers, wpSwingReadout } from '../../lib/replays/words';
+import { goalToGo, penaltyText, scorebugSituation, wpNumbers, wpSwingReadout } from '../../lib/replays/words';
 
 interface Props {
   scene: ReplayScene;
@@ -18,7 +18,8 @@ interface Props {
 
 const { scene, start = 0 } = Astro.props;
 const { play } = scene;
-const goal = scene.field.firstDown !== null && scene.field.firstDown >= 110;
+const goal = goalToGo(scene.field);
+const penalty = penaltyText(play.penalty);
 const ORDINAL = ['1st', '2nd', '3rd', '4th'];
 const swing = wpSwingReadout(play);
 const wpShown =
@@ -27,7 +28,7 @@ const wpShown =
 const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
 ---
 
-<section class="replay" data-replay data-start={start}>
+<section class="replay" data-replay data-start={start} data-penalty={penalty ?? undefined}>
   <div class="scorebug">
     <span class="team">
       <TeamChip abbr={play.away} size="sm" />
@@ -42,7 +43,7 @@ const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
     {
       wpShown && (
         <span class="cell num">
-          {play.offense} win prob {wpShown}
+          {play.featured} win prob {wpShown}
           {swing && <span class="swing" data-swing aria-hidden="true">{swing}</span>}
         </span>
       )
@@ -189,7 +190,8 @@ const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
     font-size: 15px;
   }
 
-  .caption[data-kind='touchdown'] {
+  .caption[data-kind='touchdown'],
+  .caption[data-kind='penalty'] {
     background: var(--highlight);
   }
 

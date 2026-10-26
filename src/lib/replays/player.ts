@@ -49,6 +49,7 @@ export function initReplay(root: HTMLElement): void {
   const last = prep.frames - 1;
   const total = (last / prep.hz).toFixed(1);
   const thrown = throwOf(prep);
+  const penalty = root.dataset.penalty ?? null;
 
   const ui = {
     away: q<HTMLElement>('[data-score="away"]'),
@@ -131,11 +132,14 @@ export function initReplay(root: HTMLElement): void {
       ui.swing.setAttribute('aria-hidden', String(!done));
     }
 
+    // Over the last second, a penalty on the play takes the caption (it is
+    // part of the win probability swing), unless a touchdown holds it.
     const event = captionEventAt(scene, f);
+    const flag = event !== 'touchdown' && penalty && f >= last - prep.hz ? penalty : null;
     if (ui.caption) {
-      ui.caption.hidden = event === null;
-      ui.caption.textContent = event ? CAPTION_WORDS[event]! : '';
-      ui.caption.dataset.kind = event ?? '';
+      ui.caption.hidden = event === null && flag === null;
+      ui.caption.textContent = flag ?? (event ? CAPTION_WORDS[event]! : '');
+      ui.caption.dataset.kind = flag ? 'penalty' : (event ?? '');
     }
 
     placed = ui.caption && !ui.caption.hidden ? [ui.caption.getBoundingClientRect()] : [];

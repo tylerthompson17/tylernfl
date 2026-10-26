@@ -14,7 +14,7 @@ export interface CatalogRow {
   date: string;
   teams: string[];
   type: string;
-  /** Points of the offense's win probability gained (negative: lost), null without both numbers */
+  /** Points of the featured team's win probability gained (0 when it did not move), null without both numbers */
   swing: number | null;
   /** The carrier's top speed (mph) and the pass's air yards, from tracking; the dev catalog shows them */
   speed?: number | null;

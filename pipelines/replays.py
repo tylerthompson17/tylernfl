@@ -8,7 +8,7 @@ the highlights collection with its facts but no tracking, to pick from.
 
 A key is a file name in asonty/ngs_highlights' play_data/ without .tsv
 (season_team_gameId_playId; the team is whose highlight it is, not always
-the offense). Files are read at a pinned commit (NGS_SHA) and cached in
+the team that snapped). Files are read at a pinned commit (NGS_SHA) and cached in
 pipelines/.cache/ngs/ (gitignored), or NGS_CACHE_DIR if set.
 
 What the source files hold, checked on a pass, rush, sack, punt and kickoff:
@@ -22,12 +22,17 @@ players stand past the field's edges.
 The rules, in the order they run:
 - Rows: the first row for each player (nflId) or the ball in a frame is
   kept, repeats dropped. Frames without a ball row are not frames.
-- Offense: the team whose side the replay takes. On a kickoff or punt
-  (KICK_TYPES) it is the receiving team; otherwise the team NGS flags as in
-  possession, which is the team that snaps (NGS also flags the kicking team
-  on kicks, and its playDirection is that team's). The offense always moves
-  left to right: a play where it goes left is turned round (x to 120 - x,
-  y to 53.3 - y, both angles by 180).
+- Featured team: the team the replay follows, the one whose win
+  probability rose on the play (featured_team), so its swing is a gain and
+  a return or pick-six is seen from the team that made it. With no change
+  (or no numbers), the receiving team on a kickoff or punt (KICK_TYPES),
+  else the team NGS flags as in possession, which is the team that snaps
+  (NGS also flags the kicking team on kicks, and its playDirection is that
+  team's). The featured team always moves left to right, on its final
+  possession: a play where it goes left is turned round (x to 120 - x,
+  y to 53.3 - y, both angles by 180). `field.attack` says which way the
+  snapping team then moves (1 right, -1 left: a return or pick-six), for
+  its line to gain and air yards.
 - Carrier: none before the snap or kick, none while the ball is in the air
   (a flight, below) or dead after an incompletion. From the snap the
   snapping team's quarterback (the punter on a punt) holds it until a
@@ -47,7 +52,8 @@ The rules, in the order they run:
   STOP_SPEED following first contact. Failing both, the last frame.
 - Play facts come from nflverse play-by-play through pbp_cache, matched on
   old_game_id and play_id: description, date, teams, score after the play
-  and win probability before and after it, turned to the offense's side.
+  and win probability before and after it, turned to the featured team's
+  side, and any penalty.
   The score before the snap, down, distance and clock are NGS's. A play
   where the two disagree on down or distance is printed. A kick has no
   line to gain.
@@ -75,13 +81,13 @@ NGS_SHA = '190df5caa12ec799b2c7579e16f62bdf1d203082'
 NGS_RAW = f'https://raw.githubusercontent.com/asonty/ngs_highlights/{NGS_SHA}/play_data'
 CACHE_DIR = Path(os.environ.get('NGS_CACHE_DIR') or Path(__file__).resolve().parent / '.cache' / 'ngs')
 OUT_DIR = 'replays'
-FORMAT_VERSION = 1
+FORMAT_VERSION = 2
 
 HZ = 10
 SCALE = 10
 FIELD_LENGTH = 120.0
 FIELD_WIDTH = 53.3
-END_LINE = 110.0  # the offense's goal line once it drives left to right
+END_LINE = 110.0  # the goal line the featured team drives toward, left to right
 
 LEAD_FRAMES = 15
 TAIL_FRAMES = 15
@@ -117,8 +123,9 @@ HOLDER_RELEASES = {'handoff', 'pass_forward', 'pass_shovel', 'lateral', 'fumble'
                    'fumble_defense_recovered', 'punt', 'punt_blocked'}
 DEAD_BALL = {'pass_outcome_incomplete', 'touchback', 'punt_downed'}
 
-# Retired abbreviations take today's franchise colors; nflverse calls the
-# Rams LA, normalized as everywhere else on the site.
+# Retired abbreviations and today's franchise: for colors, and to match NGS
+# teams to nflverse's. nflverse calls the Rams LA, normalized as everywhere
+# else on the site.
 COLOR_TEAM = {'OAK': 'LV', 'SD': 'LAC', 'STL': 'LAR'}
 
 
@@ -172,12 +179,27 @@ def degrees(value: float | None) -> int | None:
     return None if value is None else int(round(value)) % 360
 
 
-def offense_wp(home_wp: float | None, offense: str, home: str) -> float | None:
-    """nflverse's home win probability from the offense's side."""
-    if home_wp is None or (isinstance(home_wp, float) and math.isnan(home_wp)):
+def known(value) -> bool:
+    return value is not None and not (isinstance(value, float) and math.isnan(value))
+
+
+def team_wp(home_wp: float | None, team: str, home: str) -> float | None:
+    """nflverse's home win probability from one team's side."""
+    if not known(home_wp):
         return None
-    wp = home_wp if offense == home else 1.0 - home_wp
+    wp = home_wp if team == home else 1.0 - home_wp
     return round(wp, 3)
+
+
+def featured_team(home: str, away: str, home_wp, home_wp_post, fallback: str) -> str:
+    """The team a scene follows: the one whose win probability rose on the
+    play (so its swing always reads as a gain, and a pick-six or a return
+    is seen from the team that made it). When it did not move, or nflverse
+    has no numbers, `fallback`: the receiving team on a kick, else the team
+    that snapped."""
+    if known(home_wp) and known(home_wp_post) and home_wp_post != home_wp:
+        return home if home_wp_post > home_wp else away
+    return fallback
 
 
 # Frames --------------------------------------------------------------------
@@ -374,11 +396,16 @@ def build_scene(key: str, rows: list[dict], pbp_row: dict | None, colors: dict[s
     kick = play_type in KICK_TYPES
     snapping = next(r['teamAbbr'] for r in rows if num(r['possessionFlag']) == 1)
     other = next(r['teamAbbr'] for r in rows if r['teamAbbr'] and r['teamAbbr'] != snapping)
-    offense, defense = (other, snapping) if kick else (snapping, other)
-    # playDirection is the snapping team's; on a kick the offense goes the other way.
-    flip = (first['playDirection'] == 'left') != kick
     home = next(r['teamAbbr'] for r in rows if num(r['homeTeamFlag']) == 1)
-    away = defense if home == offense else offense
+    away = other if home == snapping else snapping
+    featured = featured_team(home, away, (pbp_row or {}).get('home_wp'), (pbp_row or {}).get('home_wp_post'),
+                             other if kick else snapping)
+    opponent = other if featured == snapping else snapping
+    # playDirection is the snapping team's. The featured team moves left to
+    # right; when it is not the team that snapped (a return, a pick-six) the
+    # snapping team moves right to left (`attack` -1).
+    attack = 1 if featured == snapping else -1
+    flip = (first['playDirection'] == 'left') != (attack == -1)
 
     carriers = carriers_of(players, ball, frames, events, snapping, play_type)
     snap = first_event(events, START_EVENTS)
@@ -401,7 +428,7 @@ def build_scene(key: str, rows: list[dict], pbp_row: dict | None, colors: dict[s
         ball_x.append(tenths(x))
         ball_y.append(tenths(y))
 
-    order = sorted(players, key=lambda pid: (players[pid][min(players[pid])]['teamAbbr'] != offense, pid))
+    order = sorted(players, key=lambda pid: (players[pid][min(players[pid])]['teamAbbr'] != featured, pid))
     scene_players = []
     for pid in order:
         track = players[pid]
@@ -423,7 +450,7 @@ def build_scene(key: str, rows: list[dict], pbp_row: dict | None, colors: dict[s
         jersey = num(any_row['jerseyNumber'])
         scene_players.append({
             'id': pid,
-            'side': 'offense' if any_row['teamAbbr'] == offense else 'defense',
+            'side': 'featured' if any_row['teamAbbr'] == featured else 'opponent',
             'jersey': None if jersey is None else int(jersey),
             'position': any_row['position'] or None,
             'name': any_row['displayName'],
@@ -435,9 +462,12 @@ def build_scene(key: str, rows: list[dict], pbp_row: dict | None, colors: dict[s
     los = None if raw_los is None else (FIELD_LENGTH - raw_los if flip else raw_los)
     down = int(num(first['down']) or 0) or None
     to_go = num(first['yardsToGo'])
-    first_down = min(END_LINE, los + to_go) if (los is not None and down and to_go and not kick) else None
+    # The line to gain is the snapping team's, the way it is going.
+    first_down = None
+    if los is not None and down and to_go and not kick:
+        first_down = min(END_LINE, los + to_go) if attack == 1 else max(FIELD_LENGTH - END_LINE, los - to_go)
 
-    play = play_facts(first, pbp_row, offense, home)
+    play = play_facts(first, pbp_row, featured, home)
     return {
         'version': FORMAT_VERSION,
         'key': key,
@@ -445,11 +475,11 @@ def build_scene(key: str, rows: list[dict], pbp_row: dict | None, colors: dict[s
         'hz': HZ,
         'scale': SCALE,
         'frameCount': len(kept),
-        'play': {**play, 'type': play_type, 'offense': normalize_team(offense), 'defense': normalize_team(defense),
-                 'home': normalize_team(home), 'away': normalize_team(away),
+        'play': {**play, 'type': play_type, 'featured': normalize_team(featured), 'opponent': normalize_team(opponent),
+                 'possession': normalize_team(snapping), 'home': normalize_team(home), 'away': normalize_team(away),
                  'kicking': normalize_team(snapping) if kick else None},
-        'field': {'lineOfScrimmage': los, 'firstDown': first_down},
-        'teams': {'offense': team_entry(offense, colors), 'defense': team_entry(defense, colors)},
+        'field': {'lineOfScrimmage': los, 'firstDown': first_down, 'attack': attack},
+        'teams': {'featured': team_entry(featured, colors), 'opponent': team_entry(opponent, colors)},
         'events': [{'frame': index[f], 'name': name} for f, name in events if f in index],
         'flights': [{**fl, 'from': index[fl['from']], 'to': index[fl['to']]}
                     for fl in all_flights(events, players, ball, frames) if fl['from'] in index and fl['to'] in index],
@@ -498,9 +528,24 @@ def play_stats(rows: list[dict]) -> dict:
     }
 
 
-def play_facts(first: dict, pbp_row: dict | None, offense: str, home: str) -> dict:
+def penalty_of(pbp_row: dict) -> dict | None:
+    """A penalty on the play, from nflverse: its team, player, type and
+    yards (as enforced, so half the distance shows as such)."""
+    if not known(pbp_row.get('penalty')) or not pbp_row['penalty']:
+        return None
+    yards = pbp_row.get('penalty_yards')
+    return {
+        'team': normalize_team(pbp_row['penalty_team']) if pbp_row.get('penalty_team') else None,
+        'player': pbp_row.get('penalty_player_name'),
+        'type': pbp_row.get('penalty_type'),
+        'yards': int(yards) if known(yards) else None,
+    }
+
+
+def play_facts(first: dict, pbp_row: dict | None, featured: str, home: str) -> dict:
     """What the scoreboard shows: NGS's situation before the snap, nflverse's
-    description, date, score after and win probability."""
+    description, date, score after, win probability (the featured team's)
+    and any penalty."""
     down = int(num(first['down']) or 0) or None
     before = {'home': int(num(first['preSnapHomeScore']) or 0), 'away': int(num(first['preSnapVisitorScore']) or 0)}
     facts = {
@@ -517,19 +562,24 @@ def play_facts(first: dict, pbp_row: dict | None, offense: str, home: str) -> di
         'scoreBefore': before,
         'description': first['playDescription'],
         'date': None, 'nflverseGameId': None, 'scoreAfter': None, 'wpBefore': None, 'wpAfter': None,
+        'penalty': None,
     }
     if pbp_row is None:
         return facts
+    # nflverse names some moved teams by today's abbreviation (the 2018
+    # Raiders are LV there, OAK in NGS): compare franchises.
     nflverse_home = normalize_team(pbp_row['home_team'])
-    if nflverse_home != normalize_team(home):
+    franchise = lambda abbr: COLOR_TEAM.get(normalize_team(abbr), normalize_team(abbr))
+    if franchise(nflverse_home) != franchise(home):
         raise ValueError(f'{first["gameId"]} {first["playId"]}: home team {home} in NGS, {nflverse_home} in nflverse')
     facts.update({
         'date': pbp_row['game_date'],
         'nflverseGameId': pbp_row['game_id'],
         'description': pbp_row['desc'],
         'scoreAfter': {'home': int(pbp_row['total_home_score']), 'away': int(pbp_row['total_away_score'])},
-        'wpBefore': offense_wp(pbp_row['home_wp'], offense, home),
-        'wpAfter': offense_wp(pbp_row['home_wp_post'], offense, home),
+        'wpBefore': team_wp(pbp_row['home_wp'], featured, home),
+        'wpAfter': team_wp(pbp_row['home_wp_post'], featured, home),
+        'penalty': penalty_of(pbp_row),
     })
     return facts
 
@@ -547,9 +597,9 @@ def situation_mismatch(first: dict, pbp_row: dict) -> str | None:
 def index_entry(row: dict, pbp_row: dict | None, stats: dict | None = None) -> dict:
     """One highlight's line in index.json, from the highlights index and
     nflverse play-by-play: who, when, the situation, the description and
-    the offense's win probability, with the scenes' rule for kicks (the
-    receiving team is the offense: nflverse's posteam on a kickoff, its
-    defteam on a punt)."""
+    the win probability of the team the scene would follow (featured_team;
+    with no change, the receiving team on a kick: nflverse's posteam on a
+    kickoff, its defteam on a punt)."""
     key = f'{row["season"]}_{row["teamAbbr"]}_{row["gameId"]}_{row["playId"]}'
     play_type = row['play.playType'].removeprefix('play_type_')
     down = int(num(row['play.down']) or 0) or None
@@ -564,8 +614,8 @@ def index_entry(row: dict, pbp_row: dict | None, stats: dict | None = None) -> d
         'playId': int(row['playId']),
         'away': None,
         'home': None,
-        'offense': None,
-        'defense': None,
+        'featured': None,
+        'opponent': None,
         'type': play_type,
         'quarter': int(num(row['play.quarter']) or 0) or None,
         'clock': row['play.gameClock'] or None,
@@ -585,17 +635,19 @@ def index_entry(row: dict, pbp_row: dict | None, stats: dict | None = None) -> d
     home, away = normalize_team(pbp_row['home_team']), normalize_team(pbp_row['away_team'])
     posteam = normalize_team(pbp_row['posteam'] or '')
     defteam = normalize_team(pbp_row['defteam'] or '')
-    offense, defense = (defteam, posteam) if play_type == 'punt' else (posteam, defteam)
+    fallback = defteam if play_type == 'punt' else posteam
+    featured = featured_team(home, away, pbp_row['home_wp'], pbp_row['home_wp_post'], fallback) or None
+    opponent = (away if featured == home else home) if featured else None
     entry.update({
         'date': pbp_row['game_date'],
         'away': away,
         'home': home,
-        'offense': offense or None,
-        'defense': defense or None,
+        'featured': featured,
+        'opponent': opponent,
         'description': pbp_row['desc'],
         'touchdown': bool(pbp_row['touchdown']),
-        'wpBefore': offense_wp(pbp_row['home_wp'], offense, home) if offense else None,
-        'wpAfter': offense_wp(pbp_row['home_wp_post'], offense, home) if offense else None,
+        'wpBefore': team_wp(pbp_row['home_wp'], featured, home) if featured else None,
+        'wpAfter': team_wp(pbp_row['home_wp_post'], featured, home) if featured else None,
     })
     return entry
 
@@ -640,7 +692,7 @@ def pbp_lookup(season: int):
         return {}
     columns = ['old_game_id', 'play_id', 'game_id', 'game_date', 'home_team', 'away_team', 'posteam', 'defteam',
                'desc', 'down', 'ydstogo', 'touchdown', 'total_home_score', 'total_away_score', 'home_wp',
-               'home_wp_post']
+               'home_wp_post', 'penalty', 'penalty_team', 'penalty_player_name', 'penalty_yards', 'penalty_type']
     frame = pbp.select(columns).with_columns(pl.col('play_id').cast(pl.Int64))
     return {(r['old_game_id'], r['play_id']): r for r in frame.iter_rows(named=True)}
 

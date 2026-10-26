@@ -32,7 +32,7 @@ import {
 } from '../src/lib/replays/timeline.ts';
 import { baseFor, BASES, RUN_FRAMES, spriteRows, SPRITE_H, SPRITE_W } from '../src/lib/replays/sprites.ts';
 import { GLYPH_H, GLYPH_W, GLYPHS, textWidth } from '../src/lib/replays/font.ts';
-import { gameWords, scorebugSituation, situationText, wpNumbers, wpSwingReadout, wpSwingText } from '../src/lib/replays/words.ts';
+import { gameWords, goalToGo, penaltyText, scorebugSituation, situationText, wpNumbers, wpSwingReadout, wpSwingText } from '../src/lib/replays/words.ts';
 import { mixHex } from '../src/lib/replays/field.ts';
 import { matches, sortRows, swingOf, type CatalogRow } from '../src/lib/replays/catalog.ts';
 
@@ -50,10 +50,10 @@ function scene(overrides: Partial<ReplayScene> = {}): ReplayScene {
       season: 2018, seasonType: 'REG', week: 3, gameId: '2018092311', playId: 141, quarter: 1, clock: '12:20',
       down: 2, yardsToGo: 6, yardline: 'CHI 35', scoreBefore: { home: 0, away: 0 }, scoreAfter: { home: 6, away: 0 },
       description: 'A pass.', date: '2018-09-23', nflverseGameId: '2018_03_CHI_ARI', wpBefore: 0.621, wpAfter: 0.697,
-      type: 'pass', offense: 'ARI', defense: 'CHI', home: 'ARI', away: 'CHI', kicking: null,
+      type: 'pass', featured: 'ARI', opponent: 'CHI', possession: 'ARI', home: 'ARI', away: 'CHI', kicking: null, penalty: null,
     },
-    field: { lineOfScrimmage: 75, firstDown: 81 },
-    teams: { offense: { abbr: 'ARI', primary: '#97233f', secondary: '#000000' }, defense: { abbr: 'CHI', primary: '#0b162a', secondary: '#e64100' } },
+    field: { lineOfScrimmage: 75, firstDown: 81, attack: 1 },
+    teams: { featured: { abbr: 'ARI', primary: '#97233f', secondary: '#000000' }, opponent: { abbr: 'CHI', primary: '#0b162a', secondary: '#e64100' } },
     events: [
       { frame: 1, name: 'ball_snap' }, { frame: 3, name: 'pass_forward' }, { frame: 7, name: 'pass_outcome_caught' },
       { frame: 9, name: 'touchdown' },
@@ -62,8 +62,8 @@ function scene(overrides: Partial<ReplayScene> = {}): ReplayScene {
     ball: { x: Array.from({ length: frames }, (_, f) => 750 + f * 30), y: new Array(frames).fill(250) },
     carrier: [null, 0, 0, null, null, null, null, 1, 1, 1],
     players: [
-      { id: 'qb', side: 'offense', jersey: 9, position: 'QB', name: 'QB', x: new Array(frames).fill(740), y: new Array(frames).fill(250), dir: new Array(frames).fill(270), o: new Array(frames).fill(90) },
-      { id: 'wr', side: 'offense', jersey: 86, position: 'TE', name: 'WR', x: Array.from({ length: frames }, (_, f) => 750 + f * 8), y: new Array(frames).fill(200), dir: new Array(frames).fill(90), o: new Array(frames).fill(0) },
+      { id: 'qb', side: 'featured', jersey: 9, position: 'QB', name: 'QB', x: new Array(frames).fill(740), y: new Array(frames).fill(250), dir: new Array(frames).fill(270), o: new Array(frames).fill(90) },
+      { id: 'wr', side: 'featured', jersey: 86, position: 'TE', name: 'WR', x: Array.from({ length: frames }, (_, f) => 750 + f * 8), y: new Array(frames).fill(200), dir: new Array(frames).fill(90), o: new Array(frames).fill(0) },
     ],
     ...overrides,
   };
@@ -164,7 +164,7 @@ test('the throw: air yards past the line, the receiver, separation when the ball
   const base = scene();
   // A defender trailing the receiver by 3 yards across and 4 along at every frame.
   const wr = base.players![1]!;
-  const cb = { ...wr, id: 'cb', side: 'defense' as const, jersey: 24, x: wr.x.map((v) => v! - 40), y: wr.y.map((v) => v! + 30) };
+  const cb = { ...wr, id: 'cb', side: 'opponent' as const, jersey: 24, x: wr.x.map((v) => v! - 40), y: wr.y.map((v) => v! + 30) };
   const prep = prepare(scene({ players: [...base.players!, cb] }));
   const thrown = throwOf(prep)!;
   assert.equal(thrown.airYards, Math.round(prep.ball.x[7]! - 75));
@@ -233,13 +233,13 @@ function kickoff(): ReplayScene {
   return {
     ...base,
     frameCount: frames,
-    play: { ...base.play, type: 'kickoff', down: null, yardsToGo: null, clock: '10:54', offense: 'KC', defense: 'HOU', home: 'KC', away: 'HOU', kicking: 'HOU' },
-    field: { lineOfScrimmage: 75, firstDown: null },
+    play: { ...base.play, type: 'kickoff', down: null, yardsToGo: null, clock: '10:54', featured: 'KC', opponent: 'HOU', possession: 'HOU', home: 'KC', away: 'HOU', kicking: 'HOU' },
+    field: { lineOfScrimmage: 75, firstDown: null, attack: -1 },
     events: [{ frame: 2, name: 'kickoff' }, { frame: 8, name: 'kick_received' }, { frame: 12, name: 'out_of_bounds' }],
     flights: [{ kind: 'kick', from: 2, to: 8 }],
     ball: { x: Array.from({ length: frames }, (_, f) => 750 - Math.min(f, 8) * 80), y: new Array(frames).fill(266) },
     carrier: Array.from({ length: frames }, (_, f) => (f >= 8 ? 0 : null)),
-    players: [{ id: 'kr', side: 'offense', jersey: 17, position: 'WR', name: 'KR', x: new Array(frames).fill(110), y: new Array(frames).fill(266) }],
+    players: [{ id: 'kr', side: 'featured', jersey: 17, position: 'WR', name: 'KR', x: new Array(frames).fill(110), y: new Array(frames).fill(266) }],
   };
 }
 
@@ -318,4 +318,25 @@ test('the dev catalog sorts by top speed and air yards, plays without them last'
   const rows = [row('a', 19.2, 12, 0), row('b', null, null, 1), row('c', 21.7, 45, 2), row('d', 15.0, -3, 3)];
   assert.deepEqual(sortRows(rows, 'speed', 'desc').map((r) => r.key), ['c', 'a', 'd', 'b']);
   assert.deepEqual(sortRows(rows, 'air', 'asc').map((r) => r.key), ['d', 'a', 'c', 'b']);
+});
+
+test('when the other team is featured, the team that snapped goes right to left', () => {
+  // A pick-six seen from the defense: the passing team attacks toward x = 0.
+  const base = scene();
+  const flipped = scene({
+    field: { lineOfScrimmage: 45, firstDown: 39, attack: -1 },
+    ball: { x: base.ball.x.map((v) => 1200 - v), y: base.ball.y },
+    players: base.players!.map((p) => ({ ...p, side: 'opponent' as const, x: p.x.map((v) => (v === null ? null : 1200 - v)) })),
+  });
+  const thrown = throwOf(prepare(flipped))!;
+  assert.equal(thrown.airYards, throwOf(prepare(base))!.airYards); // the same throw, measured its own way
+  assert.equal(goalToGo({ lineOfScrimmage: 15, firstDown: 10, attack: -1 }), true);
+  assert.equal(goalToGo({ lineOfScrimmage: 45, firstDown: 39, attack: -1 }), false);
+  assert.equal(goalToGo({ lineOfScrimmage: 105, firstDown: 110, attack: 1 }), true);
+});
+
+test('a penalty reads in plain words', () => {
+  assert.equal(penaltyText({ team: 'NO', player: 'M.Williams', type: 'Face Mask', yards: 14 }), 'Face mask on NO (M.Williams), 14 yards');
+  assert.equal(penaltyText({ team: 'NO', player: null, type: 'Offside', yards: 1 }), 'Offside on NO, 1 yard');
+  assert.equal(penaltyText(null), null);
 });
