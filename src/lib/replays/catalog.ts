@@ -31,6 +31,8 @@ export const TYPE_LABELS: Record<string, string> = {
 
 export const typeLabel = (type: string) => TYPE_LABELS[type] ?? type;
 
+export const playCount = (n: number) => `${n} ${n === 1 ? 'play' : 'plays'}`;
+
 /** Points of win probability, one decimal. */
 export function swingOf(before: number | null, after: number | null): number | null {
   if (before === null || after === null) return null;
@@ -155,7 +157,7 @@ export function initCatalog(root: HTMLElement): void {
       else th.removeAttribute('aria-sort');
     }
     for (const button of typeButtons) button.setAttribute('aria-pressed', String(button.dataset.type === type));
-    if (status) status.textContent = shown === rows.length ? `${rows.length} plays.` : `${shown} of ${rows.length} plays.`;
+    if (status) status.textContent = shown === rows.length ? `${playCount(rows.length)}.` : `${shown} of ${playCount(rows.length)}.`;
     if (sortStatus) sortStatus.textContent = `Sorted ${SORT_WORDS[sortKey][direction === 'desc' ? 0 : 1]}.`;
   }
 
