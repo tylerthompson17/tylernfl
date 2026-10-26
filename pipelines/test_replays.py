@@ -183,7 +183,6 @@ class SceneTests(unittest.TestCase):
         self.assertEqual((play['wpBefore'], play['wpAfter']), (0.62, 0.697))
         self.assertEqual(play['scoreAfter'], {'home': 6, 'away': 0})
         self.assertEqual((play['offense'], play['home'], play['away']), ('ARI', 'ARI', 'CHI'))
-        self.assertEqual(replays.summary(scene)['seconds'], 1.3)
 
     def kickoff(self, direction):
         """ARI (home, flagged in possession) kicks at frame 2; CHI's returner
@@ -229,6 +228,51 @@ class SceneTests(unittest.TestCase):
         colors = {'LV': {'primary': '#000000', 'secondary': '#a5acaf'}}
         self.assertEqual(replays.team_entry('OAK', colors), {'abbr': 'OAK', 'primary': '#000000', 'secondary': '#a5acaf'})
         self.assertEqual(replays.team_entry('LA', {'LAR': colors['LV']})['abbr'], 'LAR')
+
+
+class IndexTests(unittest.TestCase):
+    def row(self, team='SF', game='2020020200', play='3406', play_type='pass', desc='P.Mahomes pass deep right'):
+        return {'season': '2019', 'seasonType': 'POST', 'week': '21', 'teamAbbr': team, 'gameId': game, 'playId': play,
+                'play.playType': f'play_type_{play_type}', 'play.quarter': '4', 'play.gameClock': '03:44',
+                'play.down': '2', 'play.yardsToGo': '7', 'play.playDescription': desc}
+
+    def pbp(self, posteam='KC', defteam='SF', home_wp=0.4548, home_wp_post=0.6594, touchdown=0.0):
+        return {'game_date': '2020-02-02', 'home_team': 'KC', 'away_team': 'SF', 'posteam': posteam,
+                'defteam': defteam, 'desc': '(3:44) 15-P.Mahomes pass deep right to 14-S.Watkins', 'touchdown': touchdown,
+                'home_wp': home_wp, 'home_wp_post': home_wp_post}
+
+    def test_an_entry_takes_its_facts_from_play_by_play(self):
+        entry = replays.index_entry(self.row(), self.pbp())
+        self.assertEqual(entry['key'], '2019_SF_2020020200_3406')
+        self.assertEqual((entry['away'], entry['home'], entry['offense'], entry['defense']), ('SF', 'KC', 'KC', 'SF'))
+        self.assertEqual((entry['wpBefore'], entry['wpAfter']), (0.455, 0.659))
+        self.assertEqual((entry['down'], entry['yardsToGo'], entry['quarter'], entry['clock']), (2, 7, 4, '03:44'))
+        self.assertFalse(entry['touchdown'])
+
+    def test_a_punt_takes_the_receiving_teams_side(self):
+        # KC punts at home; nflverse's posteam is the punting team, so HOU (away) is the offense.
+        row = self.row(team='HOU', game='2020011200', play='346', play_type='punt')
+        entry = replays.index_entry(row, self.pbp(posteam='KC', defteam='HOU', home_wp=0.8, home_wp_post=0.7))
+        self.assertEqual((entry['offense'], entry['defense']), ('HOU', 'KC'))
+        self.assertEqual((entry['wpBefore'], entry['wpAfter']), (0.2, 0.3))
+
+    def test_a_kickoff_keeps_nflverses_posteam_the_receiving_team(self):
+        row = self.row(team='KC', game='2020011200', play='1287', play_type='kickoff')
+        entry = replays.index_entry(row, self.pbp(posteam='KC', defteam='HOU', home_wp=0.045, home_wp_post=0.053))
+        self.assertEqual((entry['offense'], entry['wpBefore']), ('KC', 0.045))
+        self.assertEqual((entry['down'], entry['yardsToGo']), (2, 7))
+
+    def test_without_play_by_play_it_keeps_the_index_facts(self):
+        entry = replays.index_entry(self.row(desc='Mahomes 1 yard run, TOUCHDOWN.'), None)
+        self.assertEqual((entry['date'], entry['offense'], entry['wpBefore']), (None, None, None))
+        self.assertTrue(entry['touchdown'])
+        self.assertEqual(entry['description'], 'Mahomes 1 yard run, TOUCHDOWN.')
+
+    def test_a_play_listed_twice_is_kept_once(self):
+        rows = [self.row(team='SF'), self.row(team='KC'), self.row(team='SF'), self.row(play='784')]
+        entries = replays.index_entries(rows, lambda season, game, play: None)
+        # One line per play, in game order (play 784 before 3406).
+        self.assertEqual([e['key'] for e in entries], ['2019_SF_2020020200_784', '2019_KC_2020020200_3406'])
 
 
 if __name__ == '__main__':

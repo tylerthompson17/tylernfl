@@ -6,6 +6,8 @@ import {
   ballHeight,
   captionEventAt,
   clockAt,
+  clockAtFrame,
+  flightHeight,
   CARRY_HEIGHT,
   distances,
   facing,
@@ -30,8 +32,9 @@ import {
 } from '../src/lib/replays/timeline.ts';
 import { baseFor, BASES, RUN_FRAMES, spriteRows, SPRITE_H, SPRITE_W } from '../src/lib/replays/sprites.ts';
 import { GLYPH_H, GLYPH_W, GLYPHS, textWidth } from '../src/lib/replays/font.ts';
-import { gameWords, scorebugSituation, situationText, wpSwingReadout, wpSwingText } from '../src/lib/replays/words.ts';
+import { gameWords, scorebugSituation, situationText, wpNumbers, wpSwingReadout, wpSwingText } from '../src/lib/replays/words.ts';
 import { mixHex } from '../src/lib/replays/field.ts';
+import { matches, sortRows, swingOf, type CatalogRow } from '../src/lib/replays/catalog.ts';
 
 /** A ten frame pass: snap at 1, thrown at 3, caught at 7 by the receiver (player 1), a touchdown at 9. */
 function scene(overrides: Partial<ReplayScene> = {}): ReplayScene {
@@ -221,4 +224,91 @@ test('page words', () => {
   assert.equal(situationText({ ...play, clock: '06:27' }, true), '2nd and goal at CHI 35, 1st quarter, 6:27');
   assert.equal(wpSwingText(play), '62% to 70% (+8 points)');
   assert.equal(wpSwingText({ ...play, wpAfter: null }), null);
+});
+
+/** A kickoff: kicked off the tee at frame 2, received at 8 by player 0 (the returner), out of bounds at 12. */
+function kickoff(): ReplayScene {
+  const base = scene();
+  const frames = 16;
+  return {
+    ...base,
+    frameCount: frames,
+    play: { ...base.play, type: 'kickoff', down: null, yardsToGo: null, clock: '10:54', offense: 'KC', defense: 'HOU', home: 'KC', away: 'HOU', kicking: 'HOU' },
+    field: { lineOfScrimmage: 75, firstDown: null },
+    events: [{ frame: 2, name: 'kickoff' }, { frame: 8, name: 'kick_received' }, { frame: 12, name: 'out_of_bounds' }],
+    flights: [{ kind: 'kick', from: 2, to: 8 }],
+    ball: { x: Array.from({ length: frames }, (_, f) => 750 - Math.min(f, 8) * 80), y: new Array(frames).fill(266) },
+    carrier: Array.from({ length: frames }, (_, f) => (f >= 8 ? 0 : null)),
+    players: [{ id: 'kr', side: 'offense', jersey: 17, position: 'WR', name: 'KR', x: new Array(frames).fill(110), y: new Array(frames).fill(266) }],
+  };
+}
+
+test('a kickoff starts off the tee and the clock waits for the return man', () => {
+  const prep = prepare(kickoff());
+  assert.equal(ballHeight(prep, 2), 0); // on the tee
+  assert.equal(ballHeight(prep, 8), FLIGHT_END_HEIGHT); // caught at hand height
+  // Halfway through a 0.6 s flight: halfway from 0 to 2, plus gravity's bulge.
+  assert.ok(Math.abs(ballHeight(prep, 5) - (1 + 0.5 * GRAVITY * 0.3 * 0.3)) < 1e-9);
+  assert.equal(prep.clockFrame, 8); // the return man's touch, not the kick at 2
+  assert.equal(clockAtFrame(prep, 7.9), '10:54'); // 0.59 s in the air: no time off
+  // A touchback never starts it; a scrimmage play starts at the snap.
+  const touchback = prepare({ ...kickoff(), events: [{ frame: 2, name: 'kickoff' }, { frame: 8, name: 'touchback' }] });
+  assert.equal(touchback.clockFrame, 15);
+  assert.equal(prepare(scene()).clockFrame, 1);
+});
+
+test('a punt leaves the foot a yard up; a pass the hand at two', () => {
+  const punt = { ...kickoff(), flights: [{ kind: 'punt', from: 2, to: 8 }] };
+  assert.equal(flightHeight(punt, 2), 1);
+  assert.equal(flightHeight(scene(), 3), FLIGHT_END_HEIGHT);
+  assert.equal(flightHeight(scene(), 0), 0);
+  assert.equal(arcHeight(0, 2, 0, 2), 0);
+  assert.equal(arcHeight(1, 2, 0, 2), 1 + 0.5 * GRAVITY);
+});
+
+test('the camera rises with a ball in the air, so a high kick stays in view', () => {
+  const s = kickoff();
+  const grounded = prepare({ ...s, flights: [] });
+  const flying = prepare(s);
+  assert.ok(flying.camera.y[5]! > grounded.camera.y[5]!);
+  assert.equal(flying.camera.y[0]! >= grounded.camera.y[0]!, true);
+});
+
+test('a player who enters or leaves mid scene is drawn only while tracked', () => {
+  const entering = [null, null, 5, 6];
+  assert.equal(sample(entering, 0.5), null);
+  assert.equal(sample(entering, 2.5), 5.5);
+  const leaving = [1, 2, null, null];
+  assert.equal(sample(leaving, 1.5), 2); // holds his last spot for the half frame
+  assert.equal(sample(leaving, 2.5), null);
+});
+
+test('win probability shows a decimal when whole numbers would hide the swing', () => {
+  assert.deepEqual(wpNumbers(0.621, 0.697), { before: '62%', after: '70%', swing: '+8' });
+  assert.deepEqual(wpNumbers(0.045, 0.053), { before: '4.5%', after: '5.3%', swing: '+0.8' });
+  assert.deepEqual(wpNumbers(0.5, 0.5), { before: '50%', after: '50%', swing: '+0' });
+  assert.equal(wpSwingText({ ...scene().play, wpBefore: 0.045, wpAfter: 0.053 }), '4.5% to 5.3% (+0.8 points)');
+  assert.equal(wpSwingReadout({ ...scene().play, wpBefore: 0.045, wpAfter: 0.053 }), '→ 5.3% (+0.8)');
+});
+
+test('the highlights list filters by team and type and sorts by swing, date or type', () => {
+  const row = (key: string, date: string, teams: string[], type: string, swing: number | null, order: number): CatalogRow => ({ key, date, teams, type, swing, order });
+  const rows = [
+    row('a', '2019-01-06', ['PHI', 'CHI'], 'pass', 12.5, 0),
+    row('b', '2018-12-09', ['NE', 'MIA'], 'pass', 91.1, 1),
+    row('c', '', [], 'rush', null, 2),
+    row('d', '2019-09-15', ['ATL', 'PHI'], 'kickoff', -45, 3),
+    row('e', '2018-01-14', ['NO', 'MIN'], 'pass', 12.5, 4),
+  ];
+  assert.deepEqual(sortRows(rows, 'swing', 'desc').map((r) => r.key), ['b', 'd', 'a', 'e', 'c']); // by size either way; ties keep order; none last
+  assert.deepEqual(sortRows(rows, 'swing', 'asc').map((r) => r.key), ['a', 'e', 'd', 'b', 'c']);
+  assert.deepEqual(sortRows(rows, 'date', 'desc').map((r) => r.key), ['d', 'a', 'b', 'e', 'c']);
+  assert.deepEqual(sortRows(rows, 'type', 'asc').map((r) => r.key), ['d', 'a', 'b', 'e', 'c']); // Kickoff, Pass, Run
+  assert.equal(matches(rows[0]!, 'PHI', ''), true);
+  assert.equal(matches(rows[0]!, 'PHI', 'kickoff'), false);
+  assert.equal(matches(rows[3]!, 'PHI', 'kickoff'), true);
+  assert.equal(matches(rows[2]!, 'PHI', ''), false);
+  assert.equal(swingOf(0.089, 1), 91.1);
+  assert.equal(swingOf(0.89, 0.388), -50.2);
+  assert.equal(swingOf(null, 0.5), null);
 });

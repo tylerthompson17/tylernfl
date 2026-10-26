@@ -8,7 +8,7 @@
  */
 import TeamChip from '../TeamChip.astro';
 import type { ReplayScene } from '../../data/types';
-import { scorebugSituation, wpSwingReadout } from '../../lib/replays/words';
+import { scorebugSituation, wpNumbers, wpSwingReadout } from '../../lib/replays/words';
 
 interface Props {
   scene: ReplayScene;
@@ -21,6 +21,8 @@ const { play } = scene;
 const goal = scene.field.firstDown !== null && scene.field.firstDown >= 110;
 const ORDINAL = ['1st', '2nd', '3rd', '4th'];
 const swing = wpSwingReadout(play);
+const wpShown =
+  play.wpBefore === null ? null : play.wpAfter === null ? `${Math.round(play.wpBefore * 100)}%` : wpNumbers(play.wpBefore, play.wpAfter).before;
 // "</script>" can never appear in JSON.stringify output once "<" is escaped.
 const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
 ---
@@ -38,9 +40,9 @@ const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
     <span class="cell num" data-clock>{ORDINAL[play.quarter - 1] ?? 'OT'} {play.clock.replace(/^0(?=\d:)/, '')}</span>
     <span class="cell">{scorebugSituation(play, goal)}</span>
     {
-      play.wpBefore !== null && (
+      wpShown && (
         <span class="cell num">
-          {play.offense} win prob {Math.round(play.wpBefore * 100)}%
+          {play.offense} win prob {wpShown}
           {swing && <span class="swing" data-swing aria-hidden="true">{swing}</span>}
         </span>
       )

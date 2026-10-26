@@ -32,20 +32,31 @@ export function situationText(play: ReplayPlay, goalToGo: boolean): string {
   return `${ORDINAL[play.down - 1]} and ${distance}${spot}, ${when}`;
 }
 
+/**
+ * Win probability before and after in percent, whole numbers unless they
+ * round to the same one (4.5% to 5.3% would read "5% to 5%"), then to one
+ * decimal; and the swing in points at the same precision.
+ */
+export function wpNumbers(before: number, after: number): { before: string; after: string; swing: string } {
+  const digits = Math.round(before * 100) === Math.round(after * 100) && before !== after ? 1 : 0;
+  const pct = (v: number) => (v * 100).toFixed(digits);
+  // The swing from the shown numbers, so they always add up.
+  const swing = (Number(pct(after)) - Number(pct(before))).toFixed(digits);
+  return { before: `${pct(before)}%`, after: `${pct(after)}%`, swing: `${Number(swing) >= 0 ? '+' : ''}${swing}` };
+}
+
 /** "62% to 70% (+8 points)" for the offense; null without both numbers. */
 export function wpSwingText(play: ReplayPlay): string | null {
   if (play.wpBefore === null || play.wpAfter === null) return null;
-  const before = Math.round(play.wpBefore * 100);
-  const after = Math.round(play.wpAfter * 100);
-  const swing = after - before;
-  return `${before}% to ${after}% (${swing >= 0 ? '+' : ''}${swing} points)`;
+  const n = wpNumbers(play.wpBefore, play.wpAfter);
+  return `${n.before} to ${n.after} (${n.swing} points)`;
 }
 
-/** The scorebug's end of play readout, "→ 70% (+8)", to follow "62%"; null without both numbers. */
+/** The scorebug's end of play readout, "→ 70% (+8)", to follow the before number (`wpNumbers`); null without both numbers. */
 export function wpSwingReadout(play: ReplayPlay): string | null {
   if (play.wpBefore === null || play.wpAfter === null) return null;
-  const swing = Math.round(play.wpAfter * 100) - Math.round(play.wpBefore * 100);
-  return `→ ${Math.round(play.wpAfter * 100)}% (${swing >= 0 ? '+' : ''}${swing})`;
+  const n = wpNumbers(play.wpBefore, play.wpAfter);
+  return `→ ${n.after} (${n.swing})`;
 }
 
 /** The scorebug's situation: "2nd and 6 at CHI 35", "Kickoff", "Two point try". */

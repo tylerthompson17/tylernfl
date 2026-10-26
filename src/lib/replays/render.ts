@@ -41,6 +41,9 @@ export const FRAMINGS = {
   phone: { width: 240, height: 160, lockY: false },
 } satisfies Record<string, Framing>;
 
+/** Yards kept between the ball and the top of the view */
+const BALL_MARGIN = 2;
+
 /** Below this page width (CSS pixels) a replay uses the phone framing and starts with stats off. */
 export const PHONE_MAX_WIDTH = 599;
 
@@ -161,7 +164,11 @@ export class ReplayRenderer {
     const { width, height } = framing;
 
     const camX = sample(prep.camera.x, f) ?? 60;
-    const camY = framing.lockY ? FIELD_WIDTH / 2 : (sample(prep.camera.y, f) ?? FIELD_WIDTH / 2);
+    let camY = framing.lockY ? FIELD_WIDTH / 2 : (sample(prep.camera.y, f) ?? FIELD_WIDTH / 2);
+    // The smoothed path can trail a high kick; never let the ball itself
+    // leave the top of the view (screen up is +y, BALL_MARGIN yards in).
+    const ballY = sample(prep.ball.y, f);
+    if (ballY !== null) camY = Math.max(camY, ballY + ballHeight(prep, f) + BALL_MARGIN - height / 2 / PX);
     const ox = Math.round(Math.min(Math.max(fx(camX) - width / 2, 0), FIELD_PX_W - width));
     const oy = Math.round(Math.min(Math.max(fy(camY) - height / 2, 0), FIELD_PX_H - height));
     this.origin = { x: ox, y: oy };

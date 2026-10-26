@@ -1088,27 +1088,35 @@ export interface ReplayScene {
   players?: ReplayPlayer[];
 }
 
-/** replays/index.json: one line per scene built. */
+/**
+ * replays/index.json: every play in the Next Gen Stats highlights
+ * collection, facts only (no tracking), to pick replays from
+ * (pipelines/replays.py --index). Teams, date, description and win
+ * probability are nflverse's and null for a play it does not have.
+ */
 export interface ReplayIndexEntry {
+  /** season_team_gameId_playId; a scene, when built, is plays/{key}.json */
   key: string;
   date: string | null;
   season: number;
   seasonType: string;
   week: number;
-  away: string;
-  home: string;
-  offense: string;
-  defense: string;
+  gameId: string;
+  playId: number;
+  away: string | null;
+  home: string | null;
+  /** The receiving team on kicks, as in the scenes */
+  offense: string | null;
+  defense: string | null;
   type: string;
-  quarter: number;
-  clock: string;
+  quarter: number | null;
+  clock: string | null;
   down: number | null;
   yardsToGo: number | null;
   description: string;
   touchdown: boolean;
   wpBefore: number | null;
   wpAfter: number | null;
-  seconds: number;
 }
 
 export interface ReplayIndexData {

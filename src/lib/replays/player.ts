@@ -74,32 +74,50 @@ export function initReplay(root: HTMLElement): void {
   /** Labels already placed this frame, so a later one can step clear of them. */
   let placed: DOMRect[] = [];
   const overlaps = (a: DOMRect, b: DOMRect) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+  /**
+   * Each shown label's step down from its spot, in canvas pixels: `target`
+   * is where it has to be, `shown` where it is drawn. During playback a
+   * label keeps its step for as long as it stays up (it never springs back
+   * the moment the crowding clears) and steps further only when it would
+   * collide. Scrubbing starts the layout afresh.
+   */
+  const steps = new Map<HTMLElement, { target: number; shown: number }>();
+  /** Share of the remaining distance a stepping label covers per drawn frame while playing: about 150 ms at 60 fps */
+  const STEP_EASE = 0.3;
 
   /**
    * Put a label at a canvas point, in CSS pixels over the canvas: its
    * bottom edge there, or with `below` its top edge. A label that would
-   * cover one placed before it this frame steps down past it. Null text
-   * hides it.
+   * cover one placed before it this frame steps down past it, sliding
+   * there during playback. Null text hides it.
    */
   function place(el: HTMLElement | null, text: string | null, x = 0, y = 0, opacity = 1, below = false) {
     if (!el) return;
     el.hidden = text === null || opacity <= 0;
-    if (el.hidden) return;
+    if (el.hidden) {
+      steps.delete(el);
+      return;
+    }
     const scale = canvas!.clientWidth / canvas!.width;
     el.textContent = text;
     el.style.left = `${x * scale}px`;
-    el.style.top = `${y * scale}px`;
     el.style.opacity = String(opacity);
     el.style.transform = below ? 'translate(-50%, 0)' : '';
-    let top = y * scale;
+    const step = steps.get(el) ?? { target: 0, shown: 0 };
+    el.style.top = `${(y + step.target) * scale}px`;
     for (let tries = 0; tries < 4; tries++) {
       const rect = el.getBoundingClientRect();
       const hit = placed.find((p) => overlaps(rect, p));
       if (!hit) break;
-      top += hit.bottom - rect.top + 2;
-      el.style.top = `${top}px`;
+      step.target += (hit.bottom - rect.top + 2) / scale;
+      el.style.top = `${(y + step.target) * scale}px`;
     }
+    // Collisions are judged where the label belongs; it is drawn where it has got to.
     placed.push(el.getBoundingClientRect());
+    step.shown = playing ? step.shown + (step.target - step.shown) * STEP_EASE : step.target;
+    if (Math.abs(step.target - step.shown) < 0.5) step.shown = step.target;
+    el.style.top = `${(y + step.shown) * scale}px`;
+    steps.set(el, step);
   }
 
   function updatePage(f: number) {
@@ -186,10 +204,12 @@ export function initReplay(root: HTMLElement): void {
   play.addEventListener('click', () => setPlaying(!playing));
   restart.addEventListener('click', () => {
     frame = 0;
+    steps.clear();
     render();
   });
   scrub.addEventListener('input', () => {
     frame = Number(scrub.value);
+    steps.clear();
     render();
   });
   for (const button of speeds) {

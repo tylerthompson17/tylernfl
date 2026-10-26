@@ -1,8 +1,9 @@
-"""Build src/data/replays/: one scene per Next Gen Stats highlight play, for
-Retro Replays, and an index of every scene built.
+"""Build src/data/replays/: one scene per Next Gen Stats highlight play
+picked for Retro Replays (plays/<key>.json), and index.json, every play in
+the highlights collection with its facts but no tracking, to pick from.
 
-    python pipelines/replays.py 2018_ARI_2018092311_141 [more keys]
-    python pipelines/replays.py --all
+    python pipelines/replays.py 2018_ARI_2018092311_141 [more keys]   scenes
+    python pipelines/replays.py --index                                index.json
 
 A key is a file name in asonty/ngs_highlights' play_data/ without .tsv
 (season_team_gameId_playId; the team is whose highlight it is, not always
@@ -459,30 +460,72 @@ def situation_mismatch(first: dict, pbp_row: dict) -> str | None:
     return None
 
 
-def summary(scene: dict) -> dict:
-    """A scene's line in index.json."""
-    play = scene['play']
-    return {
-        'key': scene['key'],
-        'date': play['date'],
-        'season': play['season'],
-        'seasonType': play['seasonType'],
-        'week': play['week'],
-        'away': play['away'],
-        'home': play['home'],
-        'offense': play['offense'],
-        'defense': play['defense'],
-        'type': play['type'],
-        'quarter': play['quarter'],
-        'clock': play['clock'],
-        'down': play['down'],
-        'yardsToGo': play['yardsToGo'],
-        'description': play['description'],
-        'touchdown': any(e['name'] == 'touchdown' for e in scene['events']),
-        'wpBefore': play['wpBefore'],
-        'wpAfter': play['wpAfter'],
-        'seconds': round(scene['frameCount'] / scene['hz'], 1),
+def index_entry(row: dict, pbp_row: dict | None) -> dict:
+    """One highlight's line in index.json, from the highlights index and
+    nflverse play-by-play: who, when, the situation, the description and
+    the offense's win probability, with the scenes' rule for kicks (the
+    receiving team is the offense: nflverse's posteam on a kickoff, its
+    defteam on a punt)."""
+    key = f'{row["season"]}_{row["teamAbbr"]}_{row["gameId"]}_{row["playId"]}'
+    play_type = row['play.playType'].removeprefix('play_type_')
+    down = int(num(row['play.down']) or 0) or None
+    to_go = num(row['play.yardsToGo'])
+    entry = {
+        'key': key,
+        'date': None,
+        'season': int(row['season']),
+        'seasonType': row['seasonType'],
+        'week': int(row['week']),
+        'gameId': row['gameId'],
+        'playId': int(row['playId']),
+        'away': None,
+        'home': None,
+        'offense': None,
+        'defense': None,
+        'type': play_type,
+        'quarter': int(num(row['play.quarter']) or 0) or None,
+        'clock': row['play.gameClock'] or None,
+        'down': down,
+        'yardsToGo': int(to_go) if down and to_go is not None else None,
+        'description': row['play.playDescription'],
+        'touchdown': 'TOUCHDOWN' in row['play.playDescription'].upper(),
+        'wpBefore': None,
+        'wpAfter': None,
     }
+    if pbp_row is None:
+        return entry
+    home, away = normalize_team(pbp_row['home_team']), normalize_team(pbp_row['away_team'])
+    posteam = normalize_team(pbp_row['posteam'] or '')
+    defteam = normalize_team(pbp_row['defteam'] or '')
+    offense, defense = (defteam, posteam) if play_type == 'punt' else (posteam, defteam)
+    entry.update({
+        'date': pbp_row['game_date'],
+        'away': away,
+        'home': home,
+        'offense': offense or None,
+        'defense': defense or None,
+        'description': pbp_row['desc'],
+        'touchdown': bool(pbp_row['touchdown']),
+        'wpBefore': offense_wp(pbp_row['home_wp'], offense, home) if offense else None,
+        'wpAfter': offense_wp(pbp_row['home_wp_post'], offense, home) if offense else None,
+    })
+    return entry
+
+
+def index_entries(rows: list[dict], lookup) -> list[dict]:
+    """Every highlight once, oldest first. The highlights index lists a few
+    plays twice (the same play as two teams' highlight, or the same row
+    repeated); the first key in key order stands for the play."""
+    seen: set[tuple[str, str]] = set()
+    entries = []
+    for row in sorted(rows, key=lambda r: f'{r["season"]}_{r["teamAbbr"]}_{r["gameId"]}_{r["playId"]}'):
+        play = (row['gameId'], row['playId'])
+        if play in seen:
+            continue
+        seen.add(play)
+        entries.append(index_entry(row, lookup(int(row['season']), row['gameId'], int(row['playId']))))
+    entries.sort(key=lambda e: (e['date'] or '', e['gameId'], e['playId']))
+    return entries
 
 
 # Writing -------------------------------------------------------------------
@@ -494,13 +537,8 @@ def write_scene(scene: dict) -> Path:
     return path
 
 
-def write_index() -> int:
-    """index.json from every scene on disk, oldest first."""
-    plays_dir = DATA_DIR / OUT_DIR / 'plays'
-    rows = [summary(json.loads(p.read_text(encoding='utf-8'))) for p in sorted(plays_dir.glob('*.json'))]
-    rows.sort(key=lambda r: (r['date'] or '', r['key']))
-    write_json_if_changed(f'{OUT_DIR}/index.json', {'version': FORMAT_VERSION, 'plays': rows}, records=True)
-    return len(rows)
+def write_index(entries: list[dict]) -> None:
+    write_json_if_changed(f'{OUT_DIR}/index.json', {'version': FORMAT_VERSION, 'plays': entries}, records=True)
 
 
 def pbp_lookup(season: int):
@@ -511,37 +549,34 @@ def pbp_lookup(season: int):
     pbp = load_pbp(season, stats_season(today_eastern()))
     if pbp is None:
         return {}
-    columns = ['old_game_id', 'play_id', 'game_id', 'game_date', 'home_team', 'away_team', 'desc', 'down',
-               'ydstogo', 'total_home_score', 'total_away_score', 'home_wp', 'home_wp_post']
+    columns = ['old_game_id', 'play_id', 'game_id', 'game_date', 'home_team', 'away_team', 'posteam', 'defteam',
+               'desc', 'down', 'ydstogo', 'touchdown', 'total_home_score', 'total_away_score', 'home_wp',
+               'home_wp_post']
     frame = pbp.select(columns).with_columns(pl.col('play_id').cast(pl.Int64))
     return {(r['old_game_id'], r['play_id']): r for r in frame.iter_rows(named=True)}
 
 
-def all_keys() -> list[str]:
-    rows = read_rows(fetch('ngs_highlights_index.tsv').read_text(encoding='utf-8'))
-    keys = {f'{r["season"]}_{r["teamAbbr"]}_{r["gameId"]}_{r["playId"]}' for r in rows}
-    return sorted(keys)
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
-    parser.add_argument('keys', nargs='*', help='play keys, e.g. 2018_ARI_2018092311_141')
-    parser.add_argument('--all', action='store_true', help='every play in the highlights index')
+    parser.add_argument('keys', nargs='*', help='play keys to build scenes for, e.g. 2018_ARI_2018092311_141')
+    parser.add_argument('--index', action='store_true', help='rewrite index.json from the whole highlights index')
     args = parser.parse_args()
-    keys = all_keys() if args.all else args.keys
-    if not keys:
-        parser.error('give play keys or --all')
+    if not args.keys and not args.index:
+        parser.error('give play keys, --index, or both')
 
-    colors = team_colors(json.loads((DATA_DIR / 'teams.json').read_text(encoding='utf-8')))
     lookups: dict[int, dict] = {}
-    total = 0
-    for key in keys:
-        rows = read_rows(fetch(f'{key}.tsv').read_text(encoding='utf-8'))
-        first = rows[0]
-        season = int(first['season'])
+
+    def lookup(season: int, game_id: str, play_id: int) -> dict | None:
         if season not in lookups:
             lookups[season] = pbp_lookup(season)
-        pbp_row = lookups[season].get((first['gameId'], int(first['playId'])))
+        return lookups[season].get((game_id, play_id))
+
+    colors = team_colors(json.loads((DATA_DIR / 'teams.json').read_text(encoding='utf-8')))
+    total = 0
+    for key in args.keys:
+        rows = read_rows(fetch(f'{key}.tsv').read_text(encoding='utf-8'))
+        first = rows[0]
+        pbp_row = lookup(int(first['season']), first['gameId'], int(first['playId']))
         if pbp_row is None:
             print(f'{key}: not in nflverse play-by-play, written without its facts', file=sys.stderr)
         elif mismatch := situation_mismatch(first, pbp_row):
@@ -551,8 +586,18 @@ def main() -> None:
         size = path.stat().st_size
         total += size
         print(f'{key}: {scene["frameCount"]} frames, {len(scene["players"])} players, {size / 1024:.1f} KB')
-    count = write_index()
-    print(f'{len(keys)} written ({total / 1024:.0f} KB), {count} in the index')
+    if args.keys:
+        print(f'{len(args.keys)} scenes written ({total / 1024:.0f} KB)')
+
+    if args.index:
+        rows = read_rows(fetch('ngs_highlights_index.tsv').read_text(encoding='utf-8'))
+        entries = index_entries(rows, lookup)
+        write_index(entries)
+        joined = sum(1 for e in entries if e['date'])
+        print(f'index.json: {len(entries)} plays from {len(rows)} index rows, {joined} joined to play-by-play')
+        for e in entries:
+            if not e['date']:
+                print(f'  {e["key"]}: not in nflverse play-by-play', file=sys.stderr)
 
 
 if __name__ == '__main__':

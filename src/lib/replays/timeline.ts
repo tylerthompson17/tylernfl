@@ -13,8 +13,10 @@ import type { ReplayScene } from '../../data/types.ts';
 
 /** Gravity in yards per second squared, for the ball's arc */
 export const GRAVITY = 10.7;
-/** The ball leaves the passer's or kicker's hand and arrives at this height (yards) */
+/** A pass or kick arrives at this height (yards), and a pass leaves the passer's hand at it */
 export const FLIGHT_END_HEIGHT = 2;
+/** Where a flight starts, by kind (yards): a kickoff off the tee, a punt off the foot, a pass from the hand */
+export const FLIGHT_START_HEIGHT: Record<string, number> = { kick: 0, punt: 1, pass: FLIGHT_END_HEIGHT };
 /** A carried ball's height (yards): about the hands of a sprite */
 export const CARRY_HEIGHT = 1.5;
 /** Faster than this (yards a second), a player faces where he is going; slower, where his body points */
@@ -55,6 +57,8 @@ export interface Prepared {
   carrier: Series;
   camera: { x: number[]; y: number[] };
   snapFrame: number;
+  /** The frame the game clock starts running: the snap, or on a kickoff the return man's touch */
+  clockFrame: number;
 }
 
 const START_EVENTS = new Set(['ball_snap', 'kickoff', 'onside_kick']);
@@ -124,7 +128,9 @@ export function prepare(scene: ReplayScene): Prepared {
     z: scene.ball.z ? scaled(scene.ball.z, s, n) : null,
   };
   const carrier: Series = scene.carrier ?? new Array(n).fill(null);
-  // The camera looks at whoever has the ball, else the ball itself.
+  // The camera looks at whoever has the ball, else the ball itself; in
+  // the air, halfway up to it, so a high kick and its shadow both stay in
+  // view (screen up is +y).
   const targetX: number[] = [];
   const targetY: number[] = [];
   for (let f = 0; f < n; f++) {
@@ -133,9 +139,10 @@ export function prepare(scene: ReplayScene): Prepared {
     const px = p?.x[f];
     const py = p?.y[f];
     targetX.push(px ?? ball.x[f]!);
-    targetY.push(py ?? ball.y[f]!);
+    targetY.push((py ?? ball.y[f]!) + flightHeight(scene, f) / 2);
   }
   const snap = scene.events.find((e) => START_EVENTS.has(e.name));
+  const snapFrame = snap ? snap.frame : 0;
   return {
     scene,
     hz,
@@ -144,8 +151,20 @@ export function prepare(scene: ReplayScene): Prepared {
     players,
     carrier,
     camera: { x: smooth(targetX), y: smooth(targetY) },
-    snapFrame: snap ? snap.frame : 0,
+    snapFrame,
+    clockFrame: clockStart(scene, snapFrame),
   };
+}
+
+/**
+ * When the game clock starts. From the snap, except on a kickoff, where it
+ * waits for the return man to touch the ball (and never starts on a
+ * touchback, so the last frame stands in for that).
+ */
+export function clockStart(scene: ReplayScene, snapFrame: number): number {
+  if (scene.play.type !== 'kickoff') return snapFrame;
+  const touch = scene.events.find((e) => e.frame >= snapFrame && (e.name === 'kick_received' || e.name === 'onside_kick'));
+  return touch ? touch.frame : scene.frameCount - 1;
 }
 
 /** A series at a fractional frame, linear between frames; a gap holds the known side. */
@@ -206,9 +225,20 @@ export function stride(p: PreparedPlayer, f: number): number {
 }
 
 /** Height of a ball arc t seconds into a flight of T seconds: a parabola under GRAVITY from FLIGHT_END_HEIGHT back to it. */
-export function arcHeight(t: number, T: number): number {
+export function arcHeight(t: number, T: number, start = FLIGHT_END_HEIGHT, end = FLIGHT_END_HEIGHT): number {
   const u = Math.min(Math.max(t, 0), T);
-  return FLIGHT_END_HEIGHT + 0.5 * GRAVITY * u * (T - u);
+  return start + (end - start) * (T > 0 ? u / T : 1) + 0.5 * GRAVITY * u * (T - u);
+}
+
+/** A scene's drawn arc height at a frame, 0 outside its flights. */
+export function flightHeight(scene: ReplayScene, f: number): number {
+  for (const flight of scene.flights) {
+    if (f >= flight.from && f <= flight.to) {
+      const start = FLIGHT_START_HEIGHT[flight.kind] ?? FLIGHT_END_HEIGHT;
+      return arcHeight((f - flight.from) / scene.hz, (flight.to - flight.from) / scene.hz, start);
+    }
+  }
+  return 0;
 }
 
 export function carrierAt(prep: Prepared, f: number): number | null {
@@ -222,9 +252,7 @@ export function ballHeight(prep: Prepared, f: number): number {
     const z = sample(prep.ball.z, f);
     if (z !== null) return z;
   }
-  for (const flight of prep.scene.flights) {
-    if (f >= flight.from && f <= flight.to) return arcHeight((f - flight.from) / prep.hz, (flight.to - flight.from) / prep.hz);
-  }
+  if (prep.scene.flights.some((fl) => f >= fl.from && f <= fl.to)) return flightHeight(prep.scene, f);
   return carrierAt(prep, f) === null ? 0 : CARRY_HEIGHT;
 }
 
@@ -236,7 +264,7 @@ export function clockAt(clock: string, seconds: number): string {
 }
 
 export function clockAtFrame(prep: Prepared, f: number): string {
-  return clockAt(prep.scene.play.clock, (f - prep.snapFrame) / prep.hz);
+  return clockAt(prep.scene.play.clock, (f - prep.clockFrame) / prep.hz);
 }
 
 const SCORING = new Set(['touchdown', 'field_goal', 'safety', 'extra_point']);
