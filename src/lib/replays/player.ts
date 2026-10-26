@@ -5,8 +5,10 @@
  * win probability swing at the last frame), the caption and the stat
  * labels. Nothing moves until the visitor presses play (the site's no
  * motion rule has this one exception), and playback pauses when the tab
- * is hidden. Phones get a tighter framing and start with stats off. The
- * scene is embedded in the page at build time; nothing is fetched.
+ * is hidden. Phones get a tighter framing and start with stats off. On a
+ * replay page the scene is embedded at build time; the home page's panel
+ * passes one it loaded (src/lib/replays/home.ts) and tears the player down
+ * with the returned function before showing another.
  */
 import type { ReplayScene } from '../../data/types.ts';
 import {
@@ -28,7 +30,15 @@ const ORDINAL = ['1st', '2nd', '3rd', '4th'];
 /** Pixels from a sprite's feet to just over its helmet */
 const HEAD_PX = 23;
 
-export function initReplay(root: HTMLElement): void {
+export interface ReplayStart {
+  /** The scene to play; without it, the one embedded in `root` */
+  scene?: ReplayScene;
+  /** Frame to show first, or the last one; otherwise `data-start`, else 0 */
+  start?: number | 'end';
+}
+
+/** Start a player in `root`; the returned function stops it and removes every listener it added. */
+export function initReplay(root: HTMLElement, given: ReplayStart = {}): () => void {
   const q = <T extends Element>(selector: string) => root.querySelector<T>(selector);
   const data = q<HTMLScriptElement>('[data-scene]');
   const canvas = q<HTMLCanvasElement>('[data-canvas]');
@@ -36,11 +46,13 @@ export function initReplay(root: HTMLElement): void {
   const restart = q<HTMLButtonElement>('[data-restart]');
   const scrub = q<HTMLInputElement>('[data-scrub]');
   const time = q<HTMLElement>('[data-time]');
-  if (!data || !canvas || !play || !restart || !scrub || !time) return;
+  if (!(given.scene || data) || !canvas || !play || !restart || !scrub || !time) return () => {};
   const speeds = [...root.querySelectorAll<HTMLButtonElement>('[data-speed]')];
   const toggles = [...root.querySelectorAll<HTMLButtonElement>('[data-toggle]')];
+  const listening = new AbortController();
+  const { signal } = listening;
 
-  const scene = JSON.parse(data.textContent ?? '') as ReplayScene;
+  const scene = given.scene ?? (JSON.parse(data!.textContent ?? '') as ReplayScene);
   const prep = prepare(scene);
   const colors = readColors(root);
   const phone = window.matchMedia(`(max-width: ${PHONE_MAX_WIDTH}px)`);
@@ -62,7 +74,8 @@ export function initReplay(root: HTMLElement): void {
     separation: q<HTMLElement>('[data-tag="separation"]'),
   };
 
-  let frame = Math.min(Math.max(Number(root.dataset.start ?? 0), 0), last);
+  const start = given.start ?? Number(root.dataset.start ?? 0);
+  let frame = start === 'end' ? last : Math.min(Math.max(start, 0), last);
   let playing = false;
   let speed = 1;
   let previous = 0;
@@ -206,41 +219,72 @@ export function initReplay(root: HTMLElement): void {
     else requestAnimationFrame(tick);
   }
 
-  play.addEventListener('click', () => setPlaying(!playing));
-  restart.addEventListener('click', () => {
-    frame = 0;
-    steps.clear();
-    render();
-  });
-  scrub.addEventListener('input', () => {
-    frame = Number(scrub.value);
-    steps.clear();
-    render();
-  });
+  play.textContent = 'Play';
+  play.addEventListener('click', () => setPlaying(!playing), { signal });
+  restart.addEventListener(
+    'click',
+    () => {
+      frame = 0;
+      steps.clear();
+      render();
+    },
+    { signal },
+  );
+  scrub.addEventListener(
+    'input',
+    () => {
+      frame = Number(scrub.value);
+      steps.clear();
+      render();
+    },
+    { signal },
+  );
   for (const button of speeds) {
-    button.addEventListener('click', () => {
-      speed = Number(button.dataset.speed);
-      for (const b of speeds) b.setAttribute('aria-pressed', String(b === button));
-    });
+    button.addEventListener(
+      'click',
+      () => {
+        speed = Number(button.dataset.speed);
+        for (const b of speeds) b.setAttribute('aria-pressed', String(b === button));
+      },
+      { signal },
+    );
   }
   for (const button of toggles) {
-    button.addEventListener('click', () => {
-      const key = button.dataset.toggle as keyof typeof options;
-      options[key] = !options[key];
-      button.setAttribute('aria-pressed', String(options[key]));
-      render();
-    });
+    button.addEventListener(
+      'click',
+      () => {
+        const key = button.dataset.toggle as keyof typeof options;
+        options[key] = !options[key];
+        button.setAttribute('aria-pressed', String(options[key]));
+        render();
+      },
+      { signal },
+    );
   }
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden && playing) setPlaying(false);
-  });
+  document.addEventListener(
+    'visibilitychange',
+    () => {
+      if (document.hidden && playing) setPlaying(false);
+    },
+    { signal },
+  );
   // Crossing the phone width changes the framing; the stats toggle stays as the visitor left it.
-  phone.addEventListener('change', () => {
-    renderer = makeRenderer();
-    render();
-  });
+  phone.addEventListener(
+    'change',
+    () => {
+      renderer = makeRenderer();
+      render();
+    },
+    { signal },
+  );
   // Labels sit in CSS pixels, so they move when the canvas is resized.
-  new ResizeObserver(() => updatePage(frame)).observe(canvas);
+  const resized = new ResizeObserver(() => updatePage(frame));
+  resized.observe(canvas);
 
   render();
+  return () => {
+    playing = false;
+    listening.abort();
+    resized.disconnect();
+  };
 }

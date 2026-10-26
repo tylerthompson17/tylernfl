@@ -83,7 +83,9 @@ tylernfl/
 ## Data contract
 
 - Pipelines write JSON into `src/data/`, commit it, and the push triggers a rebuild. Pages read data at build time.
-- Browser-side fetches of data are allowed in exactly two places. Nothing else fetches data at runtime.
+- Browser-side fetches of data are allowed in exactly two places. Nothing else fetches data at runtime
+  (the calculator's model files and the home page's replay scene, below, are the site's own build
+  output).
   1. **Live scores** (`src/lib/live-ticker/`). During game windows (15 minutes before each unfinished game's kickoff to 4.5 hours after), the browser polls ESPN's public scoreboard (`site.api.espn.com`) every 30 seconds while the tab is visible and updates scores in place. One poll feeds every game on the page: the ticker slots and, on `/scores`, the boxes, which carry the same `data-game` hooks. After a game's window closes, ticker.json still shows it unfinished until the next daily run (a Monday night game ends near midnight; the run is at 6 AM and has started hours late), so a page loaded with a game that kicked off within the last 48 hours, past its window and not final in ticker.json, makes one scoreboard request on load to pick up the result (up to 3 tries on failure; `needsCatchUp` in `schedule.ts`). One request, never polling. It matches games by `espnId`, never moves a game backwards (final stays final), backs off on errors, and leaves the `ticker.json` data showing on any failure. Live games also show who scored last: when a live game's score changes, the browser fetches that one game's summary (`/summary?event=`) once, retrying up to 3 times over about a minute if it trails the scoreboard. It is never polled on a timer (a finished game's is 566 KB, 52 KB gzipped; the scoring plays are about 1 KB), and it is one fetch per scoring play however many places render the line. The same poll moves records: when a regular season game the build had
      not counted goes final, both teams' records change at once everywhere they show (the
      playoff picture, the standings tables' W through Strk, the team header's record and
@@ -109,6 +111,12 @@ tylernfl/
   `?url` imports in `load.ts` (`assetsInlineLimit` in `astro.config.mjs` keeps the small
   ones out of the script). About 2.6 MB gzipped; methods in
   `docs/methods/fourth-down-model.md`.
+- The home page's Retro Replay panel (Tyler asked for it, 2026-10-25) fetches one
+  featured replay's scene, the site's own build output and not data from elsewhere:
+  `replays/scenes/<key>.json`, written for the featured keys only by
+  `src/pages/replays/scenes/[key].json.ts`, 8 to 28 KB gzipped. One request per play
+  shown (on load once the panel is near the screen, and on "Another play"), never
+  polled; the player's code is a lazy chunk with it (about 8 KB gzipped).
 - Live 4th downs, what shows: `/fourth-down/live/` lists every 4th down of today's games,
   newest first, with nfl4th's recommendation before the snap, each option's WP, what the
   team did and WP lost, the model loaded with the page (the calculator's worker and
@@ -774,14 +782,18 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
 ### Home page
 
 - Three independent columns: each stacks its own panels, so a short panel never leaves
-  a hole beside a tall one. The chart spans columns 1 and 2 (a full-size chart stops
-  shrinking at 600px); column 3 runs from the top beside it.
+  a hole beside a tall one. The Retro Replay panel, then the chart under it, span
+  columns 1 and 2 (a full-size chart stops shrinking at 600px); column 3 runs from the
+  top beside them. Without replays in the build there is no replay panel and the chart
+  is on top.
 - Column 1: the latest complete week's results (the week `/week` recaps, kickoff
   order, each final's excitement label with the slate bar), receiving leaders. Column 2:
   transactions, the 4th down calculator line (live 4th downs during games). Column 3: playoff picture, draft order (top 10
   of `/draft`), notable performances, on this day, latest article. The split is what
   balances heights: at 1440px with a yards race chart the columns end at about 1,375,
-  1,345 and 1,395px. Recheck when a panel is added or grows.
+  1,345 and 1,395px. Recheck when a panel is added or grows. Since the replay panel
+  (843px at 1440) they do not: on 2026-10-25 with the EPA scatter, columns 1 and 2 end
+  about 2,340 and 2,130px down, column 3 at 1,379.
 - Column 2 ends with one line linking the 4th down calculator, which becomes the "Live 4th
   downs" panel while any game is live (see the data contract).
 - Below 1100px: two columns, chart across the top, column 3's panels in a pair under
@@ -980,6 +992,17 @@ game).
   probability is nflfastR's, cited on the page with the tracking source.
 - No autoplay; playback pauses when the tab is hidden; the fade is off under reduced
   motion.
+- The home page's panel (`HomeReplay.astro`, `src/lib/replays/home.ts`): one of the
+  featured replays at random on each visit, picked in the browser (`pickReplay` in
+  `pick.ts`), never the one this browser saw last (`tylernfl.home-replay` in
+  localStorage, every access in try/catch). The page ships only the list (key, game,
+  description, page and scene URLs, about 5 KB raw); the scene and player load once the
+  panel is near the screen (see the data contract). The first frame waits for Play;
+  under reduced motion the last frame shows. Title, description (two lines, clamped),
+  a scorebug line (one line from 640px of panel, else two set lines, each cut with an
+  ellipsis), the canvas, Play, Restart and the scrubber, links to the play's page and
+  all replays, and "Another play". Every part has its size before anything loads, so
+  nothing shifts. `initReplay` takes the scene and returns a function that stops it.
 
 ### Curated posts
 

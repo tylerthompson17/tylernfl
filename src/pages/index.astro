@@ -24,6 +24,8 @@ import { draft } from '../utils/draft';
 import { draftRecord, ownerNote } from '../lib/draft/view';
 import { liveGames } from '../utils/live-games';
 import { LIVE_FOURTH_PAGE_ENABLED } from '../config';
+import HomeReplay from '../components/replays/HomeReplay.astro';
+import { homeReplays } from '../utils/replays';
 
 const receiving = leadersFor('receiving');
 
@@ -56,6 +58,9 @@ const notableWeek = notable.week === null ? null : logWeek(notable.season, notab
 // Tyler's featured chart, or the daily auto chart when none is featured.
 const featured = await getFeaturedChart();
 const auto = featured ? null : getAutoChart();
+
+// The featured replays, one picked in the browser; none when replays are not in the build.
+const replays = await homeReplays();
 
 // The latest complete week's results with their excitement labels, in
 // kickoff order: the labels the ticker never shows on a final. The same
@@ -94,6 +99,8 @@ const leaderColumns: StatTableColumn<LeaderRow>[] = [
 <BaseLayout title="Home" rail={false}>
   <h1 class="visually-hidden">Tyler NFL home</h1>
   <div class="home">
+    <div class="lead">
+    {replays.length > 0 && <HomeReplay replays={replays} />}
     {
       featured ? (
         <Panel title={featured.data.title} titleId="home-chart-title" class="home-chart">
@@ -122,6 +129,7 @@ const leaderColumns: StatTableColumn<LeaderRow>[] = [
         </Panel>
       )
     }
+    </div>
     <div class="col col-1">
       <Panel title={resultsName ? `${resultsName} results` : 'Results'}>
         {
@@ -352,9 +360,13 @@ const leaderColumns: StatTableColumn<LeaderRow>[] = [
     align-items: start;
   }
 
-  .home > :global(.home-chart) {
+  /* The replay (when the build has replays), then the chart under it. */
+  .lead {
     grid-column: 1 / 3;
     grid-row: 1;
+    display: grid;
+    gap: var(--space-3);
+    min-width: 0;
   }
 
   .col {
@@ -519,7 +531,7 @@ const leaderColumns: StatTableColumn<LeaderRow>[] = [
       grid-template-rows: auto;
     }
 
-    .home > :global(.home-chart) {
+    .lead {
       grid-column: 1 / -1;
     }
 
