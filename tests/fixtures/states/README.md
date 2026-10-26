@@ -1,14 +1,16 @@
 # Date state fixtures
 
-The site's data as it read at four moments, so the audit can load the site on
-a Sunday during games, a Tuesday after the week, a Wednesday looking ahead, and
-in the offseason (`node scripts/audit-pages.ts --state <name> ...`). Each folder
-has the same layout as `src/data/` (without `types.ts`), and `states.json` gives
-each state's moment, which the audit's build uses as `SITE_NOW`.
+The site's data as it read at five moments, so the audit can load the site on
+a Sunday during games, the Monday morning after, a Tuesday after the week, a
+Wednesday looking ahead, and in the offseason (`node scripts/audit-pages.ts
+--state <name> ...`). Each folder has the same layout as `src/data/` (without
+`types.ts`), and `states.json` gives each state's moment, which the audit's
+build uses as `SITE_NOW`.
 
 | State | Site time | What it shows |
 |---|---|---|
 | `sunday` | 2026-09-20, 2:30 PM Eastern | Week 2: Thursday's game final, the 1 PM games in progress, the late games not started |
+| `monday` | 2026-09-21, 11 AM Eastern | Week 2: Thursday's and Sunday's games final, the Monday night game still to play |
 | `tuesday` | 2026-09-29, 10 AM Eastern | Week 3, every game final |
 | `wednesday` | 2026-09-23, noon Eastern | The ticker on week 3's schedule, no game played yet |
 | `offseason` | 2026-06-15, noon Eastern | 2025 complete, 2026's opener announced |

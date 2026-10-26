@@ -128,8 +128,8 @@ tylernfl/
   saw the 4th down live (`tracker.ts`), else counted from the summary ("Timeout #n by
   TEAM" is that team's nth of the half; a timeout charged inside another play, a lost
   challenge, is not counted), checked equal to the scoreboard's at all eight captured 4th
-  downs of NE at CHI. The home panel: only on a page built on a game day (see Home page),
-  "Live 4th downs" is up from load (`data-live-hold`), holding room for a page of three
+  downs of NE at CHI. The home panel: only on a page built while a game is in its window (see
+  Home page), "Live 4th downs" is up from load (`data-live-hold`), holding room for a page of three
   items so nothing under it moves, and stays up all day (between games too, items of
   finished games marked "(final)" after the teams; worked out from today's kickoffs and
   each game's final status, from its summary or the poll). Without the hold mark
@@ -237,9 +237,11 @@ tylernfl/
   publishes a final the committed `schedule.json` does not have, so records, standings,
   playoff odds and the "as of" lines follow the games within the hour (nflverse updates
   its schedule every 10 to 30 minutes, then the deploy and Pages' 10 minute cache). It
-  checks every 5 minutes while a game is on, every 15 while waiting for a kickoff, and
-  stops when nothing is on or kicks off within 16 hours; the rule is `check` in
-  `pipelines/gameday.py`. The daily run starts it on any day with a kickoff ahead, with
+  checks every 5 minutes while a game is on, every 15 while waiting for a kickoff (timed
+  for a window's opening when one is near), and stops when nothing is on or kicks off
+  within 16 hours; the rule is `check` in `pipelines/gameday.py`. It also rebuilds the
+  site when a game window opens (15 minutes before a kickoff, `window`), since a kickoff
+  publishes no final and the home page leads with live 4th downs only while a game is on. The daily run starts it on any day with a kickoff ahead, with
   backup crons on Sunday, Monday and Thursday, and a run near the 6 hour job limit
   starts the next. Excitement labels and win probability charts still wait for
   play-by-play, which `pbp_cache.py` refreshes every 12 hours.
@@ -808,23 +810,31 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   did). Below 761px, one column.
 - What it shows depends on the moment the site was built in (`homeState` in
   `src/lib/home/state.ts`, tested in `tests/home.test.ts`; the daily and game day jobs
-  rebuild, so the build's moment holds until the next):
-  - game day (a kickoff on today's Eastern date, Thursday and Monday included): live 4th
-    downs, the week's questionable calls, the chart | game statuses, the daily game,
-    the article, playoff picture, replay, on this day.
-  - recap (every ticker game final): the chart, results, the week's questionable calls,
-    notable performances, transactions | article, coach grades, daily game, playoff
-    picture, draft top 8, replay, on this day.
-  - preview (the ticker on a week still to play): the week's questionable calls,
-    transactions, chart, results | daily game, article, coach grades, playoff picture,
-    draft top 8, replay, on this day.
+  rebuild, the game day job also when a game window opens, so the build's moment holds
+  until the next):
+  - live (a game in its window: from 15 minutes before kickoff until it is final): live
+    4th downs, the week's questionable calls, the chart | game statuses, the daily game,
+    the article, playoff picture, replay, on this day. Only then: an earlier version led
+    with the live panel all of any game day, so Monday morning opened on an empty "No
+    4th downs yet today" box hours before the night game.
+  - recap (no game on, and 3 or more finals with kickoffs in the last 48 hours: the
+    morning after a Sunday or Monday night): the chart, results, the week's questionable
+    calls, notable performances, transactions | article, coach grades, daily game,
+    playoff picture, draft top 8, replay, on this day.
+  - preview (nothing on and little just played: midweek, a game day morning, the day
+    after a lone Thursday game): the week's questionable calls, transactions, chart,
+    results | daily game, article, coach grades, playoff picture, draft top 8, replay,
+    on this day.
   - offseason (no ticker games): articles, last season's coach grades, the chart | daily
     game, last season's final seeding, replay, on this day. Draft order, results and
     transactions are empty then, so they are left out rather than shown empty.
-- "The week" is one rule (`homeWeek`): the latest week every game of which is final and
-  measured, the week `/week` recaps. Results and the questionable calls name it, so on a
-  Sunday the page never pairs week 1's results with week 2's anything. The calls are
-  that week's if it has graded calls, else the latest earlier week's (`callsWeek`).
+- "The week" is one rule (`homeWeek`): the latest week that is complete or has 3 or more
+  finals, so Monday morning is the weekend's week with Monday night still to play
+  (results say "Week 7 in progress: 15 of 16 games played", from `as-of.ts`) and the day
+  after a lone Thursday game is still the week before. Results and the questionable
+  calls name it, so they never disagree. Results list finals only and link `/week`'s
+  recap of that week once it is complete. The calls are that week's if it has graded
+  calls, else the latest earlier week's (`callsWeek`).
 - The 4th down work leads in season. Questionable calls (`QuestionableCalls.astro`):
   the week's graded mistakes from `decisions.json`, costliest first, drawn as the game
   pages' items (`decisionItem`), two columns of them, each linked to its play on the
@@ -844,14 +854,16 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   rest per width, and a foot's "N more" says the right number at each (`More.astro`).
   Under the EPA scatter (about 110px taller than a win probability chart) the list
   shows 4 fewer rows (`tallChart` in `src/utils/home.ts`). The counts in `index.astro`
-  were set on 2026-10-26 from the four date states and today's data: every one within
-  30px at 1440 and 1024. Rerun the audit in all four states when a panel changes; change
+  were set on 2026-10-26 from the five date states and today's data: every one within
+  30px at 1440 and 1024. Rerun the audit in all five states when a panel changes; change
   the counts, not the layout, to fix a flag.
 - Phones: one list in the order a visitor wants it (each panel's `--order`): the lead
   (live 4th downs, or the chart on a recap), the calls, then the daily game and the
   article, then the rest. Keyboard order follows the desktop columns.
-- The live 4th downs panel holds about 340px from load, so it is blank under its
-  "Reading today's games" line until the first 4th downs arrive.
+- The live 4th downs panel holds about 340px from load (a page of three items and the
+  pager fit it exactly), so it is blank under its "Reading today's games" line until
+  the first 4th downs arrive, minutes at most, since it shows only from 15 minutes
+  before a kickoff.
 
 ### Right rail
 

@@ -1,34 +1,66 @@
 /**
  * Which of four moments the home page is built in (src/pages/index.astro
- * lays out each one). The daily and game day jobs rebuild the site, so the
- * build's moment is good enough until the next one.
+ * lays out each one). The daily and game day jobs rebuild the site, the game
+ * day job also when a game window opens (pipelines/gameday.py), so the
+ * build's moment holds until the next.
  *
- * - gameday: a game of the ticker's season kicks off on today's Eastern date.
- * - recap: every game on the ticker is final (Monday night to Tuesday).
- * - preview: the ticker has moved on to a week with games still to play.
+ * - live: a game is in its window, from LIVE_LEAD before kickoff until it is
+ *   final (or STALE_HOURS after kickoff, when nflverse has given up on it).
+ * - recap: no game on, and at least RECAP_GAMES games went final with
+ *   kickoffs in the last RECAP_HOURS (the morning after a Sunday or Monday
+ *   night, not the day after one Thursday game).
+ * - preview: no game on and nothing much just played (midweek, a game day
+ *   morning).
  * - offseason: the ticker has no games.
  */
 import type { ScheduleGame, TickerGame } from '../../data/types';
 
-export type HomeState = 'gameday' | 'recap' | 'preview' | 'offseason';
+export type HomeState = 'live' | 'recap' | 'preview' | 'offseason';
 
-/** "2026-09-20": the Eastern calendar date of an instant. */
-export const easternDate = (d: Date): string => d.toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+/** Matches LIVE_LEAD in pipelines/gameday.py, which rebuilds the site then. */
+export const LIVE_LEAD_MINUTES = 15;
+const STALE_HOURS = 8;
+export const RECAP_HOURS = 48;
+export const RECAP_GAMES = 3;
 
-export function homeState(now: Date, schedule: Pick<ScheduleGame, 'kickoff'>[], ticker: Pick<TickerGame, 'state'>[]): HomeState {
+const HOUR = 3_600_000;
+
+type Game = Pick<ScheduleGame, 'week' | 'kickoff' | 'awayScore' | 'homeScore'>;
+
+const isFinal = (g: Game): boolean => g.awayScore !== null && g.homeScore !== null;
+
+export function homeState(now: Date, schedule: Game[], ticker: Pick<TickerGame, 'state'>[]): HomeState {
   if (ticker.length === 0) return 'offseason';
-  const today = easternDate(now);
-  if (schedule.some((g) => g.kickoff !== null && easternDate(new Date(g.kickoff)) === today)) return 'gameday';
-  return ticker.some((g) => g.state !== 'final') ? 'preview' : 'recap';
+  const t = now.getTime();
+  const at = (g: Game) => (g.kickoff === null ? null : new Date(g.kickoff).getTime());
+  const live = schedule.some((g) => {
+    const k = at(g);
+    return k !== null && !isFinal(g) && k - LIVE_LEAD_MINUTES * 60_000 <= t && t <= k + STALE_HOURS * HOUR;
+  });
+  if (live) return 'live';
+  const recent = schedule.filter((g) => {
+    const k = at(g);
+    return k !== null && isFinal(g) && t - RECAP_HOURS * HOUR <= k && k <= t;
+  });
+  return recent.length >= RECAP_GAMES ? 'recap' : 'preview';
 }
 
 /**
- * The week the home page calls "the week": the latest one every game of
- * which is final and measured (completeWeeks in src/lib/week/recap.ts, the
- * week /week recaps). Results, questionable calls and notable performances
- * all name this week, so they cannot disagree.
+ * The week the home page calls "the week": the latest one that is complete
+ * or has at least RECAP_GAMES finals. So the morning after a Sunday it is
+ * that weekend's week with Monday night still to play, and the day after a
+ * lone Thursday game it is still the week before. Results and questionable
+ * calls name it, so they cannot disagree.
  */
-export const homeWeek = (complete: number[]): number | null => complete.at(-1) ?? null;
+export function homeWeek(schedule: Game[]): number | null {
+  const weeks = [...new Set(schedule.map((g) => g.week))].sort((a, b) => b - a);
+  for (const week of weeks) {
+    const games = schedule.filter((g) => g.week === week);
+    const finals = games.filter(isFinal).length;
+    if (finals > 0 && (finals === games.length || finals >= RECAP_GAMES)) return week;
+  }
+  return null;
+}
 
 /**
  * The week whose questionable calls the home page shows: the home week if

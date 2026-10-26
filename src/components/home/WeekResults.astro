@@ -1,24 +1,27 @@
 ---
 /**
- * The home week's results (homeWeek in src/lib/home/state.ts, the week
- * /week recaps), in kickoff order with each final's excitement label and
- * the slate bar: the labels the ticker never shows on a final. Two tables
- * of eight side by side, so the panel is as wide as the main column and
- * half as tall.
+ * The home week's finals (homeWeek in src/lib/home/state.ts: complete, or
+ * three finals in, so Monday morning shows the weekend), in kickoff order
+ * with each final's excitement label and the slate bar: the labels the
+ * ticker never shows on a final. Two tables of eight side by side, so the
+ * panel is as wide as the main column and half as tall.
  */
 import Panel from '../Panel.astro';
 import TeamChip from '../TeamChip.astro';
 import { url } from '../../utils/url';
-import { emptyRecap } from '../../utils/as-of';
+import { emptyRecap, through } from '../../utils/as-of';
 import { weekLabel } from '../../utils/week';
 import { homeData } from '../../utils/home';
 
 const { schedule, excitement, week } = homeData;
+const final = (g: (typeof schedule.games)[number]) => g.awayScore !== null && g.homeScore !== null;
 const labelOf = new Map(excitement.map((e) => [e.id, e.label]));
-const games = week === null ? [] : schedule.games.filter((g) => g.week === week).sort((a, b) => (a.kickoff ?? '').localeCompare(b.kickoff ?? ''));
+const games = week === null ? [] : schedule.games.filter((g) => g.week === week && final(g)).sort((a, b) => (a.kickoff ?? '').localeCompare(b.kickoff ?? ''));
 const half = Math.ceil(games.length / 2);
 const halves = [games.slice(0, half), games.slice(half)].filter((h) => h.length > 0);
 const name = weekLabel(week);
+// /week recaps complete weeks only (completeWeeks in src/lib/week/recap.ts).
+const complete = week !== null && schedule.games.filter((g) => g.week === week).every(final) && games.every((g) => excitement.some((e) => e.id === g.id));
 ---
 
 <Panel title={name ? `${name} results` : 'Results'}>
@@ -63,8 +66,16 @@ const name = weekLabel(week);
           ))}
         </div>
         <p class="table-foot">
-          Labels mark comebacks, thrillers and shootouts. The{' '}
-          <a href={url(`week/${schedule.season}/${week}`)}>{name!.toLowerCase()} recap</a> ranks every game by excitement.
+          {through(schedule.season, week)} Labels mark comebacks, thrillers and shootouts.{' '}
+          {complete ? (
+            <>
+              The <a href={url(`week/${schedule.season}/${week}`)}>{name!.toLowerCase()} recap</a> ranks every game by excitement.
+            </>
+          ) : (
+            <>
+              The <a href={url('week')}>week recap</a> ranks each week's games once all are in.
+            </>
+          )}
         </p>
       </>
     )

@@ -4,35 +4,57 @@ import { test } from 'node:test';
 import { callsWeek, homeState, homeWeek } from '../src/lib/home/state.ts';
 import { allWidths, moreCounts, rendered, rowsClass } from '../src/lib/home/rows.ts';
 
-// Week 2 of 2026: Thursday night, then Sunday.
-const schedule = [
-  { kickoff: '2026-09-18T00:15:00Z' }, // Thursday 8:15 PM Eastern
-  { kickoff: '2026-09-20T17:00:00Z' }, // Sunday 1 PM
-  { kickoff: '2026-09-22T00:15:00Z' }, // Monday 8:15 PM
-];
+// Week 7 of 2026: Thursday night, Sunday, Monday night; week 6 complete.
+const g = (week: number, kickoff: string, final: boolean) => ({
+  week,
+  kickoff,
+  awayScore: final ? 20 : null,
+  homeScore: final ? 17 : null,
+});
+const SUN = '2026-10-25T17:00:00Z'; // Sunday 1 PM Eastern
+const week6 = Array.from({ length: 14 }, () => g(6, '2026-10-18T17:00:00Z', true));
 const final = { state: 'final' as const };
 const pre = { state: 'pre' as const };
 
-test('a day with a kickoff is a game day, whatever the ticker shows', () => {
-  assert.equal(homeState(new Date('2026-09-20T18:30:00Z'), schedule, [final, pre]), 'gameday');
-  // Thursday night, 10 PM Eastern, is still Thursday.
-  assert.equal(homeState(new Date('2026-09-18T02:00:00Z'), schedule, [pre]), 'gameday');
-  // Monday morning before the Monday night game.
-  assert.equal(homeState(new Date('2026-09-21T14:00:00Z'), schedule, [final, pre]), 'gameday');
+/** Week 7 as it stood at a moment: games that kicked off by then are final unless `live`. */
+function week7(now: string, live: string[] = []) {
+  const kickoffs = ['2026-10-23T00:15:00Z', ...Array.from({ length: 13 }, () => SUN), '2026-10-27T00:15:00Z'];
+  return kickoffs.map((k) => g(7, k, new Date(k) <= new Date(now) && !live.includes(k)));
+}
+
+test('live from 15 minutes before a kickoff until the game is final', () => {
+  const at = '2026-10-25T16:45:00Z';
+  assert.equal(homeState(new Date(at), [...week6, ...week7(at)], [final, pre]), 'live');
+  const during = '2026-10-25T18:30:00Z';
+  assert.equal(homeState(new Date(during), [...week6, ...week7(during, [SUN])], [pre]), 'live');
+  // Sunday morning, only Thursday's game played: a preview.
+  const morning = '2026-10-25T14:00:00Z';
+  assert.equal(homeState(new Date(morning), [...week6, ...week7(morning)], [final, pre]), 'preview');
 });
 
-test('no kickoff today: recap when the ticker is all final, preview when not', () => {
-  assert.equal(homeState(new Date('2026-09-22T14:00:00Z'), schedule, [final, final]), 'recap');
-  assert.equal(homeState(new Date('2026-09-23T16:00:00Z'), schedule, [pre, pre]), 'preview');
+test('the morning after a Sunday is a recap, even with Monday night still to play', () => {
+  const monday = '2026-10-26T15:00:00Z'; // Monday 11 AM
+  assert.equal(homeState(new Date(monday), [...week6, ...week7(monday)], [final, pre]), 'recap');
+  const tuesday = '2026-10-27T14:00:00Z';
+  assert.equal(homeState(new Date(tuesday), [...week6, ...week7(tuesday)], [final]), 'recap');
+});
+
+test('midweek, and the day after a lone Thursday game, are previews', () => {
+  const wednesday = '2026-10-28T16:00:00Z';
+  assert.equal(homeState(new Date(wednesday), [...week6, ...week7(wednesday)], [final]), 'preview');
+  const friday = '2026-10-23T15:00:00Z';
+  assert.equal(homeState(new Date(friday), [...week6, ...week7(friday)], [final, pre]), 'preview');
 });
 
 test('an empty ticker is the offseason', () => {
-  assert.equal(homeState(new Date('2026-06-15T16:00:00Z'), schedule, []), 'offseason');
+  assert.equal(homeState(new Date('2026-06-15T16:00:00Z'), week6, []), 'offseason');
 });
 
-test('the home week is the latest complete week', () => {
-  assert.equal(homeWeek([1, 2, 3]), 3);
-  assert.equal(homeWeek([]), null);
+test('the home week: complete, or three finals in', () => {
+  assert.equal(homeWeek([...week6, ...week7('2026-10-26T15:00:00Z')]), 7); // Monday, 14 of 15 final
+  assert.equal(homeWeek([...week6, ...week7('2026-10-23T15:00:00Z')]), 6); // Friday, 1 final
+  assert.equal(homeWeek([g(22, '2027-02-08T23:30:00Z', true)]), 22); // a one-game week, complete
+  assert.equal(homeWeek([g(1, '2026-09-10T00:20:00Z', false)]), null);
 });
 
 test('calls come from the home week, or the latest earlier week with grades', () => {

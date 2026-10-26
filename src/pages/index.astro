@@ -3,8 +3,9 @@
  * The home page: two columns, main 2 to sidebar 1, chosen for the moment
  * the site was built in (homeState in src/lib/home/state.ts):
  *
- * - gameday: live 4th downs, the week's questionable calls, the chart |
- *   game statuses, the daily game, the article, playoff picture, archive.
+ * - live (a game in its window): live 4th downs, the week's questionable
+ *   calls, the chart | game statuses, the daily game, the article, playoff
+ *   picture, archive.
  * - recap: the best game's chart, results, the week's calls, notable
  *   performances, transactions | article, coach grades, daily game,
  *   playoff picture, draft, archive.
@@ -54,7 +55,7 @@ const list = (wide: number, mid: number): Rows => ({ wide, mid, phone: Math.min(
   <h1 class="visually-hidden">Tyler NFL home</h1>
   <div class="home" data-home={state}>
     {
-      state === 'gameday' && (
+      state === 'live' && (
         <>
           <div class="home-col" data-balance="main">
             <div style="--order: 1"><LiveFourthPanel /></div>
@@ -80,7 +81,7 @@ const list = (wide: number, mid: number): Rows => ({ wide, mid, phone: Math.min(
             <div style="--order: 2"><WeekResults /></div>
             <div style="--order: 3"><QuestionableCalls rows={calls(6)} /></div>
             <div style="--order: 7"><NotablePanel /></div>
-            <div style="--order: 8"><HomeWire rows={list(tall ? 4 : 8, tall ? 10 : 13)} /></div>
+            <div style="--order: 8"><HomeWire rows={list(tall ? 4 : 8, tall ? 9 : 12)} /></div>
           </div>
           <div class="home-col" data-balance="side">
             <div style="--order: 4"><LatestArticles limit={2} /></div>

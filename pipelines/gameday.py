@@ -10,10 +10,19 @@ minutes on game days, so a result reaches the site 15 to 45 minutes after
 the final whistle, counting the deploy and GitHub Pages' 10 minute cache.
 The live ticker shows the score itself the moment ESPN does.
 
+The home page lays itself out for the moment the site was built in, and
+leads with live 4th downs only while a game is on (homeState in
+src/lib/home/state.ts: from LIVE_LEAD before a kickoff until the game is
+final). A kickoff publishes no final, so the check also names the open game
+window: the earliest kickoff among games in theirs. When that changes to a
+new one, the workflow rebuilds the site, so the live layout is up when the
+game starts; the final's rebuild takes it down. Near a kickoff the next check
+is timed for the window's opening.
+
 Run from the repo root:
     python pipelines/gameday.py
-Prints one line, "<new finals> <watch 0|1> <seconds to wait>", for the
-workflow's shell loop.
+Prints one line, "<new finals> <watch 0|1> <seconds to wait> <window>", for
+the workflow's shell loop; the window is a kickoff time, or "-" for none.
 """
 
 import json
@@ -36,6 +45,9 @@ AHEAD = timedelta(hours=16)
 # Check often while a game is on, rarely while waiting for a kickoff.
 LIVE_WAIT = 5 * 60
 IDLE_WAIT = 15 * 60
+# A game's window opens this long before kickoff: the home page's live layout
+# (LIVE_LEAD in src/lib/home/state.ts, which must match).
+LIVE_LEAD = timedelta(minutes=15)
 
 
 def _final(game: dict) -> bool:
@@ -57,7 +69,21 @@ def check(latest: list[dict], committed: list[dict], now: datetime) -> tuple[lis
     kickoffs = [k for g in latest if not _final(g) and (k := _kickoff(g)) is not None]
     on = any(now - STALE_AFTER <= k <= now for k in kickoffs)
     coming = any(now < k <= now + AHEAD for k in kickoffs)
-    return new, bool(new) or on or coming, LIVE_WAIT if on else IDLE_WAIT
+    wait = LIVE_WAIT if on else IDLE_WAIT
+    # Wake for the next window's opening rather than up to 15 minutes after it.
+    opening = [k - LIVE_LEAD for k in kickoffs if now < k - LIVE_LEAD]
+    if opening:
+        wait = max(60, min(wait, int((min(opening) - now).total_seconds())))
+    return new, bool(new) or on or coming, wait
+
+
+def window(latest: list[dict], now: datetime) -> str:
+    """The earliest kickoff among games in their window (from LIVE_LEAD
+    before kickoff, not final, not stale), as schedule.json writes it, or
+    "-" when no game is."""
+    open_ = sorted(g['kickoff'] for g in latest
+                   if not _final(g) and (k := _kickoff(g)) is not None and k - LIVE_LEAD <= now <= k + STALE_AFTER)
+    return open_[0] if open_ else '-'
 
 
 def main() -> None:
@@ -66,8 +92,9 @@ def main() -> None:
 
     committed = json.loads((DATA_DIR / 'schedule.json').read_text())
     latest = build_schedule(load_schedule_rows(today_eastern()), committed['season'], '')['games']
-    new, watch, wait = check(latest, committed['games'], datetime.now(timezone.utc))
-    print(f"{len(new)} {int(watch)} {wait}")
+    now = datetime.now(timezone.utc)
+    new, watch, wait = check(latest, committed['games'], now)
+    print(f"{len(new)} {int(watch)} {wait} {window(latest, now)}")
     if new:
         print(f"new finals: {', '.join(new)}", file=sys.stderr)
 

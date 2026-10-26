@@ -3,7 +3,7 @@
 import unittest
 from datetime import datetime, timezone
 
-from gameday import IDLE_WAIT, LIVE_WAIT, check
+from gameday import IDLE_WAIT, LIVE_WAIT, check, window
 
 NOW = datetime(2026, 10, 18, 20, 0, tzinfo=timezone.utc)  # Sunday 4 PM Eastern
 
@@ -27,6 +27,21 @@ class GamedayTest(unittest.TestCase):
     def test_a_kickoff_later_today_is_waited_for_slowly(self):
         latest = [game('a', '2026-10-19T00:20:00Z')]
         self.assertEqual(check(latest, latest, NOW), ([], True, IDLE_WAIT))
+
+    def test_the_check_before_a_window_opens_is_timed_for_it(self):
+        # 8:20 PM kickoff, window at 8:05 PM; at 7:55 PM wait 10 minutes, not 15.
+        latest = [game('snf', '2026-10-19T00:20:00Z')]
+        at = datetime(2026, 10, 18, 23, 55, tzinfo=timezone.utc)
+        self.assertEqual(check(latest, latest, at), ([], True, 600))
+
+    def test_the_window_is_the_earliest_open_kickoff(self):
+        latest = [game('early', '2026-10-18T17:00:00Z'), game('late', '2026-10-18T20:25:00Z'),
+                  game('done', '2026-10-18T17:00:00Z', 20, 17), game('snf', '2026-10-19T00:20:00Z')]
+        self.assertEqual(window(latest, NOW), '2026-10-18T17:00:00Z')
+        # 15 minutes before the late games, once the early ones are final.
+        later = [game('early', '2026-10-18T17:00:00Z', 24, 21), game('late', '2026-10-18T20:25:00Z')]
+        self.assertEqual(window(later, datetime(2026, 10, 18, 20, 10, tzinfo=timezone.utc)), '2026-10-18T20:25:00Z')
+        self.assertEqual(window(later, datetime(2026, 10, 18, 20, 9, tzinfo=timezone.utc)), '-')
 
     def test_nothing_on_and_nothing_soon_ends_the_watch(self):
         latest = [game('done', '2026-10-18T17:00:00Z', 20, 17),

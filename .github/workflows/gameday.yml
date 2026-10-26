@@ -5,6 +5,10 @@ name: Game day updates
 # within the hour instead of the next morning. pipelines/gameday.py decides
 # when there is something new and when to stop.
 #
+# A kickoff publishes no final, so the check also names the open game window
+# (pipelines/gameday.py); when a new one opens the site is rebuilt, so the home
+# page's live layout is up when the game starts.
+#
 # Started by the daily run on any day with a kickoff in the next 16 hours,
 # and by the crons below in case that run fires late (GitHub has started it
 # over three hours late). A job may run 6 hours, so one still watching near
@@ -70,12 +74,14 @@ jobs:
           started=$(date +%s)
           # Leave room under the 355 minute timeout for one last pipeline run.
           budget=$(( 330 * 60 ))
+          opened=-
           while true; do
             # Another run (the daily one) may have pushed since.
             git fetch -q origin main && git reset -q --hard origin/main || echo "Fetch failed."
-            if ! read -r new watch wait < <(python pipelines/gameday.py); then
+            published=0
+            if ! read -r new watch wait window < <(python pipelines/gameday.py); then
               echo "Check failed; trying again in 5 minutes."
-              new=0; watch=1; wait=300
+              new=0; watch=1; wait=300; window=$opened
             fi
             if (( new > 0 )) && ! python pipelines/run_daily.py; then
               echo "Pipeline failed; trying again at the next check."
@@ -87,6 +93,7 @@ jobs:
                 # this commit, and the next check starts from its data.
                 if git pull -q --rebase origin main && git push -q origin HEAD:main; then
                   gh workflow run deploy.yml --ref main
+                  published=1
                   echo "Published $new new finals."
                 else
                   git rebase --abort 2>/dev/null || true
@@ -94,6 +101,13 @@ jobs:
                 fi
               fi
             fi
+            # A game window opened since the last check: rebuild for the live
+            # layout, unless this check's finals just did.
+            if [ "$window" != "-" ] && [ "$window" != "$opened" ] && (( published == 0 )); then
+              gh workflow run deploy.yml --ref main
+              echo "Rebuilt for the games kicking off at $window."
+            fi
+            opened=$window
             if (( watch == 0 )); then
               echo "No games on or coming up; done."
               exit 0

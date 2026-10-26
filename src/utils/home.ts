@@ -6,7 +6,6 @@ import excitementData from '../data/game_excitement.json';
 import scheduleData from '../data/schedule.json';
 import tickerData from '../data/ticker.json';
 import type { GameExcitementData, ScheduleData, TickerData } from '../data/types';
-import { completeWeeks } from '../lib/week/recap';
 import { callsWeek, homeState, homeWeek } from '../lib/home/state';
 import { getAutoChart, getFeaturedChart } from './charts';
 import { decisionsData } from './decisions';
@@ -15,7 +14,7 @@ import { siteNow } from './now';
 const schedule = scheduleData as ScheduleData;
 const excitementFile = excitementData as GameExcitementData;
 const excitement = excitementFile.season === schedule.season ? excitementFile.games : [];
-const week = homeWeek(completeWeeks(schedule.games, excitement));
+const week = homeWeek(schedule.games);
 const decisionWeeks =
   decisionsData && decisionsData.season === schedule.season
     ? [...new Set([...decisionsData.fourthDowns, ...decisionsData.tries].filter((d) => d.graded).map((d) => d.week))]
