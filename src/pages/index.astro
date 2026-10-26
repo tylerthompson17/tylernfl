@@ -1,562 +1,136 @@
 ---
+/**
+ * The home page: two columns, main 2 to sidebar 1, chosen for the moment
+ * the site was built in (homeState in src/lib/home/state.ts):
+ *
+ * - gameday: live 4th downs, the week's questionable calls, the chart |
+ *   game statuses, the daily game, the article, playoff picture, archive.
+ * - recap: the best game's chart, results, the week's calls, notable
+ *   performances, transactions | article, coach grades, daily game,
+ *   playoff picture, draft, archive.
+ * - preview: the week's calls, transactions, chart, results | daily game,
+ *   article, coach grades, playoff picture, draft, archive.
+ * - offseason: articles, last season's coach grades, the chart | daily game,
+ *   last season's final seeding, archive. (The draft order is empty then.)
+ *
+ * The two columns end within a row of each other: the main column ends
+ * with a list whose row count (`Rows`, src/lib/home/rows.ts) follows the
+ * chart above it (the EPA scatter is about 110px taller) and the width
+ * (below 1100px the chart is shorter, so more rows). The counts were set
+ * from measurements at 1440 and 1024 in every date state; the audit's
+ * balance check (scripts/audit-pages.ts) reports how far apart the columns
+ * end. On phones the columns flatten into one list in `--order`.
+ */
+import '../styles/home.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Panel from '../components/Panel.astro';
-import StatTable, { type StatTableColumn } from '../components/StatTable.astro';
-import TeamChip from '../components/TeamChip.astro';
 import PlayoffPicture from '../components/PlayoffPicture.astro';
 import OnThisDay from '../components/OnThisDay.astro';
-import { url } from '../utils/url';
-import { getArticles } from '../utils/articles';
-import { headlineItems, statusSummary, transactions, type WireItem } from '../utils/transactions';
-import { notable, percentileSeasons, type NotableRow } from '../utils/performances';
-import { leadersFor, type LeaderRow } from '../utils/overview';
-import { gameStatusLine, logWeek } from '../utils/as-of';
-import ChartFigure from '../components/ChartFigure.astro';
-import { formatChartDate, getAutoChart, getFeaturedChart, hoverFor, imagesFor, svgFor } from '../utils/charts';
-import excitementData from '../data/game_excitement.json';
-import scheduleData from '../data/schedule.json';
-import type { GameExcitementData, ScheduleData } from '../data/types';
-import { completeWeeks } from '../lib/week/recap';
-import { emptyRecap } from '../utils/as-of';
-import { weekLabel } from '../utils/week';
-import { through } from '../utils/as-of';
-import { draft } from '../utils/draft';
-import { draftRecord, ownerNote } from '../lib/draft/view';
-import { liveGames } from '../utils/live-games';
-import { LIVE_FOURTH_PAGE_ENABLED } from '../config';
 import HomeReplay from '../components/replays/HomeReplay.astro';
+import HomeChart from '../components/home/HomeChart.astro';
+import WeekResults from '../components/home/WeekResults.astro';
+import HomeWire from '../components/home/HomeWire.astro';
+import LiveFourthPanel from '../components/home/LiveFourthPanel.astro';
+import QuestionableCalls from '../components/home/QuestionableCalls.astro';
+import CoachGrades from '../components/home/CoachGrades.astro';
+import DailyGame from '../components/home/DailyGame.astro';
+import DraftTop from '../components/home/DraftTop.astro';
+import NotablePanel from '../components/home/NotablePanel.astro';
+import LatestArticles from '../components/home/LatestArticles.astro';
+import { homeData, tallChart } from '../utils/home';
 import { homeReplays } from '../utils/replays';
+import type { Rows } from '../lib/home/rows';
 
-const receiving = leadersFor('receiving');
-
-const latest = (await getArticles())[0];
-
-// Game statuses and real moves, starters first; practice squad churn and
-// practice reports stay on the full wire.
-const headlines = headlineItems(8);
-const statusText = gameStatusLine(transactions.week, statusSummary(transactions.injuries));
-const headlineColumns: StatTableColumn<WireItem>[] = [
-  { key: 'team', label: 'Team', kind: 'team' as const },
-  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
-  { key: 'news', label: 'News' },
-];
-
-// The week's best lines across categories, ranked by percentile in
-// src/lib/performances/notable.ts. Each line names its own stat, so there
-// is no category column to keep in step with it.
-const notableColumns: StatTableColumn<NotableRow>[] = [
-  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
-  { key: 'team', label: 'Team', kind: 'team' as const },
-  { key: 'line', label: 'Game' },
-  { key: 'shown', label: 'Pctl', kind: 'number' as const },
-];
-
-// The logs' week, named with its season when that is an earlier one, and
-// how much of it is in while it is still being played.
-const notableWeek = notable.week === null ? null : logWeek(notable.season, notable.week);
-
-// Tyler's featured chart, or the daily auto chart when none is featured.
-const featured = await getFeaturedChart();
-const auto = featured ? null : getAutoChart();
-
-// The featured replays, one picked in the browser; none when replays are not in the build.
+const { state } = homeData;
+const tall = await tallChart();
 const replays = await homeReplays();
 
-// The latest complete week's results with their excitement labels, in
-// kickoff order: the labels the ticker never shows on a final. The same
-// week /week recaps, so from Wednesday it is the week before the ticker's.
-const schedule = scheduleData as ScheduleData;
-const excitementFile = excitementData as GameExcitementData;
-const excitement = excitementFile.season === schedule.season ? excitementFile.games : [];
-const resultsWeek = completeWeeks(schedule.games, excitement).at(-1) ?? null;
-const labelOf = new Map(excitement.map((e) => [e.id, e.label]));
-const results =
-  resultsWeek == null
-    ? []
-    : schedule.games
-        .filter((g) => g.week === resultsWeek)
-        .sort((a, b) => (a.kickoff ?? '').localeCompare(b.kickoff ?? ''));
-const resultsName = weekLabel(resultsWeek);
-const noResults = emptyRecap();
-
-// The top of the draft if the season ended today; the full order and the
-// projection are on /draft.
-const HOME_PICKS = 10;
-const draftPicks = draft.kind === 'ready' ? draft.data.picks.slice(0, HOME_PICKS) : [];
-const draftTitle = draft.kind === 'missing' ? 'Draft order' : `${draft.data.draft} draft order`;
-
-// This week's games for the live 4th downs panel (src/lib/live-fourth/dom.ts).
-const games = liveGames();
-
-const leaderColumns: StatTableColumn<LeaderRow>[] = [
-  { key: 'rank', label: 'Rk', kind: 'number' as const },
-  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
-  { key: 'team', label: 'Team', kind: 'team' as const },
-  { key: 'value', label: receiving?.valueLabel ?? 'Yds', kind: 'number' as const },
-];
+// Short lists on phones: one column, nothing to balance.
+const PHONE = 8;
+const calls = (wide: number, mid = wide): Rows => ({ wide, mid, phone: 3 });
+const list = (wide: number, mid: number): Rows => ({ wide, mid, phone: Math.min(wide, PHONE) });
 ---
 
 <BaseLayout title="Home" rail={false}>
   <h1 class="visually-hidden">Tyler NFL home</h1>
-  <div class="home">
-    <div class="lead">
-    {replays.length > 0 && <HomeReplay replays={replays} />}
+  <div class="home" data-home={state}>
     {
-      featured ? (
-        <Panel title={featured.data.title} titleId="home-chart-title" class="home-chart">
-          <ChartFigure svg={svgFor(featured)} images={imagesFor(featured)} titleId="home-chart-title" note={featured.data.note} id="home-chart" hover={hoverFor(featured)}>
-            <p class="chart-meta">
-              <span class="num">{formatChartDate(featured.data.date)}</span>, {featured.data.author}.{' '}
-              Source: {featured.data.source}.{' '}
-              <a href={url(`charts/${featured.id}`)}>Chart page</a>{' '}
-              <a href={url('charts')}>All charts</a>
-            </p>
-          </ChartFigure>
-        </Panel>
-      ) : auto ? (
-        <Panel title={auto.data.title} titleId="home-chart-title" class="home-chart">
-          <ChartFigure svg={auto.svg} titleId="home-chart-title" note={auto.data.note} id="home-chart" hover={auto.hover}>
-            <p class="chart-meta">
-              <span class="auto-label">Auto chart</span> {auto.data.asOf}. Source: {auto.data.source}.{' '}
-              <a href={url(`charts/${auto.id}`)}>Chart page</a>{' '}
-              <a href={url('charts')}>All charts</a>
-            </p>
-          </ChartFigure>
-        </Panel>
-      ) : (
-        <Panel title="Charts" class="home-chart">
-          <p class="placeholder-note">No chart yet. One is drawn each morning once games are played.</p>
-        </Panel>
+      state === 'gameday' && (
+        <>
+          <div class="home-col" data-balance="main">
+            <div style="--order: 1"><LiveFourthPanel /></div>
+            <div style="--order: 2"><QuestionableCalls rows={calls(8, 10)} /></div>
+            <div style="--order: 6"><HomeChart /></div>
+          </div>
+          <div class="home-col" data-balance="side">
+            <div style="--order: 3"><HomeWire title="Game statuses" rows={list(8, 8)} /></div>
+            <div style="--order: 4"><DailyGame /></div>
+            <div style="--order: 5"><LatestArticles limit={2} /></div>
+            <div style="--order: 7"><PlayoffPicture /></div>
+            {replays.length > 0 && <div style="--order: 8"><HomeReplay replays={replays} /></div>}
+            <div style="--order: 9"><OnThisDay /></div>
+          </div>
+        </>
       )
     }
-    </div>
-    <div class="col col-1">
-      <Panel title={resultsName ? `${resultsName} results` : 'Results'}>
-        {
-          resultsWeek == null ? (
-            <p class="placeholder-note">{noResults.text}</p>
-          ) : (
-            <>
-              <table class="stat-table results">
-                <caption class="visually-hidden">{resultsName} results in kickoff order, with each game's excitement label</caption>
-                <thead class="visually-hidden">
-                  <tr>
-                    <th scope="col">Game</th>
-                    <th scope="col">Label</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {results.map((game) => {
-                    const label = labelOf.get(game.id) ?? null;
-                    const awayWon = game.awayScore! > game.homeScore!;
-                    const homeWon = game.homeScore! > game.awayScore!;
-                    return (
-                      <tr class:list={{ marked: label }}>
-                        <td>
-                          <span class="game">
-                            <TeamChip abbr={game.away} size="sm" />
-                            <span class:list={['score', { won: awayWon }]}>{game.awayScore}</span>
-                            <span class="at">{game.neutral ? 'vs' : 'at'}</span>
-                            <TeamChip abbr={game.home} size="sm" />
-                            <span class:list={['score', { won: homeWon }]}>{game.homeScore}</span>
-                            {game.overtime && <span class="at">OT</span>}
-                          </span>
-                        </td>
-                        <td class="label">{label}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              <p class="table-foot">
-                Labels mark comebacks, thrillers and shootouts. The{' '}
-                <a href={url(`week/${schedule.season}/${resultsWeek}`)}>{resultsName!.toLowerCase()} recap</a> ranks every
-                game by excitement.
-              </p>
-            </>
-          )
-        }
-      </Panel>
-    </div>
-    <div class="col col-2">
-      <Panel title="Transactions and injuries">
-        {
-          transactions.week === null ? (
-            <p class="placeholder-note">
-              Offseason. Roster moves and injury reports return in week 1.
-            </p>
-          ) : (
-            <>
-              <StatTable
-                columns={headlineColumns}
-                rows={headlines.items}
-                caption="Top transactions and game statuses"
-                emptyText="No game statuses or roster moves yet this week."
-              />
-              <p class="table-foot">
-                Starters first. {statusText && <>{statusText}{' '}</>}{headlines.rest} more on the{' '}
-                <a href={url('transactions')}>full wire</a>, filterable by team and type.
-              </p>
-            </>
-          )
-        }
-      </Panel>
-      <div class="calc-live" data-live-fourth>
-        <p class="soon" data-calc-line>
-          <a href={url('fourth-down')}>4th down calculator</a>: go, kick or punt for any situation, from nfl4th. Or
-          play the <a href={url('fourth-down/daily')}>daily 4th down game</a>.
-        </p>
-        <div data-live-panel hidden>
-          <Panel title="Live 4th downs">
-            <ol class="live-items" data-live-list aria-live="polite"></ol>
-            <div class="live-pager">
-              <button type="button" class="pager-button" data-live-newer hidden aria-label="Newer 4th downs">Previous</button>
-              <span class="live-position" data-live-position hidden></span>
-              <button type="button" class="pager-button" data-live-older hidden aria-label="Older 4th downs">Next</button>
-            </div>
-            <p class="live-note" data-live-note>Reading today's games…</p>
-            <p class="table-foot">
-              Today's 4th downs, from ESPN's play-by-play, each against Ben Baldwin's nfl4th: its recommendation
-              before the snap and every option's win probability (the model, about 2.6 MB, loads on game days once
-              this panel is in view). Calls are preliminary. nfl4th assumes a league-average kicker and doesn't know who's kicking.{' '}
-              {
-                LIVE_FOURTH_PAGE_ENABLED ? (
-                  <a href={url('fourth-down/live')}>Every 4th down today, with nfl4th's calls and preliminary grades</a>
-                ) : (
-                  <a href={url('fourth-down')}>4th down calculator</a>
-                )
-              }
-            </p>
-          </Panel>
-        </div>
-        <script type="application/json" id="live-fourth-games" set:html={JSON.stringify(games)} />
-      </div>
-    </div>
-    <div class="col col-3">
-      <PlayoffPicture />
-      <Panel title={draftTitle}>
-        {
-          draft.kind === 'ready' ? (
-            <>
-              <table class="stat-table draft">
-                <caption class="visually-hidden">Top {HOME_PICKS} picks if the season ended today</caption>
-                <thead>
-                  <tr>
-                    <th scope="col" class="number">Pick</th>
-                    <th scope="col">Team</th>
-                    <th scope="col" class="number">Record</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {draftPicks.map((p) => {
-                    const note = ownerNote(p, draft.kind === 'ready' && draft.data.stage === 'final');
-                    return (
-                      <tr>
-                        <td class="number">{p.pick}</td>
-                        <td>
-                          <TeamChip abbr={p.team} size="sm" />
-                          {note && <span class="owner">{note}</span>}
-                        </td>
-                        <td class="number">{draftRecord(p)}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              <p class="table-foot">
-                Round 1 if the season ended today. {through(draft.data.season, draft.data.throughWeek)}{' '}
-                <a href={url('draft')}>Full order</a>{' '}
-                <a href={url('draft/projected')}>Projected order</a>
-              </p>
-            </>
-          ) : (
-            <p class="placeholder-note">
-              {draft.kind === 'missing'
-                ? 'The draft order is not available yet.'
-                : `The ${draft.data.draft} order starts once the ${draft.data.season} season has played its first games.`}
-            </p>
-          )
-        }
-      </Panel>
-      <Panel title="Notable performances">
-        {
-          notable.week === null ? (
-            <p class="placeholder-note">
-              No games played yet. Performances appear after week 1.
-            </p>
-          ) : (
-            <>
-              <StatTable
-                columns={notableColumns}
-                rows={notable.rows}
-                caption="Notable performances this week"
-                emptyText="No games logged this week yet."
-              />
-              <p class="table-foot">
-                {notableWeek?.name}'s best games across passing, rushing, receiving, sacks and field
-                goals. Pctl is the share of team games from {percentileSeasons.from} to{' '}
-                {percentileSeasons.through} whose best in that stat was lower.{' '}
-                {notableWeek?.note && <>{notableWeek.note}{' '}</>}
-                <a href={url('stats')}>Full leaderboards</a>
-              </p>
-            </>
-          )
-        }
-      </Panel>
-      <Panel title="Receiving yards leaders">
-        {
-          receiving ? (
-            <StatTable
-              columns={leaderColumns}
-              rows={receiving.rows}
-              caption="Receiving yards leaders"
-              emptyText="No games played yet. Leaders appear after week 1."
-            />
-          ) : (
-            <p class="placeholder-note">No games played yet. Leaders appear after week 1.</p>
-          )
-        }
-        <p class="table-foot">
-          {receiving?.through ?? 'No games played yet.'}{' '}
-          <a href={url(receiving?.link?.href ?? 'stats')}>Full receiving leaderboard</a>
-        </p>
-      </Panel>
-      <OnThisDay />
-      <Panel title="Latest article">
-        {
-          latest ? (
-            <>
-              <h3 class="article-title">
-                <a href={url(`articles/${latest.id}`)}>{latest.data.title}</a>
-              </h3>
-              <p class="article-desc">{latest.data.description}</p>
-            </>
-          ) : (
-            <p class="placeholder-note">No articles yet.</p>
-          )
-        }
-      </Panel>
-    </div>
+    {
+      state === 'recap' && (
+        <>
+          <div class="home-col" data-balance="main">
+            <div style="--order: 1"><HomeChart /></div>
+            <div style="--order: 2"><WeekResults /></div>
+            <div style="--order: 3"><QuestionableCalls rows={calls(6)} /></div>
+            <div style="--order: 7"><NotablePanel /></div>
+            <div style="--order: 8"><HomeWire rows={list(tall ? 4 : 8, tall ? 10 : 13)} /></div>
+          </div>
+          <div class="home-col" data-balance="side">
+            <div style="--order: 4"><LatestArticles limit={2} /></div>
+            <div style="--order: 5"><CoachGrades rows={list(5, 5)} /></div>
+            <div style="--order: 6"><DailyGame /></div>
+            <div style="--order: 9"><PlayoffPicture /></div>
+            <div style="--order: 10"><DraftTop rows={list(8, 8)} /></div>
+            {replays.length > 0 && <div style="--order: 11"><HomeReplay replays={replays} /></div>}
+            <div style="--order: 12"><OnThisDay /></div>
+          </div>
+        </>
+      )
+    }
+    {
+      state === 'preview' && (
+        <>
+          <div class="home-col" data-balance="main">
+            <div style="--order: 1"><QuestionableCalls rows={calls(6)} /></div>
+            <div style="--order: 4"><HomeWire rows={list(tall ? 13 : 17, tall ? 19 : 22)} /></div>
+            <div style="--order: 6"><HomeChart /></div>
+            <div style="--order: 7"><WeekResults /></div>
+          </div>
+          <div class="home-col" data-balance="side">
+            <div style="--order: 2"><DailyGame /></div>
+            <div style="--order: 3"><LatestArticles limit={2} /></div>
+            <div style="--order: 5"><CoachGrades rows={list(5, 5)} /></div>
+            <div style="--order: 8"><PlayoffPicture /></div>
+            <div style="--order: 9"><DraftTop rows={list(8, 8)} /></div>
+            {replays.length > 0 && <div style="--order: 10"><HomeReplay replays={replays} /></div>}
+            <div style="--order: 11"><OnThisDay /></div>
+          </div>
+        </>
+      )
+    }
+    {
+      state === 'offseason' && (
+        <>
+          <div class="home-col" data-balance="main">
+            <div style="--order: 1"><LatestArticles limit={3} /></div>
+            <div style="--order: 3"><CoachGrades rows={list(11, 16)} /></div>
+            <div style="--order: 4"><HomeChart /></div>
+          </div>
+          <div class="home-col" data-balance="side">
+            <div style="--order: 2"><DailyGame /></div>
+            <div style="--order: 5"><PlayoffPicture /></div>
+            {replays.length > 0 && <div style="--order: 6"><HomeReplay replays={replays} /></div>}
+            <div style="--order: 7"><OnThisDay /></div>
+          </div>
+        </>
+      )
+    }
   </div>
 </BaseLayout>
-
-<script>
-  import { initLiveFourth } from '../lib/live-fourth/dom';
-  initLiveFourth();
-</script>
-
-<style>
-  /* Three independent columns: each stacks its own panels, so a short
-     panel never leaves a hole beside a tall one. The chart spans the
-     first two (at 600px and under, its labels would be too small), and
-     the third column runs from the top beside it. Which panel goes in
-     which column is what balances their heights: at 1440px, with a win
-     probability chart, each column is 1,100 to 1,200px tall. */
-  .home {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: auto 1fr;
-    gap: var(--space-3);
-    align-items: start;
-  }
-
-  /* The replay (when the build has replays), then the chart under it. */
-  .lead {
-    grid-column: 1 / 3;
-    grid-row: 1;
-    display: grid;
-    gap: var(--space-3);
-    min-width: 0;
-  }
-
-  .col {
-    display: grid;
-    gap: var(--space-3);
-    align-content: start;
-  }
-
-  .col-1 {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .col-2 {
-    grid-column: 2;
-    grid-row: 2;
-  }
-
-  .col-3 {
-    grid-column: 3;
-    grid-row: 1 / 3;
-  }
-
-  /* The live panel's wrappers are grid items in column 2: without
-     min-width 0 they grow to fit a play's text (one line, cut with an
-     ellipsis) and push the panel under column 3. */
-  .calc-live,
-  .calc-live > [data-live-panel] {
-    min-width: 0;
-  }
-
-  /* No game live: the calculator is one boxed line. */
-  .soon {
-    padding: var(--space-2) var(--space-3);
-    background: var(--panel);
-    border: 1px solid var(--rule);
-  }
-
-  .soon a {
-    font-weight: 700;
-  }
-
-  /* Live 4th downs: items are styled by .live-item in global.css, shared
-     with the live page and team pages. */
-  .live-items {
-    margin-bottom: var(--space-2);
-  }
-
-  .live-note {
-    color: var(--text-dim);
-  }
-
-  .live-pager {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    margin-bottom: var(--space-1);
-  }
-
-  .live-position {
-    color: var(--text-dim);
-    font-size: 12px;
-  }
-
-  .pager-button {
-    padding: 2px var(--space-2);
-    border: 1px solid var(--rule);
-    color: var(--link);
-  }
-
-  .pager-button:disabled {
-    color: var(--text-dim);
-  }
-
-  /* Draft order: who holds a traded pick, under the team. */
-  .draft td {
-    vertical-align: middle;
-  }
-
-  .owner {
-    display: block;
-    color: var(--text-dim);
-    font-size: 12px;
-    white-space: normal;
-  }
-
-  /* Results: one row per game, the ticker's mark on a labelled one. */
-  .results {
-    width: 100%;
-  }
-
-  .results tr.marked td:first-child {
-    border-left: var(--mark-bar) solid var(--header);
-  }
-
-  .game {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-1);
-    white-space: nowrap;
-  }
-
-  .score {
-    min-width: 2ch;
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* Winners in bold, not colored. */
-  .score.won,
-  .results .label {
-    font-weight: 700;
-  }
-
-  .at {
-    color: var(--text-dim);
-    padding: 0 var(--space-1);
-  }
-
-  .table-foot {
-    margin-top: var(--space-2);
-    padding-top: var(--space-2);
-    border-top: 1px dotted var(--rule-soft);
-    color: var(--text-dim);
-    font-size: 12px;
-  }
-
-  .chart-meta {
-    margin-top: var(--space-1);
-    color: var(--text-dim);
-    font-size: 12px;
-  }
-
-  .chart-meta a {
-    margin-right: var(--space-2);
-  }
-
-  /* Says plainly that no one picked this chart: the pipeline drew it. */
-  .auto-label {
-    margin-right: var(--space-1);
-    padding: 0 var(--space-1);
-    border: 1px solid var(--rule);
-    color: var(--text);
-    font-family: var(--font-heading);
-    font-weight: 700;
-  }
-
-  .article-title {
-    font-size: 16px;
-  }
-
-  .article-desc {
-    margin-top: var(--space-1);
-    color: var(--text-dim);
-  }
-
-  /* Two columns: the chart across the top, the first two columns side by
-     side under it, and the third's panels side by side under those. */
-  @media (max-width: 1100px) {
-    .home {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-template-rows: auto;
-    }
-
-    .lead {
-      grid-column: 1 / -1;
-    }
-
-    .col-3 {
-      grid-column: 1 / -1;
-      grid-row: 3;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: start;
-    }
-  }
-
-  @media (max-width: 760px) {
-    .home {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .col-1,
-    .col-2,
-    .col-3 {
-      grid-column: 1;
-      grid-row: auto;
-    }
-
-    .col-3 {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-</style>

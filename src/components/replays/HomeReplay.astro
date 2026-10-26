@@ -297,9 +297,12 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
     max-width: calc(100% - 2 * var(--space-2));
   }
 
+  /* Slate, not first-down yellow: on a page with live data, yellow means live. */
   .caption[data-kind='touchdown'],
   .caption[data-kind='penalty'] {
-    background: var(--highlight);
+    background: var(--header);
+    border-color: var(--header);
+    color: var(--header-text);
   }
 
   .tag {

@@ -1,0 +1,235 @@
+/*
+ * The home page's two columns (src/pages/index.astro). Imported by the home
+ * page only, so no other page carries it.
+ *
+ * Row counts per width (src/lib/home/rows.ts): a list or table with
+ * classes `rows w8 m12 p8` shows 8 rows from 1101px, 12 from 761 to 1100px
+ * and 8 on phones. Every row is in the HTML; these rules hide the rest.
+ * Written out to 24 rows (MAX_ROWS); nothing animates.
+ */
+
+@media (min-width: 1101px) {
+  .rows.w1 tbody tr:nth-child(n+2),
+  .rows.w1 > li:nth-child(n+2),
+  .rows.w2 tbody tr:nth-child(n+3),
+  .rows.w2 > li:nth-child(n+3),
+  .rows.w3 tbody tr:nth-child(n+4),
+  .rows.w3 > li:nth-child(n+4),
+  .rows.w4 tbody tr:nth-child(n+5),
+  .rows.w4 > li:nth-child(n+5),
+  .rows.w5 tbody tr:nth-child(n+6),
+  .rows.w5 > li:nth-child(n+6),
+  .rows.w6 tbody tr:nth-child(n+7),
+  .rows.w6 > li:nth-child(n+7),
+  .rows.w7 tbody tr:nth-child(n+8),
+  .rows.w7 > li:nth-child(n+8),
+  .rows.w8 tbody tr:nth-child(n+9),
+  .rows.w8 > li:nth-child(n+9),
+  .rows.w9 tbody tr:nth-child(n+10),
+  .rows.w9 > li:nth-child(n+10),
+  .rows.w10 tbody tr:nth-child(n+11),
+  .rows.w10 > li:nth-child(n+11),
+  .rows.w11 tbody tr:nth-child(n+12),
+  .rows.w11 > li:nth-child(n+12),
+  .rows.w12 tbody tr:nth-child(n+13),
+  .rows.w12 > li:nth-child(n+13),
+  .rows.w13 tbody tr:nth-child(n+14),
+  .rows.w13 > li:nth-child(n+14),
+  .rows.w14 tbody tr:nth-child(n+15),
+  .rows.w14 > li:nth-child(n+15),
+  .rows.w15 tbody tr:nth-child(n+16),
+  .rows.w15 > li:nth-child(n+16),
+  .rows.w16 tbody tr:nth-child(n+17),
+  .rows.w16 > li:nth-child(n+17),
+  .rows.w17 tbody tr:nth-child(n+18),
+  .rows.w17 > li:nth-child(n+18),
+  .rows.w18 tbody tr:nth-child(n+19),
+  .rows.w18 > li:nth-child(n+19),
+  .rows.w19 tbody tr:nth-child(n+20),
+  .rows.w19 > li:nth-child(n+20),
+  .rows.w20 tbody tr:nth-child(n+21),
+  .rows.w20 > li:nth-child(n+21),
+  .rows.w21 tbody tr:nth-child(n+22),
+  .rows.w21 > li:nth-child(n+22),
+  .rows.w22 tbody tr:nth-child(n+23),
+  .rows.w22 > li:nth-child(n+23),
+  .rows.w23 tbody tr:nth-child(n+24),
+  .rows.w23 > li:nth-child(n+24),
+  .rows.w24 tbody tr:nth-child(n+25),
+  .rows.w24 > li:nth-child(n+25) {
+    display: none;
+  }
+
+  .more-m,
+  .more-p {
+    display: none;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1100px) {
+  .rows.m1 tbody tr:nth-child(n+2),
+  .rows.m1 > li:nth-child(n+2),
+  .rows.m2 tbody tr:nth-child(n+3),
+  .rows.m2 > li:nth-child(n+3),
+  .rows.m3 tbody tr:nth-child(n+4),
+  .rows.m3 > li:nth-child(n+4),
+  .rows.m4 tbody tr:nth-child(n+5),
+  .rows.m4 > li:nth-child(n+5),
+  .rows.m5 tbody tr:nth-child(n+6),
+  .rows.m5 > li:nth-child(n+6),
+  .rows.m6 tbody tr:nth-child(n+7),
+  .rows.m6 > li:nth-child(n+7),
+  .rows.m7 tbody tr:nth-child(n+8),
+  .rows.m7 > li:nth-child(n+8),
+  .rows.m8 tbody tr:nth-child(n+9),
+  .rows.m8 > li:nth-child(n+9),
+  .rows.m9 tbody tr:nth-child(n+10),
+  .rows.m9 > li:nth-child(n+10),
+  .rows.m10 tbody tr:nth-child(n+11),
+  .rows.m10 > li:nth-child(n+11),
+  .rows.m11 tbody tr:nth-child(n+12),
+  .rows.m11 > li:nth-child(n+12),
+  .rows.m12 tbody tr:nth-child(n+13),
+  .rows.m12 > li:nth-child(n+13),
+  .rows.m13 tbody tr:nth-child(n+14),
+  .rows.m13 > li:nth-child(n+14),
+  .rows.m14 tbody tr:nth-child(n+15),
+  .rows.m14 > li:nth-child(n+15),
+  .rows.m15 tbody tr:nth-child(n+16),
+  .rows.m15 > li:nth-child(n+16),
+  .rows.m16 tbody tr:nth-child(n+17),
+  .rows.m16 > li:nth-child(n+17),
+  .rows.m17 tbody tr:nth-child(n+18),
+  .rows.m17 > li:nth-child(n+18),
+  .rows.m18 tbody tr:nth-child(n+19),
+  .rows.m18 > li:nth-child(n+19),
+  .rows.m19 tbody tr:nth-child(n+20),
+  .rows.m19 > li:nth-child(n+20),
+  .rows.m20 tbody tr:nth-child(n+21),
+  .rows.m20 > li:nth-child(n+21),
+  .rows.m21 tbody tr:nth-child(n+22),
+  .rows.m21 > li:nth-child(n+22),
+  .rows.m22 tbody tr:nth-child(n+23),
+  .rows.m22 > li:nth-child(n+23),
+  .rows.m23 tbody tr:nth-child(n+24),
+  .rows.m23 > li:nth-child(n+24),
+  .rows.m24 tbody tr:nth-child(n+25),
+  .rows.m24 > li:nth-child(n+25) {
+    display: none;
+  }
+
+  .more-w,
+  .more-p {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .rows.p1 tbody tr:nth-child(n+2),
+  .rows.p1 > li:nth-child(n+2),
+  .rows.p2 tbody tr:nth-child(n+3),
+  .rows.p2 > li:nth-child(n+3),
+  .rows.p3 tbody tr:nth-child(n+4),
+  .rows.p3 > li:nth-child(n+4),
+  .rows.p4 tbody tr:nth-child(n+5),
+  .rows.p4 > li:nth-child(n+5),
+  .rows.p5 tbody tr:nth-child(n+6),
+  .rows.p5 > li:nth-child(n+6),
+  .rows.p6 tbody tr:nth-child(n+7),
+  .rows.p6 > li:nth-child(n+7),
+  .rows.p7 tbody tr:nth-child(n+8),
+  .rows.p7 > li:nth-child(n+8),
+  .rows.p8 tbody tr:nth-child(n+9),
+  .rows.p8 > li:nth-child(n+9),
+  .rows.p9 tbody tr:nth-child(n+10),
+  .rows.p9 > li:nth-child(n+10),
+  .rows.p10 tbody tr:nth-child(n+11),
+  .rows.p10 > li:nth-child(n+11),
+  .rows.p11 tbody tr:nth-child(n+12),
+  .rows.p11 > li:nth-child(n+12),
+  .rows.p12 tbody tr:nth-child(n+13),
+  .rows.p12 > li:nth-child(n+13),
+  .rows.p13 tbody tr:nth-child(n+14),
+  .rows.p13 > li:nth-child(n+14),
+  .rows.p14 tbody tr:nth-child(n+15),
+  .rows.p14 > li:nth-child(n+15),
+  .rows.p15 tbody tr:nth-child(n+16),
+  .rows.p15 > li:nth-child(n+16),
+  .rows.p16 tbody tr:nth-child(n+17),
+  .rows.p16 > li:nth-child(n+17),
+  .rows.p17 tbody tr:nth-child(n+18),
+  .rows.p17 > li:nth-child(n+18),
+  .rows.p18 tbody tr:nth-child(n+19),
+  .rows.p18 > li:nth-child(n+19),
+  .rows.p19 tbody tr:nth-child(n+20),
+  .rows.p19 > li:nth-child(n+20),
+  .rows.p20 tbody tr:nth-child(n+21),
+  .rows.p20 > li:nth-child(n+21),
+  .rows.p21 tbody tr:nth-child(n+22),
+  .rows.p21 > li:nth-child(n+22),
+  .rows.p22 tbody tr:nth-child(n+23),
+  .rows.p22 > li:nth-child(n+23),
+  .rows.p23 tbody tr:nth-child(n+24),
+  .rows.p23 > li:nth-child(n+24),
+  .rows.p24 tbody tr:nth-child(n+25),
+  .rows.p24 > li:nth-child(n+25) {
+    display: none;
+  }
+
+  .more-w,
+  .more-m {
+    display: none;
+  }
+}
+
+/* A panel's foot: what it is through, and where the rest is. */
+.home .table-foot {
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px dotted var(--rule-soft);
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+/*
+ * Two columns, main 2 to sidebar 1, from 761px: each stacks its own panels,
+ * so the page has two panel widths and one ragged end, which the row counts
+ * keep within a row. 2 to 1 all the way down keeps the main column over
+ * 612px at 761px, so a full-size chart (600px at least) never scrolls.
+ */
+.home {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.home-col {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  min-width: 0;
+}
+
+.home-col > * {
+  min-width: 0;
+}
+
+/*
+ * Phones: one column, in the order a visitor wants it (each panel's
+ * --order), not main column then sidebar. Keyboard order follows the
+ * desktop columns.
+ */
+@media (max-width: 760px) {
+  .home {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-col {
+    display: contents;
+  }
+
+  .home-col > * {
+    order: var(--order, 50);
+  }
+}

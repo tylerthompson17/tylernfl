@@ -1,0 +1,63 @@
+---
+/**
+ * The 4th down daily's first play on the home page: its situation with the
+ * teams hidden (as the game starts), its field strip, and a link to play.
+ * Nothing is recorded here; the game is on /fourth-down/daily/.
+ */
+import Panel from '../Panel.astro';
+import FieldStrip from '../FieldStrip.astro';
+import { url } from '../../utils/url';
+import { isPriorSeason } from '../../utils/as-of';
+import { fieldGoalYards } from '../../lib/field/strip';
+import { clockWords, dateWords, downWords, fieldWords, scoreWords } from '../../lib/daily-fourth/game';
+import type { DailyFourthData } from '../../data/types';
+
+const files = import.meta.glob<DailyFourthData>('../../data/daily_fourth.json', { eager: true, import: 'default' });
+const game: DailyFourthData | null = Object.values(files)[0] ?? null;
+const first = game && game.plays.length > 0 ? game.plays[0] : null;
+---
+
+<Panel title="4th down daily">
+  {
+    first ? (
+      <>
+        <p class="ask">
+          <strong>
+            {downWords(first)}, {fieldWords(first, false)}.
+          </strong>{' '}
+          {scoreWords(first, false)}, {clockWords(first).toLowerCase()}. Go for it, kick or punt?
+        </p>
+        <FieldStrip
+          yardline100={first.yardline100}
+          distance={first.distance}
+          kick={first.wp['field goal'] === null ? null : fieldGoalYards(first.yardline100)}
+          label={downWords(first)}
+        />
+        <p class="go">
+          <a href={url('fourth-down/daily')}>{game!.number > 0 ? `Play game ${game!.number}` : "Play today's game"}</a>: five
+          real 4th downs from {isPriorSeason(game!.season) ? `the ${game!.season} season` : 'this season'}, the same for
+          everyone on {dateWords(game!.date)}. Or try any situation in the{' '}
+          <a href={url('fourth-down')}>4th down calculator</a>.
+        </p>
+      </>
+    ) : (
+      <p class="placeholder-note">
+        No game today. Try any situation in the <a href={url('fourth-down')}>4th down calculator</a>.
+      </p>
+    )
+  }
+</Panel>
+
+<style>
+  .ask {
+    margin-bottom: var(--space-2);
+  }
+
+  .go {
+    margin-top: var(--space-2);
+  }
+
+  .go a:first-child {
+    font-weight: 700;
+  }
+</style>

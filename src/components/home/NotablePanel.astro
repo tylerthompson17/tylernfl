@@ -1,0 +1,38 @@
+---
+/**
+ * The week's best lines across categories, ranked by percentile
+ * (src/lib/performances/notable.ts). Each line names its own stat, so there
+ * is no category column to keep in step with it.
+ */
+import Panel from '../Panel.astro';
+import StatTable, { type StatTableColumn } from '../StatTable.astro';
+import { url } from '../../utils/url';
+import { notable, percentileSeasons, type NotableRow } from '../../utils/performances';
+import { logWeek } from '../../utils/as-of';
+
+const week = notable.week === null ? null : logWeek(notable.season, notable.week);
+const columns: StatTableColumn<NotableRow>[] = [
+  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
+  { key: 'team', label: 'Team', kind: 'team' as const },
+  { key: 'line', label: 'Game' },
+  { key: 'shown', label: 'Pctl', kind: 'number' as const },
+];
+---
+
+<Panel title="Notable performances">
+  {
+    notable.week === null ? (
+      <p class="placeholder-note">No games played yet. Performances appear after week 1.</p>
+    ) : (
+      <>
+        <StatTable columns={columns} rows={notable.rows} caption="Notable performances this week" emptyText="No games logged this week yet." />
+        <p class="table-foot">
+          {week?.name}'s best games across passing, rushing, receiving, sacks and field goals. Pctl is the share of team
+          games from {percentileSeasons.from} to {percentileSeasons.through} whose best in that stat was lower.{' '}
+          {week?.note && <>{week.note}{' '}</>}
+          <a href={url('stats')}>Full leaderboards</a>
+        </p>
+      </>
+    )
+  }
+</Panel>

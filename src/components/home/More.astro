@@ -1,0 +1,21 @@
+---
+/**
+ * "N" in a foot's "N more on the full wire": the count left out at each
+ * width, since a list shows a different number of rows at each
+ * (src/lib/home/rows.ts). src/styles/home.css shows one of the three.
+ */
+import { moreCounts, type Rows } from '../../lib/home/rows';
+
+interface Props {
+  rows: Rows;
+  /** How many the list has */
+  listed: number;
+  /** How many there are in all */
+  total: number;
+}
+
+const { rows, listed, total } = Astro.props;
+const more = moreCounts(rows, listed, total);
+---
+
+<span class="more-w">{more.wide}</span><span class="more-m">{more.mid}</span><span class="more-p">{more.phone}</span>

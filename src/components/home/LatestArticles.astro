@@ -1,0 +1,54 @@
+---
+/** The newest articles, title and description each. */
+import Panel from '../Panel.astro';
+import { url } from '../../utils/url';
+import { getArticles } from '../../utils/articles';
+
+interface Props {
+  limit: number;
+}
+
+const { limit } = Astro.props;
+const articles = (await getArticles()).slice(0, limit);
+---
+
+<Panel title={articles.length > 1 ? 'Latest articles' : 'Latest article'}>
+  {
+    articles.length === 0 ? (
+      <p class="placeholder-note">No articles yet.</p>
+    ) : (
+      <ul class="articles">
+        {articles.map((a) => (
+          <li>
+            <h3 class="title">
+              <a href={url(`articles/${a.id}`)}>{a.data.title}</a>
+            </h3>
+            <p class="desc">{a.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</Panel>
+
+<style>
+  .articles {
+    list-style: none;
+    padding: 0;
+  }
+
+  .articles li + li {
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px dotted var(--rule-soft);
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .desc {
+    margin-top: var(--space-1);
+    color: var(--text-dim);
+  }
+</style>

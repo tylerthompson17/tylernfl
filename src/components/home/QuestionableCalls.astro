@@ -1,0 +1,98 @@
+---
+/**
+ * The calls week's questionable calls (callsWeek in src/lib/home/state.ts):
+ * graded mistakes from decisions.json, costliest first, drawn as the game
+ * pages' items (decisionItem) and each linked to its play on the game page.
+ * nfl4th's recommendation only, never the experimental model.
+ */
+import Panel from '../Panel.astro';
+import More from './More.astro';
+import { url } from '../../utils/url';
+import { decisionsData } from '../../utils/decisions';
+import { gameHref } from '../../utils/games';
+import { homeData } from '../../utils/home';
+import { decisionItem, playAnchor } from '../../lib/games/view';
+import { gameWords, points } from '../../lib/decisions/view';
+import { rendered, rowsClass, type Rows } from '../../lib/home/rows';
+
+interface Props {
+  rows: Rows;
+}
+
+const { rows } = Astro.props;
+const NFL4TH = 'https://github.com/nflverse/nfl4th';
+const LICENSE = 'https://github.com/nflverse/nfl4th/blob/master/LICENSE';
+const data = decisionsData;
+const week = homeData.callsWeek;
+const all = data && week !== null ? [...data.fourthDowns, ...data.tries].filter((d) => d.week === week) : [];
+const questionable = all.filter((d) => d.graded && d.wpCost !== null).sort((a, b) => b.wpCost! - a.wpCost! || a.gameId.localeCompare(b.gameId) || a.playId - b.playId);
+const closeMargin = data?.summary.closeMargin ?? 0.05;
+const calls = questionable.slice(0, rendered(rows)).map((d) => ({ d, item: decisionItem(d, closeMargin), href: gameHref(d.gameId) }));
+---
+
+<Panel title={week === null ? 'Questionable 4th down calls' : `Week ${week}'s questionable 4th down calls`}>
+  {
+    calls.length === 0 ? (
+      <p class="placeholder-note">No graded calls yet this season. 4th downs are graded the morning after each game.</p>
+    ) : (
+      <>
+        <p class="lead">
+          {questionable.length} of week {week}'s {all.length.toLocaleString('en-US')} 4th downs and 2-point tries gave up{' '}
+          {Number(points(data!.threshold))} or more points of win probability against nfl4th's recommendation. The costliest:
+        </p>
+        <ol class:list={['live-items', 'calls', rowsClass(rows)]}>
+          {calls.map(({ d, item, href }) => (
+            <li class:list={['live-item', { questionable: item.questionable }]}>
+              <p class="live-when">
+                {href ? <a href={`${href}#${playAnchor(d.playId)}`}>{gameWords(d)}</a> : gameWords(d)}, {item.when}
+              </p>
+              <p class="live-down">{item.down}</p>
+              <p class="live-play" title={item.description}>{item.play}</p>
+              {item.clear && <p class="live-mark">Questionable call, clear</p>}
+              <p class="live-verdict">{item.verdict}</p>
+              {item.wp && <p class="live-wp">{item.wp}</p>}
+            </li>
+          ))}
+        </ol>
+        <p class="table-foot">
+          <More rows={rows} listed={calls.length} total={questionable.length} /> more that week. Grades are Ben Baldwin's{' '}
+          <a href={NFL4TH}>nfl4th</a> (<a href={LICENSE}>MIT license</a>), at the snap, whatever happened next.{' '}
+          <a href={url('decisions/worst')}>The season's costliest calls</a>
+        </p>
+      </>
+    )
+  }
+</Panel>
+
+<style>
+  .lead {
+    margin-bottom: var(--space-2);
+  }
+
+  /* Two columns of items, filled across, from 761px. */
+  .calls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-4);
+  }
+
+  @media (max-width: 760px) {
+    .calls {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* The live items' dotted rule on every item, since a row can start with any. */
+  .calls .live-item,
+  .calls .live-item + .live-item {
+    margin: 0 0 var(--space-2);
+    padding: var(--space-2) 0 0;
+    border-top: 1px dotted var(--rule-soft);
+  }
+
+  /* Every item here is questionable: the slate bar the game pages use. */
+  .calls .live-item.questionable {
+    padding-left: var(--space-2);
+    border-left: var(--mark-bar) solid var(--header);
+  }
+</style>

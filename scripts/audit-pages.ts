@@ -3,6 +3,10 @@
  * sees: console errors, failed requests, horizontal overflow, axe
  * accessibility violations, and page weight. Used by the site-auditor agent.
  *
+ * On the home page it also reports `balance`: where its two columns end, how
+ * far apart (flagged over 32px), and its distinct panel widths (flagged over
+ * two), at the widths where the columns sit side by side.
+ *
  * Page weight is a first visit (a fresh browser each load, nothing cached),
  * by type: HTML, JS, CSS, fonts, images, other. The preview server does not
  * compress, and GitHub Pages gzips text, so `transfer` estimates the wire
@@ -57,9 +61,10 @@ const BASE = '/tylernfl';
 const STATES_DIR = 'tests/fixtures/states';
 const ESPN_DIR = 'tests/fixtures/espn';
 const PYTHON = 'pipelines/.venv/bin/python';
-// What a staged copy of the site needs to build: the site itself, and
-// Tyler's chart scripts, which the chart collection checks exist.
-const SITE_FILES = ['src', 'public', 'astro.config.mjs', 'package.json', 'tsconfig.json', 'pipelines/charts/mine'];
+// What a staged copy of the site needs to build: the site itself, the 4th
+// down model files the calculator imports, and Tyler's chart scripts, which
+// the chart collection checks exist.
+const SITE_FILES = ['src', 'public', 'models', 'astro.config.mjs', 'package.json', 'tsconfig.json', 'pipelines/charts/mine'];
 const WEIGHT_BUDGET = 500 * 1024;
 const WEIGHT_TYPES = ['html', 'js', 'css', 'font', 'image', 'other'] as const;
 type WeightType = (typeof WEIGHT_TYPES)[number];
@@ -143,8 +148,10 @@ async function stageState(name: string): Promise<void> {
   }
   await symlink(resolve('node_modules'), `${siteDir}/node_modules`, 'dir');
   const data = `${siteDir}/src/data`;
+  // Retro Replays are generated, not dated (src/data/replays/README.md): a
+  // checkout that has them keeps them, so the replay panels show.
   for (const entry of await readdir(data)) {
-    if (entry !== 'types.ts') await rm(`${data}/${entry}`, { recursive: true });
+    if (entry !== 'types.ts' && entry !== 'replays') await rm(`${data}/${entry}`, { recursive: true });
   }
   await cp(`${STATES_DIR}/${name}`, data, {
     recursive: true,
@@ -265,6 +272,26 @@ async function overflowOf(page: Page) {
     if (offendersUnfiltered) offenders = find(false);
     return { pageScrollsSideways, scrollWidth: doc.scrollWidth, clientWidth: width, offenders, offendersUnfiltered };
   });
+}
+
+// The home page's two columns (data-balance in src/pages/index.astro): where
+// each ends and the distinct panel widths. Columns more than BALANCE_PX apart
+// are flagged; the row counts in index.astro are what to change.
+const BALANCE_PX = 32;
+async function balanceOf(page: Page) {
+  return page.evaluate((limit) => {
+    const cols = Array.from(document.querySelectorAll<HTMLElement>('[data-balance]'));
+    if (cols.length < 2) return null;
+    const ends = cols.map((col) => {
+      const last = Array.from(col.children).filter((c) => (c as HTMLElement).offsetHeight > 0).at(-1);
+      return { column: col.dataset.balance, end: Math.round(last ? last.getBoundingClientRect().bottom + scrollY : 0) };
+    });
+    const lefts = cols.map((c) => Math.round(c.getBoundingClientRect().left));
+    if (new Set(lefts).size < 2) return { oneColumn: true };
+    const widths = [...new Set(Array.from(document.querySelectorAll('.home .panel')).map((p) => Math.round(p.getBoundingClientRect().width)).filter((w) => w > 0))];
+    const apart = Math.max(...ends.map((e) => e.end)) - Math.min(...ends.map((e) => e.end));
+    return { ends, apart, widths, flagged: apart > limit || widths.length > 2 };
+  }, BALANCE_PX);
 }
 
 function weightType(response: Response): WeightType {
@@ -433,6 +460,7 @@ async function auditPage(browser: Browser, path: string, width: number, visits: 
     .analyze();
 
   const overflow = await overflowOf(page);
+  const balance = await balanceOf(page);
   await context.close();
   return {
     path,
@@ -444,6 +472,7 @@ async function auditPage(browser: Browser, path: string, width: number, visits: 
     failedRequests,
     ...(state ? { espnRequests } : {}),
     overflow,
+    ...(balance ? { balance } : {}),
     weight,
     axeViolations: axe.violations.map((v) => ({
       id: v.id,

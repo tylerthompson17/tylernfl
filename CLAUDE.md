@@ -128,11 +128,13 @@ tylernfl/
   saw the 4th down live (`tracker.ts`), else counted from the summary ("Timeout #n by
   TEAM" is that team's nth of the half; a timeout charged inside another play, a lost
   challenge, is not counted), checked equal to the scoreboard's at all eight captured 4th
-  downs of NE at CHI. The home panel: one line linking the calculator until a poll shows
-  any of today's games live; then "Live 4th downs", which stays up for the whole game day
-  (between games too, items of finished games marked "(final)" after the teams; worked out from today's
-  kickoffs and each game's final status, from its summary or the poll, so it holds without
-  a poll) and gives way to the line only once every game today is final:
+  downs of NE at CHI. The home panel: only on a page built on a game day (see Home page),
+  "Live 4th downs" is up from load (`data-live-hold`), holding room for a page of three
+  items so nothing under it moves, and stays up all day (between games too, items of
+  finished games marked "(final)" after the teams; worked out from today's kickoffs and
+  each game's final status, from its summary or the poll). Without the hold mark
+  (`dom.ts` still supports it) it is one line linking the calculator until a poll shows a
+  game live, and gives way to the line once every game today is final:
   today's 4th downs newest first, three at a time with Previous (newer) and Next (older)
   buttons, no rotation, an older page anchored on its first 4th down as new ones arrive
   (`paging.ts`); the model loads by itself once the panel is in view, live or between games
@@ -388,8 +390,8 @@ tylernfl/
   are kept. Checked on all 102 finals as of 2026-10-25: rushing yards
   equal the players' sum in all 204 team games, and time of possession adds to 60:00 in
   every regulation game (`check` warns in the run's log when either fails).
-- There is no `leaders.json` any more. Every top 5 on the site (the stats overview, the
-  home page's receiving panel, a team's stat leader appearances) comes from the boards and
+- There is no `leaders.json` any more. Every top 5 on the site (the stats overview, a
+  team's stat leader appearances) comes from the boards and
   `player_epa.json` through `src/utils/overview.ts`, whose rows carry player ids.
 - Play-by-play goes through `pipelines/pbp_cache.py`: completed seasons are cached for
   good, the current season refreshes after 12 hours, and a season is read once per run
@@ -779,7 +781,7 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   ones inside the chart are too small at thumbnail size), each linking to its team page: `teams` in an auto chart's
   entry (away, home on WP charts), or optional `teams: [BUF, KC]` in one of Tyler's.
   The build fails on an abbreviation that is not a team.
-- The home page's chart panel spans its first two columns (see Home page): Tyler's
+- The home page's chart panel is in its main column (see Home page): Tyler's
   featured chart with its date, else the auto chart labeled "Auto chart" with what its
   data covers, else an empty state. Win probability and yards race charts are the default
   720 by 405 (16:9), the EPA scatter 720 by 480. WP charts were drawn 3:1 for a while
@@ -799,29 +801,62 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
 
 ### Home page
 
-- Three independent columns: each stacks its own panels, so a short panel never leaves
-  a hole beside a tall one. The Retro Replay panel, then the chart under it, span
-  columns 1 and 2 (a full-size chart stops shrinking at 600px); column 3 runs from the
-  top beside them. Without replays in the build there is no replay panel and the chart
-  is on top.
-- Column 1: the latest complete week's results (the week `/week` recaps, kickoff
-  order, each final's excitement label with the slate bar). Column 2:
-  transactions, the 4th down calculator line (live 4th downs during games). Column 3: playoff picture, draft order (top 10
-  of `/draft`), notable performances, receiving leaders, on this day, latest article.
-  The split is what balances heights: on 2026-10-25 at 1440px, with the replay panel
-  (454px) and the EPA scatter above columns 1 and 2 and live 4th downs showing, the
-  columns end about 1,874, 1,980 and 1,809px down the page (receiving leaders moved
-  from column 1 to 3 when the replay panel came in). Recheck when a panel is added or
-  grows.
-- Column 2 ends with one line linking the 4th down calculator, which becomes the "Live 4th
-  downs" panel while any game is live (see the data contract).
-- Below 1100px: two columns, chart across the top, column 3's panels in a pair under
-  the rest. Below 760px: one column.
+- Two columns, main 2 to sidebar 1, from 761px (`.home` in `src/styles/home.css`, imported
+  by the home page only): each stacks its own panels, so the page has two panel widths
+  and one ragged end. 2 to 1 holds down to 761px so the main column stays over 612px
+  and a full-size chart (600px at least) never scrolls sideways (3 to 2 was tried: it
+  did). Below 761px, one column.
+- What it shows depends on the moment the site was built in (`homeState` in
+  `src/lib/home/state.ts`, tested in `tests/home.test.ts`; the daily and game day jobs
+  rebuild, so the build's moment holds until the next):
+  - game day (a kickoff on today's Eastern date, Thursday and Monday included): live 4th
+    downs, the week's questionable calls, the chart | game statuses, the daily game,
+    the article, playoff picture, replay, on this day.
+  - recap (every ticker game final): the chart, results, the week's questionable calls,
+    notable performances, transactions | article, coach grades, daily game, playoff
+    picture, draft top 8, replay, on this day.
+  - preview (the ticker on a week still to play): the week's questionable calls,
+    transactions, chart, results | daily game, article, coach grades, playoff picture,
+    draft top 8, replay, on this day.
+  - offseason (no ticker games): articles, last season's coach grades, the chart | daily
+    game, last season's final seeding, replay, on this day. Draft order, results and
+    transactions are empty then, so they are left out rather than shown empty.
+- "The week" is one rule (`homeWeek`): the latest week every game of which is final and
+  measured, the week `/week` recaps. Results and the questionable calls name it, so on a
+  Sunday the page never pairs week 1's results with week 2's anything. The calls are
+  that week's if it has graded calls, else the latest earlier week's (`callsWeek`).
+- The 4th down work leads in season. Questionable calls (`QuestionableCalls.astro`):
+  the week's graded mistakes from `decisions.json`, costliest first, drawn as the game
+  pages' items (`decisionItem`), two columns of them, each linked to its play on the
+  game page; nfl4th only, never the experimental model. Coach grades
+  (`CoachGrades.astro`): the top of `/decisions/`, the pipeline's ranks, with
+  `gradedThrough`. The daily game (`DailyGame.astro`): its first play's situation with
+  the teams hidden and its field strip, a link to play, and the calculator link (there
+  is no calculator line any more). Receiving yards leaders are not on the home page
+  (they are on `/stats`).
+- The columns end together, checked: the audit reports `balance` on the home page
+  (`scripts/audit-pages.ts`: where each column ends, flagged over 32px apart or with more
+  than two panel widths). What keeps them there is row counts (`Rows` in
+  `src/lib/home/rows.ts`): the main column's last list (transactions, or coach grades in
+  the offseason) shows a set number of rows at 1101px and up, more from 761 to 1100px
+  (the chart is shorter there), and on phones lists are short (3 calls, 8 rows), since
+  one column has nothing to balance. Every row is in the HTML; `home.css` hides the
+  rest per width, and a foot's "N more" says the right number at each (`More.astro`).
+  Under the EPA scatter (about 110px taller than a win probability chart) the list
+  shows 4 fewer rows (`tallChart` in `src/utils/home.ts`). The counts in `index.astro`
+  were set on 2026-10-26 from the four date states and today's data: every one within
+  30px at 1440 and 1024. Rerun the audit in all four states when a panel changes; change
+  the counts, not the layout, to fix a flag.
+- Phones: one list in the order a visitor wants it (each panel's `--order`): the lead
+  (live 4th downs, or the chart on a recap), the calls, then the daily game and the
+  article, then the rest. Keyboard order follows the desktop columns.
+- The live 4th downs panel holds about 340px from load, so it is blank under its
+  "Reading today's games" line until the first 4th downs arrive.
 
 ### Right rail
 
-- On every page but home (`rail={false}`, which places the same panels in its third
-  column), top to bottom: the playoff picture, then on this day.
+- On every page but home (`rail={false}`, whose sidebar has the same panels), top to
+  bottom: the playoff picture, then on this day.
 - There is no games list in the rail: the ticker right above shows the same games (one was
   tried and removed as a duplicate that made the rail heavy).
 - Playoff picture (`PlayoffPicture.astro`, from `standings.json`): each conference's seeds 1
@@ -1001,7 +1036,8 @@ game).
   facings from five drawings, a run cycle driven by distance, a `--highlight` ring under
   the carrier, the ball's height as an upward offset with a shadow.
 - Captions (Pass, Catch, Touchdown) are HTML in the heading face over the canvas, a
-  touchdown or a penalty on a `--highlight` background. The ball carrier's name
+  touchdown or a penalty in slate (`--header`), not yellow: on a page with live data
+  (the ticker is on every page), a yellow background means live. The ball carrier's name
   ("K.Drake", `shortName` in `words.ts`) is a label under his feet whenever someone has
   the ball, stats on or off. Stats (on at desktop width, off
   on phones): the carrier's speed in mph, air yards and the throw's track, and the
@@ -1030,7 +1066,8 @@ game).
   at 1x with the player's default toggles. Every part has its
   size before anything loads, so the height depends only on the panel's width and
   nothing shifts (checked on all 15 plays at 375, 1024 and 1440). `initReplay` takes
-  the scene and returns a function that stops it.
+  the scene and returns a function that stops it. On the home page it sits in the
+  sidebar, so it always takes the layout below 760px.
 
 ### Curated posts
 
@@ -1163,6 +1200,8 @@ a panel's own version. Name things by what the user sees ("Stat leaders", "4th d
     picked by Tyler and `/replays/all/` (done; see Retro Replays under Design direction,
     the data contract and `src/data/replays/README.md`). Later phases add
     video-derived tracking, action states and ball height in the same scene format.
+17. Home page by moment: four layouts chosen by date state, two columns kept level by row
+    counts, the 4th down work in the lead (done; see Home page under Design direction).
 
 ## Pending
 

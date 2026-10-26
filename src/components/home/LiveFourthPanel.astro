@@ -1,0 +1,103 @@
+---
+/**
+ * Live 4th downs on a game day's home page (src/lib/live-fourth/dom.ts):
+ * built up (`data-live-hold`) and holding room for a page of three items,
+ * so nothing under it moves when the first arrives. With the panel turned
+ * off (LIVE_FOURTH_DOWN_ENABLED) it is the one line to the calculator.
+ */
+import Panel from '../Panel.astro';
+import { url } from '../../utils/url';
+import { liveGames } from '../../utils/live-games';
+import { LIVE_FOURTH_DOWN_ENABLED, LIVE_FOURTH_PAGE_ENABLED } from '../../config';
+
+const games = liveGames();
+---
+
+<div class="live-fourth" data-live-fourth data-live-hold={LIVE_FOURTH_DOWN_ENABLED ? '' : undefined}>
+  <p class="soon" data-calc-line hidden={LIVE_FOURTH_DOWN_ENABLED}>
+    <a href={url('fourth-down')}>4th down calculator</a>: go, kick or punt for any situation, from nfl4th.
+  </p>
+  <div data-live-panel hidden={!LIVE_FOURTH_DOWN_ENABLED}>
+    <Panel title="Live 4th downs">
+      <div class="held">
+        <p class="live-note" data-live-note>Reading today's games…</p>
+        <ol class="live-items" data-live-list aria-live="polite"></ol>
+        <div class="live-pager">
+          <button type="button" class="pager-button" data-live-newer hidden aria-label="Newer 4th downs">Previous</button>
+          <span class="live-position" data-live-position hidden></span>
+          <button type="button" class="pager-button" data-live-older hidden aria-label="Older 4th downs">Next</button>
+        </div>
+      </div>
+      <p class="table-foot">
+        Today's 4th downs from ESPN's play-by-play, each against Ben Baldwin's nfl4th, a minute or so after the snap.
+        Calls are preliminary.{' '}
+        {
+          LIVE_FOURTH_PAGE_ENABLED ? (
+            <a href={url('fourth-down/live')}>Every 4th down today</a>
+          ) : (
+            <a href={url('fourth-down')}>4th down calculator</a>
+          )
+        }
+      </p>
+    </Panel>
+  </div>
+  <script type="application/json" id="live-fourth-games" set:html={JSON.stringify(games)} />
+</div>
+
+<script>
+  import { initLiveFourth } from '../../lib/live-fourth/dom';
+  initLiveFourth();
+</script>
+
+<style>
+  /* Its wrappers are grid items: without min-width 0 they grow to fit a play's one line of text. */
+  .live-fourth,
+  .live-fourth > [data-live-panel] {
+    min-width: 0;
+  }
+
+  /* Room for the note, a page of three items and the pager. */
+  .held {
+    min-height: 340px;
+  }
+
+  .soon {
+    padding: var(--space-2) var(--space-3);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+  }
+
+  .soon a {
+    font-weight: 700;
+  }
+
+  .live-items {
+    margin-bottom: var(--space-2);
+  }
+
+  .live-note {
+    color: var(--text-dim);
+    margin-bottom: var(--space-2);
+  }
+
+  .live-pager {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .live-position {
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  .pager-button {
+    padding: 2px var(--space-2);
+    border: 1px solid var(--rule);
+    color: var(--link);
+  }
+
+  .pager-button:disabled {
+    color: var(--text-dim);
+  }
+</style>

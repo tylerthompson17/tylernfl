@@ -1,0 +1,52 @@
+---
+/**
+ * Transactions and injuries: game statuses and real moves, starters first
+ * (headlineItems); practice squad churn and practice reports stay on the
+ * full wire. Its row count balances the home page's columns (`rows`).
+ */
+import Panel from '../Panel.astro';
+import StatTable, { type StatTableColumn } from '../StatTable.astro';
+import More from './More.astro';
+import { url } from '../../utils/url';
+import { headlineItems, statusSummary, transactions, type WireItem } from '../../utils/transactions';
+import { gameStatusLine } from '../../utils/as-of';
+import { rendered, rowsClass, type Rows } from '../../lib/home/rows';
+
+interface Props {
+  rows: Rows;
+  title?: string;
+}
+
+const { rows, title = 'Transactions and injuries' } = Astro.props;
+const headlines = headlineItems(rendered(rows));
+const total = headlines.items.length + headlines.rest;
+const statusText = gameStatusLine(transactions.week, statusSummary(transactions.injuries));
+const columns: StatTableColumn<WireItem>[] = [
+  { key: 'team', label: 'Team', kind: 'team' as const },
+  { key: 'player', label: 'Player', kind: 'player' as const, slugKey: 'slug' },
+  { key: 'news', label: 'News' },
+];
+---
+
+<Panel title={title}>
+  {
+    transactions.week === null ? (
+      <p class="placeholder-note">Offseason. Roster moves and injury reports return in week 1.</p>
+    ) : (
+      <>
+        <div class={rowsClass(rows)}>
+          <StatTable
+            columns={columns}
+            rows={headlines.items}
+            caption="Top transactions and game statuses"
+            emptyText="No game statuses or roster moves yet this week."
+          />
+        </div>
+        <p class="table-foot">
+          Starters first. {statusText && <>{statusText}{' '}</>}<More rows={rows} listed={headlines.items.length} total={total} /> more on the{' '}
+          <a href={url('transactions')}>full wire</a>, filterable by team and type.
+        </p>
+      </>
+    )
+  }
+</Panel>

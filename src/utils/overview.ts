@@ -126,11 +126,6 @@ export function overviewPanels(): Leaders[] {
   return [...boards, ...epa];
 }
 
-/** One panel by key, for the home page and team pages. */
-export function leadersFor(key: string): Leaders | undefined {
-  return overviewPanels().find((panel) => panel.key === key);
-}
-
 /** The season the boards cover. */
 export function boardSeason(): number | null {
   return leaderboards[0]?.season ?? null;

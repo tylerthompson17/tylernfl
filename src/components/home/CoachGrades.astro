@@ -1,0 +1,72 @@
+---
+/**
+ * The top of /decisions/: head coaches by win probability lost to 4th down
+ * and 2-point mistakes, the pipeline's ranks (decisions.json `coaches`).
+ * Its row count balances the home page's columns (`rows`).
+ */
+import Panel from '../Panel.astro';
+import { url } from '../../utils/url';
+import { decisionsData } from '../../utils/decisions';
+import { gradedThrough, isPriorSeason } from '../../utils/as-of';
+import { points } from '../../lib/decisions/view';
+import { rendered, rowsClass, type Rows } from '../../lib/home/rows';
+
+interface Props {
+  rows: Rows;
+}
+
+const { rows } = Astro.props;
+const data = decisionsData;
+const coaches = data ? [...data.coaches].sort((a, b) => a.rank - b.rank).slice(0, rendered(rows)) : [];
+const lastWeek = data ? Math.max(0, ...data.fourthDowns.map((d) => d.week), ...data.tries.map((d) => d.week)) : 0;
+---
+
+<Panel title={data && isPriorSeason(data.season) ? `${data.season} coach grades` : 'Coach grades'}>
+  {
+    !data || coaches.length === 0 ? (
+      <p class="placeholder-note">No graded decisions yet this season.</p>
+    ) : (
+      <>
+        <div class={rowsClass(rows)}>
+          <table class="stat-table coaches">
+            <caption class="visually-hidden">Head coaches by win probability lost to 4th down and 2-point mistakes</caption>
+            <thead>
+              <tr>
+                <th scope="col" class="number">Rk</th>
+                <th scope="col">Coach</th>
+                <th scope="col" class="number">Mistakes</th>
+                <th scope="col" class="number">WP lost</th>
+              </tr>
+            </thead>
+            <tbody>
+              {coaches.map((c) => (
+                <tr>
+                  <td class="number">{c.rank}</td>
+                  <td>
+                    {c.coach} <span class="teams">{c.teams.join(', ')}</span>
+                  </td>
+                  <td class="number">{c.mistakes}</td>
+                  <td class="number">{points(c.wpLost)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="table-foot">
+          Win probability lost to mistakes, in points, against nfl4th's recommendation. {gradedThrough(data.season, lastWeek, data.games)}{' '}
+          <a href={url('decisions')}>All coaches</a>
+        </p>
+      </>
+    )
+  }
+</Panel>
+
+<style>
+  .coaches {
+    width: 100%;
+  }
+
+  .teams {
+    color: var(--text-dim);
+  }
+</style>

@@ -1,11 +1,15 @@
 /**
- * The home page's live 4th downs panel. The moment the live ticker's poll
- * shows any of today's games live, the one-line calculator link gives way to
- * a "Live 4th downs" panel: any 4th down waiting for the snap first (the
- * only yellow item), then today's 4th downs newest first, three at a time
- * with Previous (newer) and Next (older) buttons, no rotation (item.ts for
- * each item's format). It stays up for the whole game day, between games
- * too, and gives way to the line once every game today is final.
+ * The home page's live 4th downs panel: any 4th down waiting for the snap
+ * first (the only yellow item), then today's 4th downs newest first, three
+ * at a time with Previous (newer) and Next (older) buttons, no rotation
+ * (item.ts for each item's format).
+ *
+ * A page built on a game day marks the panel `data-live-hold`: it is up from
+ * load, holding its room, and stays up all day. Without the mark, the moment
+ * the live ticker's poll shows any of today's games live, the one-line
+ * calculator link gives way to the panel, which stays up for the whole game
+ * day, between games too, and gives way to the line once every game today is
+ * final.
  *
  * Nothing is read until the panel scrolls into view: then the summaries
  * (feed.ts) and the model, so every item says what nfl4th recommends, live
@@ -33,6 +37,7 @@ function setUp(root: HTMLElement): void {
   const newer = root.querySelector<HTMLButtonElement>('[data-live-newer]')!;
   const older = root.querySelector<HTMLButtonElement>('[data-live-older]')!;
   const position = root.querySelector<HTMLElement>('[data-live-position]')!;
+  const hold = root.hasAttribute('data-live-hold');
   let state: FeedState | null = null;
   let watching = false;
   let inView = false;
@@ -51,13 +56,15 @@ function setUp(root: HTMLElement): void {
   function render(): void {
     // Up the moment a game is live and between games on a game day; down
     // only once every game today is final.
-    shown = Boolean(state?.anyLive || state?.gameDay);
+    shown = hold || Boolean(state?.anyLive || state?.gameDay);
     panel.hidden = !shown;
     line.hidden = shown;
     if (!shown) return;
     if (!watching) watch();
     // The model once the panel has been seen; it only shows on a game day.
     if (inView) model.start();
+    // Held up before the feed has said anything: the built note stays.
+    if (!state) return;
 
     const all = newestFirst();
     const ids = all.map((e) => e.play.id);
@@ -103,6 +110,7 @@ function setUp(root: HTMLElement): void {
   };
   older.addEventListener('click', () => move(1));
   newer.addEventListener('click', () => move(-1));
+  if (hold) render();
 }
 
 export function initLiveFourth(): void {

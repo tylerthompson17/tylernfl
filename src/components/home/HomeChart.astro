@@ -1,0 +1,64 @@
+---
+/**
+ * The home page's chart: Tyler's featured chart, else today's auto chart
+ * labeled "Auto chart", else an empty state.
+ */
+import Panel from '../Panel.astro';
+import ChartFigure from '../ChartFigure.astro';
+import { url } from '../../utils/url';
+import { formatChartDate, getAutoChart, getFeaturedChart, hoverFor, imagesFor, svgFor } from '../../utils/charts';
+
+const featured = await getFeaturedChart();
+const auto = featured ? null : getAutoChart();
+---
+
+{
+  featured ? (
+    <Panel title={featured.data.title} titleId="home-chart-title">
+      <ChartFigure svg={svgFor(featured)} images={imagesFor(featured)} titleId="home-chart-title" note={featured.data.note} id="home-chart" hover={hoverFor(featured)}>
+        <p class="chart-meta">
+          <span class="num">{formatChartDate(featured.data.date)}</span>, {featured.data.author}.{' '}
+          Source: {featured.data.source}.{' '}
+          <a href={url(`charts/${featured.id}`)}>Chart page</a>{' '}
+          <a href={url('charts')}>All charts</a>
+        </p>
+      </ChartFigure>
+    </Panel>
+  ) : auto ? (
+    <Panel title={auto.data.title} titleId="home-chart-title">
+      <ChartFigure svg={auto.svg} titleId="home-chart-title" note={auto.data.note} id="home-chart" hover={auto.hover}>
+        <p class="chart-meta">
+          <span class="auto-label">Auto chart</span> {auto.data.asOf}. Source: {auto.data.source}.{' '}
+          <a href={url(`charts/${auto.id}`)}>Chart page</a>{' '}
+          <a href={url('charts')}>All charts</a>
+        </p>
+      </ChartFigure>
+    </Panel>
+  ) : (
+    <Panel title="Charts">
+      <p class="placeholder-note">No chart yet. One is drawn each morning once games are played.</p>
+    </Panel>
+  )
+}
+
+<style>
+  .chart-meta {
+    margin-top: var(--space-1);
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  .chart-meta a {
+    margin-right: var(--space-2);
+  }
+
+  /* Says plainly that no one picked this chart: the pipeline drew it. */
+  .auto-label {
+    margin-right: var(--space-1);
+    padding: 0 var(--space-1);
+    border: 1px solid var(--rule);
+    color: var(--text);
+    font-family: var(--font-heading);
+    font-weight: 700;
+  }
+</style>

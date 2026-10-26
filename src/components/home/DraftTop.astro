@@ -1,0 +1,86 @@
+---
+/**
+ * The top of the draft if the season ended today; the full order and the
+ * projection are on /draft. Its row count balances the home page's columns.
+ */
+import Panel from '../Panel.astro';
+import TeamChip from '../TeamChip.astro';
+import { url } from '../../utils/url';
+import { draft } from '../../utils/draft';
+import { draftRecord, ownerNote } from '../../lib/draft/view';
+import { through } from '../../utils/as-of';
+import { rendered, rowsClass, type Rows } from '../../lib/home/rows';
+
+interface Props {
+  rows: Rows;
+}
+
+const { rows } = Astro.props;
+const picks = draft.kind === 'ready' ? draft.data.picks.slice(0, rendered(rows)) : [];
+const title = draft.kind === 'missing' ? 'Draft order' : `${draft.data.draft} draft order`;
+---
+
+<Panel title={title}>
+  {
+    draft.kind === 'ready' ? (
+      <>
+        <div class={rowsClass(rows)}>
+          <table class="stat-table draft">
+            <caption class="visually-hidden">The top of round 1 if the season ended today</caption>
+            <thead>
+              <tr>
+                <th scope="col" class="number">Pick</th>
+                <th scope="col">Team</th>
+                <th scope="col" class="number">Record</th>
+              </tr>
+            </thead>
+            <tbody>
+              {picks.map((p) => {
+                const note = ownerNote(p, draft.kind === 'ready' && draft.data.stage === 'final');
+                return (
+                  <tr>
+                    <td class="number">{p.pick}</td>
+                    <td>
+                      <TeamChip abbr={p.team} size="sm" />
+                      {note && <span class="owner">{note}</span>}
+                    </td>
+                    <td class="number">{draftRecord(p)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p class="table-foot">
+          Round 1 if the season ended today. {through(draft.data.season, draft.data.throughWeek)}{' '}
+          <a href={url('draft')}>Full order</a>{' '}
+          <a href={url('draft/projected')}>Projected order</a>
+        </p>
+      </>
+    ) : (
+      <p class="placeholder-note">
+        {draft.kind === 'missing'
+          ? 'The draft order is not available yet.'
+          : `The ${draft.data.draft} order starts once the ${draft.data.season} season has played its first games.`}
+      </p>
+    )
+  }
+</Panel>
+
+<style>
+  .draft {
+    width: 100%;
+  }
+
+  .draft td {
+    vertical-align: middle;
+  }
+
+  /* Who holds a traded pick, under the team. */
+  .owner {
+    display: block;
+    color: var(--text-dim);
+    font-size: 12px;
+    white-space: normal;
+  }
+</style>

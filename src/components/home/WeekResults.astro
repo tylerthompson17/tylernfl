@@ -1,0 +1,125 @@
+---
+/**
+ * The home week's results (homeWeek in src/lib/home/state.ts, the week
+ * /week recaps), in kickoff order with each final's excitement label and
+ * the slate bar: the labels the ticker never shows on a final. Two tables
+ * of eight side by side, so the panel is as wide as the main column and
+ * half as tall.
+ */
+import Panel from '../Panel.astro';
+import TeamChip from '../TeamChip.astro';
+import { url } from '../../utils/url';
+import { emptyRecap } from '../../utils/as-of';
+import { weekLabel } from '../../utils/week';
+import { homeData } from '../../utils/home';
+
+const { schedule, excitement, week } = homeData;
+const labelOf = new Map(excitement.map((e) => [e.id, e.label]));
+const games = week === null ? [] : schedule.games.filter((g) => g.week === week).sort((a, b) => (a.kickoff ?? '').localeCompare(b.kickoff ?? ''));
+const half = Math.ceil(games.length / 2);
+const halves = [games.slice(0, half), games.slice(half)].filter((h) => h.length > 0);
+const name = weekLabel(week);
+---
+
+<Panel title={name ? `${name} results` : 'Results'}>
+  {
+    week === null ? (
+      <p class="placeholder-note">{emptyRecap().text}</p>
+    ) : (
+      <>
+        <div class="halves">
+          {halves.map((rows, i) => (
+            <table class="stat-table results">
+              <caption class="visually-hidden">
+                {name} results in kickoff order{halves.length > 1 ? `, part ${i + 1} of ${halves.length}` : ''}, with each game's excitement label
+              </caption>
+              <thead class="visually-hidden">
+                <tr>
+                  <th scope="col">Game</th>
+                  <th scope="col">Label</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((game) => {
+                  const label = labelOf.get(game.id) ?? null;
+                  return (
+                    <tr class:list={{ marked: label }}>
+                      <td>
+                        <span class="game">
+                          <TeamChip abbr={game.away} size="sm" />
+                          <span class:list={['score', { won: game.awayScore! > game.homeScore! }]}>{game.awayScore}</span>
+                          <span class="at">{game.neutral ? 'vs' : 'at'}</span>
+                          <TeamChip abbr={game.home} size="sm" />
+                          <span class:list={['score', { won: game.homeScore! > game.awayScore! }]}>{game.homeScore}</span>
+                          {game.overtime && <span class="at">OT</span>}
+                        </span>
+                      </td>
+                      <td class="label">{label}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          ))}
+        </div>
+        <p class="table-foot">
+          Labels mark comebacks, thrillers and shootouts. The{' '}
+          <a href={url(`week/${schedule.season}/${week}`)}>{name!.toLowerCase()} recap</a> ranks every game by excitement.
+        </p>
+      </>
+    )
+  }
+</Panel>
+
+<style>
+  .halves {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+    align-items: start;
+  }
+
+  @media (max-width: 760px) {
+    .halves {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    /* One table on phones: the second's top border would double the first's bottom. */
+    .halves > .results + .results {
+      margin-top: -1px;
+    }
+  }
+
+  .results {
+    width: 100%;
+  }
+
+  .results tr.marked td:first-child {
+    border-left: var(--mark-bar) solid var(--header);
+  }
+
+  .game {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    white-space: nowrap;
+  }
+
+  .score {
+    min-width: 2ch;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Winners in bold, not colored. */
+  .score.won,
+  .label {
+    font-weight: 700;
+  }
+
+  .at {
+    color: var(--text-dim);
+    padding: 0 var(--space-1);
+  }
+</style>

@@ -191,9 +191,12 @@ const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
     font-size: 15px;
   }
 
+  /* Slate, not first-down yellow: on a page with live data, yellow means live. */
   .caption[data-kind='touchdown'],
   .caption[data-kind='penalty'] {
-    background: var(--highlight);
+    background: var(--header);
+    border-color: var(--header);
+    color: var(--header-text);
   }
 
   .tag {
