@@ -135,11 +135,12 @@ export function initReplay(root: HTMLElement): void {
     // Over the last second, a penalty on the play takes the caption (it is
     // part of the win probability swing), unless a touchdown holds it.
     const event = captionEventAt(scene, f);
-    const flag = event !== 'touchdown' && penalty && f >= last - prep.hz ? penalty : null;
+    const kind = event === 'pass_outcome_touchdown' ? 'touchdown' : event;
+    const flag = kind !== 'touchdown' && penalty && f >= last - prep.hz ? penalty : null;
     if (ui.caption) {
       ui.caption.hidden = event === null && flag === null;
       ui.caption.textContent = flag ?? (event ? CAPTION_WORDS[event]! : '');
-      ui.caption.dataset.kind = flag ? 'penalty' : (event ?? '');
+      ui.caption.dataset.kind = flag ? 'penalty' : (kind ?? '');
     }
 
     placed = ui.caption && !ui.caption.hidden ? [ui.caption.getBoundingClientRect()] : [];

@@ -340,3 +340,10 @@ test('a penalty reads in plain words', () => {
   assert.equal(penaltyText({ team: 'NO', player: null, type: 'Offside', yards: 1 }), 'Offside on NO, 1 yard');
   assert.equal(penaltyText(null), null);
 });
+
+test('a touchdown pass scores and keeps its caption', () => {
+  const s = scene({ events: [{ frame: 1, name: 'ball_snap' }, { frame: 3, name: 'pass_forward' }, { frame: 7, name: 'pass_outcome_touchdown' }] });
+  assert.deepEqual(scoreAt(s, 6), { home: 0, away: 0 });
+  assert.deepEqual(scoreAt(s, 7), { home: 6, away: 0 });
+  assert.equal(captionEventAt(s, 9.9), 'pass_outcome_touchdown');
+});

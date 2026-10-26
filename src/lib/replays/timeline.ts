@@ -267,7 +267,9 @@ export function clockAtFrame(prep: Prepared, f: number): string {
   return clockAt(prep.scene.play.clock, (f - prep.clockFrame) / prep.hz);
 }
 
-const SCORING = new Set(['touchdown', 'field_goal', 'safety', 'extra_point']);
+const SCORING = new Set(['touchdown', 'pass_outcome_touchdown', 'field_goal', 'safety', 'extra_point']);
+/** Events whose caption stays up for the rest of the play */
+const STAYS = new Set(['touchdown', 'pass_outcome_touchdown']);
 
 /** The score on the board: the one before the snap until a scoring event, then the one after. */
 export function scoreAt(scene: ReplayScene, f: number): { home: number; away: number } {
@@ -381,6 +383,7 @@ export const CAPTION_WORDS: Record<string, string> = {
   out_of_bounds: 'Out of bounds',
   safety: 'Safety',
   touchdown: 'Touchdown',
+  pass_outcome_touchdown: 'Touchdown',
 };
 
 /** The latest event to caption, by the same timing as the pixel captions. */
@@ -388,7 +391,7 @@ export function captionEventAt(scene: ReplayScene, f: number): string | null {
   let name: string | null = null;
   for (const e of scene.events) {
     if (e.frame > f || !(e.name in CAPTION_WORDS)) continue;
-    name = e.name === 'touchdown' || f - e.frame <= CAPTION_SECONDS * scene.hz ? e.name : null;
+    name = STAYS.has(e.name) || f - e.frame <= CAPTION_SECONDS * scene.hz ? e.name : null;
   }
   return name;
 }

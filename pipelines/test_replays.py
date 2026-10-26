@@ -94,6 +94,9 @@ class FrameTests(unittest.TestCase):
         players, ball, frames = replays.frames_of(rows)
         self.assertEqual(frames, [0])
         self.assertEqual(players['qb'][0]['x'], '2')
+        # A frame with the ball alone (files can end with these) is not a frame.
+        rows = play({0: {'ball': (1, 1, 0), 'qb': (2, 2, 0)}, 1: {'ball': (1, 1, 0)}})
+        self.assertEqual(replays.frames_of(rows)[2], [0])
         self.assertEqual(set(players['qb']), {0, 1})
 
     def test_flights_run_from_the_throw_to_its_first_end(self):
@@ -127,19 +130,71 @@ class CarrierTests(unittest.TestCase):
         self.assertEqual([carriers[f] for f in (2, 3)], ['qb', 'qb'])  # pinned; still in his hands at the handoff
         self.assertEqual(carriers[4], 'rb')  # the first frame it is on the back, not three later
 
-    def test_a_new_carrier_needs_three_frames_in_a_row(self):
-        # The RB has it; a defender is nearest the ball for two frames (a
-        # pileup), then for three.
+    def test_tacklers_piling_on_do_not_take_the_ball(self):
+        # The RB has it; a defender is nearest the ball for two frames, then
+        # from frame 10 on, as he is wrapped up. No fumble: it stays the RB's.
         frames = {}
         for f in range(16):
             if f < 6 or 8 <= f < 10:
                 ball = (72.0, 27.0, 0)  # on the RB
             else:
-                ball = (76.0, 30.0, 0)  # on the CB: frames 6 and 7, then from 10
+                ball = (76.0, 30.0, 0)  # beside the CB
             frames[f] = {'ball': ball, 'qb': (74.0, 25.0, 0), 'rb': (72.0, 27.0, 0), 'cb': (76.0, 30.0, 0)}
         carriers = self.carriers(play(frames, {1: 'ball_snap', 3: 'handoff'}), 'rush')
-        self.assertEqual([carriers[f] for f in range(4, 10)], ['rb'] * 6)  # two frames: no switch
-        self.assertEqual([carriers[f] for f in (10, 11, 12)], ['rb', 'rb', 'cb'])
+        self.assertEqual([carriers[f] for f in range(4, 16)], ['rb'] * 12)
+
+    def test_a_fumble_is_loose_until_recovered(self):
+        frames = {}
+        for f in range(16):
+            ball = (72.0, 27.0, 0) if f < 8 else ((74.0, 28.5, 0) if f < 11 else (76.0, 30.0, 0))
+            frames[f] = {'ball': ball, 'qb': (74.0, 25.0, 0), 'rb': (72.0, 27.0, 0), 'cb': (76.0, 30.0, 0)}
+        carriers = self.carriers(play(frames, {1: 'ball_snap', 3: 'handoff', 8: 'fumble', 11: 'fumble_defense_recovered'}),
+                                 'rush')
+        self.assertEqual(carriers[7], 'rb')
+        self.assertEqual([carriers[f] for f in (8, 9, 10)], [None] * 3)
+        self.assertEqual(carriers[11], 'cb')  # the defense recovered it, at once
+
+    def test_with_nobody_and_no_event_the_nearest_needs_three_frames(self):
+        # No quarterback to pin and no event: the RB stands over the ball from the snap.
+        frames = {f: {'ball': (72.0, 27.0, 0), 'rb': (72.0, 27.0, 0), 'cb': (80.0, 30.0, 0)} for f in range(8)}
+        carriers = self.carriers(play(frames, {1: 'ball_snap'}), 'rush')
+        self.assertEqual([carriers[f] for f in (1, 2, 3)], [None, None, 'rb'])
+
+    def test_an_interception_goes_to_the_defense_even_with_the_receiver_nearer(self):
+        # The pass arrives at 4 between the WR (0.3 yd) and the CB (0.8 yd); it is intercepted.
+        frames = {}
+        for f in range(10):
+            ball = (75.0, 25.0, 0) if f < 2 else ((76.0 + f, 24.0, 0) if f < 4 else (80.0, 24.0, 0))
+            frames[f] = {'ball': ball, 'qb': (74.0, 25.0, 0), 'wr': (80.0, 24.3, 0), 'cb': (80.0, 23.2, 0)}
+        carriers = self.carriers(play(frames, {1: 'ball_snap', 2: 'pass_forward', 4: 'pass_arrived',
+                                               5: 'pass_outcome_interception'}))
+        self.assertEqual(carriers[4], 'cb')
+
+    def test_a_punt_that_lands_is_loose_until_fielded(self):
+        frames = {}
+        for f in range(14):
+            if f < 3:
+                ball = (60.0, 26.0, 0)
+            elif f < 6:
+                ball = (60.0 - (f - 2) * 8.0, 26.0, 0)
+            else:
+                ball = (36.0 - (f - 6) * 0.5, 26.0, 0)  # rolling, past a coverage man
+            frames[f] = {'ball': ball, 'rb': (61.0, 26.0, 0),  # the punter's side (ARI)
+                         'wr': (33.5, 26.0, 0),  # ARI coverage, beside the rolling ball
+                         'cb': (32.0, 26.0, 0)}  # CHI returner
+        rows = play(frames, {1: 'ball_snap', 2: 'punt', 6: 'punt_land', 10: 'punt_received'}, playType='play_type_punt')
+        carriers = self.carriers(rows, 'punt')
+        self.assertEqual([carriers[f] for f in range(6, 10)], [None] * 4)  # loose: not the coverage man
+        self.assertEqual(carriers[10], 'cb')
+
+    def test_the_carrier_holds_after_the_play(self):
+        frames = {}
+        for f in range(12):
+            ball = (72.0, 27.0, 0) if f < 8 else (76.0, 30.0, 0)
+            frames[f] = {'ball': ball, 'qb': (74.0, 25.0, 0), 'rb': (72.0, 27.0, 0), 'cb': (76.0, 30.0, 0)}
+        rows = play(frames, {1: 'ball_snap', 3: 'handoff', 7: 'tackle', 8: 'fumble', 9: 'fumble_defense_recovered'})
+        carriers = self.carriers(rows, 'rush')
+        self.assertEqual([carriers[f] for f in range(7, 12)], ['rb'] * 5)  # the whistle blew at 7
 
     def lateral_play(self):
         """The WR catches a pass at 4, laterals at 8; the ball is in the air
@@ -281,9 +336,9 @@ class SceneTests(unittest.TestCase):
             elif f < 6:
                 ball = (65.0 - (f - 1) * 10.0, 26.0, 25.0)
             else:
-                ball = (15.0 + (f - 6) * 3.0, 26.0, 8.0)
-            returner = (15.0 + max(0, f - 6) * 3.0, 26.0, 8.0)
-            frames[f] = {'ball': ball, 'cb': returner, 'wr': (65.0 - f * 3.0, 20.0, 9.0)}
+                ball = (15.0 + (f - 6) * 0.8, 26.0, 8.0)
+            returner = (15.0 + max(0, f - 6) * 0.8, 26.0, 8.0)
+            frames[f] = {'ball': ball, 'cb': returner, 'wr': (65.0 - f * 0.9, 20.0, 9.0)}
         rows = play(frames, {2: 'kickoff', 6: 'kick_received', 10: 'tackle'},
                     playType='play_type_kickoff', down='0', yardsToGo='0', playDirection=direction,
                     absoluteYardlineNumber='65' if direction == 'left' else '55')
@@ -326,6 +381,30 @@ class SceneTests(unittest.TestCase):
         scene = replays.build_scene('2018_OAK_2018092311_141', rows, {**self.PBP, 'home_team': 'LV'},
                                     {**self.COLORS, 'LV': self.COLORS['ARI']})
         self.assertEqual((scene['play']['home'], scene['teams']['featured']['abbr']), ('OAK', 'OAK'))
+
+    def test_after_the_play_a_tracking_jump_hides_the_player(self):
+        # After the play ends (out of bounds at 10) the CB stands at x 98, then
+        # his track leaps 15 yards at frame 12.
+        def settle(r):
+            if r['nflId'] != 'cb' or int(r['frame']) < 10:
+                return r
+            return dict(r, x=str(98.0 + (15.0 if int(r['frame']) >= 12 else 0.0)))
+        rows = [settle(r) for r in pass_play()]
+        scene = replays.build_scene('2018_ARI_2018092311_141', rows, self.PBP, self.COLORS)
+        cb = next(p for p in scene['players'] if p['id'] == 'cb')
+        self.assertIsNotNone(cb['x'][11])
+        self.assertEqual(cb['x'][12:], [None] * (len(cb['x']) - 12))
+
+    def test_a_touchdown_pass_ends_the_play(self):
+        rows = [dict(r, event='pass_outcome_touchdown' if r['event'] == 'out_of_bounds' else r['event']) for r in pass_play()]
+        players, ball, frames = replays.frames_of(rows)
+        events = replays.events_of(rows)
+        self.assertEqual(replays.action_end(events, 2), 10)
+
+    def test_yard_lines_drop_the_leading_zero(self):
+        self.assertEqual(replays.yardline_text('BAL 03'), 'BAL 3')
+        self.assertEqual(replays.yardline_text('CHI 35'), 'CHI 35')
+        self.assertIsNone(replays.yardline_text(''))
 
     def test_retired_abbreviations_keep_their_name_and_take_todays_colors(self):
         colors = {'LV': {'primary': '#000000', 'secondary': '#a5acaf'}}

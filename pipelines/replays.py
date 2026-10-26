@@ -21,7 +21,8 @@ players stand past the field's edges.
 
 The rules, in the order they run:
 - Rows: the first row for each player (nflId) or the ball in a frame is
-  kept, repeats dropped. Frames without a ball row are not frames.
+  kept, repeats dropped. Frames without a ball row, or with no player's,
+  are not frames.
 - Featured team: the team the replay follows, the one whose win
   probability rose on the play (featured_team), so its swing is a gain and
   a return or pick-six is seen from the team that made it. With no change
@@ -34,12 +35,20 @@ The rules, in the order they run:
   snapping team then moves (1 right, -1 left: a return or pick-six), for
   its line to gain and air yards.
 - Carrier: none before the snap or kick, none while the ball is in the air
-  (a flight, below) or dead after an incompletion. From the snap the
+  (a flight, below), loose (a fumble, a muff or a kick that lands, until an
+  event says who has it) or dead after an incompletion. From the snap the
   snapping team's quarterback (the punter on a punt) holds it until a
-  handoff, pass, lateral or fumble. Otherwise it is the player nearest the ball within
-  CARRIER_REACH yards; a new nearest player (or nobody) takes over only
-  after SWITCH_FRAMES frames in a row, except that the first carrier after
-  a flight, and the first new player after a handoff, take it at once.
+  handoff, pass, lateral or fumble. When a flight or a loose ball ends, the
+  first player of the team that gets it (a catch or touchdown: the passing
+  team; an interception or a return: the other) within CARRIER_REACH yards
+  takes it at once; after a handoff, the first new player near it. Then
+  whoever has it keeps it until an event takes it away: nearness alone
+  never moves it, so tacklers piling on do not. With nobody and no event
+  (rare), the nearest player within reach for SWITCH_FRAMES frames takes
+  it. From the end of the play (its terminal event) the carrier stays.
+- Tracking glitches: after the play, a player who moves faster than
+  TOP_SPEED in one frame (tracks reset as players leave) is hidden from
+  then on.
 - Flights, for the renderer's ball arc: from a pass or kick event to the
   first event that ends it (FLIGHTS), and from a lateral to the first frame
   the ball is within CATCH_REACH of someone other than the tosser (NGS has
@@ -70,6 +79,7 @@ import io
 import json
 import math
 import os
+import re
 import ssl
 import sys
 import urllib.request
@@ -106,8 +116,8 @@ SNAP_EVENTS = {'ball_snap', 'snap_direct'}
 TOSSES = {'lateral': 'lateral', 'snap_direct': 'snap'}
 TERMINAL_EVENTS = {
     'touchdown', 'tackle', 'out_of_bounds', 'qb_sack', 'qb_strip_sack', 'qb_slide', 'qb_kneel', 'qb_spike',
-    'pass_outcome_incomplete', 'fair_catch', 'touchback', 'punt_downed', 'safety', 'field_goal',
-    'field_goal_missed', 'field_goal_blocked', 'extra_point', 'extra_point_missed',
+    'pass_outcome_incomplete', 'pass_outcome_touchdown', 'fair_catch', 'touchback', 'punt_downed', 'safety',
+    'field_goal', 'field_goal_missed', 'field_goal_blocked', 'extra_point', 'extra_point_missed',
 }
 # A flight starts at one of these events and ends at the first of its ends.
 FLIGHTS = {
@@ -122,6 +132,17 @@ FLIGHTS = {
 HOLDER_RELEASES = {'handoff', 'pass_forward', 'pass_shovel', 'lateral', 'fumble', 'fumble_offense_recovered',
                    'fumble_defense_recovered', 'punt', 'punt_blocked'}
 DEAD_BALL = {'pass_outcome_incomplete', 'touchback', 'punt_downed'}
+# A loose ball: from one of these to the first LOOSE_ENDS event after it,
+# nobody has it. The end says whose it becomes: the team that snapped,
+# the other team, or None (whoever).
+LOOSE_STARTS = {'fumble', 'punt_land', 'kickoff_land', 'punt_muffed'}
+LOOSE_ENDS = {'fumble_offense_recovered': 'snapping', 'fumble_defense_recovered': 'other',
+              'punt_received': 'other', 'kick_received': 'other', 'punt_downed': None, 'touchback': None}
+# Whose a flight's ball is when it ends, by the first outcome after it.
+CATCHES = {'pass_outcome_caught': 'snapping', 'pass_outcome_touchdown': 'snapping',
+           'pass_outcome_interception': 'other', 'kick_received': 'other', 'punt_received': 'other'}
+CATCH_LOOKAHEAD = 10  # frames after a flight's end to look for its outcome
+TOP_SPEED = 12.5  # yards a second (25.6 mph): faster than anyone runs, so a tracking glitch
 
 # Retired abbreviations and today's franchise: for colors, and to match NGS
 # teams to nflverse's. nflverse calls the Rams LA, normalized as everywhere
@@ -206,7 +227,8 @@ def featured_team(home: str, away: str, home_wp, home_wp_post, fallback: str) ->
 
 def frames_of(rows: list[dict]) -> tuple[dict, dict, list[int]]:
     """Players' and the ball's rows by frame, repeats dropped, and the
-    frames that have a ball row, in order."""
+    frames that have a ball row and at least one player's, in order (some
+    files end with frames of the ball alone)."""
     players: dict[str, dict[int, dict]] = {}
     ball: dict[int, dict] = {}
     for row in rows:
@@ -215,7 +237,8 @@ def frames_of(rows: list[dict]) -> tuple[dict, dict, list[int]]:
             ball.setdefault(frame, row)
         elif row['nflId']:
             players.setdefault(row['nflId'], {}).setdefault(frame, row)
-    return players, ball, sorted(ball)
+    tracked = {f for track in players.values() for f in track}
+    return players, ball, sorted(f for f in ball if f in tracked)
 
 
 def events_of(rows: list[dict]) -> list[tuple[int, str]]:
@@ -301,12 +324,13 @@ def end_frame(events, frames: list[int], snap: int, carriers: dict[int, str | No
 
 # Carrier -------------------------------------------------------------------
 
-def nearest(players, ball_row: dict, frame: int, reach: float = CARRIER_REACH) -> str | None:
+def nearest(players, ball_row: dict, frame: int, reach: float = CARRIER_REACH, team: str | None = None) -> str | None:
+    """The player nearest the ball within `reach`, of `team` only when given."""
     bx, by = float(ball_row['x']), float(ball_row['y'])
     best, best_d = None, reach
     for pid, track in players.items():
         row = track.get(frame)
-        if row is None:
+        if row is None or (team is not None and row['teamAbbr'] != team):
             continue
         d = math.hypot(float(row['x']) - bx, float(row['y']) - by)
         if d <= best_d:
@@ -325,17 +349,56 @@ def holder_at_snap(players, ball_row: dict, frame: int, snapping: str, position:
     return min(options)[1] if options else None
 
 
+def action_end(events, snap: int) -> int | None:
+    """The frame the play is over: its first terminal event after the snap."""
+    terminal = first_event(events, TERMINAL_EVENTS, after=snap)
+    return terminal[0] if terminal else None
+
+
+def loose_frames(events, frames: list[int]) -> set[int]:
+    """Frames the ball is loose: from a fumble, a muff or a kick landing to
+    the first event saying who has it (LOOSE_ENDS), or the last frame."""
+    loose: set[int] = set()
+    for frame, name in events:
+        if name not in LOOSE_STARTS:
+            continue
+        end = first_event(events, set(LOOSE_ENDS), after=frame + 1)
+        loose.update(f for f in frames if frame <= f < (end[0] if end else frames[-1] + 1))
+    return loose
+
+
 def carriers_of(players, ball, frames: list[int], events, snapping: str, play_type: str) -> dict[int, str | None]:
     """The ball carrier's nflId (or None) for every frame, by the rules in
-    the module docstring."""
+    the module docstring: nobody before the snap, in the air, loose or dead;
+    the quarterback (or punter) from the snap to his release; at the end of
+    a flight or a loose ball, the first player of the team that gets it
+    (CATCHES, LOOSE_ENDS) to be within reach, at once; after a handoff, the
+    first new player; otherwise whoever has it keeps it, and with nobody,
+    the nearest player within reach for SWITCH_FRAMES frames takes it. From
+    the end of the play the carrier stays as it was."""
     snap = first_event(events, START_EVENTS)
     if snap is None:
         return {frame: None for frame in frames}
+    team_of = {pid: track[min(track)]['teamAbbr'] for pid, track in players.items()}
+    other = next((t for t in team_of.values() if t and t != snapping), None)
+    side = {'snapping': snapping, 'other': other, None: None}
     flights = all_flights(events, players, ball, frames)
     in_flight = lambda f: any(fl['from'] <= f < fl['to'] for fl in flights)
-    flight_ends = {fl['to'] for fl in flights}
+    landings = {f for f, name in events if name in ('punt_land', 'kickoff_land')}
     handoffs = {f for f, name in events if name == 'handoff' and f >= snap[0]}
+    loose = loose_frames(events, frames)
+    loose_end = {f: LOOSE_ENDS[name] for f, name in events if name in LOOSE_ENDS}
     dead = first_event(events, DEAD_BALL, after=snap[0])
+    over = action_end(events, snap[0])
+
+    def catcher_team(flight, last_team):
+        """Whose a flight's ball is at its end: by its outcome; a lateral or
+        direct snap stays with the team that tossed it."""
+        if flight['kind'] in ('lateral', 'snap'):
+            return last_team or snapping
+        outcome = next((name for f, name in events
+                        if flight['to'] <= f <= flight['to'] + CATCH_LOOKAHEAD and name in CATCHES), None)
+        return side[CATCHES[outcome]] if outcome else None
 
     holder, release = None, None
     if snap[1] == 'ball_snap':
@@ -346,32 +409,51 @@ def carriers_of(players, ball, frames: list[int], events, snapping: str, play_ty
 
     carriers: dict[int, str | None] = {}
     current, candidate, streak = None, None, 0
-    landed = False  # a flight has ended and nobody has the ball yet
-    handing = False  # a handoff is under way: the first new nearest player takes it at once
+    taking = False  # a flight or loose ball has ended: the first of `taking_team` in reach takes it at once
+    taking_team: str | None = None
+    handing = False
+    last_team: str | None = None
     for frame in frames:
-        if frame in flight_ends:
-            landed = True
+        if over is not None and frame > over:
+            carriers[frame] = carriers.get(over)
+            continue
         if frame in handoffs:
             handing = True
-        if frame < snap[0] or in_flight(frame) or (dead and frame >= dead[0]):
-            current, candidate, streak = None, None, 0
-        elif holder and (release is None or frame < release):
-            current, candidate, streak = holder, None, 0
+        if frame < snap[0] or (dead and frame >= dead[0]):
+            current = None
+        elif in_flight(frame):
+            if current is not None:
+                last_team = team_of[current]
+            current, taking = None, True
+            flight = next(fl for fl in flights if fl['from'] <= frame < fl['to'])
+            taking_team = None if flight['to'] in landings else catcher_team(flight, last_team)
+            if flight['to'] in landings:
+                taking = False  # a kick that lands is loose, not caught
+        elif holder and (release is None or frame < release) and frame not in loose:
+            current = holder
+        elif frame in loose:
+            if current is not None:
+                last_team = team_of[current]
+            current, taking = None, False
         else:
-            near = nearest(players, ball[frame], frame)
-            if landed and current is None:
-                current, candidate, streak = near, None, 0
-                landed = near is None
-            elif handing and near is not None and near != current:
-                current, candidate, streak = near, None, 0
-                handing = False
-            elif near == current:
-                candidate, streak = None, 0
-            else:
-                streak = streak + 1 if near == candidate else 1
+            if frame in loose_end:
+                taking, taking_team = True, side[loose_end[frame]]
+            if taking:
+                near = nearest(players, ball[frame], frame, CARRIER_REACH, taking_team)
+                if near is not None:
+                    current, taking, handing = near, False, False
+            elif handing:
+                near = nearest(players, ball[frame], frame)
+                if near is not None and near != current:
+                    current, handing = near, False
+            elif current is None:
+                near = nearest(players, ball[frame], frame)
+                streak = streak + 1 if near is not None and near == candidate else (1 if near else 0)
                 candidate = near
                 if streak >= SWITCH_FRAMES:
                     current, candidate, streak = near, None, 0
+        if current is not None:
+            last_team = team_of[current]
         carriers[frame] = current
     return carriers
 
@@ -386,6 +468,26 @@ def team_entry(abbr: str, colors: dict[str, dict]) -> dict:
     shown = normalize_team(abbr)
     palette = colors.get(COLOR_TEAM.get(shown, shown), {'primary': '#5b6570', 'secondary': '#ffffff'})
     return {'abbr': shown, **palette}
+
+
+def glitch_after(track: dict[int, dict], frames: list[int], over: int | None) -> int | None:
+    """The first frame after the play that a player moves faster than
+    TOP_SPEED from the frame before: a track resetting as he leaves."""
+    if over is None:
+        return None
+    for prev, f in zip(frames, frames[1:]):
+        a, b = track.get(prev), track.get(f)
+        if f <= over or a is None or b is None:
+            continue
+        step = math.hypot(float(b['x']) - float(a['x']), float(b['y']) - float(a['y']))
+        if step * HZ / (f - prev) > TOP_SPEED:
+            return f
+    return None
+
+
+def yardline_text(value: str) -> str | None:
+    """NGS's yard line as people write it: 'BAL 03' is 'BAL 3'."""
+    return re.sub(r' 0(\d)$', r' \1', value) or None
 
 
 def build_scene(key: str, rows: list[dict], pbp_row: dict | None, colors: dict[str, dict]) -> dict:
@@ -428,14 +530,16 @@ def build_scene(key: str, rows: list[dict], pbp_row: dict | None, colors: dict[s
         ball_x.append(tenths(x))
         ball_y.append(tenths(y))
 
+    over = action_end(events, snap[0]) if snap else None
     order = sorted(players, key=lambda pid: (players[pid][min(players[pid])]['teamAbbr'] != featured, pid))
     scene_players = []
     for pid in order:
         track = players[pid]
         any_row = track[min(track)]
         xs, ys, dirs, os_ = [], [], [], []
+        gone = glitch_after(track, kept, over)
         for f in kept:
-            row = track.get(f)
+            row = track.get(f) if gone is None or f < gone else None
             if row is None:
                 for column in (xs, ys, dirs, os_):
                     column.append(None)
@@ -558,7 +662,7 @@ def play_facts(first: dict, pbp_row: dict | None, featured: str, home: str) -> d
         'clock': first['gameClock'],
         'down': down,
         'yardsToGo': int(num(first['yardsToGo'])) if down else None,
-        'yardline': first['yardline'] or None,
+        'yardline': yardline_text(first['yardline']),
         'scoreBefore': before,
         'description': first['playDescription'],
         'date': None, 'nflverseGameId': None, 'scoreAfter': None, 'wpBefore': None, 'wpAfter': None,

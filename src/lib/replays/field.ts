@@ -11,17 +11,23 @@ export const PX = 6;
 /** Yards shown beyond the field on every side */
 export const MARGIN_X = 10;
 export const MARGIN_Y = 6;
+/**
+ * Yards painted beyond the far sideline: enough for the camera to follow
+ * the highest kick (a 5 s hang time peaks about 33 yards up) kicked along
+ * that sideline.
+ */
+export const MARGIN_TOP = 36;
 export const FIELD_LENGTH = 120;
 export const FIELD_WIDTH = 53.3;
 /** Inbound hash marks, yards from the near sideline (70 feet 9 inches) */
 export const HASH_Y = [23.58, FIELD_WIDTH - 23.58];
 
 export const FIELD_PX_W = Math.round((FIELD_LENGTH + 2 * MARGIN_X) * PX);
-export const FIELD_PX_H = Math.round((FIELD_WIDTH + 2 * MARGIN_Y) * PX);
+export const FIELD_PX_H = Math.round((FIELD_WIDTH + MARGIN_Y + MARGIN_TOP) * PX);
 
 /** Field yards to pixels on the field canvas (unrounded). */
 export const fx = (x: number) => (x + MARGIN_X) * PX;
-export const fy = (y: number) => (FIELD_WIDTH + MARGIN_Y - y) * PX;
+export const fy = (y: number) => (FIELD_WIDTH + MARGIN_TOP - y) * PX;
 
 export interface FieldColors {
   turf: string;
