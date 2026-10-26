@@ -966,7 +966,8 @@ it out of. Keep it that way until Tyler says otherwise.
   yellow.
 - Below it, the latest week's 4th downs with a stored pre-game result in
   `decisions.json`, newest first, a "models disagree" filter, an outcome-free count of
-  disagreements, a link to each call on its game page and a button that loads it into
+  disagreements, each item's breakdown in a closed "Per-term breakdown" toggle, a link
+  to each call on its game page and a button that loads it into
   the calculator (a test checks every stored play gives its stored numbers there). No
   play text, team call, outcomes, accuracy, records or WP-cost tallies.
 - The result and breakdown are reusable: `comparisonView` / `breakdownView`

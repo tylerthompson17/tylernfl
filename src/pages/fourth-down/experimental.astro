@@ -254,7 +254,10 @@ const LICENSE = 'https://github.com/nflverse/nfl4th/blob/master/LICENSE';
                   <p class="x-game">{href ? <a href={href}>{item.game}</a> : item.game}</p>
                   <p class="x-down">{item.situation}</p>
                   <ModelComparison result={item.result} team={item.team} />
-                  <TermBreakdown result={item.result} />
+                  <details class="x-breakdown">
+                    <summary>Per-term breakdown</summary>
+                    <TermBreakdown result={item.result} />
+                  </details>
                   <button type="button" class="x-load" data-load={JSON.stringify(item.values)}>
                     Load into the calculator
                   </button>
@@ -454,6 +457,17 @@ const LICENSE = 'https://github.com/nflverse/nfl4th/blob/master/LICENSE';
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 15px;
+  }
+
+  .x-breakdown summary {
+    cursor: pointer;
+    color: var(--link);
+    text-decoration: underline;
+    width: fit-content;
+  }
+
+  .x-breakdown[open] summary {
+    margin-bottom: var(--space-1);
   }
 
   .x-load {
