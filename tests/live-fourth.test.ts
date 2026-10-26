@@ -7,6 +7,7 @@ import { loadFourthDownModel, recommend, type ModelFiles } from '../src/lib/four
 import { liveWords, optionRows, situationOf, type LiveGameInfo } from '../src/lib/live-fourth/situation.ts';
 import { parseSnapshots, yardline100, type Snapshot } from '../src/lib/live-fourth/snapshot.ts';
 import { callOf, stepAll, type GameTrack, type LiveFourthDown } from '../src/lib/live-fourth/tracker.ts';
+import { punterLine } from '../src/lib/live-fourth/words.ts';
 
 const ESPN = join(import.meta.dirname, 'fixtures', 'espn');
 const fixture = JSON.parse(readFileSync(join(ESPN, 'live-fourth-401873010.json'), 'utf8'));
@@ -140,6 +141,8 @@ test('words, the model situation and fixed-order options for a live 4th down', (
     manifest: read('manifest.json'), fdModel: read('fd_model.json'), epModel: read('ep_model.json'),
     homeWpModel: read('home_wp_model.json'), wpSpreadModel: read('wp_spread_model.json'),
     twoPtModel: read('two_pt_model.json'), tables: read('tables.json'), terms: read('terms.json'),
+    sneak: read('sneak.json'), punter: read('punter.json'), coverage: read('coverage.json'),
+    teamPunters: read('teamPunters.json'),
   };
   assert.equal(loadFourthDownModel(files), true);
   const options = optionRows(recommend(s));
@@ -147,4 +150,17 @@ test('words, the model situation and fixed-order options for a live 4th down', (
   assert.deepEqual(options.rows.map((r) => r.label), ['Go for it', 'Field goal', 'Punt']);
   assert.ok(options.rows.every((r) => /%$|too long|not considered/.test(r.value)));
   assert.deepEqual(optionRows({ supported: false, reason: 'overtime' }), { message: "nfl4th doesn't compute decisions in overtime." });
+
+  // No punterId on a live 4th down: the line names the team punter the
+  // experimental model fell back on, by its term's label.
+  const result = recommend(s);
+  assert.ok(result.supported && result.experimental.supported);
+  const chiPunter = files.teamPunters.teams.CHI.name;
+  assert.equal(punterLine(result, s), `Experimental model: assumed CHI's most recent punter, Punter (${chiPunter}).`);
+  assert.equal(punterLine(result, { ...s, punterId: '123' }), null);
+  assert.equal(punterLine({ ...result, wpPunt: null }, s), null);
+  assert.equal(punterLine({ ...result, experimental: { supported: false, reason: 'season' } }, s), null);
+  const unknown = { ...result, experimental: { ...result.experimental, flags: { ...result.experimental.flags, punterUnknown: true } } };
+  assert.equal(punterLine(unknown, s), 'Experimental model: no CHI punter found, so it assumed a league-average punter.');
+  assert.equal(punterLine({ supported: false, reason: 'overtime' }, s), null);
 });

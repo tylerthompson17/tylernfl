@@ -161,6 +161,22 @@ class BuildGamesTest(unittest.TestCase):
         self.assertEqual([s['playId'] for s in g['decisionSpots']], [1])
         self.assertIsNone(build_games([(schedule, plays)], [], None, {'games': []})['2025_01_AAA_BBB']['decisions'])
 
+    def test_a_stored_experimental_result_is_never_replaced(self):
+        schedule = {'game_id': '2026_08_AAA_BBB', 'season': 2026, 'week': 8, 'game_type': 'REG',
+                    'away_team': 'AAA', 'home_team': 'BBB', 'away_score': 7, 'home_score': 0}
+        plays = [play(1, game_id='2026_08_AAA_BBB', qtr=4, total_away_score=7)]
+        old = {'supported': True, 'modelId': 'fd-experimental-1', 'dataAsOf': {'season': 2026, 'week': 7}}
+        new = {'supported': True, 'modelId': 'fd-experimental-2', 'dataAsOf': {'season': 2026, 'week': 7}}
+        record = lambda pid, **e: {'gameId': '2026_08_AAA_BBB', 'playId': pid, 'call': 'go', **e}  # noqa: E731
+        snapshot = {'modelVersion': 'old', 'closeMargin': 0.05, 'tries': [],
+                    'fourthDowns': [record(1, experimental=old), record(2, experimental=old), record(3)]}
+        decisions = {'modelVersion': 'nfl4th-x', 'summary': {'closeMargin': 0.05}, 'tries': [],
+                     'fourthDowns': [record(1), record(2, experimental=new), record(3, experimental=new), record(4)]}
+        g = build_games([(schedule, plays)], [], decisions, {'games': []},
+                        {'2026_08_AAA_BBB': snapshot})['2026_08_AAA_BBB']
+        # Stored: kept, whatever this run has. Not stored yet: this run's, if any.
+        self.assertEqual([d.get('experimental') for d in g['decisions']['fourthDowns']], [old, old, new, None])
+        self.assertEqual(g['decisions']['modelVersion'], 'nfl4th-x')
 
 if __name__ == '__main__':
     unittest.main()

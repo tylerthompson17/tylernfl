@@ -7,7 +7,10 @@
  * runs every fixture through recommend()/recommendTry().
  * Rules (roadmap export decision 1): every probability within 1e-6 of
  * Python; calls, null options, flags, reason codes, kick distance and the
- * shape of the result exact.
+ * shape of the result exact. The experimental model (contract v5) is held
+ * to the same rules, on the exported tables (fourth_down.json) and on
+ * synthetic ones (fourth_down_synthetic.json), and its breakdown must add
+ * up to each option's WP within 1e-12.
  *
  * The default run checks a seeded sample (300 4th downs, 100 tries, the same
  * ones every run) so it stays a few seconds; ENGINE_FIXTURES=all checks every
@@ -27,7 +30,9 @@ import {
 
 const TOL = 1e-6;
 /** Fixtures per file in the default run; ENGINE_FIXTURES=all runs every one. */
-const SAMPLE_SIZE: Record<string, number> = { 'fourth_down.json': 300, 'try.json': 100 };
+const SAMPLE_SIZE: Record<string, number> = { 'fourth_down.json': 300, 'try.json': 100, 'fourth_down_synthetic.json': 60 };
+/** The breakdown identity: wpAllTermsOff + term deltas + residual = wp. */
+const IDENTITY_TOL = 1e-12;
 const SAMPLE_SEED = 20261022;
 const FULL = process.env.ENGINE_FIXTURES === 'all';
 const MODELS_DIR = process.env.MODELS_DIR ?? join(import.meta.dirname, '..', 'models', 'fourth-down');
@@ -45,7 +50,24 @@ function files(): ModelFiles {
     twoPtModel: readModel('two_pt_model.json'),
     tables: readModel('tables.json'),
     terms: readModel('terms.json'),
+    sneak: readModel('sneak.json'),
+    punter: readModel('punter.json'),
+    coverage: readModel('coverage.json'),
+    teamPunters: readModel('teamPunters.json'),
   };
+}
+
+/** Breakdown identity of an experimental result, per non-null option. */
+function identityErrors(name: string, r: any, bad: string[]) {
+  const x = r?.experimental;
+  if (!r?.supported || !x?.supported) return;
+  for (const key of ['go', 'punt', 'fieldGoal']) {
+    const o = x.options[key];
+    if (!o) continue;
+    let sum = o.wpAllTermsOff + o.residual;
+    for (const t of x.terms) if (t.options.includes(key)) sum += t.wpDelta[key];
+    if (!(Math.abs(sum - o.wp) <= IDENTITY_TOL)) bad.push(`[${name}] ${key}: identity off by ${Math.abs(sum - o.wp)}`);
+  }
 }
 
 /** Exact-match fields among the numbers: everything else numeric is a probability. */
@@ -117,7 +139,12 @@ function runFixtures(file: string, fn: (s: any) => unknown) {
   const worst = new Map<string, number>();
   const bad: string[] = [];
   const t0 = performance.now();
-  for (const c of cases) compare(c.expected, fn(c.situation), `[${c.name}]`, worst, bad);
+  for (const c of cases) {
+    const actual = fn(c.situation);
+    compare(c.expected, actual, `[${c.name}]`, worst, bad);
+    identityErrors(c.name, actual, bad);
+    identityErrors(`${c.name} (Python)`, c.expected, bad);
+  }
   const ms = (performance.now() - t0) / cases.length;
   const top = [...worst.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4);
   console.log(`${file}: ${cases.length} of ${fx.cases.length} cases, ${ms.toFixed(1)} ms each, largest diffs ${top.map(([k, v]) => `${k} ${v.toExponential(1)}`).join(', ')}`);
@@ -132,6 +159,38 @@ test('model loads', () => {
 test(`recommend() matches Python on ${FULL ? 'every' : 'a sample of'} 4th down fixture${FULL ? '' : 's'}`, () => {
   loadModel(files(), ENGINE_CONTRACT_VERSION);
   runFixtures('fourth_down.json', recommend);
+});
+
+test(`experimental model matches Python on ${FULL ? 'every' : 'a sample of'} synthetic-table fixture${FULL ? '' : 's'}`, () => {
+  const fx = readFixture('fourth_down_synthetic.json');
+  assert.equal(loadModel({ ...files(), ...fx.tables }, ENGINE_CONTRACT_VERSION), true);
+  runFixtures('fourth_down_synthetic.json', recommend);
+  loadModel(files(), ENGINE_CONTRACT_VERSION);
+});
+
+test('a broken experimental model leaves nfl4th untouched', () => {
+  loadModel(files(), ENGINE_CONTRACT_VERSION);
+  const cases = readFixture('fourth_down.json').cases.filter((c: any) => c.expected.supported).slice(0, 50);
+  const broken: Partial<ModelFiles>[] = [
+    { sneak: undefined as any },
+    { punter: { ...files().punter, modelVersion: 'other' } },
+    { coverage: { ...files().coverage, season: 2099 } },
+    { teamPunters: { ...files().teamPunters, dataAsOf: { season: 2026, week: -1 } } },
+    { terms: { ...files().terms, experimental: { ...files().terms.experimental, terms: ['qbSneak'] } } },
+  ];
+  for (const patch of broken) {
+    assert.equal(loadModel({ ...files(), ...patch }, ENGINE_CONTRACT_VERSION), true);
+    for (const c of cases) {
+      const r: any = recommend(c.situation);
+      const { experimental, ...nfl4th } = r;
+      const { experimental: _x, ...expected } = c.expected;
+      assert.deepEqual(experimental, { supported: false, reason: 'unavailable' });
+      const bad: string[] = [];
+      compare(expected, nfl4th, `[${c.name}]`, new Map(), bad);
+      assert.deepEqual(bad, []);
+    }
+  }
+  loadModel(files(), ENGINE_CONTRACT_VERSION);
 });
 
 test(`recommendTry() matches Python on ${FULL ? 'every' : 'a sample of'} try fixture${FULL ? '' : 's'}`, () => {

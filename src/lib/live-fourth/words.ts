@@ -10,11 +10,15 @@
  * - for a 4th down still to be played: "nfl4th says: Go for it, by 3.1
  *   points. Waiting for the snap.", or "A close call (nfl4th leans Punt, by
  *   0.1 points)" under 0.02;
- * - a muffed punt says so: "Punted 36 yards, muffed, recovered by TB".
+ * - a muffed punt says so: "Punted 36 yards, muffed, recovered by TB";
+ * - which punter the experimental model assumed when none was given (live
+ *   items never give one), punterLine: not shown until the items show the
+ *   experimental model, and to be reworded then.
  * "By" is points of win probability: for an agreed call, how far ahead
  * nfl4th's choice was of the next option; for one against it, what the
  * team's choice gave up.
  */
+import type { FourthDownResult, FourthDownSituation } from '../fourth-down.ts';
 import type { LiveGrade } from './grade.ts';
 import { callWords } from './grade.ts';
 import type { TeamCall } from './tracker.ts';
@@ -97,4 +101,20 @@ export function pendingLine(grade: LiveGrade): string {
   if (grade.kind === 'unsupported') return `${grade.message} Waiting for the snap.`;
   if (grade.margin < CLOSE) return `A close call (nfl4th leans ${callWords(grade.call)}, by ${by(grade.margin)}). Waiting for the snap.`;
   return `nfl4th says: ${callWords(grade.call)}, by ${by(grade.margin)}. Waiting for the snap.`;
+}
+
+/**
+ * Not shown yet (see the delivery checklist in CLAUDE.md). The punter the
+ * experimental model fell back on, or null: no punt option,
+ * a punterId given, or no supported experimental result.
+ */
+export function punterLine(result: FourthDownResult | undefined, situation: FourthDownSituation): string | null {
+  if (!result?.supported || result.wpPunt === null || situation.punterId) return null;
+  const x = result.experimental;
+  if (!x.supported) return null;
+  if (x.flags.punterUnknown) {
+    return `Experimental model: no ${situation.posteam} punter found, so it assumed a league-average punter.`;
+  }
+  const term = x.terms.find((t) => t.id === 'punter');
+  return term ? `Experimental model: assumed ${situation.posteam}'s most recent punter, ${term.label}.` : null;
 }

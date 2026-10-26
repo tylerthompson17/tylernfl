@@ -14,6 +14,10 @@ import wpSpreadModelUrl from '../../../models/fourth-down/wp_spread_model.json?u
 import twoPtModelUrl from '../../../models/fourth-down/two_pt_model.json?url';
 import tablesUrl from '../../../models/fourth-down/tables.json?url';
 import termsUrl from '../../../models/fourth-down/terms.json?url';
+import sneakUrl from '../../../models/fourth-down/sneak.json?url';
+import punterUrl from '../../../models/fourth-down/punter.json?url';
+import coverageUrl from '../../../models/fourth-down/coverage.json?url';
+import teamPuntersUrl from '../../../models/fourth-down/teamPunters.json?url';
 import type { ModelFiles } from '../fourth-down.ts';
 
 const URLS: Record<keyof ModelFiles, string> = {
@@ -25,12 +29,23 @@ const URLS: Record<keyof ModelFiles, string> = {
   twoPtModel: twoPtModelUrl,
   tables: tablesUrl,
   terms: termsUrl,
+  sneak: sneakUrl,
+  punter: punterUrl,
+  coverage: coverageUrl,
+  teamPunters: teamPuntersUrl,
 };
 
-/** Every model file, fetched in parallel and parsed. Rejects if any fails. */
-export async function fetchModelFiles(): Promise<ModelFiles> {
+/** The experimental model's own files; without them it is 'unavailable' and costs nothing. */
+const EXPERIMENTAL: (keyof ModelFiles)[] = ['sneak', 'punter', 'coverage', 'teamPunters'];
+
+/**
+ * Every model file, fetched in parallel and parsed. Rejects if any fails.
+ * `experimental: false` leaves out the experimental model's files.
+ */
+export async function fetchModelFiles({ experimental = true } = {}): Promise<ModelFiles> {
+  const wanted = Object.entries(URLS).filter(([key]) => experimental || !EXPERIMENTAL.includes(key as keyof ModelFiles));
   const entries = await Promise.all(
-    Object.entries(URLS).map(async ([key, href]) => {
+    wanted.map(async ([key, href]) => {
       const response = await fetch(href);
       if (!response.ok) throw new Error(`${href}: ${response.status}`);
       return [key, await response.json()] as const;

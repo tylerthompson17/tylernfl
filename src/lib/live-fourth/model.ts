@@ -2,10 +2,13 @@
  * The calculator's model worker (src/lib/calculator/worker.ts) for the live
  * page and the home panel: started on demand, it downloads the model once
  * (about 2.6 MB) and answers any number of situations, each by its own
- * request id. Results are cached by a key the caller chooses.
+ * request id. Results are cached by a key the caller chooses. It runs
+ * nfl4th only (NFL4TH_ONLY): the items do not show the experimental model
+ * yet, so it is not computed.
  */
 import type { FourthDownResult, FourthDownSituation } from '../fourth-down.ts';
 import type { WorkerMessage, WorkerRequest } from '../calculator/worker.ts';
+import { NFL4TH_ONLY } from '../calculator/worker-name.ts';
 
 export type ModelState = 'off' | 'loading' | 'ready' | 'failed';
 
@@ -33,7 +36,7 @@ export function createModel(onUpdate: () => void) {
       if (state !== 'off') return;
       state = 'loading';
       try {
-        worker = new Worker(new URL('../calculator/worker.ts', import.meta.url), { type: 'module' });
+        worker = new Worker(new URL('../calculator/worker.ts', import.meta.url), { type: 'module', name: NFL4TH_ONLY });
       } catch {
         state = 'failed';
         onUpdate();

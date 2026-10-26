@@ -3,7 +3,10 @@ import shutil
 import unittest
 from pathlib import Path
 
-from decisions import THRESHOLD, build_decisions, coach_table, find_decisions, grade, is_pre_snap, situation, summary
+from decisions import (
+    THRESHOLD, build_decisions, coach_table, experimental_snapshot, find_decisions, grade, is_pre_snap, punter_ids,
+    report, situation, summary,
+)
 
 FIXTURES = Path(__file__).resolve().parent.parent / 'tests' / 'fixtures' / 'fourth-down'
 
@@ -110,6 +113,7 @@ def fourth_result(**kw) -> dict:
     base = {
         'supported': True, 'call': 'go', 'wpGo': 0.52, 'wpPunt': 0.49, 'wpFieldGoal': 0.41, 'conversionProb': 0.56,
         'fgMakeProb': 0.12, 'kickDistance': 68, 'kickerId': None, 'flags': {}, 'breakdown': {},
+        'experimental': {'supported': False, 'reason': 'unavailable'},
     }
     return base | kw
 
@@ -154,6 +158,87 @@ class GradeTest(unittest.TestCase):
         entry = grade(self.decision('punt'), fourth_result(), True, self.counts())
         self.assertAlmostEqual(entry['margin'], 0.03)
 
+    def test_grades_never_carry_the_experimental_result(self):
+        entry = grade(self.decision('punt'), fourth_result(experimental={'supported': True}), True, self.counts())
+        self.assertNotIn('experimental', entry)
+
+
+def experimental(week: int, **kw) -> dict:
+    return {'supported': True, 'modelId': 'fd-experimental-1', 'dataAsOf': {'season': 2026, 'week': week},
+            'call': 'punt', 'wpGo': 0.4812345678, **kw}
+
+
+class ExperimentalSnapshotTest(unittest.TestCase):
+    def test_only_tables_from_before_the_game(self):
+        self.assertEqual(experimental_snapshot(fourth_result(experimental=experimental(6)), 2026, 7),
+                         (experimental(6, wpGo=0.48123), 'stored this run'))
+        for week in (7, 8):
+            self.assertEqual(experimental_snapshot(fourth_result(experimental=experimental(week)), 2026, 7),
+                             (None, 'not stored: tables not from before the game'))
+        last_season = experimental(17) | {'dataAsOf': {'season': 2025, 'week': 17}}
+        self.assertEqual(experimental_snapshot(fourth_result(experimental=last_season), 2026, 1)[1], 'stored this run')
+        self.assertEqual(experimental_snapshot(fourth_result(), 2026, 7), (None, 'not stored: not supported'))
+        self.assertEqual(experimental_snapshot({'supported': False, 'reason': 'overtime'}, 2026, 7)[1],
+                         'not stored: not supported')
+
+    def test_the_punter_who_punted_for_that_team(self):
+        punt = lambda season, week, game, pid, team, gsis: {  # noqa: E731
+            'season': season, 'week': week, 'game_id': game, 'play_id': pid, 'posteam': team, 'punter_player_id': gsis}
+        punts = [
+            punt(2025, 18, '2025_18_BUF_NYJ', 50, 'BUF', 'P-OLD'),
+            punt(2026, 1, '2026_01_KC_BUF', 20, 'BUF', 'P-A'),
+            punt(2026, 1, '2026_01_KC_BUF', 80, 'BUF', 'P-B'),
+            punt(2026, 1, '2026_01_KC_BUF', 30, 'KC', 'P-KC'),
+            punt(2026, 1, '2026_01_KC_BUF', 90, 'KC', 'P-NOESPN'),
+        ]
+        ids = {'P-OLD': '1', 'P-A': '2', 'P-B': '3', 'P-KC': '4'}
+        punter = punter_ids(punts, ids)
+        snap = lambda pid, team='BUF', game='2026_01_KC_BUF', week=1, gsis=None: {  # noqa: E731
+            'season': 2026, 'week': week, 'game_id': game, 'play_id': pid, 'posteam': team, 'punter_player_id': gsis}
+        self.assertEqual(punter(snap(80, gsis='P-B')), ('3', None))  # the punt itself
+        self.assertEqual(punter(snap(60)), ('2', None))  # the nearest punt before it
+        self.assertEqual(punter(snap(10)), ('2', None))  # none before: the first after
+        self.assertEqual(punter(snap(95, team='KC')), (None, 'not stored: punter has no ESPN id'))
+        # No punt in the game: the last punter of an earlier game, last season's too.
+        self.assertEqual(punter(snap(10, game='2026_02_BUF_MIA', week=2)), ('3', None))
+        self.assertEqual(punter(snap(10, game='2026_01_BUF_X')), ('1', None))  # same week is not earlier
+        self.assertEqual(punter(snap(10, team='MIA', game='2026_02_BUF_MIA', week=2)), (None, 'not stored: no punter found'))
+
+    def test_stored_once_and_never_replaced(self):
+        rows = [play(30, play_type='punt', punter_player_id='P-A', week=6.0),
+                play(10, play_type='punt', punter_player_id='P-A', week=7.0, game_id='2026_07_KC_BUF'),
+                play(20, play_type='run', week=7.0, game_id='2026_07_KC_BUF')]
+        def run_with(x):
+            def run(requests):
+                return 'nfl4th-x', [fourth_result(experimental=x) for _ in requests]
+            return run
+
+        punter = lambda snap: ('2', None) if snap['play_id'] != 20 else (None, 'not stored: no punter found')  # noqa: E731
+        first = build_decisions(rows, 2026, 'now', run=run_with(experimental(6)), punter=punter)
+        by_play = {e['playId']: e for e in first['fourthDowns']}
+        self.assertEqual(by_play[10]['situation']['punterId'], '2')
+        self.assertEqual(by_play[10]['experimental']['dataAsOf']['week'], 6)  # week 7 game, week 6 tables
+        self.assertNotIn('experimental', by_play[20])  # no punter
+        self.assertNotIn('experimental', by_play[30])  # week 6 game, week 6 tables
+        self.assertEqual(first['experimentalCounts']['stored this run'], 1)
+        self.assertEqual(first['experimentalCounts']['not stored: no punter found'], 1)
+        self.assertEqual(first['experimentalCounts']['not stored: tables not from before the game'], 1)
+        # A later run with new tables, or none at all, leaves the stored one.
+        for later in (experimental(8, call='go'), {'supported': False, 'reason': 'season'}):
+            again = build_decisions(rows, 2026, 'now', run=run_with(later), previous=first, punter=punter)
+            self.assertEqual({e['playId']: e.get('experimental') for e in again['fourthDowns']},
+                             {10: by_play[10]['experimental'], 20: None, 30: None})
+            self.assertEqual(again['experimentalCounts']['kept from an earlier run'], 1)
+        # Play 30's game (week 6) has nothing stored and week 6 tables: warned.
+        self.assertEqual(first['experimentalMissed'], {'tablesAsOf': {'season': 2026, 'week': 6},
+                                                       'games': ['2026_06_KC_BUF']})
+        self.assertIn('WARNING 2026_06_KC_BUF has 4th downs but no experimental results stored', report(first))
+        unsupported = build_decisions(rows, 2026, 'now', run=run_with({'supported': False, 'reason': 'unavailable'}),
+                                      punter=punter)
+        self.assertEqual(unsupported['experimentalMissed'], {'tablesAsOf': None, 'games': []})
+        other_season = build_decisions(rows, 2026, 'now', run=run_with(experimental(8)), previous=first | {'season': 2025},
+                                       punter=punter)
+        self.assertEqual(other_season['experimentalCounts']['kept from an earlier run'], 0)
 
 
 @unittest.skipUnless(shutil.which('node'), 'node is not installed')
@@ -172,7 +257,7 @@ class EngineTest(unittest.TestCase):
             game_seconds_remaining=float(s['secondsRemaining']), half_seconds_remaining=float(s['halfSecondsRemaining']),
             score_differential=float(s['scoreDiff']), posteam_timeouts_remaining=float(s['timeoutsOffense']),
             defteam_timeouts_remaining=float(s['timeoutsDefense']), home_opening_kickoff=1.0 if s['homeOpeningKickoff'] else 0.0,
-            roof=s['roof'], spread_line=s['spreadLine'], total_line=s['totalLine'], play_type='punt',
+            roof=s['roof'], spread_line=s['spreadLine'], total_line=s['totalLine'], play_type='punt', week=7.0,
         )
         data = build_decisions([row], 2026, '2026-10-23T00:00:00Z')
         entry = data['fourthDowns'][0]
@@ -181,6 +266,9 @@ class EngineTest(unittest.TestCase):
         self.assertEqual(entry['call'], expected['call'])
         for key in ('wpGo', 'wpPunt', 'wpFieldGoal', 'conversionProb'):
             self.assertAlmostEqual(entry[key], expected[key], places=5)
+        # No punter known: nothing stored, rather than today's team punter.
+        self.assertNotIn('experimental', entry)
+        self.assertEqual(data['experimentalCounts']['not stored: no punter found'], 1)
 
 
 def entry(coach: str, team: str, cost: float, team_call='punt', call='go', margin=0.1, fourth=True, skip=None) -> dict:

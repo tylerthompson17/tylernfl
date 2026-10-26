@@ -29,6 +29,10 @@ const files: ModelFiles = {
   twoPtModel: read(path('two_pt_model')),
   tables: read(path('tables')),
   terms: read(path('terms')),
+  sneak: read(path('sneak')),
+  punter: read(path('punter')),
+  coverage: read(path('coverage')),
+  teamPunters: read(path('teamPunters')),
 };
 const loaded = loadFourthDownModel(files);
 process.stdout.write(`${JSON.stringify({ modelVersion: manifest.modelVersion, loaded })}\n`);

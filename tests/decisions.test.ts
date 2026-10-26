@@ -68,7 +68,7 @@ test('calls, options and the game chart', () => {
 function data(fourthDowns: FourthDownDecision[], tries: TryDecision[] = []): DecisionsData {
   return {
     season: 2026, updated: '2026-10-23T01:00:00Z', modelVersion: 'nfl4th-ecb7293', label: "nfl4th's recommendation",
-    threshold: 0.02, games: 2, counts: {}, coaches: [], fourthDowns, tries,
+    threshold: 0.02, games: 2, counts: {}, experimentalCounts: {}, experimentalMissed: { tablesAsOf: null, games: [] }, coaches: [], fourthDowns, tries,
     summary: {
       fourthDowns: 1193, nfl4thGoShare: 0.41576, coachGoShare: 0.16262, mistakes: 110, kicksModelWouldGo: 103,
       kicksModelWouldGoShare: 0.93636, closeMargin: 0.05, closeCalls: 96, closeCallShare: 0.87273,

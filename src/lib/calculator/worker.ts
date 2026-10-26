@@ -10,6 +10,7 @@ import { loadFourthDownModel, recommend, recommendTry } from '../fourth-down.ts'
 import type { FourthDownSituation, TrySituation } from '../fourth-down.ts';
 import type { Fallbacks } from './format.ts';
 import { fetchModelFiles } from './load.ts';
+import { NFL4TH_ONLY } from './worker-name.ts';
 
 export type WorkerRequest =
   | { id: number; kind: 'fourth-down'; situation: FourthDownSituation }
@@ -21,7 +22,7 @@ export type WorkerMessage =
 
 const post = (message: WorkerMessage) => self.postMessage(message);
 
-fetchModelFiles()
+fetchModelFiles({ experimental: self.name !== NFL4TH_ONLY })
   .then((files) => post({ type: 'ready', ok: loadFourthDownModel(files), fallbacks: { total: files.manifest.fallbackTotalLine, kickOffset: files.manifest.kickDistanceOffset } }))
   .catch(() => post({ type: 'ready', ok: false, fallbacks: null }));
 

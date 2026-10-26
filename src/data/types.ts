@@ -742,6 +742,10 @@ export interface DecisionsData {
   games: number;
   /** Plays in each category of messy play, as each run prints them */
   counts: Record<string, number>;
+  /** 4th downs by what happened to their experimental result this run (decisions.py) */
+  experimentalCounts: Record<string, number>;
+  /** Finals with 4th downs but no stored experimental result, whose week the run's tables are not from before */
+  experimentalMissed: { tablesAsOf: { season: number; week: number } | null; games: string[] };
   /** The numbers the page's intro quotes, over evaluated decisions */
   summary: {
     fourthDowns: number;
@@ -820,6 +824,13 @@ export interface FourthDownDecision extends DecisionBase {
   conversionProb?: number;
   fgMakeProb?: number | null;
   kickDistance?: number;
+  /**
+   * What the experimental model said before the game (contract v5), numbers at
+   * five places: only from tables whose dataAsOf is earlier than the game's
+   * week, with the punter who was there (situation.punterId). Once stored it is
+   * never replaced. Never graded, counted or summed.
+   */
+  experimental?: Extract<import('../lib/fourth-down').ExperimentalResult, { supported: true }>;
 }
 
 export interface TryDecision extends DecisionBase {

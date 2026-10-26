@@ -8,11 +8,8 @@ open is listed at the end.
 
 **Contract version 5** (2026-10-25). Changes are listed under "Version history" at the
 end; bump the version with every change to a type or rule here, and `CONTRACT_VERSION`
-in `src/lib/fourth-down.ts` with it. v5 takes effect when the engine delivery merges:
-until then the site's engine and export are v4 and `CONTRACT_VERSION` stays 4, since a
-v4 engine checked against 5 would make every call `'unavailable'`. The v5 types are in
-`src/lib/fourth-down.ts` already, with `experimental` optional until the v5 engine
-returns it.
+in `src/lib/fourth-down.ts` with it. v5 took effect with the engine delivery (PR 8):
+`CONTRACT_VERSION` is 5 and `experimental` is required on supported results.
 
 Status on 2026-10-22: the types are in `src/lib/fourth-down.ts`, and `recommend()` and
 `recommendTry()` hand each call to the generated engine (`src/lib/fourth-down-engine.ts`,
@@ -522,7 +519,7 @@ content-hashed like them; the site needs no logic of its own for them:
   team-season part is refreshed weekly from earlier weeks' punts.
 - `teamPunters.json`: each team's most recent punter, refreshed weekly.
 
-Each week's tables arrive in the weekly model delivery PR.
+Each week's tables arrive in the weekly model delivery PR. Merge it only after the daily run has processed every game of that week, including Monday night: the site stores a game's experimental results only from tables older than its week (CLAUDE.md, decisions.json).
 
 ## Site copy
 

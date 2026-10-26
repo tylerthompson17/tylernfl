@@ -45,6 +45,10 @@ function modelFiles(): ModelFiles {
     twoPtModel: readJson(MODELS, 'two_pt_model.json'),
     tables: readJson(MODELS, 'tables.json'),
     terms: readJson(MODELS, 'terms.json'),
+    sneak: readJson(MODELS, 'sneak.json'),
+    punter: readJson(MODELS, 'punter.json'),
+    coverage: readJson(MODELS, 'coverage.json'),
+    teamPunters: readJson(MODELS, 'teamPunters.json'),
   };
 }
 
@@ -159,6 +163,7 @@ test('format: percents, margin, null options, n/a and the tie rule', () => {
       punt: { outcomes: { wpAfterPunt: 0.1 }, terms: breakdownTerms(0.1) },
       fieldGoal: null,
     },
+    experimental: { supported: false, reason: 'unavailable' },
   };
   const view = fourthDownView(result, fallbacks);
   assert.equal(view.kind, 'result');
@@ -253,7 +258,17 @@ test('recommend() and recommendTry() through the page match the fixtures', () =>
     // Overtime carries no clock the form keeps; every other field round trips.
     const { kickerId: _kicker, ...rest } = c.situation;
     if (!c.situation.overtime) close(s, { ...asPage(rest), temp: null }, c.name);
-    close(recommend(s), c.expected, c.name);
+    // The form has no team inputs (always BUF against KC), and nfl4th never
+    // reads team identity; the experimental model's team terms do, so its
+    // result is compared only when the page kept the fixture's teams. The
+    // engine test checks it on every fixture.
+    const sameTeams = s.posteam === c.situation.posteam && s.defteam === c.situation.defteam;
+    const strip = (r: FourthDownResult) => {
+      if (sameTeams || !r.supported) return r;
+      const { experimental: _x, ...rest } = r;
+      return rest;
+    };
+    close(strip(recommend(s)), strip(c.expected), c.name);
     const view = fourthDownView(recommend(s), fallbacks);
     if (c.expected.supported && view.kind === 'result') {
       assert.equal(view.options.find((o) => o.best)?.wp, pct(c.expected[`wp${{ go: 'Go', punt: 'Punt', 'field goal': 'FieldGoal' }[c.expected.call]}` as 'wpGo']!));
