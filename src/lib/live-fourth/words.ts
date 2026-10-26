@@ -12,9 +12,8 @@
  *   0.1 points)" under 0.02;
  * - a muffed punt says so: "Punted 36 yards, muffed, recovered by TB";
  * - which punter the experimental model assumed when none was given (live
- *   items never give one): "Experimental model: assumed KC's most recent
- *   punter, Punter (M. Araiza)." with the punter term's label as is, or "a
- *   league-average punter" when it found none.
+ *   items never give one), punterLine: not shown until the items show the
+ *   experimental model, and to be reworded then.
  * "By" is points of win probability: for an agreed call, how far ahead
  * nfl4th's choice was of the next option; for one against it, what the
  * team's choice gave up.
@@ -105,7 +104,8 @@ export function pendingLine(grade: LiveGrade): string {
 }
 
 /**
- * The punter the experimental model fell back on, or null: no punt option,
+ * Not shown yet (see the delivery checklist in CLAUDE.md). The punter the
+ * experimental model fell back on, or null: no punt option,
  * a punterId given, or no supported experimental result.
  */
 export function punterLine(result: FourthDownResult | undefined, situation: FourthDownSituation): string | null {

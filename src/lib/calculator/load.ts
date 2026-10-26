@@ -35,10 +35,17 @@ const URLS: Record<keyof ModelFiles, string> = {
   teamPunters: teamPuntersUrl,
 };
 
-/** Every model file, fetched in parallel and parsed. Rejects if any fails. */
-export async function fetchModelFiles(): Promise<ModelFiles> {
+/** The experimental model's own files; without them it is 'unavailable' and costs nothing. */
+const EXPERIMENTAL: (keyof ModelFiles)[] = ['sneak', 'punter', 'coverage', 'teamPunters'];
+
+/**
+ * Every model file, fetched in parallel and parsed. Rejects if any fails.
+ * `experimental: false` leaves out the experimental model's files.
+ */
+export async function fetchModelFiles({ experimental = true } = {}): Promise<ModelFiles> {
+  const wanted = Object.entries(URLS).filter(([key]) => experimental || !EXPERIMENTAL.includes(key as keyof ModelFiles));
   const entries = await Promise.all(
-    Object.entries(URLS).map(async ([key, href]) => {
+    wanted.map(async ([key, href]) => {
       const response = await fetch(href);
       if (!response.ok) throw new Error(`${href}: ${response.status}`);
       return [key, await response.json()] as const;

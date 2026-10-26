@@ -28,7 +28,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from common import DATA_DIR, load_with_fallback, stats_season, today_eastern, write_json_if_changed  # noqa: E402
-from decisions import build_decisions, load_decision_rows, report as decisions_report  # noqa: E402
+from decisions import (  # noqa: E402
+    build_decisions, load_decision_rows, load_espn_ids, load_punts, punter_ids, report as decisions_report,
+)
 from daily_fourth import update_daily_fourth  # noqa: E402
 from charts.auto import build_auto_charts, season_finals, wp_plays_for, write_charts  # noqa: E402
 from draft_order import build_draft_order, load_picks, load_trade_rows, unlisted_trades  # noqa: E402
@@ -98,7 +100,12 @@ def main() -> None:
     rosters = build_rosters(roster_rows, rosters_year, today, updated)
     # Every 4th down and try of the same season's finals, through the site's
     # own 4th down engine (one Node process).
-    decisions = build_decisions(load_decision_rows(pbp_season, current, schedule_rows), pbp_season, updated)
+    # Experimental results already stored are copied from the file as it is
+    # (never replaced), and each 4th down names the punter who was there.
+    decisions_path = DATA_DIR / 'decisions.json'
+    previous = json.loads(decisions_path.read_text(encoding='utf-8')) if decisions_path.exists() else None
+    decisions = build_decisions(load_decision_rows(pbp_season, current, schedule_rows), pbp_season, updated,
+                                previous=previous, punter=punter_ids(load_punts(pbp_season, current), load_espn_ids()))
     # A page's data for every final of the ticker's season with play-by-play.
     # Player stats only when the boards are that season's (weekly stats can
     # trail the play-by-play; those games get theirs on a later run).

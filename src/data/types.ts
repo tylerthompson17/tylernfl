@@ -742,6 +742,8 @@ export interface DecisionsData {
   games: number;
   /** Plays in each category of messy play, as each run prints them */
   counts: Record<string, number>;
+  /** 4th downs by what happened to their experimental result this run (decisions.py) */
+  experimentalCounts: Record<string, number>;
   /** The numbers the page's intro quotes, over evaluated decisions */
   summary: {
     fourthDowns: number;
@@ -821,11 +823,12 @@ export interface FourthDownDecision extends DecisionBase {
   fgMakeProb?: number | null;
   kickDistance?: number;
   /**
-   * The experimental model on the same situation (contract v5), numbers at five
-   * places; on supported 4th downs only. Never graded, counted or summed. In a
-   * game file, a play keeps its last supported result (with its dataAsOf).
+   * What the experimental model said before the game (contract v5), numbers at
+   * five places: only from tables whose dataAsOf is earlier than the game's
+   * week, with the punter who was there (situation.punterId). Once stored it is
+   * never replaced. Never graded, counted or summed.
    */
-  experimental?: import('../lib/fourth-down').ExperimentalResult;
+  experimental?: Extract<import('../lib/fourth-down').ExperimentalResult, { supported: true }>;
 }
 
 export interface TryDecision extends DecisionBase {

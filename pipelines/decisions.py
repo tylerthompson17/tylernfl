@@ -34,14 +34,25 @@ Each run prints how many plays fell in each category (`counts` in the file).
 Every run recomputes the whole season, so a new model reaches every play the
 next morning; the file names the model version it used.
 
-Each supported 4th down also carries the experimental model's result on the
-same situation (`experimental`, contract v5), as the engine returns it with
-numbers at five places. It is never graded, counted or summed: grades,
-coaches and the summary are nfl4th's alone. It runs on the weekly tables in
-models/fourth-down/ as they stand on the day of the run (their `dataAsOf`
-week), for every play of the season, and with no punterId, so the punter is
-the team's most recent one in teamPunters.json. games.py keeps each play's
-last supported result once the model stops supporting the season.
+Each 4th down can also carry the experimental model's result on the same
+situation (`experimental`, contract v5), numbers at five places: a record of
+what that model said before the game. It is never graded, counted or summed:
+grades, coaches and the summary are nfl4th's alone. A play gets one only when
+(experimental_snapshot):
+
+- the result is supported and its weekly tables' `dataAsOf` is earlier than
+  the game's week, so they hold nothing from the game or after it;
+- the situation names the punter (punterId, an ESPN id): the one who punted
+  for that team on the play or, failing that, in the same game (the nearest
+  punt before the play, else the first after), else the team's most recent
+  punter in an earlier game, this season or last (punter_ids). A play with
+  none, or whose punter has no ESPN id in nflverse's player table, gets no
+  result rather than the engine's fallback, the team's punter today;
+- and once a play has one, it is never replaced: each run copies it from
+  the previous decisions.json (`previous`), whatever the tables or the
+  season are now. games.py keeps it in the game file the same way.
+
+`experimentalCounts` says how many plays fell each way.
 
 Coaches are credited by game: each decision goes to its team's head coach in
 that game (nflverse's home_coach / away_coach), so an interim coach is
@@ -70,8 +81,9 @@ PBP_COLUMNS = [
     'score_differential', 'posteam_timeouts_remaining', 'defteam_timeouts_remaining', 'home_opening_kickoff',
     'roof', 'temp', 'spread_line', 'total_line', 'play_type', 'desc', 'penalty', 'penalty_type', 'penalty_team',
     'timeout', 'timeout_team', 'qb_kneel', 'qb_spike', 'extra_point_attempt', 'two_point_attempt',
-    'home_coach', 'away_coach',
+    'home_coach', 'away_coach', 'punter_player_id',
 ]
+PUNT_COLUMNS = ['season', 'week', 'game_id', 'play_id', 'posteam', 'punter_player_id']
 
 SNAPS = {'pass', 'run', 'punt', 'field_goal', 'qb_kneel', 'qb_spike', 'kickoff', 'extra_point'}
 CALL_OF = {'punt': 'punt', 'field_goal': 'field goal', 'pass': 'go', 'run': 'go'}
@@ -290,7 +302,6 @@ def grade(decision: dict, result: dict, fourth: bool, counts: dict[str, int]) ->
             'conversionProb': r5(result['conversionProb']),
             'fgMakeProb': r5(result['fgMakeProb']),
             'kickDistance': result['kickDistance'],
-            'experimental': r5_all(result['experimental']),
         }
     else:
         entry |= {'patMakeProb': r5(result['patMakeProb']), 'twoPointConvProb': r5(result['twoPointConvProb'])}
@@ -378,16 +389,97 @@ def summary(fourth: list[dict], tries: list[dict]) -> dict:
     }
 
 
-def build_decisions(rows: list[dict], season: int, updated: str, run=None) -> dict:
-    """decisions.json for one season's plays (every final game's rows)."""
+EXPERIMENTAL_KEYS = [
+    'kept from an earlier run',
+    'stored this run',
+    'not stored: tables not from before the game',
+    'not stored: not supported',
+    'not stored: no punter found',
+    'not stored: punter has no ESPN id',
+]
+
+
+def punter_ids(punts: list[dict], espn_ids: dict[str, str]):
+    """A function from a 4th down's snap row to (ESPN punter id or None, why
+    not). `punts` are punt rows (PUNT_COLUMNS, punter_player_id set) of this
+    season and last; `espn_ids` maps gsis ids to ESPN ids."""
+    by_game: dict[tuple[str, str], list[tuple[int, str]]] = {}
+    games_of: dict[str, list[tuple[int, int, str, str]]] = {}
+    for r in sorted(punts, key=lambda r: (r['season'], r['week'], r['game_id'], r['play_id'])):
+        team = normalize(r['posteam'])
+        by_game.setdefault((r['game_id'], team), []).append((int(r['play_id']), r['punter_player_id']))
+        # The team's last punter in each game, in game order.
+        games = games_of.setdefault(team, [])
+        if games and games[-1][2] == r['game_id']:
+            games.pop()
+        games.append((int(r['season']), int(r['week']), r['game_id'], r['punter_player_id']))
+
+    def punter(snap: dict) -> tuple[str | None, str | None]:
+        team = normalize(snap['posteam'])
+        gsis = snap.get('punter_player_id')
+        if not gsis:
+            in_game = by_game.get((snap['game_id'], team), [])
+            before = [g for pid, g in in_game if pid < snap['play_id']]
+            after = [g for pid, g in in_game if pid > snap['play_id']]
+            gsis = before[-1] if before else after[0] if after else None
+        if not gsis:
+            when = (int(snap['season']), int(snap['week']))
+            earlier = [g for g in games_of.get(team, []) if (g[0], g[1]) < when]
+            gsis = earlier[-1][3] if earlier else None
+        if not gsis:
+            return None, 'not stored: no punter found'
+        espn = espn_ids.get(gsis)
+        return (espn, None) if espn else (None, 'not stored: punter has no ESPN id')
+    return punter
+
+
+def experimental_snapshot(result: dict, season: int, week: int) -> tuple[dict | None, str]:
+    """(the result to store, at five places, or None; its experimentalCounts key)."""
+    x = result.get('experimental') if result.get('supported') else None
+    if not x or not x['supported']:
+        return None, 'not stored: not supported'
+    if (x['dataAsOf']['season'], x['dataAsOf']['week']) >= (season, week):
+        return None, 'not stored: tables not from before the game'
+    return r5_all(x), 'stored this run'
+
+
+def build_decisions(rows: list[dict], season: int, updated: str, run=None, previous: dict | None = None,
+                    punter=None) -> dict:
+    """decisions.json for one season's plays (every final game's rows).
+    `previous` is the decisions.json already written, whose experimental
+    results are kept; `punter` is punter_ids' function (None: no punter is
+    known, so nothing new is stored)."""
     if run is None:
         from engine import run_engine as run
     fourth, tries, counts = find_decisions(rows)
-    requests = [{'kind': 'fourth-down', 'situation': situation(d['row'], True)} for d in fourth]
+    punters = [punter(d['snap']) if punter else (None, 'not stored: no punter found') for d in fourth]
+    fourth_situations = [
+        situation(d['row'], True) | ({'punterId': pid} if pid else {}) for d, (pid, _) in zip(fourth, punters)
+    ]
+    requests = [{'kind': 'fourth-down', 'situation': s} for s in fourth_situations]
     requests += [{'kind': 'try', 'situation': situation(d['row'], False)} for d in tries]
     model_version, results = run(requests) if requests else (None, [])
-    graded_fourth = [grade(d, r, True, counts) for d, r in zip(fourth, results[: len(fourth)])]
+    graded_fourth = [grade(d, r, True, counts) | {'situation': s}
+                     for d, r, s in zip(fourth, results[: len(fourth)], fourth_situations)]
     graded_tries = [grade(d, r, False, counts) for d, r in zip(tries, results[len(fourth):])]
+
+    stored = {
+        (e['gameId'], e['playId']): e['experimental']
+        for e in (previous or {}).get('fourthDowns', []) if previous.get('season') == season and 'experimental' in e
+    }
+    experimental_counts = {key: 0 for key in EXPERIMENTAL_KEYS}
+    for d, e, r, (_, missing) in zip(fourth, graded_fourth, results, punters):
+        key = (e['gameId'], e['playId'])
+        if key in stored:
+            e['experimental'] = stored[key]
+            experimental_counts['kept from an earlier run'] += 1
+            continue
+        snapshot, why = experimental_snapshot(r, season, int(d['snap']['week']))
+        if snapshot is not None and missing:
+            snapshot, why = None, missing
+        if snapshot is not None:
+            e['experimental'] = snapshot
+        experimental_counts[why] += 1
     return {
         'season': season,
         'updated': updated,
@@ -396,6 +488,7 @@ def build_decisions(rows: list[dict], season: int, updated: str, run=None) -> di
         'threshold': THRESHOLD,
         'games': len({row['game_id'] for row in rows}),
         'counts': counts,
+        'experimentalCounts': experimental_counts,
         'summary': summary(graded_fourth, graded_tries),
         'coaches': coach_table(graded_fourth + graded_tries),
         'fourthDowns': graded_fourth,
@@ -431,9 +524,33 @@ def load_decision_rows(season: int, current_season: int, schedule_rows: list[dic
     )
 
 
+def load_punts(season: int, current_season: int) -> list[dict]:
+    """Punt rows (PUNT_COLUMNS) of `season` and the one before, for punter_ids."""
+    import polars as pl
+
+    from pbp_cache import load_pbp
+
+    punts = []
+    for year in (season - 1, season):
+        pbp = load_pbp(year, current_season)
+        if pbp is not None:
+            punts += pbp.filter(pl.col('punter_player_id').is_not_null()).select(PUNT_COLUMNS).to_dicts()
+    return punts
+
+
+def load_espn_ids() -> dict[str, str]:
+    """gsis id to ESPN id, from nflverse's player table."""
+    import nflreadpy as nfl
+    import polars as pl
+
+    players = nfl.load_players().select('gsis_id', pl.col('espn_id').cast(pl.Utf8)).drop_nulls()
+    return {g: e.removesuffix('.0') for g, e in zip(players['gsis_id'], players['espn_id']) if e}
+
+
 def report(data: dict) -> str:
     lines = [f"decisions: {data['season']}, {data['games']} games, {len(data['fourthDowns'])} 4th downs, "
              f"{len(data['tries'])} tries"]
     lines += [f'  {key}: {n}' for key, n in data['counts'].items()]
+    lines += [f'  experimental {key}: {n}' for key, n in data.get('experimentalCounts', {}).items()]
     lines += [f'  summary {key}: {value}' for key, value in data['summary'].items()]
     return '\n'.join(lines)

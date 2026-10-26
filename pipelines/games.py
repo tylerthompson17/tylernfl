@@ -35,10 +35,10 @@ score, lines and label after schedule.json moves on), from nflverse only:
   pre-snap foul counts, and a timeout or marker row never does);
 - the game's 4th down and try records from decisions.json, copied as they
   are (with the file's model version and closeMargin), so a past season's
-  page keeps its calls after decisions.json moves on. A 4th down whose
-  experimental result this run is not supported (its tables are for
-  another season, or failed to load) keeps the supported one the file
-  already has, with that result's dataAsOf (keep_experimental); and where each sits
+  page keeps its calls after decisions.json moves on. A 4th down's
+  experimental result, once in the file, is never replaced: a record of
+  what that model said before the game (decisions.py stores one only from
+  tables older than the game; keep_experimental); and where each sits
   on the win probability chart: minutes since kickoff
   (excitement.play_minutes, the chart's x) and home win probability
   before the snap.
@@ -265,17 +265,12 @@ def decisions_for(decisions: dict) -> dict[str, dict]:
 
 def keep_experimental(calls: dict, snapshot: dict | None) -> dict:
     """`calls` with each 4th down's experimental result taken from the
-    game's earlier snapshot when this run's is missing or not supported and
-    the snapshot's is supported."""
+    game's earlier snapshot wherever that has one: once stored, a result is
+    never replaced or removed. A play without one takes this run's, if any."""
     if not snapshot:
         return calls
-    kept = {d['playId']: d['experimental'] for d in snapshot.get('fourthDowns', [])
-            if (d.get('experimental') or {}).get('supported')}
-    fourth = [
-        d | {'experimental': kept[d['playId']]}
-        if d['playId'] in kept and not (d.get('experimental') or {}).get('supported') else d
-        for d in calls['fourthDowns']
-    ]
+    kept = {d['playId']: d['experimental'] for d in snapshot.get('fourthDowns', []) if 'experimental' in d}
+    fourth = [d | {'experimental': kept[d['playId']]} if d['playId'] in kept else d for d in calls['fourthDowns']]
     return calls | {'fourthDowns': fourth}
 
 
@@ -287,7 +282,7 @@ def build_games(played: list[tuple[dict, list[dict]]], player_rows: list[dict],
     `decisions` is decisions.json when it is these games' season, else None.
     A game this run has no records for keeps the snapshot already in its
     file (`kept`, game id to records), so a snapshot is never lost, and a
-    play keeps its supported experimental result (keep_experimental)."""
+    play keeps its stored experimental result (keep_experimental)."""
     by_game: dict[str, list[dict]] = defaultdict(list)
     for r in player_rows:
         by_game[r['game_id']].append(r)
