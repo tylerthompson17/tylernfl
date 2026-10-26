@@ -83,7 +83,10 @@ export function initHomeReplay(root: HTMLElement): void {
   const page = q<HTMLAnchorElement>('[data-replay-page]');
   const canvas = q<HTMLCanvasElement>('[data-canvas]');
   const another = q<HTMLButtonElement>('[data-replay-another]');
-  const controls = [...root.querySelectorAll<HTMLButtonElement | HTMLInputElement>('[data-play], [data-restart], [data-scrub]')];
+  const controls = [
+    ...root.querySelectorAll<HTMLButtonElement | HTMLInputElement>('[data-play], [data-restart], [data-scrub], [data-speed], [data-toggle]'),
+  ];
+  const speeds = [...root.querySelectorAll<HTMLButtonElement>('[data-speed]')];
   if (list.length === 0 || !title || !description || !scoreline || !status || !page || !another) return;
   const ui = { title, description, scoreline, page };
 
@@ -133,6 +136,8 @@ export function initHomeReplay(root: HTMLElement): void {
       else delete root.dataset.penalty;
       setStatus(null);
       for (const c of controls) c.disabled = false;
+      // Each scene starts at 1x (the player sets the toggles itself).
+      for (const b of speeds) b.setAttribute('aria-pressed', String(b.dataset.speed === '1'));
       stop = player.initReplay(root, { scene, start: still.matches ? 'end' : 0 });
     } catch {
       if (mine !== loads) return;

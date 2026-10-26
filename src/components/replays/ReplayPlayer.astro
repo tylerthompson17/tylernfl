@@ -63,6 +63,7 @@ const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
       <span class="tag" data-tag="speed" hidden></span>
       <span class="tag" data-tag="air" hidden></span>
       <span class="tag" data-tag="separation" hidden></span>
+      <span class="tag" data-tag="carrier" hidden></span>
     </div>
   </div>
   <noscript><p class="note">The replay needs JavaScript.</p></noscript>
@@ -75,7 +76,7 @@ const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
         <button type="button" class="control" data-speed="0.5" aria-pressed="false">0.5x</button>
         <button type="button" class="control" data-speed="1" aria-pressed="true">1x</button>
       </div>
-      <div class="group">
+      <div class="group" role="group" aria-label="Show">
         <button type="button" class="control" data-toggle="stats" aria-pressed="true">Stats</button>
         <button type="button" class="control" data-toggle="trails" aria-pressed="false">Routes</button>
         <button type="button" class="control" data-toggle="debug" aria-pressed="false">Debug</button>

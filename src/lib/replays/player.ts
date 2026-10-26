@@ -14,6 +14,7 @@ import type { ReplayScene } from '../../data/types.ts';
 import {
   CAPTION_WORDS,
   captionEventAt,
+  carrierAt,
   clockAtFrame,
   mph,
   prepare,
@@ -25,6 +26,7 @@ import {
   throwOf,
 } from './timeline.ts';
 import { FRAMINGS, PHONE_MAX_WIDTH, ReplayRenderer, readColors } from './render.ts';
+import { shortName } from './words.ts';
 
 const ORDINAL = ['1st', '2nd', '3rd', '4th'];
 /** Pixels from a sprite's feet to just over its helmet */
@@ -72,6 +74,7 @@ export function initReplay(root: HTMLElement, given: ReplayStart = {}): () => vo
     speed: q<HTMLElement>('[data-tag="speed"]'),
     air: q<HTMLElement>('[data-tag="air"]'),
     separation: q<HTMLElement>('[data-tag="separation"]'),
+    carrier: q<HTMLElement>('[data-tag="carrier"]'),
   };
 
   const start = given.start ?? Number(root.dataset.start ?? 0);
@@ -157,6 +160,15 @@ export function initReplay(root: HTMLElement, given: ReplayStart = {}): () => vo
     }
 
     placed = ui.caption && !ui.caption.hidden ? [ui.caption.getBoundingClientRect()] : [];
+    // Who has the ball, under his feet, whether or not stats are on.
+    const holder = carrierAt(prep, f);
+    const carrier = holder === null ? null : prep.players[holder];
+    const cx = carrier ? sample(carrier.x, f) : null;
+    const cy = carrier ? sample(carrier.y, f) : null;
+    if (carrier && carrier.name && cx !== null && cy !== null) {
+      const at = renderer.project(cx, cy);
+      place(ui.carrier, shortName(carrier.name), at.x, at.y + 4, 1, true);
+    } else place(ui.carrier, null);
     if (!options.stats) {
       for (const el of [ui.speed, ui.air, ui.separation]) place(el, null);
       return;

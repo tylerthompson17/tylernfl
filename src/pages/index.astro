@@ -177,24 +177,6 @@ const leaderColumns: StatTableColumn<LeaderRow>[] = [
           )
         }
       </Panel>
-      <Panel title="Receiving yards leaders">
-        {
-          receiving ? (
-            <StatTable
-              columns={leaderColumns}
-              rows={receiving.rows}
-              caption="Receiving yards leaders"
-              emptyText="No games played yet. Leaders appear after week 1."
-            />
-          ) : (
-            <p class="placeholder-note">No games played yet. Leaders appear after week 1.</p>
-          )
-        }
-        <p class="table-foot">
-          {receiving?.through ?? 'No games played yet.'}{' '}
-          <a href={url(receiving?.link?.href ?? 'stats')}>Full receiving leaderboard</a>
-        </p>
-      </Panel>
     </div>
     <div class="col col-2">
       <Panel title="Transactions and injuries">
@@ -320,6 +302,24 @@ const leaderColumns: StatTableColumn<LeaderRow>[] = [
             </>
           )
         }
+      </Panel>
+      <Panel title="Receiving yards leaders">
+        {
+          receiving ? (
+            <StatTable
+              columns={leaderColumns}
+              rows={receiving.rows}
+              caption="Receiving yards leaders"
+              emptyText="No games played yet. Leaders appear after week 1."
+            />
+          ) : (
+            <p class="placeholder-note">No games played yet. Leaders appear after week 1.</p>
+          )
+        }
+        <p class="table-foot">
+          {receiving?.through ?? 'No games played yet.'}{' '}
+          <a href={url(receiving?.link?.href ?? 'stats')}>Full receiving leaderboard</a>
+        </p>
       </Panel>
       <OnThisDay />
       <Panel title="Latest article">

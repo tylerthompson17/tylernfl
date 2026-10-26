@@ -81,6 +81,12 @@ export function penaltyText(penalty: ReplayPlay['penalty']): string | null {
   return `${type}${who}${yards}`;
 }
 
+/** "K.Drake" from "Kenyan Drake": the first name as an initial, as the ticker writes players. */
+export function shortName(name: string): string {
+  const space = name.indexOf(' ');
+  return space < 1 ? name : `${name[0]}.${name.slice(space + 1)}`;
+}
+
 /** "September 23, 2018" from an ISO date. */
 export function dateText(date: string | null): string | null {
   if (!date) return null;

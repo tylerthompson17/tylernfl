@@ -787,13 +787,14 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
   top beside them. Without replays in the build there is no replay panel and the chart
   is on top.
 - Column 1: the latest complete week's results (the week `/week` recaps, kickoff
-  order, each final's excitement label with the slate bar), receiving leaders. Column 2:
+  order, each final's excitement label with the slate bar). Column 2:
   transactions, the 4th down calculator line (live 4th downs during games). Column 3: playoff picture, draft order (top 10
-  of `/draft`), notable performances, on this day, latest article. The split is what
-  balances heights: at 1440px with a yards race chart the columns end at about 1,375,
-  1,345 and 1,395px. Recheck when a panel is added or grows. Since the replay panel
-  (454px at 1440) they do not: on 2026-10-25 with the EPA scatter, columns 1, 2 and 3
-  end about 2,128, 1,914 and 1,555px down the page.
+  of `/draft`), notable performances, receiving leaders, on this day, latest article.
+  The split is what balances heights: on 2026-10-25 at 1440px, with the replay panel
+  (454px) and the EPA scatter above columns 1 and 2 and live 4th downs showing, the
+  columns end about 1,874, 1,980 and 1,809px down the page (receiving leaders moved
+  from column 1 to 3 when the replay panel came in). Recheck when a panel is added or
+  grows.
 - Column 2 ends with one line linking the 4th down calculator, which becomes the "Live 4th
   downs" panel while any game is live (see the data contract).
 - Below 1100px: two columns, chart across the top, column 3's panels in a pair under
@@ -982,7 +983,9 @@ game).
   facings from five drawings, a run cycle driven by distance, a `--highlight` ring under
   the carrier, the ball's height as an upward offset with a shadow.
 - Captions (Pass, Catch, Touchdown) are HTML in the heading face over the canvas, a
-  touchdown or a penalty on a `--highlight` background. Stats (on at desktop width, off
+  touchdown or a penalty on a `--highlight` background. The ball carrier's name
+  ("K.Drake", `shortName` in `words.ts`) is a label under his feet whenever someone has
+  the ball, stats on or off. Stats (on at desktop width, off
   on phones): the carrier's speed in mph, air yards and the throw's track, and the
   separation when the ball arrives (as Next Gen Stats measures it), fading 1 s after the
   catch. Labels never overlap: a later one steps down past an earlier one and keeps its
@@ -1001,10 +1004,12 @@ game).
   under reduced motion the last frame shows. The layout follows the panel's own width
   (a container query): from 760px, the field (at most 540 by 360px) with Play, Restart
   and the scrubber on the left, and on the right the title, the description (five
-  lines, clamped), a scorebug of two set lines (each cut with an ellipsis), links to the
-  play's page and all replays, and "Another play" (454px tall at 1440 and 1024); below
-  760px, the title with "Another play", the field, the controls and the links, the
-  description and scorebug left to the replay page (358px at 375). Every part has its
+  lines, clamped), a scorebug of two set lines (each cut with an ellipsis), the replay
+  page's speed buttons and Stats, Routes and Debug toggles, links to the play's page
+  and all replays, and "Another play" (454px tall at 1440 and 1024); below 760px, the
+  title with "Another play", the field, the controls, speed and toggles, and the links,
+  the description and scorebug left to the replay page (392px at 375). Each play starts
+  at 1x with the player's default toggles. Every part has its
   size before anything loads, so the height depends only on the panel's width and
   nothing shifts (checked on all 15 plays at 375, 1024 and 1440). `initReplay` takes
   the scene and returns a function that stops it.

@@ -32,7 +32,7 @@ import {
 } from '../src/lib/replays/timeline.ts';
 import { baseFor, BASES, RUN_FRAMES, spriteRows, SPRITE_H, SPRITE_W } from '../src/lib/replays/sprites.ts';
 import { GLYPH_H, GLYPH_W, GLYPHS, textWidth } from '../src/lib/replays/font.ts';
-import { gameWords, goalToGo, penaltyText, scorebugSituation, situationText, wpNumbers, wpSwingReadout, wpSwingText } from '../src/lib/replays/words.ts';
+import { gameWords, goalToGo, penaltyText, scorebugSituation, shortName, situationText, wpNumbers, wpSwingReadout, wpSwingText } from '../src/lib/replays/words.ts';
 import { mixHex } from '../src/lib/replays/field.ts';
 import { matches, sortRows, swingOf, type CatalogRow } from '../src/lib/replays/catalog.ts';
 
@@ -346,4 +346,11 @@ test('a touchdown pass scores and keeps its caption', () => {
   assert.deepEqual(scoreAt(s, 6), { home: 0, away: 0 });
   assert.deepEqual(scoreAt(s, 7), { home: 6, away: 0 });
   assert.equal(captionEventAt(s, 9.9), 'pass_outcome_touchdown');
+});
+
+test('the carrier label is the first initial and the rest of the name', () => {
+  assert.equal(shortName('Kenyan Drake'), 'K.Drake');
+  assert.equal(shortName("Ja'Wuan James"), 'J.James');
+  assert.equal(shortName('Odell Beckham Jr.'), 'O.Beckham Jr.');
+  assert.equal(shortName('Nene'), 'Nene');
 });

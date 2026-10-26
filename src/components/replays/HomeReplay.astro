@@ -9,10 +9,11 @@
  * Two layouts, chosen by the panel's own width (a container query), so the
  * reserved height depends on nothing else and filling it shifts nothing:
  * from 760px, the field (at most 540px wide, 360px tall) and its controls
- * on the left, and the title, description, scoreline, links and "Another
- * play" on the right, every one of fixed height; below that, the title
- * with "Another play", the field, the controls and the links, with the
- * description and scoreline left to the replay page.
+ * on the left, and the title, description, scoreline, speed and toggles,
+ * links and "Another play" on the right, every one of fixed height; below
+ * that, the title with "Another play", the field, the controls, speed and
+ * toggles, and the links, with the description and scoreline left to the
+ * replay page.
  */
 import Panel from '../Panel.astro';
 import type { FeaturedReplay } from '../../lib/replays/pick';
@@ -41,6 +42,7 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
           <span class="tag" data-tag="speed" hidden></span>
           <span class="tag" data-tag="air" hidden></span>
           <span class="tag" data-tag="separation" hidden></span>
+          <span class="tag" data-tag="carrier" hidden></span>
         </div>
         <p class="status" data-replay-status role="status">Loading the replay…</p>
         <noscript><p class="status">The replay needs JavaScript.</p></noscript>
@@ -50,6 +52,18 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
         <button type="button" class="control" data-restart disabled>Restart</button>
         <input class="scrub" type="range" min="0" max="0" step="0.01" value="0" data-scrub disabled aria-label="Position in the play" />
         <span class="time num" data-time></span>
+      </div>
+      <div class="options">
+        <div class="group" role="group" aria-label="Speed">
+          <button type="button" class="control" data-speed="0.25" aria-pressed="false" disabled>0.25x</button>
+          <button type="button" class="control" data-speed="0.5" aria-pressed="false" disabled>0.5x</button>
+          <button type="button" class="control" data-speed="1" aria-pressed="true" disabled>1x</button>
+        </div>
+        <div class="group" role="group" aria-label="Show">
+          <button type="button" class="control" data-toggle="stats" aria-pressed="true" disabled>Stats</button>
+          <button type="button" class="control" data-toggle="trails" aria-pressed="false" disabled>Routes</button>
+          <button type="button" class="control" data-toggle="debug" aria-pressed="false" disabled>Debug</button>
+        </div>
       </div>
       <div class="foot">
         <p class="links">
@@ -81,6 +95,7 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
       'title another'
       'stage stage'
       'controls controls'
+      'options options'
       'links links';
     align-items: center;
     gap: var(--space-1) var(--space-2);
@@ -116,15 +131,31 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
     grid-area: links;
   }
 
+  .options {
+    grid-area: options;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .group {
+    display: flex;
+  }
+
+  .group .control + .control {
+    border-left: none;
+  }
+
   /* Wide: the field and controls left, everything about the play right. */
   @container (min-width: 760px) {
     .home-replay {
       grid-template-columns: minmax(0, 540px) minmax(280px, 1fr);
-      grid-template-rows: auto auto auto 1fr auto;
+      grid-template-rows: auto auto auto auto 1fr auto;
       grid-template-areas:
         'stage title'
         'stage description'
         'stage scoreline'
+        'stage options'
         'stage .'
         'controls foot';
       align-items: start;
@@ -326,6 +357,10 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
 
   .control.primary {
     min-width: 64px;
+  }
+
+  .control[aria-pressed='true'],
+  .control.primary {
     background: var(--header);
     color: var(--header-text);
   }
