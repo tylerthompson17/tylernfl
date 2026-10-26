@@ -12,6 +12,8 @@ import Panel from '../../components/Panel.astro';
 import FieldStrip from '../../components/FieldStrip.astro';
 import type { DailyFourthData } from '../../data/types';
 import { url } from '../../utils/url';
+import { gameHref } from '../../utils/games';
+import { playAnchor } from '../../lib/games/view';
 import { fieldGoalYards } from '../../lib/field/strip';
 import {
   callWords,
@@ -161,7 +163,13 @@ const embedded = ready
                       </tbody>
                     </table>
                     <p class="coach">
-                      {gameWords(p)}. {coachLine(p)}
+                      {gameHref(p.gameId) ? (
+                        // A play's key is "<gameId>:<playId>" (play_key in pipelines/daily_fourth.py).
+                        <a href={`${gameHref(p.gameId)}#${playAnchor(Number(p.key.split(':')[1]))}`}>{gameWords(p)}</a>
+                      ) : (
+                        gameWords(p)
+                      )}
+                      . {coachLine(p)}
                     </p>
                     <p class="result">
                       What happened: <span title={p.description}>{p.result}</span>

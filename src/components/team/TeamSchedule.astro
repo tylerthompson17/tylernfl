@@ -4,11 +4,13 @@
  * date, opponent, result or kickoff, the line, and the record after each
  * game, with the bye week in its place. "compact" (the Overview): week,
  * opponent, and the result or date. Dates are written in Eastern at build
- * time and rewritten in the visitor's zone.
+ * time and rewritten in the visitor's zone. A result links to its game
+ * page once it has one.
  */
 import TeamChip from '../TeamChip.astro';
 import type { Team } from '../../data/types';
 import { lineText, resultText, type TeamGame } from '../../lib/teams/hub';
+import { gameHref } from '../../utils/games';
 import { easternDate, schedule, seasonOf } from '../../utils/teams';
 
 interface Props {
@@ -76,7 +78,11 @@ if (full) {
                 </td>
                 <td>
                   {row.g.result ? (
-                    <span class="result">{resultText(row.g)}</span>
+                    gameHref(row.g.game.id) ? (
+                      <a class="result" href={gameHref(row.g.game.id)}>{resultText(row.g)}</a>
+                    ) : (
+                      <span class="result">{resultText(row.g)}</span>
+                    )
                   ) : full ? (
                     ''
                   ) : (

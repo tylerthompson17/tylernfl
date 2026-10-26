@@ -23,6 +23,8 @@ import { stepAll, type GameTrack, type LiveFourthDown } from './tracker.ts';
 export interface FeedGame extends LiveGameInfo {
   /** ISO kickoff, UTC */
   kickoff: string | null;
+  /** The game's page, once the build has one (a final the daily job has run for) */
+  page?: string | null;
 }
 
 export interface FeedEntry {

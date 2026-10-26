@@ -4,7 +4,7 @@
  * feed filtered to this team, src/lib/live-fourth/team.ts), then every game
  * this season from decisions.json, newest first: the team's questionable
  * calls and its three biggest calls, each against nfl4th, linked to the
- * game's win probability chart.
+ * game's page (its win probability chart until the page exists).
  */
 import TeamHub from '../../../components/team/TeamHub.astro';
 import Panel from '../../../components/Panel.astro';
@@ -14,6 +14,7 @@ import { LIVE_FOURTH_PAGE_ENABLED } from '../../../config';
 import { teamGameCalls } from '../../../lib/decisions/team';
 import { callWords, chartSlug, gameWords, isFourthDown, optionWords, points, situationWords } from '../../../lib/decisions/view';
 import { hasAutoChart } from '../../../utils/charts';
+import { gameHref } from '../../../utils/games';
 import { decisionsData } from '../../../utils/decisions';
 import { gradedThrough } from '../../../utils/as-of';
 import { liveGames } from '../../../utils/live-games';
@@ -64,10 +65,11 @@ const NFL4TH = 'https://github.com/nflverse/nfl4th';
         ) : (
           games.map((g) => {
             const slug = chartSlug(g.sample, season);
+            const href = gameHref(g.gameId) ?? (hasAutoChart(slug) ? url(`charts/${slug}`) : null);
             return (
               <section class="game">
                 <h3 class="game-title">
-                  Week {g.week}: {hasAutoChart(slug) ? <a href={url(`charts/${slug}`)}>{gameWords(g.sample)}</a> : gameWords(g.sample)}
+                  Week {g.week}: {href ? <a href={href}>{gameWords(g.sample)}</a> : gameWords(g.sample)}
                   <span class="dim"> {g.decisions} graded calls</span>
                 </h3>
                 <div class="stat-table-scroll" tabindex="0">

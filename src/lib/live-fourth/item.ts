@@ -54,10 +54,16 @@ export function entryItem(e: FeedEntry, model: ModelLike): HTMLLIElement {
   const { call, fake } = teamCallOf(e.play);
   const play = line('live-play', playSummary(e.play.type, e.play.text, e.play.distance, call, fake));
   play.title = e.play.text;
-  li.append(
-    line('live-when', `${e.game.away} at ${e.game.home}${e.final ? ' (final)' : ''}, ${clockWords(e.play)}`),
-    line('live-down', situationWords(e.play, e.homeId, e.game)),
-  );
+  const when = line('live-when', `${e.game.away} at ${e.game.home}${e.final ? ' (final)' : ''}, ${clockWords(e.play)}`);
+  // A game the build already has a page for (a final the daily job has
+  // run for) links its name there.
+  if (e.game.page) {
+    const a = document.createElement('a');
+    a.href = e.game.page;
+    a.textContent = `${e.game.away} at ${e.game.home}`;
+    when.replaceChildren(a, `${e.final ? ' (final)' : ''}, ${clockWords(e.play)}`);
+  }
+  li.append(when, line('live-down', situationWords(e.play, e.homeId, e.game)));
   if (e.play.spotUncertain) li.append(line('live-note', "Spot from ESPN's summary, which can be a yard off for kicks."));
   li.append(play);
   if (e.play.nullified) {

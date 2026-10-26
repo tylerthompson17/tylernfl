@@ -18,6 +18,8 @@ import {
   worstDecisions,
 } from '../../lib/decisions/view';
 import { hasAutoChart } from '../../utils/charts';
+import { gameHref } from '../../utils/games';
+import { playAnchor } from '../../lib/games/view';
 import { decisionsData } from '../../utils/decisions';
 import { url } from '../../utils/url';
 
@@ -62,6 +64,8 @@ const season = decisionsData?.season ?? 0;
               <tbody>
                 {worst.rows.map(({ rank, decision: d }) => {
                   const slug = chartSlug(d, season);
+                  const page = gameHref(d.gameId);
+                  const href = page ? `${page}#${playAnchor(d.playId)}` : hasAutoChart(slug) ? url(`charts/${slug}`) : null;
                   return (
                     <tr>
                       <td class="number">{rank}</td>
@@ -76,7 +80,7 @@ const season = decisionsData?.season ?? 0;
                       <td>{callWords(d.call)}</td>
                       <td>{optionWords(d)}</td>
                       <td class="number">{points(d.wpCost!)}</td>
-                      <td>{hasAutoChart(slug) ? <a href={url(`charts/${slug}`)}>{gameWords(d)}</a> : gameWords(d)}</td>
+                      <td>{href ? <a href={href}>{gameWords(d)}</a> : gameWords(d)}</td>
                     </tr>
                   );
                 })}
@@ -87,7 +91,7 @@ const season = decisionsData?.season ?? 0;
             WP lost is nfl4th's recommendation's win probability minus the team's choice's, in points, at the snap.
             Each option's WP is the team's chance to win after it: go for it, field goal (FG), punt; for a try, the
             extra point (XP) or going for 2, with the score counting the touchdown. A punt or field goal after the
-            offense's delay of game is graded at the spot before it. The game links to its win probability chart.
+            offense's delay of game is graded at the spot before it. The game links to the call on its game page.
             Hover a situation for the play as nflverse describes it.
           </p>
         </>

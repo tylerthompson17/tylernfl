@@ -5,7 +5,8 @@
  * with a tab per week. The order is the pipeline's score (GAME_SCORE in
  * pipelines/excitement.py, the same function that picks the day's auto
  * chart), read from game_excitement.json; results show normally. A
- * spoiler-free version is designed in docs/week-recap-spoilers.md.
+ * spoiler-free version is designed in docs/week-recap-spoilers.md. Each
+ * game links to its game page, or its win probability chart until it has one.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../../components/Panel.astro';
@@ -16,6 +17,7 @@ import scheduleData from '../../data/schedule.json';
 import type { GameExcitementData, ScheduleData } from '../../data/types';
 import { completeWeeks, rankWeek } from '../../lib/week/recap';
 import { getCharts } from '../../utils/charts';
+import { gameHref } from '../../utils/games';
 import { formatStat } from '../../utils/format';
 import { emptyRecap } from '../../utils/as-of';
 import { url } from '../../utils/url';
@@ -90,7 +92,7 @@ const empty = emptyRecap();
                     <th scope="col">Label</th>
                     <th scope="col" class="number">Excitement</th>
                     <th scope="col" class="number">Winner's low</th>
-                    <th scope="col">Chart</th>
+                    <th scope="col">Details</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -98,6 +100,7 @@ const empty = emptyRecap();
                     const awayWon = game.awayScore! > game.homeScore!;
                     const homeWon = game.homeScore! > game.awayScore!;
                     const chart = chartOf(game.away, game.home);
+                    const page = gameHref(game.id);
                     return (
                       <tr class:list={{ marked: e.label }}>
                         <td class="number">{rank}</td>
@@ -114,7 +117,13 @@ const empty = emptyRecap();
                         <td class="label">{e.label}</td>
                         <td class="number">{e.index.toFixed(2)}</td>
                         <td class="number">{e.winnerLowWp == null ? 'Tie' : formatStat(e.winnerLowWp, 'percent1')}</td>
-                        <td>{chart && <a href={url(`charts/${chart}`)}>Win probability</a>}</td>
+                        <td>
+                          {page ? (
+                            <a href={page}>Game page</a>
+                          ) : (
+                            chart && <a href={url(`charts/${chart}`)}>Win probability</a>
+                          )}
+                        </td>
                       </tr>
                     );
                   })}

@@ -1,12 +1,14 @@
 /**
  * The ticker week's games by ESPN id, for the live 4th down page and the
  * home panel: teams, kickoff, and the lines and roof the model needs from
- * schedule.json. ESPN supplies only the game state, in the browser.
+ * schedule.json, and the game page once a final has one. ESPN supplies
+ * only the game state, in the browser.
  */
 import scheduleData from '../data/schedule.json';
 import tickerData from '../data/ticker.json';
 import type { ScheduleData, TickerData } from '../data/types';
 import type { FeedGame } from '../lib/live-fourth/feed';
+import { gameHref } from './games';
 
 export function liveGames(): Record<string, FeedGame> {
   const ticker = tickerData as TickerData;
@@ -23,6 +25,7 @@ export function liveGames(): Record<string, FeedGame> {
       spreadLine: s.spreadLine,
       totalLine: s.totalLine,
       roof: s.roof,
+      page: gameHref(g.id),
     };
   }
   return games;

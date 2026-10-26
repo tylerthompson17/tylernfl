@@ -10,6 +10,8 @@
  * than repeating it. The bar appears when the game kicks off, or if ESPN
  * reports something else (postponed, say).
  *
+ * A final's status links to its game page once it has one.
+ *
  * A labelled final gets the ticker's mark: a slate bar on the left edge
  * and the word (Comeback, Thriller, Shootout) at the right of the status
  * bar, beside [data-detail] rather than in it.
@@ -17,6 +19,7 @@
 import teamsData from '../data/teams.json';
 import TeamChip from './TeamChip.astro';
 import type { TeamsData, TickerGame } from '../data/types';
+import { gameHref } from '../utils/games';
 import { url } from '../utils/url';
 
 interface Props {
@@ -29,6 +32,9 @@ const teams = teamsData as TeamsData;
 const nameOf = (abbr: string) => teams.find((t) => t.abbr === abbr)?.name ?? abbr;
 
 const decided = game.state === 'final' && game.awayScore != null && game.homeScore != null;
+// A final with a game page links its status to it (final stays final, so
+// the live client only rewrites the link's text).
+const href = game.state === 'final' ? gameHref(game.id) : null;
 const sides = [
   { key: 'away' as const, abbr: game.away, score: game.awayScore, won: decided && game.awayScore! > game.homeScore! },
   { key: 'home' as const, abbr: game.home, score: game.homeScore, won: decided && game.homeScore! > game.awayScore! },
@@ -37,10 +43,13 @@ const sides = [
 
 <article class:list={['box', { marked: game.label }]} data-game data-state={game.state} data-espn-id={game.espnId ?? undefined}>
   <p class="status">
-    <span
-      class:list={['detail', { live: game.state === 'live' }]}
-      data-detail>{game.state === 'pre' ? '' : game.detail}</span
-    >
+    {
+      href ? (
+        <a class="detail" href={href} data-detail aria-label={`${game.detail}: game page`}>{game.detail}</a>
+      ) : (
+        <span class:list={['detail', { live: game.state === 'live' }]} data-detail>{game.state === 'pre' ? '' : game.detail}</span>
+      )
+    }
     {game.label && <span class="label"><span class="visually-hidden">, </span>{game.label}</span>}
   </p>
 
