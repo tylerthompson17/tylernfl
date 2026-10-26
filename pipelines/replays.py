@@ -33,9 +33,11 @@ The rules, in the order they run:
   handoff, pass, lateral or fumble. Otherwise it is the player nearest the ball within
   CARRIER_REACH yards; a new nearest player (or nobody) takes over only
   after SWITCH_FRAMES frames in a row, except that the first carrier after
-  a flight is taken at once.
+  a flight, and the first new player after a handoff, take it at once.
 - Flights, for the renderer's ball arc: from a pass or kick event to the
-  first event that ends it (FLIGHTS).
+  first event that ends it (FLIGHTS), and from a lateral to the first frame
+  the ball is within CATCH_REACH of someone other than the tosser (NGS has
+  no event for a lateral's catch).
 - Start: LEAD_FRAMES before the snap (or the kick on a kickoff).
 - End: TAIL_FRAMES after the first terminal event (TERMINAL_EVENTS). With
   none, STOP_TAIL frames after the carrier's speed first drops under
@@ -84,6 +86,8 @@ STOP_SPEED = 1.0
 STOP_TAIL = 10
 SWITCH_FRAMES = 3
 CARRIER_REACH = 2.0
+CATCH_REACH = 1.0  # a lateral is caught once the ball is this close to a new player
+LATERAL_WINDOW = 30  # frames; a lateral nobody catches within 3 s is a loose ball, not a flight
 
 KICK_TYPES = {'kickoff', 'punt'}
 START_EVENTS = ('ball_snap', 'kickoff', 'onside_kick')
@@ -210,6 +214,32 @@ def flights_of(events) -> list[dict]:
     return flights
 
 
+def lateral_flights(events, players, ball, frames: list[int]) -> list[dict]:
+    """A lateral's flight. NGS marks the toss but not the catch, so it runs
+    from the lateral to the first frame the ball is within CATCH_REACH of a
+    player other than the one who tossed it (the player nearest the ball
+    two frames before)."""
+    flights = []
+    order = {f: i for i, f in enumerate(frames)}
+    for frame, name in events:
+        if name != 'lateral' or frame not in order:
+            continue
+        i = order[frame]
+        before = frames[max(0, i - 2)]
+        tosser = nearest(players, ball[before], before)
+        for f in frames[i + 1:i + 1 + LATERAL_WINDOW]:
+            catcher = nearest(players, ball[f], f, CATCH_REACH)
+            if catcher is not None and catcher != tosser:
+                flights.append({'kind': 'lateral', 'from': frame, 'to': f})
+                break
+    return flights
+
+
+def all_flights(events, players, ball, frames: list[int]) -> list[dict]:
+    """Passes and kicks from their events, laterals from where the ball goes."""
+    return sorted(flights_of(events) + lateral_flights(events, players, ball, frames), key=lambda fl: fl['from'])
+
+
 def start_frame(events, frames: list[int]) -> int:
     start = first_event(events, START_EVENTS)
     if start is None:
@@ -241,9 +271,9 @@ def end_frame(events, frames: list[int], snap: int, carriers: dict[int, str | No
 
 # Carrier -------------------------------------------------------------------
 
-def nearest(players, ball_row: dict, frame: int) -> str | None:
+def nearest(players, ball_row: dict, frame: int, reach: float = CARRIER_REACH) -> str | None:
     bx, by = float(ball_row['x']), float(ball_row['y'])
-    best, best_d = None, CARRIER_REACH
+    best, best_d = None, reach
     for pid, track in players.items():
         row = track.get(frame)
         if row is None:
@@ -271,9 +301,10 @@ def carriers_of(players, ball, frames: list[int], events, snapping: str, play_ty
     snap = first_event(events, START_EVENTS)
     if snap is None:
         return {frame: None for frame in frames}
-    flights = flights_of(events)
+    flights = all_flights(events, players, ball, frames)
     in_flight = lambda f: any(fl['from'] <= f < fl['to'] for fl in flights)
     flight_ends = {fl['to'] for fl in flights}
+    handoffs = {f for f, name in events if name == 'handoff' and f >= snap[0]}
     dead = first_event(events, DEAD_BALL, after=snap[0])
 
     holder, release = None, None
@@ -286,9 +317,12 @@ def carriers_of(players, ball, frames: list[int], events, snapping: str, play_ty
     carriers: dict[int, str | None] = {}
     current, candidate, streak = None, None, 0
     landed = False  # a flight has ended and nobody has the ball yet
+    handing = False  # a handoff is under way: the first new nearest player takes it at once
     for frame in frames:
         if frame in flight_ends:
             landed = True
+        if frame in handoffs:
+            handing = True
         if frame < snap[0] or in_flight(frame) or (dead and frame >= dead[0]):
             current, candidate, streak = None, None, 0
         elif holder and (release is None or frame < release):
@@ -298,6 +332,9 @@ def carriers_of(players, ball, frames: list[int], events, snapping: str, play_ty
             if landed and current is None:
                 current, candidate, streak = near, None, 0
                 landed = near is None
+            elif handing and near is not None and near != current:
+                current, candidate, streak = near, None, 0
+                handing = False
             elif near == current:
                 candidate, streak = None, 0
             else:
@@ -407,7 +444,7 @@ def build_scene(key: str, rows: list[dict], pbp_row: dict | None, colors: dict[s
         'teams': {'offense': team_entry(offense, colors), 'defense': team_entry(defense, colors)},
         'events': [{'frame': index[f], 'name': name} for f, name in events if f in index],
         'flights': [{**fl, 'from': index[fl['from']], 'to': index[fl['to']]}
-                    for fl in flights_of(events) if fl['from'] in index and fl['to'] in index],
+                    for fl in all_flights(events, players, ball, frames) if fl['from'] in index and fl['to'] in index],
         'ball': {'x': ball_x, 'y': ball_y},
         'carrier': [slot.get(carriers.get(f)) for f in kept],
         'players': scene_players,

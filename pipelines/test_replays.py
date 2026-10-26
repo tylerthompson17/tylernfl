@@ -111,22 +111,63 @@ class CarrierTests(unittest.TestCase):
         self.assertEqual([carriers[f] for f in (4, 5, 6)], [None, None, None])
         self.assertEqual(carriers[7], 'wr')
 
-    def test_a_new_carrier_needs_three_frames_in_a_row(self):
+    def test_a_handoff_goes_to_the_back_at_once(self):
         frames = {}
-        for f in range(12):
-            if f < 4:
-                ball = (74.0, 25.0, 0)  # on the QB
-            elif f in (4, 5):
-                ball = (72.5, 26.5, 0)  # beside the RB for two frames only
-            elif f < 7:
-                ball = (74.0, 25.0, 0)
-            else:
-                ball = (72.0, 27.0, 0)  # on the RB from 7
+        for f in range(10):
+            ball = (74.0, 25.0, 0) if f < 4 else (72.0, 27.0, 0)  # on the QB, then on the RB from 4
             frames[f] = {'ball': ball, 'qb': (74.0, 25.0, 0), 'rb': (72.0, 27.0, 0)}
         carriers = self.carriers(play(frames, {1: 'ball_snap', 3: 'handoff'}), 'rush')
-        self.assertEqual(carriers[2], 'qb')  # pinned before the handoff
-        self.assertEqual([carriers[f] for f in (3, 4, 5, 6)], ['qb'] * 4)  # RB nearest for 2 frames: no switch
-        self.assertEqual([carriers[f] for f in (7, 8, 9)], ['qb', 'qb', 'rb'])
+        self.assertEqual([carriers[f] for f in (2, 3)], ['qb', 'qb'])  # pinned; still in his hands at the handoff
+        self.assertEqual(carriers[4], 'rb')  # the first frame it is on the back, not three later
+
+    def test_a_new_carrier_needs_three_frames_in_a_row(self):
+        # The RB has it; a defender is nearest the ball for two frames (a
+        # pileup), then for three.
+        frames = {}
+        for f in range(16):
+            if f < 6 or 8 <= f < 10:
+                ball = (72.0, 27.0, 0)  # on the RB
+            else:
+                ball = (76.0, 30.0, 0)  # on the CB: frames 6 and 7, then from 10
+            frames[f] = {'ball': ball, 'qb': (74.0, 25.0, 0), 'rb': (72.0, 27.0, 0), 'cb': (76.0, 30.0, 0)}
+        carriers = self.carriers(play(frames, {1: 'ball_snap', 3: 'handoff'}), 'rush')
+        self.assertEqual([carriers[f] for f in range(4, 10)], ['rb'] * 6)  # two frames: no switch
+        self.assertEqual([carriers[f] for f in (10, 11, 12)], ['rb', 'rb', 'cb'])
+
+    def lateral_play(self):
+        """The WR catches a pass at 4, laterals at 8; the ball is in the air
+        for three frames and reaches the RB at 11."""
+        frames = {}
+        for f in range(16):
+            wr = (80.0 + min(f, 8) * 0.5, 20.0, 5.0)
+            rb = (82.0, 16.0 + min(f, 11) * 0.0, 5.0)
+            if f < 2:
+                ball = (75.0, 25.0, 0.0)
+            elif f < 4:
+                ball = (75.0 + (f - 1) * 2.0, 23.0, 20.0)
+            elif f < 8:
+                ball = (wr[0], wr[1] + 0.3, 5.0)
+            elif f < 11:
+                ball = (wr[0] + (f - 8) * 0.3, 20.0 - (f - 7) * 1.0, 10.0)  # tossed toward the RB
+            else:
+                ball = (rb[0], rb[1] + 0.3, 5.0)
+            frames[f] = {'ball': ball, 'qb': (74.0, 25.0, 1.0), 'wr': wr, 'rb': rb, 'cb': (90.0, 30.0, 3.0)}
+        return play(frames, {1: 'ball_snap', 2: 'pass_forward', 4: 'pass_outcome_caught', 8: 'lateral'})
+
+    def test_a_lateral_is_a_flight_to_whoever_catches_it(self):
+        rows = self.lateral_play()
+        players, ball, frames = replays.frames_of(rows)
+        events = replays.events_of(rows)
+        self.assertEqual(replays.lateral_flights(events, players, ball, frames), [{'kind': 'lateral', 'from': 8, 'to': 11}])
+        carriers = self.carriers(rows)
+        self.assertEqual(carriers[7], 'wr')
+        self.assertEqual([carriers[f] for f in (8, 9, 10)], [None] * 3)  # in the air: nobody
+        self.assertEqual(carriers[11], 'rb')  # caught: at once
+
+    def test_a_lateral_nobody_catches_is_not_a_flight(self):
+        rows = [r for r in self.lateral_play() if not (r['displayName'] == 'RB')]
+        players, ball, frames = replays.frames_of(rows)
+        self.assertEqual(replays.lateral_flights(replays.events_of(rows), players, ball, frames), [])
 
     def test_an_incompletion_leaves_nobody_with_it(self):
         frames = {f: {'ball': (75.0 + f, 25.0, 0), 'qb': (74.0, 25.0, 0), 'wr': (80.0, 25.0, 0)} for f in range(10)}

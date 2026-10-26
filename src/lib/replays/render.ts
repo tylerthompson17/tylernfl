@@ -295,9 +295,11 @@ export class ReplayRenderer {
       ...recent.map((e) => `${e.frame} ${e.name}`),
     ];
     const w = Math.max(...lines.map((l) => textWidth(l, { bold: false }))) + 6;
+    // Top right: the page's caption sits top left.
+    const left = this.framing.width - w - 2;
     ctx.fillStyle = colors.debugPanel;
-    ctx.fillRect(2, 2, w, lines.length * 9 + 3);
-    lines.forEach((line, n) => drawText(ctx, line, 5, 4 + n * 9, small(colors.debugText)));
+    ctx.fillRect(left, 2, w, lines.length * 9 + 3);
+    lines.forEach((line, n) => drawText(ctx, line, left + 3, 4 + n * 9, small(colors.debugText)));
     // The event of this frame, if any, labelled at the ball.
     const now = prep.scene.events.filter((e) => Math.abs(e.frame - f) < 3);
     now.forEach((e, n) => drawText(ctx, e.name, bpx + 4, bpy - 10 - n * 9, small(colors.debug)));
