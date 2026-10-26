@@ -6,9 +6,13 @@ after a touchdown (kick the extra point or go for 2). The model is Tyler's. This
 records the contract; the decisions in it are Tyler's (2026-10-21), and anything still
 open is listed at the end.
 
-**Contract version 4** (2026-10-22). Changes are listed under "Version history" at the
+**Contract version 5** (2026-10-25). Changes are listed under "Version history" at the
 end; bump the version with every change to a type or rule here, and `CONTRACT_VERSION`
-in `src/lib/fourth-down.ts` with it.
+in `src/lib/fourth-down.ts` with it. v5 takes effect when the engine delivery merges:
+until then the site's engine and export are v4 and `CONTRACT_VERSION` stays 4, since a
+v4 engine checked against 5 would make every call `'unavailable'`. The v5 types are in
+`src/lib/fourth-down.ts` already, with `experimental` optional until the v5 engine
+returns it.
 
 Status on 2026-10-22: the types are in `src/lib/fourth-down.ts`, and `recommend()` and
 `recommendTry()` hand each call to the generated engine (`src/lib/fourth-down-engine.ts`,
@@ -28,7 +32,7 @@ shape below when the model exists.
   `100 - yardline100`.
 - **Teams** are the site's abbreviations (`LAR`, not nflverse's `LA`). The exported
   model maps them if it was trained on nflverse's.
-- **Kicker ids are ESPN athlete ids**, as strings.
+- **Kicker and punter ids are ESPN athlete ids**, as strings.
 
 ## 1. Calculator: function signature
 
@@ -76,6 +80,7 @@ The `reason` union can grow if other cases are ruled out later.
 | `roof` | `'outdoors' \| 'dome' \| 'closed' \| 'open'` | | nflfastR's `roof` values. |
 | `temp` | number or null | degrees Fahrenheit | Null means unknown. Not read when `roof` is `'dome'` or `'closed'`. |
 | `kickerId` | string, optional | ESPN athlete id | Missing means a league-average kicker. |
+| `punterId` | string, optional | ESPN athlete id | The punter. Only the experimental model reads it (below). Missing means the team's most recent punter (an exported table refreshed weekly); if that fails too, a league-average punter, with `punterUnknown` set. |
 | `spreadLine` | number or null | points | Pregame spread, positive when the home team is favored (nflverse `spread_line`, the same convention as `spreadLine` in `schedule.json`). Null means unknown. |
 | `totalLine` | number or null | points | Pregame total (over/under). Null means unknown. |
 
@@ -93,6 +98,7 @@ The `reason` union can grow if other cases are ruled out later.
 | `kickerId` | string or null | ESPN athlete id | The kicker the numbers used; null when they used a league-average kicker. |
 | `flags` | `{ temperatureUnknown: boolean, kickerUnknown: boolean, linesUnknown: boolean }` | | What the model had to assume, below. The page must say so for each one set. |
 | `breakdown` | `FourthDownBreakdown` | | Outcome and term breakdown, below. |
+| `experimental` | `ExperimentalResult` | | The experimental model on the same situation (below). Present on every `supported: true` result. Every other field stays nfl4th as published. |
 
 ### Flags
 
@@ -198,6 +204,142 @@ as they are, so the model chooses them and they need no mapping on the site.
 Which corrections there are, and what turning one off means, are Tyler's choices with
 the model.
 
+### Experimental model
+
+`experimental` is a second model shown next to nfl4th: nfl4th plus correction terms
+(at v5, the 4th-down conversion fix, QB sneak usage, the punter and punt coverage).
+It changes none of the fields above, which stay nfl4th as published.
+
+```ts
+type ExperimentalResult =
+  | ({ supported: true } & ExperimentalRecommendation)
+  | { supported: false; reason: 'unavailable' | 'season' };
+
+interface ExperimentalRecommendation {
+  /** Model id; changes when a term or a frozen parameter changes, e.g. "fd-experimental-1" */
+  modelId: string;
+  /** Shown as is next to the numbers */
+  label: string;
+  /** Last completed week whose data the weekly tables use. A stale table is shown, labeled with this. */
+  dataAsOf: { season: number; week: number };
+  call: 'go' | 'punt' | 'field goal';      // same rules as the nfl4th call
+  wpGo: number;
+  wpPunt: number | null;                     // null exactly when the nfl4th wpPunt is
+  wpFieldGoal: number | null;                // null exactly when the nfl4th wpFieldGoal is
+  options: {
+    go: ExperimentalOption<GoOutcomes>;
+    punt: ExperimentalOption<PuntOutcomes> | null;
+    fieldGoal: ExperimentalOption<FieldGoalOutcomes> | null;
+  };
+  /** Every term in the model, in display order */
+  terms: ExperimentalTerm[];
+  flags: {
+    /** No punterId and no team punter found: league-average punter */
+    punterUnknown: boolean;
+    /** The punter is known but has no punts in the model's fit seasons: league average */
+    punterNoHistory: boolean;
+    /** The punting team's franchise has no coverage history in the fit seasons: league average for that part */
+    coverageNoHistory: boolean;
+  };
+}
+
+type OptionKey = 'go' | 'punt' | 'fieldGoal';
+
+interface ExperimentalOption<O> {
+  wp: number;
+  /** Every term off: equal to the nfl4th WP for this option */
+  wpAllTermsOff: number;
+  /** The experimental model's outcomes; the identities under Breakdown hold */
+  outcomes: O;
+  /** Branch inputs the terms moved: nfl4th's value against the experimental value */
+  changedInputs: ChangedInput[];
+  /** What the term deltas do not explain (terms interact) */
+  residual: number;
+}
+
+interface ChangedInput {
+  id: string;                      // e.g. 'conversionProb', 'puntShift'
+  label: string;                   // shown as is
+  unit: 'probability' | 'yards';
+  nfl4th: number;
+  experimental: number;
+}
+
+interface ExperimentalTerm {
+  /** Stable across versions: 'conversionFix', 'qbSneak', 'punter', 'puntCoverage' */
+  id: string;
+  /** Shown as is, e.g. "QB sneak usage (BUF)", "Punter (J. Hekker)", "Punt coverage (BUF)" */
+  label: string;
+  /** Options this term can move */
+  options: OptionKey[];
+  applies: boolean;
+  /** When applies is false: shown in place of a delta, e.g. "Only on 4th and 1" */
+  notApplicableText: string | null;
+  /** One entry per key in `options`; 0 when applies is false */
+  wpDelta: Partial<Record<OptionKey, number>>;
+}
+```
+
+Rules:
+
+- **Breakdown identity.** For each non-null option `o`: `wpAllTermsOff + (sum of
+  wpDelta[o] over the terms listing o) + residual = wp`. A term's delta is the option's
+  WP with every term on minus its WP with only that term off.
+- **Generic terms.** The site renders `terms` and `changedInputs` from their labels and
+  ids, with no mapping of its own. Adding, removing or relabeling a term needs no
+  contract change; only the types above are fixed.
+- **Null options.** Terms never create or remove an option.
+- **Unsupported reasons.**
+  - `'unavailable'`: the experimental files are missing or fail to load, or evaluating
+    them fails. This never affects the nfl4th fields.
+  - `'season'`: `situation.season` is not the season the experimental tables are for.
+- **Flags.** The same meaning as the nfl4th flags: an input the model uses was missing,
+  or had no history, and a fallback was applied. The page says so for each flag set.
+  All are always present.
+- **What pages may show.**
+  - Allowed: experimental calls, WPs and breakdowns, per play, next to nfl4th's; and
+    outcome-free counts of how often the two models disagree, and the WP at stake.
+  - Not allowed, until a later contract version lifts it: any accuracy figure,
+    calibration, graded-call record, WP-cost tally, or experimental-against-nfl4th
+    scorecard or right or wrong note based on what happened on plays.
+  - `model_record.json` grades nfl4th only.
+
+`label` is this exact text:
+
+> Experimental: nfl4th plus four adjustments (the 4th-down conversion fix, QB sneak
+> usage, punter, and punt coverage). Confirmation in progress.
+
+Example: 4th and 1 at the opponent's 45, BUF, `punterId` missing (team punter found).
+The numbers are illustrative.
+
+```json
+"experimental": {
+  "supported": true, "modelId": "fd-experimental-1",
+  "label": "Experimental: nfl4th plus four adjustments (the 4th-down conversion fix, QB sneak usage, punter, and punt coverage). Confirmation in progress.",
+  "dataAsOf": { "season": 2026, "week": 8 },
+  "call": "go", "wpGo": 0.574, "wpPunt": 0.543, "wpFieldGoal": null,
+  "options": {
+    "go": { "wp": 0.574, "wpAllTermsOff": 0.566,
+      "outcomes": { "conversionProb": 0.712, "wpIfConvert": 0.612, "wpIfFail": 0.481 },
+      "changedInputs": [{ "id": "conversionProb", "label": "Conversion chance", "unit": "probability", "nfl4th": 0.651, "experimental": 0.712 }],
+      "residual": 0.0001 },
+    "punt": { "wp": 0.543, "wpAllTermsOff": 0.541,
+      "outcomes": { "wpAfterPunt": 0.543 },
+      "changedInputs": [{ "id": "puntShift", "label": "Punt net yards vs nfl4th", "unit": "yards", "nfl4th": 0, "experimental": 0.4 }],
+      "residual": 0.0 },
+    "fieldGoal": null },
+  "terms": [
+    { "id": "conversionFix", "label": "4th-down conversion fix", "options": ["go"], "applies": true, "notApplicableText": null, "wpDelta": { "go": 0.006 } },
+    { "id": "qbSneak", "label": "QB sneak usage (BUF)", "options": ["go"], "applies": true, "notApplicableText": null, "wpDelta": { "go": 0.002 } },
+    { "id": "punter", "label": "Punter (S. Martin)", "options": ["punt"], "applies": true, "notApplicableText": null, "wpDelta": { "punt": 0.0 } },
+    { "id": "puntCoverage", "label": "Punt coverage (BUF)", "options": ["punt"], "applies": true, "notApplicableText": null, "wpDelta": { "punt": 0.002 } } ],
+  "flags": { "punterUnknown": false, "punterNoHistory": false, "coverageNoHistory": false }
+}
+```
+
+At 4th and 3 the sneak entry would read `"applies": false, "notApplicableText": "Only on
+4th and 1", "wpDelta": { "go": 0 }`.
+
 ## 2. The try after a touchdown: function signature
 
 ```ts
@@ -284,10 +426,13 @@ interface TryOutcomes {
 
 Grading of tries in `model_record.json` is not part of the contract yet.
 
+`recommendTry()` and the try types have no experimental model (unchanged in v5).
+
 ## 3. Sidebar record: `model_record.json`
 
 A list of graded calls for one season, written by a pipeline into `src/data/`. Season
-totals are derived from the list by the site, never stored.
+totals are derived from the list by the site, never stored. It grades nfl4th's calls
+only, never the experimental model's (section 1).
 
 ```ts
 interface ModelRecordData {
@@ -367,6 +512,18 @@ assets of the site itself, fetched by the calculator's page only, in a Web Worke
 MB gzipped). They are the site's own static files, not data from elsewhere, and no other
 page fetches them. Their size counts toward the calculator's weight.
 
+From v5 the engine also reads the experimental model's files next to the existing ones,
+content-hashed like them; the site needs no logic of its own for them:
+
+- `terms.json`: the term list.
+- `sneak.json`: team sneak usage offsets, refreshed weekly from earlier weeks' play calls.
+- `punter.json`: punter effects and zone multipliers, frozen at season start.
+- `coverage.json`: franchise and team-season coverage effects and zone multipliers; the
+  team-season part is refreshed weekly from earlier weeks' punts.
+- `teamPunters.json`: each team's most recent punter, refreshed weekly.
+
+Each week's tables arrive in the weekly model delivery PR.
+
 ## Site copy
 
 The 4th down article ("What the record will mean") and the about page describe
@@ -401,6 +558,21 @@ Grading rules for the pipeline that writes `model_record.json`:
 
 ## Version history
 
+- **5** (2026-10-25), from the fourth-down repo's contract change request (issue #6):
+  the experimental model next to nfl4th. All additive; every v4 field keeps its meaning
+  (nfl4th as published).
+  - `FourthDownSituation` gains the optional `punterId`.
+  - `FourthDownRecommendation` gains `experimental` (`ExperimentalResult` and the types
+    under "Experimental model" in section 1), with `'season'` as an unsupported reason
+    for it, and the rule for what pages may show of it.
+  - Section 4 lists the experimental model's files.
+  - `recommendTry()` and the try types are unchanged.
+  - v5 takes effect when the engine delivery merges: `CONTRACT_VERSION` becomes 5 in
+    the same PR as the v5 engine and export, since the v5 engine loads only a v5 export
+    and the v4 engine refuses a version it was not built for.
+- Section 4 change without a version bump (2026-10-22, commit 2517267): the model files
+  went from build-time imports shipped with the page to content-hashed assets fetched
+  at runtime in a Web Worker, on the calculator only.
 - **4** (2026-10-22), from the fourth-down repo's contract change request (issue #3,
   milestone 4, the export pipeline):
   - Flags: a flag means an input the model uses was missing and a fallback was applied,

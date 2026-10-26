@@ -21,7 +21,11 @@ import {
 
 export type { ModelFiles };
 
-/** Version of docs/model-interface.md these types match */
+/**
+ * Version of docs/model-interface.md the engine and export are checked against.
+ * The types below already include v5's additions; this becomes 5 with the v5
+ * engine delivery, since the v4 engine refuses any other version.
+ */
 export const CONTRACT_VERSION = 4;
 
 export type FourthDownCall = 'go' | 'punt' | 'field goal';
@@ -64,6 +68,11 @@ export interface FourthDownSituation {
   temp: number | null;
   /** ESPN athlete id. Missing means a league-average kicker. */
   kickerId?: string;
+  /**
+   * ESPN athlete id of the punter; only the experimental model reads it.
+   * Missing means the team's most recent punter, else a league-average one.
+   */
+  punterId?: string;
   /** Pregame spread in points, positive when the home team is favored (nflverse spread_line); null when unknown */
   spreadLine: number | null;
   /** Pregame total (over/under) in points; null when unknown */
@@ -166,6 +175,99 @@ export interface FourthDownRecommendation {
   kickerId: string | null;
   flags: FourthDownFlags;
   breakdown: FourthDownBreakdown;
+  /**
+   * The experimental model on the same situation (contract v5). Present on every
+   * supported result once the v5 engine is delivered; absent from the v4 engine.
+   */
+  experimental?: ExperimentalResult;
+}
+
+export type OptionKey = 'go' | 'punt' | 'fieldGoal';
+
+/**
+ * The experimental model: nfl4th plus correction terms, shown next to nfl4th's
+ * numbers. Pages may show its calls, WPs and breakdowns and outcome-free counts
+ * of disagreement, never accuracy, calibration or a graded record (contract v5).
+ * 'season' is a situation outside the season its tables are for.
+ */
+export type ExperimentalResult =
+  | ({ supported: true } & ExperimentalRecommendation)
+  | { supported: false; reason: 'unavailable' | 'season' };
+
+export interface ExperimentalRecommendation {
+  /** Changes when a term or a frozen parameter changes, e.g. "fd-experimental-1" */
+  modelId: string;
+  /** Shown as is next to the numbers */
+  label: string;
+  /** Last completed week whose data the weekly tables use; a stale table is shown labeled with it */
+  dataAsOf: { season: number; week: number };
+  /** Same rules as FourthDownRecommendation's call */
+  call: FourthDownCall;
+  wpGo: number;
+  /** Null exactly when the nfl4th wpPunt is */
+  wpPunt: number | null;
+  /** Null exactly when the nfl4th wpFieldGoal is */
+  wpFieldGoal: number | null;
+  options: {
+    go: ExperimentalOption<GoOutcomes>;
+    punt: ExperimentalOption<PuntOutcomes> | null;
+    fieldGoal: ExperimentalOption<FieldGoalOutcomes> | null;
+  };
+  /** Every term in the model, in display order */
+  terms: ExperimentalTerm[];
+  /** Always present; the page says so for each one set */
+  flags: {
+    /** No punterId and no team punter found: league-average punter */
+    punterUnknown: boolean;
+    /** The punter is known but has no punts in the fit seasons: league average */
+    punterNoHistory: boolean;
+    /** The punting franchise has no coverage history in the fit seasons: league average for that part */
+    coverageNoHistory: boolean;
+  };
+}
+
+/**
+ * One option: wpAllTermsOff + the sum of wpDelta for this option over the
+ * terms listing it + residual = wp.
+ */
+export interface ExperimentalOption<O> {
+  wp: number;
+  /** Every term off: equal to the nfl4th WP for this option */
+  wpAllTermsOff: number;
+  /** The experimental model's outcomes; the same identities as FourthDownBreakdown's */
+  outcomes: O;
+  /** Branch inputs the terms moved: nfl4th's value against the experimental value */
+  changedInputs: ChangedInput[];
+  /** What the term deltas do not explain (terms interact) */
+  residual: number;
+}
+
+export interface ChangedInput {
+  /** e.g. 'conversionProb', 'puntShift' */
+  id: string;
+  /** Shown as is */
+  label: string;
+  unit: 'probability' | 'yards';
+  nfl4th: number;
+  experimental: number;
+}
+
+/** Rendered from its id and label; the site keeps no mapping of terms */
+export interface ExperimentalTerm {
+  /** Stable across versions: 'conversionFix', 'qbSneak', 'punter', 'puntCoverage' */
+  id: string;
+  /** Shown as is, e.g. "Punter (J. Hekker)" */
+  label: string;
+  /** Options this term can move */
+  options: OptionKey[];
+  applies: boolean;
+  /** When applies is false, shown in place of a delta, e.g. "Only on 4th and 1" */
+  notApplicableText: string | null;
+  /**
+   * The option's WP with every term on minus its WP with only this term off;
+   * one entry per key in options, 0 when applies is false
+   */
+  wpDelta: Partial<Record<OptionKey, number>>;
 }
 
 /**
