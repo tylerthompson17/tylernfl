@@ -229,10 +229,16 @@ class ExperimentalSnapshotTest(unittest.TestCase):
             self.assertEqual({e['playId']: e.get('experimental') for e in again['fourthDowns']},
                              {10: by_play[10]['experimental'], 20: None, 30: None})
             self.assertEqual(again['experimentalCounts']['kept from an earlier run'], 1)
-        # Play 30's game (week 6) has nothing stored and week 6 tables: warned.
-        self.assertEqual(first['experimentalMissed'], {'tablesAsOf': {'season': 2026, 'week': 6},
-                                                       'games': ['2026_06_KC_BUF']})
-        self.assertIn('WARNING 2026_06_KC_BUF has 4th downs but no experimental results stored', report(first))
+        # Play 30's game has nothing stored and week 6 tables, but week 6 is
+        # before the first week a pre-game result could exist: not flagged.
+        self.assertEqual(first['experimentalMissed'], {'tablesAsOf': {'season': 2026, 'week': 6}, 'games': []})
+        self.assertNotIn('WARNING', report(first))
+        # Week 7 tables before the week 7 game was stored: flagged, week 6 still not.
+        late = build_decisions(rows, 2026, 'now', run=run_with(experimental(7)), punter=punter)
+        self.assertEqual(late['experimentalMissed'], {'tablesAsOf': {'season': 2026, 'week': 7},
+                                                      'games': ['2026_07_KC_BUF']})
+        self.assertIn('WARNING 2026_07_KC_BUF has 4th downs but no experimental results stored', report(late))
+        self.assertNotIn('2026_06_KC_BUF', report(late))
         unsupported = build_decisions(rows, 2026, 'now', run=run_with({'supported': False, 'reason': 'unavailable'}),
                                       punter=punter)
         self.assertEqual(unsupported['experimentalMissed'], {'tablesAsOf': None, 'games': []})

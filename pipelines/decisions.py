@@ -56,7 +56,8 @@ grades, coaches and the summary are nfl4th's alone. A play gets one only when
 downs but no stored result, whose week the run's tables are not from before
 (their snapshots can no longer be taken), is listed in `experimentalMissed`
 and printed as a warning each run (missed_games): the weekly model PR was
-merged before the daily run had that week's games.
+merged before the daily run had that week's games. Only games from
+FIRST_EXPERIMENTAL_WEEK on, the first week a pre-game result could exist.
 
 Coaches are credited by game: each decision goes to its team's head coach in
 that game (nflverse's home_coach / away_coach), so an interim coach is
@@ -447,9 +448,15 @@ def experimental_snapshot(result: dict, season: int, week: int) -> tuple[dict | 
     return r5_all(x), 'stored this run'
 
 
+# The model arrived with week 6 tables: week 7 of 2026 is the first week a game
+# could have a result from before it. Earlier games never get one.
+FIRST_EXPERIMENTAL_WEEK = (2026, 7)
+
+
 def missed_games(entries: list[dict], results: list[dict], season: int) -> dict:
     """{"tablesAsOf": the run's experimental dataAsOf or None, "games": game ids
-    with 4th downs and no stored result whose week is not after the tables'}."""
+    from FIRST_EXPERIMENTAL_WEEK on with 4th downs and no stored result whose
+    week is not after the tables'}."""
     as_of = next((r['experimental']['dataAsOf'] for r in results
                   if r.get('supported') and r['experimental']['supported']), None)
     if as_of is None:
@@ -461,7 +468,7 @@ def missed_games(entries: list[dict], results: list[dict], season: int) -> dict:
         if 'experimental' in e:
             stored.add(e['gameId'])
     games = [g for g, week in sorted(weeks.items())
-             if g not in stored and (as_of['season'], as_of['week']) >= (season, week)]
+             if g not in stored and FIRST_EXPERIMENTAL_WEEK <= (season, week) <= (as_of['season'], as_of['week'])]
     return {'tablesAsOf': as_of, 'games': games}
 
 
