@@ -1002,3 +1002,161 @@ export interface GameData {
   /** Each of those decisions on the WP chart: minutes since kickoff, home WP before the snap */
   decisionSpots: { playId: number; x: number; y: number }[];
 }
+
+/** A team in a Retro Replays scene: colors from teams.json (retired abbreviations take today's franchise's). */
+export interface ReplayTeam {
+  abbr: string;
+  primary: string;
+  secondary: string;
+}
+
+/**
+ * One player's track in a scene. Positions are in tenths of a yard (the
+ * scene's `scale`), null in a frame the player has no position for. The
+ * featured team always moves left to right.
+ */
+export interface ReplayPlayer {
+  id: string;
+  side: 'featured' | 'opponent';
+  jersey: number | null;
+  position: string | null;
+  name: string;
+  x: (number | null)[];
+  y: (number | null)[];
+  /** Direction of travel, whole degrees clockwise from +y */
+  dir?: (number | null)[];
+  /** Orientation (which way the body faces), same convention */
+  o?: (number | null)[];
+  /** Reserved for later phases: an action per frame (diving, tackled) */
+  state?: (string | null)[];
+}
+
+export interface ReplayPlay {
+  season: number;
+  seasonType: string;
+  week: number;
+  gameId: string;
+  playId: number;
+  quarter: number;
+  /** Game clock at the snap, MM:SS */
+  clock: string;
+  down: number | null;
+  yardsToGo: number | null;
+  yardline: string | null;
+  scoreBefore: { home: number; away: number };
+  scoreAfter: { home: number; away: number } | null;
+  description: string;
+  date: string | null;
+  nflverseGameId: string | null;
+  /** nflfastR's win probability for the featured team before and after the play: a gain unless it did not move */
+  wpBefore: number | null;
+  wpAfter: number | null;
+  type: string;
+  /**
+   * The team the replay follows, moving left to right: the one whose win
+   * probability rose (a returner's, a pick-six's defense). With no change,
+   * the receiving team on a kick, else the team that snapped.
+   */
+  featured: string;
+  opponent: string;
+  /** The team that snapped (or kicked off): the offense in the usual sense */
+  possession: string;
+  home: string;
+  away: string;
+  /** The kicking team on a kickoff or punt, else null */
+  kicking: string | null;
+  /** A penalty on the play, as nflverse records it (yards as enforced) */
+  penalty: { team: string | null; player: string | null; type: string | null; yards: number | null } | null;
+}
+
+/**
+ * replays/plays/{key}.json: one Retro Replays scene (pipelines/replays.py;
+ * the format is in src/data/replays/README.md). The ball's path is the one
+ * required track: a scene drawn from play-by-play alone has no players.
+ */
+export interface ReplayScene {
+  version: number;
+  key: string;
+  source: string;
+  /** Frames a second */
+  hz: number;
+  /** Stored positions are yards times this */
+  scale: number;
+  frameCount: number;
+  play: ReplayPlay;
+  /**
+   * Yards from the featured team's end line (0 to 120); the line to gain
+   * is null when unknown or a kick. `attack` is which way the team that
+   * snapped moves: 1 right, -1 left (when the other team is featured).
+   */
+  field: { lineOfScrimmage: number | null; firstDown: number | null; attack: 1 | -1 };
+  teams: { featured: ReplayTeam; opponent: ReplayTeam };
+  events: { frame: number; name: string }[];
+  /** The ball in the air, frame to frame, drawn as an arc unless `ball.z` is given */
+  flights: { kind: string; from: number; to: number }[];
+  ball: { x: number[]; y: number[]; z?: (number | null)[] };
+  /** Index into `players` of whoever has the ball, per frame */
+  carrier?: (number | null)[];
+  players?: ReplayPlayer[];
+}
+
+/**
+ * replays/index.json: every play in the Next Gen Stats highlights
+ * collection, facts only (no tracking), to pick replays from
+ * (pipelines/replays.py --index). Teams, date, description and win
+ * probability are nflverse's and null for a play it does not have.
+ */
+export interface ReplayIndexEntry {
+  /** season_team_gameId_playId; a scene, when built, is plays/{key}.json */
+  key: string;
+  date: string | null;
+  season: number;
+  seasonType: string;
+  week: number;
+  gameId: string;
+  playId: number;
+  away: string | null;
+  home: string | null;
+  /** The team a scene would follow, as in the scenes (the one whose win probability rose) */
+  featured: string | null;
+  opponent: string | null;
+  type: string;
+  quarter: number | null;
+  clock: string | null;
+  down: number | null;
+  yardsToGo: number | null;
+  description: string;
+  touchdown: boolean;
+  wpBefore: number | null;
+  wpAfter: number | null;
+  /** Snaps in the play's tracking file: 2 when NGS repeated the play (its numbers are then null); null without the file */
+  snaps: number | null;
+  /** From the play's tracking when it was cached for --index: the carrier's top speed (mph) */
+  topSpeed: number | null;
+  /** The first forward pass's air yards, from tracking */
+  airYards: number | null;
+}
+
+export interface ReplayIndexData {
+  version: number;
+  plays: ReplayIndexEntry[];
+}
+
+/** replays/validation.json: what pipelines/replays.py --all built and why it left plays out. */
+export interface ReplayValidation {
+  version: number;
+  ngsSha: string;
+  kept: number;
+  excluded: number;
+  /** Check key to its words and how many plays it excluded */
+  reasons: Record<string, { words: string; plays: number }>;
+  /** Excluded play key to the checks it failed */
+  excludedPlays: Record<string, string[]>;
+  /** Featured keys that are not built, with why */
+  featuredDropped: Record<string, string[]>;
+}
+
+/** replays/featured.json: Tyler's featured replays, in display order. */
+export interface ReplayFeatured {
+  keys: string[];
+}

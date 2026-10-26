@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Pull requests run the typecheck and the build (Retro Replays included)
+  # but never deploy, so a workflow change can be tried before it merges.
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -28,19 +31,118 @@ jobs:
         run: npm run typecheck
       # Node's test runner on tests/, including the 4th down engine on its
       # seeded fixture sample (the full set is npm run test:fourth-down-engine).
+      # The Retro Replays featured check skips here: it needs the generated
+      # replays, which only the build job makes.
       - name: Test
         run: npm test
 
   build:
     needs: typecheck
     runs-on: ubuntu-latest
+    env:
+      PBP_CACHE_DIR: ${{ github.workspace }}/pipelines/.cache/pbp
+      NGS_CACHE_DIR: ${{ github.workspace }}/pipelines/.cache/ngs
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: pipelines/requirements.txt
+      - name: Install pipeline dependencies
+        run: pip install -r pipelines/requirements.txt
+
+      # Retro Replays are generated here, not committed: a scene per play of
+      # the Next Gen Stats highlights collection that passes its checks, the
+      # index and the validation report (pipelines/replays.py --all, rules in
+      # src/data/replays/README.md). Only featured.json is in the repo.
+      - name: Replay inputs
+        id: inputs
+        run: echo "ngs_sha=$(cd pipelines && python -c 'import replays; print(replays.NGS_SHA)')" >> "$GITHUB_OUTPUT"
+      # Read only: the daily job keeps this cache. A miss is fine: pbp_cache.py
+      # downloads the seasons it needs from nflverse.
+      - name: Restore play-by-play cache
+        uses: actions/cache/restore@v6
+        with:
+          path: pipelines/.cache/pbp
+          key: pbp-${{ github.run_id }}
+          restore-keys: pbp-
+      # Unchanged inputs (the pipeline, the tracking commit, the play-by-play
+      # seasons, team colors, the featured list) give the same replays, so a
+      # deploy that changed none of them skips generating.
+      - name: Restore generated replays
+        id: generated
+        uses: actions/cache/restore@v6
+        with:
+          path: |
+            src/data/replays/plays
+            src/data/replays/index.json
+            src/data/replays/validation.json
+          key: replays-${{ steps.inputs.outputs.ngs_sha }}-${{ hashFiles('pipelines/replays.py', 'pipelines/common.py', 'pipelines/pbp_cache.py', 'pipelines/requirements.txt', 'src/data/teams.json', 'src/data/replays/featured.json', 'pipelines/.cache/pbp/pbp_2017.parquet', 'pipelines/.cache/pbp/pbp_2018.parquet', 'pipelines/.cache/pbp/pbp_2019.parquet') }}
+      - name: Restore tracking files
+        id: ngs
+        if: steps.generated.outputs.cache-hit != 'true'
+        uses: actions/cache/restore@v6
+        with:
+          path: pipelines/.cache/ngs
+          key: ngs-${{ steps.inputs.outputs.ngs_sha }}
+      # One shallow fetch of the pinned commit (about 95 MB packed) rather
+      # than 561 file downloads; play_data/ only.
+      - name: Fetch tracking files
+        if: steps.generated.outputs.cache-hit != 'true' && steps.ngs.outputs.cache-hit != 'true'
+        env:
+          NGS_SHA: ${{ steps.inputs.outputs.ngs_sha }}
+        run: |
+          git init -q "$RUNNER_TEMP/ngs"
+          cd "$RUNNER_TEMP/ngs"
+          git remote add origin https://github.com/asonty/ngs_highlights
+          git sparse-checkout set play_data
+          git fetch -q --depth 1 origin "$NGS_SHA"
+          git checkout -q FETCH_HEAD
+          mkdir -p "$NGS_CACHE_DIR"
+          mv play_data/* "$NGS_CACHE_DIR"/
+          echo "$(ls "$NGS_CACHE_DIR" | wc -l) tracking files"
+      - name: Save tracking files
+        if: steps.generated.outputs.cache-hit != 'true' && steps.ngs.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: pipelines/.cache/ngs
+          key: ngs-${{ steps.inputs.outputs.ngs_sha }}
+      # Writes the report to the job summary; a featured play that fails its
+      # checks is left out of Featured with a warning, never failing the deploy.
+      - name: Generate replays
+        if: steps.generated.outputs.cache-hit != 'true'
+        run: python pipelines/replays.py --all
+      - name: Save generated replays
+        if: steps.generated.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: |
+            src/data/replays/plays
+            src/data/replays/index.json
+            src/data/replays/validation.json
+          key: ${{ steps.generated.outputs.cache-primary-key }}
+      - name: Replay report
+        if: steps.generated.outputs.cache-hit == 'true'
+        run: python pipelines/replays.py --report
+      # On a pull request a featured play that fails its checks fails the
+      # run, so it is caught before it reaches main.
+      - name: Set up Node
+        if: github.event_name == 'pull_request'
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Featured replays pass their checks
+        if: github.event_name == 'pull_request'
+        run: node --test tests/replays-featured.test.ts
+
       - name: Build with Astro
         uses: withastro/action@v6
 
   deploy:
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:

@@ -1,0 +1,39 @@
+---
+/**
+ * The whole highlights collection with picks and "Copy picked keys", for
+ * choosing which plays get a replay. Dev only: getStaticPaths returns this
+ * page under `astro dev` and nothing in a build, so it never ships and
+ * nothing links to it. Open /replays/dev/catalog/ on the dev server.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Panel from '../../../components/Panel.astro';
+import HighlightsTable from '../../../components/replays/HighlightsTable.astro';
+import { builtKeys, replayIndex, replayValidation } from '../../../utils/replays';
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { page: 'catalog' } }] : [];
+}
+
+const built = builtKeys();
+const plays = replayIndex();
+const validation = replayValidation();
+const excluded = Object.fromEntries(
+  Object.entries(validation?.excludedPlays ?? {}).map(([key, codes]) => [
+    key,
+    codes.map((code) => validation?.reasons[code]?.words ?? code).join('; '),
+  ]),
+);
+---
+
+<BaseLayout title="Highlights catalog (dev)" rail={false}>
+  <h1 class="page-title">Highlights catalog</h1>
+  <p class="page-intro">
+    Dev only, not in the build. Every play in the Next Gen Stats highlights collection; {built.size} of {plays.length} have a
+    replay{validation && `, ${validation.excluded} failed their checks`}. Generate everything with
+    <code>python pipelines/replays.py --all</code>; pick featured plays here and add their keys to
+    <code>src/data/replays/featured.json</code>.
+  </p>
+  <Panel title="Highlights">
+    <HighlightsTable plays={plays} built={built} excluded={excluded} picks />
+  </Panel>
+</BaseLayout>
