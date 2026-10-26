@@ -1,5 +1,5 @@
 {
- "derived": "Synthetic, from derive_sunday.py: not an ESPN response.",
+ "derived": "Synthetic, from derive_sunday.py: not an ESPN response. Every 4th down is a real one from nflverse play-by-play.",
  "header": {
   "competitions": [
    {
@@ -32,7 +32,7 @@
     "abbreviation": "TD",
     "displayName": "Touchdown"
    },
-   "text": "Marquise Brown 12 Yd pass from Jalen Hurts (Jake Elliott Kick)",
+   "text": "Marquise Brown 12 Yd pass from Joe Milton III (Jake Elliott Kick)",
    "awayScore": 7,
    "homeScore": 0,
    "period": {
@@ -78,7 +78,7 @@
     "abbreviation": "TD",
     "displayName": "Touchdown"
    },
-   "text": "Marquise Brown 26 Yd pass from Jalen Hurts (Jake Elliott Kick)",
+   "text": "Marquise Brown 26 Yd pass from Joe Milton III (Jake Elliott Kick)",
    "awayScore": 14,
    "homeScore": 3,
    "period": {
@@ -101,7 +101,7 @@
     "abbreviation": "TD",
     "displayName": "Touchdown"
    },
-   "text": "Tank Bigsby 1 Yd Rush (Jake Elliott Kick)",
+   "text": "Saquon Barkley 1 Yd Rush (Jake Elliott Kick)",
    "awayScore": 21,
    "homeScore": 3,
    "period": {
@@ -115,5 +115,327 @@
     "abbreviation": "PHI"
    }
   }
- ]
+ ],
+ "drives": {
+  "previous": [
+   {
+    "plays": [
+     {
+      "id": "401872939100",
+      "sequenceNumber": "100",
+      "type": {
+       "text": "Punt"
+      },
+      "text": "T.Townsend punts 65 yards to PHI 5, Center-M.Cox. B.Covey to PHI 28 for 23 yards (T.Burgess).",
+      "start": {
+       "down": 4,
+       "distance": 11,
+       "yardLine": 30,
+       "team": {
+        "id": "10"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "14:21"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:02:10Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872939200",
+      "sequenceNumber": "200",
+      "type": {
+       "text": "Punt"
+      },
+      "text": "B.Mann punts 57 yards to TEN 16, Center-R.Underwood, fair catch by C.Dike.",
+      "start": {
+       "down": 4,
+       "distance": 23,
+       "yardLine": 73,
+       "team": {
+        "id": "21"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "13:41"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:04:23Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872939300",
+      "sequenceNumber": "300",
+      "type": {
+       "text": "Punt"
+      },
+      "text": "T.Townsend punts 44 yards to PHI 11, Center-M.Cox. B.Covey to PHI 19 for 8 yards (J.Chestnut).",
+      "start": {
+       "down": 4,
+       "distance": 16,
+       "yardLine": 45,
+       "team": {
+        "id": "10"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "13:02"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:06:33Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872939400",
+      "sequenceNumber": "400",
+      "type": {
+       "text": "Pass Reception"
+      },
+      "text": "(Shotgun) J.Hurts pass short left to D.Wicks to TEN 41 for 5 yards (M.Robinson).",
+      "start": {
+       "down": 4,
+       "distance": 2,
+       "yardLine": 46,
+       "team": {
+        "id": "21"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "12:22"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:08:46Z"
+     },
+     {
+      "id": "401872939500",
+      "sequenceNumber": "500",
+      "type": {
+       "text": "Passing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Marquise Brown 12 Yd pass from Joe Milton III (Jake Elliott Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 25,
+       "team": {
+        "id": "21"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "11:42"
+      },
+      "homeScore": 0,
+      "awayScore": 7,
+      "wallclock": "2026-09-20T17:11:00Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872939600",
+      "sequenceNumber": "600",
+      "type": {
+       "text": "Field Goal Good"
+      },
+      "text": "J.Slye 37 yard field goal is GOOD, Center-M.Cox, Holder-T.Townsend.",
+      "start": {
+       "down": 4,
+       "distance": 11,
+       "yardLine": 81,
+       "team": {
+        "id": "10"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "6:15"
+      },
+      "homeScore": 3,
+      "awayScore": 7,
+      "wallclock": "2026-09-20T17:29:11Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872939700",
+      "sequenceNumber": "700",
+      "type": {
+       "text": "Passing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Marquise Brown 26 Yd pass from Joe Milton III (Jake Elliott Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 25,
+       "team": {
+        "id": "21"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "1:58"
+      },
+      "homeScore": 3,
+      "awayScore": 14,
+      "wallclock": "2026-09-20T17:43:28Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872939800",
+      "sequenceNumber": "800",
+      "type": {
+       "text": "Punt"
+      },
+      "text": "T.Townsend punts 34 yards to PHI 44, Center-M.Cox, downed by TEN-O.Pappoe.",
+      "start": {
+       "down": 4,
+       "distance": 4,
+       "yardLine": 22,
+       "team": {
+        "id": "10"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "14:20"
+      },
+      "homeScore": 3,
+      "awayScore": 14,
+      "wallclock": "2026-09-20T17:52:15Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872939900",
+      "sequenceNumber": "900",
+      "type": {
+       "text": "Rushing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Saquon Barkley 1 Yd Rush (Jake Elliott Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 25,
+       "team": {
+        "id": "21"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "11:42"
+      },
+      "homeScore": 3,
+      "awayScore": 21,
+      "wallclock": "2026-09-20T18:01:02Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "4018729391000",
+      "sequenceNumber": "1000",
+      "type": {
+       "text": "Punt"
+      },
+      "text": "T.Townsend punts 60 yards to end zone, Center-M.Cox, Touchback.",
+      "start": {
+       "down": 4,
+       "distance": 9,
+       "yardLine": 40,
+       "team": {
+        "id": "10"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "8:49"
+      },
+      "homeScore": 3,
+      "awayScore": 21,
+      "wallclock": "2026-09-20T18:10:39Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "4018729391100",
+      "sequenceNumber": "1100",
+      "type": {
+       "text": "Punt"
+      },
+      "text": "B.Mann punts 53 yards to TEN 10, Center-R.Underwood. C.Dike to TEN 19 for 9 yards (T.Bigsby).",
+      "start": {
+       "down": 4,
+       "distance": 8,
+       "yardLine": 63,
+       "team": {
+        "id": "21"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "5:55"
+      },
+      "homeScore": 3,
+      "awayScore": 21,
+      "wallclock": "2026-09-20T18:20:19Z"
+     }
+    ]
+   }
+  ]
+ }
 }

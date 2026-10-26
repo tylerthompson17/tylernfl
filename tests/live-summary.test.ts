@@ -168,3 +168,19 @@ test("field goal spots: the text's distance minus 17 over the summary's, the sco
   assert.deepEqual(fieldGoalSpot('Field Goal Missed', 'Bad snap, holder falls on it', 26, 4), { yardline100: 26, distance: 4, spot: 'summary', spotUncertain: true });
   assert.deepEqual(fieldGoalSpot('Pass Reception', '(Field Goal formation) 44 yard field goal fake, pass to X', 26, 4), { yardline100: 26, distance: 4, spot: 'summary', spotUncertain: false });
 });
+
+test("the audit's derived Sunday summaries each give the feed real 4th downs, scores matching the scoreboard", () => {
+  const board = read('scoreboard-2026-week2-sunday-derived.json');
+  const live = board.events.filter((e: { status: { type: { state: string } } }) => e.status.type.state === 'in');
+  assert.equal(live.length, 8);
+  for (const event of live) {
+    const game = parseSummary(read(`summary-${event.id}-sunday-derived.json`), event.id);
+    assert.ok(game && game.fourthDowns.length >= 4, `${event.shortName}: too few 4th downs`);
+    assert.ok(game.fourthDowns.every((d) => !d.nullified && (d.period < 2 || (d.period === 2 && d.clock !== '0:00'))));
+    const summary = read(`summary-${event.id}-sunday-derived.json`);
+    const plays = summary.drives.previous.flatMap((d: { plays: unknown[] }) => d.plays);
+    const last = plays.at(-1) ?? { homeScore: 0, awayScore: 0 };
+    const score = Object.fromEntries(event.competitions[0].competitors.map((c: { homeAway: string; score: string }) => [c.homeAway, Number(c.score)]));
+    assert.deepEqual([last.homeScore, last.awayScore], [score.home, score.away], event.shortName);
+  }
+});

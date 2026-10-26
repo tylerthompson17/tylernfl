@@ -1,0 +1,146 @@
+{
+ "derived": "Synthetic, from derive_sunday.py: not an ESPN response. Every 4th down is a real one from nflverse play-by-play.",
+ "header": {
+  "competitions": [
+   {
+    "competitors": [
+     {
+      "homeAway": "home",
+      "team": {
+       "id": "27",
+       "abbreviation": "TB"
+      }
+     },
+     {
+      "homeAway": "away",
+      "team": {
+       "id": "5",
+       "abbreviation": "CLE"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "scoringPlays": [],
+ "drives": {
+  "previous": [
+   {
+    "plays": [
+     {
+      "id": "401872935100",
+      "sequenceNumber": "100",
+      "type": {
+       "text": "Pass Incompletion"
+      },
+      "text": "(Shotgun) B.Mayfield pass incomplete deep middle to E.Egbuka.",
+      "start": {
+       "down": 4,
+       "distance": 11,
+       "yardLine": 80,
+       "team": {
+        "id": "27"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "9:37"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:17:57Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872935200",
+      "sequenceNumber": "200",
+      "type": {
+       "text": "Rush"
+      },
+      "text": "Q.Judkins right guard to CLE 34 for no gain (E.Roberts).",
+      "start": {
+       "down": 4,
+       "distance": 1,
+       "yardLine": 66,
+       "team": {
+        "id": "5"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "4:13"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:35:57Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872935300",
+      "sequenceNumber": "300",
+      "type": {
+       "text": "Punt"
+      },
+      "text": "R.Dixon punts 55 yards to end zone, Center-E.Deckers, Touchback.",
+      "start": {
+       "down": 4,
+       "distance": 7,
+       "yardLine": 45,
+       "team": {
+        "id": "27"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "13:49"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:53:58Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872935400",
+      "sequenceNumber": "400",
+      "type": {
+       "text": "Punt"
+      },
+      "text": "C.Bojorquez punts 52 yards to TB 17, Center-R.Sunahara, out of bounds.",
+      "start": {
+       "down": 4,
+       "distance": 12,
+       "yardLine": 69,
+       "team": {
+        "id": "5"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "8:25"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T18:11:59Z"
+     }
+    ]
+   }
+  ]
+ }
+}

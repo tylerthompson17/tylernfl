@@ -1,5 +1,5 @@
 {
- "derived": "Synthetic, from derive_sunday.py: not an ESPN response.",
+ "derived": "Synthetic, from derive_sunday.py: not an ESPN response. Every 4th down is a real one from nflverse play-by-play.",
  "header": {
   "competitions": [
    {
@@ -101,7 +101,7 @@
     "abbreviation": "FG",
     "displayName": "Field Goal"
    },
-   "text": "Ka'imi Fairbairn 45 Yd Field Goal",
+   "text": "Ka'imi Fairbairn 37 Yd Field Goal",
    "awayScore": 14,
    "homeScore": 10,
    "period": {
@@ -207,5 +207,335 @@
     "abbreviation": "HOU"
    }
   }
- ]
+ ],
+ "drives": {
+  "previous": [
+   {
+    "plays": [
+     {
+      "id": "401872934100",
+      "sequenceNumber": "100",
+      "type": {
+       "text": "Rush"
+      },
+      "text": "B.Fisher reported in as eligible. D.Montgomery right tackle to CIN 19 for -1 yards (D.Lawrence).",
+      "start": {
+       "down": 4,
+       "distance": 1,
+       "yardLine": 82,
+       "team": {
+        "id": "34"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "14:11"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:02:27Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872934200",
+      "sequenceNumber": "200",
+      "type": {
+       "text": "Punt"
+      },
+      "text": "R.Rehkow punts 45 yards to HOU 8, Center-W.Wagner. J.Noel pushed ob at HOU 13 for 5 yards (O.Burks).",
+      "start": {
+       "down": 4,
+       "distance": 4,
+       "yardLine": 53,
+       "team": {
+        "id": "4"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "13:21"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:04:57Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872934300",
+      "sequenceNumber": "300",
+      "type": {
+       "text": "Punt"
+      },
+      "text": "K.Kroeger punts 39 yards to CIN 46, Center-A.Brinkman, fair catch by D.Meyers.",
+      "start": {
+       "down": 4,
+       "distance": 8,
+       "yardLine": 15,
+       "team": {
+        "id": "34"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "12:32"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:07:24Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872934400",
+      "sequenceNumber": "400",
+      "type": {
+       "text": "Passing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Ja'Marr Chase 12 Yd pass from Joe Burrow (Evan McPherson Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 25,
+       "team": {
+        "id": "4"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "11:42"
+      },
+      "homeScore": 0,
+      "awayScore": 7,
+      "wallclock": "2026-09-20T17:09:54Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872934500",
+      "sequenceNumber": "500",
+      "type": {
+       "text": "Rushing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Woody Marks 3 Yd Rush (Ka'imi Fairbairn Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 75,
+       "team": {
+        "id": "34"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "6:15"
+      },
+      "homeScore": 7,
+      "awayScore": 7,
+      "wallclock": "2026-09-20T17:26:15Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872934600",
+      "sequenceNumber": "600",
+      "type": {
+       "text": "Passing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Ja'Marr Chase 26 Yd pass from Joe Burrow (Evan McPherson Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 25,
+       "team": {
+        "id": "4"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "1:58"
+      },
+      "homeScore": 7,
+      "awayScore": 14,
+      "wallclock": "2026-09-20T17:39:06Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872934700",
+      "sequenceNumber": "700",
+      "type": {
+       "text": "Field Goal Good"
+      },
+      "text": "K.Fairbairn 37 yard field goal is GOOD, Center-A.Brinkman, Holder-K.Kroeger.",
+      "start": {
+       "down": 4,
+       "distance": 13,
+       "yardLine": 81,
+       "team": {
+        "id": "34"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "0:21"
+      },
+      "homeScore": 10,
+      "awayScore": 14,
+      "wallclock": "2026-09-20T17:43:57Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872934800",
+      "sequenceNumber": "800",
+      "type": {
+       "text": "Passing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Ja'Marr Chase 12 Yd pass from Joe Burrow (Evan McPherson Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 25,
+       "team": {
+        "id": "4"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "11:42"
+      },
+      "homeScore": 10,
+      "awayScore": 21,
+      "wallclock": "2026-09-20T17:54:54Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872934900",
+      "sequenceNumber": "900",
+      "type": {
+       "text": "Rushing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Woody Marks 3 Yd Rush (Ka'imi Fairbairn Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 75,
+       "team": {
+        "id": "34"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "6:15"
+      },
+      "homeScore": 17,
+      "awayScore": 21,
+      "wallclock": "2026-09-20T18:11:15Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "4018729341000",
+      "sequenceNumber": "1000",
+      "type": {
+       "text": "Passing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Ja'Marr Chase 26 Yd pass from Joe Burrow (Evan McPherson Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 25,
+       "team": {
+        "id": "4"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "1:58"
+      },
+      "homeScore": 17,
+      "awayScore": 28,
+      "wallclock": "2026-09-20T18:24:06Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "4018729341100",
+      "sequenceNumber": "1100",
+      "type": {
+       "text": "Rushing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Woody Marks 7 Yd Rush (Ka'imi Fairbairn Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 75,
+       "team": {
+        "id": "34"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:21"
+      },
+      "homeScore": 24,
+      "awayScore": 28,
+      "wallclock": "2026-09-20T18:28:57Z"
+     }
+    ]
+   }
+  ]
+ }
 }

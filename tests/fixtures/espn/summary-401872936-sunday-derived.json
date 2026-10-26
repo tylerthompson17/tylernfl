@@ -1,5 +1,5 @@
 {
- "derived": "Synthetic, from derive_sunday.py: not an ESPN response.",
+ "derived": "Synthetic, from derive_sunday.py: not an ESPN response. Every 4th down is a real one from nflverse play-by-play.",
  "header": {
   "competitions": [
    {
@@ -55,7 +55,7 @@
     "abbreviation": "FG",
     "displayName": "Field Goal"
    },
-   "text": "Blake Grupe 37 Yd Field Goal",
+   "text": "Jason Sanders 32 Yd Field Goal",
    "awayScore": 7,
    "homeScore": 3,
    "period": {
@@ -101,7 +101,7 @@
     "abbreviation": "TD",
     "displayName": "Touchdown"
    },
-   "text": "Braelon Allen 3 Yd Rush (Blake Grupe Kick)",
+   "text": "Braelon Allen 3 Yd Rush (Jason Sanders Kick)",
    "awayScore": 14,
    "homeScore": 10,
    "period": {
@@ -147,7 +147,7 @@
     "abbreviation": "FG",
     "displayName": "Field Goal"
    },
-   "text": "Trey Smack 45 Yd Field Goal",
+   "text": "Trey Smack 34 Yd Field Goal",
    "awayScore": 24,
    "homeScore": 10,
    "period": {
@@ -161,5 +161,303 @@
     "abbreviation": "GB"
    }
   }
- ]
+ ],
+ "drives": {
+  "previous": [
+   {
+    "plays": [
+     {
+      "id": "401872936100",
+      "sequenceNumber": "100",
+      "type": {
+       "text": "Rush"
+      },
+      "text": "(Shotgun) B.Allen right guard to 50 for no gain (L.Van Ness).",
+      "start": {
+       "down": 4,
+       "distance": 1,
+       "yardLine": 50,
+       "team": {
+        "id": "20"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "14:11"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:02:27Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872936200",
+      "sequenceNumber": "200",
+      "type": {
+       "text": "Sack"
+      },
+      "text": "(Shotgun) J.Love sacked at GB 45 for -5 yards (K.Enagbare).",
+      "start": {
+       "down": 4,
+       "distance": 10,
+       "yardLine": 50,
+       "team": {
+        "id": "9"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "13:21"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:04:57Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872936300",
+      "sequenceNumber": "300",
+      "type": {
+       "text": "Punt"
+      },
+      "text": "A.McNamara punts 53 yards to end zone, Center-T.Hennessy, Touchback. ** Injury Update: GB-T.Hopper has returned to the game.",
+      "start": {
+       "down": 4,
+       "distance": 9,
+       "yardLine": 47,
+       "team": {
+        "id": "20"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "12:32"
+      },
+      "homeScore": 0,
+      "awayScore": 0,
+      "wallclock": "2026-09-20T17:07:24Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872936400",
+      "sequenceNumber": "400",
+      "type": {
+       "text": "Passing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Matthew Golden 12 Yd pass from Tyrod Taylor (Trey Smack Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 25,
+       "team": {
+        "id": "9"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "11:42"
+      },
+      "homeScore": 0,
+      "awayScore": 7,
+      "wallclock": "2026-09-20T17:09:54Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872936500",
+      "sequenceNumber": "500",
+      "type": {
+       "text": "Field Goal Good"
+      },
+      "text": "J.Sanders 32 yard field goal is GOOD, Center-T.Hennessy, Holder-A.McNamara.",
+      "start": {
+       "down": 4,
+       "distance": 6,
+       "yardLine": 86,
+       "team": {
+        "id": "20"
+       }
+      },
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "6:15"
+      },
+      "homeScore": 3,
+      "awayScore": 7,
+      "wallclock": "2026-09-20T17:26:15Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872936600",
+      "sequenceNumber": "600",
+      "type": {
+       "text": "Passing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Matthew Golden 12 Yd pass from Tyrod Taylor (Trey Smack Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 25,
+       "team": {
+        "id": "9"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "11:42"
+      },
+      "homeScore": 3,
+      "awayScore": 14,
+      "wallclock": "2026-09-20T17:54:54Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872936700",
+      "sequenceNumber": "700",
+      "type": {
+       "text": "Rushing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Braelon Allen 3 Yd Rush (Jason Sanders Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 75,
+       "team": {
+        "id": "20"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "6:15"
+      },
+      "homeScore": 10,
+      "awayScore": 14,
+      "wallclock": "2026-09-20T18:11:15Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872936800",
+      "sequenceNumber": "800",
+      "type": {
+       "text": "Passing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "Matthew Golden 26 Yd pass from Tyrod Taylor (Trey Smack Kick)",
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 25,
+       "team": {
+        "id": "9"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "1:58"
+      },
+      "homeScore": 10,
+      "awayScore": 21,
+      "wallclock": "2026-09-20T18:24:06Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "401872936900",
+      "sequenceNumber": "900",
+      "type": {
+       "text": "Punt"
+      },
+      "text": "A.McNamara punts 58 yards to GB 36, Center-T.Hennessy, downed by NYJ-A.Smith.",
+      "start": {
+       "down": 4,
+       "distance": 17,
+       "yardLine": 6,
+       "team": {
+        "id": "20"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "1:10"
+      },
+      "homeScore": 10,
+      "awayScore": 21,
+      "wallclock": "2026-09-20T18:26:30Z"
+     }
+    ]
+   },
+   {
+    "plays": [
+     {
+      "id": "4018729361000",
+      "sequenceNumber": "1000",
+      "type": {
+       "text": "Field Goal Good"
+      },
+      "text": "T.Smack 34 yard field goal is GOOD, Center-M.Orzech, Holder-D.Whelan.",
+      "start": {
+       "down": 4,
+       "distance": 7,
+       "yardLine": 16,
+       "team": {
+        "id": "9"
+       }
+      },
+      "period": {
+       "number": 2
+      },
+      "clock": {
+       "displayValue": "0:21"
+      },
+      "homeScore": 10,
+      "awayScore": 24,
+      "wallclock": "2026-09-20T18:28:57Z"
+     }
+    ]
+   }
+  ]
+ }
 }
