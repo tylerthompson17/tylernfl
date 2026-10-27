@@ -6,9 +6,11 @@
  * filling the screen, which plays by itself; a beat after the last frame it
  * shrinks into its place in the panel and the controls take over. The
  * visitor clicked to watch this play, so it moves without Play, the second
- * exception to the no motion rule. Reduced motion never gets the class;
- * a click or key during the intro shrinks it at once.
+ * exception to the no motion rule. A touchdown gets a celebration
+ * (celebrate.ts) that the shrink waits for. Reduced motion never gets the
+ * class; Esc or the skip button shrinks it at once.
  */
+import { CELEBRATE_MS, celebrate } from './celebrate.ts';
 import { initReplay } from './player.ts';
 
 export const INTRO_CLASS = 'replay-intro';
@@ -63,13 +65,46 @@ export function runIntro(root: HTMLElement): void {
 
   let done = false;
   let holdTimer = 0;
+  // Esc or the button skips; a stray click or scroll does not cut the play short.
+  const skip = document.createElement('button');
+  skip.type = 'button';
+  skip.textContent = 'Skip intro (Esc)';
+  skip.style.cssText =
+    'position: fixed; right: 16px; bottom: 16px; z-index: 1002; padding: 6px 12px; border: 1px solid var(--header-text); background: var(--header); color: var(--header-text); font: 700 13px var(--font-heading); cursor: pointer;';
+  document.body.append(skip);
+  const onKey = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') shrink();
+  };
+
+  // A touchdown gets confetti and a big TOUCHDOWN, and the replay waits for it before shrinking.
+  const caption = root.querySelector<HTMLElement>('[data-caption]');
+  const colors = (root.dataset.teamColors ?? '').split(' ').filter(Boolean);
+  let party: ReturnType<typeof celebrate> | null = null;
+  let partyAt = 0;
+  const watch = new MutationObserver(() => {
+    if (done || party || caption?.dataset.kind !== 'touchdown') return;
+    const line = [...root.querySelectorAll('.scorebug .team')].map((t) => t.textContent?.trim().replace(/\s+/g, ' ')).join('   ');
+    party = celebrate(colors, line);
+    partyAt = performance.now();
+  });
+  if (caption) watch.observe(caption, { attributes: true, attributeFilter: ['data-kind'] });
+
+  function ended() {
+    const wait = party ? Math.max(0, CELEBRATE_MS - (performance.now() - partyAt)) : 0;
+    holdTimer = window.setTimeout(shrink, Math.max(HOLD_LAST_MS, wait));
+  }
   function shrink() {
     if (done) return;
     done = true;
     clearTimeout(holdTimer);
+    watch.disconnect();
     window.removeEventListener('resize', fit);
-    removeEventListener('keydown', shrink, true);
-    removeEventListener('pointerdown', shrink, true);
+    removeEventListener('keydown', onKey, true);
+    skip.remove();
+    if (party) {
+      const p = party;
+      p.canvas.animate([{ opacity: 1 }, { opacity: 0 }], { duration: SHRINK_MS * 0.6, fill: 'forwards' }).finished.then(p.stop);
+    }
     html.classList.add(REVEAL_CLASS);
     const from = px(stage!.getBoundingClientRect());
     const to = px(holder.getBoundingClientRect());
@@ -85,11 +120,11 @@ export function runIntro(root: HTMLElement): void {
 
   initReplay(root, {
     onEnd: () => {
-      if (!done) holdTimer = window.setTimeout(shrink, HOLD_LAST_MS);
+      if (!done) ended();
     },
   });
-  addEventListener('keydown', shrink, true);
-  addEventListener('pointerdown', shrink, true);
+  skip.addEventListener('click', shrink);
+  addEventListener('keydown', onKey, true);
   // The player pauses while the tab is hidden; coming back picks the intro up where it was.
   document.addEventListener('visibilitychange', () => {
     if (!done && !document.hidden && playButton.textContent === 'Play') playButton.click();

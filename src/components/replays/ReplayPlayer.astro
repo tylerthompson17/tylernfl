@@ -7,7 +7,8 @@
  * canvas; everything around it is the site's design.
  */
 import TeamChip from '../TeamChip.astro';
-import type { ReplayScene } from '../../data/types';
+import type { ReplayScene, Team } from '../../data/types';
+import teamsData from '../../data/teams.json';
 import { goalToGo, penaltyText, scorebugSituation, wpNumbers, wpSwingReadout } from '../../lib/replays/words';
 
 interface Props {
@@ -26,6 +27,10 @@ const wpShown =
   play.wpBefore === null ? null : play.wpAfter === null ? `${Math.round(play.wpBefore * 100)}%` : wpNumbers(play.wpBefore, play.wpAfter).before;
 // "</script>" can never appear in JSON.stringify output once "<" is escaped.
 const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
+// The featured team's colours, for the intro's touchdown confetti (src/lib/replays/celebrate.ts).
+const RETIRED: Record<string, string> = { OAK: 'LV', SD: 'LAC', STL: 'LAR' };
+const featuredTeam = (teamsData as Team[]).find((t) => t.abbr === (RETIRED[play.featured] ?? play.featured));
+const teamColors = featuredTeam ? `${featuredTeam.primary} ${featuredTeam.secondary}` : undefined;
 ---
 
 <!-- Arriving from the portfolio's transition (src/lib/replays/intro.ts): cover the page in turf before it paints. -->
@@ -34,7 +39,7 @@ const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
     document.documentElement.classList.add('replay-intro');
 </script>
 
-<section class="replay" data-replay data-start={start} data-penalty={penalty ?? undefined}>
+<section class="replay" data-replay data-start={start} data-penalty={penalty ?? undefined} data-team-colors={teamColors}>
   <div class="scorebug">
     <span class="team">
       <TeamChip abbr={play.away} size="sm" />
