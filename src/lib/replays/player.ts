@@ -37,6 +37,8 @@ export interface ReplayStart {
   scene?: ReplayScene;
   /** Frame to show first, or the last one; otherwise `data-start`, else 0 */
   start?: number | 'end';
+  /** Called each time playback reaches the last frame (src/lib/replays/intro.ts waits on it) */
+  onEnd?: () => void;
 }
 
 /** Start a player in `root`; the returned function stops it and removes every listener it added. */
@@ -227,8 +229,10 @@ export function initReplay(root: HTMLElement, given: ReplayStart = {}): () => vo
     previous = now;
     frame = Math.min(last, frame + dt * prep.hz * speed);
     render();
-    if (frame >= last) setPlaying(false);
-    else requestAnimationFrame(tick);
+    if (frame >= last) {
+      setPlaying(false);
+      given.onEnd?.();
+    } else requestAnimationFrame(tick);
   }
 
   play.textContent = 'Play';

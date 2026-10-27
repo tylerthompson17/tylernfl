@@ -7,7 +7,8 @@
  * canvas; everything around it is the site's design.
  */
 import TeamChip from '../TeamChip.astro';
-import type { ReplayScene } from '../../data/types';
+import type { ReplayScene, Team } from '../../data/types';
+import teamsData from '../../data/teams.json';
 import { goalToGo, penaltyText, scorebugSituation, wpNumbers, wpSwingReadout } from '../../lib/replays/words';
 
 interface Props {
@@ -26,9 +27,19 @@ const wpShown =
   play.wpBefore === null ? null : play.wpAfter === null ? `${Math.round(play.wpBefore * 100)}%` : wpNumbers(play.wpBefore, play.wpAfter).before;
 // "</script>" can never appear in JSON.stringify output once "<" is escaped.
 const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
+// The featured team's colours, for the intro's touchdown confetti (src/lib/replays/celebrate.ts).
+const RETIRED: Record<string, string> = { OAK: 'LV', SD: 'LAC', STL: 'LAR' };
+const featuredTeam = (teamsData as Team[]).find((t) => t.abbr === (RETIRED[play.featured] ?? play.featured));
+const teamColors = featuredTeam ? `${featuredTeam.primary} ${featuredTeam.secondary}` : undefined;
 ---
 
-<section class="replay" data-replay data-start={start} data-penalty={penalty ?? undefined}>
+<!-- Arriving from the portfolio's transition (src/lib/replays/intro.ts): cover the page in turf before it paints. -->
+<script is:inline>
+  if (new URLSearchParams(location.search).get('intro') === 'retro' && !matchMedia('(prefers-reduced-motion: reduce)').matches)
+    document.documentElement.classList.add('replay-intro');
+</script>
+
+<section class="replay" data-replay data-start={start} data-penalty={penalty ?? undefined} data-team-colors={teamColors}>
   <div class="scorebug">
     <span class="team">
       <TeamChip abbr={play.away} size="sm" />
@@ -92,7 +103,9 @@ const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
 
 <script>
   import { initReplay } from '../../lib/replays/player';
-  for (const root of document.querySelectorAll<HTMLElement>('[data-replay]')) initReplay(root);
+  import { INTRO_CLASS, runIntro } from '../../lib/replays/intro';
+  const intro = document.documentElement.classList.contains(INTRO_CLASS);
+  document.querySelectorAll<HTMLElement>('[data-replay]').forEach((root, i) => (intro && i === 0 ? runIntro(root) : initReplay(root)));
 </script>
 
 <style>
@@ -154,6 +167,21 @@ const embedded = JSON.stringify(scene).replace(/</g, '\\u003c');
     .swing {
       transition: none;
     }
+  }
+
+  /* The intro's turf cover, the colour the portfolio's transition ends on. */
+  :global(html.replay-intro) :global(body)::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: var(--replay-turf);
+    pointer-events: none;
+    transition: opacity 0.7s ease-out;
+  }
+
+  :global(html.replay-intro-reveal) :global(body)::after {
+    opacity: 0;
   }
 
   .stage {
