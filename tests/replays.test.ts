@@ -29,10 +29,17 @@ import {
   THROW_HOLD,
   throwMarkOpacity,
   throwOf,
+  effectsOf,
+  endsGame,
+  firstDownFrame,
+  interceptor,
+  nearMisses,
+  wpAt,
+  wpProgress,
 } from '../src/lib/replays/timeline.ts';
 import { baseFor, BASES, RUN_FRAMES, spriteRows, SPRITE_H, SPRITE_W } from '../src/lib/replays/sprites.ts';
 import { GLYPH_H, GLYPH_W, GLYPHS, textWidth } from '../src/lib/replays/font.ts';
-import { gameWords, goalToGo, penaltyText, scorebugSituation, shortName, situationText, wpNumbers, wpSwingReadout, wpSwingText } from '../src/lib/replays/words.ts';
+import { gameWords, goalToGo, penaltyText, scorebugSituation, shortName, situationText, wpNumbers, wpShownAt, wpSwingReadout, wpSwingText } from '../src/lib/replays/words.ts';
 import { mixHex } from '../src/lib/replays/field.ts';
 import { matches, sortRows, swingOf, type CatalogRow } from '../src/lib/replays/catalog.ts';
 
@@ -147,8 +154,8 @@ test('the scorebug: running clock, situation, score after the touchdown, the swi
   assert.equal(scorebugSituation({ ...s.play, type: 'kickoff', down: null }, false), 'Kickoff');
   assert.deepEqual(scoreAt(s, 8), { home: 0, away: 0 });
   assert.deepEqual(scoreAt(s, 9), { home: 6, away: 0 });
-  assert.equal(wpSwingReadout(s.play), '→ 70% (+8)');
-  assert.equal(wpSwingReadout({ ...s.play, wpAfter: 0.55 }), '→ 55% (-7)');
+  assert.equal(wpSwingReadout(s.play), '(+8)');
+  assert.equal(wpSwingReadout({ ...s.play, wpAfter: 0.55 }), '(-7)');
   assert.equal(wpSwingReadout({ ...s.play, wpAfter: null }), null);
 });
 
@@ -288,7 +295,7 @@ test('win probability shows a decimal when whole numbers would hide the swing', 
   assert.deepEqual(wpNumbers(0.045, 0.053), { before: '4.5%', after: '5.3%', swing: '+0.8' });
   assert.deepEqual(wpNumbers(0.5, 0.5), { before: '50%', after: '50%', swing: '+0' });
   assert.equal(wpSwingText({ ...scene().play, wpBefore: 0.045, wpAfter: 0.053 }), '4.5% to 5.3% (+0.8 points)');
-  assert.equal(wpSwingReadout({ ...scene().play, wpBefore: 0.045, wpAfter: 0.053 }), '→ 5.3% (+0.8)');
+  assert.equal(wpSwingReadout({ ...scene().play, wpBefore: 0.045, wpAfter: 0.053 }), '(+0.8)');
 });
 
 test('the highlights list filters by team and type and sorts by swing, date or type', () => {
@@ -353,4 +360,85 @@ test('the carrier label is the first initial and the rest of the name', () => {
   assert.equal(shortName("Ja'Wuan James"), 'J.James');
   assert.equal(shortName('Odell Beckham Jr.'), 'O.Beckham Jr.');
   assert.equal(shortName('Nene'), 'Nene');
+});
+
+test('win probability counts from before to after as the ball goes, never back', () => {
+  const s = scene();
+  const prep = prepare(s);
+  const progress = wpProgress(prep);
+  // Nothing before the snap; all of it from the touchdown at 9.
+  assert.equal(progress[0], 0);
+  assert.equal(progress[1], 0);
+  assert.equal(progress[9], 1);
+  for (let f = 1; f < progress.length; f++) assert.ok(progress[f]! >= progress[f - 1]!);
+  assert.equal(wpAt(prep, progress, 0), 0.621);
+  assert.ok(Math.abs(wpAt(prep, progress, 9)! - 0.697) < 1e-9);
+  // A ball going backwards first (a kick the featured team returns) holds at the before value.
+  const back = scene({ ball: { x: [750, 750, 700, 650, 700, 800, 900, 1000, 1100, 1150], y: new Array(10).fill(250) } });
+  const p2 = wpProgress(prepare(back));
+  assert.equal(p2[3], 0);
+  assert.ok(p2[6]! > 0 && p2[6]! < 1);
+  // Without an after value the number stays put.
+  const none = prepare(scene({ play: { ...s.play, wpAfter: null } }));
+  assert.equal(wpAt(none, wpProgress(none), 5), 0.621);
+  assert.equal(wpShownAt(s.play, 0.6549), '65%');
+  assert.equal(wpShownAt({ ...s.play, wpBefore: 0.045, wpAfter: 0.053 }, 0.0491), '4.9%');
+});
+
+test('a play ends the game only when nothing can follow it', () => {
+  const s = scene();
+  // 1st quarter: never.
+  assert.equal(endsGame(prepare(s)), false);
+  // A touchdown as the 4th quarter clock runs out, scorer ahead: the try is skipped.
+  const last = { ...s.play, quarter: 4, clock: '00:00', scoreBefore: { home: 20, away: 24 }, scoreAfter: { home: 26, away: 24 } };
+  assert.equal(endsGame(prepare(scene({ play: last }))), true);
+  // Time left: not over.
+  assert.equal(endsGame(prepare(scene({ play: { ...last, clock: '00:09' } }))), false);
+  // A touchdown that ties it: the try is still to come.
+  assert.equal(endsGame(prepare(scene({ play: { ...last, scoreAfter: { home: 24, away: 24 } } }))), false);
+  // Overtime: a touchdown ends it at any time.
+  assert.equal(endsGame(prepare(scene({ play: { ...last, quarter: 5, clock: '08:00' } }))), true);
+});
+
+test('moments get one effect each, a touchdown once', () => {
+  const s = scene({
+    events: [
+      { frame: 1, name: 'ball_snap' }, { frame: 3, name: 'pass_forward' }, { frame: 5, name: 'pass_arrived' },
+      { frame: 7, name: 'pass_outcome_touchdown' }, { frame: 7, name: 'touchdown' },
+    ],
+  });
+  assert.deepEqual(effectsOf(s), [
+    { frame: 1, kind: 'snap' },
+    { frame: 3, kind: 'throw' },
+    { frame: 7, kind: 'touchdown' },
+  ]);
+});
+
+test('a missed tackle: a defender gets close, then the carrier is clear of him', () => {
+  const base = scene();
+  const runner = { ...base.players![1]!, x: Array.from({ length: 10 }, (_, f) => 750 + f * 20), y: new Array(10).fill(250) };
+  const defender = { id: 'db', side: 'opponent' as const, jersey: 24, position: 'CB', name: 'DB', x: new Array(10).fill(890), y: new Array(10).fill(255), dir: new Array(10).fill(270), o: new Array(10).fill(270) };
+  const events = [{ frame: 1, name: 'ball_snap' }, { frame: 7, name: 'pass_outcome_caught' }];
+  const missed = nearMisses(prepare(scene({ events, players: [base.players![0]!, runner, defender] })));
+  assert.equal(missed.length, 1);
+  assert.equal(missed[0]!.frame, 7);
+  assert.equal(missed[0]!.defender, 2);
+  assert.equal(missed[0]!.carrier, 1);
+  // Tackled right there: no miss.
+  const tackled = [...events, { frame: 8, name: 'tackle' }];
+  assert.deepEqual(nearMisses(prepare(scene({ events: tackled, players: [base.players![0]!, runner, defender] }))), []);
+  // Never close: no miss.
+  const far = { ...defender, y: new Array(10).fill(300) };
+  assert.deepEqual(nearMisses(prepare(scene({ events, players: [base.players![0]!, runner, far] }))), []);
+});
+
+test('the first down frame, and who picked a pass off', () => {
+  const s = scene();
+  assert.equal(firstDownFrame(prepare(s)), 2);
+  assert.equal(firstDownFrame(prepare(scene({ field: { ...s.field, firstDown: null } }))), null);
+  // Goal to go: the touchdown says it.
+  assert.equal(firstDownFrame(prepare(scene({ field: { ...s.field, firstDown: 110 } }))), null);
+  assert.equal(interceptor(prepare(s)), null);
+  const pick = scene({ events: [{ frame: 1, name: 'ball_snap' }, { frame: 6, name: 'pass_outcome_interception' }] });
+  assert.deepEqual(interceptor(prepare(pick)), { frame: 6, player: 1 });
 });

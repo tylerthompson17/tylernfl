@@ -21,6 +21,7 @@
 import Panel from '../Panel.astro';
 import type { FeaturedReplay } from '../../lib/replays/pick';
 import { url } from '../../utils/url';
+import '../../styles/replay-effects.css';
 
 interface Props {
   replays: FeaturedReplay[];
@@ -40,6 +41,7 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
       <div class="stage">
         <canvas class="replay-canvas" width="504" height="336" data-canvas role="img" aria-label="Pixel art replay drawn from player tracking"
         ></canvas>
+        <canvas class="replay-fx" width="504" height="336" data-fx aria-hidden="true"></canvas>
         <div class="layer" aria-hidden="true">
           <p class="caption" data-caption hidden></p>
           <span class="tag" data-tag="speed" hidden></span>
@@ -47,6 +49,10 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
           <span class="tag" data-tag="separation" hidden></span>
           <span class="tag" data-tag="carrier" hidden></span>
         </div>
+        <button type="button" class="replay-sound" data-sound aria-pressed="false" aria-label="Sound effects" title="Sound off" hidden>
+          <svg class="sound-on" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 9h4l5-4v14l-5-4H3z" /><path fill="none" stroke="currentColor" stroke-width="2" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" /></svg>
+          <svg class="sound-off" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 9h4l5-4v14l-5-4H3z" /><path fill="none" stroke="currentColor" stroke-width="2" d="M15 9l6 6M21 9l-6 6" /></svg>
+        </button>
         <p class="status" data-replay-status role="status">Loading the replay…</p>
         <noscript><p class="status">The replay needs JavaScript.</p></noscript>
       </div>
@@ -309,18 +315,31 @@ const embedded = JSON.stringify(replays).replace(/</g, '\\u003c');
     color: var(--header-text);
   }
 
+  /* No box: white text with a one pixel outline, so it reads on the turf
+     and covers none of the field. */
   .tag {
     position: absolute;
     transform: translate(-50%, -100%);
-    padding: 0 var(--space-1);
-    background: var(--panel);
-    border: 1px solid var(--rule);
-    color: var(--text);
+    color: var(--header-text);
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.35;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
+    text-shadow:
+      -1px -1px 0 var(--replay-outline),
+      1px -1px 0 var(--replay-outline),
+      -1px 1px 0 var(--replay-outline),
+      1px 1px 0 var(--replay-outline),
+      0 -1px 0 var(--replay-outline),
+      0 1px 0 var(--replay-outline),
+      -1px 0 0 var(--replay-outline),
+      1px 0 0 var(--replay-outline);
+  }
+
+  /* A fast carrier's speed, a size up. */
+  .tag[data-fast='true'] {
+    font-size: 13px;
   }
 
   @media (max-width: 599px) {

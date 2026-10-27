@@ -10,10 +10,11 @@ import TeamChip from '../TeamChip.astro';
 import type { ReplayScene, Team } from '../../data/types';
 import teamsData from '../../data/teams.json';
 import { goalToGo, penaltyText, scorebugSituation, wpNumbers, wpSwingReadout } from '../../lib/replays/words';
+import '../../styles/replay-effects.css';
 
 interface Props {
   scene: ReplayScene;
-  /** Frame to show first (the replay still waits for Play) */
+  /** Frame to show first */
   start?: number;
 }
 
@@ -54,7 +55,12 @@ const teamColors = featuredTeam ? `${featuredTeam.primary} ${featuredTeam.second
     {
       wpShown && (
         <span class="cell num">
-          {play.featured} win prob {wpShown}
+          {play.featured} win prob <span data-wp>{wpShown}</span>
+          {play.wpBefore !== null && (
+            <span class="wp-meter" aria-hidden="true">
+              <span data-wp-meter style={`width: ${(play.wpBefore * 100).toFixed(1)}%`} />
+            </span>
+          )}
           {swing && <span class="swing" data-swing aria-hidden="true">{swing}</span>}
         </span>
       )
@@ -69,6 +75,7 @@ const teamColors = featuredTeam ? `${featuredTeam.primary} ${featuredTeam.second
       role="img"
       aria-label={`Pixel art replay drawn from player tracking: ${play.description}`}
     ></canvas>
+    <canvas class="replay-fx" width="504" height="336" data-fx aria-hidden="true"></canvas>
     <div class="layer" aria-hidden="true">
       <p class="caption" data-caption hidden></p>
       <span class="tag" data-tag="speed" hidden></span>
@@ -76,6 +83,10 @@ const teamColors = featuredTeam ? `${featuredTeam.primary} ${featuredTeam.second
       <span class="tag" data-tag="separation" hidden></span>
       <span class="tag" data-tag="carrier" hidden></span>
     </div>
+    <button type="button" class="replay-sound" data-sound aria-pressed="false" aria-label="Sound effects" title="Sound off" hidden>
+        <svg class="sound-on" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 9h4l5-4v14l-5-4H3z" /><path fill="none" stroke="currentColor" stroke-width="2" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" /></svg>
+        <svg class="sound-off" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 9h4l5-4v14l-5-4H3z" /><path fill="none" stroke="currentColor" stroke-width="2" d="M15 9l6 6M21 9l-6 6" /></svg>
+      </button>
   </div>
   <noscript><p class="note">The replay needs JavaScript.</p></noscript>
   <div class="controls" data-controls hidden>
@@ -105,7 +116,9 @@ const teamColors = featuredTeam ? `${featuredTeam.primary} ${featuredTeam.second
   import { initReplay } from '../../lib/replays/player';
   import { INTRO_CLASS, runIntro } from '../../lib/replays/intro';
   const intro = document.documentElement.classList.contains(INTRO_CLASS);
-  document.querySelectorAll<HTMLElement>('[data-replay]').forEach((root, i) => (intro && i === 0 ? runIntro(root) : initReplay(root)));
+  document
+    .querySelectorAll<HTMLElement>('[data-replay]')
+    .forEach((root, i) => (intro && i === 0 ? runIntro(root) : initReplay(root, { autoplay: true })));
 </script>
 
 <style>
@@ -227,18 +240,31 @@ const teamColors = featuredTeam ? `${featuredTeam.primary} ${featuredTeam.second
     color: var(--header-text);
   }
 
+  /* No box: white text with a one pixel outline, so it reads on the turf
+     and covers none of the field. */
   .tag {
     position: absolute;
     transform: translate(-50%, -100%);
-    padding: 0 var(--space-1);
-    background: var(--panel);
-    border: 1px solid var(--rule);
-    color: var(--text);
+    color: var(--header-text);
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.35;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
+    text-shadow:
+      -1px -1px 0 var(--replay-outline),
+      1px -1px 0 var(--replay-outline),
+      -1px 1px 0 var(--replay-outline),
+      1px 1px 0 var(--replay-outline),
+      0 -1px 0 var(--replay-outline),
+      0 1px 0 var(--replay-outline),
+      -1px 0 0 var(--replay-outline),
+      1px 0 0 var(--replay-outline);
+  }
+
+  /* A fast carrier's speed, a size up. */
+  .tag[data-fast='true'] {
+    font-size: 13px;
   }
 
   @media (max-width: 599px) {

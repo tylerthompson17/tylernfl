@@ -3,9 +3,9 @@
  * replays at random on each visit, never the one this browser saw last.
  * The page ships only the short list (pick.ts); the chosen scene and the
  * player's code load once the panel is near the screen, and again for
- * "Another play". It never plays by itself: the first frame waits for Play,
- * or the last frame under reduced motion. Every size is set before
- * anything loads, so nothing shifts.
+ * "Another play". Each play starts by itself once most of the panel is on
+ * screen; under reduced motion it shows the last frame and waits. Every
+ * size is set before anything loads, so nothing shifts.
  */
 import type { ReplayScene } from '../../data/types.ts';
 import { pickReplay, type FeaturedReplay } from './pick.ts';
@@ -58,7 +58,19 @@ function fillScoreline(el: HTMLElement, scene: ReplayScene): void {
   const parts: HTMLElement[] = [game];
   if (play.wpBefore !== null) {
     const before = play.wpAfter === null ? `${Math.round(play.wpBefore * 100)}%` : wpNumbers(play.wpBefore, play.wpAfter).before;
-    const wp = span(`${play.featured} win prob ${before}`, 'cell num');
+    const wp = span(`${play.featured} win prob `, 'cell num');
+    const now = span(before, 'num');
+    now.dataset.wp = '';
+    wp.append(now);
+    if (play.wpAfter !== null) {
+      const meter = span('', 'wp-meter');
+      meter.setAttribute('aria-hidden', 'true');
+      const fill = span('', '');
+      fill.dataset.wpMeter = '';
+      fill.style.width = `${(play.wpBefore * 100).toFixed(1)}%`;
+      meter.append(fill);
+      wp.append(meter);
+    }
     const readout = wpSwingReadout(play);
     if (readout) {
       const swing = span(readout, 'swing');
@@ -138,7 +150,7 @@ export function initHomeReplay(root: HTMLElement): void {
       for (const c of controls) c.disabled = false;
       // Each scene starts at 1x (the player sets the toggles itself).
       for (const b of speeds) b.setAttribute('aria-pressed', String(b.dataset.speed === '1'));
-      stop = player.initReplay(root, { scene, start: still.matches ? 'end' : 0 });
+      stop = player.initReplay(root, { scene, start: still.matches ? 'end' : 0, autoplay: true });
     } catch {
       if (mine !== loads) return;
       ui.scoreline.replaceChildren();
