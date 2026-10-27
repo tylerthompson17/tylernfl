@@ -42,7 +42,7 @@ export function runIntro(root: HTMLElement): void {
   const playButton = root.querySelector<HTMLButtonElement>('[data-play]');
   if (!stage || !playButton) {
     html.classList.remove(INTRO_CLASS);
-    initReplay(root);
+    initReplay(root, { autoplay: true });
     return;
   }
   // A reload or a shared link opens the page as usual.
@@ -118,7 +118,9 @@ export function runIntro(root: HTMLElement): void {
     backdrop.animate([{ opacity: 1 }, { opacity: 0 }], { duration: SHRINK_MS, easing: EASE }).finished.then(() => backdrop.remove());
   }
 
+  // The touchdown celebration here covers the window, so the player's own stays out of it.
   initReplay(root, {
+    celebrate: false,
     onEnd: () => {
       if (!done) ended();
     },

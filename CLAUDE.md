@@ -595,7 +595,8 @@ header bars and boxed content, not decoration. Do not use PFR's green.
 
 - Radius 0, no shadows, no gradients.
 - No motion, with three exceptions: two in the score ticker, and the Retro Replays
-  player (below), which moves only when the visitor presses Play.
+  player (below), which plays by itself once it is on screen, with its effects (Tyler
+  asked for both, 2026-10-27), and never under reduced motion.
   - A ticker group is a looping carousel, a slow continuous glide. It pauses
     on hover and keyboard focus, and stays a static, swipeable strip on touch
     devices, for reduced motion, and when its games fit. Games glide out of
@@ -1072,7 +1073,12 @@ game).
   (`getStaticPaths` returns nothing in a build) and linked from nowhere.
 - `/replays/<key>/` (`ReplayPlayer.astro`, `src/lib/replays/`): the scorebug is the
   panel's header bar (team chips with a light outline, score, running clock, situation,
-  the featured team's win probability, and "→ 70% (+8)" fading in at the last frame);
+  the featured team's win probability counting from its before value to its after value
+  as the ball goes, with a bar, and "(+8)" fading in at the last frame; `wpProgress` in
+  `timeline.ts`: nothing before the snap, then the ball's progress toward where it ends,
+  never going back, all of it at a score; a reading aid that only ever lands on
+  nflfastR's two numbers. A play that ends the game, `endsGame`, puts "Final" in place
+  of the clock at the last frame);
   then a canvas drawn at native resolution and scaled up pixelated: All-22 framing,
   sideline to sideline at 504 by 336 with a slow pan along the field, and 240 by 160
   following the ball across too below 600px so the 13 by 21 sprites stay legible. Muted
@@ -1084,7 +1090,7 @@ game).
   touchdown or a penalty in slate (`--header`), not yellow: on a page with live data
   (the ticker is on every page), a yellow background means live. The ball carrier's name
   ("K.Drake", `shortName` in `words.ts`) is a label under his feet whenever someone has
-  the ball, stats on or off. Stats (on at desktop width, off
+  the ball, stats on or off. Labels are white text with a one pixel dark outline, no box. Stats (on at desktop width, off
   on phones): the carrier's speed in mph, air yards and the throw's track, and the
   separation when the ball arrives (as Next Gen Stats measures it), fading 1 s after the
   catch. Labels never overlap: a later one steps down past an earlier one and keeps its
@@ -1092,15 +1098,37 @@ game).
 - A scene follows the team whose win probability rose, so the swing always reads as a
   gain and returns and pick-sixes are seen from the team that made them. Win
   probability is nflfastR's, cited on the page with the tracking source.
-- No autoplay; playback pauses when the tab is hidden; the fade is off under reduced
-  motion.
+- A replay starts by itself once 60% of it (or of a shorter window) is on screen with the
+  tab in front, once per load; never under reduced motion. Playback pauses when the tab
+  is hidden; the fade is off under reduced motion.
+- Effects (`effects.ts`, a pixel canvas over the field at its resolution, from
+  `effectsOf` in `timeline.ts`, fired as playback passes each moment and running on
+  their own clock; none under reduced motion, cleared by scrubbing): a touchdown or
+  safety flashes, bursts into confetti in the featured team's colours and slams its word
+  in; an interception, fumble or blocked kick slams its word, flashes and shakes the
+  field, a sack slams and shakes; whoever picked a pass off (`interceptor`) gets a beam
+  of light, rings and glints that follow him, and playback drops to 0.3x for 0.9 s; a
+  missed tackle (`nearMisses`: a defender within 1 yard, then the carrier, still
+  carrying and moving, 2.5 yards clear of him within 1 s, no tackle or score between;
+  180 in 135 of the 517 replays) says WHIFF! over the defender with dust and 0.35 s of
+  slow motion; the carrier crossing the line to gain (`firstDownFrame`, not goal to go)
+  says 1ST DOWN!; a hit on a carrier at 14 mph or more says BOOM!; small words stack
+  when up together; a catch sparks, a hit puffs dust, a flag flies; a
+  carrier at 18 mph or more (`FAST_MPH`) trails speed lines and his speed tag turns
+  slate; a play that ends the game slams FINAL after any word still up, with confetti
+  when the featured team won. The intro passes `celebrate: false`, since its own
+  touchdown moment covers the window.
+- Sound effects (`sound.ts`), synthesized with Web Audio, no sound files: off until the
+  speaker button at the field's top right turns them on, one setting for every replay
+  (`tylernfl.replay-sound` in localStorage, every access in try/catch).
 - The home page's panel (`HomeReplay.astro`, `src/lib/replays/home.ts`): one of the
   featured replays at random on each visit, picked in the browser (`pickReplay` in
   `pick.ts`), never the one this browser saw last (`tylernfl.home-replay` in
   localStorage, every access in try/catch). The page ships only the list (key, game,
   description, page and scene URLs, about 5 KB raw); the scene and player load once the
-  panel is near the screen (see the data contract). The first frame waits for Play;
-  under reduced motion the last frame shows. The layout follows the panel's own width
+  panel is near the screen (see the data contract). It plays by itself once mostly on
+  screen, and each "Another play" too; under reduced motion the last frame shows and
+  waits. The layout follows the panel's own width
   (a container query): from 760px, the field (at most 540 by 360px) on the left, and on
   the right the title, the description (five lines, clamped), a scorebug of two set
   lines (each cut with an ellipsis), Play, Restart and the scrubber, the replay page's

@@ -23,7 +23,7 @@ interface Bit {
 }
 
 /** A colour light enough to read on the field, else white */
-function bright(hex: string | undefined): string {
+export function bright(hex: string | undefined): string {
   const m = hex?.match(/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
   if (!m) return '#ffffff';
   const [r, g, b] = m.slice(1).map((h) => parseInt(h, 16));
@@ -31,7 +31,7 @@ function bright(hex: string | undefined): string {
 }
 
 /** Text with a one pixel dark outline and a drop shadow, centred on x */
-function shout(ctx: CanvasRenderingContext2D, text: string, cx: number, y: number, scale: number, color: string, shadow: string) {
+export function shout(ctx: CanvasRenderingContext2D, text: string, cx: number, y: number, scale: number, color: string, shadow: string) {
   const x = Math.round(cx - textWidth(text, { scale }) / 2);
   const s = Math.max(1, Math.round(scale / 3));
   drawText(ctx, text, x + s, y + s, { color: shadow, scale });

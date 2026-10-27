@@ -395,3 +395,211 @@ export function captionEventAt(scene: ReplayScene, f: number): string | null {
   }
   return name;
 }
+
+// The play as it unfolds: win probability, the end of the game, effects --
+
+/** Events that put the win probability at its after value at once */
+const DECIDING = new Set(['touchdown', 'pass_outcome_touchdown', 'safety', 'field_goal']);
+/** A ball that ends closer than this to where it was snapped (yards) moves the win probability with time instead */
+const WP_MIN_TRAVEL = 3;
+
+/**
+ * Share of the way from the win probability before the play to after it,
+ * per frame: 0 to the snap, then how far the ball has come toward where it
+ * ends (the featured team always goes toward +x), never going back, and 1
+ * from a score, or the last frame. A ball that hardly moves goes by time.
+ * nflfastR has no value inside a play, so this is a reading aid that only
+ * ever lands on its two published numbers.
+ */
+export function wpProgress(prep: Prepared): number[] {
+  const last = prep.frames - 1;
+  const decided = prep.scene.events.find((e) => DECIDING.has(e.name) && e.frame >= prep.snapFrame);
+  const end = Math.min(last, decided ? decided.frame : last);
+  const from = prep.ball.x[prep.snapFrame]!;
+  const to = prep.ball.x[end]!;
+  const byTime = Math.abs(to - from) < WP_MIN_TRAVEL;
+  let most = 0;
+  return Array.from({ length: prep.frames }, (_, f) => {
+    if (f <= prep.snapFrame) return 0;
+    if (f >= end) return 1;
+    const u = byTime ? (f - prep.snapFrame) / (end - prep.snapFrame) : (prep.ball.x[f]! - from) / (to - from);
+    most = Math.max(most, Math.min(1, u));
+    return most;
+  });
+}
+
+/** The featured team's win probability at a frame, from `wpProgress`; null without both numbers. */
+export function wpAt(prep: Prepared, progress: number[], f: number): number | null {
+  const { wpBefore, wpAfter } = prep.scene.play;
+  if (wpBefore === null || wpAfter === null) return wpBefore;
+  return wpBefore + (wpAfter - wpBefore) * (sample(progress, f) ?? 0);
+}
+
+const TOUCHDOWNS = new Set(['touchdown', 'pass_outcome_touchdown']);
+
+/**
+ * Whether the game ended on this play: in overtime, a touchdown or a
+ * safety; in the 4th quarter, the clock run out at the last frame with a
+ * team ahead, and after a touchdown only when the scorer leads, since the
+ * league skips the try then.
+ */
+export function endsGame(prep: Prepared): boolean {
+  const { play, events } = prep.scene;
+  const after = play.scoreAfter ?? play.scoreBefore;
+  if (play.quarter < 4 || after.home === after.away) return false;
+  const touchdown = events.some((e) => TOUCHDOWNS.has(e.name));
+  if (play.quarter >= 5 && (touchdown || events.some((e) => e.name === 'safety'))) return true;
+  if (clockAtFrame(prep, prep.frames - 1) !== '0:00') return false;
+  if (!touchdown) return true;
+  const scorer = after.home - play.scoreBefore.home > after.away - play.scoreBefore.away ? 'home' : 'away';
+  const other = scorer === 'home' ? 'away' : 'home';
+  return after[scorer] > after[other];
+}
+
+/** A carrier at or over this speed (mph) gets speed lines */
+export const FAST_MPH = 18;
+
+export type EffectKind =
+  | 'snap'
+  | 'throw'
+  | 'kick'
+  | 'catch'
+  | 'incomplete'
+  | 'hit'
+  | 'whistle'
+  | 'interception'
+  | 'fumble'
+  | 'sack'
+  | 'blocked'
+  | 'flag'
+  | 'touchdown'
+  | 'safety';
+
+const EFFECTS: Record<string, EffectKind> = {
+  ball_snap: 'snap',
+  snap_direct: 'snap',
+  pass_forward: 'throw',
+  pass_shovel: 'throw',
+  lateral: 'throw',
+  kickoff: 'kick',
+  onside_kick: 'kick',
+  punt: 'kick',
+  field_goal_attempt: 'kick',
+  pass_outcome_caught: 'catch',
+  kick_received: 'catch',
+  punt_received: 'catch',
+  pass_outcome_incomplete: 'incomplete',
+  first_contact: 'hit',
+  tackle: 'whistle',
+  out_of_bounds: 'whistle',
+  fair_catch: 'whistle',
+  touchback: 'whistle',
+  pass_outcome_interception: 'interception',
+  fumble: 'fumble',
+  fumble_defense_recovered: 'fumble',
+  qb_sack: 'sack',
+  qb_strip_sack: 'sack',
+  punt_blocked: 'blocked',
+  touchdown: 'touchdown',
+  pass_outcome_touchdown: 'touchdown',
+  safety: 'safety',
+  penalty_flag: 'flag',
+};
+
+/** Kinds that happen once a play however many events name them (a pass touchdown, a fumble and its recovery) */
+const ONCE = new Set<EffectKind>(['touchdown', 'fumble']);
+
+/** The moments that get an effect and a sound, in frame order. */
+export function effectsOf(scene: ReplayScene): { frame: number; kind: EffectKind }[] {
+  const out: { frame: number; kind: EffectKind }[] = [];
+  for (const e of [...scene.events].sort((a, b) => a.frame - b.frame)) {
+    const kind = EFFECTS[e.name];
+    if (!kind || (ONCE.has(kind) && out.some((o) => o.kind === kind))) continue;
+    out.push({ frame: e.frame, kind });
+  }
+  return out;
+}
+
+/** A defender this close to the carrier (yards) is in on him */
+export const MISS_CLOSE = 1;
+/** ...and has missed once the carrier is this far clear of him (yards) */
+export const MISS_CLEAR = 2.5;
+/** ...within this long (seconds), still carrying, with nothing ending the run */
+export const MISS_WINDOW = 1;
+/** A carrier slower than this (yards a second) is being wrapped up, not slipping a tackle */
+const MISS_MIN_SPEED = 2;
+const RUN_ENDS = new Set(['tackle', 'out_of_bounds', 'touchdown', 'pass_outcome_touchdown', 'fumble', 'qb_sack', 'qb_strip_sack', 'safety']);
+
+export interface NearMiss {
+  /** The frame the defender was closest */
+  frame: number;
+  defender: number;
+  carrier: number;
+  /** How close he got, yards */
+  yards: number;
+}
+
+/**
+ * Tackles the carrier slipped, from tracking alone: a defender closes to
+ * within MISS_CLOSE, then the same carrier, still moving, is MISS_CLEAR
+ * away from him within MISS_WINDOW with no tackle, score or fumble in
+ * between. At most one a defender, and none within half a second of
+ * another, so a crowd at the line reads as one moment.
+ */
+export function nearMisses(prep: Prepared): NearMiss[] {
+  const window = Math.round(MISS_WINDOW * prep.hz);
+  const ends = prep.scene.events.filter((e) => RUN_ENDS.has(e.name)).map((e) => e.frame);
+  const gap = (a: PreparedPlayer, b: PreparedPlayer, f: number) => {
+    const ax = a.x[f], ay = a.y[f], bx = b.x[f], by = b.y[f];
+    return ax == null || ay == null || bx == null || by == null ? null : Math.hypot(ax - bx, ay - by);
+  };
+  const found: NearMiss[] = [];
+  prep.players.forEach((d, di) => {
+    for (let f = Math.max(1, prep.snapFrame); f < prep.frames - 1; f++) {
+      const ci = prep.carrier[f];
+      const c = ci == null ? undefined : prep.players[ci];
+      if (!c || c.side === d.side || (c.speed[f] ?? 0) < MISS_MIN_SPEED) continue;
+      const here = gap(c, d, f);
+      const before = gap(c, d, f - 1);
+      const after = gap(c, d, f + 1);
+      if (here === null || here >= MISS_CLOSE || (before !== null && before < here) || (after !== null && after < here)) continue;
+      for (let g = f + 1; g <= Math.min(prep.frames - 1, f + window); g++) {
+        if (prep.carrier[g] !== ci || ends.some((e) => e >= f && e <= g + 2)) break;
+        if ((gap(c, d, g) ?? 0) > MISS_CLEAR) {
+          found.push({ frame: f, defender: di, carrier: ci!, yards: here });
+          return;
+        }
+      }
+    }
+  });
+  found.sort((a, b) => a.frame - b.frame);
+  return found.filter((m, i) => i === 0 || m.frame - found[i - 1]!.frame >= prep.hz / 2);
+}
+
+/**
+ * The frame the carrier takes the ball past the line to gain, for the team
+ * that snapped; null on a kick, without a line, or goal to go (the
+ * touchdown says it then).
+ */
+export function firstDownFrame(prep: Prepared): number | null {
+  const { firstDown, attack } = prep.scene.field;
+  if (firstDown === null || firstDown >= 110 || firstDown <= 10) return null;
+  const side = attack === 1 ? 'featured' : 'opponent';
+  for (let f = prep.snapFrame + 1; f < prep.frames; f++) {
+    const ci = prep.carrier[f];
+    if (ci == null || prep.players[ci]?.side !== side) continue;
+    if (attack * (prep.ball.x[f]! - firstDown) >= 0) return f;
+  }
+  return null;
+}
+
+/** Who caught an interception: the carrier at the moment or just after; null if the tracking never gives him the ball. */
+export function interceptor(prep: Prepared): { frame: number; player: number } | null {
+  const pick = prep.scene.events.find((e) => e.name === 'pass_outcome_interception');
+  if (!pick) return null;
+  for (let f = pick.frame; f < Math.min(prep.frames, pick.frame + 6); f++) {
+    const c = prep.carrier[f];
+    if (c != null) return { frame: pick.frame, player: c };
+  }
+  return null;
+}

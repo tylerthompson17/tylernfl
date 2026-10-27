@@ -52,11 +52,19 @@ export function wpSwingText(play: ReplayPlay): string | null {
   return `${n.before} to ${n.after} (${n.swing} points)`;
 }
 
-/** The scorebug's end of play readout, "→ 70% (+8)", to follow the before number (`wpNumbers`); null without both numbers. */
+/**
+ * The scorebug's end of play readout, "(+8)": by then the number before it
+ * has counted up to the after value (`wpNumbers`); null without both numbers.
+ */
 export function wpSwingReadout(play: ReplayPlay): string | null {
   if (play.wpBefore === null || play.wpAfter === null) return null;
-  const n = wpNumbers(play.wpBefore, play.wpAfter);
-  return `→ ${n.after} (${n.swing})`;
+  return `(${wpNumbers(play.wpBefore, play.wpAfter).swing})`;
+}
+
+/** A win probability as the scorebug counts it, at the precision `wpNumbers` gives the play's two values. */
+export function wpShownAt(play: ReplayPlay, wp: number): string {
+  const digits = play.wpBefore !== null && play.wpAfter !== null && wpNumbers(play.wpBefore, play.wpAfter).after.includes('.') ? 1 : 0;
+  return `${(wp * 100).toFixed(digits)}%`;
 }
 
 /** The scorebug's situation: "2nd and 6 at CHI 35", "Kickoff", "Two point try". */
