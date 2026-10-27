@@ -175,6 +175,26 @@
     },
     {
       "rank": 5,
+      "playerId": "00-0033077",
+      "player": "Dak Prescott",
+      "team": "DAL",
+      "position": "QB",
+      "teamGames": 7,
+      "qualified": true,
+      "values": {
+        "games": 7,
+        "completions": 178,
+        "attempts": 273,
+        "passing_yards": 1851,
+        "passing_tds": 13,
+        "passing_interceptions": 5,
+        "sacks_suffered": 7,
+        "cmp_pct": 0.652,
+        "pass_ypa": 6.8
+      }
+    },
+    {
+      "rank": 6,
       "playerId": "00-0033106",
       "player": "Jared Goff",
       "team": "DET",
@@ -194,7 +214,7 @@
       }
     },
     {
-      "rank": 6,
+      "rank": 7,
       "playerId": "00-0039851",
       "player": "Drake Maye",
       "team": "NE",
@@ -214,7 +234,7 @@
       }
     },
     {
-      "rank": 7,
+      "rank": 8,
       "playerId": "00-0037834",
       "player": "Brock Purdy",
       "team": "SF",
@@ -234,7 +254,7 @@
       }
     },
     {
-      "rank": 8,
+      "rank": 9,
       "playerId": "00-0040743",
       "player": "Tyler Shough",
       "team": "NO",
@@ -254,7 +274,7 @@
       }
     },
     {
-      "rank": 9,
+      "rank": 10,
       "playerId": "00-0039150",
       "player": "Bryce Young",
       "team": "CAR",
@@ -274,7 +294,7 @@
       }
     },
     {
-      "rank": 10,
+      "rank": 11,
       "playerId": "00-0023459",
       "player": "Aaron Rodgers",
       "team": "PIT",
@@ -294,7 +314,7 @@
       }
     },
     {
-      "rank": 11,
+      "rank": 12,
       "playerId": "00-0036442",
       "player": "Joe Burrow",
       "team": "CIN",
@@ -311,26 +331,6 @@
         "sacks_suffered": 10,
         "cmp_pct": 0.717,
         "pass_ypa": 7.5
-      }
-    },
-    {
-      "rank": 12,
-      "playerId": "00-0033077",
-      "player": "Dak Prescott",
-      "team": "DAL",
-      "position": "QB",
-      "teamGames": 6,
-      "qualified": true,
-      "values": {
-        "games": 6,
-        "completions": 163,
-        "attempts": 246,
-        "passing_yards": 1639,
-        "passing_tds": 10,
-        "passing_interceptions": 5,
-        "sacks_suffered": 7,
-        "cmp_pct": 0.663,
-        "pass_ypa": 6.7
       }
     },
     {
@@ -659,7 +659,7 @@
       "player": "Jalen Hurts",
       "team": "PHI",
       "position": "QB",
-      "teamGames": 6,
+      "teamGames": 7,
       "qualified": true,
       "values": {
         "games": 5,
@@ -795,6 +795,26 @@
     },
     {
       "rank": 36,
+      "playerId": "00-0038400",
+      "player": "Tanner McKee",
+      "team": "PHI",
+      "position": "QB",
+      "teamGames": 7,
+      "qualified": false,
+      "values": {
+        "games": 2,
+        "completions": 49,
+        "attempts": 80,
+        "passing_yards": 426,
+        "passing_tds": 2,
+        "passing_interceptions": 1,
+        "sacks_suffered": 5,
+        "cmp_pct": 0.613,
+        "pass_ypa": 5.3
+      }
+    },
+    {
+      "rank": 37,
       "playerId": "00-0035704",
       "player": "Drew Lock",
       "team": "SEA",
@@ -814,7 +834,7 @@
       }
     },
     {
-      "rank": 37,
+      "rank": 38,
       "playerId": "00-0038416",
       "player": "Tyson Bagent",
       "team": "CHI",
@@ -834,7 +854,7 @@
       }
     },
     {
-      "rank": 38,
+      "rank": 39,
       "playerId": "00-0028986",
       "player": "Case Keenum",
       "team": "CHI",
@@ -854,7 +874,7 @@
       }
     },
     {
-      "rank": 39,
+      "rank": 40,
       "playerId": "00-0032268",
       "player": "Marcus Mariota",
       "team": "WAS",
@@ -874,7 +894,7 @@
       }
     },
     {
-      "rank": 40,
+      "rank": 41,
       "playerId": "00-0032950",
       "player": "Carson Wentz",
       "team": "MIN",
@@ -894,7 +914,7 @@
       }
     },
     {
-      "rank": 41,
+      "rank": 42,
       "playerId": "00-0040691",
       "player": "Jaxson Dart",
       "team": "NYG",
@@ -914,7 +934,7 @@
       }
     },
     {
-      "rank": 42,
+      "rank": 43,
       "playerId": "00-0033662",
       "player": "Cooper Rush",
       "team": "ATL",
@@ -931,26 +951,6 @@
         "sacks_suffered": 5,
         "cmp_pct": 0.564,
         "pass_ypa": 5.9
-      }
-    },
-    {
-      "rank": 43,
-      "playerId": "00-0038400",
-      "player": "Tanner McKee",
-      "team": "PHI",
-      "position": "QB",
-      "teamGames": 6,
-      "qualified": false,
-      "values": {
-        "games": 1,
-        "completions": 26,
-        "attempts": 45,
-        "passing_yards": 215,
-        "passing_tds": 1,
-        "passing_interceptions": 0,
-        "sacks_suffered": 3,
-        "cmp_pct": 0.578,
-        "pass_ypa": 4.8
       }
     },
     {
@@ -1179,7 +1179,7 @@
       "player": "Andy Dalton",
       "team": "PHI",
       "position": "QB",
-      "teamGames": 6,
+      "teamGames": 7,
       "qualified": false,
       "values": {
         "games": 1,
