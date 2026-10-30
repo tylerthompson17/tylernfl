@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "PHI",
   "week": 8,
-  "updated": "2026-10-27T15:35:44Z",
+  "updated": "2026-10-30T03:32:40Z",
   "groups": [
     {
       "key": "offense",
@@ -130,28 +130,13 @@
       "number": 30,
       "position": "RB",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 69,
       "weight": 200,
       "age": 22,
       "experience": 1,
       "college": "Texas"
-    },
-    {
-      "gsisId": "00-0039325",
-      "name": "Carson Steele",
-      "slug": "carson-steele",
-      "number": 34,
-      "position": "RB",
-      "group": "offense",
-      "status": "RES",
-      "statusLabel": "Reserve",
-      "heightInches": 72,
-      "weight": 225,
-      "age": 24,
-      "experience": 2,
-      "college": "UCLA; Ball State"
     },
     {
       "gsisId": "00-0037258",
@@ -160,8 +145,8 @@
       "number": 39,
       "position": "RB",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 70,
       "weight": 215,
       "age": 26,
@@ -175,8 +160,8 @@
       "number": 49,
       "position": "RB",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 70,
       "weight": 221,
       "age": 28,
@@ -242,6 +227,21 @@
       "age": 25,
       "experience": 3,
       "college": "Virginia"
+    },
+    {
+      "gsisId": "00-0040406",
+      "name": "Quentin Skinner",
+      "slug": "quentin-skinner",
+      "number": 18,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 195,
+      "age": 24,
+      "experience": 1,
+      "college": "Kansas"
     },
     {
       "gsisId": "00-0036980",
@@ -484,21 +484,6 @@
       "college": "Florida"
     },
     {
-      "gsisId": "00-0040451",
-      "name": "Xavier Truss",
-      "slug": "xavier-truss",
-      "number": 77,
-      "position": "T",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 79,
-      "weight": 309,
-      "age": 25,
-      "experience": 1,
-      "college": "Georgia"
-    },
-    {
       "gsisId": "00-0039001",
       "name": "Tyler Steen",
       "slug": "tyler-steen",
@@ -512,6 +497,21 @@
       "age": 26,
       "experience": 3,
       "college": "Alabama; Vanderbilt"
+    },
+    {
+      "gsisId": "00-0040909",
+      "name": "Evan Beerntsen",
+      "slug": "evan-beerntsen",
+      "number": 60,
+      "position": "G",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 301,
+      "age": 26,
+      "experience": 0,
+      "college": "Northwestern; South Dakota State"
     },
     {
       "gsisId": "00-0037002",
@@ -805,8 +805,8 @@
       "number": 50,
       "position": "OLB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 73,
       "weight": 240,
       "age": 24,
@@ -1024,6 +1024,21 @@
       "college": "Toledo"
     },
     {
+      "gsisId": "00-0036559",
+      "name": "Shaun Wade",
+      "slug": "shaun-wade",
+      "number": 30,
+      "position": "CB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 195,
+      "age": 28,
+      "experience": 5,
+      "college": "Ohio State"
+    },
+    {
       "gsisId": "00-0032580",
       "name": "Jonathan Jones",
       "slug": "jonathan-jones",
@@ -1142,21 +1157,6 @@
       "age": 30,
       "experience": 7,
       "college": "Wyoming"
-    },
-    {
-      "gsisId": "00-0040396",
-      "name": "Dean Clark",
-      "slug": "dean-clark",
-      "number": 48,
-      "position": "SS",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 72,
-      "weight": 206,
-      "age": 25,
-      "experience": 1,
-      "college": "Fresno State; Kent State"
     },
     {
       "gsisId": "00-0033787",

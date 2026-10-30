@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "IND",
   "week": 8,
-  "updated": "2026-10-27T15:35:44Z",
+  "updated": "2026-10-30T03:32:40Z",
   "groups": [
     {
       "key": "offense",
@@ -452,21 +452,6 @@
       "age": 29,
       "experience": 4,
       "college": "Central Michigan"
-    },
-    {
-      "gsisId": "00-0034342",
-      "name": "Quenton Nelson",
-      "slug": "quenton-nelson",
-      "number": 56,
-      "position": "G",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 77,
-      "weight": 330,
-      "age": 30,
-      "experience": 8,
-      "college": "Notre Dame"
     },
     {
       "gsisId": "00-0041517",
@@ -934,14 +919,29 @@
       "college": "Minnesota"
     },
     {
+      "gsisId": "00-0038966",
+      "name": "Natrone Brooks",
+      "slug": "natrone-brooks",
+      "number": 28,
+      "position": "CB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 71,
+      "weight": 176,
+      "age": 26,
+      "experience": 3,
+      "college": "Southern Mississippi"
+    },
+    {
       "gsisId": "00-0037753",
       "name": "Cam Taylor-Britt",
       "slug": "cam-taylor-britt",
       "number": 29,
       "position": "CB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 71,
       "weight": 200,
       "age": 27,
@@ -955,8 +955,8 @@
       "number": 33,
       "position": "CB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 72,
       "weight": 195,
       "age": 24,
@@ -1007,6 +1007,21 @@
       "age": 25,
       "experience": 3,
       "college": "Northwestern"
+    },
+    {
+      "gsisId": "00-0039292",
+      "name": "Shemar Bartholomew",
+      "slug": "shemar-bartholomew",
+      "number": 45,
+      "position": "CB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 200,
+      "age": 26,
+      "experience": 2,
+      "college": "Georgia Southern; Northwestern State (LA)"
     },
     {
       "gsisId": "00-0036629",

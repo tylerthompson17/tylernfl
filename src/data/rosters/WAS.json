@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "WAS",
   "week": 8,
-  "updated": "2026-10-27T15:35:44Z",
+  "updated": "2026-10-30T03:32:40Z",
   "groups": [
     {
       "key": "offense",
@@ -109,21 +109,6 @@
       "college": "Arizona; New Mexico; Alabama State"
     },
     {
-      "gsisId": "00-0040202",
-      "name": "Devin Neal",
-      "slug": "devin-neal",
-      "number": 24,
-      "position": "RB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 71,
-      "weight": 215,
-      "age": 23,
-      "experience": 1,
-      "college": "Kansas"
-    },
-    {
       "gsisId": "00-0033955",
       "name": "Jeremy McNichols",
       "slug": "jeremy-mcnichols",
@@ -152,6 +137,21 @@
       "age": 31,
       "experience": 9,
       "college": "Western State"
+    },
+    {
+      "gsisId": "00-0040202",
+      "name": "Devin Neal",
+      "slug": "devin-neal",
+      "number": 31,
+      "position": "RB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 71,
+      "weight": 215,
+      "age": 23,
+      "experience": 1,
+      "college": "Kansas"
     },
     {
       "gsisId": "00-0035567",
@@ -220,8 +220,8 @@
       "number": 12,
       "position": "WR",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 73,
       "weight": 197,
       "age": 30,
@@ -265,8 +265,8 @@
       "number": 17,
       "position": "WR",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 72,
       "weight": 210,
       "age": 31,
@@ -782,6 +782,21 @@
       "age": 22,
       "experience": 0,
       "college": "Tennessee"
+    },
+    {
+      "gsisId": "00-0040161",
+      "name": "Kyle Kennard",
+      "slug": "kyle-kennard",
+      "number": 54,
+      "position": "OLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 254,
+      "age": 24,
+      "experience": 1,
+      "college": "South Carolina"
     },
     {
       "gsisId": "00-0040004",

@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "TB",
   "week": 8,
-  "updated": "2026-10-27T15:35:44Z",
+  "updated": "2026-10-30T03:32:40Z",
   "groups": [
     {
       "key": "offense",
@@ -34,21 +34,6 @@
       "college": "Oklahoma; Texas Tech"
     },
     {
-      "gsisId": "00-0034955",
-      "name": "Brett Rypien",
-      "slug": "brett-rypien",
-      "number": 8,
-      "position": "QB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 74,
-      "weight": 200,
-      "age": 30,
-      "experience": 7,
-      "college": "Boise State"
-    },
-    {
       "gsisId": "00-0041251",
       "name": "Jalon Daniels",
       "slug": "jalon-daniels",
@@ -59,7 +44,7 @@
       "statusLabel": "Active",
       "heightInches": 72,
       "weight": 219,
-      "age": 23,
+      "age": 24,
       "experience": 0,
       "college": "Kansas"
     },
@@ -137,6 +122,21 @@
       "age": 25,
       "experience": 3,
       "college": "Syracuse"
+    },
+    {
+      "gsisId": "00-0041595",
+      "name": "Barika Kpeenu",
+      "slug": "barika-kpeenu",
+      "number": 49,
+      "position": "RB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 70,
+      "weight": 213,
+      "age": 23,
+      "experience": 0,
+      "college": "North Dakota State"
     },
     {
       "gsisId": "00-0040129",
@@ -629,7 +629,7 @@
       "statusLabel": "Practice squad",
       "heightInches": 78,
       "weight": 340,
-      "age": 24,
+      "age": 25,
       "experience": 1,
       "college": "Auburn; Oregon"
     },

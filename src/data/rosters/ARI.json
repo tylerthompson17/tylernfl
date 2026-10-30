@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "ARI",
   "week": 8,
-  "updated": "2026-10-27T15:35:44Z",
+  "updated": "2026-10-30T03:32:40Z",
   "groups": [
     {
       "key": "offense",
@@ -214,6 +214,21 @@
       "college": "Eastern Washington"
     },
     {
+      "gsisId": "00-0033891",
+      "name": "Zay Jones",
+      "slug": "zay-jones",
+      "number": 18,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 200,
+      "age": 31,
+      "experience": 9,
+      "college": "East Carolina"
+    },
+    {
       "gsisId": "00-0036646",
       "name": "Simi Fehoko",
       "slug": "simi-fehoko",
@@ -280,8 +295,8 @@
       "number": 86,
       "position": "WR",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 74,
       "weight": 205,
       "age": 26,
@@ -317,21 +332,6 @@
       "age": 27,
       "experience": 5,
       "college": "Mississippi"
-    },
-    {
-      "gsisId": "00-0041366",
-      "name": "Jameson Geers",
-      "slug": "jameson-geers",
-      "number": 46,
-      "position": "TE",
-      "group": "offense",
-      "status": "RES",
-      "statusLabel": "Reserve",
-      "heightInches": 77,
-      "weight": 250,
-      "age": 23,
-      "experience": 0,
-      "college": "Minnesota"
     },
     {
       "gsisId": "00-0037277",
@@ -499,6 +499,21 @@
       "college": "Mississippi State"
     },
     {
+      "gsisId": "00-0037302",
+      "name": "Austin Deculus",
+      "slug": "austin-deculus",
+      "number": 76,
+      "position": "T",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 330,
+      "age": 27,
+      "experience": 4,
+      "college": "LSU"
+    },
+    {
       "gsisId": "00-0040382",
       "name": "Josh Fryar",
       "slug": "josh-fryar",
@@ -569,7 +584,7 @@
       "statusLabel": "Active",
       "heightInches": 76,
       "weight": 310,
-      "age": 32,
+      "age": 33,
       "experience": 10,
       "college": "Oregon State"
     },
@@ -595,8 +610,8 @@
       "number": 64,
       "position": "C",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 305,
       "age": 25,
@@ -1174,19 +1189,19 @@
       "college": "Washington"
     },
     {
-      "gsisId": "00-0038613",
-      "name": "Jerrick Reed II",
-      "slug": "jerrick-reed-ii",
-      "number": 33,
+      "gsisId": "00-0041370",
+      "name": "Wydett Williams Jr.",
+      "slug": "wydett-williams-jr",
+      "number": 31,
       "position": "SS",
       "group": "defense",
       "status": "DEV",
       "statusLabel": "Practice squad",
-      "heightInches": 69,
-      "weight": 192,
-      "age": 26,
-      "experience": 3,
-      "college": "New Mexico; Northwest Mississippi CC"
+      "heightInches": 73,
+      "weight": 205,
+      "age": 22,
+      "experience": 0,
+      "college": "Mississippi; Louisiana-Monroe; Delta State University"
     },
     {
       "gsisId": "00-0038567",

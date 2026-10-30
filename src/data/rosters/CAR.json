@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "CAR",
   "week": 8,
-  "updated": "2026-10-27T15:35:44Z",
+  "updated": "2026-10-30T03:32:40Z",
   "groups": [
     {
       "key": "offense",
@@ -415,8 +415,8 @@
       "number": 72,
       "position": "T",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 77,
       "weight": 316,
       "age": 32,
@@ -664,6 +664,21 @@
       "college": "Auburn"
     },
     {
+      "gsisId": "00-0040655",
+      "name": "Keith Cooper Jr.",
+      "slug": "keith-cooper-jr",
+      "number": 96,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 285,
+      "age": 23,
+      "experience": 1,
+      "college": "Houston; Tulane"
+    },
+    {
       "gsisId": "00-0036903",
       "name": "Bobby Brown III",
       "slug": "bobby-brown-iii",
@@ -677,21 +692,6 @@
       "age": 26,
       "experience": 5,
       "college": "Texas A&M"
-    },
-    {
-      "gsisId": "00-0040655",
-      "name": "Keith Cooper Jr.",
-      "slug": "keith-cooper-jr",
-      "number": 97,
-      "position": "DT",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 77,
-      "weight": 285,
-      "age": 23,
-      "experience": 1,
-      "college": "Houston; Tulane"
     },
     {
       "gsisId": "00-0035890",
@@ -775,8 +775,8 @@
       "number": 39,
       "position": "OLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 225,
       "age": 26,
@@ -934,6 +934,21 @@
       "college": "Stanford"
     },
     {
+      "gsisId": "00-0040408",
+      "name": "Ja'Markis Weston",
+      "slug": "jamarkis-weston",
+      "number": 46,
+      "position": "MLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 235,
+      "age": 26,
+      "experience": 1,
+      "college": "Florida"
+    },
+    {
       "gsisId": "00-0035277",
       "name": "Mike Jackson",
       "slug": "mike-jackson",
@@ -962,21 +977,6 @@
       "age": 26,
       "experience": 5,
       "college": "South Carolina"
-    },
-    {
-      "gsisId": "00-0036884",
-      "name": "Marco Wilson",
-      "slug": "marco-wilson",
-      "number": 21,
-      "position": "CB",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 71,
-      "weight": 191,
-      "age": 27,
-      "experience": 5,
-      "college": "Florida"
     },
     {
       "gsisId": "00-0041063",
@@ -1037,6 +1037,21 @@
       "age": 25,
       "experience": 1,
       "college": "Louisville"
+    },
+    {
+      "gsisId": "00-0036884",
+      "name": "Marco Wilson",
+      "slug": "marco-wilson",
+      "number": 35,
+      "position": "CB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 71,
+      "weight": 191,
+      "age": 27,
+      "experience": 5,
+      "college": "Florida"
     },
     {
       "gsisId": "00-0041188",

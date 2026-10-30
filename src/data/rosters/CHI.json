@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "CHI",
   "week": 8,
-  "updated": "2026-10-27T15:35:44Z",
+  "updated": "2026-10-30T03:32:40Z",
   "groups": [
     {
       "key": "offense",
@@ -130,8 +130,8 @@
       "number": 30,
       "position": "RB",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 73,
       "weight": 220,
       "age": 27,
@@ -979,21 +979,6 @@
       "college": "Texas"
     },
     {
-      "gsisId": "00-0036589",
-      "name": "Nick McCloud",
-      "slug": "nick-mccloud",
-      "number": 26,
-      "position": "CB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 73,
-      "weight": 190,
-      "age": 28,
-      "experience": 5,
-      "college": "Notre Dame"
-    },
-    {
       "gsisId": "00-0039071",
       "name": "Tyrique Stevenson",
       "slug": "tyrique-stevenson",
@@ -1007,6 +992,21 @@
       "age": 26,
       "experience": 3,
       "college": "Miami; Georgia"
+    },
+    {
+      "gsisId": "00-0041166",
+      "name": "KC Eziomume",
+      "slug": "kc-eziomume",
+      "number": 32,
+      "position": "CB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 198,
+      "age": 24,
+      "experience": 0,
+      "college": "Tulane; Albany"
     },
     {
       "gsisId": "00-0037395",
@@ -1037,21 +1037,6 @@
       "age": 26,
       "experience": 2,
       "college": "Boston College"
-    },
-    {
-      "gsisId": "00-0041166",
-      "name": "KC Eziomume",
-      "slug": "kc-eziomume",
-      "number": 37,
-      "position": "CB",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 198,
-      "age": 24,
-      "experience": 0,
-      "college": "Tulane; Albany"
     },
     {
       "gsisId": "00-0037129",

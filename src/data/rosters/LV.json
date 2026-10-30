@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "LV",
   "week": 8,
-  "updated": "2026-10-27T15:35:44Z",
+  "updated": "2026-10-30T03:32:40Z",
   "groups": [
     {
       "key": "offense",
@@ -205,8 +205,8 @@
       "number": 10,
       "position": "WR",
       "group": "offense",
-      "status": "RES",
-      "statusLabel": "Reserve",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 77,
       "weight": 205,
       "age": 23,
@@ -257,21 +257,6 @@
       "age": 24,
       "experience": 0,
       "college": "Oregon; Florida State; Alabama; Hutchinson CC"
-    },
-    {
-      "gsisId": "00-0039379",
-      "name": "Jamari Thrash",
-      "slug": "jamari-thrash",
-      "number": 80,
-      "position": "WR",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 72,
-      "weight": 190,
-      "age": 25,
-      "experience": 2,
-      "college": "Louisville; Georgia State"
     },
     {
       "gsisId": "00-0037093",
@@ -724,21 +709,6 @@
       "college": "Connecticut"
     },
     {
-      "gsisId": "00-0039423",
-      "name": "Jonah Laulu",
-      "slug": "jonah-laulu",
-      "number": 96,
-      "position": "DT",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 77,
-      "weight": 289,
-      "age": 26,
-      "experience": 2,
-      "college": "Oklahoma; Hawaii"
-    },
-    {
       "gsisId": "00-0040169",
       "name": "Tonka Hemingway",
       "slug": "tonka-hemingway",
@@ -782,6 +752,21 @@
       "age": 23,
       "experience": 0,
       "college": "Auburn; Arkansas State"
+    },
+    {
+      "gsisId": "00-0039837",
+      "name": "Bralen Trice",
+      "slug": "bralen-trice",
+      "number": 48,
+      "position": "OLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 274,
+      "age": 25,
+      "experience": 2,
+      "college": "Washington"
     },
     {
       "gsisId": "00-0041006",

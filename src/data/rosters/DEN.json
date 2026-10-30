@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "DEN",
   "week": 8,
-  "updated": "2026-10-27T15:35:44Z",
+  "updated": "2026-10-30T03:32:40Z",
   "groups": [
     {
       "key": "offense",
@@ -289,6 +289,21 @@
       "college": "San Diego"
     },
     {
+      "gsisId": "00-0040337",
+      "name": "Eli Pancol",
+      "slug": "eli-pancol",
+      "number": 86,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 205,
+      "age": 26,
+      "experience": 1,
+      "college": "Duke"
+    },
+    {
       "gsisId": "00-0041293",
       "name": "Dane Key",
       "slug": "dane-key",
@@ -524,7 +539,7 @@
       "statusLabel": "Active",
       "heightInches": 76,
       "weight": 310,
-      "age": 29,
+      "age": 30,
       "experience": 7,
       "college": "Oklahoma; Butler County JC"
     },
@@ -1079,7 +1094,7 @@
       "statusLabel": "Active",
       "heightInches": 72,
       "weight": 210,
-      "age": 28,
+      "age": 29,
       "experience": 5,
       "college": "Western Kentucky"
     },
@@ -1097,21 +1112,6 @@
       "age": 28,
       "experience": 7,
       "college": "Washington"
-    },
-    {
-      "gsisId": "00-0035142",
-      "name": "Ugo Amadi",
-      "slug": "ugo-amadi",
-      "number": 35,
-      "position": "FS",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 69,
-      "weight": 201,
-      "age": 29,
-      "experience": 7,
-      "college": "Oregon"
     },
     {
       "gsisId": "00-0041130",
@@ -1199,7 +1199,7 @@
       "statusLabel": "Active",
       "heightInches": 74,
       "weight": 223,
-      "age": 29,
+      "age": 30,
       "experience": 5,
       "college": "Arizona State"
     }

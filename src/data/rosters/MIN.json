@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "MIN",
   "week": 8,
-  "updated": "2026-10-27T15:35:44Z",
+  "updated": "2026-10-30T03:32:40Z",
   "groups": [
     {
       "key": "offense",
@@ -274,19 +274,34 @@
       "college": "Georgia"
     },
     {
-      "gsisId": "00-0039631",
-      "name": "Cam Grandy",
-      "slug": "cam-grandy",
+      "gsisId": "00-0039754",
+      "name": "Devin Culp",
+      "slug": "devin-culp",
+      "number": 82,
+      "position": "TE",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 237,
+      "age": 26,
+      "experience": 2,
+      "college": "Washington"
+    },
+    {
+      "gsisId": "00-0040504",
+      "name": "Bryson Nesbit",
+      "slug": "bryson-nesbit",
       "number": 83,
       "position": "TE",
       "group": "offense",
       "status": "DEV",
       "statusLabel": "Practice squad",
       "heightInches": 77,
-      "weight": 253,
-      "age": 26,
-      "experience": 2,
-      "college": "Illinois State; Missouri Western"
+      "weight": 235,
+      "age": 24,
+      "experience": 1,
+      "college": "North Carolina"
     },
     {
       "gsisId": "00-0035249",
