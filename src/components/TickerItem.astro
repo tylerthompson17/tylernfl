@@ -14,6 +14,11 @@
  *
  * A final's status links to its game page once it has one.
  *
+ * An upcoming game shows the point spread in the empty score column beside
+ * the favored team ("-3", or "PK" beside the home team), from schedule.json
+ * (nflverse's lines). It is hidden from kickoff, when the live client sets
+ * the slot's state and the score takes the column.
+ *
  * Only a live game is ever marked here: when the scoreboard poll finds it
  * worth switching to (src/lib/live-ticker/mark.ts), the whole slot takes
  * a pale yellow tint and the word (Comeback, Close game, Shootout) shows
@@ -23,7 +28,9 @@
  * when a mark comes or goes. It sits beside [data-detail], never inside
  * it, since the live client rewrites that element's text.
  */
-import type { TickerGame } from '../data/types';
+import scheduleData from '../data/schedule.json';
+import type { ScheduleData, TickerGame } from '../data/types';
+import { tickerSpread } from '../lib/odds/spread';
 import { LIVE_MARKS } from '../lib/live-ticker/mark';
 import { gameHref } from '../utils/games';
 import { url } from '../utils/url';
@@ -40,6 +47,10 @@ const homeWon = decided && game.homeScore! > game.awayScore!;
 // A final with a game page links its status to it. Final stays final, so
 // the live client only ever rewrites this link's text.
 const href = game.state === 'final' ? gameHref(game.id) : null;
+const spread =
+  game.state === 'pre'
+    ? tickerSpread((scheduleData as ScheduleData).games.find((g) => g.id === game.id)?.spreadLine)
+    : null;
 ---
 
 <li
@@ -64,10 +75,26 @@ const href = game.state === 'final' ? gameHref(game.id) : null;
   </span>
   <span class:list={['line', { won: awayWon }]} data-side="away" data-team={game.away}>
     <a class="team" href={url(`teams/${game.away}`)}>{game.away}</a>
+    {
+      spread?.side === 'away' && (
+        <span class="spread">
+          <span aria-hidden="true">{spread.text}</span>
+          <span class="visually-hidden">{spread.words}</span>
+        </span>
+      )
+    }
     <span class="num" data-score>{game.awayScore ?? ''}</span>
   </span>
   <span class:list={['line', { won: homeWon }]} data-side="home" data-team={game.home}>
     <a class="team" href={url(`teams/${game.home}`)}>{game.home}</a>
+    {
+      spread?.side === 'home' && (
+        <span class="spread">
+          <span aria-hidden="true">{spread.text}</span>
+          <span class="visually-hidden">{spread.words}</span>
+        </span>
+      )
+    }
     <span class="num" data-score>{game.homeScore ?? ''}</span>
   </span>
   <span class="last-score" data-last-score hidden>
@@ -167,6 +194,18 @@ const href = game.state === 'final' ? gameHref(game.id) : null;
 
   .line.won {
     font-weight: 700;
+  }
+
+  /* The spread, until kickoff. Dimmed, so it never reads as a score. */
+  .spread {
+    margin-left: auto;
+    color: var(--text-dim);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .game:not([data-state='pre']) .spread {
+    display: none;
   }
 
   /* Who scored last, under a pinned live game. Sized by the slot rather

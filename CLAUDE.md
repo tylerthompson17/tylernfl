@@ -617,6 +617,11 @@ header bars and boxed content, not decoration. Do not use PFR's green.
   time, so the strip starts with the whole row. Either group loops as a
   carousel when its own games overflow its share. Below 760px neither group
   gets a share: the row is one swipeable strip with live games first.
+- An upcoming game shows the point spread in its empty score column, beside the
+  favored team as a sportsbook writes it ("BUF -3", "PK" beside the home team for a
+  pick'em), dimmed so it never reads as a score, from `schedule.json`'s `spreadLine`
+  (`tickerSpread` in `src/lib/odds/spread.ts`); nothing until nflverse has a line, and
+  hidden from kickoff, when the score takes the column.
 - A pinned game has a third line saying who scored last ("BUF TD: J.Allen
   1 Yd Rush", first names as initials), cut with an ellipsis, full play in
   the tooltip. It holds its
