@@ -9,6 +9,7 @@ from decisions import (
 )
 
 FIXTURES = Path(__file__).resolve().parent.parent / 'tests' / 'fixtures' / 'fourth-down'
+MANIFEST = Path(__file__).resolve().parent.parent / 'models' / 'fourth-down' / 'manifest.json'
 
 
 def play(play_id: int, **kw) -> dict:
@@ -255,6 +256,9 @@ class EngineTest(unittest.TestCase):
         cases = json.loads((FIXTURES / 'fourth_down.json').read_text())['cases']
         case = next(c for c in cases if c['expected']['supported'] and c['expected']['wpPunt'] is not None)
         s = case['situation']
+        # The week after the delivered tables, so the tables are from before the
+        # game and only the missing punter keeps a result from being stored.
+        as_of = json.loads(MANIFEST.read_text())['experimental']['dataAsOf']
         row = play(
             10, season=s['season'], posteam=s['posteam'], defteam=s['defteam'], home_team=s['home'],
             away_team=s['defteam'] if s['home'] == s['posteam'] else s['posteam'],
@@ -263,7 +267,8 @@ class EngineTest(unittest.TestCase):
             game_seconds_remaining=float(s['secondsRemaining']), half_seconds_remaining=float(s['halfSecondsRemaining']),
             score_differential=float(s['scoreDiff']), posteam_timeouts_remaining=float(s['timeoutsOffense']),
             defteam_timeouts_remaining=float(s['timeoutsDefense']), home_opening_kickoff=1.0 if s['homeOpeningKickoff'] else 0.0,
-            roof=s['roof'], spread_line=s['spreadLine'], total_line=s['totalLine'], play_type='punt', week=7.0,
+            roof=s['roof'], spread_line=s['spreadLine'], total_line=s['totalLine'], play_type='punt',
+            week=float(as_of['week'] + 1),
         )
         data = build_decisions([row], 2026, '2026-10-23T00:00:00Z')
         entry = data['fourthDowns'][0]
