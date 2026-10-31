@@ -6,7 +6,7 @@
 import type { GameBigPlay, GameData, GameTeamBox } from '../../data/types.ts';
 import type { LiveGrade } from '../live-fourth/grade.ts';
 import { optionWords as liveOptionWords } from '../live-fourth/grade.ts';
-import { playSummary, verdictLine, verdictWords } from '../live-fourth/words.ts';
+import { playSummary, tt4thLines, verdictLine, verdictWords, type Tt4thLines } from '../live-fourth/words.ts';
 import { callWords, clockLine, isFourthDown, pct, scoreWords, spotWords, type Decision } from '../decisions/view.ts';
 import { formatStat } from '../../utils/format.ts';
 
@@ -106,6 +106,11 @@ export interface DecisionItem {
   verdict: string;
   /** Each option's WP; null when there are no numbers */
   wp: string | null;
+  /**
+   * tt4th's call and WPs from before the game (the stored experimental
+   * result), which lead the item; null for a try or a 4th down without one
+   */
+  tt4th: Tt4thLines | null;
   questionable: boolean;
   /** Questionable with nfl4th's top two options closeMargin or more apart */
   clear: boolean;
@@ -151,7 +156,7 @@ export function decisionItem(d: Decision, closeMargin: number): DecisionItem {
     const down = `${f.posteam} 4th and ${togo} at ${spotWords(f.yardline100, f.defteam)}, ${scoreWords(f.scoreDiff)}`;
     const play = playSummary('', d.description, f.distance, d.teamCall, d.fake);
     if (unsupported) {
-      return { ...base, down, play, verdict: UNSUPPORTED[d.skip ?? 'unavailable'] ?? UNSUPPORTED.unavailable, wp: null, questionable, clear, fourthDown: true };
+      return { ...base, down, play, verdict: UNSUPPORTED[d.skip ?? 'unavailable'] ?? UNSUPPORTED.unavailable, wp: null, tt4th: null, questionable, clear, fourthDown: true };
     }
     const grade: Extract<LiveGrade, { kind: 'graded' }> = {
       kind: 'graded',
@@ -171,6 +176,7 @@ export function decisionItem(d: Decision, closeMargin: number): DecisionItem {
       play,
       verdict: verdictLine(grade, d.teamCall) + (decided ? `.${decided}` : ''),
       wp: liveOptionWords(grade, f.yardline100),
+      tt4th: tt4thLines(d.experimental, f.yardline100),
       questionable,
       clear,
       fourthDown: true,
@@ -179,7 +185,7 @@ export function decisionItem(d: Decision, closeMargin: number): DecisionItem {
   const down = `${s.posteam} try after a touchdown, ${scoreWords(s.scoreDiff)}`;
   const play = trySummary(d.teamCall, d.description);
   if (unsupported) {
-    return { ...base, down, play, verdict: UNSUPPORTED[d.skip ?? 'unavailable'] ?? UNSUPPORTED.unavailable, wp: null, questionable, clear, fourthDown: false };
+    return { ...base, down, play, verdict: UNSUPPORTED[d.skip ?? 'unavailable'] ?? UNSUPPORTED.unavailable, wp: null, tt4th: null, questionable, clear, fourthDown: false };
   }
   const options: [string, number | null | undefined][] = [['Extra point', d.wpKick], ['Go for 2', d.wpGoForTwo]];
   return {
@@ -190,6 +196,7 @@ export function decisionItem(d: Decision, closeMargin: number): DecisionItem {
     wp: options.filter((o): o is [string, number] => typeof o[1] === 'number').map(([l, v]) => `${l} ${pct(v)}`).join('; '),
     questionable,
     clear,
+    tt4th: null,
     fourthDown: false,
   };
 }

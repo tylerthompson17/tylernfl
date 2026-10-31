@@ -7,6 +7,7 @@
  */
 .mc {
   min-width: 0;
+  container-type: inline-size;
 }
 
 .mc p {
@@ -38,11 +39,23 @@
   color: var(--text-dim);
 }
 
+/* tt4th leads: the wider, darker box with the larger call; nfl4th's beside
+   it is the comparison. Stacked when the column is narrow. */
 .mc-calls {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
   gap: var(--space-2);
   margin-bottom: var(--space-2);
+}
+
+.mc-calls > :only-child {
+  grid-column: 1 / -1;
+}
+
+@container (max-width: 380px) {
+  .mc-calls {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .mc-call {
@@ -65,8 +78,21 @@
 
 .mc-call-value {
   font-family: var(--font-heading);
-  font-size: 20px;
+  font-size: 17px;
   line-height: 1.1;
+}
+
+.mc-experimental .mc-call-value {
+  font-size: 24px;
+}
+
+.mc-who-note {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.mc-experimental .mc-who-note {
+  color: var(--header-text);
 }
 
 .mc-margin {

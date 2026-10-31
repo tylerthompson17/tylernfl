@@ -1,6 +1,7 @@
 ---
 /**
- * Every 4th down of today's games, with nfl4th's recommendation, each
+ * Every 4th down of today's games, with tt4th's call first and nfl4th's
+ * recommendation, each
  * option's win probability and what the team's choice cost: preliminary
  * grades from ESPN's live game summaries (src/lib/live-fourth/page.ts).
  * The final grades are /decisions/, from nflverse the next morning.
@@ -10,6 +11,7 @@ import Panel from '../../components/Panel.astro';
 import { LIVE_FOURTH_PAGE_ENABLED } from '../../config';
 import { liveGames } from '../../utils/live-games';
 import { url } from '../../utils/url';
+import { TT4TH_CREDITS } from '../../lib/model-compare/credits';
 
 const games = liveGames();
 const NFL4TH = 'https://github.com/nflverse/nfl4th';
@@ -17,7 +19,7 @@ const NFL4TH = 'https://github.com/nflverse/nfl4th';
 
 <BaseLayout
   title="Live 4th downs"
-  description="Every 4th down of today's NFL games with nfl4th's recommendation, each option's win probability and preliminary grades."
+  description="Every 4th down of today's NFL games with tt4th's call and nfl4th's recommendation, each option's win probability and preliminary grades against nfl4th."
 >
   <h1 class="page-title">Live 4th downs</h1>
   {
@@ -26,9 +28,12 @@ const NFL4TH = 'https://github.com/nflverse/nfl4th';
         <div class="intro">
           <p>
             Every 4th down of today's games, newest first, read from ESPN's play-by-play as plays are reported. Each
-            has Ben Baldwin's <a href={NFL4TH}>nfl4th</a> recommendation before the snap, every option's win
-            probability, what the team did, and the win probability its choice gave up (WP lost, in points).
+            has tt4th's call and every option's win probability under it first, then Ben Baldwin's{' '}
+            <a href={NFL4TH}>nfl4th</a> recommendation before the snap, what the team did, and the win probability its
+            choice gave up against nfl4th (WP lost, in points). tt4th is still being confirmed, so its calls are
+            shown but never graded.
           </p>
+          <p set:html={TT4TH_CREDITS} />
           <p>
             <strong>These grades are preliminary.</strong> The final grades, from nflverse's play-by-play the next
             morning, are on <a href={url('decisions')}>4th down and 2-point decisions</a>. A questionable call cost
@@ -36,7 +41,7 @@ const NFL4TH = 'https://github.com/nflverse/nfl4th';
             apart. Not graded: overtime, the last 15 seconds, and games already decided. Test your own calls in the{' '}
             <a href={url('fourth-down/daily')}>daily 4th down game</a>.
           </p>
-          <p class="dim">nfl4th assumes a league-average kicker and doesn't know who's kicking.</p>
+          <p class="dim">Both models assume a league-average kicker and don't know who's kicking.</p>
           <p class="dim" data-live-status aria-live="polite">Loading today's games…</p>
         </div>
 
@@ -52,7 +57,7 @@ const NFL4TH = 'https://github.com/nflverse/nfl4th';
           <p class="empty" data-live-empty>No 4th downs yet today.</p>
         </Panel>
         <p class="foot">
-          Win probability is the offense's chance to win after each choice, before the snap. "By" is points of win probability: how far nfl4th's choice was ahead of the next option, or what
+          Win probability is the offense's chance to win after each choice, before the snap. "By" is points of win probability: how far a model's choice was ahead of the next option, or what
           the team's choice gave up. A close call is under 2 points either way. Timeouts come from the live
           scoreboard when this page saw the 4th down happen, otherwise they are counted from the play-by-play.
           Hover what happened for the play as ESPN describes it.

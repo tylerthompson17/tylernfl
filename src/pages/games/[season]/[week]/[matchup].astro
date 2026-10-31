@@ -4,10 +4,11 @@
  * games/{gameId}.json (pipelines/games.py): the result and line score
  * with the closing lines, the win probability chart with every 4th down
  * and try marked (each mark links to its item below), the five biggest
- * swings, every 4th down and try against nfl4th in the live items'
- * wording (from the game file's copy of its decisions.json records), and
- * the box score. Win probability is nflfastR's as
- * published; the calls are Ben Baldwin's nfl4th, never Tyler's model.
+ * swings, every 4th down and try in the live items' wording (from the
+ * game file's copy of its decisions.json records): tt4th's stored pre-game
+ * call first where there is one (Tyler's model, still being confirmed,
+ * never graded), then the grade against Ben Baldwin's nfl4th; and the box
+ * score. Win probability is nflfastR's as published.
  * Words are in src/lib/games/view.ts.
  */
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
@@ -15,6 +16,8 @@ import Panel from '../../../../components/Panel.astro';
 import TeamChip from '../../../../components/TeamChip.astro';
 import ChartFigure, { type ChartMark } from '../../../../components/ChartFigure.astro';
 import teamsData from '../../../../data/teams.json';
+import { TT4TH_CREDITS } from '../../../../lib/model-compare/credits';
+import { isFourthDown } from '../../../../lib/decisions/view';
 import type { BoardColumn, GameData, TeamsData } from '../../../../data/types';
 import { toSvg } from '../../../../lib/charts/hover';
 import { formatCell } from '../../../../lib/leaderboard/arrange';
@@ -68,12 +71,12 @@ const sides = [
 ];
 
 // The calls, from the game file's copy of its decisions.json records.
-const NFL4TH = 'https://github.com/nflverse/nfl4th';
-const LICENSE = 'https://github.com/nflverse/nfl4th/blob/master/LICENSE.md';
 const NFLFASTR = 'https://www.nflfastr.com/';
 const calls = game.decisions;
 const records = calls ? [...calls.fourthDowns, ...calls.tries].sort((a, b) => a.playId - b.playId) : [];
 const items = records.map((d) => decisionItem(d, calls!.closeMargin));
+// The label tt4th's stored results carry (the contract's, shown as is), from the game's first one.
+const tt4thLabel = records.filter(isFourthDown).find((d) => d.experimental)?.experimental?.label ?? null;
 const questionable = items.filter((i) => i.questionable).length;
 
 // The game's win probability chart, with each call marked on its line.
@@ -250,11 +253,18 @@ const total = game.totalLine;
 
     <Panel title="4th downs and tries">
       <p class="lead">
-        Every 4th down and try after a touchdown, against Ben Baldwin's <a href={NFL4TH}>nfl4th</a> (<a href={LICENSE}>MIT license</a>):
-        what it recommended before the snap, what the team did, and each option's win probability. A questionable call gave
-        up 2 points of win probability or more; clear when nfl4th's top two options were 5 points or more apart. nfl4th assumes a
-        league-average kicker and doesn't know who's kicking. Every coach's calls: <a href={url('decisions')}>decision grades</a>.
+        Every 4th down and try after a touchdown: what the team did and each option's win probability.{' '}
+        {
+          tt4thLabel
+            ? "tt4th's call leads each 4th down, as it stood before the game; it is still being confirmed and is never graded. nfl4th's recommendation follows, and the grades are nfl4th's: "
+            : "The grades are against nfl4th's recommendation: "
+        }
+        a questionable call gave up 2 points of win probability or more against it; clear when nfl4th's top two options were 5
+        points or more apart. Both models assume a league-average kicker and don't know who's kicking. Every coach's calls:{' '}
+        <a href={url('decisions')}>decision grades</a>.
       </p>
+      {tt4thLabel && <p class="lead tt4th-label">{tt4thLabel}</p>}
+      <p class="lead" set:html={TT4TH_CREDITS} />
       {
         items.length === 0 ? (
           <p class="placeholder-note">
@@ -268,13 +278,23 @@ const total = game.totalLine;
             </p>
             <ol class="live-items calls">
               {items.map((item) => (
-                <li class:list={['live-item', { questionable: item.questionable }]} id={item.anchor}>
+                <li class:list={['live-item', { questionable: item.questionable, 'has-tt4th': item.tt4th }]} id={item.anchor}>
                   <p class="live-when">{item.when}</p>
                   <p class="live-down">{item.down}</p>
                   <p class="live-play" title={item.description}>{item.play}</p>
+                  {
+                    item.tt4th && (
+                      <>
+                        <p class="live-tt4th">{item.tt4th.call}.</p>
+                        <p class="live-wp live-tt4th-wp">
+                          tt4th: {item.tt4th.wp}. {item.tt4th.asOf}, before the game.
+                        </p>
+                      </>
+                    )
+                  }
                   {item.questionable && <p class="live-mark">{item.clear ? 'Questionable call, clear' : 'Questionable call'}</p>}
                   <p class="live-verdict">{item.verdict}</p>
-                  {item.wp && <p class="live-wp">{item.wp}</p>}
+                  {item.wp && <p class="live-wp">{item.tt4th ? `nfl4th: ${item.wp}` : item.wp}</p>}
                 </li>
               ))}
             </ol>

@@ -155,7 +155,7 @@ export const clockWords = (d: SummaryFourthDown): string => (d.period > 4 ? `OT 
  * "Go 52.0%; Field goal, 51 yards: 41.3%; Punt 49.1%": every option the
  * model considers, fixed order, the field goal with its distance.
  */
-export function optionWords(g: Extract<LiveGrade, { kind: 'graded' }>, yardline100: number): string {
+export function optionWords(g: Pick<Extract<LiveGrade, { kind: 'graded' }>, 'wpGo' | 'wpFieldGoal' | 'wpPunt'>, yardline100: number): string {
   const parts: [string, number | null][] = [
     ['Go', g.wpGo],
     [`Field goal, ${fieldGoalYards(yardline100)} yards:`, g.wpFieldGoal],

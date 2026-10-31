@@ -1,11 +1,12 @@
 /**
- * The experimental calculator's page script (/fourth-down/experimental/).
- * Like the 4th down calculator's (calculator/dom.ts): reads the form from
- * the URL, starts the model in the calculator's worker with the
- * experimental files, recomputes 150 ms after the last change and keeps the
+ * The tt4th comparison calculator's script (ComparisonCalculator.astro, on
+ * /fourth-down/ and /fourth-down/experimental/). Like the try calculator's
+ * (calculator/dom.ts): reads the form from the URL, starts the model in the
+ * calculator's worker with tt4th's files, recomputes 150 ms after the last change and keeps the
  * inputs in the query string. It draws the comparison and breakdown with
  * html.ts, the same markup the week's list has from the build. It also runs
- * the list's disagreement filter and its "Load into the calculator" buttons.
+ * the experimental page's list: its disagreement filter and its "Load into
+ * the calculator" buttons.
  */
 import { checkFourthDown, decode, encode, fieldsOf, situationLine, yardline100Of, type FormValues } from '../calculator/form.ts';
 import { fieldGoalKick, fieldStripHtml } from '../field/strip.ts';
@@ -75,7 +76,7 @@ function setUpCalculator(root: HTMLElement): (values: FormValues & TeamValues) =
     output.setAttribute('aria-busy', 'false');
     announce.textContent =
       view.kind === 'both'
-        ? `Experimental model: ${view.experimental.call}. nfl4th: ${view.nfl4th.call}.${view.disagree ? ' The models disagree.' : ''}`
+        ? `tt4th: ${view.experimental.call}. nfl4th: ${view.nfl4th.call}.${view.disagree ? ' The models disagree.' : ''}`
         : view.kind === 'nfl4th-only'
           ? `nfl4th: ${view.nfl4th.call}. ${view.message}`
           : view.message;

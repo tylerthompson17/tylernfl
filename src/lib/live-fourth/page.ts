@@ -50,7 +50,7 @@ function setUp(root: HTMLElement): void {
     const items =
       tab === 'all'
         ? [...(state?.pending ?? []).map((p) => pendingItem(p, model)), ...all.map((e) => entryItem(e, model))]
-        : questionable(all).map((e) => entryItem(e, model));
+        : questionable(all).map((e) => entryItem(e, model, { tt4th: false }));
     list.replaceChildren(...items);
     list.hidden = items.length === 0;
     empty.hidden = items.length > 0;

@@ -11,16 +11,18 @@
  *   points. Waiting for the snap.", or "A close call (nfl4th leans Punt, by
  *   0.1 points)" under 0.02;
  * - a muffed punt says so: "Punted 36 yards, muffed, recovered by TB";
- * - which punter the experimental model assumed when none was given (live
- *   items never give one), punterLine: not shown until the items show the
- *   experimental model, and to be reworded then.
+ * - tt4th's call (the contract's experimental model), which leads the item:
+ *   "tt4th (still being confirmed): Go for it, by 1.0 point", with its WPs
+ *   and the week its tables run through, tt4thLines;
+ * - which punter tt4th assumed when none was given (live items never give
+ *   one), punterLine.
  * "By" is points of win probability: for an agreed call, how far ahead
  * nfl4th's choice was of the next option; for one against it, what the
  * team's choice gave up.
  */
-import type { FourthDownResult, FourthDownSituation } from '../fourth-down.ts';
+import type { ExperimentalResult, FourthDownResult, FourthDownSituation } from '../fourth-down.ts';
 import type { LiveGrade } from './grade.ts';
-import { callWords } from './grade.ts';
+import { callWords, optionWords } from './grade.ts';
 import type { TeamCall } from './tracker.ts';
 
 /** Under this gap between nfl4th's top two options, a call is close either way. */
@@ -103,18 +105,49 @@ export function pendingLine(grade: LiveGrade): string {
   return `nfl4th says: ${callWords(grade.call)}, by ${by(grade.margin)}. Waiting for the snap.`;
 }
 
+export interface Tt4thLines {
+  /** "tt4th (still being confirmed): Go for it, by 1.0 point" */
+  call: string;
+  /** Each option's WP under tt4th: "Go 45.1%; Punt 30.8%" */
+  wp: string;
+  /** "Tables through 2026 week 7" */
+  asOf: string;
+}
+
 /**
- * Not shown yet (see the delivery checklist in CLAUDE.md). The punter the
- * experimental model fell back on, or null: no punt option,
- * a punterId given, or no supported experimental result.
+ * tt4th's call and WPs on a 4th down, from a result's experimental part (a
+ * live result or a stored decisions.json snapshot); null when tt4th has no
+ * numbers there. Per play only: never graded against what the team did.
+ */
+export function tt4thLines(x: ExperimentalResult | undefined, yardline100: number): Tt4thLines | null {
+  if (!x?.supported) return null;
+  const wps = [x.wpGo, x.wpFieldGoal, x.wpPunt].filter((v): v is number => v !== null).sort((a, b) => b - a);
+  const margin = wps.length > 1 ? wps[0] - wps[1] : 0;
+  const call =
+    wps.length > 1 && margin < CLOSE
+      ? `a close call, leaning ${callWords(x.call)} by ${by(margin)}`
+      : wps.length > 1
+        ? `${callWords(x.call)}, by ${by(margin)}`
+        : callWords(x.call);
+  return {
+    call: `tt4th (still being confirmed): ${call}`,
+    wp: optionWords(x, yardline100),
+    asOf: `Tables through ${x.dataAsOf.season} week ${x.dataAsOf.week}`,
+  };
+}
+
+/**
+ * The punter tt4th fell back on, or null: no punt option, a punterId
+ * given, or no supported tt4th result.
  */
 export function punterLine(result: FourthDownResult | undefined, situation: FourthDownSituation): string | null {
   if (!result?.supported || result.wpPunt === null || situation.punterId) return null;
   const x = result.experimental;
   if (!x.supported) return null;
-  if (x.flags.punterUnknown) {
-    return `Experimental model: no ${situation.posteam} punter found, so it assumed a league-average punter.`;
-  }
+  if (x.flags.punterUnknown) return `tt4th found no ${situation.posteam} punter and used a league-average one.`;
   const term = x.terms.find((t) => t.id === 'punter');
-  return term ? `Experimental model: assumed ${situation.posteam}'s most recent punter, ${term.label}.` : null;
+  if (!term) return null;
+  // "Punter (T. Doman)"; a punter missing from punter.json is labelled "Punter" alone.
+  const name = /\((.+)\)/.exec(term.label)?.[1];
+  return name ? `tt4th assumed ${situation.posteam}'s most recent punter, ${name}.` : `tt4th assumed ${situation.posteam}'s most recent punter.`;
 }

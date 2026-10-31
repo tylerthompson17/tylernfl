@@ -119,6 +119,22 @@ test('a 4th down in the live items wording', () => {
   assert.equal(markLabel(item), '4th down, Q4 14:04: ARI 4th and 1 at own 40, up 2. Punted 60 yards. Questionable call.');
 });
 
+test("tt4th's stored pre-game call leads a 4th down that has one; the grade stays nfl4th's", () => {
+  assert.equal(decisionItem(fourth({}), 0.05).tt4th, null);
+  const experimental = {
+    supported: true, label: 'Experimental: nfl4th plus four adjustments.', dataAsOf: { season: 2026, week: 6 },
+    call: 'punt', wpGo: 0.47, wpPunt: 0.5, wpFieldGoal: null,
+  } as unknown as FourthDownDecision['experimental'];
+  const item = decisionItem(fourth({ experimental }), 0.05);
+  assert.deepEqual(item.tt4th, {
+    call: 'tt4th (still being confirmed): Punt, by 3.0 points',
+    wp: 'Go 47.0%; Punt 50.0%',
+    asOf: 'Tables through 2026 week 6',
+  });
+  assert.equal(item.verdict, 'Went against nfl4th: it said Go for it (by 6.3 points)');
+  assert.equal(item.questionable, true);
+});
+
 test('agreed, close, decided and unsupported 4th downs', () => {
   const agreed = decisionItem(fourth({ call: 'punt', wpGo: 0.4, margin: 0.052, wpCost: 0, graded: false }), 0.05);
   assert.equal(agreed.verdict, 'Agreed with nfl4th: Punt (by 5.2 points)');

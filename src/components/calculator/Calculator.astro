@@ -1,7 +1,10 @@
 ---
 /**
- * The 4th down calculator, either tab: the title, what the model is, the
- * tabs, the form and the result. The form is drawn with the defaults; the
+ * The 4th down calculator, either tab: the title, what the models are, the
+ * tabs, the form and the result. The 4th down tab is tt4th leading with
+ * nfl4th beside it (ComparisonCalculator.astro, whose script is
+ * src/lib/model-compare/dom.ts); the try tab is nfl4th alone, since tt4th
+ * covers 4th downs only. The try form is drawn with the defaults; its
  * script (src/lib/calculator/dom.ts) fills it from the URL, fetches the
  * model and recomputes as the inputs change. Nothing is computed at build
  * time.
@@ -9,6 +12,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Panel from '../Panel.astro';
 import Tabs from '../Tabs.astro';
+import ComparisonCalculator from '../fourth-down/ComparisonCalculator.astro';
+import { TT4TH_CREDITS } from '../../lib/model-compare/credits';
 import { asOfContext } from '../../utils/as-of';
 import { url } from '../../utils/url';
 import { modelDownloadBytes, modelManifest as manifest } from '../../utils/fourth-down-model';
@@ -34,7 +39,6 @@ const field: FieldState | null = line
 
 const downloadMb = (modelDownloadBytes / 1e6).toFixed(1);
 
-const NFL4TH = 'https://github.com/nflverse/nfl4th';
 const LICENSE = 'https://github.com/nflverse/nfl4th/blob/master/LICENSE';
 const FASTR_LICENSE = 'https://github.com/nflverse/nflfastR/blob/master/LICENSE';
 const METHODS = 'https://github.com/tylerthompson17/tylernfl/blob/main/docs/methods/fourth-down-model.md';
@@ -44,221 +48,250 @@ const tabs = [
 ];
 const title = fourth ? '4th down calculator' : 'After a touchdown: kick or go for 2';
 const description = fourth
-  ? 'Set any 4th down situation and compare the win probability of going for it, kicking a field goal and punting, from nfl4th.'
+  ? "Set any 4th down situation and compare the win probability of going for it, kicking a field goal and punting, from tt4th, Tyler's model built on nfl4th, with nfl4th beside it."
   : 'After a touchdown, compare the win probability of kicking the extra point against going for 2, from nfl4th.';
 ---
 
 <BaseLayout {title} {description}>
   <h1 class="page-title">4th down calculator</h1>
-  <p class="page-intro">
-    Ben Baldwin's <a href={NFL4TH}>nfl4th</a> model, reproduced exactly and run in your browser. It is not adjusted
-    for the teams playing yet. <a href="#about-model">More on the model</a>. Test your calls against it in the{' '}
-    <a href={url('fourth-down/daily')}>daily 4th down game</a>.
-  </p>
+  {
+    fourth ? (
+      <p class="page-intro">
+        tt4th is Tyler's 4th down model: nfl4th with four adjustments, for the chance of converting, how often a
+        team runs a QB sneak, the punter and punt coverage. It reads the teams and the punter, which nfl4th does
+        not. tt4th is still being confirmed, so nfl4th's call sits beside it on every situation. Both run in your
+        browser. <a href="#about-model">More on the models</a>.
+      </p>
+    ) : (
+      <p class="page-intro">
+        After a touchdown the numbers are nfl4th's alone: tt4th covers 4th downs only. They run in your browser.{' '}
+        <a href="#about-model">More on the model</a>.
+      </p>
+    )
+  }
+  {fourth && <p class="page-intro credits" set:html={TT4TH_CREDITS} />}
   <Tabs label="Calculator decisions" tabs={tabs} current={kind} />
 
-  <div
-    class="calc"
-    data-calculator={kind}
-    data-season={season}
-    data-kick-offset={manifest.kickDistanceOffset}
-    data-kick-longest={manifest.maxFieldGoalDistance}
-  >
-    <Panel title={fourth ? 'Situation' : 'Game state after the touchdown'} class="calc-inputs">
-      <form novalidate>
-        {
-          fourth && (
-            <fieldset>
-              <legend>Down and distance</legend>
-              <div class="fields">
-                <div class="field wide">
-                  <span class="field-label" id="calc-ball-label">Ball on</span>
-                  <div class="pair" role="group" aria-labelledby="calc-ball-label">
-                    <select name="side" aria-label="Side of the field">
-                      <option value="own" selected={d.side === 'own'}>Own</option>
-                      <option value="opp" selected={d.side === 'opp'}>Opponent's</option>
-                    </select>
-                    <input
-                      name="yl"
-                      type="number"
-                      inputmode="numeric"
-                      min="1"
-                      max="50"
-                      value={d.yl}
-                      aria-label="Yard line"
-                      aria-describedby="calc-yl-error"
-                    />
+  {
+    fourth ? (
+      <ComparisonCalculator />
+    ) : (
+      <div
+        class="calc"
+        data-calculator={kind}
+        data-season={season}
+        data-kick-offset={manifest.kickDistanceOffset}
+        data-kick-longest={manifest.maxFieldGoalDistance}
+      >
+        <Panel title={fourth ? 'Situation' : 'Game state after the touchdown'} class="calc-inputs">
+          <form novalidate>
+            {
+              fourth && (
+                <fieldset>
+                  <legend>Down and distance</legend>
+                  <div class="fields">
+                    <div class="field wide">
+                      <span class="field-label" id="calc-ball-label">Ball on</span>
+                      <div class="pair" role="group" aria-labelledby="calc-ball-label">
+                        <select name="side" aria-label="Side of the field">
+                          <option value="own" selected={d.side === 'own'}>Own</option>
+                          <option value="opp" selected={d.side === 'opp'}>Opponent's</option>
+                        </select>
+                        <input
+                          name="yl"
+                          type="number"
+                          inputmode="numeric"
+                          min="1"
+                          max="50"
+                          value={d.yl}
+                          aria-label="Yard line"
+                          aria-describedby="calc-yl-error"
+                        />
+                      </div>
+                      <p class="field-error" id="calc-yl-error" data-error-for="yl" hidden />
+                    </div>
+                    <div class="field">
+                      <label for="calc-togo">Yards to go</label>
+                      <input
+                        id="calc-togo"
+                        name="togo"
+                        type="number"
+                        inputmode="numeric"
+                        min="1"
+                        max="99"
+                        value={d.togo}
+                        aria-describedby="calc-togo-error"
+                      />
+                      <p class="field-error" id="calc-togo-error" data-error-for="togo" hidden />
+                    </div>
                   </div>
-                  <p class="field-error" id="calc-yl-error" data-error-for="yl" hidden />
+                  <div class="calc-field" data-calc-field set:html={field ? fieldStripHtml(field) : ''} />
+                  <p class="visually-hidden" data-calc-situation aria-live="polite">{field?.label}</p>
+                </fieldset>
+              )
+            }
+
+            <fieldset>
+              <legend>Clock and score</legend>
+              <div class="fields">
+                <div class="field">
+                  <label for="calc-q">Quarter</label>
+                  <select id="calc-q" name="q">
+                    {QUARTERS.map((q) => <option value={q} selected={d.q === q}>{q === 'OT' ? 'Overtime' : q}</option>)}
+                  </select>
                 </div>
                 <div class="field">
-                  <label for="calc-togo">Yards to go</label>
+                  <label for="calc-clock">Time left</label>
                   <input
-                    id="calc-togo"
-                    name="togo"
-                    type="number"
+                    id="calc-clock"
+                    name="clock"
+                    type="text"
                     inputmode="numeric"
-                    min="1"
-                    max="99"
-                    value={d.togo}
-                    aria-describedby="calc-togo-error"
+                    autocomplete="off"
+                    value={d.clock}
+                    aria-describedby="calc-clock-help calc-clock-error"
                   />
-                  <p class="field-error" id="calc-togo-error" data-error-for="togo" hidden />
+                  <p class="help" id="calc-clock-help">In the quarter, as 10:00.</p>
+                  <p class="field-error" id="calc-clock-error" data-error-for="clock" hidden />
+                </div>
+                <div class="field">
+                  <label for="calc-pts">{team.us} score</label>
+                  <input id="calc-pts" name="pts" type="number" inputmode="numeric" min="0" value={d.pts} aria-describedby={fourth ? 'calc-pts-error' : 'calc-score-help calc-pts-error'} />
+                  <p class="field-error" id="calc-pts-error" data-error-for="pts" hidden />
+                </div>
+                <div class="field">
+                  <label for="calc-opp">{team.them} score</label>
+                  <input id="calc-opp" name="opp" type="number" inputmode="numeric" min="0" value={d.opp} aria-describedby={fourth ? 'calc-opp-error' : 'calc-score-help calc-opp-error'} />
+                  <p class="field-error" id="calc-opp-error" data-error-for="opp" hidden />
+                </div>
+                <div class="field">
+                  <label for="calc-to">{team.us} timeouts</label>
+                  <input id="calc-to" name="to" type="number" inputmode="numeric" min="0" max="3" value={d.to} aria-describedby="calc-to-error" />
+                  <p class="field-error" id="calc-to-error" data-error-for="to" hidden />
+                </div>
+                <div class="field">
+                  <label for="calc-oppto">{team.them} timeouts</label>
+                  <input id="calc-oppto" name="oppto" type="number" inputmode="numeric" min="0" max="3" value={d.oppto} aria-describedby="calc-oppto-error" />
+                  <p class="field-error" id="calc-oppto-error" data-error-for="oppto" hidden />
                 </div>
               </div>
-              <div class="calc-field" data-calc-field set:html={field ? fieldStripHtml(field) : ''} />
-              <p class="visually-hidden" data-calc-situation aria-live="polite">{field?.label}</p>
+              {!fourth && <p class="help" id="calc-score-help">Scores include the touchdown's 6 points, before the try.</p>}
             </fieldset>
-          )
-        }
 
-        <fieldset>
-          <legend>Clock and score</legend>
-          <div class="fields">
-            <div class="field">
-              <label for="calc-q">Quarter</label>
-              <select id="calc-q" name="q">
-                {QUARTERS.map((q) => <option value={q} selected={d.q === q}>{q === 'OT' ? 'Overtime' : q}</option>)}
-              </select>
-            </div>
-            <div class="field">
-              <label for="calc-clock">Time left</label>
-              <input
-                id="calc-clock"
-                name="clock"
-                type="text"
-                inputmode="numeric"
-                autocomplete="off"
-                value={d.clock}
-                aria-describedby="calc-clock-help calc-clock-error"
-              />
-              <p class="help" id="calc-clock-help">In the quarter, as 10:00.</p>
-              <p class="field-error" id="calc-clock-error" data-error-for="clock" hidden />
-            </div>
-            <div class="field">
-              <label for="calc-pts">{team.us} score</label>
-              <input id="calc-pts" name="pts" type="number" inputmode="numeric" min="0" value={d.pts} aria-describedby={fourth ? 'calc-pts-error' : 'calc-score-help calc-pts-error'} />
-              <p class="field-error" id="calc-pts-error" data-error-for="pts" hidden />
-            </div>
-            <div class="field">
-              <label for="calc-opp">{team.them} score</label>
-              <input id="calc-opp" name="opp" type="number" inputmode="numeric" min="0" value={d.opp} aria-describedby={fourth ? 'calc-opp-error' : 'calc-score-help calc-opp-error'} />
-              <p class="field-error" id="calc-opp-error" data-error-for="opp" hidden />
-            </div>
-            <div class="field">
-              <label for="calc-to">{team.us} timeouts</label>
-              <input id="calc-to" name="to" type="number" inputmode="numeric" min="0" max="3" value={d.to} aria-describedby="calc-to-error" />
-              <p class="field-error" id="calc-to-error" data-error-for="to" hidden />
-            </div>
-            <div class="field">
-              <label for="calc-oppto">{team.them} timeouts</label>
-              <input id="calc-oppto" name="oppto" type="number" inputmode="numeric" min="0" max="3" value={d.oppto} aria-describedby="calc-oppto-error" />
-              <p class="field-error" id="calc-oppto-error" data-error-for="oppto" hidden />
-            </div>
+            <fieldset>
+              <legend>Game</legend>
+              <div class="fields">
+                <div class="field">
+                  <label for="calc-home">{team.us} is</label>
+                  <select id="calc-home" name="home">
+                    <option value="off" selected={d.home === 'off'}>Home</option>
+                    <option value="def" selected={d.home === 'def'}>Away</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="calc-ko">Opening kickoff to</label>
+                  <select id="calc-ko" name="ko">
+                    <option value="off" selected={d.ko === 'off'}>{team.us}</option>
+                    <option value="def" selected={d.ko === 'def'}>{team.them}</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="calc-roof">Roof</label>
+                  <select id="calc-roof" name="roof">
+                    {ROOFS.map((r) => <option value={r.value} selected={d.roof === r.value}>{r.label}</option>)}
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="calc-season">Season</label>
+                  <select id="calc-season" name="season" aria-describedby="calc-season-error">
+                    {seasonsUpTo(season).map((s) => <option value={s} selected={d.season === String(s)}>{s}</option>)}
+                  </select>
+                  <p class="field-error" id="calc-season-error" data-error-for="season" hidden />
+                </div>
+                <div class="field">
+                  <label for="calc-spread">{team.us} spread</label>
+                  <input
+                    id="calc-spread"
+                    name="spread"
+                    type="number"
+                    inputmode="decimal"
+                    step="0.5"
+                    value={d.spread}
+                    aria-describedby="calc-spread-help calc-spread-error"
+                  />
+                  <p class="help" id="calc-spread-help">
+                    Pregame line as a sportsbook writes it: -3 if favored by 3, 3 if a 3 point underdog. Blank if unknown.
+                  </p>
+                  <p class="field-error" id="calc-spread-error" data-error-for="spread" hidden />
+                </div>
+                <div class="field">
+                  <label for="calc-total">Total</label>
+                  <input
+                    id="calc-total"
+                    name="total"
+                    type="number"
+                    inputmode="decimal"
+                    step="0.5"
+                    value={d.total}
+                    aria-describedby="calc-total-help calc-total-error"
+                  />
+                  <p class="help" id="calc-total-help">Pregame over/under, points by both teams. Blank if unknown.</p>
+                  <p class="field-error" id="calc-total-error" data-error-for="total" hidden />
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </Panel>
+
+        <Panel title={fourth ? 'Go, kick or punt' : 'Kick or go for 2'} class="calc-result">
+          <div class="output" data-calc-output aria-busy="true">
+            <noscript><p>The calculator runs in your browser and needs JavaScript.</p></noscript>
+            <p class="loading">Loading the model, a one-time download of about {downloadMb} MB.</p>
           </div>
-          {!fourth && <p class="help" id="calc-score-help">Scores include the touchdown's 6 points, before the try.</p>}
-        </fieldset>
-
-        <fieldset>
-          <legend>Game</legend>
-          <div class="fields">
-            <div class="field">
-              <label for="calc-home">{team.us} is</label>
-              <select id="calc-home" name="home">
-                <option value="off" selected={d.home === 'off'}>Home</option>
-                <option value="def" selected={d.home === 'def'}>Away</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="calc-ko">Opening kickoff to</label>
-              <select id="calc-ko" name="ko">
-                <option value="off" selected={d.ko === 'off'}>{team.us}</option>
-                <option value="def" selected={d.ko === 'def'}>{team.them}</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="calc-roof">Roof</label>
-              <select id="calc-roof" name="roof">
-                {ROOFS.map((r) => <option value={r.value} selected={d.roof === r.value}>{r.label}</option>)}
-              </select>
-            </div>
-            <div class="field">
-              <label for="calc-season">Season</label>
-              <select id="calc-season" name="season" aria-describedby="calc-season-error">
-                {seasonsUpTo(season).map((s) => <option value={s} selected={d.season === String(s)}>{s}</option>)}
-              </select>
-              <p class="field-error" id="calc-season-error" data-error-for="season" hidden />
-            </div>
-            <div class="field">
-              <label for="calc-spread">{team.us} spread</label>
-              <input
-                id="calc-spread"
-                name="spread"
-                type="number"
-                inputmode="decimal"
-                step="0.5"
-                value={d.spread}
-                aria-describedby="calc-spread-help calc-spread-error"
-              />
-              <p class="help" id="calc-spread-help">
-                Pregame line as a sportsbook writes it: -3 if favored by 3, 3 if a 3 point underdog. Blank if unknown.
-              </p>
-              <p class="field-error" id="calc-spread-error" data-error-for="spread" hidden />
-            </div>
-            <div class="field">
-              <label for="calc-total">Total</label>
-              <input
-                id="calc-total"
-                name="total"
-                type="number"
-                inputmode="decimal"
-                step="0.5"
-                value={d.total}
-                aria-describedby="calc-total-help calc-total-error"
-              />
-              <p class="help" id="calc-total-help">Pregame over/under, points by both teams. Blank if unknown.</p>
-              <p class="field-error" id="calc-total-error" data-error-for="total" hidden />
-            </div>
-          </div>
-        </fieldset>
-      </form>
-    </Panel>
-
-    <Panel title={fourth ? 'Go, kick or punt' : 'Kick or go for 2'} class="calc-result">
-      <div class="output" data-calc-output aria-busy="true">
-        <noscript><p>The calculator runs in your browser and needs JavaScript.</p></noscript>
-        <p class="loading">Loading the model, a one-time download of about {downloadMb} MB.</p>
+          <p class="visually-hidden" aria-live="polite" data-calc-announce></p>
+          <p class="foot">
+            Win probability is the {fourth ? 'offense' : 'scoring team'}'s chance to win the game after each choice.
+            {
+              fourth
+                ? "nfl4th assumes a league-average kicker and doesn't know who's kicking. Temperature is not used."
+                : "The extra point is nfl4th's league-average 33 yard kick."
+            }
+          </p>
+        </Panel>
       </div>
-      <p class="visually-hidden" aria-live="polite" data-calc-announce></p>
-      <p class="foot">
-        Win probability is the {fourth ? 'offense' : 'scoring team'}'s chance to win the game after each choice.
-        {
-          fourth
-            ? "nfl4th assumes a league-average kicker and doesn't know who's kicking. Temperature is not used."
-            : "The extra point is nfl4th's league-average 33 yard kick."
-        }
+    )
+  }
+
+  <Panel title={fourth ? 'About the models' : 'About the model'} class="calc-about" titleId="about-model">
+    <div class="prose">
+      {
+        fourth && (
+          <p>
+            tt4th is Tyler's model. It starts from nfl4th's win probability for each option and adjusts it four ways:
+            the chance of converting, how often the offense runs a QB sneak, the punter, and the punt coverage of the
+            teams playing. Its weekly tables run through {manifest.experimental.dataAsOf.season} week{' '}
+            {manifest.experimental.dataAsOf.week}. It is still being confirmed, so the site shows its numbers play
+            by play and keeps no record of how its calls turned out. The per-term breakdown under each result shows
+            how far each adjustment moved nfl4th's numbers.
+          </p>
+        )
+      }
+      <p>
+        nfl4th is Ben Baldwin's model. Its numbers here are reproduced exactly: a port of its code (commit{' '}
+        {manifest.source.nfl4thSha.slice(0, 7)}) and trained models that runs in your browser. On 3,907 test
+        situations, 2,979 4th downs and 928 tries, they match the reference port of nfl4th to within 0.00000006 of
+        win probability. <a href={METHODS}>How it was ported and checked</a>.
       </p>
-    </Panel>
-
-    <Panel title="About the model" class="calc-about" titleId="about-model">
-      <div class="prose">
-        <p>
-          This is Ben Baldwin's <a href={NFL4TH}>nfl4th</a>, reproduced exactly: a port of its code (commit
-          {manifest.source.nfl4thSha.slice(0, 7)}) and trained models that runs in your browser. On 3,907 test
-          situations, 2,979 4th downs and 928 tries, its numbers match the reference port of nfl4th to within
-          0.00000006 of win probability. <a href={METHODS}>How it was ported and checked</a>.
-        </p>
-        <p>
-          It is not adjusted for the teams playing yet. Apart from the pregame spread and total, every team is
-          treated alike. Every 4th down and try this season is <a href={url('decisions')}>graded against it</a>.
-        </p>
-        <p>
-          nfl4th and the nflfastR models it builds on are by Ben Baldwin and Sebastian Carl, both released under
-          the MIT license (<a href={LICENSE}>nfl4th's</a>, <a href={FASTR_LICENSE}>nflfastR's</a>).
-        </p>
-      </div>
-    </Panel>
-  </div>
+      <p>
+        nfl4th is not adjusted for the teams playing: apart from the pregame spread and total, every team is treated
+        alike. Every 4th down and try this season is <a href={url('decisions')}>graded against nfl4th</a>.
+      </p>
+      <p>
+        nfl4th and the nflfastR models it builds on are by Ben Baldwin and Sebastian Carl, both released under the
+        MIT license (<a href={LICENSE}>nfl4th's</a>, <a href={FASTR_LICENSE}>nflfastR's</a>).
+      </p>
+    </div>
+  </Panel>
 </BaseLayout>
 
 <script>
@@ -280,8 +313,8 @@ const description = fourth
     align-items: start;
   }
 
-  .calc :global(.calc-about) {
-    grid-column: 1 / -1;
+  .calc {
+    margin-bottom: var(--space-3);
   }
 
   @media (max-width: 900px) {

@@ -209,6 +209,24 @@ th,
   font-weight: 600;
 }
 
+/* tt4th leads an item when it has numbers: its call in the heading face,
+   nfl4th's verdict after it in body weight, as the comparison. No bar
+   (the slate bar marks a questionable call) and never yellow (live). */
+.live-item .live-tt4th {
+  margin-top: 2px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.live-item .live-tt4th-wp {
+  margin-bottom: 2px;
+}
+
+.live-item.has-tt4th .live-verdict {
+  font-weight: 400;
+}
+
 .live-item .live-wp {
   color: var(--text-dim);
   font-size: 12px;

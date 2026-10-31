@@ -15,7 +15,7 @@ const games = liveGames();
 
 <div class="live-fourth" data-live-fourth data-live-hold={LIVE_FOURTH_DOWN_ENABLED ? '' : undefined}>
   <p class="soon" data-calc-line hidden={LIVE_FOURTH_DOWN_ENABLED}>
-    <a href={url('fourth-down')}>4th down calculator</a>: go, kick or punt for any situation, from nfl4th.
+    <a href={url('fourth-down')}>4th down calculator</a>: go, kick or punt for any situation, from tt4th and nfl4th.
   </p>
   <div data-live-panel hidden={!LIVE_FOURTH_DOWN_ENABLED}>
     <Panel title="Live 4th downs">
@@ -29,8 +29,8 @@ const games = liveGames();
         </div>
       </div>
       <p class="table-foot">
-        Today's 4th downs from ESPN's play-by-play, each against Ben Baldwin's nfl4th, a minute or so after the snap.
-        Calls are preliminary.{' '}
+        Today's 4th downs from ESPN's play-by-play, a minute or so after the snap: tt4th's call first (Tyler's model
+        built on Ben Baldwin's nfl4th, still being confirmed), then the grade against nfl4th. Calls are preliminary.{' '}
         {
           LIVE_FOURTH_PAGE_ENABLED ? (
             <a href={url('fourth-down/live')}>Every 4th down today</a>
@@ -56,9 +56,10 @@ const games = liveGames();
     min-width: 0;
   }
 
-  /* Room for the note, a page of three items and the pager. */
+  /* Room for the note, a page of three items with tt4th's two lines each
+     and the pager. */
   .held {
-    min-height: 340px;
+    min-height: 460px;
   }
 
   .soon {

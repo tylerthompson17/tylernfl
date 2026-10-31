@@ -146,17 +146,26 @@ tylernfl/
   nfl4th: Punt (by 4.7 points)", "Went against nfl4th: it said Go for it (by 3.1
   points)", or "A close call" when nfl4th's top two options are under 0.02 apart (unless
   the team took a third option that gave up 0.02 or more: that went against nfl4th); then
-  each option's WP, smaller. The items' worker runs nfl4th only (`NFL4TH_ONLY` in
-  `src/lib/calculator/worker-name.ts`): it skips the experimental model's files, so
-  that model is not computed until the items show it. A 4th down still to be played comes first ("nfl4th says: Go
-  for it, by 3.1 points. Waiting for the snap.", from the scoreboard detector) and is the
-  only item with the yellow background. A 4th down wiped out by a penalty after the snap
+  each option's WP, smaller. tt4th (the contract's experimental model, see tt4th under Design
+  direction) leads each item, after what happened and before the verdict: "tt4th (still
+  being confirmed): Go for it, by 1.0 point.", then its WPs and the week its tables run
+  through, and which punter it assumed (`tt4thLines` and `punterLine` in `words.ts`);
+  never graded, and left out of the live page's questionable calls tab, which lists
+  nfl4th's grades. Two workers (`model.ts`): one runs nfl4th only (`NFL4TH_ONLY` in
+  `src/lib/calculator/worker-name.ts`, skipping tt4th's files) and answers first, and a
+  second, started once the first is ready, computes tt4th, so nfl4th's numbers never wait
+  (on a 4x slower phone, 107 items of a Sunday took 4.8 s for nfl4th alone and 11.6 s
+  with tt4th). A 4th down still to be played comes first ("nfl4th says: Go
+  for it, by 3.1 points. Waiting for the snap.", from the scoreboard detector, with tt4th's
+  line above it) and is the only item with the yellow background. A 4th down wiped out by a penalty after the snap
   is listed too, "Nullified by penalty (defensive offside), not graded", with no verdict
   (a pre-snap foul is not listed; `nullifyingFoul` in `summary.ts`). Team pages
   have a "4th downs" tab: today's game live from the same feed given only that game (the
   model loads for today's game, live or final), then every game this season from `decisions.json`, newest first, with the
   team's questionable calls and its three biggest (widest gap between nfl4th's top two
-  options), each game linked to its chart (`src/lib/decisions/team.ts`). Tables on the
+  options), each game linked to its chart (`src/lib/decisions/team.ts`). Its table has
+  tt4th's call and WPs from before the game first ("None" for tries and games without a
+  stored result), then nfl4th's, the gap, WP lost and the mark, all nfl4th's. Tables on the
   4th down pages hover in `--row-hover` (`.neutral-hover`), not yellow, since yellow
   means live there. Flags in
   `src/config.ts`: `LIVE_FOURTH_PAGE_ENABLED` (the page says it is off and links the final
@@ -690,14 +699,18 @@ ESPN's summary) is not built.
   hover readout still works around them.
 - The calls are the live items (`.live-item`), rendered at build time from the records
   (`decisionItem`): clock, situation, what happened (`playSummary` on nflverse's text, a
-  try's from `trySummary`), the verdict in `verdictWords` (shared with `verdictLine`),
-  each option's WP. A questionable call has the slate bar and says "Questionable call",
+  try's from `trySummary`), tt4th's call and WPs as they stood before the game when the
+  record has a stored result (weeks 7 on; "Tables through 2026 week 6, before the game"),
+  the verdict in `verdictWords` (shared with `verdictLine`), each option's WP under
+  nfl4th. Above them, the label of the game's first stored tt4th result, as is. A questionable call has the slate bar and says "Questionable call",
   ", clear" at `closeMargin`. Overtime and the last 15 seconds say they are not graded,
   as live. Two columns where they fit, in game order top to bottom. Read from the game
   file's copy of its records, never from `decisions.json` (moving the page to the copy
   left all 102 pages byte-identical).
-- Credits on the page: nflfastR's win probability (not a model of this site's) and Ben
-  Baldwin's nfl4th with its license; never Tyler's model.
+- Credits on the page: nflfastR's win probability (not a model of this site's), and the
+  tt4th credits line (`TT4TH_CREDITS` in `src/lib/model-compare/credits.ts`: Tyler's
+  model, built on Ben Baldwin's nfl4th, with nfl4th's license linked). The grades are
+  nfl4th's and say so.
 - Linked from: a final's status in the ticker and on `/scores` (the status becomes the
   link; final stays final, so the live client only rewrites its text), team schedules'
   results, the team 4th downs tab's game titles, `/week`'s Details column (the WP chart
@@ -873,7 +886,12 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
 - The live 4th downs panel holds about 340px from load (a page of three items and the
   pager fit it exactly), so it is blank under its "Reading today's games" line until
   the first 4th downs arrive, minutes at most, since it shows only from 15 minutes
-  before a kickoff.
+  before a kickoff. It held 340px until tt4th led the items (2026-10-31): now 460px, for
+  tt4th's two lines per item, and the live state's game statuses list went from 8 rows
+  to 14 at 1101px and up and 13 from 761 to 1100px to keep the columns level (7px and 1px
+  apart in the Sunday state). The audit's date states need the generated Retro Replays
+  data in the checkout: without it the sidebar has no replay panel and reads about 480px
+  short.
 
 ### Right rail
 
@@ -934,9 +952,16 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
 point or go for 2, `recommendTry()`), a tab each (`Tabs.astro`), in the nav as "4th down".
 `/tools/4th-down` redirects there.
 
-- The numbers are nfl4th's, reproduced exactly (`docs/methods/fourth-down-model.md`); the
-  page says so, links nfl4th and its MIT license, and says it is not team-adjusted. It is
-  not presented as Tyler's model.
+- The 4th down tab is tt4th leading with nfl4th beside it: the comparison calculator
+  (`ComparisonCalculator.astro`, shared with the unlisted page below, script
+  `src/lib/model-compare/dom.ts`), with offense, defense and punter, which only tt4th
+  reads. The intro presents tt4th as Tyler's model built on nfl4th, still being
+  confirmed, with no claim that it is more accurate; the credits line follows it.
+- nfl4th's numbers are reproduced exactly (`docs/methods/fourth-down-model.md`). The site
+  says so only of nfl4th: under its call box ("nfl4th's numbers, reproduced exactly.")
+  and in the About panel, which also says nfl4th is not team-adjusted and links its MIT
+  license. The try tab is nfl4th alone (tt4th covers 4th downs only) and its own script
+  (`src/lib/calculator/dom.ts`).
 - Field goal distances in labels are the conventional yards to the goal line plus 17
   (`fieldGoalYards` in `src/lib/field/strip.ts`), on the calculator's option ("Field goal,
   51 yards"), its Kick line and too-long note, the daily game's choices and table, the
@@ -948,27 +973,42 @@ point or go for 2, `recommendTry()`), a tab each (`Tabs.astro`), in the nav as "
   shared link and a typed form take one path: `decode`, `checkFourthDown` / `checkTry`
   (`src/lib/calculator/form.ts`), the worker, then `fourthDownView` / `tryView`
   (`format.ts`). The offense's spread is entered as a sportsbook writes it (-3 favored) and
-  converted to `spreadLine`. No team pickers: two stand-in teams and a home or away menu,
-  since the baseline reads no team identity.
+  converted to `spreadLine`. The try tab has no team pickers: two stand-in teams and a
+  home or away menu, since nfl4th reads no team identity.
 - Recomputes 150 ms after the last change. A model that fails to load, or is for another
   contract version, shows "unavailable" and no numbers.
 
-### Experimental model page (unlisted)
+### tt4th
 
-`/fourth-down/experimental/` shows the experimental model (contract v5) next to nfl4th.
-It is unlisted: no link to it from the nav or any page, not in `search-index.ts`, a
+The contract's experimental model (contract v5, `experimental` on a result) is named
+tt4th wherever the site labels it: Tyler's 4th down model, nfl4th plus four adjustments
+(conversion chance, QB sneak usage, the punter, punt coverage). It leads everywhere it
+shows (Tyler, 2026-10-31): the calculator's 4th down tab, live items (live page, home
+panel, team tabs), game pages and the team tab's table, its call and WPs first and most
+prominent with the label and dataAsOf, nfl4th's call and WPs beside it as the
+comparison. It says "still being confirmed" wherever its calls appear, never claims to
+be more accurate than nfl4th, and has no outcome-based record: grades, coach pages,
+questionable call lists and the daily game's scoring are nfl4th's alone. Its label text
+is the contract's (`terms.json`'s `experimental.label`, shown as is; stored results keep
+the label they were stored with), still "Experimental: ...". A contract change naming it
+tt4th is drafted for the fourth-down repo, not applied.
+
+### tt4th comparison page (unlisted)
+
+`/fourth-down/experimental/` shows tt4th next to nfl4th, the calculator's comparison
+then the stored results. It is unlisted: no link to it from the nav or any page, not in `search-index.ts`, a
 `robots` noindex tag (`noindex` on `BaseLayout`), and the site has no sitemap to leave
 it out of. Keep it that way until Tyler says otherwise.
 
-- A calculator with the 4th down calculator's inputs plus offense, defense and punter
-  (the experimental model reads them; nfl4th does not), in the same query string
-  (`src/lib/model-compare/form.ts`). The punter menu defaults to the offense's most
+- The 4th down tab's comparison calculator (`ComparisonCalculator.astro`): its inputs
+  plus offense, defense and punter (tt4th reads them; nfl4th does not), in the same query
+  string (`src/lib/model-compare/form.ts`). The punter menu defaults to the offense's most
   recent punter, named from `punter.json`, else from `teamPunters.json`
   (`punters.ts`). It runs the calculator's worker with the experimental files.
-- Experimental first, nfl4th beside it: each call and margin, every option's WP under
-  both and the difference, the label as is, dataAsOf, the flags in words, then the
-  per-term breakdown in WP points (nfl4th's WP, each term, the residual, the
-  experimental WP). A disagreement is the slate bar and "The models disagree", never
+- tt4th first, in the larger dark box, nfl4th beside it: each call and margin, the label
+  as is and dataAsOf, every option's WP under both and the difference, the flags in
+  words, then the per-term breakdown in WP points (nfl4th's WP, each term, the residual,
+  tt4th's WP). A disagreement is the slate bar and "The models disagree", never
   yellow.
 - Below it, the latest week's 4th downs with a stored pre-game result in
   `decisions.json`, newest first, a "models disagree" filter, an outcome-free count of
@@ -1295,14 +1335,9 @@ a panel's own version. Name things by what the user sees ("Stat leaders", "4th d
   - Until the confirmation ends: the `/fourth-down/` feed shows nfl4th calls only. The
     experimental model appears on the calculator, game pages and live items, per play,
     with no outcome-based records, accuracy or WP-cost tallies.
-  - Live items (live page, home panel, team pages): drop `NFL4TH_ONLY` from the items'
-    worker only with the display. Show nfl4th's numbers first and fill in the
-    experimental model's after, newest items first: on a 4x slower phone, 107 items of a
-    Sunday took 4.8 s for nfl4th alone and 11.6 s with the experimental model.
-  - Live items that use the punter fallback say which punter was assumed: `punterLine`
-    in `src/lib/live-fourth/words.ts` is written and tested but not shown; reword it
-    first ("Experimental model: assumed IND's most recent punter, Punter (R. Sanchez)."
-    repeats "punter", and a punter missing from `punter.json` is labelled only "Punter").
+  - The tt4th label: the contract still says "Experimental: ..."; a change naming it
+    tt4th is drafted for the fourth-down repo. Decide whether stored results (195 in
+    `decisions.json`, 15 game files on 2026-10-31) keep their stored text.
 
 ## Articles
 

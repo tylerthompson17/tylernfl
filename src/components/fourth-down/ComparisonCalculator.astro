@@ -1,0 +1,339 @@
+---
+/**
+ * The 4th down calculator with tt4th (the contract's experimental model)
+ * leading and nfl4th beside it: the 4th down calculator's inputs plus
+ * offense, defense and punter, which only tt4th reads; tt4th's call first
+ * and largest, then nfl4th's, each option's WP under both, the label,
+ * dataAsOf and the per-term breakdown. The 4th down tab of /fourth-down/
+ * and the unlisted /fourth-down/experimental/ page both draw it. Its script
+ * (src/lib/model-compare/dom.ts) also runs the experimental page's list of
+ * stored results, when the page has one. Per-play numbers only (contract
+ * v5): no outcomes, accuracy, records or WP-cost tallies.
+ */
+import Panel from '../Panel.astro';
+import '../../styles/model-compare.css';
+import teamsData from '../../data/teams.json';
+import teamPunters from '../../../models/fourth-down/teamPunters.json';
+import punterTable from '../../../models/fourth-down/punter.json';
+import { asOfContext } from '../../utils/as-of';
+import { modelDownloadBytes, modelManifest as manifest } from '../../utils/fourth-down-model';
+import { QUARTERS, ROOFS, defaults, seasonsUpTo, situationLine, yardline100Of } from '../../lib/calculator/form';
+import { fieldGoalKick, fieldStripHtml } from '../../lib/field/strip';
+import { DEFAULT_TEAMS } from '../../lib/model-compare/form';
+import { defaultPunterLabel, punterMenu } from '../../lib/model-compare/punters';
+
+interface Props {
+  /** Punters a page loads into the form (the experimental page's stored plays), so the menu has them */
+  punterIds?: string[];
+}
+
+const { punterIds = [] } = Astro.props;
+const season = asOfContext.season;
+const d = defaults('fourth-down', season);
+const teams = teamsData.map((t) => t.abbr).sort();
+const menu = punterMenu(teamPunters, punterTable, punterIds);
+
+const line = situationLine(d);
+const ydsToGoal = yardline100Of(d.side, Number(d.yl));
+const field = line
+  ? { yardline100: ydsToGoal, distance: Number(d.togo), label: line, kick: fieldGoalKick(ydsToGoal, manifest.kickDistanceOffset, manifest.maxFieldGoalDistance) }
+  : null;
+const downloadMb = (modelDownloadBytes / 1e6).toFixed(1);
+---
+
+  <div
+    class="calc"
+    id="calculator"
+    tabindex="-1"
+    data-experimental-calculator
+    data-season={season}
+    data-kick-offset={manifest.kickDistanceOffset}
+    data-kick-longest={manifest.maxFieldGoalDistance}
+    data-tables-season={manifest.experimental.season}
+  >
+    <script type="application/json" data-punter-menu set:html={JSON.stringify(menu)} />
+    <Panel title="Situation" class="calc-inputs">
+      <form novalidate>
+        <fieldset>
+          <legend>Teams</legend>
+          <div class="fields">
+            <div class="field">
+              <label for="x-offense">Offense</label>
+              <select id="x-offense" name="offense">
+                {teams.map((t) => <option value={t} selected={t === DEFAULT_TEAMS.offense}>{t}</option>)}
+              </select>
+            </div>
+            <div class="field">
+              <label for="x-defense">Defense</label>
+              <select id="x-defense" name="defense" aria-describedby="x-defense-error">
+                {teams.map((t) => <option value={t} selected={t === DEFAULT_TEAMS.defense}>{t}</option>)}
+              </select>
+              <p class="field-error" id="x-defense-error" data-error-for="defense" hidden />
+            </div>
+            <div class="field wide">
+              <label for="x-punter">Punter</label>
+              <select id="x-punter" name="punter" aria-describedby="x-punter-help">
+                <option value="" selected data-default-punter>{defaultPunterLabel(menu, DEFAULT_TEAMS.offense)}</option>
+                <optgroup label="Each team's most recent punter">
+                  {menu.current.map((p) => <option value={p.id}>{p.label}</option>)}
+                </optgroup>
+                <optgroup label="Other punters in the model">
+                  {menu.others.map((p) => <option value={p.id}>{p.label}</option>)}
+                </optgroup>
+              </select>
+              <p class="help" id="x-punter-help">Only tt4th reads the teams and the punter.</p>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Down and distance</legend>
+          <div class="fields">
+            <div class="field wide">
+              <span class="field-label" id="x-ball-label">Ball on</span>
+              <div class="pair" role="group" aria-labelledby="x-ball-label">
+                <select name="side" aria-label="Side of the field">
+                  <option value="own" selected={d.side === 'own'}>Own</option>
+                  <option value="opp" selected={d.side === 'opp'}>Opponent's</option>
+                </select>
+                <input name="yl" type="number" inputmode="numeric" min="1" max="50" value={d.yl} aria-label="Yard line" aria-describedby="x-yl-error" />
+              </div>
+              <p class="field-error" id="x-yl-error" data-error-for="yl" hidden />
+            </div>
+            <div class="field">
+              <label for="x-togo">Yards to go</label>
+              <input id="x-togo" name="togo" type="number" inputmode="numeric" min="1" max="99" value={d.togo} aria-describedby="x-togo-error" />
+              <p class="field-error" id="x-togo-error" data-error-for="togo" hidden />
+            </div>
+          </div>
+          <div class="calc-field" data-calc-field set:html={field ? fieldStripHtml(field) : ''} />
+          <p class="visually-hidden" data-calc-situation aria-live="polite">{field?.label}</p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Clock and score</legend>
+          <div class="fields">
+            <div class="field">
+              <label for="x-q">Quarter</label>
+              <select id="x-q" name="q">
+                {QUARTERS.map((q) => <option value={q} selected={d.q === q}>{q === 'OT' ? 'Overtime' : q}</option>)}
+              </select>
+            </div>
+            <div class="field">
+              <label for="x-clock">Time left</label>
+              <input id="x-clock" name="clock" type="text" inputmode="numeric" autocomplete="off" value={d.clock} aria-describedby="x-clock-help x-clock-error" />
+              <p class="help" id="x-clock-help">In the quarter, as 10:00.</p>
+              <p class="field-error" id="x-clock-error" data-error-for="clock" hidden />
+            </div>
+            <div class="field">
+              <label for="x-pts">Offense score</label>
+              <input id="x-pts" name="pts" type="number" inputmode="numeric" min="0" value={d.pts} aria-describedby="x-pts-error" />
+              <p class="field-error" id="x-pts-error" data-error-for="pts" hidden />
+            </div>
+            <div class="field">
+              <label for="x-opp">Defense score</label>
+              <input id="x-opp" name="opp" type="number" inputmode="numeric" min="0" value={d.opp} aria-describedby="x-opp-error" />
+              <p class="field-error" id="x-opp-error" data-error-for="opp" hidden />
+            </div>
+            <div class="field">
+              <label for="x-to">Offense timeouts</label>
+              <input id="x-to" name="to" type="number" inputmode="numeric" min="0" max="3" value={d.to} aria-describedby="x-to-error" />
+              <p class="field-error" id="x-to-error" data-error-for="to" hidden />
+            </div>
+            <div class="field">
+              <label for="x-oppto">Defense timeouts</label>
+              <input id="x-oppto" name="oppto" type="number" inputmode="numeric" min="0" max="3" value={d.oppto} aria-describedby="x-oppto-error" />
+              <p class="field-error" id="x-oppto-error" data-error-for="oppto" hidden />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Game</legend>
+          <div class="fields">
+            <div class="field">
+              <label for="x-home">Offense is</label>
+              <select id="x-home" name="home">
+                <option value="off" selected={d.home === 'off'}>Home</option>
+                <option value="def" selected={d.home === 'def'}>Away</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="x-ko">Opening kickoff to</label>
+              <select id="x-ko" name="ko">
+                <option value="off" selected={d.ko === 'off'}>Offense</option>
+                <option value="def" selected={d.ko === 'def'}>Defense</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="x-roof">Roof</label>
+              <select id="x-roof" name="roof">
+                {ROOFS.map((r) => <option value={r.value} selected={d.roof === r.value}>{r.label}</option>)}
+              </select>
+            </div>
+            <div class="field">
+              <label for="x-season">Season</label>
+              <select id="x-season" name="season" aria-describedby="x-season-error">
+                {seasonsUpTo(season).map((s) => <option value={s} selected={d.season === String(s)}>{s}</option>)}
+              </select>
+              <p class="field-error" id="x-season-error" data-error-for="season" hidden />
+            </div>
+            <div class="field">
+              <label for="x-spread">Offense spread</label>
+              <input id="x-spread" name="spread" type="number" inputmode="decimal" step="0.5" value={d.spread} aria-describedby="x-spread-help x-spread-error" />
+              <p class="help" id="x-spread-help">
+                Pregame line as a sportsbook writes it: -3 if favored by 3, 3 if a 3 point underdog. Blank if unknown.
+              </p>
+              <p class="field-error" id="x-spread-error" data-error-for="spread" hidden />
+            </div>
+            <div class="field">
+              <label for="x-total">Total</label>
+              <input id="x-total" name="total" type="number" inputmode="decimal" step="0.5" value={d.total} aria-describedby="x-total-help x-total-error" />
+              <p class="help" id="x-total-help">Pregame over/under, points by both teams. Blank if unknown.</p>
+              <p class="field-error" id="x-total-error" data-error-for="total" hidden />
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </Panel>
+
+    <Panel title="tt4th and nfl4th" class="calc-result">
+      <div class="output" data-calc-output aria-busy="true">
+        <noscript><p>The calculator runs in your browser and needs JavaScript.</p></noscript>
+        <p class="loading">Loading both models, a one-time download of about {downloadMb} MB.</p>
+      </div>
+      <p class="visually-hidden" aria-live="polite" data-calc-announce></p>
+      <p class="foot">
+        Win probability is the offense's chance to win the game after each choice. Both models assume a
+        league-average kicker and don't know who's kicking. Differences and adjustments are in points of win
+        probability. tt4th is still being confirmed.
+      </p>
+    </Panel>
+  </div>
+
+<script>
+  import { initExperimental } from '../../lib/model-compare/dom';
+  initExperimental();
+</script>
+
+<style>
+  .calc {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-3);
+    align-items: start;
+    margin-bottom: var(--space-3);
+  }
+
+  .calc:focus {
+    outline: none;
+  }
+
+  @media (max-width: 900px) {
+    .calc {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0 0 var(--space-3);
+    min-width: 0;
+  }
+
+  fieldset:last-child {
+    margin-bottom: 0;
+  }
+
+  legend {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 0;
+    margin-bottom: var(--space-2);
+    width: 100%;
+    border-bottom: 1px dotted var(--rule-soft);
+  }
+
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: var(--space-2) var(--space-3);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .field.wide {
+    grid-column: span 2;
+  }
+
+  label,
+  .field-label {
+    font-weight: 700;
+  }
+
+  input,
+  select {
+    font: inherit;
+    color: var(--text);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 2px var(--space-1);
+    min-width: 0;
+    width: 100%;
+    font-variant-numeric: tabular-nums;
+  }
+
+  input[type='checkbox'] {
+    width: auto;
+  }
+
+  input[aria-invalid],
+  select[aria-invalid] {
+    border-color: var(--loss);
+    outline: 1px solid var(--loss);
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+
+  .help,
+  .field-error {
+    font-size: 12px;
+  }
+
+  .help {
+    color: var(--text-dim);
+  }
+
+  .field-error {
+    color: var(--loss);
+  }
+
+  .calc-field {
+    margin-top: var(--space-3);
+  }
+
+  .loading,
+  .foot {
+    color: var(--text-dim);
+  }
+
+  .foot {
+    margin-top: var(--space-3);
+  }
+
+  .output :global(.mc-breakdown) {
+    margin-top: var(--space-3);
+  }
+</style>

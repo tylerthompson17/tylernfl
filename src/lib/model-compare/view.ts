@@ -1,9 +1,11 @@
 /**
- * The experimental model next to nfl4th, as words and numbers ready to show
- * (contract v5, docs/model-interface.md "Experimental model"): each model's
+ * tt4th (the contract's experimental model, Tyler's: nfl4th plus four
+ * adjustments, still being confirmed) next to nfl4th, as words and numbers
+ * ready to show (contract v5, docs/model-interface.md "Experimental model"),
+ * tt4th first: each model's
  * call and margin, every option's win probability under both, whether they
  * disagree, the label and dataAsOf, the flags in words, and the experimental
- * model's per-term breakdown in points of win probability.
+ * tt4th's per-term breakdown in points of win probability.
  *
  * It reads anything shaped like a result: a live recommend() result or a
  * stored decisions.json record, which carry the same fields. Terms and
@@ -49,7 +51,7 @@ export interface OptionRow {
   label: string;
   experimental: string;
   nfl4th: string;
-  /** Experimental minus nfl4th, in points: "+0.56" */
+  /** tt4th minus nfl4th, in points: "+0.56" */
   difference: string;
   bestExperimental: boolean;
   bestNfl4th: boolean;
@@ -69,9 +71,9 @@ export interface BreakdownView {
   start: string[];
   terms: { id: string; label: string; cells: BreakdownCell[] }[];
   residual: string[];
-  /** The experimental model's WP for each option */
+  /** tt4th's WP for each option */
   end: string[];
-  /** "Conversion chance: nfl4th 52.4%, experimental 56.7%" */
+  /** "Conversion chance: nfl4th 52.4%, tt4th 56.7%" */
   changed: string[];
 }
 
@@ -81,7 +83,7 @@ export type ComparisonView =
       kind: 'nfl4th-only';
       nfl4th: CallView;
       options: OptionRow[];
-      /** Why the experimental model has no numbers */
+      /** Why tt4th has no numbers */
       message: string;
     }
   | {
@@ -151,10 +153,10 @@ function rows(r: Comparable, nfl4th: Wps, experimental: Wps | null, kickOffset: 
 
 function changedLine(c: { label: string; unit: 'probability' | 'yards'; nfl4th: number; experimental: number }): string {
   const value = (v: number) => (c.unit === 'probability' ? pct(v) : `${v.toFixed(1)} ${Math.abs(v) === 1 ? 'yard' : 'yards'}`);
-  return `${c.label}: nfl4th ${value(c.nfl4th)}, experimental ${value(c.experimental)}`;
+  return `${c.label}: nfl4th ${value(c.nfl4th)}, tt4th ${value(c.experimental)}`;
 }
 
-/** The experimental model's term table: every term against every option it can move, in WP points. */
+/** tt4th's term table: every term against every option it can move, in WP points. */
 export function breakdownView(e: Extract<ExperimentalResult, { supported: true }>, r: Comparable, kickOffset: number): BreakdownView {
   const keys = KEYS.filter((k) => e.options[k] !== null);
   const option = (k: OptionKey) => e.options[k]!;
@@ -178,9 +180,9 @@ export function breakdownView(e: Extract<ExperimentalResult, { supported: true }
 
 function flagNotes(e: Extract<ExperimentalResult, { supported: true }>, team: string): string[] {
   const notes: string[] = [];
-  if (e.flags.punterUnknown) notes.push(`No punter was found for ${team}, so the experimental model used a league-average punter.`);
-  if (e.flags.punterNoHistory) notes.push("The punter has no punts in the experimental model's fit seasons, so it used a league-average punter.");
-  if (e.flags.coverageNoHistory) notes.push(`${team} has no punt coverage history in the experimental model's fit seasons, so that part is league average.`);
+  if (e.flags.punterUnknown) notes.push(`No punter was found for ${team}, so tt4th used a league-average punter.`);
+  if (e.flags.punterNoHistory) notes.push("The punter has no punts in tt4th's fit seasons, so it used a league-average punter.");
+  if (e.flags.coverageNoHistory) notes.push(`${team} has no punt coverage history in tt4th's fit seasons, so that part is league average.`);
   return notes;
 }
 
@@ -195,15 +197,15 @@ export function unsupportedComparison(reason: 'overtime' | 'endgame' | 'unavaila
   return { kind: 'unsupported', message: UNSUPPORTED[reason] };
 }
 
-/** The two models on one situation, experimental first. */
+/** The two models on one situation, tt4th first. */
 export function comparisonView(r: Comparable, opts: CompareOptions): ComparisonView {
   const nfl4th: Wps = { go: r.wpGo, fieldGoal: r.wpFieldGoal, punt: r.wpPunt };
   const e = r.experimental;
   if (!e || !e.supported) {
     const message =
       e?.supported === false && e.reason === 'season'
-        ? `The experimental model's tables are for the ${opts.tablesSeason ?? 'current'} season only, so it has no numbers for this one.`
-        : 'The experimental model has no numbers here: its files could not be loaded.';
+        ? `tt4th's tables are for the ${opts.tablesSeason ?? 'current'} season only, so it has no numbers for this one.`
+        : 'tt4th has no numbers here: its files could not be loaded.';
     return { kind: 'nfl4th-only', nfl4th: callView(r.call, nfl4th), options: rows(r, nfl4th, null, opts.kickOffset), message };
   }
   const experimental: Wps = { go: e.wpGo, fieldGoal: e.wpFieldGoal, punt: e.wpPunt };

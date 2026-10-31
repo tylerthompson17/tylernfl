@@ -3,8 +3,10 @@
  * A team's 4th downs: today's live game from ESPN's summaries (the live
  * feed filtered to this team, src/lib/live-fourth/team.ts), then every game
  * this season from decisions.json, newest first: the team's questionable
- * calls and its three biggest calls, each against nfl4th, linked to the
- * game's page (its win probability chart until the page exists).
+ * calls and its three biggest calls, picked and graded against nfl4th,
+ * with tt4th's stored pre-game call and WPs leading where there is one
+ * (never graded), linked to the game's page (its win probability chart
+ * until the page exists).
  */
 import TeamHub from '../../../components/team/TeamHub.astro';
 import Panel from '../../../components/Panel.astro';
@@ -12,7 +14,8 @@ import teamsData from '../../../data/teams.json';
 import type { Team, TeamsData } from '../../../data/types';
 import { LIVE_FOURTH_PAGE_ENABLED } from '../../../config';
 import { teamGameCalls } from '../../../lib/decisions/team';
-import { callWords, chartSlug, gameWords, isFourthDown, optionWords, points, situationWords } from '../../../lib/decisions/view';
+import { callWords, chartSlug, gameWords, isFourthDown, optionWords, points, situationWords, tt4thCallWords, tt4thOptionWords } from '../../../lib/decisions/view';
+import { TT4TH_CREDITS } from '../../../lib/model-compare/credits';
 import { hasAutoChart } from '../../../utils/charts';
 import { gameHref } from '../../../utils/games';
 import { decisionsData } from '../../../utils/decisions';
@@ -30,7 +33,6 @@ const season = decisionsData?.season ?? 0;
 const lastWeek = decisionsData ? Math.max(0, ...decisionsData.fourthDowns.map((d) => d.week)) : 0;
 // This team's games of the ticker's week, for the live section.
 const mine = Object.fromEntries(Object.entries(liveGames()).filter(([, g]) => g.home === team.abbr || g.away === team.abbr));
-const NFL4TH = 'https://github.com/nflverse/nfl4th';
 ---
 
 <TeamHub team={team} tab="fourth-downs">
@@ -42,9 +44,10 @@ const NFL4TH = 'https://github.com/nflverse/nfl4th';
             <p class="dim" data-team-live-status>Reading today's game…</p>
             <ol class="live-items team-live-list" data-team-live-list />
             <p class="foot">
-              {team.abbr}'s 4th downs so far, newest first, from ESPN's play-by-play, each against nfl4th (the model,
-              about 2.6 MB, loads for today's game). nfl4th assumes a league-average kicker and doesn't know who's kicking. Calls are preliminary; every game today:{' '}
-              <a href={url('fourth-down/live')}>live 4th downs</a>.
+              {team.abbr}'s 4th downs so far, newest first, from ESPN's play-by-play: tt4th's call first (still being
+              confirmed, never graded), then the grade against nfl4th (the models, about 2.6 MB, load for today's
+              game). Both assume a league-average kicker and don't know who's kicking. Calls are preliminary; every
+              game today: <a href={url('fourth-down/live')}>live 4th downs</a>.
             </p>
           </Panel>
           <script type="application/json" id="live-fourth-games" set:html={JSON.stringify(mine)} />
@@ -54,11 +57,13 @@ const NFL4TH = 'https://github.com/nflverse/nfl4th';
 
     <Panel title="4th down and 2-point calls by game">
       <p class="lead">
-        Each game's questionable calls (the choice gave up 2 points of win probability or more against Ben Baldwin's{' '}
-        <a href={NFL4TH}>nfl4th</a>; clear when its top two options were 5 or more apart) and its three biggest
-        calls, where nfl4th's top two options were furthest apart. {decisionsData && gradedThrough(season, lastWeek, decisionsData.games)}{' '}
+        Each game's questionable calls (the choice gave up 2 points of win probability or more against nfl4th; clear
+        when its top two options were 5 or more apart) and its three biggest calls, where nfl4th's top two options
+        were furthest apart. tt4th's call and win probabilities come first, as they stood before the game, from week 7
+        on; tt4th is still being confirmed and is never graded. {decisionsData && gradedThrough(season, lastWeek, decisionsData.games)}{' '}
         <a href={url('decisions')}>Every coach and the season's worst calls</a>.
       </p>
+      <p class="lead" set:html={TT4TH_CREDITS} />
       {
         games.length === 0 ? (
           <p class="dim">No graded games yet this season.</p>
@@ -82,8 +87,10 @@ const NFL4TH = 'https://github.com/nflverse/nfl4th';
                         <th scope="col">Situation</th>
                         <th scope="col">Type</th>
                         <th scope="col">Team did</th>
+                        <th scope="col">tt4th's call</th>
+                        <th scope="col">tt4th's WP</th>
                         <th scope="col">nfl4th's recommendation</th>
-                        <th scope="col">Each option's WP</th>
+                        <th scope="col">nfl4th's WP</th>
                         <th scope="col" class="number" title="Points of win probability between nfl4th's top two options">Gap</th>
                         <th scope="col" class="number" title="Points of win probability">WP lost</th>
                         <th scope="col">Mark</th>
@@ -95,6 +102,8 @@ const NFL4TH = 'https://github.com/nflverse/nfl4th';
                           <td title={r.decision.description}>{situationWords(r.decision)}</td>
                           <td>{isFourthDown(r.decision) ? '4th down' : 'Try'}</td>
                           <td>{callWords(r.decision.teamCall)}</td>
+                          <td class:list={tt4thCallWords(r.decision) ? 'tt4th' : 'dim'}>{tt4thCallWords(r.decision) ?? 'None'}</td>
+                          <td class:list={{ dim: !tt4thOptionWords(r.decision) }}>{tt4thOptionWords(r.decision) ?? 'None'}</td>
                           <td>{callWords(r.decision.call)}</td>
                           <td>{optionWords(r.decision)}</td>
                           <td class="number">{points(r.decision.margin ?? 0)}</td>
@@ -149,6 +158,10 @@ const NFL4TH = 'https://github.com/nflverse/nfl4th';
 
   tr.questionable td:first-child {
     border-left: var(--mark-bar) solid var(--header);
+  }
+
+  td.tt4th {
+    font-weight: 700;
   }
 
   td.clear {

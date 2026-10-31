@@ -7,7 +7,7 @@ import { loadFourthDownModel, recommend, type ModelFiles } from '../src/lib/four
 import { liveWords, optionRows, situationOf, type LiveGameInfo } from '../src/lib/live-fourth/situation.ts';
 import { parseSnapshots, yardline100, type Snapshot } from '../src/lib/live-fourth/snapshot.ts';
 import { callOf, stepAll, type GameTrack, type LiveFourthDown } from '../src/lib/live-fourth/tracker.ts';
-import { punterLine } from '../src/lib/live-fourth/words.ts';
+import { punterLine, tt4thLines } from '../src/lib/live-fourth/words.ts';
 
 const ESPN = join(import.meta.dirname, 'fixtures', 'espn');
 const fixture = JSON.parse(readFileSync(join(ESPN, 'live-fourth-401873010.json'), 'utf8'));
@@ -151,16 +151,36 @@ test('words, the model situation and fixed-order options for a live 4th down', (
   assert.ok(options.rows.every((r) => /%$|too long|not considered/.test(r.value)));
   assert.deepEqual(optionRows({ supported: false, reason: 'overtime' }), { message: "nfl4th doesn't compute decisions in overtime." });
 
-  // No punterId on a live 4th down: the line names the team punter the
-  // experimental model fell back on, by its term's label.
+  // No punterId on a live 4th down: the line names the team punter tt4th
+  // fell back on, from its term's label.
   const result = recommend(s);
   assert.ok(result.supported && result.experimental.supported);
   const chiPunter = files.teamPunters.teams.CHI.name;
-  assert.equal(punterLine(result, s), `Experimental model: assumed CHI's most recent punter, Punter (${chiPunter}).`);
+  assert.equal(punterLine(result, s), `tt4th assumed CHI's most recent punter, ${chiPunter}.`);
+  const unnamed = {
+    ...result,
+    experimental: { ...result.experimental, terms: result.experimental.terms.map((t) => (t.id === 'punter' ? { ...t, label: 'Punter' } : t)) },
+  };
+  assert.equal(punterLine(unnamed, s), "tt4th assumed CHI's most recent punter.");
   assert.equal(punterLine(result, { ...s, punterId: '123' }), null);
   assert.equal(punterLine({ ...result, wpPunt: null }, s), null);
   assert.equal(punterLine({ ...result, experimental: { supported: false, reason: 'season' } }, s), null);
   const unknown = { ...result, experimental: { ...result.experimental, flags: { ...result.experimental.flags, punterUnknown: true } } };
-  assert.equal(punterLine(unknown, s), 'Experimental model: no CHI punter found, so it assumed a league-average punter.');
+  assert.equal(punterLine(unknown, s), 'tt4th found no CHI punter and used a league-average one.');
   assert.equal(punterLine({ supported: false, reason: 'overtime' }, s), null);
+
+  // tt4th's lines lead the item: its call with "still being confirmed", its
+  // WPs in the item's order, and the week its tables run through.
+  const x = result.experimental;
+  const lines = tt4thLines(x, s.yardline100);
+  assert.ok(lines);
+  assert.match(lines.call, /^tt4th \(still being confirmed\): (Go for it|Field goal|Punt|a close call, leaning (Go for it|Field goal|Punt) by [\d.]+ points?)(, by [\d.]+ points?|less than 0\.1 points)?$/);
+  assert.match(lines.wp, /^Go \d+\.\d%/);
+  assert.equal(lines.asOf, `Tables through ${x.dataAsOf.season} week ${x.dataAsOf.week}`);
+  assert.equal(tt4thLines({ supported: false, reason: 'season' }, s.yardline100), null);
+  assert.equal(tt4thLines(undefined, s.yardline100), null);
+  const close = tt4thLines({ ...x, call: 'go', wpGo: 0.5, wpFieldGoal: null, wpPunt: 0.495 }, s.yardline100);
+  assert.equal(close?.call, 'tt4th (still being confirmed): a close call, leaning Go for it by 0.5 points');
+  const clear = tt4thLines({ ...x, call: 'punt', wpGo: 0.4, wpFieldGoal: null, wpPunt: 0.45 }, s.yardline100);
+  assert.equal(clear?.call, 'tt4th (still being confirmed): Punt, by 5.0 points');
 });

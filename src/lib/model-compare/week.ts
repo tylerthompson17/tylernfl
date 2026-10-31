@@ -1,6 +1,6 @@
 /**
  * The experimental page's list: the latest week's 4th downs that have a
- * stored pre-game experimental result (decisions.json), newest first, each
+ * stored pre-game tt4th result (decisions.json), newest first, each
  * with both models' numbers, whether they disagree, a link to the call on
  * its game page and the form values that load it into the calculator.
  * Only per-play numbers and an outcome-free count of disagreements: no

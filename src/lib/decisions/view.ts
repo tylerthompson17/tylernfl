@@ -70,6 +70,18 @@ export function optionWords(d: Decision): string {
     .join(', ');
 }
 
+/** tt4th's call before the game, from the stored experimental result; null for a try or a 4th down without one. */
+export function tt4thCallWords(d: Decision): string | null {
+  return isFourthDown(d) && d.experimental ? callWords(d.experimental.call) : null;
+}
+
+/** tt4th's WPs before the game, as optionWords writes nfl4th's: "Go 43.0%, FG 37.2%, Punt 39.4%". */
+export function tt4thOptionWords(d: Decision): string | null {
+  if (!isFourthDown(d) || !d.experimental) return null;
+  const x = d.experimental;
+  return optionWords({ ...d, wpGo: x.wpGo, wpFieldGoal: x.wpFieldGoal, wpPunt: x.wpPunt });
+}
+
 /** The auto chart a game's decisions link to (charts/auto.py wp_slug). */
 export function chartSlug(d: Decision, season: number): string {
   const { home, posteam, defteam } = d.situation;

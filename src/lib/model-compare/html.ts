@@ -1,7 +1,8 @@
 /**
- * Markup for a model comparison (view.ts): the result (both calls, the
- * disagreement mark, each option's WP under both models, the label, dataAsOf
- * and the flags) and the experimental model's term breakdown. Strings, so
+ * Markup for a model comparison (view.ts): the result (tt4th's call first
+ * and largest, nfl4th's beside it, the disagreement mark, each option's WP
+ * under both models with tt4th's column first, the label, dataAsOf and the
+ * flags) and tt4th's term breakdown. Strings, so
  * the same markup comes from an Astro component at build time
  * (ModelComparison.astro, TermBreakdown.astro) and from a page script in the
  * browser, like the field strip. Styles are model-compare.css.
@@ -11,40 +12,47 @@ import type { BreakdownView, ComparisonView, OptionRow } from './view.ts';
 const escape = (text: string): string =>
   text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-function callBox(who: string, call: { call: string; margin: string }, className: string): string {
+function callBox(who: string, call: { call: string; margin: string }, className: string, note = ''): string {
   return (
     `<div class="${className}"><span class="mc-who">${escape(who)}</span>` +
     `<strong class="mc-call-value">${escape(call.call)}</strong>` +
-    `<span class="mc-margin">${escape(call.margin)}</span></div>`
+    `<span class="mc-margin">${escape(call.margin)}</span>` +
+    (note ? `<span class="mc-who-note">${escape(note)}</span>` : '') +
+    '</div>'
   );
 }
 
+/** Said under tt4th's call wherever it shows. */
+export const TT4TH_CONFIRMING = 'Still being confirmed.';
+/** Said under nfl4th's call: only its numbers are a reproduction. */
+export const NFL4TH_EXACT = "nfl4th's numbers, reproduced exactly.";
+
 function wpTable(options: OptionRow[], both: boolean): string {
   const head = both
-    ? '<tr><th scope="col">Option</th><th scope="col">Experimental</th><th scope="col">nfl4th</th><th scope="col">Difference</th></tr>'
+    ? '<tr><th scope="col">Option</th><th scope="col">tt4th</th><th scope="col">nfl4th</th><th scope="col">Difference</th></tr>'
     : '<tr><th scope="col">Option</th><th scope="col">nfl4th</th></tr>';
   const body = options
     .map((o) => {
       const mark = (best: boolean, text: string, who: string) =>
         best ? `<strong>${escape(text)}</strong><span class="visually-hidden"> (${who}'s call)</span>` : escape(text);
       const cells = both
-        ? `<td>${mark(o.bestExperimental, o.experimental, 'experimental model')}</td><td>${mark(o.bestNfl4th, o.nfl4th, 'nfl4th')}</td><td>${escape(o.difference)}</td>`
+        ? `<td>${mark(o.bestExperimental, o.experimental, 'tt4th')}</td><td>${mark(o.bestNfl4th, o.nfl4th, 'nfl4th')}</td><td>${escape(o.difference)}</td>`
         : `<td>${mark(o.bestNfl4th, o.nfl4th, 'nfl4th')}</td>`;
       return `<tr><th scope="row">${escape(o.label)}</th>${cells}</tr>`;
     })
     .join('');
   return (
-    `<table class="mc-wp"><caption class="visually-hidden">Win probability of each option${both ? ', experimental model and nfl4th' : ''}</caption>` +
+    `<table class="mc-wp"><caption class="visually-hidden">Win probability of each option${both ? ', tt4th and nfl4th' : ''}</caption>` +
     `<thead>${head}</thead><tbody>${body}</tbody></table>`
   );
 }
 
-/** Both calls and each option's WP, experimental first; a disagreement says so in words and with the slate bar. */
+/** Both calls and each option's WP, tt4th first; a disagreement says so in words and with the slate bar. */
 export function comparisonHtml(view: ComparisonView): string {
   if (view.kind === 'unsupported') return `<div class="mc"><p class="mc-unsupported">${escape(view.message)}</p></div>`;
   if (view.kind === 'nfl4th-only') {
     return (
-      `<div class="mc"><div class="mc-calls">${callBox("nfl4th's recommendation", view.nfl4th, 'mc-call')}</div>` +
+      `<div class="mc"><div class="mc-calls">${callBox("nfl4th's recommendation", view.nfl4th, 'mc-call', NFL4TH_EXACT)}</div>` +
       `<p class="mc-unsupported">${escape(view.message)}</p>${wpTable(view.options, false)}</div>`
     );
   }
@@ -52,14 +60,14 @@ export function comparisonHtml(view: ComparisonView): string {
   return (
     `<div class="mc${view.disagree ? ' disagree' : ''}">` +
     (view.disagree ? '<p class="mc-flag">The models disagree</p>' : '<p class="mc-agree">The models agree</p>') +
-    `<div class="mc-calls">${callBox('Experimental model', view.experimental, 'mc-call mc-experimental')}` +
-    `${callBox("nfl4th's recommendation", view.nfl4th, 'mc-call')}</div>` +
-    `${wpTable(view.options, true)}` +
-    `<p class="mc-label">${escape(view.label)} ${escape(view.asOf)}</p>${notes}</div>`
+    `<div class="mc-calls">${callBox('tt4th', view.experimental, 'mc-call mc-experimental', TT4TH_CONFIRMING)}` +
+    `${callBox("nfl4th's recommendation", view.nfl4th, 'mc-call', NFL4TH_EXACT)}</div>` +
+    `<p class="mc-label">${escape(view.label)} ${escape(view.asOf)}</p>` +
+    `${wpTable(view.options, true)}${notes}</div>`
   );
 }
 
-/** The experimental model's adjustments to each option, from nfl4th's WP to its own, in WP points. */
+/** tt4th's adjustments to each option, from nfl4th's WP to its own, in WP points. */
 export function breakdownHtml(b: BreakdownView): string {
   const cols = b.columns.map((c) => `<th scope="col">${escape(c.label)}</th>`).join('');
   const row = (label: string, cells: string[], className = '') =>
@@ -76,12 +84,12 @@ export function breakdownHtml(b: BreakdownView): string {
   const changed = b.changed.length ? `<ul class="mc-changed">${b.changed.map((c) => `<li>${escape(c)}</li>`).join('')}</ul>` : '';
   return (
     '<div class="mc-breakdown"><table class="mc-terms">' +
-    '<caption>Experimental adjustments, in points of win probability</caption>' +
+    "<caption>tt4th's adjustments to nfl4th, in points of win probability</caption>" +
     `<thead><tr><th scope="col">Term</th>${cols}</tr></thead><tbody>` +
     row('nfl4th win prob.', plain(b.start), 'mc-total') +
     terms.join('') +
     row('Residual (terms interact)', plain(b.residual)) +
-    row('Experimental win prob.', plain(b.end), 'mc-total') +
+    row('tt4th win prob.', plain(b.end), 'mc-total') +
     `</tbody></table>${changed}</div>`
   );
 }
