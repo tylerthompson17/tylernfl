@@ -2,7 +2,7 @@
   "key": "kicking",
   "label": "Kicking",
   "season": 2026,
-  "throughWeek": 7,
+  "throughWeek": 8,
   "primary": "fg_made",
   "qualifier": {
     "column": "fg_att",
@@ -295,6 +295,25 @@
     },
     {
       "rank": 10,
+      "playerId": "00-0040279",
+      "player": "Ryan Fitzgerald",
+      "team": "CAR",
+      "position": "K",
+      "teamGames": 7,
+      "qualified": true,
+      "values": {
+        "games": 7,
+        "fg_made": 13,
+        "fg_att": 13,
+        "fg_long": 53,
+        "pat_made": 13,
+        "pat_att": 18,
+        "fg_pct": 1.0,
+        "xp_pct": 0.722
+      }
+    },
+    {
+      "rank": 10,
       "playerId": "00-0036162",
       "player": "Tyler Bass",
       "team": "BUF",
@@ -313,7 +332,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0037692",
       "player": "Brandon Aubrey",
       "team": "DAL",
@@ -332,7 +351,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0025565",
       "player": "Nick Folk",
       "team": "ATL",
@@ -351,7 +370,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0040074",
       "player": "Tyler Loop",
       "team": "BAL",
@@ -370,7 +389,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0032569",
       "player": "Wil Lutz",
       "team": "DEN",
@@ -389,7 +408,7 @@
       }
     },
     {
-      "rank": 17,
+      "rank": 18,
       "playerId": "00-0031203",
       "player": "Cairo Santos",
       "team": "CHI",
@@ -408,7 +427,7 @@
       }
     },
     {
-      "rank": 17,
+      "rank": 18,
       "playerId": "00-0033303",
       "player": "Harrison Butker",
       "team": "KC",
@@ -427,41 +446,22 @@
       }
     },
     {
-      "rank": 17,
-      "playerId": "00-0040279",
-      "player": "Ryan Fitzgerald",
-      "team": "CAR",
-      "position": "K",
-      "teamGames": 6,
-      "qualified": true,
-      "values": {
-        "games": 6,
-        "fg_made": 11,
-        "fg_att": 11,
-        "fg_long": 53,
-        "pat_made": 12,
-        "pat_att": 17,
-        "fg_pct": 1.0,
-        "xp_pct": 0.706
-      }
-    },
-    {
-      "rank": 17,
+      "rank": 18,
       "playerId": "00-0040899",
       "player": "Trey Smack",
       "team": "GB",
       "position": "K",
-      "teamGames": 7,
+      "teamGames": 8,
       "qualified": true,
       "values": {
-        "games": 7,
+        "games": 8,
         "fg_made": 11,
         "fg_att": 16,
         "fg_long": 59,
-        "pat_made": 13,
-        "pat_att": 15,
+        "pat_made": 16,
+        "pat_att": 19,
         "fg_pct": 0.688,
-        "xp_pct": 0.867
+        "xp_pct": 0.842
       }
     },
     {

@@ -2,7 +2,7 @@
   "key": "passing",
   "label": "Passing",
   "season": 2026,
-  "throughWeek": 7,
+  "throughWeek": 8,
   "primary": "passing_yards",
   "qualifier": {
     "column": "attempts",
@@ -95,6 +95,26 @@
   "rows": [
     {
       "rank": 1,
+      "playerId": "00-0036264",
+      "player": "Jordan Love",
+      "team": "GB",
+      "position": "QB",
+      "teamGames": 8,
+      "qualified": true,
+      "values": {
+        "games": 8,
+        "completions": 192,
+        "attempts": 312,
+        "passing_yards": 2246,
+        "passing_tds": 16,
+        "passing_interceptions": 6,
+        "sacks_suffered": 14,
+        "cmp_pct": 0.615,
+        "pass_ypa": 7.2
+      }
+    },
+    {
+      "rank": 2,
       "playerId": "00-0026498",
       "player": "Matthew Stafford",
       "team": "LAR",
@@ -114,27 +134,27 @@
       }
     },
     {
-      "rank": 2,
-      "playerId": "00-0036264",
-      "player": "Jordan Love",
-      "team": "GB",
+      "rank": 3,
+      "playerId": "00-0039150",
+      "player": "Bryce Young",
+      "team": "CAR",
       "position": "QB",
       "teamGames": 7,
       "qualified": true,
       "values": {
         "games": 7,
-        "completions": 162,
-        "attempts": 271,
-        "passing_yards": 1958,
+        "completions": 158,
+        "attempts": 269,
+        "passing_yards": 1921,
         "passing_tds": 13,
         "passing_interceptions": 5,
-        "sacks_suffered": 14,
-        "cmp_pct": 0.598,
-        "pass_ypa": 7.2
+        "sacks_suffered": 23,
+        "cmp_pct": 0.587,
+        "pass_ypa": 7.1
       }
     },
     {
-      "rank": 3,
+      "rank": 4,
       "playerId": "00-0029604",
       "player": "Kirk Cousins",
       "team": "LV",
@@ -154,7 +174,7 @@
       }
     },
     {
-      "rank": 4,
+      "rank": 5,
       "playerId": "00-0039163",
       "player": "C.J. Stroud",
       "team": "HOU",
@@ -174,7 +194,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0033077",
       "player": "Dak Prescott",
       "team": "DAL",
@@ -194,7 +214,7 @@
       }
     },
     {
-      "rank": 6,
+      "rank": 7,
       "playerId": "00-0033106",
       "player": "Jared Goff",
       "team": "DET",
@@ -214,7 +234,7 @@
       }
     },
     {
-      "rank": 7,
+      "rank": 8,
       "playerId": "00-0039851",
       "player": "Drake Maye",
       "team": "NE",
@@ -234,7 +254,7 @@
       }
     },
     {
-      "rank": 8,
+      "rank": 9,
       "playerId": "00-0037834",
       "player": "Brock Purdy",
       "team": "SF",
@@ -254,7 +274,7 @@
       }
     },
     {
-      "rank": 9,
+      "rank": 10,
       "playerId": "00-0040743",
       "player": "Tyler Shough",
       "team": "NO",
@@ -271,26 +291,6 @@
         "sacks_suffered": 15,
         "cmp_pct": 0.67,
         "pass_ypa": 6.3
-      }
-    },
-    {
-      "rank": 10,
-      "playerId": "00-0039150",
-      "player": "Bryce Young",
-      "team": "CAR",
-      "position": "QB",
-      "teamGames": 6,
-      "qualified": true,
-      "values": {
-        "games": 6,
-        "completions": 135,
-        "attempts": 228,
-        "passing_yards": 1712,
-        "passing_tds": 12,
-        "passing_interceptions": 4,
-        "sacks_suffered": 17,
-        "cmp_pct": 0.592,
-        "pass_ypa": 7.5
       }
     },
     {
@@ -1019,7 +1019,7 @@
       "player": "Kenny Pickett",
       "team": "CAR",
       "position": "QB",
-      "teamGames": 6,
+      "teamGames": 7,
       "qualified": false,
       "values": {
         "games": 3,

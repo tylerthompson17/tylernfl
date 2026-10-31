@@ -1,77 +1,77 @@
 {
   "month": 10,
-  "day": 29,
-  "gamesOnDate": 57,
+  "day": 31,
+  "gamesOnDate": 58,
   "items": [
     {
-      "year": 2023,
-      "gameId": "2023_08_KC_DEN",
-      "text": "The Broncos beat the Chiefs 24-9 as 7-point underdogs.",
+      "year": 2021,
+      "gameId": "2021_08_PHI_DET",
+      "text": "The Eagles beat the Lions 44-6.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Broncos",
-          "team": "DEN"
+          "text": "Eagles",
+          "team": "PHI"
         },
         {
           "text": " beat the "
+        },
+        {
+          "text": "Lions",
+          "team": "DET"
+        },
+        {
+          "text": " 44-6."
+        }
+      ]
+    },
+    {
+      "year": 2004,
+      "gameId": "2004_08_IND_KC",
+      "text": "The Chiefs beat the Colts 45-35 with 80 combined points.",
+      "parts": [
+        {
+          "text": "The "
         },
         {
           "text": "Chiefs",
           "team": "KC"
         },
         {
-          "text": " 24-9 as 7-point underdogs."
+          "text": " beat the "
+        },
+        {
+          "text": "Colts",
+          "team": "IND"
+        },
+        {
+          "text": " 45-35 with 80 combined points."
         }
       ]
     },
     {
-      "year": 2017,
-      "gameId": "2017_08_HOU_SEA",
-      "text": "The Seahawks beat the Texans 41-38 with 79 combined points.",
+      "year": 1999,
+      "gameId": "1999_08_SD_KC",
+      "text": "The Chiefs shut out the Chargers 34-0.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Seahawks",
-          "team": "SEA"
+          "text": "Chiefs",
+          "team": "KC"
         },
         {
-          "text": " beat the "
+          "text": " shut out the "
         },
         {
-          "text": "Texans",
-          "team": "HOU"
+          "text": "Chargers",
+          "team": "LAC"
         },
         {
-          "text": " 41-38 with 79 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2006,
-      "gameId": "2006_08_SF_CHI",
-      "text": "The Bears beat the 49ers 41-10.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Bears",
-          "team": "CHI"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "49ers",
-          "team": "SF"
-        },
-        {
-          "text": " 41-10."
+          "text": " 34-0."
         }
       ]
     }
