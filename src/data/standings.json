@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 8,
-  "updated": "2026-11-01T21:45:08Z",
+  "updated": "2026-11-01T21:52:39Z",
   "teams": [
     {
       "team": "BUF",
@@ -142,24 +142,24 @@
       "team": "CIN",
       "conference": "AFC",
       "division": "AFC North",
-      "wins": 4,
+      "wins": 5,
       "losses": 2,
       "ties": 0,
-      "pct": 0.667,
-      "pointsFor": 163,
-      "pointsAgainst": 122,
-      "diff": 41,
+      "pct": 0.714,
+      "pointsFor": 206,
+      "pointsAgainst": 158,
+      "diff": 48,
       "divisionRecord": [
         1,
         1,
         0
       ],
       "conferenceRecord": [
-        3,
+        4,
         2,
         0
       ],
-      "streak": "W2",
+      "streak": "W3",
       "divisionRank": 2,
       "conferenceRank": 6,
       "divisionTiebreak": null,
@@ -305,12 +305,12 @@
       "conference": "AFC",
       "division": "AFC South",
       "wins": 1,
-      "losses": 6,
+      "losses": 7,
       "ties": 0,
-      "pct": 0.143,
-      "pointsFor": 108,
-      "pointsAgainst": 156,
-      "diff": -48,
+      "pct": 0.125,
+      "pointsFor": 144,
+      "pointsAgainst": 199,
+      "diff": -55,
       "divisionRecord": [
         1,
         1,
@@ -318,10 +318,10 @@
       ],
       "conferenceRecord": [
         1,
-        4,
+        5,
         0
       ],
-      "streak": "L1",
+      "streak": "L2",
       "divisionRank": 4,
       "conferenceRank": 15,
       "divisionTiebreak": null,
@@ -379,7 +379,7 @@
       "divisionRank": 2,
       "conferenceRank": 5,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "strength_of_victory"
     },
     {
       "team": "LV",
