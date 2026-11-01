@@ -82,6 +82,24 @@ export function tt4thOptionWords(d: Decision): string | null {
   return optionWords({ ...d, wpGo: x.wpGo, wpFieldGoal: x.wpFieldGoal, wpPunt: x.wpPunt });
 }
 
+/**
+ * The latest 4th downs where tt4th and nfl4th made different calls, newest
+ * week first, then the widest gap between tt4th's top two options: what the
+ * home page's live panel shows until today's first 4th down arrives. Plays
+ * nfl4th did not evaluate, or with no stored tt4th result, are left out.
+ */
+export function splitCalls(fourthDowns: FourthDownDecision[], count: number): FourthDownDecision[] {
+  const gap = (d: FourthDownDecision): number => {
+    const x = d.experimental!;
+    const [top, next] = [x.wpGo, x.wpFieldGoal, x.wpPunt].filter((v): v is number => v !== null).sort((a, b) => b - a);
+    return top - (next ?? top);
+  };
+  return fourthDowns
+    .filter((d) => d.skip === null && d.call !== null && d.experimental?.supported && d.experimental.call !== d.call)
+    .sort((a, b) => b.week - a.week || gap(b) - gap(a) || a.gameId.localeCompare(b.gameId) || a.playId - b.playId)
+    .slice(0, count);
+}
+
 /** The auto chart a game's decisions link to (charts/auto.py wp_slug). */
 export function chartSlug(d: Decision, season: number): string {
   const { home, posteam, defteam } = d.situation;

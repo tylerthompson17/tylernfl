@@ -3,6 +3,7 @@ import { test } from 'node:test';
 
 import type { DecisionsData, FourthDownDecision, TryDecision } from '../src/data/types.ts';
 import {
+  splitCalls,
   callWords,
   chartSlug,
   clockLine,
@@ -112,4 +113,25 @@ test("a team's calls by game: questionable ones and its three biggest, newest ga
   ]);
   assert.equal(week5.decisions, 5);
   assert.deepEqual(games[0].rows.map((r) => [r.decision.playId, r.questionable, r.clear]), [[6, true, false]]);
+});
+
+test('the latest calls where tt4th and nfl4th split: newest week, then the widest gap', () => {
+  const play = (week: number, playId: number, tt4th: string | null, gaps: [number, number] = [0.5, 0.49], over: object = {}) =>
+    ({
+      week, playId, gameId: `G${playId}`, call: 'punt', skip: null,
+      experimental: tt4th && { supported: true, call: tt4th, wpGo: gaps[0], wpPunt: gaps[1], wpFieldGoal: null },
+      ...over,
+    }) as unknown as FourthDownDecision;
+  const plays = [
+    play(7, 1, 'go', [0.5, 0.49]),
+    play(7, 2, 'go', [0.5, 0.45]),
+    play(8, 3, 'go'),
+    play(8, 4, 'punt'), // agree
+    play(8, 5, null), // no stored result
+    play(8, 6, 'go', [0.5, 0.4], { skip: 'overtime' }),
+    play(8, 7, 'go', [0.5, 0.4], { experimental: { supported: false } }),
+    play(6, 8, 'go'),
+  ];
+  assert.deepEqual(splitCalls(plays, 3).map((d) => d.playId), [3, 2, 1]);
+  assert.deepEqual(splitCalls(plays, 9).map((d) => d.playId), [3, 2, 1, 8]);
 });

@@ -2,15 +2,26 @@
 /**
  * Live 4th downs on a game day's home page (src/lib/live-fourth/dom.ts):
  * built up (`data-live-hold`) and holding room for a page of three items,
- * so nothing under it moves when the first arrives. With the panel turned
- * off (LIVE_FOURTH_DOWN_ENABLED) it is the one line to the calculator.
+ * so nothing under it moves when the first arrives. Until then it shows the
+ * latest calls where tt4th and nfl4th split, drawn at build time, which the
+ * script hides for good once there is a 4th down to show. With the panel
+ * turned off (LIVE_FOURTH_DOWN_ENABLED) it is the one line to the calculator.
  */
 import Panel from '../Panel.astro';
 import { url } from '../../utils/url';
 import { liveGames } from '../../utils/live-games';
 import { LIVE_FOURTH_DOWN_ENABLED, LIVE_FOURTH_PAGE_ENABLED } from '../../config';
+import { decisionsData } from '../../utils/decisions';
+import { gameHref } from '../../utils/games';
+import { decisionItem, playAnchor } from '../../lib/games/view';
+import { gameWords, splitCalls } from '../../lib/decisions/view';
 
 const games = liveGames();
+const data = decisionsData;
+// A page's worth, the same three items the live ones replace.
+const splits = data
+  ? splitCalls(data.fourthDowns, 3).map((d) => ({ d, item: decisionItem(d, data.summary.closeMargin), href: gameHref(d.gameId) }))
+  : [];
 ---
 
 <div class="live-fourth" data-live-fourth data-live-hold={LIVE_FOURTH_DOWN_ENABLED ? '' : undefined}>
@@ -20,8 +31,36 @@ const games = liveGames();
   <div data-live-panel hidden={!LIVE_FOURTH_DOWN_ENABLED}>
     <Panel title="Live 4th downs">
       <div class="held">
-        <p class="live-note" data-live-note>Reading today's games…</p>
+        <p class="live-note" data-live-note hidden={splits.length > 0}>Reading today's games…</p>
         <ol class="live-items" data-live-list aria-live="polite"></ol>
+        {
+          splits.length > 0 && (
+            <div data-live-filler>
+              <p class="filler-lead">Waiting for today's 4th downs. Until then, the latest calls where tt4th and nfl4th split:</p>
+              <ol class="live-items">
+                {splits.map(({ d, item, href }) => (
+                  <li class="live-item has-tt4th">
+                    <p class="live-when">
+                      {href ? <a href={`${href}#${playAnchor(d.playId)}`}>{gameWords(d)}</a> : gameWords(d)}, {item.when}
+                    </p>
+                    <p class="live-down">{item.down}</p>
+                    <p class="live-play" title={item.description}>{item.play}</p>
+                    {item.tt4th && (
+                      <>
+                        <p class="live-tt4th">{item.tt4th.call}.</p>
+                        <p class="live-wp live-tt4th-wp">
+                          tt4th: {item.tt4th.wp}. {item.tt4th.asOf}, before the game.
+                        </p>
+                      </>
+                    )}
+                    <p class="live-verdict">{item.verdict}</p>
+                    {item.wp && <p class="live-wp">nfl4th: {item.wp}</p>}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )
+        }
         <div class="live-pager">
           <button type="button" class="pager-button" data-live-newer hidden aria-label="Newer 4th downs">Previous</button>
           <span class="live-position" data-live-position hidden></span>
@@ -78,6 +117,10 @@ const games = liveGames();
 
   .live-note {
     color: var(--text-dim);
+    margin-bottom: var(--space-2);
+  }
+
+  .filler-lead {
     margin-bottom: var(--space-2);
   }
 

@@ -37,6 +37,7 @@ function setUp(root: HTMLElement): void {
   const newer = root.querySelector<HTMLButtonElement>('[data-live-newer]')!;
   const older = root.querySelector<HTMLButtonElement>('[data-live-older]')!;
   const position = root.querySelector<HTMLElement>('[data-live-position]')!;
+  const filler = root.querySelector<HTMLElement>('[data-live-filler]');
   const hold = root.hasAttribute('data-live-hold');
   let state: FeedState | null = null;
   let watching = false;
@@ -74,6 +75,8 @@ function setUp(root: HTMLElement): void {
       ...pending.map((p) => pendingItem(p, model)),
       ...all.slice(page.start, page.start + PAGE).map((e) => entryItem(e, model)),
     );
+    // The built calls hold the panel until there is a 4th down to show.
+    if (filler) filler.hidden = list.childElementCount > 0;
     newer.hidden = older.hidden = position.hidden = ids.length <= PAGE;
     newer.disabled = !page.hasNewer;
     older.disabled = !page.hasOlder;
@@ -86,7 +89,8 @@ function setUp(root: HTMLElement): void {
         : ids.length + pending.length === 0
           ? 'No 4th downs yet today.'
           : '';
-    note.hidden = note.textContent === '';
+    // The built calls say what they are waiting for themselves.
+    note.hidden = note.textContent === '' || (filler !== null && !filler.hidden);
   }
 
   /** Read the summaries, and start the model while live, once the panel is on screen. */

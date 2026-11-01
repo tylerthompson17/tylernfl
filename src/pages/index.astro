@@ -65,7 +65,7 @@ const list = (wide: number, mid: number): Rows => ({ wide, mid, phone: Math.min(
             <div style="--order: 6"><HomeChart /></div>
           </div>
           <div class="home-col" data-balance="side">
-            <div style="--order: 3"><HomeWire title="Game statuses" rows={list(14, 13)} /></div>
+            <div style="--order: 3"><HomeWire title="Game statuses" rows={tall ? list(14, 13) : list(8, 8)} /></div>
             <div style="--order: 4"><DailyGame /></div>
             <div style="--order: 5"><LatestArticles limit={2} /></div>
             <div style="--order: 7"><PlayoffPicture /></div>

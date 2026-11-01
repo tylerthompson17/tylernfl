@@ -885,15 +885,20 @@ recap never ranks half a week (`completeWeeks` in `src/lib/week/recap.ts`).
 - Phones: one list in the order a visitor wants it (each panel's `--order`): the lead
   (live 4th downs, the chart on a recap, the replay on a quiet day), the calls, then the daily game and the
   article, then the rest. Keyboard order follows the desktop columns.
-- The live 4th downs panel holds about 340px from load (a page of three items and the
-  pager fit it exactly), so it is blank under its "Reading today's games" line until
-  the first 4th downs arrive, minutes at most, since it shows only from 15 minutes
-  before a kickoff. It held 340px until tt4th led the items (2026-10-31): now 460px, for
-  tt4th's two lines per item, and the live state's game statuses list went from 8 rows
-  to 14 at 1101px and up and 13 from 761 to 1100px to keep the columns level (7px and 1px
-  apart in the Sunday state). The audit's date states need the generated Retro Replays
-  data in the checkout: without it the sidebar has no replay panel and reads about 480px
-  short.
+- The live 4th downs panel holds about 460px from load (a page of three items and the
+  pager fit it). Until today's first 4th down arrives it shows the latest three calls
+  where tt4th and nfl4th split (Tyler asked for filler, 2026-11-01; `splitCalls` in
+  `src/lib/decisions/view.ts`, newest week, then the widest gap in tt4th's options), drawn
+  at build time as the same items, which the script hides for good once there is a 4th
+  down to show; with no such calls yet, the "Reading today's games" line. It held 340px until tt4th led the items (2026-10-31): now 460px, for
+  tt4th's two lines per item, and the live state's game statuses list shows 14 rows at
+  1101px and up and 13 from 761 to 1100px under the EPA scatter, 8 under a shorter chart
+  (on 2026-11-01's real data at 1440 and 1024, within 10px). The audit's date states need
+  the generated Retro Replays data in the checkout: without it the sidebar has no replay
+  panel and reads about 480px short. Their early-season fixtures have no stored tt4th
+  results, so the daily game reads "No game today" and the live panel has no filler,
+  which puts the Sunday state's columns about 160px apart; check the live state's balance
+  on real data with `SITE_NOW` set too.
 
 ### Right rail
 
