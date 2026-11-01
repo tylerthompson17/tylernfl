@@ -42,7 +42,7 @@ const ready = game !== null && game.plays.length > 0;
 const link = new URL(url('fourth-down/daily'), Astro.site).href;
 // Only what the script needs; the words are already on the page.
 const embedded = ready
-  ? { date: game.date, number: game.number, link, plays: game.plays.map(({ wp, call }) => ({ wp, call })) }
+  ? { date: game.date, number: game.number, link, plays: game.plays.map(({ wp, call, coachWpLost }) => ({ wp, call, coachWpLost })) }
   : null;
 ---
 
@@ -54,8 +54,8 @@ const embedded = ready
   <p class="page-intro">
     Five real 4th downs from this season, the same for everyone today. Make each call, then see what tt4th estimated
     before the game that each option was worth in win probability, with nfl4th beside it, what the coach did and what
-    happened. Your score is the win probability your calls give up against tt4th's estimates. tt4th is still being
-    confirmed.
+    happened. Your score is the win probability your calls give up against tt4th's estimates, next to the coaches' on
+    the same plays. tt4th is still being confirmed.
   </p>
 
   {
@@ -249,6 +249,7 @@ const embedded = ready
                 <th scope="col">Game</th>
                 <th scope="col">Date</th>
                 <th scope="col" class="number">You gave up</th>
+                <th scope="col" class="number">Coaches gave up</th>
               </tr>
             </thead>
             <tbody data-history-rows />

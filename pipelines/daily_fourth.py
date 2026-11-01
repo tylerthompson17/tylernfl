@@ -413,6 +413,7 @@ def build_daily_fourth(decisions: dict, day: date, previous: dict | None, rows_f
         'modelVersion': decisions['modelVersion'],
         'closeMargin': CLOSE,
         'plays': plays,
+        'coachWpLost': round(sum(p['coachWpLost'] for p in plays), 5),
         'history': history,
     }
 

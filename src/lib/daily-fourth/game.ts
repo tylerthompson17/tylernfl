@@ -5,8 +5,7 @@
  * beside it, what each pick gave up, the score, the shareable text, and
  * streaks and history from the visitor's own record. Every number is an
  * estimate, so the words never say a pick was correct or wrong: only how it
- * compares. The score is the visitor's own picks: per the model contract
- * there is no tally of what coaches gave up against tt4th, only each play's.
+ * compares.
  */
 import type { DailyFourthData, DailyFourthPlay, DriveResult } from '../../data/types';
 import type { FourthDownCall } from '../fourth-down';
@@ -14,7 +13,7 @@ import type { FourthDownCall } from '../fourth-down';
 export const CALLS: FourthDownCall[] = ['go', 'punt', 'field goal'];
 
 /** What scoring reads from a play: all the page script is given. */
-export type ScoredPlay = Pick<DailyFourthPlay, 'wp' | 'call'>;
+export type ScoredPlay = Pick<DailyFourthPlay, 'wp' | 'call' | 'coachWpLost'>;
 
 /** The day's game as the page script has it. */
 export type ScoredGame = Pick<DailyFourthData, 'date' | 'number'> & { plays: ScoredPlay[] };
@@ -176,24 +175,34 @@ export const NOISY = 'Outcomes are noisy: a good call can still go badly.';
 export interface Score {
   /** Your WP lost against tt4th's call over the plays picked */
   you: number;
+  /** The coaches' WP lost on the same plays */
+  coaches: number;
   /** Plays where your pick was tt4th's call */
   same: number;
 }
 
 export function scoreOf(plays: ScoredPlay[], picks: FourthDownCall[]): Score {
   let you = 0;
+  let coaches = 0;
   let same = 0;
   picks.forEach((pick, i) => {
     const p = plays[i];
     you += wpLost(p, pick);
+    coaches += p.coachWpLost;
     if (pick === p.call) same += 1;
   });
-  return { you, same };
+  return { you, coaches, same };
 }
 
-/** "You gave up 4.2 points ... You matched tt4th on 3 of 5." */
+/** "You gave up 4.2 points ... The coaches gave up 7.9." */
 export function scoreLine(s: Score, plays: number): string {
-  return `You gave up ${pointsWords(s.you)} of win probability against tt4th's estimates. You matched tt4th on ${s.same} of ${plays}. tt4th is still being confirmed.`;
+  const compare =
+    points(s.you) === points(s.coaches)
+      ? 'the same as the coaches'
+      : s.you < s.coaches
+        ? `${pointsWords(s.coaches - s.you)} less than the coaches`
+        : `${pointsWords(s.you - s.coaches)} more than the coaches`;
+  return `You gave up ${pointsWords(s.you)} of win probability against tt4th's estimates, ${compare} (${pointsWords(s.coaches)}). You matched tt4th on ${s.same} of ${plays}. tt4th is still being confirmed.`;
 }
 
 /** "October 25, 2026", from the game's Eastern date. */
@@ -214,7 +223,7 @@ export function shareText(game: ScoredGame, picks: FourthDownCall[], link: strin
   return [
     `4th down daily #${game.number}, ${dateWords(game.date)}`,
     ...lines,
-    `WP given up against tt4th: ${points(s.you)} points`,
+    `WP given up against tt4th: ${points(s.you)} points (the coaches: ${points(s.coaches)})`,
     link,
   ].join('\n');
 }
@@ -225,6 +234,8 @@ export interface DayRecord {
   date: string;
   picks: FourthDownCall[];
   wpLost: number;
+  /** Missing on a day played while the game showed no coaches' total (2026-11-01) */
+  coachWpLost?: number;
 }
 
 /** What the page keeps in localStorage: finished days, and today's picks so far. */
@@ -256,7 +267,7 @@ export function withPick(store: Store, game: ScoredGame, pick: FourthDownCall): 
   const picks = [...before, pick].slice(0, game.plays.length);
   if (picks.length < game.plays.length) return { ...store, progress: { number: game.number, picks } };
   const s = scoreOf(game.plays, picks);
-  const day: DayRecord = { number: game.number, date: game.date, picks, wpLost: s.you };
+  const day: DayRecord = { number: game.number, date: game.date, picks, wpLost: s.you, coachWpLost: s.coaches };
   const days = [...store.days, day].sort((a, b) => a.number - b.number);
   return { ...store, days, progress: null };
 }

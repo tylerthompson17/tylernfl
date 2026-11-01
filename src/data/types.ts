@@ -859,6 +859,8 @@ export interface DailyFourthData {
   closeMargin: number;
   /** Five plays in the order they are played; empty when too few were available */
   plays: DailyFourthPlay[];
+  /** Sum of the coaches' WP lost against tt4th on the five plays */
+  coachWpLost: number;
   /** The last 21 days' plays, newest first, so they are not used again soon */
   history: { date: string; keys: string[] }[];
 }

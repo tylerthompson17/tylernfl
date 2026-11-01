@@ -991,8 +991,9 @@ prominent with the label and dataAsOf, nfl4th's call and WPs beside it as the
 comparison. It says "still being confirmed" wherever its calls appear, never claims to
 be more accurate than nfl4th, and has no outcome-based record: grades, coach pages and
 questionable call lists are nfl4th's alone. The daily game is played against it (Tyler,
-2026-11-01): a visitor's own picks are scored against tt4th, and what a coach gave up is
-shown per play only, never summed, since the contract allows no WP-cost tally yet. Its label text
+2026-11-01): a visitor's picks are scored against tt4th beside what the coaches gave up on
+the same plays. That total is a WP-cost tally the contract's "What pages may show" does not
+yet allow; Tyler chose to show it (2026-11-01), and the contract is his to update. Its label text
 is the contract's (`terms.json`'s `experimental.label`, shown as is; stored results keep
 the label they were stored with), still "Experimental: ...". A contract change naming it
 tt4th is drafted for the fourth-down repo, not applied.
@@ -1096,9 +1097,9 @@ calculator's tabs.
   by 3.1 points.", "A close call: tt4th (still being confirmed) leaned Punt, by 0.4
   points.", "You picked Punt: 3.1 points of win probability below tt4th's estimate for Go
   for it." Rules and words are in `src/lib/daily-fourth/game.ts`.
-- Score: WP given up against tt4th's call over the five picks. A coach's cost shows per
-  play (`coachWpLost`) and is never summed: the contract allows no WP-cost tally of the
-  model yet. The share text lists only how each pick compared, never the plays or teams.
+- Score: WP given up against tt4th's call over the five picks, beside the coaches' on the
+  same plays (`coachWpLost`, tt4th's call minus the team's choice). The share text lists only
+  how each pick compared, never the plays or teams.
   Games before game 8 (2026-11-01) were scored against nfl4th, and the history says so.
 - Picks in progress, finished days, streaks (by game number; the current streak counts
   back from yesterday until today is played) and the team toggle live in localStorage
