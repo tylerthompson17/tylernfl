@@ -1,32 +1,32 @@
 {
   "season": 2026,
   "throughWeek": 8,
-  "updated": "2026-11-01T21:15:01Z",
+  "updated": "2026-11-01T21:32:36Z",
   "teams": [
     {
       "team": "BUF",
       "conference": "AFC",
       "division": "AFC East",
-      "wins": 5,
+      "wins": 6,
       "losses": 1,
       "ties": 0,
-      "pct": 0.833,
-      "pointsFor": 197,
-      "pointsAgainst": 171,
-      "diff": 26,
+      "pct": 0.857,
+      "pointsFor": 233,
+      "pointsAgainst": 181,
+      "diff": 52,
       "divisionRecord": [
         0,
         1,
         0
       ],
       "conferenceRecord": [
-        3,
+        4,
         1,
         0
       ],
-      "streak": "W2",
+      "streak": "W3",
       "divisionRank": 1,
-      "conferenceRank": 2,
+      "conferenceRank": 1,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -55,7 +55,7 @@
       "divisionRank": 2,
       "conferenceRank": 8,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "conference_record"
+      "conferenceTiebreak": null
     },
     {
       "team": "NYJ",
@@ -197,12 +197,12 @@
       "conference": "AFC",
       "division": "AFC North",
       "wins": 4,
-      "losses": 3,
+      "losses": 4,
       "ties": 0,
-      "pct": 0.571,
-      "pointsFor": 169,
-      "pointsAgainst": 167,
-      "diff": 2,
+      "pct": 0.5,
+      "pointsFor": 179,
+      "pointsAgainst": 203,
+      "diff": -24,
       "divisionRecord": [
         0,
         2,
@@ -210,12 +210,12 @@
       ],
       "conferenceRecord": [
         2,
-        2,
+        3,
         0
       ],
-      "streak": "L2",
+      "streak": "L3",
       "divisionRank": 4,
-      "conferenceRank": 9,
+      "conferenceRank": 10,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -350,9 +350,9 @@
       ],
       "streak": "L1",
       "divisionRank": 1,
-      "conferenceRank": 1,
+      "conferenceRank": 2,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "conference_record"
+      "conferenceTiebreak": null
     },
     {
       "team": "DEN",
@@ -404,9 +404,9 @@
       ],
       "streak": "W1",
       "divisionRank": 3,
-      "conferenceRank": 10,
+      "conferenceRank": 9,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "LAC",
