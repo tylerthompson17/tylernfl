@@ -358,13 +358,15 @@ tylernfl/
   readable; packed, git stores about 7 KB per version either way. Methods and the rbsdm.com comparison: `docs/methods/decision-grades.md`.
 - `daily_fourth.json` is written daily by `pipelines/daily_fourth.py` (one call at the end
   of `run_daily.py`'s decisions step): the daily 4th down game's five plays, picked from
-  `decisions.json`, with each option's WP, nfl4th's call and margin, what the team did
-  and what happened (`play_summary`, the live items' wording on nflverse's text) baked in.
+  `decisions.json`, with each option's WP under tt4th (its stored pre-game result) and
+  nfl4th, each one's call and margin, what the team did and what happened (`play_summary`,
+  the live items' wording on nflverse's text) baked in. Only plays with a stored result are
+  in the pool (`as_tt4th`), so from 2026 week 7.
   Selection is deterministic by date (sha256 of the date and each play's key, no clock and
   no `random`): evaluated 4th downs only (`skip` null), no fakes, games still in doubt
-  (nfl4th's best option 5% to 95%); two where the coach went against nfl4th, one close call
+  (tt4th's best option 5% to 95%); two where the coach went against tt4th, one close call
   (margin under 0.02) on about half of days and never more, the rest 0.02 or more; no team
-  or game twice, at most 2 of one nfl4th call, field zone or quarter, at most 1 routine
+  or game twice, at most 2 of one tt4th call, field zone or quarter, at most 1 routine
   punt, dropped in the order of `RELAX` when the pool runs short. Plays used in the last
   21 days (`history` in the file) rank after unused ones. A date already in the file is
   never changed, so game day reruns keep the day's game; the one exception is a field
@@ -987,8 +989,10 @@ shows (Tyler, 2026-10-31): the calculator's 4th down tab, live items (live page,
 panel, team tabs), game pages and the team tab's table, its call and WPs first and most
 prominent with the label and dataAsOf, nfl4th's call and WPs beside it as the
 comparison. It says "still being confirmed" wherever its calls appear, never claims to
-be more accurate than nfl4th, and has no outcome-based record: grades, coach pages,
-questionable call lists and the daily game's scoring are nfl4th's alone. Its label text
+be more accurate than nfl4th, and has no outcome-based record: grades, coach pages and
+questionable call lists are nfl4th's alone. The daily game is played against it (Tyler,
+2026-11-01): a visitor's own picks are scored against tt4th, and what a coach gave up is
+shown per play only, never summed, since the contract allows no WP-cost tally yet. Its label text
 is the contract's (`terms.json`'s `experimental.label`, shown as is; stored results keep
 the label they were stored with), still "Experimental: ...". A contract change naming it
 tt4th is drafted for the fourth-down repo, not applied.
@@ -1087,18 +1091,20 @@ calculator's tabs.
   75 yards in all.", then "Final: IND 30, KC 33 in overtime." and always "Outcomes are
   noisy: a good call can still go badly." A play with no `next` shows none of it.
 - Only options the model allows are offered (an option with null WP is left out).
-- Words are nfl4th's estimate, never "correct" or "wrong": "nfl4th says Go for it, by 3.1
-  points.", "A close call: nfl4th leaned Punt, by 0.4 points.", "You picked Punt: 3.1
-  points of win probability below nfl4th's estimate for Go for it." Rules and words are
-  in `src/lib/daily-fourth/game.ts`.
-- Score: WP given up against nfl4th's call over the five picks, beside the coaches' on the
-  same plays (`coachWpLost`, the file's `wpCost`). The share text lists only how each pick
-  compared, never the plays or teams.
+- Played against tt4th's stored pre-game results, nfl4th's call and WPs beside them. Words
+  are estimates, never "correct" or "wrong": "tt4th (still being confirmed) says Go for it,
+  by 3.1 points.", "A close call: tt4th (still being confirmed) leaned Punt, by 0.4
+  points.", "You picked Punt: 3.1 points of win probability below tt4th's estimate for Go
+  for it." Rules and words are in `src/lib/daily-fourth/game.ts`.
+- Score: WP given up against tt4th's call over the five picks. A coach's cost shows per
+  play (`coachWpLost`) and is never summed: the contract allows no WP-cost tally of the
+  model yet. The share text lists only how each pick compared, never the plays or teams.
+  Games before game 8 (2026-11-01) were scored against nfl4th, and the history says so.
 - Picks in progress, finished days, streaks (by game number; the current streak counts
   back from yesterday until today is played) and the team toggle live in localStorage
   (`tylernfl.daily-fourth`), every access in try/catch. A page whose game date is before
   the visitor's Eastern date says today's game is not out yet.
-- Credits Ben Baldwin's nfl4th with its license; never presented as Tyler's model.
+- Credits as everywhere tt4th shows (`TT4TH_CREDITS`).
 
 ### Retro Replays
 

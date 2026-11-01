@@ -1,10 +1,12 @@
 /**
  * The daily 4th down game's rules and words (/fourth-down/daily/), shared
  * by the page at build time and its script: the situation from either
- * side's view (team names hidden or shown), nfl4th's estimate, what each
- * pick gave up, the score, the shareable text, and streaks and history
- * from the visitor's own record. Every number is nfl4th's estimate, so the
- * words never say a pick was correct or wrong: only how it compares.
+ * side's view (team names hidden or shown), tt4th's estimate and nfl4th's
+ * beside it, what each pick gave up, the score, the shareable text, and
+ * streaks and history from the visitor's own record. Every number is an
+ * estimate, so the words never say a pick was correct or wrong: only how it
+ * compares. The score is the visitor's own picks: per the model contract
+ * there is no tally of what coaches gave up against tt4th, only each play's.
  */
 import type { DailyFourthData, DailyFourthPlay, DriveResult } from '../../data/types';
 import type { FourthDownCall } from '../fourth-down';
@@ -12,7 +14,7 @@ import type { FourthDownCall } from '../fourth-down';
 export const CALLS: FourthDownCall[] = ['go', 'punt', 'field goal'];
 
 /** What scoring reads from a play: all the page script is given. */
-export type ScoredPlay = Pick<DailyFourthPlay, 'wp' | 'call' | 'coachWpLost'>;
+export type ScoredPlay = Pick<DailyFourthPlay, 'wp' | 'call'>;
 
 /** The day's game as the page script has it. */
 export type ScoredGame = Pick<DailyFourthData, 'date' | 'number'> & { plays: ScoredPlay[] };
@@ -26,6 +28,9 @@ const DID_WORDS: Record<FourthDownCall, string> = {
 
 export const callWords = (call: FourthDownCall): string => CALL_WORDS[call];
 
+/** The file's closeMargin (CLOSE in pipelines/daily_fourth.py). */
+const CLOSE_MARGIN = 0.02;
+
 /** Points of win probability, one decimal: 0.0842 is "8.4". */
 export const points = (wp: number): string => (Math.max(wp, 0) * 100).toFixed(1);
 
@@ -35,7 +40,7 @@ const pointsWords = (wp: number): string => (wp > 0 && points(wp) === '0.0' ? 'l
 /** The options the model allows on this play, in a fixed order. */
 export const optionsOf = (p: DailyFourthPlay): FourthDownCall[] => CALLS.filter((c) => p.wp[c] !== null);
 
-/** WP a pick gave up against nfl4th's call, 0 for the call itself. */
+/** WP a pick gave up against tt4th's call, 0 for the call itself. */
 export function wpLost(p: ScoredPlay, pick: FourthDownCall): number {
   const chosen = p.wp[pick];
   const best = p.wp[p.call];
@@ -79,23 +84,31 @@ export function timeoutWords(p: DailyFourthPlay, names: boolean): string {
 /** "Week 2: IND at KC". */
 export const gameWords = (p: DailyFourthPlay): string => `Week ${p.week}: ${p.away} at ${p.home}`;
 
-/** "nfl4th says Go for it, by 8.4 points." or, under the close margin, a close call. */
-export function nfl4thLine(p: DailyFourthPlay): string {
+/** "tt4th (still being confirmed) says Go for it, by 8.4 points." or, under the close margin, a close call. */
+export function tt4thLine(p: DailyFourthPlay): string {
   return p.close
-    ? `A close call: nfl4th leaned ${callWords(p.call)}, by ${pointsWords(p.margin)}.`
-    : `nfl4th says ${callWords(p.call)}, by ${pointsWords(p.margin)}.`;
+    ? `A close call: tt4th (still being confirmed) leaned ${callWords(p.call)}, by ${pointsWords(p.margin)}.`
+    : `tt4th (still being confirmed) says ${callWords(p.call)}, by ${pointsWords(p.margin)}.`;
 }
 
-/** How a pick compares with nfl4th's estimate. */
+/** nfl4th on the same play, the comparison: the same words under the same close margin. */
+export function nfl4thLine(p: DailyFourthPlay): string {
+  const { call, margin } = p.nfl4th;
+  return margin < CLOSE_MARGIN
+    ? `A close call: nfl4th leaned ${callWords(call)}, by ${pointsWords(margin)}.`
+    : `nfl4th says ${callWords(call)}, by ${pointsWords(margin)}.`;
+}
+
+/** How a pick compares with tt4th's estimate. */
 export function pickLine(p: ScoredPlay, pick: FourthDownCall): string {
-  if (pick === p.call) return `You picked ${callWords(pick)}, the same as nfl4th.`;
-  return `You picked ${callWords(pick)}: ${pointsWords(wpLost(p, pick))} of win probability below nfl4th's estimate for ${callWords(p.call)}.`;
+  if (pick === p.call) return `You picked ${callWords(pick)}, the same as tt4th.`;
+  return `You picked ${callWords(pick)}: ${pointsWords(wpLost(p, pick))} of win probability below tt4th's estimate for ${callWords(p.call)}.`;
 }
 
 /** "Shane Steichen's IND punted: Punted 41 yards." plus how it compares. */
 export function coachLine(p: DailyFourthPlay): string {
   const did = `${p.coach}'s ${p.offense} ${DID_WORDS[p.teamCall]}`;
-  const vs = p.teamCall === p.call ? ', the same as nfl4th' : `, ${pointsWords(p.coachWpLost)} below nfl4th's estimate`;
+  const vs = p.teamCall === p.call ? ', the same as tt4th' : `, ${pointsWords(p.coachWpLost)} below tt4th's estimate`;
   return `${did}${vs}.`;
 }
 
@@ -161,36 +174,26 @@ export function finalLine(p: DailyFourthPlay): string | null {
 export const NOISY = 'Outcomes are noisy: a good call can still go badly.';
 
 export interface Score {
-  /** Your WP lost against nfl4th's call over the plays picked */
+  /** Your WP lost against tt4th's call over the plays picked */
   you: number;
-  /** The coaches' WP lost on the same plays */
-  coaches: number;
-  /** Plays where your pick was nfl4th's call */
+  /** Plays where your pick was tt4th's call */
   same: number;
 }
 
 export function scoreOf(plays: ScoredPlay[], picks: FourthDownCall[]): Score {
   let you = 0;
-  let coaches = 0;
   let same = 0;
   picks.forEach((pick, i) => {
     const p = plays[i];
     you += wpLost(p, pick);
-    coaches += p.coachWpLost;
     if (pick === p.call) same += 1;
   });
-  return { you, coaches, same };
+  return { you, same };
 }
 
-/** "You gave up 4.2 points ... The coaches gave up 7.9." */
+/** "You gave up 4.2 points ... You matched tt4th on 3 of 5." */
 export function scoreLine(s: Score, plays: number): string {
-  const compare =
-    points(s.you) === points(s.coaches)
-      ? 'the same as the coaches'
-      : s.you < s.coaches
-        ? `${pointsWords(s.coaches - s.you)} less than the coaches`
-        : `${pointsWords(s.you - s.coaches)} more than the coaches`;
-  return `You gave up ${pointsWords(s.you)} of win probability against nfl4th's estimates, ${compare} (${pointsWords(s.coaches)}). You matched nfl4th on ${s.same} of ${plays}.`;
+  return `You gave up ${pointsWords(s.you)} of win probability against tt4th's estimates. You matched tt4th on ${s.same} of ${plays}. tt4th is still being confirmed.`;
 }
 
 /** "October 25, 2026", from the game's Eastern date. */
@@ -205,13 +208,13 @@ export function shareText(game: ScoredGame, picks: FourthDownCall[], link: strin
   const s = scoreOf(game.plays, picks);
   const lines = picks.map((pick, i) => {
     const lost = wpLost(game.plays[i], pick);
-    const shown = lost === 0 ? 'Same as nfl4th' : points(lost) === '0.0' ? 'Under 0.1 below nfl4th' : `-${points(lost)}`;
+    const shown = lost === 0 ? 'Same as tt4th' : points(lost) === '0.0' ? 'Under 0.1 below tt4th' : `-${points(lost)}`;
     return `${i + 1}. ${shown}`;
   });
   return [
     `4th down daily #${game.number}, ${dateWords(game.date)}`,
     ...lines,
-    `WP given up: ${points(s.you)} points (the coaches: ${points(s.coaches)})`,
+    `WP given up against tt4th: ${points(s.you)} points`,
     link,
   ].join('\n');
 }
@@ -222,7 +225,6 @@ export interface DayRecord {
   date: string;
   picks: FourthDownCall[];
   wpLost: number;
-  coachWpLost: number;
 }
 
 /** What the page keeps in localStorage: finished days, and today's picks so far. */
@@ -254,7 +256,7 @@ export function withPick(store: Store, game: ScoredGame, pick: FourthDownCall): 
   const picks = [...before, pick].slice(0, game.plays.length);
   if (picks.length < game.plays.length) return { ...store, progress: { number: game.number, picks } };
   const s = scoreOf(game.plays, picks);
-  const day: DayRecord = { number: game.number, date: game.date, picks, wpLost: s.you, coachWpLost: s.coaches };
+  const day: DayRecord = { number: game.number, date: game.date, picks, wpLost: s.you };
   const days = [...store.days, day].sort((a, b) => a.number - b.number);
   return { ...store, days, progress: null };
 }

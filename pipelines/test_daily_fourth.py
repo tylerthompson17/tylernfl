@@ -3,7 +3,7 @@ import unittest
 from datetime import date, timedelta
 
 from common import DATA_DIR
-from daily_fourth import CLOSE, PLAYS, build_daily_fourth, play_summary, quarter_clock, select, spot, what_next, zone
+from daily_fourth import CLOSE, PLAYS, as_tt4th, build_daily_fourth, play_summary, quarter_clock, select, spot, what_next, zone
 
 DAY = date(2026, 10, 25)
 
@@ -54,10 +54,39 @@ class SelectTest(unittest.TestCase):
         more = self.decisions | {'fourthDowns': self.decisions['fourthDowns'][100:]}
         self.assertIs(build_daily_fourth(more, DAY, previous), previous)
 
+    def test_only_plays_with_a_stored_tt4th_result(self):
+        by_key = {f"{r['gameId']}:{r['playId']}": r for r in self.decisions['fourthDowns']}
+        for p in build_daily_fourth(self.decisions, DAY, None)['plays']:
+            e = by_key[p['key']]['experimental']
+            self.assertEqual(p['call'], e['call'])
+            self.assertEqual(p['wp'], {'go': e['wpGo'], 'punt': e['wpPunt'], 'field goal': e['wpFieldGoal']})
+            self.assertEqual(p['asOf'], e['dataAsOf'])
+            self.assertEqual(p['nfl4th']['call'], by_key[p['key']]['call'])
+            self.assertEqual(p['nfl4th']['wp']['go'], by_key[p['key']]['wpGo'])
+        without = [r | {'experimental': None} for r in self.decisions['fourthDowns']]
+        self.assertEqual(select(without, DAY, set()), [])
+
     def test_too_few_plays_gives_an_empty_day(self):
         game = build_daily_fourth(self.decisions | {'fourthDowns': self.decisions['fourthDowns'][:3]}, DAY, None)
         self.assertEqual(game['plays'], [])
         self.assertEqual(game['history'], [])
+
+
+class AsTt4thTest(unittest.TestCase):
+    RECORD = {
+        'call': 'punt', 'margin': 0.01, 'teamCall': 'punt', 'wpGo': 0.40, 'wpPunt': 0.41, 'wpFieldGoal': None,
+        'experimental': {'supported': True, 'call': 'go', 'wpGo': 0.45, 'wpPunt': 0.42, 'wpFieldGoal': None,
+                         'dataAsOf': {'season': 2026, 'week': 6}},
+    }
+
+    def test_tt4th_fills_the_fields_nfl4th_moves_aside(self):
+        t = as_tt4th(self.RECORD)
+        self.assertEqual((t['call'], t['margin'], t['wpCost'], t['wpGo']), ('go', 0.03, 0.03, 0.45))
+        self.assertEqual(t['nfl4th'], {'wp': {'go': 0.40, 'punt': 0.41, 'field goal': None}, 'call': 'punt', 'margin': 0.01})
+
+    def test_no_stored_result(self):
+        self.assertIsNone(as_tt4th(self.RECORD | {'experimental': None}))
+        self.assertIsNone(as_tt4th(self.RECORD | {'experimental': {'supported': False}}))
 
 
 def row(play_id, qtr, posteam, fixed_drive, result, drive=None, start=None, plays=0, yards=0,

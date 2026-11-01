@@ -85,9 +85,9 @@ async function pageEntries(): Promise<SearchEntry[]> {
       page(chart.data.title, `charts/${chart.id}`, `chart ${chart.data.tags.join(' ')}`, 'Chart')
     ),
     page('Transactions and injuries', 'transactions', 'injury report roster moves wire signings releases'),
-    page('4th down calculator', 'fourth-down', 'fourth down go for it punt field goal nfl4th', 'Tools'),
+    page('4th down calculator', 'fourth-down', 'fourth down go for it punt field goal tt4th nfl4th', 'Tools'),
     page('After a touchdown: kick or go for 2', 'fourth-down/try', 'two point conversion extra point pat try nfl4th', 'Tools'),
-    page('4th down daily', 'fourth-down/daily', 'daily game quiz play fourth down go for it punt field goal nfl4th', 'Tools'),
+    page('4th down daily', 'fourth-down/daily', 'daily game quiz play fourth down go for it punt field goal tt4th nfl4th', 'Tools'),
     page('Coaches\' 4th down decisions', 'decisions', 'coaches 4th down decisions grades nfl4th mistakes win probability lost two point', 'Tools'),
     page('Worst 4th down decisions', 'decisions/worst', 'worst 4th down decisions punts field goals mistakes nfl4th two point', 'Tools'),
     page('Tools', 'tools', 'calculators'),

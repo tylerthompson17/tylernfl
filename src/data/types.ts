@@ -855,12 +855,10 @@ export interface DailyFourthData {
   number: number;
   season: number;
   modelVersion: string | null;
-  /** Under this gap between nfl4th's top two options, a play is a close call */
+  /** Under this gap between tt4th's top two options, a play is a close call */
   closeMargin: number;
   /** Five plays in the order they are played; empty when too few were available */
   plays: DailyFourthPlay[];
-  /** Sum of the coaches' WP lost on the five plays */
-  coachWpLost: number;
   /** The last 21 days' plays, newest first, so they are not used again soon */
   history: { date: string; keys: string[] }[];
 }
@@ -886,16 +884,24 @@ export interface DailyFourthPlay {
   scoreDiff: number;
   timeoutsOffense: number;
   timeoutsDefense: number;
-  /** nfl4th's WP for each option; null for one the model leaves out */
+  /** tt4th's stored pre-game WP for each option; null for one the model leaves out */
   wp: Record<import('../lib/fourth-down').FourthDownCall, number | null>;
-  /** nfl4th's call */
+  /** tt4th's call */
   call: import('../lib/fourth-down').FourthDownCall;
-  /** WP between nfl4th's top two options */
+  /** WP between tt4th's top two options */
   margin: number;
   /** margin under closeMargin */
   close: boolean;
+  /** What tt4th's stored result was through */
+  asOf: { season: number; week: number };
+  /** nfl4th on the same play, the comparison */
+  nfl4th: {
+    wp: Record<import('../lib/fourth-down').FourthDownCall, number | null>;
+    call: import('../lib/fourth-down').FourthDownCall;
+    margin: number;
+  };
   teamCall: import('../lib/fourth-down').FourthDownCall;
-  /** WP of nfl4th's call minus WP of the team's choice */
+  /** WP of tt4th's call minus WP of the team's choice */
   coachWpLost: number;
   /** What happened, in a few plain words ("Punted 41 yards") */
   result: string;

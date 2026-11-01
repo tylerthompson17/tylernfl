@@ -1,23 +1,29 @@
 """The daily 4th down game (/fourth-down/daily/): five real 4th downs of the
 season, the same for everyone on a date, written to src/data/daily_fourth.json
-with everything the page shows baked in (each option's win probability,
-nfl4th's call and margin, what the team did and what happened), so the page
-downloads no model and fetches nothing.
+with everything the page shows baked in (each option's win probability under
+tt4th and nfl4th, each one's call and margin, what the team did and what
+happened), so the page downloads no model and fetches nothing.
+
+The game is played against tt4th's stored pre-game results (the experimental
+model's snapshot on each decisions.json record), nfl4th's kept beside them. So
+only plays with a stored result are in the pool: from 2026 week 7, the first
+week a pre-game result could exist.
 
 Read only from decisions.json, the same morning's file. Selection:
 - The pool is every 4th down nfl4th evaluated (skip is null: not overtime,
-  the last 15 seconds or a game already decided) with every option's WP and
-  a margin, in a game still in doubt (nfl4th's best option between 5% and
-  95%). Fakes are left out: what the team did is neither choice.
+  the last 15 seconds or a game already decided) with every option's WP, a
+  margin and a stored tt4th result, in a game still in doubt (tt4th's best
+  option between 5% and 95%). Fakes are left out: what the team did is
+  neither choice.
 - Each play is ranked by sha256 of the date and its key, so a date always
   gives the same order and nothing reads a clock or Python's random. Plays
   used in the last REUSE_DAYS days' games rank after every unused one.
 - Five slots are filled in rank order: AGAINST plays where the coach went
-  against nfl4th (margin at least CLOSE), then one close call (margin under
+  against tt4th (margin at least CLOSE), then one close call (margin under
   CLOSE) on days the date's hash says so, then the rest from plays with a
   margin of CLOSE or more. Close calls are never used anywhere else.
 - Every pick keeps the day varied: no team twice (on offense or defense),
-  no game twice, at most 2 of one nfl4th call, of one field zone and of one
+  no game twice, at most 2 of one tt4th call, of one field zone and of one
   quarter, and at most 1 routine punt. When the pool cannot satisfy them
   they are dropped one at a time in RELAX order; distinct games never are.
 - A date already in the file is kept as it is, so the game day reruns never
@@ -47,7 +53,7 @@ from common import DATA_DIR, normalize_team, write_json_if_changed
 
 FILE = 'daily_fourth.json'
 PLAYS = 5
-# Under this gap between nfl4th's top two options a play is a close call,
+# Under this gap between tt4th's top two options a play is a close call,
 # the live items' CLOSE (src/lib/live-fourth/words.ts).
 CLOSE = 0.02
 AGAINST = 2
@@ -87,10 +93,32 @@ def play_key(r: dict) -> str:
     return f"{r['gameId']}:{r['playId']}"
 
 
+def as_tt4th(r: dict) -> dict | None:
+    """A record with tt4th's stored numbers in the fields the game reads and
+    nfl4th's under `nfl4th`, or None when it has no stored result."""
+    e = r.get('experimental')
+    if not e or not e['supported']:
+        return None
+    wp = {field: e[field] for field in WP_FIELDS.values()}
+    top = sorted((v for v in wp.values() if v is not None), reverse=True)
+    if len(top) < 2 or e['call'] not in CALLS or r['teamCall'] not in CALLS or wp[WP_FIELDS[r['teamCall']]] is None:
+        return None
+    return r | wp | {
+        'call': e['call'],
+        'margin': round(top[0] - top[1], 5),
+        'wpCost': max(round(wp[WP_FIELDS[e['call']]] - wp[WP_FIELDS[r['teamCall']]], 5), 0),
+        'asOf': e['dataAsOf'],
+        'nfl4th': {'wp': {call: r.get(WP_FIELDS[call]) for call in CALLS}, 'call': r['call'], 'margin': r['margin']},
+    }
+
+
 def eligible(r: dict) -> bool:
-    if not (r['skip'] is None and r['call'] in CALLS and r.get('margin') is not None
-            and r.get('wpGo') is not None and r.get('wpCost') is not None and not r['fake']):
-        return False
+    """Whether nfl4th evaluated this 4th down as a real choice."""
+    return (r['skip'] is None and r['call'] in CALLS and r.get('margin') is not None
+            and r.get('wpGo') is not None and r.get('wpCost') is not None and not r['fake'])
+
+
+def in_doubt(r: dict) -> bool:
     return IN_DOUBT[0] <= r[WP_FIELDS[r['call']]] <= IN_DOUBT[1]
 
 
@@ -150,8 +178,8 @@ def take(candidates: list[dict], picked: list[dict], count: int) -> None:
 
 def select(fourth_downs: list[dict], day: date, recent: set[str]) -> list[dict]:
     """The day's five 4th downs, in the order they are played."""
-    pool = sorted((r for r in fourth_downs if eligible(r)),
-                  key=lambda r: (play_key(r) in recent, rank(day, play_key(r))))
+    played = [t for t in (as_tt4th(r) for r in fourth_downs if eligible(r)) if t and in_doubt(t)]
+    pool = sorted(played, key=lambda r: (play_key(r) in recent, rank(day, play_key(r))))
     clear = [r for r in pool if r['margin'] >= CLOSE]
     close = [r for r in pool if r['margin'] < CLOSE]
     picked: list[dict] = []
@@ -236,6 +264,8 @@ def baked(r: dict) -> dict:
         'call': r['call'],
         'margin': r['margin'],
         'close': r['margin'] < CLOSE,
+        'asOf': r['asOf'],
+        'nfl4th': r['nfl4th'],
         'teamCall': r['teamCall'],
         'coachWpLost': r['wpCost'],
         'result': play_summary(r['description'], s['distance'], r['teamCall']),
@@ -383,7 +413,6 @@ def build_daily_fourth(decisions: dict, day: date, previous: dict | None, rows_f
         'modelVersion': decisions['modelVersion'],
         'closeMargin': CLOSE,
         'plays': plays,
-        'coachWpLost': round(sum(p['coachWpLost'] for p in plays), 5),
         'history': history,
     }
 

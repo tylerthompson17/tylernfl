@@ -15,6 +15,7 @@ import { url } from '../../utils/url';
 import { gameHref } from '../../utils/games';
 import { playAnchor } from '../../lib/games/view';
 import { fieldGoalYards } from '../../lib/field/strip';
+import { TT4TH_CREDITS } from '../../lib/model-compare/credits';
 import {
   callWords,
   clockWords,
@@ -31,31 +32,30 @@ import {
   points,
   scoreWords,
   timeoutWords,
+  tt4thLine,
 } from '../../lib/daily-fourth/game';
 
 const files = import.meta.glob<DailyFourthData>('../../data/daily_fourth.json', { eager: true, import: 'default' });
 const game: DailyFourthData | null = Object.values(files)[0] ?? null;
 const ready = game !== null && game.plays.length > 0;
 
-const NFL4TH = 'https://github.com/nflverse/nfl4th';
-const LICENSE = 'https://github.com/nflverse/nfl4th/blob/master/LICENSE';
 const link = new URL(url('fourth-down/daily'), Astro.site).href;
 // Only what the script needs; the words are already on the page.
 const embedded = ready
-  ? { date: game.date, number: game.number, link, plays: game.plays.map(({ wp, call, coachWpLost }) => ({ wp, call, coachWpLost })) }
+  ? { date: game.date, number: game.number, link, plays: game.plays.map(({ wp, call }) => ({ wp, call })) }
   : null;
 ---
 
 <BaseLayout
   title="4th down daily"
-  description="Five real 4th downs from this NFL season every day: make the call, then see nfl4th's win probability for each option and what the coach did."
+  description="Five real 4th downs from this NFL season every day: make the call, then see tt4th's and nfl4th's win probability for each option and what the coach did."
 >
   <h1 class="page-title">4th down daily</h1>
   <p class="page-intro">
-    Five real 4th downs from this season, the same for everyone today. Make each call, then see what Ben Baldwin's
-    <a href={NFL4TH}>nfl4th</a> estimates each option was worth in win probability, what the coach did and what
-    happened. Your score is the win probability your calls give up against nfl4th's estimates, next to the coaches' on
-    the same plays.
+    Five real 4th downs from this season, the same for everyone today. Make each call, then see what tt4th estimated
+    before the game that each option was worth in win probability, with nfl4th beside it, what the coach did and what
+    happened. Your score is the win probability your calls give up against tt4th's estimates. tt4th is still being
+    confirmed.
   </p>
 
   {
@@ -132,20 +132,22 @@ const embedded = ready
                       </button>
                     ))}
                   </div>
-                  <p class="kicker-note">nfl4th assumes a league-average kicker and doesn't know who's kicking.</p>
+                  <p class="kicker-note">tt4th and nfl4th assume a league-average kicker and don't know who's kicking.</p>
                 </div>
                 <div class="side">
                   <p class="waiting" data-waiting>
-                    Make your call to see nfl4th's estimate for each option, what the coach did and what happened.
+                    Make your call to see tt4th's and nfl4th's estimates for each option, what the coach did and what happened.
                   </p>
                   <div class="reveal" data-reveal hidden>
                     <p class="you" data-you tabindex="-1" />
-                    <p class="said">{nfl4thLine(p)}</p>
+                    <p class="said">{tt4thLine(p)}</p>
+                    <p class="also">{nfl4thLine(p)}</p>
                     <table class="stat-table wp">
-                      <caption class="visually-hidden">nfl4th's win probability for each option</caption>
+                      <caption class="visually-hidden">tt4th's and nfl4th's win probability for each option</caption>
                       <thead>
                         <tr>
                           <th scope="col">Option</th>
+                          <th scope="col" class="number">tt4th WP</th>
                           <th scope="col" class="number">nfl4th WP</th>
                           <th scope="col">Who</th>
                         </tr>
@@ -155,13 +157,15 @@ const embedded = ready
                           <tr data-option={c} class:list={{ top: c === p.call }}>
                             <th scope="row">{c === 'field goal' ? `Field goal, ${fieldGoalYards(p.yardline100)} yards` : callWords(c)}</th>
                             <td class="number">{points(p.wp[c]!)}%</td>
+                            <td class="number">{points(p.nfl4th.wp[c]!)}%</td>
                             <td class="who" data-who={c}>
-                              {[c === p.call ? 'nfl4th' : null, c === p.teamCall ? 'Coach' : null].filter(Boolean).join(', ')}
+                              {[c === p.call ? 'tt4th' : null, c === p.nfl4th.call ? 'nfl4th' : null, c === p.teamCall ? 'Coach' : null].filter(Boolean).join(', ')}
                             </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
+                    <p class="as-of">tt4th's tables through {p.asOf.season} week {p.asOf.week}, before this game.</p>
                     <p class="coach">
                       {gameHref(p.gameId) ? (
                         // A play's key is "<gameId>:<playId>" (play_key in pipelines/daily_fourth.py).
@@ -201,7 +205,7 @@ const embedded = ready
                   <th scope="col">Play</th>
                   <th scope="col">Game</th>
                   <th scope="col">You</th>
-                  <th scope="col">nfl4th</th>
+                  <th scope="col">tt4th</th>
                   <th scope="col">Coach</th>
                   <th scope="col" class="number">You gave up</th>
                   <th scope="col" class="number">Coach gave up</th>
@@ -245,12 +249,11 @@ const embedded = ready
                 <th scope="col">Game</th>
                 <th scope="col">Date</th>
                 <th scope="col" class="number">You gave up</th>
-                <th scope="col" class="number">Coaches gave up</th>
               </tr>
             </thead>
             <tbody data-history-rows />
           </table>
-          <p class="foot">Kept in this browser only. Clearing site data resets it.</p>
+          <p class="foot">Kept in this browser only. Clearing site data resets it. Games before game 8 were scored against nfl4th.</p>
         </Panel>
       </div>
     ) : (
@@ -267,24 +270,24 @@ const embedded = ready
   <Panel title="How it works" class="about">
     <ul class="notes">
       <li>
-        Every number is nfl4th's estimate: the offense's chance to win after each option, before the snap, with a
-        league average kicker and no adjustment for the teams playing. The page compares your calls with it; it does not
-        say any call was right.
+        Your score is against tt4th: its estimate of the offense's chance to win after each option, stored before the
+        game was played, with a league average kicker. nfl4th's is beside it, with no adjustment for the teams playing.
+        The page compares your calls with tt4th; it does not say any call was right, and tt4th is still being confirmed.
       </li>
       <li>
-        "By" is points of win probability: how far nfl4th's choice was ahead of the next option. A close call is under
+        "By" is points of win probability: how far a model's choice was ahead of the next option. A close call is under
         {ready ? ` ${points(game.closeMargin)}` : ' 2.0'} points, when either choice is reasonable. Options the model leaves
         out (a field goal from your own side of the field) are not offered.
       </li>
       <li>
-        Plays are picked each morning from the season's finals: some where the coach went against nfl4th, at most one
-        close call, a mix of teams, field position and quarters, and only games still in doubt. Teams are hidden until
-        you show them; the answer names the game.
+        Plays are picked each morning from the season's finals that have a stored tt4th result: some where the coach
+        went against tt4th, at most one close call, a mix of teams, field position and quarters, and only games still in
+        doubt. Teams are hidden until you show them; the answer names the game.
       </li>
       <li>
-        The model is Ben Baldwin's <a href={NFL4TH}>nfl4th</a> (<a href={LICENSE}>MIT license</a>), reproduced exactly
-        {ready && game.modelVersion ? ` (${game.modelVersion})` : ''}. The same numbers grade every coach on{' '}
-        <a href={url('decisions')}>4th down and 2-point decisions</a>, and you can set any situation in the{' '}
+        <Fragment set:html={TT4TH_CREDITS} /> nfl4th's numbers are reproduced exactly
+        {ready && game.modelVersion ? ` (${game.modelVersion})` : ''} and grade every coach on{' '}
+        <a href={url('decisions')}>4th down and 2-point decisions</a>. You can set any situation in the{' '}
         <a href={url('fourth-down')}>4th down calculator</a>.
       </li>
     </ul>
@@ -518,6 +521,15 @@ const embedded = ready
   .you,
   .said {
     font-weight: 700;
+  }
+
+  .also,
+  .as-of {
+    color: var(--text-dim);
+  }
+
+  .as-of {
+    font-size: 12px;
   }
 
   .wp {

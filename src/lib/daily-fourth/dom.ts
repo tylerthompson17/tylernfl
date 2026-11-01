@@ -120,7 +120,6 @@ export function initDailyFourth(): void {
           [String(d.number), true],
           [dateWords(d.date), false],
           [points(d.wpLost), true],
-          [points(d.coachWpLost), true],
         ] as const) {
           const td = document.createElement('td');
           td.textContent = text;

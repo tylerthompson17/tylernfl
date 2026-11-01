@@ -8,6 +8,7 @@ import {
   finalLine,
   nextLine,
   nfl4thLine,
+  tt4thLine,
   optionsOf,
   parseStore,
   pickLine,
@@ -26,7 +27,8 @@ const play = (over: Partial<DailyFourthPlay> = {}): DailyFourthPlay => ({
   key: '2026_02_IND_KC:3975', gameId: '2026_02_IND_KC', week: 2, away: 'IND', home: 'KC', offense: 'IND',
   defense: 'KC', coach: 'Shane Steichen', quarter: 4, clock: 34, distance: 4, yardline100: 51, scoreDiff: 0,
   timeoutsOffense: 1, timeoutsDefense: 3, wp: { go: 0.43649, punt: 0.35233, 'field goal': 0.22108 }, call: 'go',
-  margin: 0.08416, close: false, teamCall: 'punt', coachWpLost: 0.08416, result: 'Punted 41 yards',
+  margin: 0.08416, close: false, asOf: { season: 2026, week: 6 },
+  nfl4th: { wp: { go: 0.3, punt: 0.35, 'field goal': 0.2 }, call: 'punt', margin: 0.05 }, teamCall: 'punt', coachWpLost: 0.08416, result: 'Punted 41 yards',
   description: '(0:34) punts 41 yards',
   next: {
     converted: false,
@@ -59,22 +61,29 @@ test('only the options the model allows', () => {
 });
 
 test('estimates, never right or wrong', () => {
-  assert.equal(nfl4thLine(play()), 'nfl4th says Go for it, by 8.4 points.');
-  assert.equal(nfl4thLine(play({ close: true, margin: 0.004, call: 'punt' })), 'A close call: nfl4th leaned Punt, by 0.4 points.');
-  assert.equal(nfl4thLine(play({ close: true, margin: 0.00005, call: 'punt' })), 'A close call: nfl4th leaned Punt, by less than 0.1 points.');
-  assert.equal(pickLine(play(), 'go'), 'You picked Go for it, the same as nfl4th.');
-  assert.equal(pickLine(play(), 'punt'), "You picked Punt: 8.4 points of win probability below nfl4th's estimate for Go for it.");
-  for (const line of [nfl4thLine(play()), pickLine(play(), 'punt')]) assert.doesNotMatch(line, /correct|wrong/i);
+  assert.equal(tt4thLine(play()), 'tt4th (still being confirmed) says Go for it, by 8.4 points.');
+  assert.equal(tt4thLine(play({ close: true, margin: 0.004, call: 'punt' })), 'A close call: tt4th (still being confirmed) leaned Punt, by 0.4 points.');
+  assert.equal(tt4thLine(play({ close: true, margin: 0.00005, call: 'punt' })), 'A close call: tt4th (still being confirmed) leaned Punt, by less than 0.1 points.');
+  assert.equal(pickLine(play(), 'go'), 'You picked Go for it, the same as tt4th.');
+  assert.equal(pickLine(play(), 'punt'), "You picked Punt: 8.4 points of win probability below tt4th's estimate for Go for it.");
+  for (const line of [tt4thLine(play()), nfl4thLine(play()), pickLine(play(), 'punt')]) assert.doesNotMatch(line, /correct|wrong/i);
 });
 
-test('score against nfl4th and the coaches', () => {
+test("nfl4th's call on the same play is the comparison", () => {
+  assert.equal(nfl4thLine(play()), 'nfl4th says Punt, by 5.0 points.');
+  const close = play({ nfl4th: { wp: { go: 0.3, punt: 0.304, 'field goal': null }, call: 'punt', margin: 0.004 } });
+  assert.equal(nfl4thLine(close), 'A close call: nfl4th leaned Punt, by 0.4 points.');
+});
+
+test('the score is your own picks against tt4th, with no coach tally', () => {
   assert.equal(wpLost(play(), 'field goal'), 0.21541);
   const s = scoreOf(game().plays, ['go', 'punt']);
   assert.equal(s.same, 1);
   assert.ok(Math.abs(s.you - 0.1) < 1e-9);
+  assert.deepEqual(Object.keys(s).sort(), ['same', 'you']);
   assert.equal(
     scoreLine(s, 2),
-    "You gave up 10.0 points of win probability against nfl4th's estimates, 1.6 points more than the coaches (8.4 points). You matched nfl4th on 1 of 2.",
+    "You gave up 10.0 points of win probability against tt4th's estimates. You matched tt4th on 1 of 2. tt4th is still being confirmed.",
   );
 });
 
@@ -82,14 +91,14 @@ test('share text has no plays in it', () => {
   const text = shareText(game(), ['go', 'punt'], 'https://example.test/daily/');
   assert.equal(text, [
     '4th down daily #1, October 25, 2026',
-    '1. Same as nfl4th',
+    '1. Same as tt4th',
     '2. -10.0',
-    'WP given up: 10.0 points (the coaches: 8.4)',
+    'WP given up against tt4th: 10.0 points',
     'https://example.test/daily/',
   ].join('\n'));
-  assert.doesNotMatch(text, /IND|KC|Steichen/);
+  assert.doesNotMatch(text, /IND|KC|Steichen|coach/i);
   const close = game(1, [play({ wp: { go: 0.40224, punt: 0.4023, 'field goal': null }, call: 'punt' })]);
-  assert.match(shareText(close, ['go'], 'x'), /^1\. Under 0\.1 below nfl4th$/m);
+  assert.match(shareText(close, ['go'], 'x'), /^1\. Under 0\.1 below tt4th$/m);
 });
 
 test('picks are kept until the day is filed, once', () => {
@@ -110,7 +119,7 @@ test('stored values that are not ours start over', () => {
 });
 
 test('streaks run back from today, or from yesterday until today is played', () => {
-  const store = { ...emptyStore(), days: [1, 2, 3, 5, 6].map((number) => ({ number, date: '2026-10-25', picks: [], wpLost: 0, coachWpLost: 0 })) };
+  const store = { ...emptyStore(), days: [1, 2, 3, 5, 6].map((number) => ({ number, date: '2026-10-25', picks: [], wpLost: 0 })) };
   assert.deepEqual(streaks(store, 6), { current: 2, best: 3, played: 5 });
   assert.deepEqual(streaks(store, 7), { current: 2, best: 3, played: 5 });
   assert.deepEqual(streaks(store, 8), { current: 0, best: 3, played: 5 });
