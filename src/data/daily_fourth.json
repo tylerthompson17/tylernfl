@@ -1,45 +1,180 @@
 {
-  "date": "2026-10-31",
-  "number": 7,
+  "date": "2026-11-01",
+  "number": 8,
   "season": 2026,
   "modelVersion": "nfl4th-ecb7293",
   "closeMargin": 0.02,
   "plays": [
     {
-      "key": "2026_03_MIN_TB:2594",
+      "key": "2026_03_CAR_CLE:563",
+      "gameId": "2026_03_CAR_CLE",
+      "week": 3,
+      "away": "CAR",
+      "home": "CLE",
+      "offense": "CAR",
+      "defense": "CLE",
+      "coach": "Dave Canales",
+      "quarter": 1,
+      "clock": 360,
+      "distance": 2,
+      "yardline100": 56,
+      "scoreDiff": 0,
+      "timeoutsOffense": 3,
+      "timeoutsDefense": 3,
+      "wp": {
+        "go": 0.55929,
+        "punt": 0.53586,
+        "field goal": null
+      },
+      "call": "go",
+      "margin": 0.02343,
+      "close": false,
+      "teamCall": "punt",
+      "coachWpLost": 0.02343,
+      "result": "Punted 47 yards",
+      "description": "(6:00) 6-S.Martin punts 47 yards to CLE 9, Center-44-J.Jansen, downed by CAR-29-A.Evans.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "CLE",
+          "startYardline100": 91,
+          "plays": 13,
+          "yards": 48,
+          "result": "punt"
+        },
+        "ended": null,
+        "final": {
+          "away": 18,
+          "home": 21,
+          "overtime": false
+        }
+      }
+    },
+    {
+      "key": "2026_06_TEN_IND:3812",
+      "gameId": "2026_06_TEN_IND",
+      "week": 6,
+      "away": "TEN",
+      "home": "IND",
+      "offense": "TEN",
+      "defense": "IND",
+      "coach": "Robert Saleh",
+      "quarter": 4,
+      "clock": 127,
+      "distance": 5,
+      "yardline100": 31,
+      "scoreDiff": 0,
+      "timeoutsOffense": 3,
+      "timeoutsDefense": 2,
+      "wp": {
+        "go": 0.47393,
+        "punt": 0.33838,
+        "field goal": 0.50305
+      },
+      "call": "field goal",
+      "margin": 0.02912,
+      "close": false,
+      "teamCall": "field goal",
+      "coachWpLost": 0.0,
+      "result": "Made a 49-yard field goal",
+      "description": "(2:07) 6-J.Slye 49 yard field goal is GOOD, Center-46-M.Cox, Holder-3-T.Townsend.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "IND",
+          "startYardline100": 77,
+          "plays": 5,
+          "yards": 8,
+          "result": "turnover on downs"
+        },
+        "ended": null,
+        "final": {
+          "away": 26,
+          "home": 20,
+          "overtime": false
+        }
+      }
+    },
+    {
+      "key": "2026_05_BAL_ATL:415",
+      "gameId": "2026_05_BAL_ATL",
+      "week": 5,
+      "away": "BAL",
+      "home": "ATL",
+      "offense": "ATL",
+      "defense": "BAL",
+      "coach": "Raheem Morris",
+      "quarter": 1,
+      "clock": 581,
+      "distance": 6,
+      "yardline100": 79,
+      "scoreDiff": -3,
+      "timeoutsOffense": 3,
+      "timeoutsDefense": 3,
+      "wp": {
+        "go": 0.49828,
+        "punt": 0.51858,
+        "field goal": null
+      },
+      "call": "punt",
+      "margin": 0.02031,
+      "close": false,
+      "teamCall": "punt",
+      "coachWpLost": 0.0,
+      "result": "Punted 56 yards",
+      "description": "(9:41) 16-J.Bailey punts 56 yards to BAL 23, Center-49-L.McCullough, fair catch by 10-L.Wester.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "BAL",
+          "startYardline100": 77,
+          "plays": 3,
+          "yards": 11,
+          "result": "opponent touchdown"
+        },
+        "ended": null,
+        "final": {
+          "away": 30,
+          "home": 23,
+          "overtime": true
+        }
+      }
+    },
+    {
+      "key": "2026_03_MIN_TB:4009",
       "gameId": "2026_03_MIN_TB",
       "week": 3,
       "away": "MIN",
       "home": "TB",
-      "offense": "TB",
-      "defense": "MIN",
-      "coach": "Todd Bowles",
-      "quarter": 3,
-      "clock": 578,
-      "distance": 5,
-      "yardline100": 81,
-      "scoreDiff": -7,
+      "offense": "MIN",
+      "defense": "TB",
+      "coach": "Kevin O'Connell",
+      "quarter": 4,
+      "clock": 195,
+      "distance": 16,
+      "yardline100": 38,
+      "scoreDiff": 1,
       "timeoutsOffense": 3,
       "timeoutsDefense": 3,
       "wp": {
-        "go": 0.17159,
-        "punt": 0.17368,
-        "field goal": null
+        "go": 0.60484,
+        "punt": 0.63195,
+        "field goal": 0.66578
       },
-      "call": "punt",
-      "margin": 0.00209,
-      "close": true,
-      "teamCall": "punt",
+      "call": "field goal",
+      "margin": 0.03384,
+      "close": false,
+      "teamCall": "field goal",
       "coachWpLost": 0.0,
-      "result": "Punted 59 yards",
-      "description": "(9:38) 9-R.Dixon punts 59 yards to MIN 22, Center-86-E.Deckers. 4-M.Price to MIN 32 for 10 yards (84-B.Sharp).",
+      "result": "Made a 56-yard field goal",
+      "description": "(3:15) 16-W.Reichard 56 yard field goal is GOOD, Center-42-A.DePaola, Holder-6-J.Hekker.",
       "next": {
         "converted": false,
         "drive": {
-          "team": "MIN",
-          "startYardline100": 68,
-          "plays": 3,
-          "yards": -1,
+          "team": "TB",
+          "startYardline100": 71,
+          "plays": 5,
+          "yards": 10,
           "result": "turnover"
         },
         "ended": null,
@@ -51,188 +186,63 @@
       }
     },
     {
-      "key": "2026_03_CAR_CLE:1141",
-      "gameId": "2026_03_CAR_CLE",
-      "week": 3,
-      "away": "CAR",
-      "home": "CLE",
-      "offense": "CLE",
-      "defense": "CAR",
-      "coach": "Todd Monken",
+      "key": "2026_01_NE_SEA:1430",
+      "gameId": "2026_01_NE_SEA",
+      "week": 1,
+      "away": "NE",
+      "home": "SEA",
+      "offense": "SEA",
+      "defense": "NE",
+      "coach": "Mike Macdonald",
       "quarter": 2,
-      "clock": 723,
-      "distance": 14,
-      "yardline100": 43,
-      "scoreDiff": 0,
+      "clock": 285,
+      "distance": 5,
+      "yardline100": 50,
+      "scoreDiff": -7,
       "timeoutsOffense": 3,
       "timeoutsDefense": 3,
       "wp": {
-        "go": 0.41633,
-        "punt": 0.44185,
-        "field goal": 0.42144
+        "go": 0.31132,
+        "punt": 0.28565,
+        "field goal": 0.24264
       },
-      "call": "punt",
-      "margin": 0.02042,
+      "call": "go",
+      "margin": 0.02567,
       "close": false,
       "teamCall": "punt",
-      "coachWpLost": 0.0,
-      "result": "Punted 27 yards",
-      "description": "(12:03) 13-C.Bojorquez punts 27 yards to CAR 16, Center-50-R.Sunahara, out of bounds.",
+      "coachWpLost": 0.02567,
+      "result": "Punted 42 yards",
+      "description": "(4:45) 4-M.Dickson punts 42 yards to NE 8, Center-41-C.Stoll, out of bounds.",
       "next": {
         "converted": false,
         "drive": {
-          "team": "CAR",
-          "startYardline100": 84,
+          "team": "NE",
+          "startYardline100": 92,
           "plays": 8,
-          "yards": 31,
-          "result": "turnover on downs"
-        },
-        "ended": null,
-        "final": {
-          "away": 18,
-          "home": 21,
-          "overtime": false
-        }
-      }
-    },
-    {
-      "key": "2026_03_HOU_IND:723",
-      "gameId": "2026_03_HOU_IND",
-      "week": 3,
-      "away": "HOU",
-      "home": "IND",
-      "offense": "IND",
-      "defense": "HOU",
-      "coach": "Shane Steichen",
-      "quarter": 1,
-      "clock": 272,
-      "distance": 13,
-      "yardline100": 21,
-      "scoreDiff": 0,
-      "timeoutsOffense": 2,
-      "timeoutsDefense": 3,
-      "wp": {
-        "go": 0.4629,
-        "punt": null,
-        "field goal": 0.48439
-      },
-      "call": "field goal",
-      "margin": 0.02149,
-      "close": false,
-      "teamCall": "field goal",
-      "coachWpLost": 0.0,
-      "result": "Made a 39-yard field goal",
-      "description": "(4:32) 3-S.Shrader 39 yard field goal is GOOD, Center-46-L.Rhodes, Holder-8-R.Sanchez. ** Injury Update: IND-3-S.Shrader has returned to the game.",
-      "next": {
-        "converted": false,
-        "drive": {
-          "team": "HOU",
-          "startYardline100": 80,
-          "plays": 4,
-          "yards": -1,
+          "yards": 45,
           "result": "punt"
         },
         "ended": null,
         "final": {
-          "away": 17,
-          "home": 19,
-          "overtime": false
-        }
-      }
-    },
-    {
-      "key": "2026_06_CHI_ATL:1786",
-      "gameId": "2026_06_CHI_ATL",
-      "week": 6,
-      "away": "CHI",
-      "home": "ATL",
-      "offense": "CHI",
-      "defense": "ATL",
-      "coach": "Ben Johnson",
-      "quarter": 2,
-      "clock": 112,
-      "distance": 1,
-      "yardline100": 60,
-      "scoreDiff": 7,
-      "timeoutsOffense": 3,
-      "timeoutsDefense": 2,
-      "wp": {
-        "go": 0.79698,
-        "punt": 0.77422,
-        "field goal": null
-      },
-      "call": "go",
-      "margin": 0.02275,
-      "close": false,
-      "teamCall": "punt",
-      "coachWpLost": 0.02275,
-      "result": "Punted 50 yards",
-      "description": "(1:52) 19-T.Taylor punts 50 yards to ATL 10, Center-46-S.Daly. 17-Z.Branch MUFFS catch, RECOVERED by CHI-39-J.Blackwell at ATL 10.",
-      "next": {
-        "converted": false,
-        "drive": {
-          "team": "CHI",
-          "startYardline100": 10,
-          "plays": 3,
-          "yards": 10,
-          "result": "touchdown"
-        },
-        "ended": null,
-        "final": {
-          "away": 31,
-          "home": 23,
-          "overtime": false
-        }
-      }
-    },
-    {
-      "key": "2026_02_JAX_DEN:2622",
-      "gameId": "2026_02_JAX_DEN",
-      "week": 2,
-      "away": "JAX",
-      "home": "DEN",
-      "offense": "DEN",
-      "defense": "JAX",
-      "coach": "Sean Payton",
-      "quarter": 3,
-      "clock": 302,
-      "distance": 5,
-      "yardline100": 27,
-      "scoreDiff": -10,
-      "timeoutsOffense": 3,
-      "timeoutsDefense": 3,
-      "wp": {
-        "go": 0.25602,
-        "punt": null,
-        "field goal": 0.2266
-      },
-      "call": "go",
-      "margin": 0.02941,
-      "close": false,
-      "teamCall": "field goal",
-      "coachWpLost": 0.02941,
-      "result": "Made a 45-yard field goal",
-      "description": "(5:02) 3-W.Lutz 45 yard field goal is GOOD, Center-48-M.Fraboni, Holder-16-J.Crawshaw.",
-      "next": {
-        "converted": false,
-        "drive": {
-          "team": "JAX",
-          "startYardline100": 68,
-          "plays": 5,
-          "yards": 18,
-          "result": "turnover"
-        },
-        "ended": null,
-        "final": {
-          "away": 13,
-          "home": 20,
+          "away": 10,
+          "home": 13,
           "overtime": false
         }
       }
     }
   ],
-  "coachWpLost": 0.05216,
+  "coachWpLost": 0.0491,
   "history": [
+    {
+      "date": "2026-11-01",
+      "keys": [
+        "2026_03_CAR_CLE:563",
+        "2026_06_TEN_IND:3812",
+        "2026_05_BAL_ATL:415",
+        "2026_03_MIN_TB:4009",
+        "2026_01_NE_SEA:1430"
+      ]
+    },
     {
       "date": "2026-10-31",
       "keys": [

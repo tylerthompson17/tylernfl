@@ -3,7 +3,7 @@
   "week": 8,
   "movesWeek": 8,
   "comparedToWeek": 7,
-  "updated": "2026-10-31T15:36:38Z",
+  "updated": "2026-11-01T16:30:17Z",
   "categories": [
     {
       "key": "game-status",
@@ -56,6 +56,20 @@
       "snapShare": 0.27,
       "starter": false,
       "priority": 110
+    },
+    {
+      "playerId": "00-0039234",
+      "player": "T.J. Tampa",
+      "position": "CB",
+      "team": "BAL",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.06,
+      "starter": false,
+      "priority": 130
     },
     {
       "playerId": "00-0035253",
@@ -156,6 +170,34 @@
       "priority": 30
     },
     {
+      "playerId": "00-0035227",
+      "player": "P.J. Locke",
+      "position": "SS",
+      "team": "DAL",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.4,
+      "starter": false,
+      "priority": 130
+    },
+    {
+      "playerId": "00-0040730",
+      "player": "RJ Harvey",
+      "position": "RB",
+      "team": "DEN",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.44,
+      "starter": false,
+      "priority": 110
+    },
+    {
       "playerId": "00-0039817",
       "player": "Jacob Monk",
       "position": "C",
@@ -184,6 +226,34 @@
       "priority": 110
     },
     {
+      "playerId": "00-0036374",
+      "player": "L'Jarius Sneed",
+      "position": "CB",
+      "team": "KC",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.66,
+      "starter": true,
+      "priority": 10
+    },
+    {
+      "playerId": "00-0034790",
+      "player": "Derwin James",
+      "position": "SS",
+      "team": "LAC",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.96,
+      "starter": true,
+      "priority": 10
+    },
+    {
       "playerId": "00-0040581",
       "player": "Dont'e Thornton Jr.",
       "position": "WR",
@@ -198,6 +268,34 @@
       "priority": 130
     },
     {
+      "playerId": "00-0040729",
+      "player": "Jack Bech",
+      "position": "WR",
+      "team": "LV",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.57,
+      "starter": true,
+      "priority": 30
+    },
+    {
+      "playerId": "00-0036922",
+      "player": "Patrick Johnson",
+      "position": "OLB",
+      "team": "LV",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.06,
+      "starter": false,
+      "priority": 110
+    },
+    {
       "playerId": "00-0040504",
       "player": "Bryson Nesbit",
       "position": "TE",
@@ -210,6 +308,20 @@
       "snapShare": null,
       "starter": false,
       "priority": 130
+    },
+    {
+      "playerId": "00-0039886",
+      "player": "T'Vondre Sweat",
+      "position": "DT",
+      "team": "NYJ",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.48,
+      "starter": false,
+      "priority": 110
     },
     {
       "playerId": "00-0037258",
@@ -338,6 +450,20 @@
       "priority": 120
     },
     {
+      "playerId": "00-0027114",
+      "player": "Thomas Morstead",
+      "position": "P",
+      "team": "TEN",
+      "fromTeam": "IND",
+      "type": "joined",
+      "practiceSquad": false,
+      "note": "Joined from IND",
+      "category": "team-change",
+      "snapShare": 0.0,
+      "starter": false,
+      "priority": 120
+    },
+    {
       "playerId": "00-0036195",
       "player": "Charlie Heck",
       "position": "T",
@@ -362,6 +488,48 @@
       "note": "Signed",
       "category": "signed",
       "snapShare": 0.34,
+      "starter": false,
+      "priority": 140
+    },
+    {
+      "playerId": "00-0039395",
+      "player": "Jamal Hill",
+      "position": "OLB",
+      "team": "JAX",
+      "fromTeam": null,
+      "type": "signed",
+      "practiceSquad": false,
+      "note": "Signed",
+      "category": "signed",
+      "snapShare": 0.0,
+      "starter": false,
+      "priority": 140
+    },
+    {
+      "playerId": "00-0028394",
+      "player": "Jake McQuaide",
+      "position": "LS",
+      "team": "LAR",
+      "fromTeam": null,
+      "type": "signed",
+      "practiceSquad": false,
+      "note": "Signed",
+      "category": "signed",
+      "snapShare": 0.0,
+      "starter": false,
+      "priority": 140
+    },
+    {
+      "playerId": "00-0039750",
+      "player": "Joshua Karty",
+      "position": "K",
+      "team": "LAR",
+      "fromTeam": null,
+      "type": "signed",
+      "practiceSquad": false,
+      "note": "Signed",
+      "category": "signed",
+      "snapShare": 0.0,
       "starter": false,
       "priority": 140
     },
@@ -476,20 +644,6 @@
       "snapShare": 0.03,
       "starter": false,
       "priority": 150
-    },
-    {
-      "playerId": "00-0027114",
-      "player": "Thomas Morstead",
-      "position": "P",
-      "team": "TEN",
-      "fromTeam": "IND",
-      "type": "joined",
-      "practiceSquad": true,
-      "note": "Joined practice squad from IND",
-      "category": "practice-squad",
-      "snapShare": 0.0,
-      "starter": false,
-      "priority": 370
     },
     {
       "playerId": "00-0040161",
@@ -744,20 +898,6 @@
       "priority": 270
     },
     {
-      "playerId": "00-0039395",
-      "player": "Jamal Hill",
-      "position": "OLB",
-      "team": "JAX",
-      "fromTeam": null,
-      "type": "signed",
-      "practiceSquad": true,
-      "note": "Signed to practice squad",
-      "category": "practice-squad",
-      "snapShare": 0.0,
-      "starter": false,
-      "priority": 370
-    },
-    {
       "playerId": "00-0029597",
       "player": "Justin Tucker",
       "position": "K",
@@ -786,37 +926,9 @@
       "priority": 370
     },
     {
-      "playerId": "00-0028394",
-      "player": "Jake McQuaide",
-      "position": "LS",
-      "team": "LAR",
-      "fromTeam": null,
-      "type": "signed",
-      "practiceSquad": true,
-      "note": "Signed to practice squad",
-      "category": "practice-squad",
-      "snapShare": 0.0,
-      "starter": false,
-      "priority": 370
-    },
-    {
       "playerId": "00-0036802",
       "player": "Jon Rhattigan",
       "position": "MLB",
-      "team": "LAR",
-      "fromTeam": null,
-      "type": "signed",
-      "practiceSquad": true,
-      "note": "Signed to practice squad",
-      "category": "practice-squad",
-      "snapShare": 0.0,
-      "starter": false,
-      "priority": 370
-    },
-    {
-      "playerId": "00-0039750",
-      "player": "Joshua Karty",
-      "position": "K",
       "team": "LAR",
       "fromTeam": null,
       "type": "signed",
@@ -1418,6 +1530,20 @@
       "priority": 300
     },
     {
+      "playerId": "00-0040236",
+      "player": "Kyle Monangai",
+      "team": "CHI",
+      "position": "RB",
+      "status": "Out",
+      "injury": "Thumb",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.41,
+      "starter": false,
+      "priority": 100
+    },
+    {
       "playerId": "00-0036231",
       "player": "Kyle Dugger",
       "team": "CIN",
@@ -1838,6 +1964,48 @@
       "priority": 100
     },
     {
+      "playerId": "00-0037821",
+      "player": "Charles Cross",
+      "team": "SEA",
+      "position": "T",
+      "status": "Out",
+      "injury": "Ankle",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.98,
+      "starter": true,
+      "priority": 0
+    },
+    {
+      "playerId": "00-0037545",
+      "player": "Rashid Shaheed",
+      "team": "SEA",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Knee",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.5,
+      "starter": true,
+      "priority": 0
+    },
+    {
+      "playerId": "00-0037745",
+      "player": "Velus Jones Jr.",
+      "team": "SEA",
+      "position": "RB",
+      "status": "Out",
+      "injury": "Hamstring",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.05,
+      "starter": false,
+      "priority": 100
+    },
+    {
       "playerId": "00-0040129",
       "player": "Emeka Egbuka",
       "team": "TB",
@@ -1946,6 +2114,20 @@
       "category": "game-status",
       "gamePlayed": false,
       "snapShare": 0.81,
+      "starter": true,
+      "priority": 1
+    },
+    {
+      "playerId": "00-0034350",
+      "player": "Uchenna Nwosu",
+      "team": "SEA",
+      "position": "LB",
+      "status": "Doubtful",
+      "injury": "Ankle",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.52,
       "starter": true,
       "priority": 1
     },
@@ -2228,6 +2410,34 @@
       "snapShare": 0.41,
       "starter": false,
       "priority": 302
+    },
+    {
+      "playerId": "00-0037271",
+      "player": "D'Marco Jackson",
+      "team": "CHI",
+      "position": "LB",
+      "status": "Questionable",
+      "injury": "Ankle",
+      "practice": "Full",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.51,
+      "starter": true,
+      "priority": 2
+    },
+    {
+      "playerId": "00-0041060",
+      "player": "Malik Muhammad",
+      "team": "CHI",
+      "position": "CB",
+      "status": "Questionable",
+      "injury": "Toe",
+      "practice": "Limited",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.75,
+      "starter": true,
+      "priority": 2
     },
     {
       "playerId": "00-0035363",
@@ -2842,6 +3052,62 @@
       "category": "game-status",
       "gamePlayed": false,
       "snapShare": 0.09,
+      "starter": false,
+      "priority": 102
+    },
+    {
+      "playerId": "00-0039020",
+      "player": "Anthony Bradford",
+      "team": "SEA",
+      "position": "G",
+      "status": "Questionable",
+      "injury": "Knee",
+      "practice": "Limited",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.96,
+      "starter": true,
+      "priority": 2
+    },
+    {
+      "playerId": "00-0038694",
+      "player": "Brandon Pili",
+      "team": "SEA",
+      "position": "DT",
+      "status": "Questionable",
+      "injury": "Back",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.13,
+      "starter": false,
+      "priority": 102
+    },
+    {
+      "playerId": "00-0035704",
+      "player": "Drew Lock",
+      "team": "SEA",
+      "position": "QB",
+      "status": "Questionable",
+      "injury": "Elbow",
+      "practice": "Limited",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.36,
+      "starter": false,
+      "priority": 102
+    },
+    {
+      "playerId": "00-0038764",
+      "player": "Patrick O'Connell",
+      "team": "SEA",
+      "position": "LB",
+      "status": "Questionable",
+      "injury": "Toe",
+      "practice": "Did not practice",
+      "category": "game-status",
+      "gamePlayed": false,
+      "snapShare": 0.01,
       "starter": false,
       "priority": 102
     },
@@ -3538,26 +3804,12 @@
       "position": "TE",
       "status": null,
       "injury": "Neck",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.86,
       "starter": true,
-      "priority": 281
-    },
-    {
-      "playerId": "00-0037271",
-      "player": "D'Marco Jackson",
-      "team": "CHI",
-      "position": "LB",
-      "status": null,
-      "injury": "Ankle",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.51,
-      "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0037109",
@@ -3572,34 +3824,6 @@
       "snapShare": 0.04,
       "starter": false,
       "priority": 382
-    },
-    {
-      "playerId": "00-0040236",
-      "player": "Kyle Monangai",
-      "team": "CHI",
-      "position": "RB",
-      "status": null,
-      "injury": "Thumb",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.41,
-      "starter": false,
-      "priority": 380
-    },
-    {
-      "playerId": "00-0041060",
-      "player": "Malik Muhammad",
-      "team": "CHI",
-      "position": "CB",
-      "status": null,
-      "injury": "Toe",
-      "practice": "Limited",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.75,
-      "starter": true,
-      "priority": 281
     },
     {
       "playerId": "00-0035386",
@@ -5240,20 +5464,6 @@
       "priority": 282
     },
     {
-      "playerId": "00-0039020",
-      "player": "Anthony Bradford",
-      "team": "SEA",
-      "position": "G",
-      "status": null,
-      "injury": "Knee",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.96,
-      "starter": true,
-      "priority": 280
-    },
-    {
       "playerId": "00-0038488",
       "player": "Brady Russell",
       "team": "SEA",
@@ -5268,46 +5478,18 @@
       "priority": 382
     },
     {
-      "playerId": "00-0038694",
-      "player": "Brandon Pili",
-      "team": "SEA",
-      "position": "DT",
-      "status": null,
-      "injury": "Back",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.13,
-      "starter": false,
-      "priority": 380
-    },
-    {
       "playerId": "00-0039309",
       "player": "Byron Murphy II",
       "team": "SEA",
       "position": "DT",
       "status": null,
       "injury": "Back",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.69,
       "starter": true,
-      "priority": 281
-    },
-    {
-      "playerId": "00-0037821",
-      "player": "Charles Cross",
-      "team": "SEA",
-      "position": "T",
-      "status": null,
-      "injury": "Ankle",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.98,
-      "starter": true,
-      "priority": 280
+      "priority": 282
     },
     {
       "playerId": "00-0037003",
@@ -5366,20 +5548,6 @@
       "priority": 282
     },
     {
-      "playerId": "00-0035704",
-      "player": "Drew Lock",
-      "team": "SEA",
-      "position": "QB",
-      "status": null,
-      "injury": "Elbow",
-      "practice": "Limited",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.36,
-      "starter": false,
-      "priority": 381
-    },
-    {
       "playerId": "00-0041512",
       "player": "Jadarian Price",
       "team": "SEA",
@@ -5422,20 +5590,6 @@
       "priority": 282
     },
     {
-      "playerId": "00-0038764",
-      "player": "Patrick O'Connell",
-      "team": "SEA",
-      "position": "LB",
-      "status": null,
-      "injury": "Toe",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.01,
-      "starter": false,
-      "priority": 380
-    },
-    {
       "playerId": "00-0034342",
       "player": "Quenton Nelson",
       "team": "SEA",
@@ -5450,60 +5604,18 @@
       "priority": 282
     },
     {
-      "playerId": "00-0037545",
-      "player": "Rashid Shaheed",
-      "team": "SEA",
-      "position": "WR",
-      "status": null,
-      "injury": "Knee",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.5,
-      "starter": true,
-      "priority": 280
-    },
-    {
       "playerId": "00-0039815",
       "player": "Tyrice Knight",
       "team": "SEA",
       "position": "LB",
       "status": null,
       "injury": "Hip",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.24,
       "starter": false,
-      "priority": 381
-    },
-    {
-      "playerId": "00-0034350",
-      "player": "Uchenna Nwosu",
-      "team": "SEA",
-      "position": "LB",
-      "status": null,
-      "injury": "Ankle",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.52,
-      "starter": true,
-      "priority": 280
-    },
-    {
-      "playerId": "00-0037745",
-      "player": "Velus Jones Jr.",
-      "team": "SEA",
-      "position": "RB",
-      "status": null,
-      "injury": "Hamstring",
-      "practice": "Did not practice",
-      "category": "practice-report",
-      "gamePlayed": false,
-      "snapShare": 0.05,
-      "starter": false,
-      "priority": 380
+      "priority": 382
     },
     {
       "playerId": "00-0039165",
@@ -5512,12 +5624,12 @@
       "position": "RB",
       "status": null,
       "injury": "Knee",
-      "practice": "Limited",
+      "practice": "Full",
       "category": "practice-report",
       "gamePlayed": false,
       "snapShare": 0.47,
       "starter": false,
-      "priority": 381
+      "priority": 382
     },
     {
       "playerId": "00-0032889",
