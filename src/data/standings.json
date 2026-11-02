@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 8,
-  "updated": "2026-11-02T00:06:04Z",
+  "updated": "2026-11-02T00:38:44Z",
   "teams": [
     {
       "team": "BUF",
@@ -34,28 +34,28 @@
       "team": "NE",
       "conference": "AFC",
       "division": "AFC East",
-      "wins": 4,
+      "wins": 5,
       "losses": 3,
       "ties": 0,
-      "pct": 0.571,
-      "pointsFor": 160,
-      "pointsAgainst": 143,
-      "diff": 17,
+      "pct": 0.625,
+      "pointsFor": 184,
+      "pointsAgainst": 162,
+      "diff": 22,
       "divisionRecord": [
-        2,
+        3,
         0,
         0
       ],
       "conferenceRecord": [
-        4,
+        5,
         1,
         0
       ],
-      "streak": "L1",
+      "streak": "W1",
       "divisionRank": 2,
-      "conferenceRank": 8,
+      "conferenceRank": 7,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "NYJ",
@@ -89,23 +89,23 @@
       "conference": "AFC",
       "division": "AFC East",
       "wins": 1,
-      "losses": 5,
+      "losses": 6,
       "ties": 0,
-      "pct": 0.167,
-      "pointsFor": 98,
-      "pointsAgainst": 157,
-      "diff": -59,
+      "pct": 0.143,
+      "pointsFor": 117,
+      "pointsAgainst": 181,
+      "diff": -64,
       "divisionRecord": [
         1,
-        0,
+        1,
         0
       ],
       "conferenceRecord": [
         1,
-        3,
+        4,
         0
       ],
-      "streak": "W1",
+      "streak": "L1",
       "divisionRank": 4,
       "conferenceRank": 14,
       "divisionTiebreak": null,
@@ -188,7 +188,7 @@
       ],
       "streak": "L1",
       "divisionRank": 3,
-      "conferenceRank": 7,
+      "conferenceRank": 8,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
