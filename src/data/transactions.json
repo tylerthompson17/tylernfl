@@ -3,7 +3,7 @@
   "week": 8,
   "movesWeek": 8,
   "comparedToWeek": 7,
-  "updated": "2026-11-01T21:52:39Z",
+  "updated": "2026-11-02T00:06:04Z",
   "categories": [
     {
       "key": "game-status",
@@ -1734,10 +1734,10 @@
       "injury": "Quadricep",
       "practice": "Did not practice",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.18,
       "starter": false,
-      "priority": 100
+      "priority": 300
     },
     {
       "playerId": "00-0037320",
@@ -1748,10 +1748,10 @@
       "injury": "Concussion",
       "practice": "Did not practice",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.19,
       "starter": false,
-      "priority": 100
+      "priority": 300
     },
     {
       "playerId": "00-0034790",
@@ -1762,10 +1762,10 @@
       "injury": "Hamstring",
       "practice": "Did not practice",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.96,
       "starter": true,
-      "priority": 0
+      "priority": 200
     },
     {
       "playerId": "00-0036736",
@@ -1776,10 +1776,10 @@
       "injury": "Fibula",
       "practice": "Did not practice",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.71,
       "starter": true,
-      "priority": 0
+      "priority": 200
     },
     {
       "playerId": "00-0040488",
@@ -2098,10 +2098,10 @@
       "injury": "Ankle",
       "practice": "Did not practice",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.0,
       "starter": false,
-      "priority": 101
+      "priority": 301
     },
     {
       "playerId": "00-0041026",
@@ -2798,10 +2798,10 @@
       "injury": "Hamstring",
       "practice": "Limited",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.39,
       "starter": false,
-      "priority": 102
+      "priority": 302
     },
     {
       "playerId": "00-0041381",
@@ -2812,10 +2812,10 @@
       "injury": "Hamstring",
       "practice": "Limited",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.12,
       "starter": false,
-      "priority": 102
+      "priority": 302
     },
     {
       "playerId": "00-0036244",
@@ -2826,10 +2826,10 @@
       "injury": "Rib",
       "practice": "Did not practice",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.69,
       "starter": true,
-      "priority": 2
+      "priority": 202
     },
     {
       "playerId": "00-0034114",
@@ -2840,10 +2840,10 @@
       "injury": "Hip",
       "practice": "Limited",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.99,
       "starter": true,
-      "priority": 2
+      "priority": 202
     },
     {
       "playerId": "00-0039751",
@@ -2854,10 +2854,10 @@
       "injury": "Back",
       "practice": "Did not practice",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.23,
       "starter": false,
-      "priority": 102
+      "priority": 302
     },
     {
       "playerId": "00-0037191",
@@ -2868,10 +2868,10 @@
       "injury": "Groin",
       "practice": "Limited",
       "category": "game-status",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.89,
       "starter": true,
-      "priority": 2
+      "priority": 202
     },
     {
       "playerId": "00-0040729",
@@ -4590,7 +4590,7 @@
       "injury": "Not injury related - resting player",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.71,
       "starter": true,
       "priority": 282
@@ -4604,7 +4604,7 @@
       "injury": "Concussion",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.58,
       "starter": true,
       "priority": 282
@@ -4618,7 +4618,7 @@
       "injury": "Hamstring",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.68,
       "starter": true,
       "priority": 282
@@ -4632,7 +4632,7 @@
       "injury": "Not injury related - resting player",
       "practice": "Did not practice",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.62,
       "starter": true,
       "priority": 280
@@ -4646,7 +4646,7 @@
       "injury": "Not injury related - resting player",
       "practice": "Did not practice",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.99,
       "starter": true,
       "priority": 280
@@ -4660,7 +4660,7 @@
       "injury": "Not injury related - resting player",
       "practice": "Did not practice",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.79,
       "starter": true,
       "priority": 280
@@ -4674,7 +4674,7 @@
       "injury": "Hip",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.19,
       "starter": false,
       "priority": 382
@@ -4688,7 +4688,7 @@
       "injury": "Concussion",
       "practice": "Full",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.9,
       "starter": true,
       "priority": 282
@@ -4702,7 +4702,7 @@
       "injury": "Not injury related - resting player",
       "practice": "Did not practice",
       "category": "practice-report",
-      "gamePlayed": false,
+      "gamePlayed": true,
       "snapShare": 0.8,
       "starter": true,
       "priority": 280
