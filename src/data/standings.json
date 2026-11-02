@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 8,
-  "updated": "2026-11-02T00:38:44Z",
+  "updated": "2026-11-02T00:46:17Z",
   "teams": [
     {
       "team": "BUF",
@@ -328,58 +328,58 @@
       "conferenceTiebreak": null
     },
     {
-      "team": "KC",
+      "team": "DEN",
       "conference": "AFC",
       "division": "AFC West",
-      "wins": 5,
-      "losses": 1,
+      "wins": 6,
+      "losses": 2,
       "ties": 0,
-      "pct": 0.833,
-      "pointsFor": 143,
-      "pointsAgainst": 103,
-      "diff": 40,
+      "pct": 0.75,
+      "pointsFor": 172,
+      "pointsAgainst": 165,
+      "diff": 7,
       "divisionRecord": [
-        3,
-        0,
+        2,
+        1,
         0
       ],
       "conferenceRecord": [
-        5,
-        0,
+        3,
+        1,
         0
       ],
-      "streak": "L1",
+      "streak": "W4",
       "divisionRank": 1,
       "conferenceRank": 2,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
-      "team": "DEN",
+      "team": "KC",
       "conference": "AFC",
       "division": "AFC West",
       "wins": 5,
       "losses": 2,
       "ties": 0,
       "pct": 0.714,
-      "pointsFor": 144,
-      "pointsAgainst": 141,
-      "diff": 3,
+      "pointsFor": 167,
+      "pointsAgainst": 131,
+      "diff": 36,
       "divisionRecord": [
-        1,
+        3,
         1,
         0
       ],
       "conferenceRecord": [
-        2,
+        5,
         1,
         0
       ],
-      "streak": "W3",
+      "streak": "L2",
       "divisionRank": 2,
       "conferenceRank": 5,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "strength_of_victory"
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "LV",
