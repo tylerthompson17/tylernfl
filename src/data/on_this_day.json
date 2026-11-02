@@ -1,77 +1,77 @@
 {
   "month": 11,
-  "day": 1,
-  "gamesOnDate": 42,
+  "day": 2,
+  "gamesOnDate": 54,
   "items": [
     {
-      "year": 2018,
-      "gameId": "2018_09_OAK_SF",
-      "text": "The 49ers beat the Raiders 34-3.",
+      "year": 2025,
+      "gameId": "2025_09_CHI_CIN",
+      "text": "The Bears beat the Bengals 47-42 with 89 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "49ers",
-          "team": "SF"
+          "text": "Bears",
+          "team": "CHI"
         },
         {
           "text": " beat the "
+        },
+        {
+          "text": "Bengals",
+          "team": "CIN"
+        },
+        {
+          "text": " 47-42 with 89 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2014,
+      "gameId": "2014_09_SD_MIA",
+      "text": "The Dolphins shut out the Chargers 37-0.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Dolphins",
+          "team": "MIA"
+        },
+        {
+          "text": " shut out the "
+        },
+        {
+          "text": "Chargers",
+          "team": "LAC"
+        },
+        {
+          "text": " 37-0."
+        }
+      ]
+    },
+    {
+      "year": 2008,
+      "gameId": "2008_09_ATL_OAK",
+      "text": "The Falcons shut out the Raiders 24-0.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Falcons",
+          "team": "ATL"
+        },
+        {
+          "text": " shut out the "
         },
         {
           "text": "Raiders",
           "team": "LV"
         },
         {
-          "text": " 34-3."
-        }
-      ]
-    },
-    {
-      "year": 2015,
-      "gameId": "2015_08_NYG_NO",
-      "text": "The Saints beat the Giants 52-49 with 101 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Saints",
-          "team": "NO"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Giants",
-          "team": "NYG"
-        },
-        {
-          "text": " 52-49 with 101 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2009,
-      "gameId": "2009_08_CAR_ARI",
-      "text": "The Panthers beat the Cardinals 34-21 as 10-point underdogs.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Panthers",
-          "team": "CAR"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Cardinals",
-          "team": "ARI"
-        },
-        {
-          "text": " 34-21 as 10-point underdogs."
+          "text": " 24-0."
         }
       ]
     }
