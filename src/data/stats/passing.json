@@ -515,6 +515,26 @@
     },
     {
       "rank": 22,
+      "playerId": "00-0034869",
+      "player": "Sam Darnold",
+      "team": "SEA",
+      "position": "QB",
+      "teamGames": 8,
+      "qualified": true,
+      "values": {
+        "games": 7,
+        "completions": 127,
+        "attempts": 211,
+        "passing_yards": 1478,
+        "passing_tds": 10,
+        "passing_interceptions": 9,
+        "sacks_suffered": 17,
+        "cmp_pct": 0.602,
+        "pass_ypa": 7.0
+      }
+    },
+    {
+      "rank": 23,
       "playerId": "00-0036355",
       "player": "Justin Herbert",
       "team": "LAC",
@@ -531,26 +551,6 @@
         "sacks_suffered": 23,
         "cmp_pct": 0.618,
         "pass_ypa": 6.6
-      }
-    },
-    {
-      "rank": 23,
-      "playerId": "00-0034869",
-      "player": "Sam Darnold",
-      "team": "SEA",
-      "position": "QB",
-      "teamGames": 7,
-      "qualified": true,
-      "values": {
-        "games": 6,
-        "completions": 110,
-        "attempts": 177,
-        "passing_yards": 1290,
-        "passing_tds": 8,
-        "passing_interceptions": 8,
-        "sacks_suffered": 14,
-        "cmp_pct": 0.621,
-        "pass_ypa": 7.3
       }
     },
     {
@@ -595,6 +595,26 @@
     },
     {
       "rank": 26,
+      "playerId": "00-0039918",
+      "player": "Caleb Williams",
+      "team": "CHI",
+      "position": "QB",
+      "teamGames": 8,
+      "qualified": true,
+      "values": {
+        "games": 5,
+        "completions": 112,
+        "attempts": 158,
+        "passing_yards": 1267,
+        "passing_tds": 6,
+        "passing_interceptions": 1,
+        "sacks_suffered": 13,
+        "cmp_pct": 0.709,
+        "pass_ypa": 8.0
+      }
+    },
+    {
+      "rank": 27,
       "playerId": "00-0035228",
       "player": "Kyler Murray",
       "team": "MIN",
@@ -611,26 +631,6 @@
         "sacks_suffered": 15,
         "cmp_pct": 0.649,
         "pass_ypa": 6.6
-      }
-    },
-    {
-      "rank": 27,
-      "playerId": "00-0039918",
-      "player": "Caleb Williams",
-      "team": "CHI",
-      "position": "QB",
-      "teamGames": 7,
-      "qualified": true,
-      "values": {
-        "games": 4,
-        "completions": 88,
-        "attempts": 124,
-        "passing_yards": 1020,
-        "passing_tds": 5,
-        "passing_interceptions": 1,
-        "sacks_suffered": 12,
-        "cmp_pct": 0.71,
-        "pass_ypa": 8.2
       }
     },
     {
@@ -819,7 +819,7 @@
       "player": "Drew Lock",
       "team": "SEA",
       "position": "QB",
-      "teamGames": 7,
+      "teamGames": 8,
       "qualified": false,
       "values": {
         "games": 2,
@@ -839,7 +839,7 @@
       "player": "Tyson Bagent",
       "team": "CHI",
       "position": "QB",
-      "teamGames": 7,
+      "teamGames": 8,
       "qualified": false,
       "values": {
         "games": 3,
@@ -859,7 +859,7 @@
       "player": "Case Keenum",
       "team": "CHI",
       "position": "QB",
-      "teamGames": 7,
+      "teamGames": 8,
       "qualified": false,
       "values": {
         "games": 2,
@@ -1139,10 +1139,10 @@
       "player": "Jaxon Smith-Njigba",
       "team": "SEA",
       "position": "WR",
-      "teamGames": 7,
+      "teamGames": 8,
       "qualified": false,
       "values": {
-        "games": 7,
+        "games": 8,
         "completions": 1,
         "attempts": 1,
         "passing_yards": 14,

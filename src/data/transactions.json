@@ -3,7 +3,7 @@
   "week": 8,
   "movesWeek": 8,
   "comparedToWeek": 7,
-  "updated": "2026-11-03T04:36:05Z",
+  "updated": "2026-11-03T17:24:18Z",
   "categories": [
     {
       "key": "game-status",
@@ -338,6 +338,20 @@
       "priority": 110
     },
     {
+      "playerId": "00-0041512",
+      "player": "Jadarian Price",
+      "position": "RB",
+      "team": "SEA",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.4,
+      "starter": false,
+      "priority": 130
+    },
+    {
       "playerId": "00-0039381",
       "player": "Dominique Hampton",
       "position": "OLB",
@@ -375,7 +389,7 @@
       "practiceSquad": false,
       "note": "Joined from TEN",
       "category": "team-change",
-      "snapShare": 0.83,
+      "snapShare": 0.87,
       "starter": true,
       "priority": 20
     },
@@ -534,6 +548,20 @@
       "priority": 140
     },
     {
+      "playerId": "00-0040621",
+      "player": "Montorie Foster Jr",
+      "position": "WR",
+      "team": "SEA",
+      "fromTeam": null,
+      "type": "signed",
+      "practiceSquad": false,
+      "note": "Signed",
+      "category": "signed",
+      "snapShare": 0.0,
+      "starter": false,
+      "priority": 140
+    },
+    {
       "playerId": "00-0041366",
       "player": "Jameson Geers",
       "position": "TE",
@@ -642,6 +670,20 @@
       "note": "Released",
       "category": "released",
       "snapShare": 0.03,
+      "starter": false,
+      "priority": 150
+    },
+    {
+      "playerId": "00-0041178",
+      "player": "Robert Henry Jr.",
+      "position": "RB",
+      "team": "SEA",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": null,
       "starter": false,
       "priority": 150
     },
@@ -1048,20 +1090,6 @@
       "note": "Signed to practice squad",
       "category": "practice-squad",
       "snapShare": 0.17,
-      "starter": false,
-      "priority": 370
-    },
-    {
-      "playerId": "00-0040621",
-      "player": "Montorie Foster Jr",
-      "position": "WR",
-      "team": "SEA",
-      "fromTeam": null,
-      "type": "signed",
-      "practiceSquad": true,
-      "note": "Signed to practice squad",
-      "category": "practice-squad",
-      "snapShare": 0.0,
       "starter": false,
       "priority": 370
     },
@@ -2421,9 +2449,9 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.51,
-      "starter": true,
-      "priority": 202
+      "snapShare": 0.49,
+      "starter": false,
+      "priority": 302
     },
     {
       "playerId": "00-0041060",
@@ -3065,7 +3093,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.96,
+      "snapShare": 0.86,
       "starter": true,
       "priority": 202
     },
@@ -3821,7 +3849,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.04,
+      "snapShare": 0.02,
       "starter": false,
       "priority": 382
     },
@@ -5473,7 +5501,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.21,
+      "snapShare": 0.22,
       "starter": false,
       "priority": 382
     },
@@ -5487,7 +5515,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.69,
+      "snapShare": 0.7,
       "starter": true,
       "priority": 282
     },
@@ -5557,7 +5585,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.37,
+      "snapShare": 0.4,
       "starter": false,
       "priority": 382
     },
@@ -5571,7 +5599,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.83,
+      "snapShare": 0.85,
       "starter": true,
       "priority": 282
     },
@@ -5585,7 +5613,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.73,
+      "snapShare": 0.71,
       "starter": true,
       "priority": 282
     },
@@ -5627,7 +5655,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.47,
+      "snapShare": 0.46,
       "starter": false,
       "priority": 382
     },

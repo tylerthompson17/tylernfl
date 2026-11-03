@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 8,
-  "updated": "2026-11-02T19:52:26Z",
+  "updated": "2026-11-03T17:24:18Z",
   "categories": [
     {
       "key": "epa_per_dropback",
@@ -34,21 +34,21 @@
         },
         {
           "rank": 3,
-          "playerId": "00-0039918",
-          "player": "Caleb Williams",
-          "team": "CHI",
-          "value": 0.348,
-          "plays": 150,
-          "teamGames": 7
-        },
-        {
-          "rank": 4,
           "playerId": "00-0037834",
           "player": "Brock Purdy",
           "team": "SF",
           "value": 0.328,
           "plays": 231,
           "teamGames": 7
+        },
+        {
+          "rank": 4,
+          "playerId": "00-0039918",
+          "player": "Caleb Williams",
+          "team": "CHI",
+          "value": 0.32,
+          "plays": 186,
+          "teamGames": 8
         },
         {
           "rank": 5,
@@ -223,15 +223,6 @@
         },
         {
           "rank": 24,
-          "playerId": "00-0034869",
-          "player": "Sam Darnold",
-          "team": "SEA",
-          "value": -0.008,
-          "plays": 196,
-          "teamGames": 7
-        },
-        {
-          "rank": 25,
           "playerId": "00-0039732",
           "player": "Bo Nix",
           "team": "DEN",
@@ -240,12 +231,21 @@
           "teamGames": 8
         },
         {
-          "rank": 26,
+          "rank": 25,
           "playerId": "00-0036389",
           "player": "Jalen Hurts",
           "team": "PHI",
           "value": -0.032,
           "plays": 179,
+          "teamGames": 8
+        },
+        {
+          "rank": 26,
+          "playerId": "00-0034869",
+          "player": "Sam Darnold",
+          "team": "SEA",
+          "value": -0.038,
+          "plays": 235,
           "teamGames": 8
         },
         {
@@ -385,7 +385,7 @@
           "team": "CHI",
           "value": 0.097,
           "plays": 60,
-          "teamGames": 7
+          "teamGames": 8
         },
         {
           "rank": 6,
@@ -524,6 +524,15 @@
         },
         {
           "rank": 21,
+          "playerId": "00-0036275",
+          "player": "D'Andre Swift",
+          "team": "CHI",
+          "value": -0.036,
+          "plays": 143,
+          "teamGames": 8
+        },
+        {
+          "rank": 22,
           "playerId": "00-0036875",
           "player": "Rhamondre Stevenson",
           "team": "NE",
@@ -532,22 +541,13 @@
           "teamGames": 8
         },
         {
-          "rank": 22,
+          "rank": 23,
           "playerId": "00-0036223",
           "player": "Jonathan Taylor",
           "team": "IND",
           "value": -0.059,
           "plays": 148,
           "teamGames": 8
-        },
-        {
-          "rank": 23,
-          "playerId": "00-0036275",
-          "player": "D'Andre Swift",
-          "team": "CHI",
-          "value": -0.06,
-          "plays": 116,
-          "teamGames": 7
         },
         {
           "rank": 24,
@@ -628,7 +628,7 @@
           "team": "SEA",
           "value": -0.148,
           "plays": 111,
-          "teamGames": 7
+          "teamGames": 8
         },
         {
           "rank": 33,
