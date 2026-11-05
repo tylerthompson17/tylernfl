@@ -1,19 +1,67 @@
 {
   "month": 11,
-  "day": 4,
-  "gamesOnDate": 54,
+  "day": 5,
+  "gamesOnDate": 56,
   "items": [
     {
-      "year": 2018,
-      "gameId": "2018_09_LA_NO",
-      "text": "The Saints beat the Rams 45-35 with 80 combined points.",
+      "year": 2023,
+      "gameId": "2023_09_TB_HOU",
+      "text": "The Texans beat the Buccaneers 39-37 with 76 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Saints",
-          "team": "NO"
+          "text": "Texans",
+          "team": "HOU"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Buccaneers",
+          "team": "TB"
+        },
+        {
+          "text": " 39-37 with 76 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2006,
+      "gameId": "2006_09_MIA_CHI",
+      "text": "The Dolphins beat the Bears 31-13 as 13-point underdogs.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Dolphins",
+          "team": "MIA"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Bears",
+          "team": "CHI"
+        },
+        {
+          "text": " 31-13 as 13-point underdogs."
+        }
+      ]
+    },
+    {
+      "year": 2000,
+      "gameId": "2000_10_CAR_STL",
+      "text": "The Panthers beat the Rams 27-24 as 13.5-point underdogs.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Panthers",
+          "team": "CAR"
         },
         {
           "text": " beat the "
@@ -23,55 +71,7 @@
           "team": "LAR"
         },
         {
-          "text": " 45-35 with 80 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2012,
-      "gameId": "2012_09_CHI_TEN",
-      "text": "The Bears beat the Titans 51-20 with 71 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Bears",
-          "team": "CHI"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Titans",
-          "team": "TEN"
-        },
-        {
-          "text": " 51-20 with 71 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2007,
-      "gameId": "2007_09_DEN_DET",
-      "text": "The Lions beat the Broncos 44-7.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Lions",
-          "team": "DET"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Broncos",
-          "team": "DEN"
-        },
-        {
-          "text": " 44-7."
+          "text": " 27-24 as 13.5-point underdogs."
         }
       ]
     }
