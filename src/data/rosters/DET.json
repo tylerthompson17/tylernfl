@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "DET",
   "week": 9,
-  "updated": "2026-11-05T17:43:02Z",
+  "updated": "2026-11-06T16:59:17Z",
   "groups": [
     {
       "key": "offense",
@@ -835,8 +835,8 @@
       "number": 35,
       "position": "OLB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 74,
       "weight": 235,
       "age": 28,
@@ -934,6 +934,21 @@
       "college": "South Carolina"
     },
     {
+      "gsisId": "00-0036643",
+      "name": "K.J. Britt",
+      "slug": "kj-britt",
+      "number": 40,
+      "position": "ILB",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 72,
+      "weight": 240,
+      "age": 27,
+      "experience": 5,
+      "college": "Auburn"
+    },
+    {
       "gsisId": "00-0041442",
       "name": "Jimmy Rolder",
       "slug": "jimmy-rolder",
@@ -962,6 +977,21 @@
       "age": 26,
       "experience": 3,
       "college": "Iowa"
+    },
+    {
+      "gsisId": "00-0038600",
+      "name": "Owen Pappoe",
+      "slug": "owen-pappoe",
+      "number": 51,
+      "position": "MLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 230,
+      "age": 26,
+      "experience": 3,
+      "college": "Auburn"
     },
     {
       "gsisId": "00-0039862",

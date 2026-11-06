@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "MIN",
   "week": 9,
-  "updated": "2026-11-05T17:43:02Z",
+  "updated": "2026-11-06T16:59:17Z",
   "groups": [
     {
       "key": "offense",
@@ -100,8 +100,8 @@
       "number": 31,
       "position": "RB",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 70,
       "weight": 225,
       "age": 28,
@@ -269,7 +269,7 @@
       "statusLabel": "Practice squad",
       "heightInches": 73,
       "weight": 209,
-      "age": 22,
+      "age": 23,
       "experience": 0,
       "college": "Georgia"
     },
@@ -394,6 +394,21 @@
       "college": "Pittsburgh"
     },
     {
+      "gsisId": "00-0041247",
+      "name": "Corey Robinson II",
+      "slug": "corey-robinson-ii",
+      "number": 77,
+      "position": "T",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 311,
+      "age": 23,
+      "experience": 0,
+      "college": "Arkansas; Georgia Tech; Kansas"
+    },
+    {
       "gsisId": "00-0041053",
       "name": "Caleb Tiernan",
       "slug": "caleb-tiernan",
@@ -437,6 +452,21 @@
       "age": 24,
       "experience": 1,
       "college": "Wisconsin"
+    },
+    {
+      "gsisId": "00-0039833",
+      "name": "C.J. Hanson",
+      "slug": "cj-hanson",
+      "number": 61,
+      "position": "G",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 305,
+      "age": 25,
+      "experience": 2,
+      "college": "Holy Cross"
     },
     {
       "gsisId": "00-0040307",

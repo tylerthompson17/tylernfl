@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "DEN",
   "week": 9,
-  "updated": "2026-11-05T17:43:02Z",
+  "updated": "2026-11-06T16:59:17Z",
   "groups": [
     {
       "key": "offense",
@@ -709,6 +709,21 @@
       "college": "Boston College"
     },
     {
+      "gsisId": "00-0039570",
+      "name": "Jordan Miller",
+      "slug": "jordan-miller",
+      "number": 90,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 307,
+      "age": 26,
+      "experience": 2,
+      "college": "SMU; Miami"
+    },
+    {
       "gsisId": "00-0033297",
       "name": "D.J. Jones",
       "slug": "dj-jones",
@@ -722,21 +737,6 @@
       "age": 31,
       "experience": 9,
       "college": "Mississippi; East Mississippi JC"
-    },
-    {
-      "gsisId": "00-0039570",
-      "name": "Jordan Miller",
-      "slug": "jordan-miller",
-      "number": 96,
-      "position": "DT",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 75,
-      "weight": 307,
-      "age": 26,
-      "experience": 2,
-      "college": "SMU; Miami"
     },
     {
       "gsisId": "00-0035763",
@@ -1117,7 +1117,7 @@
       "gsisId": "00-0035142",
       "name": "Ugo Amadi",
       "slug": "ugo-amadi",
-      "number": 35,
+      "number": 32,
       "position": "FS",
       "group": "defense",
       "status": "DEV",

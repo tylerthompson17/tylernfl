@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYG",
   "week": 9,
-  "updated": "2026-11-05T17:43:02Z",
+  "updated": "2026-11-06T16:59:17Z",
   "groups": [
     {
       "key": "offense",
@@ -32,21 +32,6 @@
       "age": 23,
       "experience": 1,
       "college": "Mississippi; USC"
-    },
-    {
-      "gsisId": "00-0038998",
-      "name": "Jake Haener",
-      "slug": "jake-haener",
-      "number": 13,
-      "position": "QB",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 73,
-      "weight": 200,
-      "age": 27,
-      "experience": 3,
-      "college": "Fresno State; Washington"
     },
     {
       "gsisId": "00-0039923",
@@ -112,7 +97,7 @@
       "gsisId": "00-0041376",
       "name": "Gregory Desrosiers",
       "slug": "gregory-desrosiers",
-      "number": 31,
+      "number": 30,
       "position": "RB",
       "group": "offense",
       "status": "ACT",
@@ -142,7 +127,7 @@
       "gsisId": "00-0038396",
       "name": "Eric Gray",
       "slug": "eric-gray",
-      "number": 41,
+      "number": 38,
       "position": "RB",
       "group": "offense",
       "status": "DEV",
@@ -232,7 +217,7 @@
       "gsisId": "00-0040498",
       "name": "Dontae Fleming",
       "slug": "dontae-fleming",
-      "number": 19,
+      "number": 37,
       "position": "WR",
       "group": "offense",
       "status": "DEV",
@@ -529,6 +514,21 @@
       "college": "Oklahoma State; West Virginia"
     },
     {
+      "gsisId": "00-0040943",
+      "name": "Josh Gesky",
+      "slug": "josh-gesky",
+      "number": 68,
+      "position": "G",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 308,
+      "age": 23,
+      "experience": 0,
+      "college": "Illinois"
+    },
+    {
       "gsisId": "00-0041101",
       "name": "J.C. Davis",
       "slug": "jc-davis",
@@ -557,36 +557,6 @@
       "age": 29,
       "experience": 6,
       "college": "Michigan"
-    },
-    {
-      "gsisId": "00-0040943",
-      "name": "Josh Gesky",
-      "slug": "josh-gesky",
-      "number": 76,
-      "position": "G",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 77,
-      "weight": 308,
-      "age": 23,
-      "experience": 0,
-      "college": "Illinois"
-    },
-    {
-      "gsisId": "00-0036983",
-      "name": "Kendrick Green",
-      "slug": "kendrick-green",
-      "number": 53,
-      "position": "C",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 315,
-      "age": 27,
-      "experience": 5,
-      "college": "Illinois"
     },
     {
       "gsisId": "00-0039446",
@@ -634,6 +604,21 @@
       "college": "Alabama; Michigan State"
     },
     {
+      "gsisId": "00-0036983",
+      "name": "Kendrick Green",
+      "slug": "kendrick-green",
+      "number": 73,
+      "position": "C",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 315,
+      "age": 27,
+      "experience": 5,
+      "college": "Illinois"
+    },
+    {
       "gsisId": "00-0036982",
       "name": "Chauncey Golston",
       "slug": "chauncey-golston",
@@ -649,25 +634,10 @@
       "college": "Iowa"
     },
     {
-      "gsisId": "00-0033907",
-      "name": "Dawuane Smoot",
-      "slug": "dawuane-smoot",
-      "number": 98,
-      "position": "DE",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 75,
-      "weight": 264,
-      "age": 31,
-      "experience": 9,
-      "college": "Illinois"
-    },
-    {
       "gsisId": "00-0032412",
       "name": "Dean Lowry",
       "slug": "dean-lowry",
-      "number": 98,
+      "number": 75,
       "position": "DE",
       "group": "defense",
       "status": "DEV",
@@ -677,6 +647,21 @@
       "age": 32,
       "experience": 10,
       "college": "Northwestern"
+    },
+    {
+      "gsisId": "00-0033907",
+      "name": "Dawuane Smoot",
+      "slug": "dawuane-smoot",
+      "number": 96,
+      "position": "DE",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 264,
+      "age": 31,
+      "experience": 9,
+      "college": "Illinois"
     },
     {
       "gsisId": "00-0040694",
