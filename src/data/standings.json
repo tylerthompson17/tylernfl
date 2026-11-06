@@ -1,7 +1,7 @@
 {
   "season": 2026,
-  "throughWeek": 8,
-  "updated": "2026-11-03T04:36:05Z",
+  "throughWeek": 9,
+  "updated": "2026-11-06T04:15:28Z",
   "teams": [
     {
       "team": "BUF",
@@ -134,7 +134,7 @@
       ],
       "streak": "W4",
       "divisionRank": 1,
-      "conferenceRank": 3,
+      "conferenceRank": 4,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -197,12 +197,12 @@
       "conference": "AFC",
       "division": "AFC North",
       "wins": 4,
-      "losses": 4,
+      "losses": 5,
       "ties": 0,
-      "pct": 0.5,
-      "pointsFor": 179,
-      "pointsAgainst": 203,
-      "diff": -24,
+      "pct": 0.444,
+      "pointsFor": 189,
+      "pointsAgainst": 236,
+      "diff": -47,
       "divisionRecord": [
         0,
         2,
@@ -210,10 +210,10 @@
       ],
       "conferenceRecord": [
         2,
-        3,
+        4,
         0
       ],
-      "streak": "L3",
+      "streak": "L4",
       "divisionRank": 4,
       "conferenceRank": 10,
       "divisionTiebreak": null,
@@ -223,28 +223,28 @@
       "team": "JAX",
       "conference": "AFC",
       "division": "AFC South",
-      "wins": 5,
+      "wins": 6,
       "losses": 2,
       "ties": 0,
-      "pct": 0.714,
-      "pointsFor": 196,
-      "pointsAgainst": 111,
-      "diff": 85,
+      "pct": 0.75,
+      "pointsFor": 229,
+      "pointsAgainst": 121,
+      "diff": 108,
       "divisionRecord": [
         1,
         1,
         0
       ],
       "conferenceRecord": [
-        4,
+        5,
         2,
         0
       ],
-      "streak": "W1",
+      "streak": "W2",
       "divisionRank": 1,
-      "conferenceRank": 4,
+      "conferenceRank": 3,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "HOU",
@@ -406,7 +406,7 @@
       "divisionRank": 3,
       "conferenceRank": 9,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "conference_record"
+      "conferenceTiebreak": null
     },
     {
       "team": "LAC",
