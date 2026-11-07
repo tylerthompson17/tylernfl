@@ -1,19 +1,19 @@
 {
   "month": 11,
-  "day": 6,
-  "gamesOnDate": 55,
+  "day": 7,
+  "gamesOnDate": 57,
   "items": [
     {
-      "year": 2022,
-      "gameId": "2022_09_BUF_NYJ",
-      "text": "The Jets beat the Bills 20-17 as 11-point underdogs.",
+      "year": 2021,
+      "gameId": "2021_09_BUF_JAX",
+      "text": "The Jaguars beat the Bills 9-6 as 14.5-point underdogs.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Jets",
-          "team": "NYJ"
+          "text": "Jaguars",
+          "team": "JAX"
         },
         {
           "text": " beat the "
@@ -23,38 +23,14 @@
           "team": "BUF"
         },
         {
-          "text": " 20-17 as 11-point underdogs."
+          "text": " 9-6 as 14.5-point underdogs."
         }
       ]
     },
     {
-      "year": 2016,
-      "gameId": "2016_09_TEN_SD",
-      "text": "The Chargers beat the Titans 43-35 with 78 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Chargers",
-          "team": "LAC"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Titans",
-          "team": "TEN"
-        },
-        {
-          "text": " 43-35 with 78 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2011,
-      "gameId": "2011_09_GB_SD",
-      "text": "The Packers beat the Chargers 45-38 with 83 combined points.",
+      "year": 2010,
+      "gameId": "2010_09_DAL_GB",
+      "text": "The Packers beat the Cowboys 45-7.",
       "parts": [
         {
           "text": "The "
@@ -67,11 +43,35 @@
           "text": " beat the "
         },
         {
-          "text": "Chargers",
-          "team": "LAC"
+          "text": "Cowboys",
+          "team": "DAL"
         },
         {
-          "text": " 45-38 with 83 combined points."
+          "text": " 45-7."
+        }
+      ]
+    },
+    {
+      "year": 1999,
+      "gameId": "1999_09_BAL_CLE",
+      "text": "The Ravens beat the Browns 41-9.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Ravens",
+          "team": "BAL"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Browns",
+          "team": "CLE"
+        },
+        {
+          "text": " 41-9."
         }
       ]
     }
