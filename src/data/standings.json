@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 9,
-  "updated": "2026-11-08T21:00:01Z",
+  "updated": "2026-11-08T21:15:04Z",
   "teams": [
     {
       "team": "BUF",
@@ -62,12 +62,12 @@
       "conference": "AFC",
       "division": "AFC East",
       "wins": 2,
-      "losses": 6,
+      "losses": 7,
       "ties": 0,
-      "pct": 0.25,
-      "pointsFor": 170,
-      "pointsAgainst": 188,
-      "diff": -18,
+      "pct": 0.222,
+      "pointsFor": 182,
+      "pointsAgainst": 223,
+      "diff": -41,
       "divisionRecord": [
         0,
         2,
@@ -75,14 +75,14 @@
       ],
       "conferenceRecord": [
         2,
-        3,
+        4,
         0
       ],
-      "streak": "L3",
+      "streak": "L4",
       "divisionRank": 3,
-      "conferenceRank": 12,
+      "conferenceRank": 13,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "conference_record"
+      "conferenceTiebreak": null
     },
     {
       "team": "MIA",
@@ -161,7 +161,7 @@
       ],
       "streak": "W4",
       "divisionRank": 2,
-      "conferenceRank": 5,
+      "conferenceRank": 6,
       "divisionTiebreak": "head_to_head",
       "conferenceTiebreak": null
     },
@@ -296,7 +296,7 @@
       ],
       "streak": "L4",
       "divisionRank": 3,
-      "conferenceRank": 13,
+      "conferenceRank": 12,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -328,6 +328,33 @@
       "conferenceTiebreak": null
     },
     {
+      "team": "KC",
+      "conference": "AFC",
+      "division": "AFC West",
+      "wins": 6,
+      "losses": 2,
+      "ties": 0,
+      "pct": 0.75,
+      "pointsFor": 202,
+      "pointsAgainst": 143,
+      "diff": 59,
+      "divisionRecord": [
+        3,
+        1,
+        0
+      ],
+      "conferenceRecord": [
+        6,
+        1,
+        0
+      ],
+      "streak": "W1",
+      "divisionRank": 1,
+      "conferenceRank": 2,
+      "divisionTiebreak": "division_record",
+      "conferenceTiebreak": "conference_record"
+    },
+    {
       "team": "DEN",
       "conference": "AFC",
       "division": "AFC West",
@@ -349,37 +376,10 @@
         0
       ],
       "streak": "W4",
-      "divisionRank": 1,
-      "conferenceRank": 2,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": "conference_record"
-    },
-    {
-      "team": "KC",
-      "conference": "AFC",
-      "division": "AFC West",
-      "wins": 5,
-      "losses": 2,
-      "ties": 0,
-      "pct": 0.714,
-      "pointsFor": 167,
-      "pointsAgainst": 131,
-      "diff": 36,
-      "divisionRecord": [
-        3,
-        1,
-        0
-      ],
-      "conferenceRecord": [
-        5,
-        1,
-        0
-      ],
-      "streak": "L2",
       "divisionRank": 2,
-      "conferenceRank": 6,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceRank": 5,
+      "divisionTiebreak": "division_record",
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "LV",
