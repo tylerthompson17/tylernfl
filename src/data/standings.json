@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 9,
-  "updated": "2026-11-08T17:44:49Z",
+  "updated": "2026-11-08T21:00:01Z",
   "teams": [
     {
       "team": "BUF",
@@ -89,12 +89,12 @@
       "conference": "AFC",
       "division": "AFC East",
       "wins": 1,
-      "losses": 6,
+      "losses": 7,
       "ties": 0,
-      "pct": 0.143,
-      "pointsFor": 117,
-      "pointsAgainst": 181,
-      "diff": -64,
+      "pct": 0.125,
+      "pointsFor": 126,
+      "pointsAgainst": 200,
+      "diff": -74,
       "divisionRecord": [
         1,
         1,
@@ -105,11 +105,11 @@
         4,
         0
       ],
-      "streak": "L1",
+      "streak": "L2",
       "divisionRank": 4,
       "conferenceRank": 14,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "PIT",
@@ -571,6 +571,33 @@
       "conferenceTiebreak": null
     },
     {
+      "team": "DET",
+      "conference": "NFC",
+      "division": "NFC North",
+      "wins": 6,
+      "losses": 2,
+      "ties": 0,
+      "pct": 0.75,
+      "pointsFor": 222,
+      "pointsAgainst": 189,
+      "diff": 33,
+      "divisionRecord": [
+        2,
+        0,
+        0
+      ],
+      "conferenceRecord": [
+        4,
+        1,
+        0
+      ],
+      "streak": "W4",
+      "divisionRank": 2,
+      "conferenceRank": 5,
+      "divisionTiebreak": "division_record",
+      "conferenceTiebreak": "division_order"
+    },
+    {
       "team": "CHI",
       "conference": "NFC",
       "division": "NFC North",
@@ -592,37 +619,10 @@
         0
       ],
       "streak": "W3",
-      "divisionRank": 2,
-      "conferenceRank": 5,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
-    },
-    {
-      "team": "DET",
-      "conference": "NFC",
-      "division": "NFC North",
-      "wins": 5,
-      "losses": 2,
-      "ties": 0,
-      "pct": 0.714,
-      "pointsFor": 203,
-      "pointsAgainst": 180,
-      "diff": 23,
-      "divisionRecord": [
-        2,
-        0,
-        0
-      ],
-      "conferenceRecord": [
-        4,
-        1,
-        0
-      ],
-      "streak": "W3",
       "divisionRank": 3,
       "conferenceRank": 6,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "divisionTiebreak": "division_record",
+      "conferenceTiebreak": "division_order"
     },
     {
       "team": "GB",
