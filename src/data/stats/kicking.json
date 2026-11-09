@@ -86,6 +86,25 @@
   "rows": [
     {
       "rank": 1,
+      "playerId": "00-0035358",
+      "player": "Chase McLaughlin",
+      "team": "TB",
+      "position": "K",
+      "teamGames": 9,
+      "qualified": true,
+      "values": {
+        "games": 9,
+        "fg_made": 22,
+        "fg_att": 22,
+        "fg_long": 59,
+        "pat_made": 18,
+        "pat_att": 18,
+        "fg_pct": 1.0,
+        "xp_pct": 1.0
+      }
+    },
+    {
+      "rank": 1,
       "playerId": "00-0039576",
       "player": "Spencer Shrader",
       "team": "IND",
@@ -104,7 +123,7 @@
       }
     },
     {
-      "rank": 2,
+      "rank": 3,
       "playerId": "00-0034794",
       "player": "Jason Sanders",
       "team": "NYJ",
@@ -123,7 +142,7 @@
       }
     },
     {
-      "rank": 3,
+      "rank": 4,
       "playerId": "00-0038567",
       "player": "Chad Ryland",
       "team": "ARI",
@@ -142,7 +161,7 @@
       }
     },
     {
-      "rank": 4,
+      "rank": 5,
       "playerId": "00-0038428",
       "player": "Andre Szmyt",
       "team": "CLE",
@@ -161,26 +180,7 @@
       }
     },
     {
-      "rank": 4,
-      "playerId": "00-0035358",
-      "player": "Chase McLaughlin",
-      "team": "TB",
-      "position": "K",
-      "teamGames": 8,
-      "qualified": true,
-      "values": {
-        "games": 8,
-        "fg_made": 19,
-        "fg_att": 19,
-        "fg_long": 59,
-        "pat_made": 17,
-        "pat_att": 17,
-        "fg_pct": 1.0,
-        "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 4,
+      "rank": 5,
       "playerId": "00-0035269",
       "player": "Matt Gay",
       "team": "LV",
@@ -390,6 +390,25 @@
     },
     {
       "rank": 17,
+      "playerId": "00-0031203",
+      "player": "Cairo Santos",
+      "team": "CHI",
+      "position": "K",
+      "teamGames": 9,
+      "qualified": true,
+      "values": {
+        "games": 9,
+        "fg_made": 15,
+        "fg_att": 19,
+        "fg_long": 58,
+        "pat_made": 28,
+        "pat_att": 28,
+        "fg_pct": 0.789,
+        "xp_pct": 1.0
+      }
+    },
+    {
+      "rank": 17,
       "playerId": "00-0037224",
       "player": "Cameron Dicker",
       "team": "LAC",
@@ -408,7 +427,7 @@
       }
     },
     {
-      "rank": 18,
+      "rank": 19,
       "playerId": "00-0039409",
       "player": "Cam Little",
       "team": "JAX",
@@ -427,7 +446,7 @@
       }
     },
     {
-      "rank": 18,
+      "rank": 19,
       "playerId": "00-0040899",
       "player": "Trey Smack",
       "team": "GB",
@@ -446,26 +465,7 @@
       }
     },
     {
-      "rank": 20,
-      "playerId": "00-0031203",
-      "player": "Cairo Santos",
-      "team": "CHI",
-      "position": "K",
-      "teamGames": 8,
-      "qualified": true,
-      "values": {
-        "games": 8,
-        "fg_made": 13,
-        "fg_att": 17,
-        "fg_long": 58,
-        "pat_made": 25,
-        "pat_att": 25,
-        "fg_pct": 0.765,
-        "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 20,
+      "rank": 21,
       "playerId": "00-0025565",
       "player": "Nick Folk",
       "team": "ATL",
@@ -484,7 +484,7 @@
       }
     },
     {
-      "rank": 20,
+      "rank": 21,
       "playerId": "00-0040279",
       "player": "Ryan Fitzgerald",
       "team": "CAR",
@@ -503,7 +503,7 @@
       }
     },
     {
-      "rank": 20,
+      "rank": 21,
       "playerId": "00-0040074",
       "player": "Tyler Loop",
       "team": "BAL",

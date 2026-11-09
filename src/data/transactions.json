@@ -3,7 +3,7 @@
   "week": 9,
   "movesWeek": 9,
   "comparedToWeek": 8,
-  "updated": "2026-11-09T04:50:00Z",
+  "updated": "2026-11-09T20:14:27Z",
   "categories": [
     {
       "key": "game-status",
@@ -44,6 +44,20 @@
   ],
   "moves": [
     {
+      "playerId": "00-0039808",
+      "player": "Isaiah Adams",
+      "position": "G",
+      "team": "ARI",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.93,
+      "starter": true,
+      "priority": 30
+    },
+    {
       "playerId": "00-0041027",
       "player": "Jeremiyah Love",
       "position": "RB",
@@ -81,9 +95,23 @@
       "practiceSquad": false,
       "note": "Activated from reserve list",
       "category": "activated",
-      "snapShare": 0.15,
+      "snapShare": 0.16,
       "starter": false,
       "priority": 130
+    },
+    {
+      "playerId": "00-0037746",
+      "player": "Brian Robinson",
+      "position": "RB",
+      "team": "ATL",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.26,
+      "starter": false,
+      "priority": 110
     },
     {
       "playerId": "00-0040578",
@@ -95,7 +123,7 @@
       "practiceSquad": false,
       "note": "Activated from reserve list",
       "category": "activated",
-      "snapShare": 0.58,
+      "snapShare": 0.54,
       "starter": true,
       "priority": 30
     },
@@ -123,7 +151,7 @@
       "practiceSquad": false,
       "note": "Activated from reserve list",
       "category": "activated",
-      "snapShare": 0.15,
+      "snapShare": 0.16,
       "starter": false,
       "priority": 130
     },
@@ -212,6 +240,76 @@
       "priority": 110
     },
     {
+      "playerId": "00-0041537",
+      "player": "Malachi Lawrence",
+      "position": "OLB",
+      "team": "DAL",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.4,
+      "starter": false,
+      "priority": 110
+    },
+    {
+      "playerId": "00-0039352",
+      "player": "Marist Liufau",
+      "position": "OLB",
+      "team": "DAL",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.12,
+      "starter": false,
+      "priority": 130
+    },
+    {
+      "playerId": "00-0038106",
+      "player": "Eyioma Uwazurike",
+      "position": "DE",
+      "team": "DEN",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.52,
+      "starter": true,
+      "priority": 10
+    },
+    {
+      "playerId": "00-0040134",
+      "player": "Pat Bryant",
+      "position": "WR",
+      "team": "DEN",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.59,
+      "starter": true,
+      "priority": 30
+    },
+    {
+      "playerId": "00-0039018",
+      "player": "Jack Campbell",
+      "position": "MLB",
+      "team": "DET",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.97,
+      "starter": true,
+      "priority": 10
+    },
+    {
       "playerId": "00-0041442",
       "player": "Jimmy Rolder",
       "position": "MLB",
@@ -282,6 +380,76 @@
       "priority": 110
     },
     {
+      "playerId": "00-0037195",
+      "player": "Jaylen Watson",
+      "position": "CB",
+      "team": "LAR",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.84,
+      "starter": true,
+      "priority": 10
+    },
+    {
+      "playerId": "00-0033868",
+      "player": "Myles Garrett",
+      "position": "OLB",
+      "team": "LAR",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.84,
+      "starter": true,
+      "priority": 30
+    },
+    {
+      "playerId": "00-0037557",
+      "player": "Ronnie Rivers",
+      "position": "RB",
+      "team": "LAR",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.05,
+      "starter": false,
+      "priority": 130
+    },
+    {
+      "playerId": "00-0040488",
+      "player": "Carter Runyon",
+      "position": "TE",
+      "team": "LV",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.07,
+      "starter": false,
+      "priority": 130
+    },
+    {
+      "playerId": "00-0033555",
+      "player": "Mack Hollins",
+      "position": "WR",
+      "team": "NE",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.68,
+      "starter": true,
+      "priority": 30
+    },
+    {
       "playerId": "00-0040226",
       "player": "Marcus Bryant",
       "position": "T",
@@ -291,9 +459,37 @@
       "practiceSquad": false,
       "note": "Activated from reserve list",
       "category": "activated",
-      "snapShare": 0.02,
+      "snapShare": 0.05,
       "starter": false,
       "priority": 130
+    },
+    {
+      "playerId": "00-0041029",
+      "player": "Jordyn Tyson",
+      "position": "WR",
+      "team": "NO",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.24,
+      "starter": false,
+      "priority": 130
+    },
+    {
+      "playerId": "00-0040125",
+      "player": "Kelvin Banks Jr.",
+      "position": "T",
+      "team": "NO",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.85,
+      "starter": true,
+      "priority": 30
     },
     {
       "playerId": "00-0039384",
@@ -324,6 +520,34 @@
       "priority": 110
     },
     {
+      "playerId": "00-0034775",
+      "player": "Christian Kirk",
+      "position": "WR",
+      "team": "SF",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.42,
+      "starter": false,
+      "priority": 110
+    },
+    {
+      "playerId": "00-0032775",
+      "player": "Demarcus Robinson",
+      "position": "WR",
+      "team": "SF",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.48,
+      "starter": false,
+      "priority": 130
+    },
+    {
       "playerId": "00-0034333",
       "player": "Daron Payne",
       "position": "DT",
@@ -338,6 +562,20 @@
       "priority": 10
     },
     {
+      "playerId": "00-0036626",
+      "player": "Dyami Brown",
+      "position": "WR",
+      "team": "WAS",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Placed on reserve list",
+      "category": "reserve",
+      "snapShare": 0.4,
+      "starter": false,
+      "priority": 110
+    },
+    {
       "playerId": "00-0036260",
       "player": "Javon Kinlaw",
       "position": "DT",
@@ -350,6 +588,20 @@
       "snapShare": 0.62,
       "starter": true,
       "priority": 10
+    },
+    {
+      "playerId": "00-0039906",
+      "player": "Jer'Zhan Newton",
+      "position": "DT",
+      "team": "WAS",
+      "fromTeam": null,
+      "type": "status",
+      "practiceSquad": false,
+      "note": "Activated from reserve list",
+      "category": "activated",
+      "snapShare": 0.41,
+      "starter": false,
+      "priority": 130
     },
     {
       "playerId": "00-0033955",
@@ -403,7 +655,7 @@
       "practiceSquad": false,
       "note": "Joined from SF",
       "category": "team-change",
-      "snapShare": 0.22,
+      "snapShare": 0.27,
       "starter": false,
       "priority": 120
     },
@@ -417,7 +669,7 @@
       "practiceSquad": false,
       "note": "Joined from CLE",
       "category": "team-change",
-      "snapShare": 0.38,
+      "snapShare": 0.43,
       "starter": false,
       "priority": 120
     },
@@ -431,7 +683,7 @@
       "practiceSquad": false,
       "note": "Joined from LAC",
       "category": "team-change",
-      "snapShare": null,
+      "snapShare": 0.07,
       "starter": false,
       "priority": 120
     },
@@ -501,7 +753,21 @@
       "practiceSquad": false,
       "note": "Signed",
       "category": "signed",
-      "snapShare": 0.25,
+      "snapShare": 0.23,
+      "starter": false,
+      "priority": 140
+    },
+    {
+      "playerId": "00-0034854",
+      "player": "KhaDarel Hodge",
+      "position": "WR",
+      "team": "SF",
+      "fromTeam": null,
+      "type": "signed",
+      "practiceSquad": false,
+      "note": "Signed",
+      "category": "signed",
+      "snapShare": 0.16,
       "starter": false,
       "priority": 140
     },
@@ -520,30 +786,16 @@
       "priority": 140
     },
     {
-      "playerId": "00-0041131",
-      "player": "Carsen Ryan",
-      "position": "TE",
-      "team": "CLE",
+      "playerId": "00-0033119",
+      "player": "Jacoby Brissett",
+      "position": "QB",
+      "team": "ARI",
       "fromTeam": null,
       "type": "released",
       "practiceSquad": false,
       "note": "Released",
       "category": "released",
-      "snapShare": 0.01,
-      "starter": false,
-      "priority": 150
-    },
-    {
-      "playerId": "00-0035663",
-      "player": "Taylor Rapp",
-      "position": "FS",
-      "team": "DEN",
-      "fromTeam": null,
-      "type": "released",
-      "practiceSquad": false,
-      "note": "Released",
-      "category": "released",
-      "snapShare": 0.87,
+      "snapShare": 0.95,
       "starter": true,
       "priority": 50
     },
@@ -562,30 +814,30 @@
       "priority": 150
     },
     {
-      "playerId": "00-0040488",
-      "player": "Carter Runyon",
+      "playerId": "00-0038551",
+      "player": "Kendre Miller",
+      "position": "RB",
+      "team": "NO",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": 0.29,
+      "starter": false,
+      "priority": 150
+    },
+    {
+      "playerId": "00-0039518",
+      "player": "Treyton Welch",
       "position": "TE",
-      "team": "LV",
+      "team": "NO",
       "fromTeam": null,
       "type": "released",
       "practiceSquad": false,
       "note": "Released",
       "category": "released",
       "snapShare": 0.07,
-      "starter": false,
-      "priority": 150
-    },
-    {
-      "playerId": "00-0038998",
-      "player": "Jake Haener",
-      "position": "QB",
-      "team": "NYG",
-      "fromTeam": null,
-      "type": "released",
-      "practiceSquad": false,
-      "note": "Released",
-      "category": "released",
-      "snapShare": null,
       "starter": false,
       "priority": 150
     },
@@ -600,20 +852,6 @@
       "note": "Released",
       "category": "released",
       "snapShare": 0.35,
-      "starter": false,
-      "priority": 150
-    },
-    {
-      "playerId": "00-0037745",
-      "player": "Velus Jones Jr.",
-      "position": "RB",
-      "team": "SEA",
-      "fromTeam": null,
-      "type": "released",
-      "practiceSquad": false,
-      "note": "Released",
-      "category": "released",
-      "snapShare": 0.05,
       "starter": false,
       "priority": 150
     },
@@ -1206,20 +1444,6 @@
       "priority": 370
     },
     {
-      "playerId": "00-0034854",
-      "player": "KhaDarel Hodge",
-      "position": "WR",
-      "team": "SF",
-      "fromTeam": null,
-      "type": "signed",
-      "practiceSquad": true,
-      "note": "Signed to practice squad",
-      "category": "practice-squad",
-      "snapShare": 0.15,
-      "starter": false,
-      "priority": 370
-    },
-    {
       "playerId": "00-0038603",
       "player": "Rob Beal Jr.",
       "position": "DE",
@@ -1286,6 +1510,20 @@
       "note": "Released from practice squad",
       "category": "practice-squad",
       "snapShare": 0.23,
+      "starter": false,
+      "priority": 370
+    },
+    {
+      "playerId": "00-0032208",
+      "player": "Phillip Dorsett",
+      "position": "WR",
+      "team": "LV",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": true,
+      "note": "Released from practice squad",
+      "category": "practice-squad",
+      "snapShare": null,
       "starter": false,
       "priority": 370
     },
@@ -2477,7 +2715,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.56,
+      "snapShare": 0.65,
       "starter": true,
       "priority": 202
     },
@@ -2505,7 +2743,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.15,
+      "snapShare": 0.16,
       "starter": false,
       "priority": 302
     },
@@ -2519,7 +2757,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.87,
+      "snapShare": 0.81,
       "starter": true,
       "priority": 202
     },
@@ -2533,7 +2771,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.58,
+      "snapShare": 0.54,
       "starter": true,
       "priority": 202
     },
@@ -2547,7 +2785,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.15,
+      "snapShare": 0.16,
       "starter": false,
       "priority": 302
     },
@@ -2687,7 +2925,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.03,
+      "snapShare": 0.15,
       "starter": false,
       "priority": 302
     },
@@ -2729,7 +2967,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.63,
+      "snapShare": 0.67,
       "starter": true,
       "priority": 202
     },
@@ -2743,7 +2981,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.26,
+      "snapShare": 0.22,
       "starter": false,
       "priority": 302
     },
@@ -2799,7 +3037,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.59,
+      "snapShare": 0.54,
       "starter": true,
       "priority": 202
     },
@@ -2855,7 +3093,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.14,
+      "snapShare": 0.12,
       "starter": false,
       "priority": 302
     },
@@ -2869,7 +3107,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.41,
+      "snapShare": 0.39,
       "starter": false,
       "priority": 302
     },
@@ -2883,7 +3121,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.6,
+      "snapShare": 0.59,
       "starter": true,
       "priority": 202
     },
@@ -2911,7 +3149,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.86,
+      "snapShare": 0.83,
       "starter": true,
       "priority": 202
     },
@@ -2939,7 +3177,7 @@
       "practice": "Did not practice",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.21,
+      "snapShare": 0.25,
       "starter": false,
       "priority": 302
     },
@@ -2967,7 +3205,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.98,
+      "snapShare": 0.96,
       "starter": true,
       "priority": 202
     },
@@ -2995,7 +3233,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.99,
+      "snapShare": 0.92,
       "starter": true,
       "priority": 202
     },
@@ -3037,7 +3275,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.01,
+      "snapShare": 0.0,
       "starter": false,
       "priority": 302
     },
@@ -3051,7 +3289,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.69,
+      "snapShare": 0.68,
       "starter": true,
       "priority": 202
     },
@@ -3079,7 +3317,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.21,
+      "snapShare": 0.22,
       "starter": false,
       "priority": 302
     },
@@ -3093,7 +3331,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.93,
+      "snapShare": 1.0,
       "starter": true,
       "priority": 202
     },
@@ -3121,7 +3359,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.47,
+      "snapShare": 0.43,
       "starter": false,
       "priority": 302
     },
@@ -3149,7 +3387,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.06,
+      "snapShare": 0.07,
       "starter": false,
       "priority": 302
     },
@@ -3163,7 +3401,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.3,
+      "snapShare": 0.31,
       "starter": false,
       "priority": 302
     },
@@ -3219,7 +3457,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.85,
+      "snapShare": 0.83,
       "starter": true,
       "priority": 202
     },
@@ -3233,7 +3471,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.66,
+      "snapShare": 0.63,
       "starter": true,
       "priority": 202
     },
@@ -3247,7 +3485,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.96,
+      "snapShare": 0.95,
       "starter": true,
       "priority": 202
     },
@@ -3261,7 +3499,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.7,
+      "snapShare": 0.68,
       "starter": true,
       "priority": 202
     },
@@ -3275,7 +3513,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.84,
+      "snapShare": 0.82,
       "starter": true,
       "priority": 202
     },
@@ -3289,7 +3527,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.77,
+      "snapShare": 0.66,
       "starter": true,
       "priority": 202
     },
@@ -3303,7 +3541,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": null,
+      "snapShare": 0.24,
       "starter": false,
       "priority": 302
     },
@@ -3331,7 +3569,7 @@
       "practice": "Did not practice",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.36,
+      "snapShare": 0.45,
       "starter": false,
       "priority": 302
     },
@@ -3345,7 +3583,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.06,
+      "snapShare": 0.04,
       "starter": false,
       "priority": 302
     },
@@ -3359,7 +3597,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.58,
+      "snapShare": 0.56,
       "starter": true,
       "priority": 202
     },
@@ -3387,7 +3625,7 @@
       "practice": "Did not practice",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.02,
+      "snapShare": 0.05,
       "starter": false,
       "priority": 302
     },
@@ -3401,7 +3639,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.49,
+      "snapShare": 0.48,
       "starter": false,
       "priority": 302
     },
@@ -3429,7 +3667,7 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.0,
+      "snapShare": 0.02,
       "starter": false,
       "priority": 302
     },
@@ -3443,9 +3681,9 @@
       "practice": "Limited",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.49,
-      "starter": false,
-      "priority": 302
+      "snapShare": 0.55,
+      "starter": true,
+      "priority": 202
     },
     {
       "playerId": "00-0040129",
@@ -3457,7 +3695,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.79,
+      "snapShare": 0.81,
       "starter": true,
       "priority": 202
     },
@@ -3471,7 +3709,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.43,
+      "snapShare": 0.41,
       "starter": false,
       "priority": 302
     },
@@ -3485,7 +3723,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.99,
+      "snapShare": 0.98,
       "starter": true,
       "priority": 282
     },
@@ -3513,7 +3751,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.99,
+      "snapShare": 1.0,
       "starter": true,
       "priority": 282
     },
@@ -3541,7 +3779,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.57,
+      "snapShare": 0.59,
       "starter": true,
       "priority": 282
     },
@@ -3569,7 +3807,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.18,
+      "snapShare": 0.21,
       "starter": false,
       "priority": 382
     },
@@ -4003,7 +4241,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.41,
+      "snapShare": 0.4,
       "starter": false,
       "priority": 382
     },
@@ -4031,7 +4269,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.41,
+      "snapShare": 0.45,
       "starter": false,
       "priority": 382
     },
@@ -4045,7 +4283,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.49,
+      "snapShare": 0.46,
       "starter": false,
       "priority": 382
     },
@@ -4059,7 +4297,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.69,
+      "snapShare": 0.71,
       "starter": true,
       "priority": 282
     },
@@ -4101,7 +4339,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.69,
+      "snapShare": 0.79,
       "starter": true,
       "priority": 282
     },
@@ -4129,7 +4367,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.46,
+      "snapShare": 0.44,
       "starter": false,
       "priority": 380
     },
@@ -4143,7 +4381,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.93,
+      "snapShare": 0.95,
       "starter": true,
       "priority": 282
     },
@@ -4157,7 +4395,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.63,
+      "snapShare": 0.69,
       "starter": true,
       "priority": 280
     },
@@ -4171,7 +4409,7 @@
       "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.61,
+      "snapShare": 0.63,
       "starter": true,
       "priority": 281
     },
@@ -4241,7 +4479,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.93,
+      "snapShare": 1.0,
       "starter": true,
       "priority": 282
     },
@@ -4255,7 +4493,7 @@
       "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.42,
+      "snapShare": 0.44,
       "starter": false,
       "priority": 381
     },
@@ -4283,7 +4521,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.66,
+      "snapShare": 0.65,
       "starter": true,
       "priority": 282
     },
@@ -4297,7 +4535,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.6,
+      "snapShare": 0.63,
       "starter": true,
       "priority": 282
     },
@@ -4325,7 +4563,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.06,
+      "snapShare": 0.07,
       "starter": false,
       "priority": 380
     },
@@ -4339,7 +4577,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.93,
+      "snapShare": 0.94,
       "starter": true,
       "priority": 282
     },
@@ -4353,7 +4591,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.64,
+      "snapShare": 0.62,
       "starter": true,
       "priority": 282
     },
@@ -4395,7 +4633,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.5,
+      "snapShare": 0.58,
       "starter": true,
       "priority": 282
     },
@@ -4409,7 +4647,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.98,
+      "snapShare": 0.99,
       "starter": true,
       "priority": 282
     },
@@ -4423,7 +4661,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.22,
+      "snapShare": 0.24,
       "starter": false,
       "priority": 380
     },
@@ -4437,7 +4675,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.77,
+      "snapShare": 0.78,
       "starter": true,
       "priority": 282
     },
@@ -4451,7 +4689,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.64,
+      "snapShare": 0.57,
       "starter": true,
       "priority": 282
     },
@@ -4465,7 +4703,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.68,
+      "snapShare": 0.7,
       "starter": true,
       "priority": 282
     },
@@ -4507,7 +4745,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.59,
+      "snapShare": 0.55,
       "starter": true,
       "priority": 282
     },
@@ -4521,7 +4759,7 @@
       "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.66,
+      "snapShare": 0.62,
       "starter": true,
       "priority": 281
     },
@@ -4549,7 +4787,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.73,
+      "snapShare": 0.75,
       "starter": true,
       "priority": 280
     },
@@ -4577,7 +4815,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.3,
+      "snapShare": 0.18,
       "starter": false,
       "priority": 382
     },
@@ -4605,7 +4843,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.08,
+      "snapShare": 0.09,
       "starter": false,
       "priority": 382
     },
@@ -4619,7 +4857,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.88,
+      "snapShare": 0.87,
       "starter": true,
       "priority": 282
     },
@@ -4633,7 +4871,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.31,
+      "snapShare": 0.33,
       "starter": false,
       "priority": 382
     },
@@ -4661,7 +4899,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.29,
+      "snapShare": 0.36,
       "starter": false,
       "priority": 382
     },
@@ -4703,7 +4941,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.77,
+      "snapShare": 0.75,
       "starter": true,
       "priority": 282
     },
@@ -4857,7 +5095,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.85,
+      "snapShare": 0.89,
       "starter": true,
       "priority": 282
     },
@@ -4871,7 +5109,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 1.0,
+      "snapShare": 0.99,
       "starter": true,
       "priority": 282
     },
@@ -4899,7 +5137,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.7,
+      "snapShare": 0.66,
       "starter": true,
       "priority": 282
     },
@@ -4913,7 +5151,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.78,
+      "snapShare": 0.77,
       "starter": true,
       "priority": 282
     },
@@ -4927,7 +5165,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.2,
+      "snapShare": 0.18,
       "starter": false,
       "priority": 382
     },
@@ -4941,7 +5179,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.89,
+      "snapShare": 0.87,
       "starter": true,
       "priority": 282
     },
@@ -4955,7 +5193,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.39,
+      "snapShare": 0.42,
       "starter": false,
       "priority": 382
     },
@@ -4969,7 +5207,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.71,
+      "snapShare": 0.69,
       "starter": true,
       "priority": 282
     },
@@ -4983,7 +5221,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.12,
+      "snapShare": 0.14,
       "starter": false,
       "priority": 382
     },
@@ -4997,7 +5235,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.62,
+      "snapShare": 0.64,
       "starter": true,
       "priority": 280
     },
@@ -5025,7 +5263,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.8,
+      "snapShare": 0.82,
       "starter": true,
       "priority": 280
     },
@@ -5039,7 +5277,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.98,
+      "snapShare": 1.0,
       "starter": true,
       "priority": 282
     },
@@ -5053,7 +5291,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.86,
+      "snapShare": 0.84,
       "starter": true,
       "priority": 280
     },
@@ -5067,7 +5305,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.82,
+      "snapShare": 0.85,
       "starter": true,
       "priority": 280
     },
@@ -5095,7 +5333,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.99,
+      "snapShare": 0.9,
       "starter": true,
       "priority": 282
     },
@@ -5109,7 +5347,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.61,
+      "snapShare": 0.69,
       "starter": true,
       "priority": 280
     },
@@ -5137,7 +5375,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.44,
+      "snapShare": 0.46,
       "starter": false,
       "priority": 382
     },
@@ -5151,7 +5389,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.35,
+      "snapShare": 0.32,
       "starter": false,
       "priority": 382
     },
@@ -5179,7 +5417,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.79,
+      "snapShare": 0.83,
       "starter": true,
       "priority": 282
     },
@@ -5207,7 +5445,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.98,
+      "snapShare": 1.0,
       "starter": true,
       "priority": 282
     },
@@ -5263,7 +5501,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.41,
+      "snapShare": 0.4,
       "starter": false,
       "priority": 382
     },
@@ -5277,7 +5515,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.75,
+      "snapShare": 0.76,
       "starter": true,
       "priority": 282
     },
@@ -5361,9 +5599,9 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.51,
-      "starter": true,
-      "priority": 282
+      "snapShare": 0.48,
+      "starter": false,
+      "priority": 382
     },
     {
       "playerId": "00-0039851",
@@ -5375,7 +5613,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.98,
+      "snapShare": 0.95,
       "starter": true,
       "priority": 282
     },
@@ -5389,7 +5627,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.63,
+      "snapShare": 0.61,
       "starter": true,
       "priority": 282
     },
@@ -5403,7 +5641,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.53,
+      "snapShare": 0.56,
       "starter": true,
       "priority": 282
     },
@@ -5417,7 +5655,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.8,
+      "snapShare": 0.84,
       "starter": true,
       "priority": 282
     },
@@ -5431,7 +5669,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.36,
+      "snapShare": 0.34,
       "starter": false,
       "priority": 382
     },
@@ -5445,7 +5683,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.88,
+      "snapShare": 0.92,
       "starter": true,
       "priority": 282
     },
@@ -5459,7 +5697,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.29,
+      "snapShare": 0.3,
       "starter": false,
       "priority": 382
     },
@@ -5473,7 +5711,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.94,
+      "snapShare": 0.91,
       "starter": true,
       "priority": 282
     },
@@ -5487,7 +5725,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.66,
+      "snapShare": 0.63,
       "starter": true,
       "priority": 282
     },
@@ -5501,7 +5739,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.89,
+      "snapShare": 0.87,
       "starter": true,
       "priority": 282
     },
@@ -5515,7 +5753,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.88,
+      "snapShare": 0.96,
       "starter": true,
       "priority": 282
     },
@@ -5543,7 +5781,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.56,
+      "snapShare": 0.57,
       "starter": true,
       "priority": 282
     },
@@ -5557,7 +5795,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.5,
+      "snapShare": 0.49,
       "starter": false,
       "priority": 382
     },
@@ -5585,7 +5823,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.19,
+      "snapShare": 0.16,
       "starter": false,
       "priority": 382
     },
@@ -5599,7 +5837,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.7,
+      "snapShare": 0.76,
       "starter": true,
       "priority": 282
     },
@@ -5627,7 +5865,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.17,
+      "snapShare": 0.27,
       "starter": false,
       "priority": 382
     },
@@ -5641,9 +5879,9 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.56,
-      "starter": true,
-      "priority": 282
+      "snapShare": 0.47,
+      "starter": false,
+      "priority": 382
     },
     {
       "playerId": "00-0040225",
@@ -5669,7 +5907,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.27,
+      "snapShare": 0.24,
       "starter": false,
       "priority": 382
     },
@@ -5683,7 +5921,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.63,
+      "snapShare": 0.57,
       "starter": true,
       "priority": 282
     },
@@ -5697,7 +5935,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.81,
+      "snapShare": 0.8,
       "starter": true,
       "priority": 282
     },
@@ -5711,7 +5949,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 1.0,
+      "snapShare": 0.99,
       "starter": true,
       "priority": 282
     },
@@ -5725,7 +5963,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.62,
+      "snapShare": 0.6,
       "starter": true,
       "priority": 282
     },
@@ -5739,7 +5977,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.74,
+      "snapShare": 0.73,
       "starter": true,
       "priority": 282
     },
@@ -5781,7 +6019,7 @@
       "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.59,
+      "snapShare": 0.58,
       "starter": true,
       "priority": 281
     },
@@ -5795,7 +6033,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.39,
+      "snapShare": 0.43,
       "starter": false,
       "priority": 382
     },
@@ -5809,7 +6047,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.52,
+      "snapShare": 0.53,
       "starter": true,
       "priority": 282
     },
@@ -5837,7 +6075,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.57,
+      "snapShare": 0.52,
       "starter": true,
       "priority": 282
     },
@@ -5865,7 +6103,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.63,
+      "snapShare": 0.75,
       "starter": true,
       "priority": 282
     },
@@ -5879,7 +6117,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.61,
+      "snapShare": 0.6,
       "starter": true,
       "priority": 282
     },
@@ -5893,7 +6131,7 @@
       "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.46,
+      "snapShare": 0.44,
       "starter": false,
       "priority": 381
     },
@@ -5907,7 +6145,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.99,
+      "snapShare": 0.93,
       "starter": true,
       "priority": 282
     },
@@ -5921,7 +6159,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.86,
+      "snapShare": 0.88,
       "starter": true,
       "priority": 282
     },
@@ -5949,7 +6187,7 @@
       "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.36,
+      "snapShare": 0.44,
       "starter": false,
       "priority": 381
     },
@@ -5977,7 +6215,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.85,
+      "snapShare": 0.83,
       "starter": true,
       "priority": 282
     },
@@ -6005,7 +6243,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.4,
+      "snapShare": 0.38,
       "starter": false,
       "priority": 382
     },
@@ -6019,7 +6257,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.24,
+      "snapShare": 0.21,
       "starter": false,
       "priority": 382
     },
@@ -6047,7 +6285,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.71,
+      "snapShare": 0.69,
       "starter": true,
       "priority": 282
     },
@@ -6061,7 +6299,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.18,
+      "snapShare": 0.17,
       "starter": false,
       "priority": 382
     },
@@ -6075,7 +6313,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.08,
+      "snapShare": 0.05,
       "starter": false,
       "priority": 382
     },
@@ -6089,9 +6327,9 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.44,
-      "starter": false,
-      "priority": 382
+      "snapShare": 0.51,
+      "starter": true,
+      "priority": 282
     },
     {
       "playerId": "00-0040660",
@@ -6103,7 +6341,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.57,
+      "snapShare": 0.53,
       "starter": true,
       "priority": 282
     },
@@ -6117,7 +6355,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.64,
+      "snapShare": 0.66,
       "starter": true,
       "priority": 282
     },
@@ -6131,7 +6369,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.81,
+      "snapShare": 0.92,
       "starter": true,
       "priority": 282
     },
@@ -6145,7 +6383,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.46,
+      "snapShare": 0.45,
       "starter": false,
       "priority": 382
     },
@@ -6173,7 +6411,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.62,
+      "snapShare": 0.63,
       "starter": true,
       "priority": 282
     },
@@ -6201,7 +6439,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.82,
+      "snapShare": 0.83,
       "starter": true,
       "priority": 282
     },
@@ -6229,7 +6467,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.22,
+      "snapShare": 0.2,
       "starter": false,
       "priority": 382
     },
@@ -6243,7 +6481,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.38,
+      "snapShare": 0.37,
       "starter": false,
       "priority": 382
     },
@@ -6285,7 +6523,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.15,
+      "snapShare": 0.14,
       "starter": false,
       "priority": 382
     },
@@ -6299,7 +6537,7 @@
       "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.39,
+      "snapShare": 0.38,
       "starter": false,
       "priority": 381
     },
@@ -6313,7 +6551,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.86,
+      "snapShare": 0.9,
       "starter": true,
       "priority": 282
     },
@@ -6327,7 +6565,7 @@
       "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.44,
+      "snapShare": 0.4,
       "starter": false,
       "priority": 381
     },
@@ -6369,7 +6607,7 @@
       "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.34,
+      "snapShare": 0.39,
       "starter": false,
       "priority": 381
     },
@@ -6383,7 +6621,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.58,
+      "snapShare": 0.59,
       "starter": true,
       "priority": 280
     }
