@@ -315,6 +315,26 @@
     },
     {
       "rank": 12,
+      "playerId": "00-0034857",
+      "player": "Josh Allen",
+      "team": "BUF",
+      "position": "QB",
+      "teamGames": 8,
+      "qualified": true,
+      "values": {
+        "games": 8,
+        "completions": 156,
+        "attempts": 236,
+        "passing_yards": 2027,
+        "passing_tds": 12,
+        "passing_interceptions": 6,
+        "sacks_suffered": 17,
+        "cmp_pct": 0.661,
+        "pass_ypa": 8.6
+      }
+    },
+    {
+      "rank": 13,
       "playerId": "00-0040743",
       "player": "Tyler Shough",
       "team": "NO",
@@ -334,7 +354,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 14,
       "playerId": "00-0037834",
       "player": "Brock Purdy",
       "team": "SF",
@@ -354,7 +374,7 @@
       }
     },
     {
-      "rank": 14,
+      "rank": 15,
       "playerId": "00-0036971",
       "player": "Trevor Lawrence",
       "team": "JAX",
@@ -374,7 +394,7 @@
       }
     },
     {
-      "rank": 15,
+      "rank": 16,
       "playerId": "00-0023459",
       "player": "Aaron Rodgers",
       "team": "PIT",
@@ -394,7 +414,7 @@
       }
     },
     {
-      "rank": 16,
+      "rank": 17,
       "playerId": "00-0033537",
       "player": "Deshaun Watson",
       "team": "CLE",
@@ -411,26 +431,6 @@
         "sacks_suffered": 33,
         "cmp_pct": 0.655,
         "pass_ypa": 7.3
-      }
-    },
-    {
-      "rank": 17,
-      "playerId": "00-0034857",
-      "player": "Josh Allen",
-      "team": "BUF",
-      "position": "QB",
-      "teamGames": 7,
-      "qualified": true,
-      "values": {
-        "games": 7,
-        "completions": 135,
-        "attempts": 205,
-        "passing_yards": 1793,
-        "passing_tds": 11,
-        "passing_interceptions": 5,
-        "sacks_suffered": 13,
-        "cmp_pct": 0.659,
-        "pass_ypa": 8.7
       }
     },
     {
@@ -659,7 +659,7 @@
       "player": "Kyler Murray",
       "team": "MIN",
       "position": "QB",
-      "teamGames": 7,
+      "teamGames": 8,
       "qualified": true,
       "values": {
         "games": 6,
@@ -855,6 +855,26 @@
     },
     {
       "rank": 39,
+      "playerId": "00-0032950",
+      "player": "Carson Wentz",
+      "team": "MIN",
+      "position": "QB",
+      "teamGames": 8,
+      "qualified": false,
+      "values": {
+        "games": 3,
+        "completions": 31,
+        "attempts": 64,
+        "passing_yards": 357,
+        "passing_tds": 3,
+        "passing_interceptions": 2,
+        "sacks_suffered": 7,
+        "cmp_pct": 0.484,
+        "pass_ypa": 5.6
+      }
+    },
+    {
+      "rank": 40,
       "playerId": "00-0028986",
       "player": "Case Keenum",
       "team": "CHI",
@@ -874,7 +894,7 @@
       }
     },
     {
-      "rank": 40,
+      "rank": 41,
       "playerId": "00-0035289",
       "player": "Gardner Minshew",
       "team": "ARI",
@@ -894,7 +914,7 @@
       }
     },
     {
-      "rank": 41,
+      "rank": 42,
       "playerId": "00-0032268",
       "player": "Marcus Mariota",
       "team": "WAS",
@@ -914,7 +934,7 @@
       }
     },
     {
-      "rank": 42,
+      "rank": 43,
       "playerId": "00-0040668",
       "player": "Shedeur Sanders",
       "team": "CLE",
@@ -931,26 +951,6 @@
         "sacks_suffered": 5,
         "cmp_pct": 0.647,
         "pass_ypa": 8.8
-      }
-    },
-    {
-      "rank": 43,
-      "playerId": "00-0032950",
-      "player": "Carson Wentz",
-      "team": "MIN",
-      "position": "QB",
-      "teamGames": 7,
-      "qualified": false,
-      "values": {
-        "games": 2,
-        "completions": 23,
-        "attempts": 39,
-        "passing_yards": 276,
-        "passing_tds": 3,
-        "passing_interceptions": 0,
-        "sacks_suffered": 6,
-        "cmp_pct": 0.59,
-        "pass_ypa": 7.1
       }
     },
     {
@@ -1075,6 +1075,26 @@
     },
     {
       "rank": 50,
+      "playerId": "00-0040494",
+      "player": "Max Brosmer",
+      "team": "MIN",
+      "position": "QB",
+      "teamGames": 8,
+      "qualified": false,
+      "values": {
+        "games": 1,
+        "completions": 6,
+        "attempts": 7,
+        "passing_yards": 58,
+        "passing_tds": 0,
+        "passing_interceptions": 0,
+        "sacks_suffered": 1,
+        "cmp_pct": 0.857,
+        "pass_ypa": 8.3
+      }
+    },
+    {
+      "rank": 51,
       "playerId": "00-0038476",
       "player": "Tommy DeVito",
       "team": "NE",
@@ -1094,7 +1114,7 @@
       }
     },
     {
-      "rank": 51,
+      "rank": 52,
       "playerId": "00-0041562",
       "player": "Fernando Mendoza",
       "team": "LV",
@@ -1114,7 +1134,7 @@
       }
     },
     {
-      "rank": 52,
+      "rank": 53,
       "playerId": "00-0038102",
       "player": "Kenny Pickett",
       "team": "CAR",
@@ -1134,7 +1154,7 @@
       }
     },
     {
-      "rank": 53,
+      "rank": 54,
       "playerId": "00-0032065",
       "player": "Bradley Pinion",
       "team": "MIA",
@@ -1154,7 +1174,7 @@
       }
     },
     {
-      "rank": 54,
+      "rank": 55,
       "playerId": "00-0036212",
       "player": "Tua Tagovailoa",
       "team": "ATL",
@@ -1174,7 +1194,7 @@
       }
     },
     {
-      "rank": 55,
+      "rank": 56,
       "playerId": "00-0040464",
       "player": "DJ Uiagalelei",
       "team": "LAC",
@@ -1194,7 +1214,7 @@
       }
     },
     {
-      "rank": 56,
+      "rank": 57,
       "playerId": "00-0040563",
       "player": "Efton Chism III",
       "team": "NE",
@@ -1214,7 +1234,7 @@
       }
     },
     {
-      "rank": 57,
+      "rank": 58,
       "playerId": "00-0038543",
       "player": "Jaxon Smith-Njigba",
       "team": "SEA",
@@ -1234,7 +1254,7 @@
       }
     },
     {
-      "rank": 58,
+      "rank": 59,
       "playerId": "00-0035190",
       "player": "AJ Cole",
       "team": "LV",
@@ -1254,7 +1274,7 @@
       }
     },
     {
-      "rank": 58,
+      "rank": 59,
       "playerId": "00-0039107",
       "player": "Stetson Bennett",
       "team": "LAR",
@@ -1274,7 +1294,7 @@
       }
     },
     {
-      "rank": 60,
+      "rank": 61,
       "playerId": "00-0035156",
       "player": "Jack Fox",
       "team": "DET",
@@ -1294,7 +1314,7 @@
       }
     },
     {
-      "rank": 61,
+      "rank": 62,
       "playerId": "00-0039164",
       "player": "Anthony Richardson",
       "team": "IND",
@@ -1314,7 +1334,7 @@
       }
     },
     {
-      "rank": 61,
+      "rank": 62,
       "playerId": "00-0040234",
       "player": "Quinn Ewers",
       "team": "JAX",
@@ -1334,7 +1354,7 @@
       }
     },
     {
-      "rank": 63,
+      "rank": 64,
       "playerId": "00-0036898",
       "player": "Davis Mills",
       "team": "HOU",
@@ -1354,7 +1374,7 @@
       }
     },
     {
-      "rank": 63,
+      "rank": 64,
       "playerId": "00-0038559",
       "player": "Michael Wilson",
       "team": "ARI",
@@ -1374,7 +1394,7 @@
       }
     },
     {
-      "rank": 65,
+      "rank": 66,
       "playerId": "00-0027973",
       "player": "Andy Dalton",
       "team": "PHI",
@@ -1394,7 +1414,7 @@
       }
     },
     {
-      "rank": 65,
+      "rank": 66,
       "playerId": "00-0041040",
       "player": "Antonio Williams",
       "team": "WAS",
@@ -1414,7 +1434,7 @@
       }
     },
     {
-      "rank": 65,
+      "rank": 66,
       "playerId": "00-0033729",
       "player": "Cameron Johnston",
       "team": "PIT",
@@ -1434,7 +1454,7 @@
       }
     },
     {
-      "rank": 65,
+      "rank": 66,
       "playerId": "00-0036626",
       "player": "Dyami Brown",
       "team": "WAS",
@@ -1454,7 +1474,7 @@
       }
     },
     {
-      "rank": 65,
+      "rank": 66,
       "playerId": "00-0040654",
       "player": "Kai Kroeger",
       "team": "HOU",
@@ -1474,7 +1494,7 @@
       }
     },
     {
-      "rank": 65,
+      "rank": 66,
       "playerId": "00-0034771",
       "player": "Mason Rudolph",
       "team": "PIT",
@@ -1494,7 +1514,7 @@
       }
     },
     {
-      "rank": 65,
+      "rank": 66,
       "playerId": "00-0040727",
       "player": "Tre Harris",
       "team": "LAC",
@@ -1514,7 +1534,7 @@
       }
     },
     {
-      "rank": 72,
+      "rank": 73,
       "playerId": "00-0032764",
       "player": "Derrick Henry",
       "team": "BAL",

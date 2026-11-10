@@ -1,8 +1,8 @@
 {
   "season": 2026,
   "team": "MIN",
-  "week": 9,
-  "updated": "2026-11-06T16:59:17Z",
+  "week": 10,
+  "updated": "2026-11-10T17:21:19Z",
   "groups": [
     {
       "key": "offense",
@@ -70,8 +70,8 @@
       "number": 21,
       "position": "RB",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 70,
       "weight": 188,
       "age": 23,
@@ -175,8 +175,8 @@
       "number": 9,
       "position": "WR",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 71,
       "weight": 198,
       "age": 34,
@@ -379,6 +379,21 @@
       "college": "Connecticut"
     },
     {
+      "gsisId": "00-0041247",
+      "name": "Corey Robinson II",
+      "slug": "corey-robinson-ii",
+      "number": 73,
+      "position": "T",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 311,
+      "age": 23,
+      "experience": 0,
+      "college": "Arkansas; Georgia Tech; Kansas"
+    },
+    {
       "gsisId": "00-0034158",
       "name": "Brian O'Neill",
       "slug": "brian-oneill",
@@ -392,21 +407,6 @@
       "age": 31,
       "experience": 8,
       "college": "Pittsburgh"
-    },
-    {
-      "gsisId": "00-0041247",
-      "name": "Corey Robinson II",
-      "slug": "corey-robinson-ii",
-      "number": 77,
-      "position": "T",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 77,
-      "weight": 311,
-      "age": 23,
-      "experience": 0,
-      "college": "Arkansas; Georgia Tech; Kansas"
     },
     {
       "gsisId": "00-0041053",
@@ -454,21 +454,6 @@
       "college": "Wisconsin"
     },
     {
-      "gsisId": "00-0039833",
-      "name": "C.J. Hanson",
-      "slug": "cj-hanson",
-      "number": 61,
-      "position": "G",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 77,
-      "weight": 305,
-      "age": 25,
-      "experience": 2,
-      "college": "Holy Cross"
-    },
-    {
       "gsisId": "00-0040307",
       "name": "Josh Priebe",
       "slug": "josh-priebe",
@@ -497,6 +482,21 @@
       "age": 27,
       "experience": 3,
       "college": "Princeton"
+    },
+    {
+      "gsisId": "00-0039833",
+      "name": "C.J. Hanson",
+      "slug": "cj-hanson",
+      "number": 69,
+      "position": "G",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 305,
+      "age": 25,
+      "experience": 2,
+      "college": "Holy Cross"
     },
     {
       "gsisId": "00-0040661",
@@ -1045,8 +1045,8 @@
       "number": 37,
       "position": "FS",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 70,
       "weight": 212,
       "age": 30,

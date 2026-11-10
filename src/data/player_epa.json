@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 9,
-  "updated": "2026-11-09T20:14:27Z",
+  "updated": "2026-11-10T17:21:19Z",
   "categories": [
     {
       "key": "epa_per_dropback",
@@ -16,20 +16,20 @@
       "rows": [
         {
           "rank": 1,
-          "playerId": "00-0034857",
-          "player": "Josh Allen",
-          "team": "BUF",
-          "value": 0.352,
-          "plays": 237,
-          "teamGames": 7
-        },
-        {
-          "rank": 2,
           "playerId": "00-0037834",
           "player": "Brock Purdy",
           "team": "SF",
           "value": 0.34,
           "plays": 261,
+          "teamGames": 8
+        },
+        {
+          "rank": 2,
+          "playerId": "00-0034857",
+          "player": "Josh Allen",
+          "team": "BUF",
+          "value": 0.305,
+          "plays": 273,
           "teamGames": 8
         },
         {
@@ -210,7 +210,7 @@
           "team": "MIN",
           "value": 0.003,
           "plays": 184,
-          "teamGames": 7
+          "teamGames": 8
         },
         {
           "rank": 23,
@@ -380,20 +380,20 @@
         },
         {
           "rank": 7,
-          "playerId": "00-0037248",
-          "player": "James Cook",
-          "team": "BUF",
-          "value": 0.054,
-          "plays": 138,
-          "teamGames": 7
-        },
-        {
-          "rank": 8,
           "playerId": "00-0038611",
           "player": "Chris Rodriguez Jr.",
           "team": "JAX",
           "value": 0.038,
           "plays": 55,
+          "teamGames": 8
+        },
+        {
+          "rank": 8,
+          "playerId": "00-0037248",
+          "player": "James Cook",
+          "team": "BUF",
+          "value": 0.022,
+          "plays": 169,
           "teamGames": 8
         },
         {
@@ -644,9 +644,9 @@
           "playerId": "00-0033293",
           "player": "Aaron Jones",
           "team": "MIN",
-          "value": -0.189,
-          "plays": 110,
-          "teamGames": 7
+          "value": -0.196,
+          "plays": 115,
+          "teamGames": 8
         },
         {
           "rank": 37,

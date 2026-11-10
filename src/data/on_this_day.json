@@ -1,60 +1,12 @@
 {
   "month": 11,
-  "day": 9,
-  "gamesOnDate": 53,
+  "day": 10,
+  "gamesOnDate": 55,
   "items": [
     {
-      "year": 2014,
-      "gameId": "2014_10_CHI_GB",
-      "text": "The Packers beat the Bears 55-14.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Packers",
-          "team": "GB"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Bears",
-          "team": "CHI"
-        },
-        {
-          "text": " 55-14."
-        }
-      ]
-    },
-    {
-      "year": 2008,
-      "gameId": "2008_10_STL_NYJ",
-      "text": "The Jets beat the Rams 47-3.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Jets",
-          "team": "NYJ"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Rams",
-          "team": "LAR"
-        },
-        {
-          "text": " 47-3."
-        }
-      ]
-    },
-    {
-      "year": 2003,
-      "gameId": "2003_10_ATL_NYG",
-      "text": "The Falcons beat the Giants 27-7 as 11.5-point underdogs.",
+      "year": 2019,
+      "gameId": "2019_10_ATL_NO",
+      "text": "The Falcons beat the Saints 26-9 as 14-point underdogs.",
       "parts": [
         {
           "text": "The "
@@ -67,11 +19,59 @@
           "text": " beat the "
         },
         {
-          "text": "Giants",
-          "team": "NYG"
+          "text": "Saints",
+          "team": "NO"
         },
         {
-          "text": " 27-7 as 11.5-point underdogs."
+          "text": " 26-9 as 14-point underdogs."
+        }
+      ]
+    },
+    {
+      "year": 2013,
+      "gameId": "2013_10_STL_IND",
+      "text": "The Rams beat the Colts 38-8 as 7.5-point underdogs.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Rams",
+          "team": "LAR"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Colts",
+          "team": "IND"
+        },
+        {
+          "text": " 38-8 as 7.5-point underdogs."
+        }
+      ]
+    },
+    {
+      "year": 2002,
+      "gameId": "2002_10_ATL_PIT",
+      "text": "The Falcons and the Steelers tied 34-34 in overtime.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Falcons",
+          "team": "ATL"
+        },
+        {
+          "text": " and the "
+        },
+        {
+          "text": "Steelers",
+          "team": "PIT"
+        },
+        {
+          "text": " tied 34-34 in overtime."
         }
       ]
     }
