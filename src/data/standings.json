@@ -1,19 +1,19 @@
 {
   "season": 2026,
   "throughWeek": 9,
-  "updated": "2026-11-09T04:50:00Z",
+  "updated": "2026-11-10T04:35:59Z",
   "teams": [
     {
       "team": "BUF",
       "conference": "AFC",
       "division": "AFC East",
-      "wins": 6,
+      "wins": 7,
       "losses": 1,
       "ties": 0,
-      "pct": 0.857,
-      "pointsFor": 233,
-      "pointsAgainst": 181,
-      "diff": 52,
+      "pct": 0.875,
+      "pointsFor": 256,
+      "pointsAgainst": 187,
+      "diff": 69,
       "divisionRecord": [
         0,
         1,
@@ -24,7 +24,7 @@
         1,
         0
       ],
-      "streak": "W3",
+      "streak": "W4",
       "divisionRank": 1,
       "conferenceRank": 1,
       "divisionTiebreak": null,
@@ -544,33 +544,6 @@
       "conferenceTiebreak": null
     },
     {
-      "team": "MIN",
-      "conference": "NFC",
-      "division": "NFC North",
-      "wins": 6,
-      "losses": 1,
-      "ties": 0,
-      "pct": 0.857,
-      "pointsFor": 140,
-      "pointsAgainst": 93,
-      "diff": 47,
-      "divisionRecord": [
-        2,
-        1,
-        0
-      ],
-      "conferenceRecord": [
-        4,
-        1,
-        0
-      ],
-      "streak": "L1",
-      "divisionRank": 1,
-      "conferenceRank": 2,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
-    },
-    {
       "team": "CHI",
       "conference": "NFC",
       "division": "NFC North",
@@ -592,8 +565,8 @@
         0
       ],
       "streak": "W4",
-      "divisionRank": 2,
-      "conferenceRank": 5,
+      "divisionRank": 1,
+      "conferenceRank": 2,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -619,10 +592,37 @@
         0
       ],
       "streak": "W4",
+      "divisionRank": 2,
+      "conferenceRank": 5,
+      "divisionTiebreak": "head_to_head",
+      "conferenceTiebreak": "division_order"
+    },
+    {
+      "team": "MIN",
+      "conference": "NFC",
+      "division": "NFC North",
+      "wins": 6,
+      "losses": 2,
+      "ties": 0,
+      "pct": 0.75,
+      "pointsFor": 146,
+      "pointsAgainst": 116,
+      "diff": 30,
+      "divisionRecord": [
+        2,
+        1,
+        0
+      ],
+      "conferenceRecord": [
+        4,
+        1,
+        0
+      ],
+      "streak": "L2",
       "divisionRank": 3,
       "conferenceRank": 6,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "divisionTiebreak": "head_to_head",
+      "conferenceTiebreak": "division_order"
     },
     {
       "team": "GB",
