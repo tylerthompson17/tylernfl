@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "IND",
   "week": 10,
-  "updated": "2026-11-10T17:21:19Z",
+  "updated": "2026-11-12T17:46:49Z",
   "groups": [
     {
       "key": "offense",
@@ -124,21 +124,6 @@
       "college": "Mississippi State; Utah State"
     },
     {
-      "gsisId": "00-0038997",
-      "name": "Josh Downs",
-      "slug": "josh-downs",
-      "number": 2,
-      "position": "WR",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 69,
-      "weight": 171,
-      "age": 25,
-      "experience": 3,
-      "college": "North Carolina"
-    },
-    {
       "gsisId": "00-0035045",
       "name": "D.J. Montgomery",
       "slug": "dj-montgomery",
@@ -184,21 +169,6 @@
       "college": "Southern Mississippi"
     },
     {
-      "gsisId": "00-0030279",
-      "name": "Keenan Allen",
-      "slug": "keenan-allen",
-      "number": 10,
-      "position": "WR",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 74,
-      "weight": 211,
-      "age": 34,
-      "experience": 13,
-      "college": "California"
-    },
-    {
       "gsisId": "00-0035140",
       "name": "Mecole Hardman",
       "slug": "mecole-hardman",
@@ -220,8 +190,8 @@
       "number": 12,
       "position": "WR",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 74,
       "weight": 211,
       "age": 29,
@@ -1172,6 +1142,21 @@
       "age": 33,
       "experience": 10,
       "college": "William & Mary"
+    },
+    {
+      "gsisId": "00-0035757",
+      "name": "Jacob Bobenmoyer",
+      "slug": "jacob-bobenmoyer",
+      "number": 55,
+      "position": "LS",
+      "group": "specialists",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 235,
+      "age": 29,
+      "experience": 6,
+      "college": "Northern Colorado"
     }
   ]
 }

@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "ATL",
   "week": 10,
-  "updated": "2026-11-10T17:21:19Z",
+  "updated": "2026-11-12T17:46:49Z",
   "groups": [
     {
       "key": "offense",
@@ -544,6 +544,36 @@
       "college": "Washburn"
     },
     {
+      "gsisId": "00-0038383",
+      "name": "Andrew Vorhees",
+      "slug": "andrew-vorhees",
+      "number": 72,
+      "position": "G",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 78,
+      "weight": 330,
+      "age": 27,
+      "experience": 3,
+      "college": "USC"
+    },
+    {
+      "gsisId": "00-0040401",
+      "name": "Gus Hartwig",
+      "slug": "gus-hartwig",
+      "number": 60,
+      "position": "C",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 315,
+      "age": 24,
+      "experience": 1,
+      "college": "Purdue"
+    },
+    {
       "gsisId": "00-0033793",
       "name": "Corey Levin",
       "slug": "corey-levin",
@@ -557,21 +587,6 @@
       "age": 32,
       "experience": 9,
       "college": "Tennessee-Chattanooga"
-    },
-    {
-      "gsisId": "00-0036833",
-      "name": "Ryan Neuzil",
-      "slug": "ryan-neuzil",
-      "number": 64,
-      "position": "C",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 75,
-      "weight": 305,
-      "age": 29,
-      "experience": 5,
-      "college": "Appalachian State"
     },
     {
       "gsisId": "00-0033945",
@@ -829,21 +844,6 @@
       "college": "Kentucky; East Mississippi JC"
     },
     {
-      "gsisId": "00-0037826",
-      "name": "Drake Jackson",
-      "slug": "drake-jackson",
-      "number": 91,
-      "position": "OLB",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 250,
-      "age": 25,
-      "experience": 4,
-      "college": "USC"
-    },
-    {
       "gsisId": "00-0036990",
       "name": "Divine Deablo",
       "slug": "divine-deablo",
@@ -1099,19 +1099,19 @@
       "college": "Notre Dame"
     },
     {
-      "gsisId": "00-0034675",
-      "name": "Jessie Bates",
-      "slug": "jessie-bates",
-      "number": 3,
-      "position": "SS",
+      "gsisId": "00-0037264",
+      "name": "Delarrin Turner-Yell",
+      "slug": "delarrin-turner-yell",
+      "number": 32,
+      "position": "FS",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 73,
-      "weight": 210,
-      "age": 29,
-      "experience": 8,
-      "college": "Wake Forest"
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 71,
+      "weight": 190,
+      "age": 26,
+      "experience": 4,
+      "college": "Oklahoma"
     },
     {
       "gsisId": "00-0038628",

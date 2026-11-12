@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "JAX",
   "week": 10,
-  "updated": "2026-11-11T17:30:44Z",
+  "updated": "2026-11-12T17:46:49Z",
   "groups": [
     {
       "key": "offense",
@@ -62,21 +62,6 @@
       "age": 27,
       "experience": 5,
       "college": "Clemson"
-    },
-    {
-      "gsisId": "00-0041203",
-      "name": "Joey Aguilar",
-      "slug": "joey-aguilar",
-      "number": 17,
-      "position": "QB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 75,
-      "weight": 225,
-      "age": 25,
-      "experience": 0,
-      "college": "Tennessee; Appalachian State; Diablo Valley College"
     },
     {
       "gsisId": "00-0040238",
@@ -154,21 +139,6 @@
       "college": "Virginia Tech; North Carolina A&T"
     },
     {
-      "gsisId": "00-0041220",
-      "name": "Michael Wortham",
-      "slug": "michael-wortham",
-      "number": 0,
-      "position": "WR",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 69,
-      "weight": 190,
-      "age": 24,
-      "experience": 0,
-      "college": "Montana; Eastern Washington"
-    },
-    {
       "gsisId": "00-0034960",
       "name": "Jakobi Meyers",
       "slug": "jakobi-meyers",
@@ -242,6 +212,21 @@
       "age": 28,
       "experience": 5,
       "college": "Southern Mississippi"
+    },
+    {
+      "gsisId": "00-0041220",
+      "name": "Michael Wortham",
+      "slug": "michael-wortham",
+      "number": 15,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 69,
+      "weight": 190,
+      "age": 24,
+      "experience": 0,
+      "college": "Montana; Eastern Washington"
     },
     {
       "gsisId": "00-0041106",
@@ -664,21 +649,6 @@
       "college": "Washington; Sioux Falls"
     },
     {
-      "gsisId": "00-0041059",
-      "name": "Wesley Williams",
-      "slug": "wesley-williams",
-      "number": 90,
-      "position": "DE",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 75,
-      "weight": 256,
-      "age": 22,
-      "experience": 0,
-      "college": "Duke"
-    },
-    {
       "gsisId": "00-0040342",
       "name": "Danny Striggow",
       "slug": "danny-striggow",
@@ -709,6 +679,21 @@
       "college": "Colorado; Arizona State"
     },
     {
+      "gsisId": "00-0041059",
+      "name": "Wesley Williams",
+      "slug": "wesley-williams",
+      "number": 97,
+      "position": "DE",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 75,
+      "weight": 256,
+      "age": 22,
+      "experience": 0,
+      "college": "Duke"
+    },
+    {
       "gsisId": "00-0036262",
       "name": "DaVon Hamilton",
       "slug": "davon-hamilton",
@@ -724,6 +709,36 @@
       "college": "Ohio State"
     },
     {
+      "gsisId": "00-0032763",
+      "name": "Austin Johnson",
+      "slug": "austin-johnson",
+      "number": 55,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 314,
+      "age": 32,
+      "experience": 10,
+      "college": "Penn State"
+    },
+    {
+      "gsisId": "00-0037073",
+      "name": "Jordan Davis",
+      "slug": "jordan-davis",
+      "number": 90,
+      "position": "DT",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 78,
+      "weight": 336,
+      "age": 26,
+      "experience": 4,
+      "college": "Georgia"
+    },
+    {
       "gsisId": "00-0032164",
       "name": "Arik Armstead",
       "slug": "arik-armstead",
@@ -737,21 +752,6 @@
       "age": 32,
       "experience": 11,
       "college": "Oregon"
-    },
-    {
-      "gsisId": "00-0032763",
-      "name": "Austin Johnson",
-      "slug": "austin-johnson",
-      "number": 93,
-      "position": "DT",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 314,
-      "age": 32,
-      "experience": 10,
-      "college": "Penn State"
     },
     {
       "gsisId": "00-0034657",
@@ -772,7 +772,7 @@
       "gsisId": "00-0041204",
       "name": "T.J. Bollers",
       "slug": "tj-bollers",
-      "number": 94,
+      "number": 96,
       "position": "DT",
       "group": "defense",
       "status": "DEV",
@@ -817,7 +817,7 @@
       "gsisId": "00-0033860",
       "name": "Davon Godchaux",
       "slug": "davon-godchaux",
-      "number": 92,
+      "number": 94,
       "position": "NT",
       "group": "defense",
       "status": "ACT",
@@ -1024,21 +1024,6 @@
       "college": "Florida State; Mississippi State"
     },
     {
-      "gsisId": "00-0040411",
-      "name": "Alijah Huzzie",
-      "slug": "alijah-huzzie",
-      "number": 21,
-      "position": "CB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 70,
-      "weight": 195,
-      "age": 25,
-      "experience": 1,
-      "college": "North Carolina; East Tennessee State"
-    },
-    {
       "gsisId": "00-0037106",
       "name": "Jaylon Jones",
       "slug": "jaylon-jones-jax",
@@ -1112,6 +1097,21 @@
       "age": 24,
       "experience": 1,
       "college": "Colorado; Jackson State University"
+    },
+    {
+      "gsisId": "00-0034675",
+      "name": "Jessie Bates",
+      "slug": "jessie-bates",
+      "number": 3,
+      "position": "SS",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 73,
+      "weight": 210,
+      "age": 29,
+      "experience": 8,
+      "college": "Wake Forest"
     },
     {
       "gsisId": "00-0038596",

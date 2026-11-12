@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "MIN",
   "week": 10,
-  "updated": "2026-11-11T17:30:44Z",
+  "updated": "2026-11-12T17:46:49Z",
   "groups": [
     {
       "key": "offense",
@@ -32,6 +32,21 @@
       "age": 29,
       "experience": 7,
       "college": "Oklahoma; Texas A&M"
+    },
+    {
+      "gsisId": "00-0029604",
+      "name": "Kirk Cousins",
+      "slug": "kirk-cousins",
+      "number": 8,
+      "position": "QB",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 75,
+      "weight": 209,
+      "age": 38,
+      "experience": 14,
+      "college": "Michigan State"
     },
     {
       "gsisId": "00-0032950",
@@ -167,21 +182,6 @@
       "age": 24,
       "experience": 1,
       "college": "Indiana; Texas Tech"
-    },
-    {
-      "gsisId": "00-0031235",
-      "name": "Odell Beckham Jr.",
-      "slug": "odell-beckham-jr",
-      "number": 9,
-      "position": "WR",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 71,
-      "weight": 198,
-      "age": 34,
-      "experience": 12,
-      "college": "LSU"
     },
     {
       "gsisId": "00-0040154",
@@ -379,21 +379,6 @@
       "college": "Connecticut"
     },
     {
-      "gsisId": "00-0041247",
-      "name": "Corey Robinson II",
-      "slug": "corey-robinson-ii",
-      "number": 73,
-      "position": "T",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 77,
-      "weight": 311,
-      "age": 23,
-      "experience": 0,
-      "college": "Arkansas; Georgia Tech; Kansas"
-    },
-    {
       "gsisId": "00-0034158",
       "name": "Brian O'Neill",
       "slug": "brian-oneill",
@@ -482,21 +467,6 @@
       "age": 27,
       "experience": 3,
       "college": "Princeton"
-    },
-    {
-      "gsisId": "00-0039833",
-      "name": "C.J. Hanson",
-      "slug": "cj-hanson",
-      "number": 69,
-      "position": "G",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 77,
-      "weight": 305,
-      "age": 25,
-      "experience": 2,
-      "college": "Holy Cross"
     },
     {
       "gsisId": "00-0040661",
@@ -1045,8 +1015,8 @@
       "number": 37,
       "position": "FS",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 70,
       "weight": 212,
       "age": 30,

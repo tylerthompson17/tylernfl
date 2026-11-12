@@ -1,10 +1,242 @@
 {
-  "date": "2026-11-11",
-  "number": 18,
+  "date": "2026-11-12",
+  "number": 19,
   "season": 2026,
   "modelVersion": "nfl4th-ecb7293",
   "closeMargin": 0.02,
   "plays": [
+    {
+      "key": "2026_09_CLE_NO:3652",
+      "gameId": "2026_09_CLE_NO",
+      "week": 9,
+      "away": "CLE",
+      "home": "NO",
+      "offense": "NO",
+      "defense": "CLE",
+      "coach": "Kellen Moore",
+      "quarter": 4,
+      "clock": 263,
+      "distance": 3,
+      "yardline100": 63,
+      "scoreDiff": -4,
+      "timeoutsOffense": 3,
+      "timeoutsDefense": 3,
+      "wp": {
+        "go": 0.29416,
+        "punt": 0.24808,
+        "field goal": null
+      },
+      "call": "go",
+      "margin": 0.04608,
+      "close": false,
+      "asOf": {
+        "season": 2026,
+        "week": 7
+      },
+      "nfl4th": {
+        "wp": {
+          "go": 0.28195,
+          "punt": 0.24815,
+          "field goal": null
+        },
+        "call": "go",
+        "margin": 0.0338
+      },
+      "teamCall": "punt",
+      "coachWpLost": 0.04608,
+      "result": "Punted 46 yards",
+      "description": "(4:23) 17-R.Wright punts 46 yards to CLE 17, Center-49-Z.Wood, fair catch by 1-K.Concepcion.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "CLE",
+          "startYardline100": 83,
+          "plays": 7,
+          "yards": -1,
+          "result": "punt"
+        },
+        "ended": null,
+        "final": {
+          "away": 22,
+          "home": 23,
+          "overtime": true
+        }
+      }
+    },
+    {
+      "key": "2026_08_ATL_TB:398",
+      "gameId": "2026_08_ATL_TB",
+      "week": 8,
+      "away": "ATL",
+      "home": "TB",
+      "offense": "TB",
+      "defense": "ATL",
+      "coach": "Todd Bowles",
+      "quarter": 1,
+      "clock": 467,
+      "distance": 5,
+      "yardline100": 28,
+      "scoreDiff": 0,
+      "timeoutsOffense": 3,
+      "timeoutsDefense": 3,
+      "wp": {
+        "go": 0.61573,
+        "punt": null,
+        "field goal": 0.59158
+      },
+      "call": "go",
+      "margin": 0.02415,
+      "close": false,
+      "asOf": {
+        "season": 2026,
+        "week": 7
+      },
+      "nfl4th": {
+        "wp": {
+          "go": 0.60944,
+          "punt": null,
+          "field goal": 0.59158
+        },
+        "call": "go",
+        "margin": 0.01786
+      },
+      "teamCall": "field goal",
+      "coachWpLost": 0.02415,
+      "result": "Made a 46-yard field goal",
+      "description": "(7:47) 4-C.McLaughlin 46 yard field goal is GOOD, Center-86-E.Deckers, Holder-9-R.Dixon.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "ATL",
+          "startYardline100": 66,
+          "plays": 1,
+          "yards": 0,
+          "result": "turnover"
+        },
+        "ended": null,
+        "final": {
+          "away": 0,
+          "home": 16,
+          "overtime": false
+        }
+      }
+    },
+    {
+      "key": "2026_07_IND_MIN:2166",
+      "gameId": "2026_07_IND_MIN",
+      "week": 7,
+      "away": "IND",
+      "home": "MIN",
+      "offense": "IND",
+      "defense": "MIN",
+      "coach": "Shane Steichen",
+      "quarter": 3,
+      "clock": 687,
+      "distance": 23,
+      "yardline100": 81,
+      "scoreDiff": 4,
+      "timeoutsOffense": 3,
+      "timeoutsDefense": 3,
+      "wp": {
+        "go": 0.36542,
+        "punt": 0.43744,
+        "field goal": null
+      },
+      "call": "punt",
+      "margin": 0.07202,
+      "close": false,
+      "asOf": {
+        "season": 2026,
+        "week": 6
+      },
+      "nfl4th": {
+        "wp": {
+          "go": 0.36387,
+          "punt": 0.43557,
+          "field goal": null
+        },
+        "call": "punt",
+        "margin": 0.07169
+      },
+      "teamCall": "punt",
+      "coachWpLost": 0.0,
+      "result": "Punted 42 yards",
+      "description": "(11:27) 8-R.Sanchez punts 42 yards to MIN 39, Center-46-L.Rhodes, fair catch by 4-M.Price.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "MIN",
+          "startYardline100": 61,
+          "plays": 3,
+          "yards": 5,
+          "result": "punt"
+        },
+        "ended": null,
+        "final": {
+          "away": 10,
+          "home": 16,
+          "overtime": false
+        }
+      }
+    },
+    {
+      "key": "2026_08_NE_MIA:1168",
+      "gameId": "2026_08_NE_MIA",
+      "week": 8,
+      "away": "NE",
+      "home": "MIA",
+      "offense": "MIA",
+      "defense": "NE",
+      "coach": "Jeff Hafley",
+      "quarter": 2,
+      "clock": 573,
+      "distance": 16,
+      "yardline100": 34,
+      "scoreDiff": 0,
+      "timeoutsOffense": 3,
+      "timeoutsDefense": 3,
+      "wp": {
+        "go": 0.27719,
+        "punt": 0.28921,
+        "field goal": 0.31
+      },
+      "call": "field goal",
+      "margin": 0.02079,
+      "close": false,
+      "asOf": {
+        "season": 2026,
+        "week": 7
+      },
+      "nfl4th": {
+        "wp": {
+          "go": 0.27474,
+          "punt": 0.28923,
+          "field goal": 0.31
+        },
+        "call": "field goal",
+        "margin": 0.02077
+      },
+      "teamCall": "field goal",
+      "coachWpLost": 0.0,
+      "result": "Made a 52-yard field goal",
+      "description": "(9:33) 31-Z.Gonzalez 52 yard field goal is GOOD, Center-46-T.Addington, Holder-48-B.Pinion.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "NE",
+          "startYardline100": 65,
+          "plays": 12,
+          "yards": 43,
+          "result": "missed field goal"
+        },
+        "ended": null,
+        "final": {
+          "away": 24,
+          "home": 19,
+          "overtime": false
+        }
+      }
+    },
     {
       "key": "2026_09_NYJ_KC:2147",
       "gameId": "2026_09_NYJ_KC",
@@ -62,242 +294,20 @@
           "overtime": false
         }
       }
-    },
-    {
-      "key": "2026_09_BUF_MIN:1798",
-      "gameId": "2026_09_BUF_MIN",
-      "week": 9,
-      "away": "BUF",
-      "home": "MIN",
-      "offense": "MIN",
-      "defense": "BUF",
-      "coach": "Kevin O'Connell",
-      "quarter": 2,
-      "clock": 246,
-      "distance": 1,
-      "yardline100": 25,
-      "scoreDiff": -3,
-      "timeoutsOffense": 2,
-      "timeoutsDefense": 3,
-      "wp": {
-        "go": 0.40189,
-        "punt": null,
-        "field goal": 0.37711
-      },
-      "call": "go",
-      "margin": 0.02478,
-      "close": false,
-      "asOf": {
-        "season": 2026,
-        "week": 7
-      },
-      "nfl4th": {
-        "wp": {
-          "go": 0.3986,
-          "punt": null,
-          "field goal": 0.37711
-        },
-        "call": "go",
-        "margin": 0.02149
-      },
-      "teamCall": "field goal",
-      "coachWpLost": 0.02478,
-      "result": "Made a 43-yard field goal",
-      "description": "(4:06) 16-W.Reichard 43 yard field goal is GOOD, Center-42-A.DePaola, Holder-19-B.Thorson.",
-      "next": {
-        "converted": false,
-        "drive": {
-          "team": "BUF",
-          "startYardline100": 80,
-          "plays": 8,
-          "yards": 80,
-          "result": "touchdown"
-        },
-        "ended": null,
-        "final": {
-          "away": 23,
-          "home": 6,
-          "overtime": false
-        }
-      }
-    },
-    {
-      "key": "2026_07_NYG_HOU:2521",
-      "gameId": "2026_07_NYG_HOU",
-      "week": 7,
-      "away": "NYG",
-      "home": "HOU",
-      "offense": "NYG",
-      "defense": "HOU",
-      "coach": "John Harbaugh",
-      "quarter": 3,
-      "clock": 613,
-      "distance": 13,
-      "yardline100": 37,
-      "scoreDiff": 0,
-      "timeoutsOffense": 3,
-      "timeoutsDefense": 3,
-      "wp": {
-        "go": 0.28927,
-        "punt": 0.28942,
-        "field goal": 0.33123
-      },
-      "call": "field goal",
-      "margin": 0.04181,
-      "close": false,
-      "asOf": {
-        "season": 2026,
-        "week": 6
-      },
-      "nfl4th": {
-        "wp": {
-          "go": 0.2846,
-          "punt": 0.28933,
-          "field goal": 0.33123
-        },
-        "call": "field goal",
-        "margin": 0.04191
-      },
-      "teamCall": "punt",
-      "coachWpLost": 0.04181,
-      "result": "Punted 23 yards",
-      "description": "(10:13) 15-J.Stout punts 23 yards to HOU 14, Center-58-B.Mann, fair catch by 13-J.Noel.",
-      "next": {
-        "converted": false,
-        "drive": {
-          "team": "HOU",
-          "startYardline100": 86,
-          "plays": 3,
-          "yards": 9,
-          "result": "punt"
-        },
-        "ended": null,
-        "final": {
-          "away": 27,
-          "home": 21,
-          "overtime": true
-        }
-      }
-    },
-    {
-      "key": "2026_09_CLE_NO:3880",
-      "gameId": "2026_09_CLE_NO",
-      "week": 9,
-      "away": "CLE",
-      "home": "NO",
-      "offense": "CLE",
-      "defense": "NO",
-      "coach": "Todd Monken",
-      "quarter": 4,
-      "clock": 120,
-      "distance": 22,
-      "yardline100": 84,
-      "scoreDiff": 4,
-      "timeoutsOffense": 3,
-      "timeoutsDefense": 0,
-      "wp": {
-        "go": 0.58442,
-        "punt": 0.73774,
-        "field goal": null
-      },
-      "call": "punt",
-      "margin": 0.15332,
-      "close": false,
-      "asOf": {
-        "season": 2026,
-        "week": 7
-      },
-      "nfl4th": {
-        "wp": {
-          "go": 0.58085,
-          "punt": 0.73318,
-          "field goal": null
-        },
-        "call": "punt",
-        "margin": 0.15234
-      },
-      "teamCall": "punt",
-      "coachWpLost": 0.0,
-      "result": "Punted 59 yards",
-      "description": "(2:00) 13-C.Bojorquez punts 59 yards to NO 25, Center-50-R.Sunahara. 19-B.Brown pushed ob at NO 45 for 20 yards (11-M.Corley).",
-      "next": {
-        "converted": false,
-        "drive": {
-          "team": "NO",
-          "startYardline100": 55,
-          "plays": 6,
-          "yards": 55,
-          "result": "touchdown"
-        },
-        "ended": null,
-        "final": {
-          "away": 22,
-          "home": 23,
-          "overtime": true
-        }
-      }
-    },
-    {
-      "key": "2026_09_DEN_CAR:322",
-      "gameId": "2026_09_DEN_CAR",
-      "week": 9,
-      "away": "DEN",
-      "home": "CAR",
-      "offense": "DEN",
-      "defense": "CAR",
-      "coach": "Sean Payton",
-      "quarter": 1,
-      "clock": 671,
-      "distance": 8,
-      "yardline100": 8,
-      "scoreDiff": 0,
-      "timeoutsOffense": 3,
-      "timeoutsDefense": 3,
-      "wp": {
-        "go": 0.62592,
-        "punt": null,
-        "field goal": 0.60506
-      },
-      "call": "go",
-      "margin": 0.02086,
-      "close": false,
-      "asOf": {
-        "season": 2026,
-        "week": 7
-      },
-      "nfl4th": {
-        "wp": {
-          "go": 0.62044,
-          "punt": null,
-          "field goal": 0.60506
-        },
-        "call": "go",
-        "margin": 0.01538
-      },
-      "teamCall": "field goal",
-      "coachWpLost": 0.02086,
-      "result": "Made a 26-yard field goal",
-      "description": "(11:11) 3-W.Lutz 26 yard field goal is GOOD, Center-48-M.Fraboni, Holder-16-J.Crawshaw.",
-      "next": {
-        "converted": false,
-        "drive": {
-          "team": "CAR",
-          "startYardline100": 80,
-          "plays": 4,
-          "yards": 14,
-          "result": "punt"
-        },
-        "ended": null,
-        "final": {
-          "away": 26,
-          "home": 21,
-          "overtime": false
-        }
-      }
     }
   ],
-  "coachWpLost": 0.08745,
+  "coachWpLost": 0.07023,
   "history": [
+    {
+      "date": "2026-11-12",
+      "keys": [
+        "2026_09_CLE_NO:3652",
+        "2026_08_ATL_TB:398",
+        "2026_07_IND_MIN:2166",
+        "2026_08_NE_MIA:1168",
+        "2026_09_NYJ_KC:2147"
+      ]
+    },
     {
       "date": "2026-11-11",
       "keys": [

@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "ARI",
   "week": 10,
-  "updated": "2026-11-10T17:21:19Z",
+  "updated": "2026-11-12T17:46:49Z",
   "groups": [
     {
       "key": "offense",
@@ -25,13 +25,28 @@
       "number": 15,
       "position": "QB",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 73,
       "weight": 225,
       "age": 30,
       "experience": 7,
       "college": "Washington State"
+    },
+    {
+      "gsisId": "00-0041203",
+      "name": "Joey Aguilar",
+      "slug": "joey-aguilar",
+      "number": 17,
+      "position": "QB",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 75,
+      "weight": 225,
+      "age": 25,
+      "experience": 0,
+      "college": "Tennessee; Appalachian State; Diablo Valley College"
     },
     {
       "gsisId": "00-0041561",
@@ -77,21 +92,6 @@
       "age": 31,
       "experience": 9,
       "college": "Pittsburgh"
-    },
-    {
-      "gsisId": "00-0036670",
-      "name": "Jermar Jefferson",
-      "slug": "jermar-jefferson",
-      "number": 17,
-      "position": "RB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 70,
-      "weight": 215,
-      "age": 26,
-      "experience": 5,
-      "college": "Oregon State"
     },
     {
       "gsisId": "00-0037157",
@@ -169,19 +169,19 @@
       "college": "Cincinnati; Alabama"
     },
     {
-      "gsisId": "00-0038891",
-      "name": "Shedrick Jackson",
-      "slug": "shedrick-jackson",
-      "number": 4,
+      "gsisId": "00-0033891",
+      "name": "Zay Jones",
+      "slug": "zay-jones",
+      "number": 7,
       "position": "WR",
       "group": "offense",
       "status": "DEV",
       "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 202,
-      "age": 27,
-      "experience": 3,
-      "college": "Auburn"
+      "heightInches": 74,
+      "weight": 200,
+      "age": 31,
+      "experience": 9,
+      "college": "East Carolina"
     },
     {
       "gsisId": "00-0038559",
@@ -190,8 +190,8 @@
       "number": 14,
       "position": "WR",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 74,
       "weight": 213,
       "age": 26,
@@ -214,25 +214,25 @@
       "college": "Eastern Washington"
     },
     {
-      "gsisId": "00-0033891",
-      "name": "Zay Jones",
-      "slug": "zay-jones",
-      "number": 18,
+      "gsisId": "00-0038891",
+      "name": "Shedrick Jackson",
+      "slug": "shedrick-jackson",
+      "number": 30,
       "position": "WR",
       "group": "offense",
       "status": "DEV",
       "statusLabel": "Practice squad",
-      "heightInches": 74,
-      "weight": 200,
-      "age": 31,
-      "experience": 9,
-      "college": "East Carolina"
+      "heightInches": 73,
+      "weight": 202,
+      "age": 27,
+      "experience": 3,
+      "college": "Auburn"
     },
     {
       "gsisId": "00-0036133",
       "name": "James Proche",
       "slug": "james-proche",
-      "number": 80,
+      "number": 37,
       "position": "WR",
       "group": "offense",
       "status": "DEV",
@@ -347,21 +347,6 @@
       "age": 28,
       "experience": 5,
       "college": "Mississippi"
-    },
-    {
-      "gsisId": "00-0040046",
-      "name": "Rivaldo Fairweather",
-      "slug": "rivaldo-fairweather",
-      "number": 45,
-      "position": "TE",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 75,
-      "weight": 251,
-      "age": 24,
-      "experience": 1,
-      "college": "Auburn; Florida International"
     },
     {
       "gsisId": "00-0037277",
@@ -514,6 +499,21 @@
       "college": "Ohio State"
     },
     {
+      "gsisId": "00-0037302",
+      "name": "Austin Deculus",
+      "slug": "austin-deculus",
+      "number": 75,
+      "position": "T",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 330,
+      "age": 27,
+      "experience": 4,
+      "college": "LSU"
+    },
+    {
       "gsisId": "00-0041138",
       "name": "Albert Reese",
       "slug": "albert-reese",
@@ -527,21 +527,6 @@
       "age": 24,
       "experience": 0,
       "college": "Mississippi State"
-    },
-    {
-      "gsisId": "00-0037302",
-      "name": "Austin Deculus",
-      "slug": "austin-deculus",
-      "number": 76,
-      "position": "T",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 77,
-      "weight": 330,
-      "age": 27,
-      "experience": 4,
-      "college": "LSU"
     },
     {
       "gsisId": "00-0040382",
@@ -874,6 +859,21 @@
       "college": "Tulsa"
     },
     {
+      "gsisId": "00-0040176",
+      "name": "Bradyn Swinson",
+      "slug": "bradyn-swinson",
+      "number": 41,
+      "position": "OLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 255,
+      "age": 24,
+      "experience": 1,
+      "college": "LSU; Oregon"
+    },
+    {
       "gsisId": "00-0041367",
       "name": "Cam Robertson",
       "slug": "cam-robertson",
@@ -917,21 +917,6 @@
       "age": 27,
       "experience": 3,
       "college": "Auburn"
-    },
-    {
-      "gsisId": "00-0040176",
-      "name": "Bradyn Swinson",
-      "slug": "bradyn-swinson",
-      "number": 57,
-      "position": "OLB",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 255,
-      "age": 24,
-      "experience": 1,
-      "college": "LSU; Oregon"
     },
     {
       "gsisId": "00-0040645",
@@ -997,7 +982,7 @@
       "gsisId": "00-0041564",
       "name": "Riley Wilson",
       "slug": "riley-wilson",
-      "number": 51,
+      "number": 53,
       "position": "ILB",
       "group": "defense",
       "status": "DEV",

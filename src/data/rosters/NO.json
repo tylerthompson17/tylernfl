@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NO",
   "week": 10,
-  "updated": "2026-11-10T17:21:19Z",
+  "updated": "2026-11-12T17:46:49Z",
   "groups": [
     {
       "key": "offense",
@@ -94,23 +94,8 @@
       "college": "Georgia"
     },
     {
-      "gsisId": "00-0040692",
-      "name": "Jarquez Hunter",
-      "slug": "jarquez-hunter",
-      "number": 27,
-      "position": "RB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 70,
-      "weight": 210,
-      "age": 23,
-      "experience": 1,
-      "college": "Auburn"
-    },
-    {
       "gsisId": "00-0039373",
-      "name": "Audric Estimé",
+      "name": "Audric Estime",
       "slug": "audric-estime",
       "number": 30,
       "position": "RB",
@@ -319,6 +304,21 @@
       "college": "Georgia"
     },
     {
+      "gsisId": "00-0041001",
+      "name": "Matt Lauter",
+      "slug": "matt-lauter",
+      "number": 46,
+      "position": "TE",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 245,
+      "age": 24,
+      "experience": 0,
+      "college": null
+    },
+    {
       "gsisId": "00-0040244",
       "name": "Moliki Matavao",
       "slug": "moliki-matavao",
@@ -332,6 +332,21 @@
       "age": 23,
       "experience": 1,
       "college": "UCLA"
+    },
+    {
+      "gsisId": "00-0039518",
+      "name": "Treyton Welch",
+      "slug": "treyton-welch",
+      "number": 82,
+      "position": "TE",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 241,
+      "age": 25,
+      "experience": 2,
+      "college": "Wyoming"
     },
     {
       "gsisId": "00-0036040",

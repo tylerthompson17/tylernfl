@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "BUF",
   "week": 10,
-  "updated": "2026-11-10T17:21:19Z",
+  "updated": "2026-11-12T17:46:49Z",
   "groups": [
     {
       "key": "offense",
@@ -235,8 +235,8 @@
       "number": 18,
       "position": "WR",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 72,
       "weight": 203,
       "age": 30,
@@ -904,21 +904,6 @@
       "college": "LSU"
     },
     {
-      "gsisId": "00-0039685",
-      "name": "A.J. Woods",
-      "slug": "aj-woods",
-      "number": 31,
-      "position": "CB",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 71,
-      "weight": 195,
-      "age": 25,
-      "experience": 2,
-      "college": "Pittsburgh"
-    },
-    {
       "gsisId": "00-0039469",
       "name": "Te'Cory Couch",
       "slug": "tecory-couch",
@@ -1015,8 +1000,8 @@
       "number": 25,
       "position": "FS",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 71,
       "weight": 210,
       "age": 27,
@@ -1037,6 +1022,21 @@
       "age": 30,
       "experience": 6,
       "college": "Temple"
+    },
+    {
+      "gsisId": "00-0035632",
+      "name": "Amani Hooker",
+      "slug": "amani-hooker",
+      "number": 37,
+      "position": "FS",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 71,
+      "weight": 210,
+      "age": 28,
+      "experience": 7,
+      "college": "Iowa"
     },
     {
       "gsisId": "00-0036888",

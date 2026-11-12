@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "BAL",
   "week": 10,
-  "updated": "2026-11-10T17:21:19Z",
+  "updated": "2026-11-12T17:46:49Z",
   "groups": [
     {
       "key": "offense",
@@ -34,21 +34,6 @@
       "college": "Utah"
     },
     {
-      "gsisId": "00-0033119",
-      "name": "Jacoby Brissett",
-      "slug": "jacoby-brissett",
-      "number": 7,
-      "position": "QB",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 76,
-      "weight": 235,
-      "age": 33,
-      "experience": 10,
-      "college": "N.C. State; Florida"
-    },
-    {
       "gsisId": "00-0034796",
       "name": "Lamar Jackson",
       "slug": "lamar-jackson",
@@ -62,6 +47,21 @@
       "age": 29,
       "experience": 8,
       "college": "Louisville"
+    },
+    {
+      "gsisId": "00-0033119",
+      "name": "Jacoby Brissett",
+      "slug": "jacoby-brissett",
+      "number": 11,
+      "position": "QB",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 76,
+      "weight": 235,
+      "age": 33,
+      "experience": 10,
+      "college": "N.C. State; Florida"
     },
     {
       "gsisId": "00-0037327",
@@ -167,6 +167,21 @@
       "age": 28,
       "experience": 7,
       "college": "Oklahoma State"
+    },
+    {
+      "gsisId": "00-0040637",
+      "name": "Lucas Scott",
+      "slug": "lucas-scott",
+      "number": 47,
+      "position": "FB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 305,
+      "age": 23,
+      "experience": 1,
+      "college": "Army"
     },
     {
       "gsisId": "00-0039064",
@@ -334,21 +349,6 @@
       "college": "Alabama; Washington; Pomona State"
     },
     {
-      "gsisId": "00-0032394",
-      "name": "Nick Vannett",
-      "slug": "nick-vannett",
-      "number": 87,
-      "position": "TE",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 78,
-      "weight": 257,
-      "age": 33,
-      "experience": 10,
-      "college": "Ohio State"
-    },
-    {
       "gsisId": "00-0040879",
       "name": "Matthew Hibner",
       "slug": "matthew-hibner",
@@ -484,21 +484,6 @@
       "college": "LSU"
     },
     {
-      "gsisId": "00-0039624",
-      "name": "Kyle Hergel",
-      "slug": "kyle-hergel",
-      "number": 60,
-      "position": "G",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 74,
-      "weight": 315,
-      "age": 27,
-      "experience": 2,
-      "college": "Boston College; Texas State-San Marcos"
-    },
-    {
       "gsisId": "00-0040866",
       "name": "Olaivavega Ioane",
       "slug": "olaivavega-ioane",
@@ -514,21 +499,6 @@
       "college": "Penn State"
     },
     {
-      "gsisId": "00-0038383",
-      "name": "Andrew Vorhees",
-      "slug": "andrew-vorhees",
-      "number": 72,
-      "position": "G",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 78,
-      "weight": 330,
-      "age": 27,
-      "experience": 3,
-      "college": "USC"
-    },
-    {
       "gsisId": "00-0036369",
       "name": "John Simpson",
       "slug": "john-simpson",
@@ -542,21 +512,6 @@
       "age": 29,
       "experience": 6,
       "college": "Clemson"
-    },
-    {
-      "gsisId": "00-0035266",
-      "name": "Mike Jordan",
-      "slug": "mike-jordan",
-      "number": 79,
-      "position": "G",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 78,
-      "weight": 315,
-      "age": 28,
-      "experience": 7,
-      "college": "Ohio State"
     },
     {
       "gsisId": "00-0038629",
@@ -602,6 +557,21 @@
       "age": 27,
       "experience": 4,
       "college": "Nebraska"
+    },
+    {
+      "gsisId": "00-0036833",
+      "name": "Ryan Neuzil",
+      "slug": "ryan-neuzil",
+      "number": 64,
+      "position": "C",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 75,
+      "weight": 305,
+      "age": 29,
+      "experience": 5,
+      "college": "Appalachian State"
     },
     {
       "gsisId": "00-0033901",
@@ -1132,7 +1102,7 @@
       "gsisId": "00-0033941",
       "name": "Rayshawn Jenkins",
       "slug": "rayshawn-jenkins",
-      "number": 20,
+      "number": 36,
       "position": "SS",
       "group": "defense",
       "status": "DEV",
@@ -1172,21 +1142,6 @@
       "age": 25,
       "experience": 1,
       "college": "Arizona"
-    },
-    {
-      "gsisId": "00-0038562",
-      "name": "Jake Moody",
-      "slug": "jake-moody",
-      "number": 45,
-      "position": "K",
-      "group": "specialists",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 210,
-      "age": 26,
-      "experience": 3,
-      "college": "Michigan"
     },
     {
       "gsisId": "00-0040898",

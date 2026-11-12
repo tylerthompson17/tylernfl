@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "SF",
   "week": 10,
-  "updated": "2026-11-11T17:30:44Z",
+  "updated": "2026-11-12T17:46:49Z",
   "groups": [
     {
       "key": "offense",
@@ -229,6 +229,21 @@
       "college": "Mississippi; Oklahoma State; Washington State"
     },
     {
+      "gsisId": "00-0030279",
+      "name": "Keenan Allen",
+      "slug": "keenan-allen",
+      "number": 10,
+      "position": "WR",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 74,
+      "weight": 211,
+      "age": 34,
+      "experience": 13,
+      "college": "California"
+    },
+    {
       "gsisId": "00-0036261",
       "name": "Brandon Aiyuk",
       "slug": "brandon-aiyuk",
@@ -287,21 +302,6 @@
       "age": 30,
       "experience": 7,
       "college": "South Carolina"
-    },
-    {
-      "gsisId": "00-0038359",
-      "name": "Xavier Smith",
-      "slug": "xavier-smith",
-      "number": 19,
-      "position": "WR",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 69,
-      "weight": 180,
-      "age": 29,
-      "experience": 3,
-      "college": "Florida A&M"
     },
     {
       "gsisId": "00-0041359",
@@ -682,7 +682,7 @@
       "gsisId": "00-0038603",
       "name": "Rob Beal Jr.",
       "slug": "rob-beal-jr",
-      "number": 51,
+      "number": 50,
       "position": "DE",
       "group": "defense",
       "status": "DEV",
@@ -844,6 +844,21 @@
       "college": "Texas A&M"
     },
     {
+      "gsisId": "00-0040711",
+      "name": "C.J. West",
+      "slug": "cj-west",
+      "number": 90,
+      "position": "DT",
+      "group": "defense",
+      "status": "RES",
+      "statusLabel": "Reserve",
+      "heightInches": 73,
+      "weight": 316,
+      "age": 24,
+      "experience": 1,
+      "college": "Indiana; Kent State"
+    },
+    {
       "gsisId": "00-0036942",
       "name": "Osa Odighizuwa",
       "slug": "osa-odighizuwa",
@@ -865,8 +880,8 @@
       "number": 93,
       "position": "DT",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 75,
       "weight": 293,
       "age": 22,
@@ -902,21 +917,6 @@
       "age": 24,
       "experience": 0,
       "college": "Illinois; Wisconsin"
-    },
-    {
-      "gsisId": "00-0040711",
-      "name": "C.J. West",
-      "slug": "cj-west",
-      "number": 99,
-      "position": "DT",
-      "group": "defense",
-      "status": "RES",
-      "statusLabel": "Reserve",
-      "heightInches": 73,
-      "weight": 316,
-      "age": 24,
-      "experience": 1,
-      "college": "Indiana; Kent State"
     },
     {
       "gsisId": "00-0032378",

@@ -1,12 +1,36 @@
 {
   "month": 11,
-  "day": 11,
-  "gamesOnDate": 57,
+  "day": 12,
+  "gamesOnDate": 60,
   "items": [
     {
-      "year": 2018,
-      "gameId": "2018_10_NO_CIN",
-      "text": "The Saints beat the Bengals 51-14.",
+      "year": 2023,
+      "gameId": "2023_10_DET_LAC",
+      "text": "The Lions beat the Chargers 41-38 with 79 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Lions",
+          "team": "DET"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Chargers",
+          "team": "LAC"
+        },
+        {
+          "text": " 41-38 with 79 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2017,
+      "gameId": "2017_10_NO_BUF",
+      "text": "The Saints beat the Bills 47-10.",
       "parts": [
         {
           "text": "The "
@@ -19,59 +43,35 @@
           "text": " beat the "
         },
         {
-          "text": "Bengals",
-          "team": "CIN"
+          "text": "Bills",
+          "team": "BUF"
         },
         {
-          "text": " 51-14."
+          "text": " 47-10."
         }
       ]
     },
     {
-      "year": 2012,
-      "gameId": "2012_10_OAK_BAL",
-      "text": "The Ravens beat the Raiders 55-20 with 75 combined points.",
+      "year": 2006,
+      "gameId": "2006_10_SD_CIN",
+      "text": "The Chargers beat the Bengals 49-41 with 90 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Ravens",
-          "team": "BAL"
+          "text": "Chargers",
+          "team": "LAC"
         },
         {
           "text": " beat the "
         },
         {
-          "text": "Raiders",
-          "team": "LV"
+          "text": "Bengals",
+          "team": "CIN"
         },
         {
-          "text": " 55-20 with 75 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2007,
-      "gameId": "2007_10_MIN_GB",
-      "text": "The Packers shut out the Vikings 34-0.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Packers",
-          "team": "GB"
-        },
-        {
-          "text": " shut out the "
-        },
-        {
-          "text": "Vikings",
-          "team": "MIN"
-        },
-        {
-          "text": " 34-0."
+          "text": " 49-41 with 90 combined points."
         }
       ]
     }

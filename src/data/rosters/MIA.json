@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "MIA",
   "week": 10,
-  "updated": "2026-11-10T17:21:19Z",
+  "updated": "2026-11-12T17:46:49Z",
   "groups": [
     {
       "key": "offense",
@@ -25,8 +25,8 @@
       "number": 2,
       "position": "QB",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 73,
       "weight": 225,
       "age": 27,
@@ -670,8 +670,8 @@
       "number": 92,
       "position": "DT",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 78,
       "weight": 300,
       "age": 31,
@@ -1007,21 +1007,6 @@
       "age": 26,
       "experience": 2,
       "college": "Auburn"
-    },
-    {
-      "gsisId": "00-0038521",
-      "name": "Reese Taylor",
-      "slug": "reese-taylor",
-      "number": 35,
-      "position": "CB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 71,
-      "weight": 190,
-      "age": 27,
-      "experience": 3,
-      "college": "Purdue"
     },
     {
       "gsisId": "00-0040182",

@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "CLE",
   "week": 10,
-  "updated": "2026-11-10T17:21:19Z",
+  "updated": "2026-11-12T17:46:49Z",
   "groups": [
     {
       "key": "offense",
@@ -127,7 +127,7 @@
       "gsisId": "00-0037617",
       "name": "Hassan Haskins",
       "slug": "hassan-haskins",
-      "number": 26,
+      "number": 27,
       "position": "RB",
       "group": "offense",
       "status": "DEV",
@@ -334,6 +334,21 @@
       "college": "BYU; Utah; UCLA"
     },
     {
+      "gsisId": "00-0037340",
+      "name": "Zaire Mitchell-Paden",
+      "slug": "zaire-mitchell-paden",
+      "number": 80,
+      "position": "TE",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 257,
+      "age": 27,
+      "experience": 4,
+      "college": "Florida Atlantic"
+    },
+    {
       "gsisId": "00-0038710",
       "name": "Blake Whiteheart",
       "slug": "blake-whiteheart",
@@ -347,21 +362,6 @@
       "age": 26,
       "experience": 3,
       "college": "Wake Forest"
-    },
-    {
-      "gsisId": "00-0037306",
-      "name": "John FitzPatrick",
-      "slug": "john-fitzpatrick",
-      "number": 87,
-      "position": "TE",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 79,
-      "weight": 250,
-      "age": 26,
-      "experience": 4,
-      "college": "Georgia"
     },
     {
       "gsisId": "00-0041030",
@@ -722,21 +722,6 @@
       "age": 25,
       "experience": 2,
       "college": "SMU"
-    },
-    {
-      "gsisId": "00-0037269",
-      "name": "Eric Johnson",
-      "slug": "eric-johnson",
-      "number": 67,
-      "position": "DT",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 298,
-      "age": 28,
-      "experience": 4,
-      "college": "Missouri State"
     },
     {
       "gsisId": "00-0039400",
@@ -1202,6 +1187,21 @@
       "age": 30,
       "experience": 8,
       "college": "New Mexico; Cerritos College"
+    },
+    {
+      "gsisId": "00-0041284",
+      "name": "Wes Pahl",
+      "slug": "wes-pahl",
+      "number": 36,
+      "position": "P",
+      "group": "specialists",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 195,
+      "age": 24,
+      "experience": 0,
+      "college": "Oklahoma State"
     },
     {
       "gsisId": "00-0036443",

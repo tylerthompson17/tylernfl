@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "LAR",
   "week": 10,
-  "updated": "2026-11-10T17:21:19Z",
+  "updated": "2026-11-12T17:46:49Z",
   "groups": [
     {
       "key": "offense",
@@ -244,6 +244,21 @@
       "college": "Fresno State"
     },
     {
+      "gsisId": "00-0038359",
+      "name": "Xavier Smith",
+      "slug": "xavier-smith",
+      "number": 19,
+      "position": "WR",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 69,
+      "weight": 180,
+      "age": 29,
+      "experience": 3,
+      "college": "Florida A&M"
+    },
+    {
       "gsisId": "00-0040597",
       "name": "Brennan Presley",
       "slug": "brennan-presley",
@@ -265,8 +280,8 @@
       "number": 88,
       "position": "WR",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 73,
       "weight": 204,
       "age": 26,

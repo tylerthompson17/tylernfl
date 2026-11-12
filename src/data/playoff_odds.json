@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 9,
-  "updated": "2026-11-11T17:30:44Z",
+  "updated": "2026-11-12T17:46:49Z",
   "simulations": 10000,
   "source": "betting lines and market ratings",
   "pricedGames": 27,
@@ -9,7 +9,7 @@
   "teams": [
     {
       "team": "ARI",
-      "playoffs": 0.006,
+      "playoffs": 0.005,
       "division": 0.0,
       "topSeed": 0.0,
       "seeds": [
@@ -19,205 +19,205 @@
         0.0,
         0.0,
         0.001,
-        0.005
+        0.004
       ],
       "meanWins": 5.9
     },
     {
       "team": "ATL",
-      "playoffs": 0.237,
-      "division": 0.226,
+      "playoffs": 0.233,
+      "division": 0.221,
       "topSeed": 0.0,
       "seeds": [
         0.0,
         0.002,
-        0.067,
-        0.157,
+        0.064,
+        0.155,
         0.001,
         0.002,
-        0.008
+        0.009
       ],
       "meanWins": 6.9
     },
     {
       "team": "BAL",
-      "playoffs": 0.196,
-      "division": 0.036,
+      "playoffs": 0.207,
+      "division": 0.039,
       "topSeed": 0.0,
       "seeds": [
         0.0,
         0.001,
-        0.007,
-        0.028,
-        0.016,
-        0.054,
-        0.091
+        0.008,
+        0.03,
+        0.012,
+        0.057,
+        0.1
       ],
       "meanWins": 8.1
     },
     {
       "team": "BUF",
-      "playoffs": 0.992,
-      "division": 0.915,
-      "topSeed": 0.408,
+      "playoffs": 0.991,
+      "division": 0.92,
+      "topSeed": 0.418,
       "seeds": [
-        0.408,
-        0.221,
-        0.172,
-        0.114,
-        0.031,
+        0.418,
+        0.22,
+        0.18,
+        0.102,
         0.026,
-        0.02
+        0.031,
+        0.014
       ],
-      "meanWins": 13.1
+      "meanWins": 13.2
     },
     {
       "team": "CAR",
-      "playoffs": 0.291,
-      "division": 0.284,
+      "playoffs": 0.295,
+      "division": 0.286,
       "topSeed": 0.0,
       "seeds": [
         0.0,
-        0.004,
-        0.088,
-        0.191,
+        0.007,
+        0.09,
+        0.188,
         0.0,
         0.002,
-        0.006
+        0.007
       ],
-      "meanWins": 7.1
+      "meanWins": 7.2
     },
     {
       "team": "CHI",
-      "playoffs": 0.837,
-      "division": 0.339,
-      "topSeed": 0.192,
+      "playoffs": 0.842,
+      "division": 0.347,
+      "topSeed": 0.197,
       "seeds": [
-        0.192,
-        0.14,
-        0.007,
+        0.197,
+        0.143,
+        0.006,
         0.0,
-        0.213,
-        0.16,
-        0.125
+        0.203,
+        0.164,
+        0.129
       ],
       "meanWins": 11.5
     },
     {
       "team": "CIN",
-      "playoffs": 0.901,
-      "division": 0.628,
-      "topSeed": 0.095,
+      "playoffs": 0.898,
+      "division": 0.62,
+      "topSeed": 0.091,
       "seeds": [
-        0.095,
-        0.165,
-        0.191,
-        0.177,
-        0.1,
-        0.107,
-        0.066
+        0.091,
+        0.158,
+        0.187,
+        0.184,
+        0.102,
+        0.105,
+        0.07
       ],
       "meanWins": 11.8
     },
     {
       "team": "CLE",
-      "playoffs": 0.227,
+      "playoffs": 0.226,
       "division": 0.051,
       "topSeed": 0.0,
       "seeds": [
         0.0,
         0.003,
-        0.011,
-        0.036,
+        0.012,
+        0.035,
         0.017,
-        0.059,
-        0.102
+        0.058,
+        0.1
       ],
       "meanWins": 8.2
     },
     {
       "team": "DAL",
-      "playoffs": 0.342,
-      "division": 0.31,
+      "playoffs": 0.344,
+      "division": 0.313,
       "topSeed": 0.0,
       "seeds": [
         0.0,
-        0.013,
-        0.16,
-        0.137,
+        0.015,
+        0.158,
+        0.139,
         0.002,
-        0.01,
+        0.009,
         0.02
       ],
       "meanWins": 8.2
     },
     {
       "team": "DEN",
-      "playoffs": 0.932,
-      "division": 0.545,
-      "topSeed": 0.189,
+      "playoffs": 0.937,
+      "division": 0.551,
+      "topSeed": 0.191,
       "seeds": [
-        0.189,
+        0.191,
         0.145,
-        0.126,
-        0.085,
-        0.217,
-        0.106,
-        0.064
+        0.124,
+        0.091,
+        0.223,
+        0.098,
+        0.066
       ],
-      "meanWins": 12.0
+      "meanWins": 12.1
     },
     {
       "team": "DET",
-      "playoffs": 0.814,
-      "division": 0.372,
-      "topSeed": 0.194,
+      "playoffs": 0.808,
+      "division": 0.361,
+      "topSeed": 0.184,
       "seeds": [
-        0.194,
-        0.166,
+        0.184,
+        0.164,
         0.013,
-        0.0,
-        0.171,
-        0.15,
-        0.12
+        0.001,
+        0.175,
+        0.151,
+        0.119
       ],
       "meanWins": 11.2
     },
     {
       "team": "GB",
-      "playoffs": 0.552,
-      "division": 0.098,
-      "topSeed": 0.036,
+      "playoffs": 0.543,
+      "division": 0.097,
+      "topSeed": 0.032,
       "seeds": [
-        0.036,
-        0.057,
-        0.005,
-        0.001,
-        0.129,
-        0.155,
-        0.17
+        0.032,
+        0.058,
+        0.007,
+        0.0,
+        0.126,
+        0.154,
+        0.166
       ],
       "meanWins": 9.9
     },
     {
       "team": "HOU",
       "playoffs": 0.431,
-      "division": 0.117,
-      "topSeed": 0.001,
+      "division": 0.113,
+      "topSeed": 0.0,
       "seeds": [
-        0.001,
-        0.007,
-        0.027,
-        0.082,
-        0.045,
-        0.113,
-        0.156
+        0.0,
+        0.005,
+        0.028,
+        0.08,
+        0.043,
+        0.118,
+        0.157
       ],
       "meanWins": 8.8
     },
     {
       "team": "IND",
-      "playoffs": 0.007,
+      "playoffs": 0.008,
       "division": 0.002,
       "topSeed": 0.0,
       "seeds": [
@@ -226,40 +226,40 @@
         0.0,
         0.002,
         0.0,
-        0.001,
-        0.004
+        0.002,
+        0.005
       ],
       "meanWins": 5.5
     },
     {
       "team": "JAX",
-      "playoffs": 0.969,
-      "division": 0.881,
-      "topSeed": 0.145,
+      "playoffs": 0.971,
+      "division": 0.885,
+      "topSeed": 0.143,
       "seeds": [
-        0.145,
-        0.26,
-        0.241,
-        0.235,
-        0.021,
+        0.143,
+        0.265,
+        0.243,
+        0.233,
+        0.018,
         0.036,
-        0.031
+        0.032
       ],
       "meanWins": 12.2
     },
     {
       "team": "KC",
-      "playoffs": 0.927,
-      "division": 0.445,
-      "topSeed": 0.125,
+      "playoffs": 0.923,
+      "division": 0.438,
+      "topSeed": 0.119,
       "seeds": [
-        0.125,
-        0.112,
-        0.111,
-        0.097,
-        0.271,
+        0.119,
+        0.116,
+        0.108,
+        0.095,
+        0.278,
         0.131,
-        0.08
+        0.076
       ],
       "meanWins": 11.5
     },
@@ -281,39 +281,39 @@
     },
     {
       "team": "LAR",
-      "playoffs": 0.507,
-      "division": 0.088,
+      "playoffs": 0.512,
+      "division": 0.086,
       "topSeed": 0.027,
       "seeds": [
         0.027,
-        0.049,
-        0.011,
+        0.046,
+        0.012,
         0.001,
-        0.138,
-        0.134,
-        0.147
+        0.149,
+        0.131,
+        0.146
       ],
       "meanWins": 9.7
     },
     {
       "team": "LV",
-      "playoffs": 0.087,
-      "division": 0.009,
+      "playoffs": 0.094,
+      "division": 0.011,
       "topSeed": 0.0,
       "seeds": [
         0.0,
         0.001,
         0.003,
-        0.006,
-        0.005,
-        0.021,
-        0.051
+        0.007,
+        0.007,
+        0.023,
+        0.053
       ],
       "meanWins": 7.2
     },
     {
       "team": "MIA",
-      "playoffs": 0.001,
+      "playoffs": 0.0,
       "division": 0.0,
       "topSeed": 0.0,
       "seeds": [
@@ -325,75 +325,75 @@
         0.0,
         0.0
       ],
-      "meanWins": 3.5
+      "meanWins": 3.4
     },
     {
       "team": "MIN",
-      "playoffs": 0.703,
-      "division": 0.191,
-      "topSeed": 0.088,
+      "playoffs": 0.716,
+      "division": 0.194,
+      "topSeed": 0.087,
       "seeds": [
-        0.088,
-        0.093,
+        0.087,
+        0.097,
         0.009,
-        0.0,
-        0.184,
-        0.168,
-        0.161
+        0.001,
+        0.183,
+        0.177,
+        0.162
       ],
       "meanWins": 10.5
     },
     {
       "team": "NE",
-      "playoffs": 0.596,
-      "division": 0.085,
-      "topSeed": 0.006,
+      "playoffs": 0.586,
+      "division": 0.08,
+      "topSeed": 0.008,
       "seeds": [
-        0.006,
-        0.018,
-        0.025,
-        0.035,
-        0.146,
+        0.008,
+        0.015,
+        0.024,
+        0.033,
+        0.14,
         0.175,
-        0.19
+        0.191
       ],
-      "meanWins": 9.3
+      "meanWins": 9.2
     },
     {
       "team": "NO",
-      "playoffs": 0.233,
-      "division": 0.225,
+      "playoffs": 0.234,
+      "division": 0.227,
       "topSeed": 0.0,
       "seeds": [
         0.0,
-        0.004,
-        0.074,
-        0.147,
+        0.003,
+        0.081,
+        0.143,
+        0.0,
         0.001,
-        0.002,
-        0.006
+        0.005
       ],
       "meanWins": 7.0
     },
     {
       "team": "NYG",
-      "playoffs": 0.638,
-      "division": 0.612,
-      "topSeed": 0.021,
+      "playoffs": 0.632,
+      "division": 0.603,
+      "topSeed": 0.022,
       "seeds": [
-        0.021,
-        0.06,
-        0.401,
-        0.131,
+        0.022,
+        0.062,
+        0.39,
+        0.13,
         0.002,
-        0.007,
-        0.018
+        0.008,
+        0.019
       ],
       "meanWins": 9.3
     },
     {
       "team": "NYJ",
-      "playoffs": 0.006,
+      "playoffs": 0.005,
       "division": 0.0,
       "topSeed": 0.0,
       "seeds": [
@@ -403,89 +403,89 @@
         0.0,
         0.0,
         0.001,
-        0.005
+        0.004
       ],
       "meanWins": 5.1
     },
     {
       "team": "PHI",
-      "playoffs": 0.009,
-      "division": 0.008,
+      "playoffs": 0.011,
+      "division": 0.011,
       "topSeed": 0.0,
       "seeds": [
         0.0,
         0.0,
-        0.002,
-        0.005,
+        0.003,
+        0.008,
         0.0,
         0.0,
-        0.001
+        0.0
       ],
-      "meanWins": 4.9
+      "meanWins": 5.0
     },
     {
       "team": "PIT",
-      "playoffs": 0.727,
-      "division": 0.286,
-      "topSeed": 0.03,
+      "playoffs": 0.72,
+      "division": 0.289,
+      "topSeed": 0.029,
       "seeds": [
-        0.03,
-        0.067,
-        0.085,
-        0.104,
-        0.131,
-        0.169,
-        0.141
+        0.029,
+        0.07,
+        0.084,
+        0.107,
+        0.134,
+        0.165,
+        0.131
       ],
       "meanWins": 10.5
     },
     {
       "team": "SEA",
-      "playoffs": 0.53,
-      "division": 0.122,
-      "topSeed": 0.02,
+      "playoffs": 0.52,
+      "division": 0.119,
+      "topSeed": 0.024,
       "seeds": [
-        0.02,
-        0.085,
+        0.024,
+        0.078,
         0.016,
         0.002,
-        0.102,
-        0.149,
-        0.157
+        0.1,
+        0.14,
+        0.161
       ],
       "meanWins": 9.9
     },
     {
       "team": "SF",
-      "playoffs": 0.951,
-      "division": 0.79,
-      "topSeed": 0.421,
+      "playoffs": 0.953,
+      "division": 0.794,
+      "topSeed": 0.426,
       "seeds": [
-        0.421,
-        0.326,
-        0.039,
-        0.003,
-        0.057,
-        0.058,
-        0.046
+        0.426,
+        0.322,
+        0.042,
+        0.004,
+        0.059,
+        0.056,
+        0.044
       ],
       "meanWins": 12.6
     },
     {
       "team": "TB",
-      "playoffs": 0.27,
-      "division": 0.265,
+      "playoffs": 0.271,
+      "division": 0.266,
       "topSeed": 0.0,
       "seeds": [
         0.0,
         0.002,
-        0.064,
-        0.2,
+        0.066,
+        0.198,
         0.0,
         0.001,
         0.004
       ],
-      "meanWins": 6.7
+      "meanWins": 6.8
     },
     {
       "team": "TEN",
@@ -505,17 +505,17 @@
     },
     {
       "team": "WAS",
-      "playoffs": 0.079,
-      "division": 0.07,
+      "playoffs": 0.081,
+      "division": 0.073,
       "topSeed": 0.0,
       "seeds": [
         0.0,
         0.001,
         0.043,
-        0.027,
+        0.029,
         0.0,
         0.002,
-        0.007
+        0.005
       ],
       "meanWins": 6.4
     }
