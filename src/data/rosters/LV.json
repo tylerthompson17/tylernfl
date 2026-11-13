@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "LV",
   "week": 10,
-  "updated": "2026-11-12T17:46:49Z",
+  "updated": "2026-11-13T17:25:34Z",
   "groups": [
     {
       "key": "offense",
@@ -92,21 +92,6 @@
       "age": 26,
       "experience": 2,
       "college": "New Hampshire"
-    },
-    {
-      "gsisId": "00-0039244",
-      "name": "Chris Collier",
-      "slug": "chris-collier",
-      "number": 33,
-      "position": "RB",
-      "group": "offense",
-      "status": "RES",
-      "statusLabel": "Reserve",
-      "heightInches": 71,
-      "weight": 203,
-      "age": 26,
-      "experience": 2,
-      "college": "University of Lock Haven"
     },
     {
       "gsisId": "00-0040998",
@@ -604,6 +589,21 @@
       "college": "Eastern Michigan"
     },
     {
+      "gsisId": "00-0035857",
+      "name": "Chris Williams",
+      "slug": "chris-williams",
+      "number": 53,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 298,
+      "age": 28,
+      "experience": 6,
+      "college": "Wagner"
+    },
+    {
       "gsisId": "00-0033381",
       "name": "Adam Butler",
       "slug": "adam-butler",
@@ -640,8 +640,8 @@
       "number": 91,
       "position": "DT",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 74,
       "weight": 320,
       "age": 23,

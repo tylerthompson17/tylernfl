@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "ARI",
   "week": 10,
-  "updated": "2026-11-12T17:46:49Z",
+  "updated": "2026-11-13T17:25:34Z",
   "groups": [
     {
       "key": "offense",
@@ -18,6 +18,21 @@
     }
   ],
   "players": [
+    {
+      "gsisId": "00-0026300",
+      "name": "Josh Johnson",
+      "slug": "josh-johnson",
+      "number": 11,
+      "position": "QB",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 75,
+      "weight": 219,
+      "age": 40,
+      "experience": 18,
+      "college": "San Diego"
+    },
     {
       "gsisId": "00-0035289",
       "name": "Gardner Minshew",
@@ -37,7 +52,7 @@
       "gsisId": "00-0041203",
       "name": "Joey Aguilar",
       "slug": "joey-aguilar",
-      "number": 17,
+      "number": 18,
       "position": "QB",
       "group": "offense",
       "status": "ACT",
@@ -182,6 +197,21 @@
       "age": 31,
       "experience": 9,
       "college": "East Carolina"
+    },
+    {
+      "gsisId": "00-0032208",
+      "name": "Phillip Dorsett",
+      "slug": "phillip-dorsett",
+      "number": 13,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 70,
+      "weight": 192,
+      "age": 33,
+      "experience": 11,
+      "college": "Miami"
     },
     {
       "gsisId": "00-0038559",
@@ -587,6 +617,21 @@
       "age": 24,
       "experience": 1,
       "college": "Texas"
+    },
+    {
+      "gsisId": "00-0037295",
+      "name": "Jamaree Salyer",
+      "slug": "jamaree-salyer",
+      "number": 69,
+      "position": "G",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 325,
+      "age": 26,
+      "experience": 4,
+      "college": "Georgia"
     },
     {
       "gsisId": "00-0032954",

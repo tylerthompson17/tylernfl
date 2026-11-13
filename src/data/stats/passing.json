@@ -2,7 +2,7 @@
   "key": "passing",
   "label": "Passing",
   "season": 2026,
-  "throughWeek": 9,
+  "throughWeek": 10,
   "primary": "passing_yards",
   "qualifier": {
     "column": "attempts",
@@ -535,6 +535,26 @@
     },
     {
       "rank": 23,
+      "playerId": "00-0039910",
+      "player": "Jayden Daniels",
+      "team": "WAS",
+      "position": "QB",
+      "teamGames": 9,
+      "qualified": true,
+      "values": {
+        "games": 7,
+        "completions": 138,
+        "attempts": 213,
+        "passing_yards": 1499,
+        "passing_tds": 10,
+        "passing_interceptions": 2,
+        "sacks_suffered": 17,
+        "cmp_pct": 0.648,
+        "pass_ypa": 7.0
+      }
+    },
+    {
+      "rank": 24,
       "playerId": "00-0040676",
       "player": "Cam Ward",
       "team": "TEN",
@@ -554,7 +574,7 @@
       }
     },
     {
-      "rank": 24,
+      "rank": 25,
       "playerId": "00-0034869",
       "player": "Sam Darnold",
       "team": "SEA",
@@ -574,7 +594,7 @@
       }
     },
     {
-      "rank": 25,
+      "rank": 26,
       "playerId": "00-0039917",
       "player": "Michael Penix Jr.",
       "team": "ATL",
@@ -594,7 +614,7 @@
       }
     },
     {
-      "rank": 26,
+      "rank": 27,
       "playerId": "00-0038128",
       "player": "Malik Willis",
       "team": "MIA",
@@ -614,35 +634,15 @@
       }
     },
     {
-      "rank": 27,
-      "playerId": "00-0039910",
-      "player": "Jayden Daniels",
-      "team": "WAS",
-      "position": "QB",
-      "teamGames": 8,
-      "qualified": true,
-      "values": {
-        "games": 6,
-        "completions": 115,
-        "attempts": 180,
-        "passing_yards": 1250,
-        "passing_tds": 7,
-        "passing_interceptions": 0,
-        "sacks_suffered": 16,
-        "cmp_pct": 0.639,
-        "pass_ypa": 6.9
-      }
-    },
-    {
       "rank": 28,
       "playerId": "00-0031503",
       "player": "Jameis Winston",
       "team": "NYG",
       "position": "QB",
-      "teamGames": 8,
+      "teamGames": 9,
       "qualified": true,
       "values": {
-        "games": 7,
+        "games": 8,
         "completions": 96,
         "attempts": 166,
         "passing_yards": 1028,
@@ -735,6 +735,26 @@
     },
     {
       "rank": 33,
+      "playerId": "00-0039923",
+      "player": "J.J. McCarthy",
+      "team": "NYG",
+      "position": "QB",
+      "teamGames": 9,
+      "qualified": false,
+      "values": {
+        "games": 5,
+        "completions": 66,
+        "attempts": 104,
+        "passing_yards": 915,
+        "passing_tds": 2,
+        "passing_interceptions": 2,
+        "sacks_suffered": 10,
+        "cmp_pct": 0.635,
+        "pass_ypa": 8.8
+      }
+    },
+    {
+      "rank": 34,
       "playerId": "00-0035993",
       "player": "Tyler Huntley",
       "team": "BAL",
@@ -754,7 +774,7 @@
       }
     },
     {
-      "rank": 34,
+      "rank": 35,
       "playerId": "00-0038400",
       "player": "Tanner McKee",
       "team": "PHI",
@@ -771,26 +791,6 @@
         "sacks_suffered": 10,
         "cmp_pct": 0.632,
         "pass_ypa": 5.6
-      }
-    },
-    {
-      "rank": 35,
-      "playerId": "00-0039923",
-      "player": "J.J. McCarthy",
-      "team": "NYG",
-      "position": "QB",
-      "teamGames": 8,
-      "qualified": false,
-      "values": {
-        "games": 4,
-        "completions": 43,
-        "attempts": 68,
-        "passing_yards": 622,
-        "passing_tds": 1,
-        "passing_interceptions": 1,
-        "sacks_suffered": 9,
-        "cmp_pct": 0.632,
-        "pass_ypa": 9.1
       }
     },
     {
@@ -919,7 +919,7 @@
       "player": "Marcus Mariota",
       "team": "WAS",
       "position": "QB",
-      "teamGames": 8,
+      "teamGames": 9,
       "qualified": false,
       "values": {
         "games": 3,
@@ -959,7 +959,7 @@
       "player": "Jaxson Dart",
       "team": "NYG",
       "position": "QB",
-      "teamGames": 8,
+      "teamGames": 9,
       "qualified": false,
       "values": {
         "games": 2,
@@ -999,7 +999,7 @@
       "player": "Athan Kaliakmanis",
       "team": "WAS",
       "position": "QB",
-      "teamGames": 8,
+      "teamGames": 9,
       "qualified": false,
       "values": {
         "games": 1,
@@ -1419,10 +1419,10 @@
       "player": "Antonio Williams",
       "team": "WAS",
       "position": "WR",
-      "teamGames": 8,
+      "teamGames": 9,
       "qualified": false,
       "values": {
-        "games": 8,
+        "games": 9,
         "completions": 0,
         "attempts": 1,
         "passing_yards": 0,
@@ -1459,7 +1459,7 @@
       "player": "Dyami Brown",
       "team": "WAS",
       "position": "WR",
-      "teamGames": 8,
+      "teamGames": 9,
       "qualified": false,
       "values": {
         "games": 7,

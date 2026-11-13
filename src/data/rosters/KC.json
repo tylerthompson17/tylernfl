@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "KC",
   "week": 10,
-  "updated": "2026-11-12T17:46:49Z",
+  "updated": "2026-11-13T17:25:34Z",
   "groups": [
     {
       "key": "offense",
@@ -302,21 +302,6 @@
       "age": 22,
       "experience": 0,
       "college": "Washington"
-    },
-    {
-      "gsisId": "00-0038519",
-      "name": "Nikko Remigio",
-      "slug": "nikko-remigio",
-      "number": 81,
-      "position": "WR",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 69,
-      "weight": 185,
-      "age": 27,
-      "experience": 3,
-      "college": "Fresno State"
     },
     {
       "gsisId": "00-0040120",
@@ -790,8 +775,8 @@
       "number": 96,
       "position": "DT",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 295,
       "age": 26,
@@ -902,6 +887,21 @@
       "age": 23,
       "experience": 0,
       "college": "Central Michigan"
+    },
+    {
+      "gsisId": "00-0041256",
+      "name": "Jack Pyburn",
+      "slug": "jack-pyburn",
+      "number": 54,
+      "position": "OLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 76,
+      "weight": 258,
+      "age": 23,
+      "experience": 0,
+      "college": "LSU; Florida"
     },
     {
       "gsisId": "00-0036621",

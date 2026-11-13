@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "BAL",
   "week": 10,
-  "updated": "2026-11-12T17:46:49Z",
+  "updated": "2026-11-13T17:25:34Z",
   "groups": [
     {
       "key": "offense",
@@ -349,6 +349,21 @@
       "college": "Alabama; Washington; Pomona State"
     },
     {
+      "gsisId": "00-0032394",
+      "name": "Nick Vannett",
+      "slug": "nick-vannett",
+      "number": 87,
+      "position": "TE",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 78,
+      "weight": 257,
+      "age": 33,
+      "experience": 10,
+      "college": "Ohio State"
+    },
+    {
       "gsisId": "00-0040879",
       "name": "Matthew Hibner",
       "slug": "matthew-hibner",
@@ -434,7 +449,7 @@
       "statusLabel": "Active",
       "heightInches": 79,
       "weight": 325,
-      "age": 24,
+      "age": 25,
       "experience": 1,
       "college": "Alabama A&M"
     },
@@ -482,6 +497,21 @@
       "age": 22,
       "experience": 1,
       "college": "LSU"
+    },
+    {
+      "gsisId": "00-0039624",
+      "name": "Kyle Hergel",
+      "slug": "kyle-hergel",
+      "number": 60,
+      "position": "G",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 315,
+      "age": 27,
+      "experience": 2,
+      "college": "Boston College; Texas State-San Marcos"
     },
     {
       "gsisId": "00-0040866",
@@ -1049,7 +1079,7 @@
       "statusLabel": "Active",
       "heightInches": 73,
       "weight": 205,
-      "age": 22,
+      "age": 23,
       "experience": 1,
       "college": "Georgia"
     },
@@ -1142,6 +1172,36 @@
       "age": 25,
       "experience": 1,
       "college": "Arizona"
+    },
+    {
+      "gsisId": "00-0036816",
+      "name": "Riley Patterson",
+      "slug": "riley-patterson",
+      "number": 47,
+      "position": "K",
+      "group": "specialists",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 72,
+      "weight": 196,
+      "age": 27,
+      "experience": 5,
+      "college": "Memphis"
+    },
+    {
+      "gsisId": "00-0039498",
+      "name": "Harrison Mevis",
+      "slug": "harrison-mevis",
+      "number": 92,
+      "position": "K",
+      "group": "specialists",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 243,
+      "age": 24,
+      "experience": 2,
+      "college": "Missouri"
     },
     {
       "gsisId": "00-0040898",

@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "ATL",
   "week": 10,
-  "updated": "2026-11-12T17:46:49Z",
+  "updated": "2026-11-13T17:25:34Z",
   "groups": [
     {
       "key": "offense",
@@ -415,8 +415,8 @@
       "number": 73,
       "position": "T",
       "group": "offense",
-      "status": "RES",
-      "statusLabel": "Reserve",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 78,
       "weight": 317,
       "age": 23,
@@ -547,7 +547,7 @@
       "gsisId": "00-0038383",
       "name": "Andrew Vorhees",
       "slug": "andrew-vorhees",
-      "number": 72,
+      "number": 74,
       "position": "G",
       "group": "offense",
       "status": "ACT",
@@ -557,21 +557,6 @@
       "age": 27,
       "experience": 3,
       "college": "USC"
-    },
-    {
-      "gsisId": "00-0040401",
-      "name": "Gus Hartwig",
-      "slug": "gus-hartwig",
-      "number": 60,
-      "position": "C",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 77,
-      "weight": 315,
-      "age": 24,
-      "experience": 1,
-      "college": "Purdue"
     },
     {
       "gsisId": "00-0033793",
@@ -587,6 +572,21 @@
       "age": 32,
       "experience": 9,
       "college": "Tennessee-Chattanooga"
+    },
+    {
+      "gsisId": "00-0040401",
+      "name": "Gus Hartwig",
+      "slug": "gus-hartwig",
+      "number": 66,
+      "position": "C",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 315,
+      "age": 24,
+      "experience": 1,
+      "college": "Purdue"
     },
     {
       "gsisId": "00-0033945",
@@ -1159,19 +1159,19 @@
       "college": "Florida State"
     },
     {
-      "gsisId": "00-0025565",
-      "name": "Nick Folk",
-      "slug": "nick-folk",
-      "number": 6,
+      "gsisId": "00-0038562",
+      "name": "Jake Moody",
+      "slug": "jake-moody",
+      "number": 39,
       "position": "K",
       "group": "specialists",
       "status": "ACT",
       "statusLabel": "Active",
       "heightInches": 73,
-      "weight": 222,
-      "age": 42,
-      "experience": 19,
-      "college": "Arizona"
+      "weight": 210,
+      "age": 26,
+      "experience": 3,
+      "college": "Michigan"
     },
     {
       "gsisId": "00-0035280",
