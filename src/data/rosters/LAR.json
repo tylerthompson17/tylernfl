@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "LAR",
   "week": 10,
-  "updated": "2026-11-13T17:25:34Z",
+  "updated": "2026-11-14T16:12:09Z",
   "groups": [
     {
       "key": "offense",
@@ -265,13 +265,28 @@
       "number": 81,
       "position": "WR",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 68,
       "weight": 174,
       "age": 24,
       "experience": 1,
       "college": "Oklahoma State"
+    },
+    {
+      "gsisId": "00-0038941",
+      "name": "Tyler Scott",
+      "slug": "tyler-scott",
+      "number": 82,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 70,
+      "weight": 185,
+      "age": 25,
+      "experience": 3,
+      "college": "Cincinnati"
     },
     {
       "gsisId": "00-0039751",

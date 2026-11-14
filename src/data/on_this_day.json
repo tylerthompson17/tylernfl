@@ -1,77 +1,77 @@
 {
   "month": 11,
-  "day": 13,
+  "day": 14,
   "gamesOnDate": 58,
   "items": [
     {
-      "year": 2016,
-      "gameId": "2016_10_GB_TEN",
-      "text": "The Titans beat the Packers 47-25 with 72 combined points.",
+      "year": 2021,
+      "gameId": "2021_10_DET_PIT",
+      "text": "The Lions and the Steelers tied 16-16 in overtime.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Titans",
-          "team": "TEN"
+          "text": "Lions",
+          "team": "DET"
         },
         {
-          "text": " beat the "
+          "text": " and the "
+        },
+        {
+          "text": "Steelers",
+          "team": "PIT"
+        },
+        {
+          "text": " tied 16-16 in overtime."
+        }
+      ]
+    },
+    {
+      "year": 2011,
+      "gameId": "2011_10_MIN_GB",
+      "text": "The Packers beat the Vikings 45-7.",
+      "parts": [
+        {
+          "text": "The "
         },
         {
           "text": "Packers",
           "team": "GB"
         },
         {
-          "text": " 47-25 with 72 combined points."
+          "text": " beat the "
+        },
+        {
+          "text": "Vikings",
+          "team": "MIN"
+        },
+        {
+          "text": " 45-7."
         }
       ]
     },
     {
-      "year": 2011,
-      "gameId": "2011_10_ARI_PHI",
-      "text": "The Cardinals beat the Eagles 21-17 as 13.5-point underdogs.",
+      "year": 1999,
+      "gameId": "1999_10_CLE_PIT",
+      "text": "The Browns beat the Steelers 16-15 as 14.5-point underdogs.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Cardinals",
-          "team": "ARI"
+          "text": "Browns",
+          "team": "CLE"
         },
         {
           "text": " beat the "
         },
         {
-          "text": "Eagles",
-          "team": "PHI"
+          "text": "Steelers",
+          "team": "PIT"
         },
         {
-          "text": " 21-17 as 13.5-point underdogs."
-        }
-      ]
-    },
-    {
-      "year": 2005,
-      "gameId": "2005_10_WAS_TB",
-      "text": "The Buccaneers beat Washington 36-35 with 71 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Buccaneers",
-          "team": "TB"
-        },
-        {
-          "text": " beat "
-        },
-        {
-          "text": "Washington",
-          "team": "WAS"
-        },
-        {
-          "text": " 36-35 with 71 combined points."
+          "text": " 16-15 as 14.5-point underdogs."
         }
       ]
     }
