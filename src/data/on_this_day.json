@@ -1,77 +1,74 @@
 {
   "month": 11,
-  "day": 14,
-  "gamesOnDate": 58,
+  "day": 15,
+  "gamesOnDate": 43,
   "items": [
     {
-      "year": 2021,
-      "gameId": "2021_10_DET_PIT",
-      "text": "The Lions and the Steelers tied 16-16 in overtime.",
+      "year": 2015,
+      "gameId": "2015_10_NO_WAS",
+      "text": "Washington beat the Saints 47-14.",
       "parts": [
         {
-          "text": "The "
-        },
-        {
-          "text": "Lions",
-          "team": "DET"
-        },
-        {
-          "text": " and the "
-        },
-        {
-          "text": "Steelers",
-          "team": "PIT"
-        },
-        {
-          "text": " tied 16-16 in overtime."
-        }
-      ]
-    },
-    {
-      "year": 2011,
-      "gameId": "2011_10_MIN_GB",
-      "text": "The Packers beat the Vikings 45-7.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Packers",
-          "team": "GB"
+          "text": "Washington",
+          "team": "WAS"
         },
         {
           "text": " beat the "
         },
         {
-          "text": "Vikings",
-          "team": "MIN"
+          "text": "Saints",
+          "team": "NO"
         },
         {
-          "text": " 45-7."
+          "text": " 47-14."
         }
       ]
     },
     {
-      "year": 1999,
-      "gameId": "1999_10_CLE_PIT",
-      "text": "The Browns beat the Steelers 16-15 as 14.5-point underdogs.",
+      "year": 2010,
+      "gameId": "2010_10_PHI_WAS",
+      "text": "The Eagles beat Washington 59-28 with 87 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Browns",
-          "team": "CLE"
+          "text": "Eagles",
+          "team": "PHI"
+        },
+        {
+          "text": " beat "
+        },
+        {
+          "text": "Washington",
+          "team": "WAS"
+        },
+        {
+          "text": " 59-28 with 87 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2004,
+      "gameId": "2004_10_PHI_DAL",
+      "text": "The Eagles beat the Cowboys 49-21 with 70 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Eagles",
+          "team": "PHI"
         },
         {
           "text": " beat the "
         },
         {
-          "text": "Steelers",
-          "team": "PIT"
+          "text": "Cowboys",
+          "team": "DAL"
         },
         {
-          "text": " 16-15 as 14.5-point underdogs."
+          "text": " 49-21 with 70 combined points."
         }
       ]
     }
