@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 10,
-  "updated": "2026-11-15T23:59:29Z",
+  "updated": "2026-11-16T00:07:39Z",
   "teams": [
     {
       "team": "BUF",
@@ -215,7 +215,7 @@
       ],
       "streak": "L4",
       "divisionRank": 4,
-      "conferenceRank": 10,
+      "conferenceRank": 9,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -386,12 +386,12 @@
       "conference": "AFC",
       "division": "AFC West",
       "wins": 4,
-      "losses": 5,
+      "losses": 6,
       "ties": 0,
-      "pct": 0.444,
-      "pointsFor": 238,
-      "pointsAgainst": 268,
-      "diff": -30,
+      "pct": 0.4,
+      "pointsFor": 251,
+      "pointsAgainst": 289,
+      "diff": -38,
       "divisionRecord": [
         1,
         1,
@@ -402,11 +402,11 @@
         3,
         0
       ],
-      "streak": "L1",
+      "streak": "L2",
       "divisionRank": 3,
-      "conferenceRank": 9,
+      "conferenceRank": 10,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "conference_record"
+      "conferenceTiebreak": null
     },
     {
       "team": "LAC",
@@ -647,9 +647,9 @@
       ],
       "streak": "L1",
       "divisionRank": 4,
-      "conferenceRank": 8,
+      "conferenceRank": 7,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "CAR",
@@ -787,6 +787,33 @@
       "conferenceTiebreak": null
     },
     {
+      "team": "SEA",
+      "conference": "NFC",
+      "division": "NFC West",
+      "wins": 6,
+      "losses": 4,
+      "ties": 0,
+      "pct": 0.6,
+      "pointsFor": 223,
+      "pointsAgainst": 175,
+      "diff": 48,
+      "divisionRecord": [
+        2,
+        1,
+        0
+      ],
+      "conferenceRecord": [
+        2,
+        3,
+        0
+      ],
+      "streak": "W2",
+      "divisionRank": 2,
+      "conferenceRank": 8,
+      "divisionTiebreak": "division_record",
+      "conferenceTiebreak": "division_order"
+    },
+    {
       "team": "LAR",
       "conference": "NFC",
       "division": "NFC West",
@@ -808,37 +835,10 @@
         0
       ],
       "streak": "W4",
-      "divisionRank": 2,
-      "conferenceRank": 7,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": "conference_record"
-    },
-    {
-      "team": "SEA",
-      "conference": "NFC",
-      "division": "NFC West",
-      "wins": 5,
-      "losses": 4,
-      "ties": 0,
-      "pct": 0.556,
-      "pointsFor": 202,
-      "pointsAgainst": 162,
-      "diff": 40,
-      "divisionRecord": [
-        2,
-        1,
-        0
-      ],
-      "conferenceRecord": [
-        2,
-        3,
-        0
-      ],
-      "streak": "W1",
       "divisionRank": 3,
       "conferenceRank": 9,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "divisionTiebreak": "division_record",
+      "conferenceTiebreak": "division_order"
     },
     {
       "team": "ARI",
