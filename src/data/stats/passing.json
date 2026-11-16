@@ -115,6 +115,26 @@
     },
     {
       "rank": 2,
+      "playerId": "00-0036442",
+      "player": "Joe Burrow",
+      "team": "CIN",
+      "position": "QB",
+      "teamGames": 9,
+      "qualified": true,
+      "values": {
+        "games": 9,
+        "completions": 254,
+        "attempts": 340,
+        "passing_yards": 2795,
+        "passing_tds": 27,
+        "passing_interceptions": 6,
+        "sacks_suffered": 16,
+        "cmp_pct": 0.747,
+        "pass_ypa": 8.2
+      }
+    },
+    {
+      "rank": 3,
       "playerId": "00-0033077",
       "player": "Dak Prescott",
       "team": "DAL",
@@ -134,7 +154,7 @@
       }
     },
     {
-      "rank": 3,
+      "rank": 4,
       "playerId": "00-0026498",
       "player": "Matthew Stafford",
       "team": "LAR",
@@ -154,7 +174,7 @@
       }
     },
     {
-      "rank": 4,
+      "rank": 5,
       "playerId": "00-0029604",
       "player": "Kirk Cousins",
       "team": "MIN",
@@ -174,7 +194,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0039163",
       "player": "C.J. Stroud",
       "team": "HOU",
@@ -194,7 +214,7 @@
       }
     },
     {
-      "rank": 6,
+      "rank": 7,
       "playerId": "00-0033106",
       "player": "Jared Goff",
       "team": "DET",
@@ -214,7 +234,7 @@
       }
     },
     {
-      "rank": 7,
+      "rank": 8,
       "playerId": "00-0039150",
       "player": "Bryce Young",
       "team": "CAR",
@@ -231,26 +251,6 @@
         "sacks_suffered": 29,
         "cmp_pct": 0.601,
         "pass_ypa": 7.1
-      }
-    },
-    {
-      "rank": 8,
-      "playerId": "00-0036442",
-      "player": "Joe Burrow",
-      "team": "CIN",
-      "position": "QB",
-      "teamGames": 8,
-      "qualified": true,
-      "values": {
-        "games": 8,
-        "completions": 219,
-        "attempts": 296,
-        "passing_yards": 2386,
-        "passing_tds": 23,
-        "passing_interceptions": 6,
-        "sacks_suffered": 15,
-        "cmp_pct": 0.74,
-        "pass_ypa": 8.1
       }
     },
     {
@@ -419,18 +419,18 @@
       "player": "Aaron Rodgers",
       "team": "PIT",
       "position": "QB",
-      "teamGames": 8,
+      "teamGames": 9,
       "qualified": true,
       "values": {
-        "games": 8,
-        "completions": 175,
-        "attempts": 288,
-        "passing_yards": 1871,
-        "passing_tds": 13,
+        "games": 9,
+        "completions": 190,
+        "attempts": 317,
+        "passing_yards": 2014,
+        "passing_tds": 15,
         "passing_interceptions": 6,
-        "sacks_suffered": 23,
-        "cmp_pct": 0.608,
-        "pass_ypa": 6.5
+        "sacks_suffered": 26,
+        "cmp_pct": 0.599,
+        "pass_ypa": 6.4
       }
     },
     {
@@ -1515,6 +1515,26 @@
     },
     {
       "rank": 72,
+      "playerId": "00-0034771",
+      "player": "Mason Rudolph",
+      "team": "PIT",
+      "position": "QB",
+      "teamGames": 9,
+      "qualified": false,
+      "values": {
+        "games": 3,
+        "completions": 1,
+        "attempts": 4,
+        "passing_yards": 2,
+        "passing_tds": 0,
+        "passing_interceptions": 0,
+        "sacks_suffered": 0,
+        "cmp_pct": 0.25,
+        "pass_ypa": 0.5
+      }
+    },
+    {
+      "rank": 73,
       "playerId": "00-0027973",
       "player": "Andy Dalton",
       "team": "PHI",
@@ -1534,7 +1554,7 @@
       }
     },
     {
-      "rank": 72,
+      "rank": 73,
       "playerId": "00-0041040",
       "player": "Antonio Williams",
       "team": "WAS",
@@ -1554,15 +1574,15 @@
       }
     },
     {
-      "rank": 72,
+      "rank": 73,
       "playerId": "00-0033729",
       "player": "Cameron Johnston",
       "team": "PIT",
       "position": "P",
-      "teamGames": 8,
+      "teamGames": 9,
       "qualified": false,
       "values": {
-        "games": 8,
+        "games": 9,
         "completions": 0,
         "attempts": 1,
         "passing_yards": 0,
@@ -1574,7 +1594,7 @@
       }
     },
     {
-      "rank": 72,
+      "rank": 73,
       "playerId": "00-0036626",
       "player": "Dyami Brown",
       "team": "WAS",
@@ -1594,7 +1614,7 @@
       }
     },
     {
-      "rank": 72,
+      "rank": 73,
       "playerId": "00-0040654",
       "player": "Kai Kroeger",
       "team": "HOU",
@@ -1614,27 +1634,7 @@
       }
     },
     {
-      "rank": 72,
-      "playerId": "00-0034771",
-      "player": "Mason Rudolph",
-      "team": "PIT",
-      "position": "QB",
-      "teamGames": 8,
-      "qualified": false,
-      "values": {
-        "games": 2,
-        "completions": 0,
-        "attempts": 1,
-        "passing_yards": 0,
-        "passing_tds": 0,
-        "passing_interceptions": 0,
-        "sacks_suffered": 0,
-        "cmp_pct": 0.0,
-        "pass_ypa": 0.0
-      }
-    },
-    {
-      "rank": 72,
+      "rank": 73,
       "playerId": "00-0040727",
       "player": "Tre Harris",
       "team": "LAC",
