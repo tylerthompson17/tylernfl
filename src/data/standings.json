@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 10,
-  "updated": "2026-11-16T00:56:02Z",
+  "updated": "2026-11-16T04:34:15Z",
   "teams": [
     {
       "team": "BUF",
@@ -112,57 +112,57 @@
       "conferenceTiebreak": "conference_record"
     },
     {
+      "team": "CIN",
+      "conference": "AFC",
+      "division": "AFC North",
+      "wins": 7,
+      "losses": 2,
+      "ties": 0,
+      "pct": 0.778,
+      "pointsFor": 278,
+      "pointsAgainst": 193,
+      "diff": 85,
+      "divisionRecord": [
+        2,
+        1,
+        0
+      ],
+      "conferenceRecord": [
+        5,
+        2,
+        0
+      ],
+      "streak": "W5",
+      "divisionRank": 1,
+      "conferenceRank": 4,
+      "divisionTiebreak": null,
+      "conferenceTiebreak": null
+    },
+    {
       "team": "PIT",
       "conference": "AFC",
       "division": "AFC North",
       "wins": 6,
-      "losses": 2,
+      "losses": 3,
       "ties": 0,
-      "pct": 0.75,
-      "pointsFor": 180,
-      "pointsAgainst": 144,
-      "diff": 36,
+      "pct": 0.667,
+      "pointsFor": 198,
+      "pointsAgainst": 182,
+      "diff": 16,
       "divisionRecord": [
         2,
-        1,
+        2,
         0
       ],
       "conferenceRecord": [
         3,
-        2,
+        3,
         0
       ],
-      "streak": "W4",
-      "divisionRank": 1,
-      "conferenceRank": 4,
-      "divisionTiebreak": "head_to_head",
-      "conferenceTiebreak": null
-    },
-    {
-      "team": "CIN",
-      "conference": "AFC",
-      "division": "AFC North",
-      "wins": 6,
-      "losses": 2,
-      "ties": 0,
-      "pct": 0.75,
-      "pointsFor": 240,
-      "pointsAgainst": 175,
-      "diff": 65,
-      "divisionRecord": [
-        1,
-        1,
-        0
-      ],
-      "conferenceRecord": [
-        4,
-        2,
-        0
-      ],
-      "streak": "W4",
+      "streak": "L1",
       "divisionRank": 2,
       "conferenceRank": 6,
-      "divisionTiebreak": "head_to_head",
+      "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
     {
@@ -244,7 +244,7 @@
       "divisionRank": 1,
       "conferenceRank": 3,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "head_to_head_sweep"
     },
     {
       "team": "HOU",
