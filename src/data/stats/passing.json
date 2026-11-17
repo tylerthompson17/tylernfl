@@ -415,6 +415,26 @@
     },
     {
       "rank": 17,
+      "playerId": "00-0033119",
+      "player": "Jacoby Brissett",
+      "team": "BAL",
+      "position": "QB",
+      "teamGames": 10,
+      "qualified": true,
+      "values": {
+        "games": 9,
+        "completions": 226,
+        "attempts": 354,
+        "passing_yards": 2059,
+        "passing_tds": 10,
+        "passing_interceptions": 8,
+        "sacks_suffered": 21,
+        "cmp_pct": 0.638,
+        "pass_ypa": 5.8
+      }
+    },
+    {
+      "rank": 18,
       "playerId": "00-0023459",
       "player": "Aaron Rodgers",
       "team": "PIT",
@@ -434,7 +454,7 @@
       }
     },
     {
-      "rank": 18,
+      "rank": 19,
       "playerId": "00-0035710",
       "player": "Daniel Jones",
       "team": "IND",
@@ -454,7 +474,7 @@
       }
     },
     {
-      "rank": 19,
+      "rank": 20,
       "playerId": "00-0039732",
       "player": "Bo Nix",
       "team": "DEN",
@@ -474,7 +494,7 @@
       }
     },
     {
-      "rank": 19,
+      "rank": 20,
       "playerId": "00-0039917",
       "player": "Michael Penix Jr.",
       "team": "ATL",
@@ -494,27 +514,27 @@
       }
     },
     {
-      "rank": 21,
-      "playerId": "00-0033119",
-      "player": "Jacoby Brissett",
-      "team": "ARI",
+      "rank": 22,
+      "playerId": "00-0036355",
+      "player": "Justin Herbert",
+      "team": "LAC",
       "position": "QB",
-      "teamGames": 10,
+      "teamGames": 9,
       "qualified": true,
       "values": {
-        "games": 8,
-        "completions": 193,
-        "attempts": 305,
-        "passing_yards": 1719,
-        "passing_tds": 10,
-        "passing_interceptions": 7,
-        "sacks_suffered": 19,
-        "cmp_pct": 0.633,
-        "pass_ypa": 5.6
+        "games": 9,
+        "completions": 156,
+        "attempts": 253,
+        "passing_yards": 1720,
+        "passing_tds": 6,
+        "passing_interceptions": 11,
+        "sacks_suffered": 33,
+        "cmp_pct": 0.617,
+        "pass_ypa": 6.8
       }
     },
     {
-      "rank": 22,
+      "rank": 23,
       "playerId": "00-0040676",
       "player": "Cam Ward",
       "team": "TEN",
@@ -531,26 +551,6 @@
         "sacks_suffered": 14,
         "cmp_pct": 0.638,
         "pass_ypa": 6.0
-      }
-    },
-    {
-      "rank": 23,
-      "playerId": "00-0036355",
-      "player": "Justin Herbert",
-      "team": "LAC",
-      "position": "QB",
-      "teamGames": 8,
-      "qualified": true,
-      "values": {
-        "games": 8,
-        "completions": 144,
-        "attempts": 235,
-        "passing_yards": 1591,
-        "passing_tds": 6,
-        "passing_interceptions": 11,
-        "sacks_suffered": 31,
-        "cmp_pct": 0.613,
-        "pass_ypa": 6.8
       }
     },
     {
@@ -679,7 +679,7 @@
       "player": "Lamar Jackson",
       "team": "BAL",
       "position": "QB",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": false,
       "values": {
         "games": 5,
@@ -779,7 +779,7 @@
       "player": "Tyler Huntley",
       "team": "BAL",
       "position": "QB",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": false,
       "values": {
         "games": 5,
@@ -1079,7 +1079,7 @@
       "player": "Joe Fagnano",
       "team": "BAL",
       "position": "QB",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": false,
       "values": {
         "games": 2,
@@ -1279,7 +1279,7 @@
       "player": "DJ Uiagalelei",
       "team": "LAC",
       "position": "QB",
-      "teamGames": 8,
+      "teamGames": 9,
       "qualified": false,
       "values": {
         "games": 1,
@@ -1639,10 +1639,10 @@
       "player": "Tre Harris",
       "team": "LAC",
       "position": "WR",
-      "teamGames": 8,
+      "teamGames": 9,
       "qualified": false,
       "values": {
-        "games": 7,
+        "games": 8,
         "completions": 0,
         "attempts": 1,
         "passing_yards": 0,
@@ -1659,10 +1659,10 @@
       "player": "Derrick Henry",
       "team": "BAL",
       "position": "RB",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": false,
       "values": {
-        "games": 9,
+        "games": 10,
         "completions": 1,
         "attempts": 1,
         "passing_yards": -3,

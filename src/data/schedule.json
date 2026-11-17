@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "updated": "2026-11-17T04:30:55Z",
+  "updated": "2026-11-17T18:48:50Z",
   "games": [
     {
       "id": "2026_01_NE_SEA",
@@ -2714,10 +2714,10 @@
       "overtime": false,
       "divisional": true,
       "neutral": false,
-      "spreadLine": 11.5,
+      "spreadLine": 12.5,
       "totalLine": 44.5,
-      "awayMoneyline": 470,
-      "homeMoneyline": -650,
+      "awayMoneyline": 500,
+      "homeMoneyline": -700,
       "roof": null
     },
     {
@@ -2734,8 +2734,8 @@
       "neutral": false,
       "spreadLine": 16.5,
       "totalLine": 41.5,
-      "awayMoneyline": 1000,
-      "homeMoneyline": -1800,
+      "awayMoneyline": 850,
+      "homeMoneyline": -1450,
       "roof": "outdoors"
     },
     {
@@ -2750,10 +2750,10 @@
       "overtime": false,
       "divisional": false,
       "neutral": false,
-      "spreadLine": null,
-      "totalLine": null,
-      "awayMoneyline": null,
-      "homeMoneyline": null,
+      "spreadLine": 2.5,
+      "totalLine": 43.5,
+      "awayMoneyline": 120,
+      "homeMoneyline": -142,
       "roof": "outdoors"
     },
     {
@@ -2788,8 +2788,8 @@
       "neutral": false,
       "spreadLine": 16.5,
       "totalLine": 45.5,
-      "awayMoneyline": 850,
-      "homeMoneyline": -1450,
+      "awayMoneyline": 750,
+      "homeMoneyline": -1200,
       "roof": "outdoors"
     },
     {
@@ -2806,8 +2806,8 @@
       "neutral": false,
       "spreadLine": 11.5,
       "totalLine": 48.5,
-      "awayMoneyline": 500,
-      "homeMoneyline": -700,
+      "awayMoneyline": 490,
+      "homeMoneyline": -675,
       "roof": "outdoors"
     },
     {
@@ -2823,9 +2823,9 @@
       "divisional": false,
       "neutral": false,
       "spreadLine": 6.5,
-      "totalLine": 46.5,
-      "awayMoneyline": 225,
-      "homeMoneyline": -278,
+      "totalLine": 45.5,
+      "awayMoneyline": 220,
+      "homeMoneyline": -270,
       "roof": "dome"
     },
     {
@@ -2858,10 +2858,10 @@
       "overtime": false,
       "divisional": false,
       "neutral": false,
-      "spreadLine": null,
-      "totalLine": null,
-      "awayMoneyline": null,
-      "homeMoneyline": null,
+      "spreadLine": 3.5,
+      "totalLine": 40.5,
+      "awayMoneyline": 150,
+      "homeMoneyline": -180,
       "roof": "dome"
     },
     {
@@ -2878,8 +2878,8 @@
       "neutral": false,
       "spreadLine": 10.0,
       "totalLine": 40.5,
-      "awayMoneyline": 410,
-      "homeMoneyline": -550,
+      "awayMoneyline": 425,
+      "homeMoneyline": -575,
       "roof": "outdoors"
     },
     {
@@ -2932,8 +2932,8 @@
       "neutral": false,
       "spreadLine": -6.5,
       "totalLine": 52.5,
-      "awayMoneyline": -305,
-      "homeMoneyline": 245,
+      "awayMoneyline": -298,
+      "homeMoneyline": 240,
       "roof": "outdoors"
     },
     {
@@ -3063,24 +3063,6 @@
       "roof": null
     },
     {
-      "id": "2026_12_LV_CLE",
-      "week": 12,
-      "type": "REG",
-      "kickoff": "2026-11-29T18:00:00Z",
-      "away": "LV",
-      "home": "CLE",
-      "awayScore": null,
-      "homeScore": null,
-      "overtime": false,
-      "divisional": false,
-      "neutral": false,
-      "spreadLine": null,
-      "totalLine": null,
-      "awayMoneyline": null,
-      "homeMoneyline": null,
-      "roof": "outdoors"
-    },
-    {
       "id": "2026_12_NO_CIN",
       "week": 12,
       "type": "REG",
@@ -3138,7 +3120,7 @@
       "id": "2026_12_TEN_JAX",
       "week": 12,
       "type": "REG",
-      "kickoff": "2026-11-29T21:05:00Z",
+      "kickoff": "2026-11-29T18:00:00Z",
       "away": "TEN",
       "home": "JAX",
       "awayScore": null,
@@ -3151,6 +3133,24 @@
       "awayMoneyline": null,
       "homeMoneyline": null,
       "roof": "outdoors"
+    },
+    {
+      "id": "2026_12_NE_LAC",
+      "week": 12,
+      "type": "REG",
+      "kickoff": "2026-11-29T21:05:00Z",
+      "away": "NE",
+      "home": "LAC",
+      "awayScore": null,
+      "homeScore": null,
+      "overtime": false,
+      "divisional": false,
+      "neutral": false,
+      "spreadLine": null,
+      "totalLine": null,
+      "awayMoneyline": null,
+      "homeMoneyline": null,
+      "roof": "dome"
     },
     {
       "id": "2026_12_SEA_SF",
@@ -3189,12 +3189,12 @@
       "roof": null
     },
     {
-      "id": "2026_12_NE_LAC",
+      "id": "2026_12_LV_CLE",
       "week": 12,
       "type": "REG",
       "kickoff": "2026-11-30T01:20:00Z",
-      "away": "NE",
-      "home": "LAC",
+      "away": "LV",
+      "home": "CLE",
       "awayScore": null,
       "homeScore": null,
       "overtime": false,
@@ -3204,7 +3204,7 @@
       "totalLine": null,
       "awayMoneyline": null,
       "homeMoneyline": null,
-      "roof": "dome"
+      "roof": "outdoors"
     },
     {
       "id": "2026_12_CAR_TB",
