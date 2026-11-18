@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "HOU",
   "week": 11,
-  "updated": "2026-11-17T18:48:50Z",
+  "updated": "2026-11-18T18:28:29Z",
   "groups": [
     {
       "key": "offense",
@@ -179,7 +179,7 @@
       "statusLabel": "Reserve",
       "heightInches": 71,
       "weight": 225,
-      "age": 26,
+      "age": 27,
       "experience": 2,
       "college": "North Carolina"
     },
@@ -664,6 +664,21 @@
       "college": "Alabama"
     },
     {
+      "gsisId": "00-0041305",
+      "name": "Sabastian Harsh",
+      "slug": "sabastian-harsh",
+      "number": 54,
+      "position": "DE",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 255,
+      "age": 24,
+      "experience": 0,
+      "college": "N.C. State; Wyoming"
+    },
+    {
       "gsisId": "00-0031565",
       "name": "Danielle Hunter",
       "slug": "danielle-hunter",
@@ -812,21 +827,6 @@
       "age": 26,
       "experience": 2,
       "college": "Mississippi State"
-    },
-    {
-      "gsisId": "00-0040414",
-      "name": "Junior Tafuna",
-      "slug": "junior-tafuna",
-      "number": 95,
-      "position": "DT",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 75,
-      "weight": 308,
-      "age": 25,
-      "experience": 1,
-      "college": "Utah"
     },
     {
       "gsisId": "00-0032265",
@@ -985,8 +985,8 @@
       "number": 0,
       "position": "MLB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 74,
       "weight": 228,
       "age": 29,

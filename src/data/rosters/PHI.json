@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "PHI",
   "week": 11,
-  "updated": "2026-11-17T18:48:50Z",
+  "updated": "2026-11-18T18:28:29Z",
   "groups": [
     {
       "key": "offense",
@@ -130,8 +130,8 @@
       "number": 30,
       "position": "RB",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 69,
       "weight": 200,
       "age": 22,
@@ -242,6 +242,21 @@
       "age": 26,
       "experience": 4,
       "college": "Texas Tech"
+    },
+    {
+      "gsisId": "00-0040406",
+      "name": "Quentin Skinner",
+      "slug": "quentin-skinner",
+      "number": 84,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 195,
+      "age": 24,
+      "experience": 1,
+      "college": "Kansas"
     },
     {
       "gsisId": "00-0037132",
@@ -572,6 +587,21 @@
       "age": 23,
       "experience": 0,
       "college": "East Carolina"
+    },
+    {
+      "gsisId": "00-0036371",
+      "name": "Leki Fotu",
+      "slug": "leki-fotu",
+      "number": 90,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 335,
+      "age": 28,
+      "experience": 6,
+      "college": "Utah"
     },
     {
       "gsisId": "00-0041580",

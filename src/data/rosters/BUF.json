@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "BUF",
   "week": 11,
-  "updated": "2026-11-17T18:48:50Z",
+  "updated": "2026-11-18T18:28:29Z",
   "groups": [
     {
       "key": "offense",
@@ -430,8 +430,8 @@
       "number": 60,
       "position": "G",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 77,
       "weight": 314,
       "age": 25,
@@ -467,21 +467,6 @@
       "age": 26,
       "experience": 3,
       "college": "Florida; Louisiana-Lafayette"
-    },
-    {
-      "gsisId": "00-0038633",
-      "name": "Nick Broeker",
-      "slug": "nick-broeker",
-      "number": 65,
-      "position": "G",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 76,
-      "weight": 305,
-      "age": 26,
-      "experience": 3,
-      "college": "Mississippi"
     },
     {
       "gsisId": "00-0037428",
@@ -917,6 +902,21 @@
       "age": 31,
       "experience": 9,
       "college": "LSU"
+    },
+    {
+      "gsisId": "00-0039469",
+      "name": "Te'Cory Couch",
+      "slug": "tecory-couch",
+      "number": 33,
+      "position": "CB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 70,
+      "weight": 185,
+      "age": 27,
+      "experience": 2,
+      "college": "Miami"
     },
     {
       "gsisId": "00-0040192",

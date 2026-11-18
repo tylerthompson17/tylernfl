@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "TEN",
   "week": 11,
-  "updated": "2026-11-17T18:48:50Z",
+  "updated": "2026-11-18T18:28:29Z",
   "groups": [
     {
       "key": "offense",
@@ -124,6 +124,21 @@
       "college": "Penn State"
     },
     {
+      "gsisId": "00-0036924",
+      "name": "Michael Carter",
+      "slug": "michael-carter",
+      "number": 35,
+      "position": "RB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 68,
+      "weight": 200,
+      "age": 27,
+      "experience": 5,
+      "college": "North Carolina"
+    },
+    {
       "gsisId": "00-0037594",
       "name": "Julius Chestnut",
       "slug": "julius-chestnut",
@@ -160,8 +175,8 @@
       "number": 4,
       "position": "WR",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 68,
       "weight": 185,
       "age": 25,
@@ -244,14 +259,29 @@
       "college": "John Carroll University; Nicholls State; LSU"
     },
     {
+      "gsisId": "00-0039379",
+      "name": "Jamari Thrash",
+      "slug": "jamari-thrash",
+      "number": 80,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 190,
+      "age": 25,
+      "experience": 2,
+      "college": "Louisville; Georgia State"
+    },
+    {
       "gsisId": "00-0040522",
       "name": "Xavier Restrepo",
       "slug": "xavier-restrepo",
       "number": 87,
       "position": "WR",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 70,
       "weight": 202,
       "age": 24,
@@ -569,7 +599,7 @@
       "statusLabel": "Active",
       "heightInches": 77,
       "weight": 311,
-      "age": 23,
+      "age": 24,
       "experience": 0,
       "college": "Indiana; Notre Dame"
     },
