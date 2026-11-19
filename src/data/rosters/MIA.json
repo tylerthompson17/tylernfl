@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "MIA",
   "week": 11,
-  "updated": "2026-11-18T18:28:29Z",
+  "updated": "2026-11-19T18:43:02Z",
   "groups": [
     {
       "key": "offense",
@@ -262,7 +262,7 @@
       "gsisId": "00-0041205",
       "name": "Brady Boyd",
       "slug": "brady-boyd",
-      "number": 83,
+      "number": 84,
       "position": "WR",
       "group": "offense",
       "status": "DEV",
@@ -271,7 +271,7 @@
       "weight": 195,
       "age": 24,
       "experience": 0,
-      "college": null
+      "college": "Utah State"
     },
     {
       "gsisId": "00-0038728",
@@ -580,8 +580,8 @@
       "number": 57,
       "position": "DE",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 77,
       "weight": 258,
       "age": 24,
@@ -664,21 +664,6 @@
       "college": "Michigan"
     },
     {
-      "gsisId": "00-0038661",
-      "name": "Chris Smith",
-      "slug": "chris-smith",
-      "number": 90,
-      "position": "DT",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 320,
-      "age": 26,
-      "experience": 3,
-      "college": "Notre Dame; Harvard"
-    },
-    {
       "gsisId": "00-0037280",
       "name": "Matthew Butler",
       "slug": "matthew-butler",
@@ -737,6 +722,21 @@
       "age": 22,
       "experience": 1,
       "college": "Maryland; Tennessee"
+    },
+    {
+      "gsisId": "00-0038661",
+      "name": "Chris Smith",
+      "slug": "chris-smith",
+      "number": 96,
+      "position": "DT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 320,
+      "age": 26,
+      "experience": 3,
+      "college": "Notre Dame; Harvard"
     },
     {
       "gsisId": "00-0040655",
@@ -1132,7 +1132,7 @@
       "gsisId": "00-0034161",
       "name": "Daniel Carlson",
       "slug": "daniel-carlson",
-      "number": 10,
+      "number": 38,
       "position": "K",
       "group": "specialists",
       "status": "DEV",
@@ -1142,6 +1142,21 @@
       "age": 31,
       "experience": 8,
       "college": "Auburn"
+    },
+    {
+      "gsisId": "00-0039477",
+      "name": "Jack Browning",
+      "slug": "jack-browning",
+      "number": 31,
+      "position": "P",
+      "group": "specialists",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 71,
+      "weight": 190,
+      "age": 25,
+      "experience": 2,
+      "college": "San Diego State; Grossmont"
     },
     {
       "gsisId": "00-0032065",

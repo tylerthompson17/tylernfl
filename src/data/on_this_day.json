@@ -1,12 +1,60 @@
 {
   "month": 11,
-  "day": 18,
-  "gamesOnDate": 58,
+  "day": 19,
+  "gamesOnDate": 60,
   "items": [
     {
-      "year": 2012,
-      "gameId": "2012_11_IND_NE",
-      "text": "The Patriots beat the Colts 59-24 with 83 combined points.",
+      "year": 2018,
+      "gameId": "2018_11_KC_LA",
+      "text": "The Rams beat the Chiefs 54-51 with 105 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Rams",
+          "team": "LAR"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Chiefs",
+          "team": "KC"
+        },
+        {
+          "text": " 54-51 with 105 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2017,
+      "gameId": "2017_11_BUF_LAC",
+      "text": "The Chargers beat the Bills 54-24 with 78 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Chargers",
+          "team": "LAC"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Bills",
+          "team": "BUF"
+        },
+        {
+          "text": " 54-24 with 78 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2006,
+      "gameId": "2006_11_NE_GB",
+      "text": "The Patriots shut out the Packers 35-0.",
       "parts": [
         {
           "text": "The "
@@ -16,62 +64,14 @@
           "team": "NE"
         },
         {
-          "text": " beat the "
+          "text": " shut out the "
         },
         {
-          "text": "Colts",
-          "team": "IND"
+          "text": "Packers",
+          "team": "GB"
         },
         {
-          "text": " 59-24 with 83 combined points."
-        }
-      ]
-    },
-    {
-      "year": 2007,
-      "gameId": "2007_11_PIT_NYJ",
-      "text": "The Jets beat the Steelers 19-16 in overtime as 9.5-point underdogs.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Jets",
-          "team": "NYJ"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Steelers",
-          "team": "PIT"
-        },
-        {
-          "text": " 19-16 in overtime as 9.5-point underdogs."
-        }
-      ]
-    },
-    {
-      "year": 2001,
-      "gameId": "2001_10_DET_ARI",
-      "text": "The Cardinals beat the Lions 45-38 with 83 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Cardinals",
-          "team": "ARI"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Lions",
-          "team": "DET"
-        },
-        {
-          "text": " 45-38 with 83 combined points."
+          "text": " 35-0."
         }
       ]
     }

@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "BAL",
   "week": 11,
-  "updated": "2026-11-18T18:28:29Z",
+  "updated": "2026-11-19T18:43:02Z",
   "groups": [
     {
       "key": "offense",
@@ -130,8 +130,8 @@
       "number": 23,
       "position": "RB",
       "group": "offense",
-      "status": "RES",
-      "statusLabel": "Reserve",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 240,
       "age": 22,
@@ -512,6 +512,21 @@
       "age": 27,
       "experience": 2,
       "college": "Boston College; Texas State-San Marcos"
+    },
+    {
+      "gsisId": "00-0035266",
+      "name": "Mike Jordan",
+      "slug": "mike-jordan",
+      "number": 67,
+      "position": "G",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 78,
+      "weight": 315,
+      "age": 28,
+      "experience": 7,
+      "college": "Ohio State"
     },
     {
       "gsisId": "00-0040866",

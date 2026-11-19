@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "DET",
   "week": 11,
-  "updated": "2026-11-18T18:28:29Z",
+  "updated": "2026-11-19T18:43:02Z",
   "groups": [
     {
       "key": "offense",
@@ -655,8 +655,8 @@
       "number": 97,
       "position": "DE",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 79,
       "weight": 265,
       "age": 26,
@@ -1099,6 +1099,21 @@
       "college": "Northern Arizona"
     },
     {
+      "gsisId": "00-0038841",
+      "name": "Nick Whiteside",
+      "slug": "nick-whiteside",
+      "number": 38,
+      "position": "CB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 200,
+      "age": 26,
+      "experience": 3,
+      "college": "Saginaw Valley State"
+    },
+    {
       "gsisId": "00-0039660",
       "name": "Thomas Harper",
       "slug": "thomas-harper",
@@ -1150,8 +1165,8 @@
       "number": 31,
       "position": "FS",
       "group": "defense",
-      "status": "RES",
-      "statusLabel": "Reserve",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 72,
       "weight": 210,
       "age": 26,

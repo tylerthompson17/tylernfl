@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "KC",
   "week": 11,
-  "updated": "2026-11-18T18:28:29Z",
+  "updated": "2026-11-19T18:43:02Z",
   "groups": [
     {
       "key": "offense",
@@ -136,7 +136,7 @@
       "weight": 215,
       "age": 24,
       "experience": 0,
-      "college": null
+      "college": "Texas A&M; Stanford"
     },
     {
       "gsisId": "00-0040547",
@@ -430,8 +430,8 @@
       "number": 89,
       "position": "TE",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 78,
       "weight": 249,
       "age": 26,
@@ -497,6 +497,21 @@
       "age": 26,
       "experience": 4,
       "college": "North Dakota"
+    },
+    {
+      "gsisId": "00-0034951",
+      "name": "Fred Johnson",
+      "slug": "fred-johnson",
+      "number": 74,
+      "position": "T",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 79,
+      "weight": 326,
+      "age": 29,
+      "experience": 7,
+      "college": "Florida"
     },
     {
       "gsisId": "00-0039317",
@@ -730,8 +745,8 @@
       "number": 55,
       "position": "DT",
       "group": "defense",
-      "status": "RES",
-      "statusLabel": "Reserve",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 315,
       "age": 24,
@@ -857,21 +872,6 @@
       "age": 24,
       "experience": 1,
       "college": "Oklahoma"
-    },
-    {
-      "gsisId": "00-0035900",
-      "name": "Cole Christiansen",
-      "slug": "cole-christiansen",
-      "number": 48,
-      "position": "OLB",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 73,
-      "weight": 230,
-      "age": 29,
-      "experience": 6,
-      "college": "Army"
     },
     {
       "gsisId": "00-0041329",
