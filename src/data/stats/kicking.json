@@ -2,7 +2,7 @@
   "key": "kicking",
   "label": "Kicking",
   "season": 2026,
-  "throughWeek": 10,
+  "throughWeek": 11,
   "primary": "fg_made",
   "qualifier": {
     "column": "fg_att",
@@ -109,21 +109,21 @@
       "player": "Spencer Shrader",
       "team": "IND",
       "position": "K",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": true,
       "values": {
-        "games": 10,
-        "fg_made": 23,
-        "fg_att": 25,
+        "games": 11,
+        "fg_made": 24,
+        "fg_att": 28,
         "fg_long": 59,
         "pat_made": 19,
         "pat_att": 20,
-        "fg_pct": 0.92,
+        "fg_pct": 0.857,
         "xp_pct": 0.95
       }
     },
     {
-      "rank": 2,
+      "rank": 3,
       "playerId": "00-0039404",
       "player": "Will Reichard",
       "team": "MIN",
@@ -219,6 +219,25 @@
     },
     {
       "rank": 8,
+      "playerId": "00-0032726",
+      "player": "Ka'imi Fairbairn",
+      "team": "HOU",
+      "position": "K",
+      "teamGames": 10,
+      "qualified": true,
+      "values": {
+        "games": 10,
+        "fg_made": 20,
+        "fg_att": 21,
+        "fg_long": 58,
+        "pat_made": 27,
+        "pat_att": 27,
+        "fg_pct": 0.952,
+        "xp_pct": 1.0
+      }
+    },
+    {
+      "rank": 8,
       "playerId": "00-0036162",
       "player": "Tyler Bass",
       "team": "BUF",
@@ -237,7 +256,7 @@
       }
     },
     {
-      "rank": 9,
+      "rank": 10,
       "playerId": "00-0037692",
       "player": "Brandon Aubrey",
       "team": "DAL",
@@ -256,7 +275,7 @@
       }
     },
     {
-      "rank": 9,
+      "rank": 10,
       "playerId": "00-0031136",
       "player": "Chris Boswell",
       "team": "PIT",
@@ -271,25 +290,6 @@
         "pat_made": 17,
         "pat_att": 17,
         "fg_pct": 0.792,
-        "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 9,
-      "playerId": "00-0032726",
-      "player": "Ka'imi Fairbairn",
-      "team": "HOU",
-      "position": "K",
-      "teamGames": 9,
-      "qualified": true,
-      "values": {
-        "games": 9,
-        "fg_made": 19,
-        "fg_att": 20,
-        "fg_long": 58,
-        "pat_made": 24,
-        "pat_att": 24,
-        "fg_pct": 0.95,
         "xp_pct": 1.0
       }
     },

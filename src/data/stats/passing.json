@@ -2,7 +2,7 @@
   "key": "passing",
   "label": "Passing",
   "season": 2026,
-  "throughWeek": 10,
+  "throughWeek": 11,
   "primary": "passing_yards",
   "qualifier": {
     "column": "attempts",
@@ -155,6 +155,26 @@
     },
     {
       "rank": 4,
+      "playerId": "00-0039163",
+      "player": "C.J. Stroud",
+      "team": "HOU",
+      "position": "QB",
+      "teamGames": 10,
+      "qualified": true,
+      "values": {
+        "games": 10,
+        "completions": 222,
+        "attempts": 347,
+        "passing_yards": 2656,
+        "passing_tds": 22,
+        "passing_interceptions": 4,
+        "sacks_suffered": 18,
+        "cmp_pct": 0.64,
+        "pass_ypa": 7.7
+      }
+    },
+    {
+      "rank": 5,
       "playerId": "00-0026498",
       "player": "Matthew Stafford",
       "team": "LAR",
@@ -174,7 +194,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0029604",
       "player": "Kirk Cousins",
       "team": "MIN",
@@ -191,26 +211,6 @@
         "sacks_suffered": 14,
         "cmp_pct": 0.645,
         "pass_ypa": 7.4
-      }
-    },
-    {
-      "rank": 6,
-      "playerId": "00-0039163",
-      "player": "C.J. Stroud",
-      "team": "HOU",
-      "position": "QB",
-      "teamGames": 9,
-      "qualified": true,
-      "values": {
-        "games": 9,
-        "completions": 201,
-        "attempts": 320,
-        "passing_yards": 2462,
-        "passing_tds": 19,
-        "passing_interceptions": 3,
-        "sacks_suffered": 17,
-        "cmp_pct": 0.628,
-        "pass_ypa": 7.7
       }
     },
     {
@@ -459,17 +459,17 @@
       "player": "Daniel Jones",
       "team": "IND",
       "position": "QB",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": true,
       "values": {
-        "games": 10,
-        "completions": 193,
-        "attempts": 324,
-        "passing_yards": 1830,
+        "games": 11,
+        "completions": 205,
+        "attempts": 351,
+        "passing_yards": 1974,
         "passing_tds": 7,
-        "passing_interceptions": 12,
-        "sacks_suffered": 25,
-        "cmp_pct": 0.596,
+        "passing_interceptions": 13,
+        "sacks_suffered": 27,
+        "cmp_pct": 0.584,
         "pass_ypa": 5.6
       }
     },
@@ -1399,18 +1399,18 @@
       "player": "Anthony Richardson",
       "team": "IND",
       "position": "QB",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": false,
       "values": {
-        "games": 1,
+        "games": 2,
         "completions": 2,
-        "attempts": 2,
+        "attempts": 4,
         "passing_yards": 8,
         "passing_tds": 0,
         "passing_interceptions": 0,
         "sacks_suffered": 1,
-        "cmp_pct": 1.0,
-        "pass_ypa": 4.0
+        "cmp_pct": 0.5,
+        "pass_ypa": 2.0
       }
     },
     {
@@ -1439,7 +1439,7 @@
       "player": "Davis Mills",
       "team": "HOU",
       "position": "QB",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": false,
       "values": {
         "games": 1,
@@ -1619,10 +1619,10 @@
       "player": "Kai Kroeger",
       "team": "HOU",
       "position": "P",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": false,
       "values": {
-        "games": 9,
+        "games": 10,
         "completions": 0,
         "attempts": 1,
         "passing_yards": 0,
