@@ -1,12 +1,12 @@
 {
   "season": 2026,
-  "updated": "2026-11-20T18:04:44Z",
+  "updated": "2026-11-21T05:08:39Z",
   "modelVersion": "nfl4th-ecb7293",
   "label": "nfl4th's recommendation",
   "threshold": 0.02,
   "games": 151,
   "counts": {"4th down rows": 2343, "pre-snap penalties before a 4th down snap": 123, "delay of game, then a kick (graded at the spot before it)": 60, "delay of game, then went for it (graded at the snap)": 6, "nullified by a post-snap penalty (skipped)": 51, "fakes (counted as go)": 8, "snaps right after a timeout by the offense": 78, "snaps right after a timeout by the defense": 105, "kneels and spikes (skipped)": 1, "tries": 766, "tries retaken after a penalty (last attempt kept)": 0, "overtime (not supported)": 22, "endgame, 15 seconds or less (not supported)": 23, "model unavailable": 0, "choice the model leaves out (not graded)": 0, "game already decided (not graded)": 315, "graded 4th downs": 147, "graded tries": 19},
-  "experimentalCounts": {"kept from an earlier run": 819, "stored this run": 13, "not stored: tables not from before the game": 1301, "not stored: not supported": 35, "not stored: no punter found": 0, "not stored: punter has no ESPN id": 0},
+  "experimentalCounts": {"kept from an earlier run": 832, "stored this run": 0, "not stored: tables not from before the game": 1301, "not stored: not supported": 35, "not stored: no punter found": 0, "not stored: punter has no ESPN id": 0},
   "experimentalMissed": {"tablesAsOf": {"season": 2026, "week": 7}, "games": []},
   "summary": {"fourthDowns": 1915, "nfl4thGoShare": 0.4188, "coachGoShare": 0.16658, "mistakes": 166, "kicksModelWouldGo": 154, "kicksModelWouldGoShare": 0.92771, "closeMargin": 0.05, "closeCalls": 149, "closeCallShare": 0.89759},
   "coaches": [
