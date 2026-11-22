@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 11,
-  "updated": "2026-11-22T21:25:05Z",
+  "updated": "2026-11-22T23:55:49Z",
   "teams": [
     {
       "team": "BUF",
@@ -61,28 +61,28 @@
       "team": "NYJ",
       "conference": "AFC",
       "division": "AFC East",
-      "wins": 2,
+      "wins": 3,
       "losses": 8,
       "ties": 0,
-      "pct": 0.2,
-      "pointsFor": 194,
-      "pointsAgainst": 254,
-      "diff": -60,
+      "pct": 0.273,
+      "pointsFor": 221,
+      "pointsAgainst": 278,
+      "diff": -57,
       "divisionRecord": [
         0,
         3,
         0
       ],
       "conferenceRecord": [
-        2,
+        3,
         5,
         0
       ],
-      "streak": "L5",
+      "streak": "W1",
       "divisionRank": 3,
-      "conferenceRank": 13,
+      "conferenceRank": 12,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "MIA",
@@ -107,9 +107,9 @@
       ],
       "streak": "L4",
       "divisionRank": 4,
-      "conferenceRank": 16,
+      "conferenceRank": 15,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "strength_of_schedule"
     },
     {
       "team": "CIN",
@@ -296,7 +296,7 @@
       ],
       "streak": "L1",
       "divisionRank": 3,
-      "conferenceRank": 12,
+      "conferenceRank": 13,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -323,9 +323,9 @@
       ],
       "streak": "L4",
       "divisionRank": 4,
-      "conferenceRank": 15,
+      "conferenceRank": 16,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "strength_of_victory"
+      "conferenceTiebreak": null
     },
     {
       "team": "KC",
@@ -413,12 +413,12 @@
       "conference": "AFC",
       "division": "AFC West",
       "wins": 1,
-      "losses": 8,
+      "losses": 9,
       "ties": 0,
-      "pct": 0.111,
-      "pointsFor": 144,
-      "pointsAgainst": 239,
-      "diff": -95,
+      "pct": 0.1,
+      "pointsFor": 168,
+      "pointsAgainst": 266,
+      "diff": -98,
       "divisionRecord": [
         0,
         3,
@@ -426,14 +426,14 @@
       ],
       "conferenceRecord": [
         1,
-        5,
+        6,
         0
       ],
-      "streak": "W1",
+      "streak": "L1",
       "divisionRank": 4,
       "conferenceRank": 14,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "strength_of_victory"
     },
     {
       "team": "NYG",

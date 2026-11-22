@@ -123,7 +123,26 @@
       }
     },
     {
-      "rank": 3,
+      "rank": 2,
+      "playerId": "00-0036162",
+      "player": "Tyler Bass",
+      "team": "BUF",
+      "position": "K",
+      "teamGames": 10,
+      "qualified": true,
+      "values": {
+        "games": 10,
+        "fg_made": 24,
+        "fg_att": 25,
+        "fg_long": 56,
+        "pat_made": 29,
+        "pat_att": 31,
+        "fg_pct": 0.96,
+        "xp_pct": 0.935
+      }
+    },
+    {
+      "rank": 4,
       "playerId": "00-0039404",
       "player": "Will Reichard",
       "team": "MIN",
@@ -142,45 +161,64 @@
       }
     },
     {
-      "rank": 4,
+      "rank": 5,
       "playerId": "00-0038567",
       "player": "Chad Ryland",
       "team": "ARI",
+      "position": "K",
+      "teamGames": 11,
+      "qualified": true,
+      "values": {
+        "games": 11,
+        "fg_made": 22,
+        "fg_att": 24,
+        "fg_long": 60,
+        "pat_made": 17,
+        "pat_att": 18,
+        "fg_pct": 0.917,
+        "xp_pct": 0.944
+      }
+    },
+    {
+      "rank": 5,
+      "playerId": "00-0035358",
+      "player": "Chase McLaughlin",
+      "team": "TB",
       "position": "K",
       "teamGames": 10,
       "qualified": true,
       "values": {
         "games": 10,
         "fg_made": 22,
-        "fg_att": 24,
-        "fg_long": 60,
-        "pat_made": 16,
-        "pat_att": 17,
-        "fg_pct": 0.917,
-        "xp_pct": 0.941
-      }
-    },
-    {
-      "rank": 4,
-      "playerId": "00-0035358",
-      "player": "Chase McLaughlin",
-      "team": "TB",
-      "position": "K",
-      "teamGames": 9,
-      "qualified": true,
-      "values": {
-        "games": 9,
-        "fg_made": 22,
         "fg_att": 22,
         "fg_long": 59,
-        "pat_made": 18,
-        "pat_att": 18,
+        "pat_made": 21,
+        "pat_att": 21,
         "fg_pct": 1.0,
         "xp_pct": 1.0
       }
     },
     {
-      "rank": 6,
+      "rank": 5,
+      "playerId": "00-0031136",
+      "player": "Chris Boswell",
+      "team": "PIT",
+      "position": "K",
+      "teamGames": 10,
+      "qualified": true,
+      "values": {
+        "games": 10,
+        "fg_made": 22,
+        "fg_att": 27,
+        "fg_long": 58,
+        "pat_made": 18,
+        "pat_att": 18,
+        "fg_pct": 0.815,
+        "xp_pct": 1.0
+      }
+    },
+    {
+      "rank": 8,
       "playerId": "00-0038428",
       "player": "Andre Szmyt",
       "team": "CLE",
@@ -199,7 +237,7 @@
       }
     },
     {
-      "rank": 6,
+      "rank": 8,
       "playerId": "00-0035269",
       "player": "Matt Gay",
       "team": "LV",
@@ -218,7 +256,26 @@
       }
     },
     {
-      "rank": 8,
+      "rank": 10,
+      "playerId": "00-0037692",
+      "player": "Brandon Aubrey",
+      "team": "DAL",
+      "position": "K",
+      "teamGames": 11,
+      "qualified": true,
+      "values": {
+        "games": 11,
+        "fg_made": 20,
+        "fg_att": 25,
+        "fg_long": 60,
+        "pat_made": 31,
+        "pat_att": 33,
+        "fg_pct": 0.8,
+        "xp_pct": 0.939
+      }
+    },
+    {
+      "rank": 10,
       "playerId": "00-0032726",
       "player": "Ka'imi Fairbairn",
       "team": "HOU",
@@ -233,63 +290,6 @@
         "pat_made": 27,
         "pat_att": 27,
         "fg_pct": 0.952,
-        "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 8,
-      "playerId": "00-0036162",
-      "player": "Tyler Bass",
-      "team": "BUF",
-      "position": "K",
-      "teamGames": 9,
-      "qualified": true,
-      "values": {
-        "games": 9,
-        "fg_made": 20,
-        "fg_att": 20,
-        "fg_long": 56,
-        "pat_made": 27,
-        "pat_att": 29,
-        "fg_pct": 1.0,
-        "xp_pct": 0.931
-      }
-    },
-    {
-      "rank": 10,
-      "playerId": "00-0037692",
-      "player": "Brandon Aubrey",
-      "team": "DAL",
-      "position": "K",
-      "teamGames": 10,
-      "qualified": true,
-      "values": {
-        "games": 10,
-        "fg_made": 19,
-        "fg_att": 24,
-        "fg_long": 60,
-        "pat_made": 25,
-        "pat_att": 27,
-        "fg_pct": 0.792,
-        "xp_pct": 0.926
-      }
-    },
-    {
-      "rank": 10,
-      "playerId": "00-0031136",
-      "player": "Chris Boswell",
-      "team": "PIT",
-      "position": "K",
-      "teamGames": 9,
-      "qualified": true,
-      "values": {
-        "games": 9,
-        "fg_made": 19,
-        "fg_att": 24,
-        "fg_long": 58,
-        "pat_made": 17,
-        "pat_att": 17,
-        "fg_pct": 0.792,
         "xp_pct": 1.0
       }
     },
@@ -332,7 +332,45 @@
       }
     },
     {
-      "rank": 14,
+      "rank": 12,
+      "playerId": "00-0035192",
+      "player": "Joey Slye",
+      "team": "TEN",
+      "position": "K",
+      "teamGames": 10,
+      "qualified": true,
+      "values": {
+        "games": 10,
+        "fg_made": 18,
+        "fg_att": 19,
+        "fg_long": 56,
+        "pat_made": 17,
+        "pat_att": 17,
+        "fg_pct": 0.947,
+        "xp_pct": 1.0
+      }
+    },
+    {
+      "rank": 15,
+      "playerId": "00-0031203",
+      "player": "Cairo Santos",
+      "team": "CHI",
+      "position": "K",
+      "teamGames": 10,
+      "qualified": true,
+      "values": {
+        "games": 10,
+        "fg_made": 17,
+        "fg_att": 21,
+        "fg_long": 58,
+        "pat_made": 29,
+        "pat_att": 30,
+        "fg_pct": 0.81,
+        "xp_pct": 0.967
+      }
+    },
+    {
+      "rank": 15,
       "playerId": "00-0041145",
       "player": "Dominic Zvada",
       "team": "NYG",
@@ -351,7 +389,7 @@
       }
     },
     {
-      "rank": 14,
+      "rank": 15,
       "playerId": "00-0041182",
       "player": "Drew Stevens",
       "team": "WAS",
@@ -370,26 +408,45 @@
       }
     },
     {
-      "rank": 16,
+      "rank": 15,
       "playerId": "00-0039172",
       "player": "Jake Bates",
       "team": "DET",
       "position": "K",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": true,
       "values": {
-        "games": 9,
-        "fg_made": 16,
-        "fg_att": 17,
-        "fg_long": 54,
-        "pat_made": 29,
-        "pat_att": 29,
-        "fg_pct": 0.941,
+        "games": 10,
+        "fg_made": 17,
+        "fg_att": 19,
+        "fg_long": 56,
+        "pat_made": 33,
+        "pat_att": 33,
+        "fg_pct": 0.895,
         "xp_pct": 1.0
       }
     },
     {
-      "rank": 16,
+      "rank": 15,
+      "playerId": "00-0040279",
+      "player": "Ryan Fitzgerald",
+      "team": "CAR",
+      "position": "K",
+      "teamGames": 10,
+      "qualified": true,
+      "values": {
+        "games": 10,
+        "fg_made": 17,
+        "fg_att": 19,
+        "fg_long": 55,
+        "pat_made": 21,
+        "pat_att": 26,
+        "fg_pct": 0.895,
+        "xp_pct": 0.808
+      }
+    },
+    {
+      "rank": 20,
       "playerId": "00-0031492",
       "player": "Jason Myers",
       "team": "SEA",
@@ -408,7 +465,7 @@
       }
     },
     {
-      "rank": 16,
+      "rank": 20,
       "playerId": "00-0032569",
       "player": "Wil Lutz",
       "team": "DEN",
@@ -427,64 +484,7 @@
       }
     },
     {
-      "rank": 19,
-      "playerId": "00-0031203",
-      "player": "Cairo Santos",
-      "team": "CHI",
-      "position": "K",
-      "teamGames": 9,
-      "qualified": true,
-      "values": {
-        "games": 9,
-        "fg_made": 15,
-        "fg_att": 19,
-        "fg_long": 58,
-        "pat_made": 28,
-        "pat_att": 28,
-        "fg_pct": 0.789,
-        "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 19,
-      "playerId": "00-0035192",
-      "player": "Joey Slye",
-      "team": "TEN",
-      "position": "K",
-      "teamGames": 9,
-      "qualified": true,
-      "values": {
-        "games": 9,
-        "fg_made": 15,
-        "fg_att": 16,
-        "fg_long": 56,
-        "pat_made": 14,
-        "pat_att": 14,
-        "fg_pct": 0.938,
-        "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 19,
-      "playerId": "00-0040279",
-      "player": "Ryan Fitzgerald",
-      "team": "CAR",
-      "position": "K",
-      "teamGames": 9,
-      "qualified": true,
-      "values": {
-        "games": 9,
-        "fg_made": 15,
-        "fg_att": 17,
-        "fg_long": 55,
-        "pat_made": 18,
-        "pat_att": 23,
-        "fg_pct": 0.882,
-        "xp_pct": 0.783
-      }
-    },
-    {
-      "rank": 19,
+      "rank": 22,
       "playerId": "00-0040899",
       "player": "Trey Smack",
       "team": "GB",
@@ -504,6 +504,25 @@
     },
     {
       "rank": 23,
+      "playerId": "00-0033303",
+      "player": "Harrison Butker",
+      "team": "KC",
+      "position": "K",
+      "teamGames": 10,
+      "qualified": true,
+      "values": {
+        "games": 10,
+        "fg_made": 14,
+        "fg_att": 21,
+        "fg_long": 50,
+        "pat_made": 31,
+        "pat_att": 32,
+        "fg_pct": 0.667,
+        "xp_pct": 0.969
+      }
+    },
+    {
+      "rank": 24,
       "playerId": "00-0036854",
       "player": "Evan McPherson",
       "team": "CIN",
@@ -522,7 +541,7 @@
       }
     },
     {
-      "rank": 23,
+      "rank": 24,
       "playerId": "00-0025565",
       "player": "Nick Folk",
       "team": "ATL",
@@ -541,12 +560,12 @@
       }
     },
     {
-      "rank": 23,
+      "rank": 24,
       "playerId": "00-0040074",
       "player": "Tyler Loop",
       "team": "BAL",
       "position": "K",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": true,
       "values": {
         "games": 8,
@@ -557,25 +576,6 @@
         "pat_att": 18,
         "fg_pct": 0.765,
         "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 26,
-      "playerId": "00-0033303",
-      "player": "Harrison Butker",
-      "team": "KC",
-      "position": "K",
-      "teamGames": 9,
-      "qualified": true,
-      "values": {
-        "games": 9,
-        "fg_made": 12,
-        "fg_att": 19,
-        "fg_long": 50,
-        "pat_made": 27,
-        "pat_att": 28,
-        "fg_pct": 0.632,
-        "xp_pct": 0.964
       }
     },
     {
@@ -598,45 +598,64 @@
       }
     },
     {
-      "rank": 28,
-      "playerId": "00-0036816",
-      "player": "Riley Patterson",
-      "team": "BAL",
+      "rank": 27,
+      "playerId": "00-0034161",
+      "player": "Daniel Carlson",
+      "team": "MIA",
       "position": "K",
       "teamGames": 10,
       "qualified": true,
       "values": {
-        "games": 6,
-        "fg_made": 9,
-        "fg_att": 11,
-        "fg_long": 41,
-        "pat_made": 7,
-        "pat_att": 8,
-        "fg_pct": 0.818,
-        "xp_pct": 0.875
-      }
-    },
-    {
-      "rank": 29,
-      "playerId": "00-0034161",
-      "player": "Daniel Carlson",
-      "team": "NO",
-      "position": "K",
-      "teamGames": 9,
-      "qualified": true,
-      "values": {
-        "games": 7,
-        "fg_made": 8,
-        "fg_att": 12,
+        "games": 8,
+        "fg_made": 11,
+        "fg_att": 15,
         "fg_long": 58,
         "pat_made": 16,
         "pat_att": 18,
-        "fg_pct": 0.667,
+        "fg_pct": 0.733,
         "xp_pct": 0.889
       }
     },
     {
-      "rank": 29,
+      "rank": 27,
+      "playerId": "00-0033787",
+      "player": "Jake Elliott",
+      "team": "PHI",
+      "position": "K",
+      "teamGames": 10,
+      "qualified": true,
+      "values": {
+        "games": 10,
+        "fg_made": 11,
+        "fg_att": 12,
+        "fg_long": 58,
+        "pat_made": 18,
+        "pat_att": 18,
+        "fg_pct": 0.917,
+        "xp_pct": 1.0
+      }
+    },
+    {
+      "rank": 30,
+      "playerId": "00-0036816",
+      "player": "Riley Patterson",
+      "team": "BAL",
+      "position": "K",
+      "teamGames": 11,
+      "qualified": true,
+      "values": {
+        "games": 7,
+        "fg_made": 10,
+        "fg_att": 12,
+        "fg_long": 41,
+        "pat_made": 11,
+        "pat_att": 12,
+        "fg_pct": 0.833,
+        "xp_pct": 0.917
+      }
+    },
+    {
+      "rank": 31,
       "playerId": "00-0034173",
       "player": "Eddy Pineiro",
       "team": "SF",
@@ -655,21 +674,21 @@
       }
     },
     {
-      "rank": 31,
-      "playerId": "00-0033787",
-      "player": "Jake Elliott",
-      "team": "PHI",
+      "rank": 32,
+      "playerId": "00-0039229",
+      "player": "Charlie Smyth",
+      "team": "NO",
       "position": "K",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": false,
       "values": {
-        "games": 9,
-        "fg_made": 7,
+        "games": 3,
+        "fg_made": 6,
         "fg_att": 8,
-        "fg_long": 58,
-        "pat_made": 17,
-        "pat_att": 17,
-        "fg_pct": 0.875,
+        "fg_long": 56,
+        "pat_made": 5,
+        "pat_att": 5,
+        "fg_pct": 0.75,
         "xp_pct": 1.0
       }
     },
@@ -679,7 +698,7 @@
       "player": "Zane Gonzalez",
       "team": "MIA",
       "position": "K",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": true,
       "values": {
         "games": 4,
@@ -693,7 +712,7 @@
       }
     },
     {
-      "rank": 33,
+      "rank": 34,
       "playerId": "00-0029822",
       "player": "Brandon McManus",
       "team": "LAR",
@@ -712,7 +731,7 @@
       }
     },
     {
-      "rank": 33,
+      "rank": 34,
       "playerId": "00-0039498",
       "player": "Harrison Mevis",
       "team": "LAR",
@@ -727,25 +746,6 @@
         "pat_made": 14,
         "pat_att": 14,
         "fg_pct": 0.556,
-        "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 35,
-      "playerId": "00-0039229",
-      "player": "Charlie Smyth",
-      "team": "NO",
-      "position": "K",
-      "teamGames": 9,
-      "qualified": false,
-      "values": {
-        "games": 2,
-        "fg_made": 4,
-        "fg_att": 5,
-        "fg_long": 55,
-        "pat_made": 4,
-        "pat_att": 4,
-        "fg_pct": 0.8,
         "xp_pct": 1.0
       }
     },
