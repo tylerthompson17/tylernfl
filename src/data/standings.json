@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 11,
-  "updated": "2026-11-20T04:15:28Z",
+  "updated": "2026-11-22T21:00:01Z",
   "teams": [
     {
       "team": "BUF",
@@ -331,13 +331,13 @@
       "team": "KC",
       "conference": "AFC",
       "division": "AFC West",
-      "wins": 7,
+      "wins": 8,
       "losses": 2,
       "ties": 0,
-      "pct": 0.778,
-      "pointsFor": 237,
-      "pointsAgainst": 156,
-      "diff": 81,
+      "pct": 0.8,
+      "pointsFor": 271,
+      "pointsAgainst": 163,
+      "diff": 108,
       "divisionRecord": [
         3,
         1,
@@ -348,11 +348,11 @@
         1,
         0
       ],
-      "streak": "W2",
+      "streak": "W3",
       "divisionRank": 1,
       "conferenceRank": 2,
-      "divisionTiebreak": "division_record",
-      "conferenceTiebreak": "conference_record"
+      "divisionTiebreak": null,
+      "conferenceTiebreak": null
     },
     {
       "team": "DEN",
@@ -378,7 +378,7 @@
       "streak": "W5",
       "divisionRank": 2,
       "conferenceRank": 5,
-      "divisionTiebreak": "division_record",
+      "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
     {
@@ -757,7 +757,7 @@
       "divisionRank": 4,
       "conferenceRank": 14,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "conference_record"
+      "conferenceTiebreak": null
     },
     {
       "team": "SF",
@@ -845,12 +845,12 @@
       "conference": "NFC",
       "division": "NFC West",
       "wins": 3,
-      "losses": 7,
+      "losses": 8,
       "ties": 0,
-      "pct": 0.3,
-      "pointsFor": 184,
-      "pointsAgainst": 289,
-      "diff": -105,
+      "pct": 0.273,
+      "pointsFor": 191,
+      "pointsAgainst": 323,
+      "diff": -132,
       "divisionRecord": [
         1,
         4,
@@ -861,7 +861,7 @@
         6,
         0
       ],
-      "streak": "L2",
+      "streak": "L3",
       "divisionRank": 4,
       "conferenceRank": 15,
       "divisionTiebreak": null,
