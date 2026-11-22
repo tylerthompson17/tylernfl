@@ -1,33 +1,33 @@
 {
-  "date": "2026-11-21",
-  "number": 28,
+  "date": "2026-11-22",
+  "number": 29,
   "season": 2026,
   "modelVersion": "nfl4th-ecb7293",
   "closeMargin": 0.02,
   "plays": [
     {
-      "key": "2026_09_BUF_MIN:152",
-      "gameId": "2026_09_BUF_MIN",
+      "key": "2026_09_NYG_PHI:3657",
+      "gameId": "2026_09_NYG_PHI",
       "week": 9,
-      "away": "BUF",
-      "home": "MIN",
-      "offense": "BUF",
-      "defense": "MIN",
-      "coach": "Joe Brady",
-      "quarter": 1,
-      "clock": 791,
-      "distance": 21,
-      "yardline100": 47,
-      "scoreDiff": 0,
+      "away": "NYG",
+      "home": "PHI",
+      "offense": "NYG",
+      "defense": "PHI",
+      "coach": "John Harbaugh",
+      "quarter": 4,
+      "clock": 550,
+      "distance": 6,
+      "yardline100": 20,
+      "scoreDiff": 5,
       "timeoutsOffense": 3,
       "timeoutsDefense": 3,
       "wp": {
-        "go": 0.55097,
-        "punt": 0.5775,
-        "field goal": 0.54499
+        "go": 0.83559,
+        "punt": null,
+        "field goal": 0.86776
       },
-      "call": "punt",
-      "margin": 0.02653,
+      "call": "field goal",
+      "margin": 0.03217,
       "close": false,
       "asOf": {
         "season": 2026,
@@ -35,269 +35,279 @@
       },
       "nfl4th": {
         "wp": {
-          "go": 0.54895,
-          "punt": 0.5776,
-          "field goal": 0.54499
+          "go": 0.83035,
+          "punt": null,
+          "field goal": 0.86776
         },
-        "call": "punt",
-        "margin": 0.02865
+        "call": "field goal",
+        "margin": 0.03741
       },
-      "teamCall": "punt",
+      "teamCall": "field goal",
       "coachWpLost": 0.0,
-      "result": "Punted 47 yards",
-      "description": "(13:11) 39-T.Doman punts 47 yards to end zone, Center-69-R.Ferguson, Touchback.",
+      "result": "Made a 38-yard field goal",
+      "description": "(9:10) 34-D.Zvada 38 yard field goal is GOOD, Center-58-B.Mann, Holder-15-J.Stout.",
       "next": {
         "converted": false,
         "drive": {
-          "team": "MIN",
-          "startYardline100": 80,
-          "plays": 3,
-          "yards": 6,
+          "team": "PHI",
+          "startYardline100": 69,
+          "plays": 4,
+          "yards": 11,
           "result": "punt"
         },
         "ended": null,
         "final": {
-          "away": 23,
+          "away": 19,
+          "home": 11,
+          "overtime": false
+        }
+      }
+    },
+    {
+      "key": "2026_07_NE_CHI:3592",
+      "gameId": "2026_07_NE_CHI",
+      "week": 7,
+      "away": "NE",
+      "home": "CHI",
+      "offense": "NE",
+      "defense": "CHI",
+      "coach": "Mike Vrabel",
+      "quarter": 4,
+      "clock": 388,
+      "distance": 7,
+      "yardline100": 54,
+      "scoreDiff": -6,
+      "timeoutsOffense": 3,
+      "timeoutsDefense": 2,
+      "wp": {
+        "go": 0.17396,
+        "punt": 0.12741,
+        "field goal": null
+      },
+      "call": "go",
+      "margin": 0.04655,
+      "close": false,
+      "asOf": {
+        "season": 2026,
+        "week": 6
+      },
+      "nfl4th": {
+        "wp": {
+          "go": 0.16742,
+          "punt": 0.12749,
+          "field goal": null
+        },
+        "call": "go",
+        "margin": 0.03992
+      },
+      "teamCall": "punt",
+      "coachWpLost": 0.04655,
+      "result": "Punted 45 yards",
+      "description": "(6:28) 19-M.Wishnowsky punts 45 yards to CHI 9, Center-47-J.Ashby, fair catch by 14-K.Raymond.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "CHI",
+          "startYardline100": 91,
+          "plays": 12,
+          "yards": 51,
+          "result": "field goal"
+        },
+        "ended": null,
+        "final": {
+          "away": 24,
+          "home": 30,
+          "overtime": false
+        }
+      }
+    },
+    {
+      "key": "2026_10_LA_ARI:1468",
+      "gameId": "2026_10_LA_ARI",
+      "week": 10,
+      "away": "LAR",
+      "home": "ARI",
+      "offense": "LAR",
+      "defense": "ARI",
+      "coach": "Sean McVay",
+      "quarter": 2,
+      "clock": 423,
+      "distance": 3,
+      "yardline100": 47,
+      "scoreDiff": -3,
+      "timeoutsOffense": 1,
+      "timeoutsDefense": 2,
+      "wp": {
+        "go": 0.73135,
+        "punt": 0.6989,
+        "field goal": 0.68257
+      },
+      "call": "go",
+      "margin": 0.03245,
+      "close": false,
+      "asOf": {
+        "season": 2026,
+        "week": 7
+      },
+      "nfl4th": {
+        "wp": {
+          "go": 0.72485,
+          "punt": 0.69908,
+          "field goal": 0.68257
+        },
+        "call": "go",
+        "margin": 0.02577
+      },
+      "teamCall": "punt",
+      "coachWpLost": 0.03245,
+      "result": "Punted 31 yards",
+      "description": "(7:03) 42-E.Evans punts 31 yards to ARI 16, Center-43-J.McQuaide, out of bounds.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "ARI",
+          "startYardline100": 84,
+          "plays": 3,
+          "yards": 0,
+          "result": "punt"
+        },
+        "ended": null,
+        "final": {
+          "away": 34,
           "home": 6,
           "overtime": false
         }
       }
     },
     {
-      "key": "2026_10_SEA_LV:1112",
-      "gameId": "2026_10_SEA_LV",
-      "week": 10,
-      "away": "SEA",
-      "home": "LV",
-      "offense": "SEA",
-      "defense": "LV",
-      "coach": "Mike Macdonald",
+      "key": "2026_08_TEN_CIN:1912",
+      "gameId": "2026_08_TEN_CIN",
+      "week": 8,
+      "away": "TEN",
+      "home": "CIN",
+      "offense": "TEN",
+      "defense": "CIN",
+      "coach": "Robert Saleh",
       "quarter": 2,
-      "clock": 526,
-      "distance": 2,
-      "yardline100": 72,
-      "scoreDiff": -3,
-      "timeoutsOffense": 3,
-      "timeoutsDefense": 3,
-      "wp": {
-        "go": 0.564,
-        "punt": 0.53856,
-        "field goal": null
-      },
-      "call": "go",
-      "margin": 0.02544,
-      "close": false,
-      "asOf": {
-        "season": 2026,
-        "week": 7
-      },
-      "nfl4th": {
-        "wp": {
-          "go": 0.55753,
-          "punt": 0.5354,
-          "field goal": null
-        },
-        "call": "go",
-        "margin": 0.02212
-      },
-      "teamCall": "punt",
-      "coachWpLost": 0.02544,
-      "result": "Punted 63 yards",
-      "description": "(8:46) 4-M.Dickson punts 63 yards to LV 9, Center-41-C.Stoll. 23-D.Laube MUFFS catch, and recovers at LV 9.",
-      "next": {
-        "converted": false,
-        "drive": {
-          "team": "LV",
-          "startYardline100": 91,
-          "plays": 8,
-          "yards": 28,
-          "result": "punt"
-        },
-        "ended": null,
-        "final": {
-          "away": 21,
-          "home": 13,
-          "overtime": false
-        }
-      }
-    },
-    {
-      "key": "2026_09_DET_MIA:2370",
-      "gameId": "2026_09_DET_MIA",
-      "week": 9,
-      "away": "DET",
-      "home": "MIA",
-      "offense": "DET",
-      "defense": "MIA",
-      "coach": "Dan Campbell",
-      "quarter": 3,
-      "clock": 557,
-      "distance": 10,
-      "yardline100": 14,
-      "scoreDiff": 3,
-      "timeoutsOffense": 3,
-      "timeoutsDefense": 3,
-      "wp": {
-        "go": 0.79842,
-        "punt": null,
-        "field goal": 0.82829
-      },
-      "call": "field goal",
-      "margin": 0.02987,
-      "close": false,
-      "asOf": {
-        "season": 2026,
-        "week": 7
-      },
-      "nfl4th": {
-        "wp": {
-          "go": 0.7933,
-          "punt": null,
-          "field goal": 0.82829
-        },
-        "call": "field goal",
-        "margin": 0.03499
-      },
-      "teamCall": "field goal",
-      "coachWpLost": 0.0,
-      "result": "Made a 33-yard field goal",
-      "description": "(9:17) 39-J.Bates 33 yard field goal is GOOD, Center-49-H.Hatten, Holder-3-J.Fox.",
-      "next": {
-        "converted": false,
-        "drive": {
-          "team": "MIA",
-          "startYardline100": 60,
-          "plays": 8,
-          "yards": 26,
-          "result": "field goal"
-        },
-        "ended": null,
-        "final": {
-          "away": 19,
-          "home": 9,
-          "overtime": false
-        }
-      }
-    },
-    {
-      "key": "2026_10_CAR_NO:3455",
-      "gameId": "2026_10_CAR_NO",
-      "week": 10,
-      "away": "CAR",
-      "home": "NO",
-      "offense": "CAR",
-      "defense": "NO",
-      "coach": "Dave Canales",
-      "quarter": 4,
-      "clock": 580,
+      "clock": 139,
       "distance": 5,
-      "yardline100": 58,
-      "scoreDiff": 3,
-      "timeoutsOffense": 1,
-      "timeoutsDefense": 3,
+      "yardline100": 75,
+      "scoreDiff": 6,
+      "timeoutsOffense": 2,
+      "timeoutsDefense": 2,
       "wp": {
-        "go": 0.63689,
-        "punt": 0.61651,
+        "go": 0.31555,
+        "punt": 0.326,
         "field goal": null
       },
-      "call": "go",
-      "margin": 0.02038,
-      "close": false,
+      "call": "punt",
+      "margin": 0.01045,
+      "close": true,
       "asOf": {
         "season": 2026,
         "week": 7
       },
       "nfl4th": {
         "wp": {
-          "go": 0.62692,
-          "punt": 0.61638,
+          "go": 0.31065,
+          "punt": 0.32415,
           "field goal": null
         },
-        "call": "go",
-        "margin": 0.01054
+        "call": "punt",
+        "margin": 0.0135
       },
       "teamCall": "punt",
-      "coachWpLost": 0.02038,
-      "result": "Punted 39 yards",
-      "description": "(9:40) 6-S.Martin punts 39 yards to NO 19, Center-44-J.Jansen. 19-B.Brown to NO 30 for 11 yards (36-M.DeWalt).",
-      "next": {
-        "converted": false,
-        "drive": {
-          "team": "NO",
-          "startYardline100": 70,
-          "plays": 9,
-          "yards": 70,
-          "result": "touchdown"
-        },
-        "ended": null,
-        "final": {
-          "away": 20,
-          "home": 17,
-          "overtime": false
-        }
-      }
-    },
-    {
-      "key": "2026_10_JAX_TEN:1365",
-      "gameId": "2026_10_JAX_TEN",
-      "week": 10,
-      "away": "JAX",
-      "home": "TEN",
-      "offense": "JAX",
-      "defense": "TEN",
-      "coach": "Liam Coen",
-      "quarter": 2,
-      "clock": 479,
-      "distance": 23,
-      "yardline100": 30,
-      "scoreDiff": 7,
-      "timeoutsOffense": 2,
-      "timeoutsDefense": 3,
-      "wp": {
-        "go": 0.87568,
-        "punt": null,
-        "field goal": 0.89581
-      },
-      "call": "field goal",
-      "margin": 0.02013,
-      "close": false,
-      "asOf": {
-        "season": 2026,
-        "week": 7
-      },
-      "nfl4th": {
-        "wp": {
-          "go": 0.87536,
-          "punt": null,
-          "field goal": 0.89581
-        },
-        "call": "field goal",
-        "margin": 0.02045
-      },
-      "teamCall": "field goal",
       "coachWpLost": 0.0,
-      "result": "Made a 48-yard field goal",
-      "description": "(7:59) 39-C.Little 48 yard field goal is GOOD, Center-46-R.Matiscik, Holder-9-L.Cooke.",
+      "result": "Punted 42 yards",
+      "description": "(2:19) 13-T.Morstead punts 42 yards to CIN 33, Center-46-M.Cox, fair catch by 81-D.Meyers.",
       "next": {
         "converted": false,
         "drive": {
-          "team": "TEN",
+          "team": "CIN",
           "startYardline100": 67,
-          "plays": 6,
+          "plays": 9,
           "yards": 67,
           "result": "touchdown"
         },
         "ended": null,
         "final": {
-          "away": 40,
-          "home": 23,
+          "away": 36,
+          "home": 43,
+          "overtime": true
+        }
+      }
+    },
+    {
+      "key": "2026_07_KC_SEA:2497",
+      "gameId": "2026_07_KC_SEA",
+      "week": 7,
+      "away": "KC",
+      "home": "SEA",
+      "offense": "SEA",
+      "defense": "KC",
+      "coach": "Mike Macdonald",
+      "quarter": 3,
+      "clock": 492,
+      "distance": 15,
+      "yardline100": 17,
+      "scoreDiff": 10,
+      "timeoutsOffense": 3,
+      "timeoutsDefense": 3,
+      "wp": {
+        "go": 0.87633,
+        "punt": null,
+        "field goal": 0.91119
+      },
+      "call": "field goal",
+      "margin": 0.03486,
+      "close": false,
+      "asOf": {
+        "season": 2026,
+        "week": 6
+      },
+      "nfl4th": {
+        "wp": {
+          "go": 0.87411,
+          "punt": null,
+          "field goal": 0.91119
+        },
+        "call": "field goal",
+        "margin": 0.03708
+      },
+      "teamCall": "field goal",
+      "coachWpLost": 0.0,
+      "result": "Made a 35-yard field goal",
+      "description": "(8:12) 5-J.Myers 35 yard field goal is GOOD, Center-41-C.Stoll, Holder-4-M.Dickson.",
+      "next": {
+        "converted": false,
+        "drive": {
+          "team": "KC",
+          "startYardline100": 76,
+          "plays": 13,
+          "yards": 44,
+          "result": "field goal"
+        },
+        "ended": null,
+        "final": {
+          "away": 3,
+          "home": 20,
           "overtime": false
         }
       }
     }
   ],
-  "coachWpLost": 0.04582,
+  "coachWpLost": 0.079,
   "history": [
+    {
+      "date": "2026-11-22",
+      "keys": [
+        "2026_09_NYG_PHI:3657",
+        "2026_07_NE_CHI:3592",
+        "2026_10_LA_ARI:1468",
+        "2026_08_TEN_CIN:1912",
+        "2026_07_KC_SEA:2497"
+      ]
+    },
     {
       "date": "2026-11-21",
       "keys": [
@@ -506,16 +516,6 @@
         "2026_07_NYG_HOU:2521",
         "2026_07_PIT_NO:2208",
         "2026_08_CAR_GB:4121"
-      ]
-    },
-    {
-      "date": "2026-10-31",
-      "keys": [
-        "2026_03_MIN_TB:2594",
-        "2026_03_CAR_CLE:1141",
-        "2026_03_HOU_IND:723",
-        "2026_06_CHI_ATL:1786",
-        "2026_02_JAX_DEN:2622"
       ]
     }
   ]

@@ -1,19 +1,43 @@
 {
   "month": 11,
-  "day": 21,
-  "gamesOnDate": 63,
+  "day": 22,
+  "gamesOnDate": 53,
   "items": [
     {
-      "year": 2021,
-      "gameId": "2021_11_PIT_LAC",
-      "text": "The Chargers beat the Steelers 41-37 with 78 combined points.",
+      "year": 2015,
+      "gameId": "2015_11_KC_SD",
+      "text": "The Chiefs beat the Chargers 33-3.",
       "parts": [
         {
           "text": "The "
         },
         {
+          "text": "Chiefs",
+          "team": "KC"
+        },
+        {
+          "text": " beat the "
+        },
+        {
           "text": "Chargers",
           "team": "LAC"
+        },
+        {
+          "text": " 33-3."
+        }
+      ]
+    },
+    {
+      "year": 2009,
+      "gameId": "2009_11_PIT_KC",
+      "text": "The Chiefs beat the Steelers 27-24 in overtime as 10.5-point underdogs.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Chiefs",
+          "team": "KC"
         },
         {
           "text": " beat the "
@@ -23,52 +47,31 @@
           "team": "PIT"
         },
         {
-          "text": " 41-37 with 78 combined points."
+          "text": " 27-24 in overtime as 10.5-point underdogs."
         }
       ]
     },
     {
-      "year": 2010,
-      "gameId": "2010_11_WAS_TEN",
-      "text": "Washington beat the Titans 19-16 in overtime as 7-point underdogs.",
-      "parts": [
-        {
-          "text": "Washington",
-          "team": "WAS"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Titans",
-          "team": "TEN"
-        },
-        {
-          "text": " 19-16 in overtime as 7-point underdogs."
-        }
-      ]
-    },
-    {
-      "year": 2004,
-      "gameId": "2004_11_SF_TB",
-      "text": "The Buccaneers beat the 49ers 35-3.",
+      "year": 2007,
+      "gameId": "2007_12_NYJ_DAL",
+      "text": "The Cowboys beat the Jets 34-3.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Buccaneers",
-          "team": "TB"
+          "text": "Cowboys",
+          "team": "DAL"
         },
         {
           "text": " beat the "
         },
         {
-          "text": "49ers",
-          "team": "SF"
+          "text": "Jets",
+          "team": "NYJ"
         },
         {
-          "text": " 35-3."
+          "text": " 34-3."
         }
       ]
     }
