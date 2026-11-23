@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 11,
-  "updated": "2026-11-22T23:55:49Z",
+  "updated": "2026-11-23T00:54:12Z",
   "teams": [
     {
       "team": "BUF",
@@ -271,7 +271,7 @@
       "divisionRank": 2,
       "conferenceRank": 9,
       "divisionTiebreak": null,
-      "conferenceTiebreak": "strength_of_victory"
+      "conferenceTiebreak": null
     },
     {
       "team": "IND",
@@ -328,6 +328,33 @@
       "conferenceTiebreak": null
     },
     {
+      "team": "DEN",
+      "conference": "AFC",
+      "division": "AFC West",
+      "wins": 8,
+      "losses": 2,
+      "ties": 0,
+      "pct": 0.8,
+      "pointsFor": 236,
+      "pointsAgainst": 210,
+      "diff": 26,
+      "divisionRecord": [
+        3,
+        1,
+        0
+      ],
+      "conferenceRecord": [
+        4,
+        1,
+        0
+      ],
+      "streak": "W6",
+      "divisionRank": 1,
+      "conferenceRank": 2,
+      "divisionTiebreak": "common_games",
+      "conferenceTiebreak": null
+    },
+    {
       "team": "KC",
       "conference": "AFC",
       "division": "AFC West",
@@ -349,36 +376,9 @@
         0
       ],
       "streak": "W3",
-      "divisionRank": 1,
-      "conferenceRank": 2,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
-    },
-    {
-      "team": "DEN",
-      "conference": "AFC",
-      "division": "AFC West",
-      "wins": 7,
-      "losses": 2,
-      "ties": 0,
-      "pct": 0.778,
-      "pointsFor": 198,
-      "pointsAgainst": 186,
-      "diff": 12,
-      "divisionRecord": [
-        2,
-        1,
-        0
-      ],
-      "conferenceRecord": [
-        3,
-        1,
-        0
-      ],
-      "streak": "W5",
       "divisionRank": 2,
       "conferenceRank": 5,
-      "divisionTiebreak": null,
+      "divisionTiebreak": "common_games",
       "conferenceTiebreak": null
     },
     {
@@ -386,27 +386,27 @@
       "conference": "AFC",
       "division": "AFC West",
       "wins": 4,
-      "losses": 6,
+      "losses": 7,
       "ties": 0,
-      "pct": 0.4,
-      "pointsFor": 251,
-      "pointsAgainst": 289,
-      "diff": -38,
+      "pct": 0.364,
+      "pointsFor": 275,
+      "pointsAgainst": 327,
+      "diff": -52,
       "divisionRecord": [
         1,
-        1,
+        2,
         0
       ],
       "conferenceRecord": [
         3,
-        3,
+        4,
         0
       ],
-      "streak": "L2",
+      "streak": "L3",
       "divisionRank": 3,
       "conferenceRank": 10,
       "divisionTiebreak": null,
-      "conferenceTiebreak": null
+      "conferenceTiebreak": "conference_record"
     },
     {
       "team": "LAC",
