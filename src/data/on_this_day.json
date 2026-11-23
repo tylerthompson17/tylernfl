@@ -1,60 +1,12 @@
 {
   "month": 11,
-  "day": 22,
-  "gamesOnDate": 53,
+  "day": 23,
+  "gamesOnDate": 67,
   "items": [
     {
-      "year": 2015,
-      "gameId": "2015_11_KC_SD",
-      "text": "The Chiefs beat the Chargers 33-3.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Chiefs",
-          "team": "KC"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Chargers",
-          "team": "LAC"
-        },
-        {
-          "text": " 33-3."
-        }
-      ]
-    },
-    {
-      "year": 2009,
-      "gameId": "2009_11_PIT_KC",
-      "text": "The Chiefs beat the Steelers 27-24 in overtime as 10.5-point underdogs.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Chiefs",
-          "team": "KC"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Steelers",
-          "team": "PIT"
-        },
-        {
-          "text": " 27-24 in overtime as 10.5-point underdogs."
-        }
-      ]
-    },
-    {
-      "year": 2007,
-      "gameId": "2007_12_NYJ_DAL",
-      "text": "The Cowboys beat the Jets 34-3.",
+      "year": 2023,
+      "gameId": "2023_12_WAS_DAL",
+      "text": "The Cowboys beat Washington 45-10.",
       "parts": [
         {
           "text": "The "
@@ -64,14 +16,62 @@
           "team": "DAL"
         },
         {
+          "text": " beat "
+        },
+        {
+          "text": "Washington",
+          "team": "WAS"
+        },
+        {
+          "text": " 45-10."
+        }
+      ]
+    },
+    {
+      "year": 2008,
+      "gameId": "2008_12_BUF_KC",
+      "text": "The Bills beat the Chiefs 54-31 with 85 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Bills",
+          "team": "BUF"
+        },
+        {
           "text": " beat the "
         },
         {
-          "text": "Jets",
-          "team": "NYJ"
+          "text": "Chiefs",
+          "team": "KC"
         },
         {
-          "text": " 34-3."
+          "text": " 54-31 with 85 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2003,
+      "gameId": "2003_12_SEA_BAL",
+      "text": "The Ravens beat the Seahawks 44-41 in overtime with 85 combined points.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Ravens",
+          "team": "BAL"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Seahawks",
+          "team": "SEA"
+        },
+        {
+          "text": " 44-41 in overtime with 85 combined points."
         }
       ]
     }

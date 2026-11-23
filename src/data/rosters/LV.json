@@ -1,8 +1,8 @@
 {
   "season": 2026,
   "team": "LV",
-  "week": 11,
-  "updated": "2026-11-19T18:43:02Z",
+  "week": 12,
+  "updated": "2026-11-23T21:46:05Z",
   "groups": [
     {
       "key": "offense",
@@ -310,8 +310,8 @@
       "number": 84,
       "position": "TE",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 76,
       "weight": 243,
       "age": 25,
@@ -604,21 +604,6 @@
       "college": "Eastern Michigan"
     },
     {
-      "gsisId": "00-0035857",
-      "name": "Chris Williams",
-      "slug": "chris-williams",
-      "number": 53,
-      "position": "DT",
-      "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 74,
-      "weight": 298,
-      "age": 28,
-      "experience": 6,
-      "college": "Wagner"
-    },
-    {
       "gsisId": "00-0033381",
       "name": "Adam Butler",
       "slug": "adam-butler",
@@ -632,6 +617,21 @@
       "age": 32,
       "experience": 9,
       "college": "Vanderbilt"
+    },
+    {
+      "gsisId": "00-0035857",
+      "name": "Chris Williams",
+      "slug": "chris-williams",
+      "number": 72,
+      "position": "DT",
+      "group": "defense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 74,
+      "weight": 298,
+      "age": 28,
+      "experience": 6,
+      "college": "Wagner"
     },
     {
       "gsisId": "00-0040902",
