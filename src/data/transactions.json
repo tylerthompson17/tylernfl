@@ -3,7 +3,7 @@
   "week": 11,
   "movesWeek": 12,
   "comparedToWeek": 11,
-  "updated": "2026-11-24T04:26:01Z",
+  "updated": "2026-11-24T20:25:19Z",
   "categories": [
     {
       "key": "game-status",
@@ -72,6 +72,20 @@
       "priority": 140
     },
     {
+      "playerId": "00-0037823",
+      "player": "Christian Harris",
+      "position": "ILB",
+      "team": "ATL",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": 0.07,
+      "starter": false,
+      "priority": 150
+    },
+    {
       "playerId": "00-0035710",
       "player": "Daniel Jones",
       "position": "QB",
@@ -84,6 +98,62 @@
       "snapShare": 0.97,
       "starter": true,
       "priority": 50
+    },
+    {
+      "playerId": "00-0041531",
+      "player": "Max Llewellyn",
+      "position": "DE",
+      "team": "MIA",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": 0.04,
+      "starter": false,
+      "priority": 150
+    },
+    {
+      "playerId": "00-0038890",
+      "player": "Shaka Heyward",
+      "position": "ILB",
+      "team": "MIA",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": 0.0,
+      "starter": false,
+      "priority": 150
+    },
+    {
+      "playerId": "00-0036261",
+      "player": "Brandon Aiyuk",
+      "position": "WR",
+      "team": "SF",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": false,
+      "note": "Released",
+      "category": "released",
+      "snapShare": null,
+      "starter": false,
+      "priority": 150
+    },
+    {
+      "playerId": "00-0038395",
+      "player": "Terell Smith",
+      "position": "CB",
+      "team": "ATL",
+      "fromTeam": null,
+      "type": "signed",
+      "practiceSquad": true,
+      "note": "Signed to practice squad",
+      "category": "practice-squad",
+      "snapShare": 0.0,
+      "starter": false,
+      "priority": 370
     },
     {
       "playerId": "00-0040352",
@@ -114,6 +184,34 @@
       "priority": 370
     },
     {
+      "playerId": "00-0038396",
+      "player": "Eric Gray",
+      "position": "RB",
+      "team": "IND",
+      "fromTeam": null,
+      "type": "signed",
+      "practiceSquad": true,
+      "note": "Signed to practice squad",
+      "category": "practice-squad",
+      "snapShare": 0.01,
+      "starter": false,
+      "priority": 370
+    },
+    {
+      "playerId": "00-0035900",
+      "player": "Cole Christiansen",
+      "position": "OLB",
+      "team": "KC",
+      "fromTeam": null,
+      "type": "signed",
+      "practiceSquad": true,
+      "note": "Signed to practice squad",
+      "category": "practice-squad",
+      "snapShare": 0.0,
+      "starter": false,
+      "priority": 370
+    },
+    {
       "playerId": "00-0037385",
       "player": "Michael Niese",
       "position": "C",
@@ -124,6 +222,48 @@
       "note": "Signed to practice squad",
       "category": "practice-squad",
       "snapShare": 0.02,
+      "starter": false,
+      "priority": 370
+    },
+    {
+      "playerId": "00-0041172",
+      "player": "Miller Moss",
+      "position": "QB",
+      "team": "CHI",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": true,
+      "note": "Released from practice squad",
+      "category": "practice-squad",
+      "snapShare": null,
+      "starter": false,
+      "priority": 370
+    },
+    {
+      "playerId": "00-0041246",
+      "player": "Josh Kattus",
+      "position": "TE",
+      "team": "CIN",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": true,
+      "note": "Released from practice squad",
+      "category": "practice-squad",
+      "snapShare": null,
+      "starter": false,
+      "priority": 370
+    },
+    {
+      "playerId": "00-0040964",
+      "player": "EJ Smith",
+      "position": "RB",
+      "team": "KC",
+      "fromTeam": null,
+      "type": "released",
+      "practiceSquad": true,
+      "note": "Released from practice squad",
+      "category": "practice-squad",
+      "snapShare": null,
       "starter": false,
       "priority": 370
     }
@@ -1147,7 +1287,7 @@
       "practice": "Did not practice",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.95,
+      "snapShare": 0.92,
       "starter": true,
       "priority": 202
     },
@@ -1189,7 +1329,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.04,
+      "snapShare": 0.05,
       "starter": false,
       "priority": 302
     },
@@ -2099,7 +2239,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.43,
+      "snapShare": 0.45,
       "starter": false,
       "priority": 302
     },
@@ -2113,7 +2253,7 @@
       "practice": "Full",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.67,
+      "snapShare": 0.8,
       "starter": true,
       "priority": 202
     },
@@ -2127,7 +2267,7 @@
       "practice": "Did not practice",
       "category": "game-status",
       "gamePlayed": true,
-      "snapShare": 0.53,
+      "snapShare": 0.5,
       "starter": true,
       "priority": 202
     },
@@ -2659,7 +2799,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.44,
+      "snapShare": 0.47,
       "starter": false,
       "priority": 380
     },
@@ -2673,7 +2813,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.68,
+      "snapShare": 0.7,
       "starter": true,
       "priority": 280
     },
@@ -2743,7 +2883,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.79,
+      "snapShare": 0.82,
       "starter": true,
       "priority": 282
     },
@@ -4367,7 +4507,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.03,
+      "snapShare": 0.01,
       "starter": false,
       "priority": 382
     },
@@ -4381,7 +4521,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.69,
+      "snapShare": 0.68,
       "starter": true,
       "priority": 282
     },
@@ -4409,7 +4549,7 @@
       "practice": "Limited",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.37,
+      "snapShare": 0.36,
       "starter": false,
       "priority": 381
     },
@@ -4423,7 +4563,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.91,
+      "snapShare": 0.94,
       "starter": true,
       "priority": 282
     },
@@ -4451,7 +4591,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.38,
+      "snapShare": 0.26,
       "starter": false,
       "priority": 382
     },
@@ -4465,7 +4605,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.64,
+      "snapShare": 0.67,
       "starter": true,
       "priority": 282
     },
@@ -4479,7 +4619,7 @@
       "practice": "Did not practice",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.61,
+      "snapShare": 0.62,
       "starter": true,
       "priority": 280
     },
@@ -4493,7 +4633,7 @@
       "practice": "Full",
       "category": "practice-report",
       "gamePlayed": true,
-      "snapShare": 0.56,
+      "snapShare": 0.57,
       "starter": true,
       "priority": 282
     },

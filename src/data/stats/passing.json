@@ -95,6 +95,26 @@
   "rows": [
     {
       "rank": 1,
+      "playerId": "00-0036442",
+      "player": "Joe Burrow",
+      "team": "CIN",
+      "position": "QB",
+      "teamGames": 10,
+      "qualified": true,
+      "values": {
+        "games": 10,
+        "completions": 282,
+        "attempts": 380,
+        "passing_yards": 3095,
+        "passing_tds": 29,
+        "passing_interceptions": 6,
+        "sacks_suffered": 19,
+        "cmp_pct": 0.742,
+        "pass_ypa": 8.1
+      }
+    },
+    {
+      "rank": 2,
       "playerId": "00-0033077",
       "player": "Dak Prescott",
       "team": "DAL",
@@ -114,7 +134,7 @@
       }
     },
     {
-      "rank": 2,
+      "rank": 3,
       "playerId": "00-0036264",
       "player": "Jordan Love",
       "team": "GB",
@@ -131,26 +151,6 @@
         "sacks_suffered": 25,
         "cmp_pct": 0.63,
         "pass_ypa": 7.7
-      }
-    },
-    {
-      "rank": 3,
-      "playerId": "00-0036442",
-      "player": "Joe Burrow",
-      "team": "CIN",
-      "position": "QB",
-      "teamGames": 9,
-      "qualified": true,
-      "values": {
-        "games": 9,
-        "completions": 254,
-        "attempts": 340,
-        "passing_yards": 2795,
-        "passing_tds": 27,
-        "passing_interceptions": 6,
-        "sacks_suffered": 16,
-        "cmp_pct": 0.747,
-        "pass_ypa": 8.2
       }
     },
     {
@@ -535,6 +535,26 @@
     },
     {
       "rank": 23,
+      "playerId": "00-0039910",
+      "player": "Jayden Daniels",
+      "team": "WAS",
+      "position": "QB",
+      "teamGames": 10,
+      "qualified": true,
+      "values": {
+        "games": 8,
+        "completions": 161,
+        "attempts": 248,
+        "passing_yards": 1788,
+        "passing_tds": 10,
+        "passing_interceptions": 2,
+        "sacks_suffered": 20,
+        "cmp_pct": 0.649,
+        "pass_ypa": 7.2
+      }
+    },
+    {
+      "rank": 24,
       "playerId": "00-0039917",
       "player": "Michael Penix Jr.",
       "team": "ATL",
@@ -554,7 +574,7 @@
       }
     },
     {
-      "rank": 24,
+      "rank": 25,
       "playerId": "00-0039918",
       "player": "Caleb Williams",
       "team": "CHI",
@@ -571,26 +591,6 @@
         "sacks_suffered": 16,
         "cmp_pct": 0.683,
         "pass_ypa": 7.9
-      }
-    },
-    {
-      "rank": 25,
-      "playerId": "00-0039910",
-      "player": "Jayden Daniels",
-      "team": "WAS",
-      "position": "QB",
-      "teamGames": 9,
-      "qualified": true,
-      "values": {
-        "games": 7,
-        "completions": 138,
-        "attempts": 213,
-        "passing_yards": 1499,
-        "passing_tds": 10,
-        "passing_interceptions": 2,
-        "sacks_suffered": 17,
-        "cmp_pct": 0.648,
-        "pass_ypa": 7.0
       }
     },
     {
@@ -939,7 +939,7 @@
       "player": "Marcus Mariota",
       "team": "WAS",
       "position": "QB",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": false,
       "values": {
         "games": 3,
@@ -1059,7 +1059,7 @@
       "player": "Athan Kaliakmanis",
       "team": "WAS",
       "position": "QB",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": false,
       "values": {
         "games": 1,
@@ -1619,10 +1619,10 @@
       "player": "Antonio Williams",
       "team": "WAS",
       "position": "WR",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": false,
       "values": {
-        "games": 9,
+        "games": 10,
         "completions": 0,
         "attempts": 1,
         "passing_yards": 0,
@@ -1659,7 +1659,7 @@
       "player": "Dyami Brown",
       "team": "WAS",
       "position": "WR",
-      "teamGames": 9,
+      "teamGames": 10,
       "qualified": false,
       "values": {
         "games": 7,

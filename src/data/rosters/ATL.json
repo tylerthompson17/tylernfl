@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "ATL",
   "week": 12,
-  "updated": "2026-11-23T21:46:05Z",
+  "updated": "2026-11-24T20:25:19Z",
   "groups": [
     {
       "key": "offense",
@@ -889,21 +889,6 @@
       "college": "Maryland"
     },
     {
-      "gsisId": "00-0037823",
-      "name": "Christian Harris",
-      "slug": "christian-harris",
-      "number": 45,
-      "position": "ILB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 74,
-      "weight": 232,
-      "age": 25,
-      "experience": 4,
-      "college": "Alabama"
-    },
-    {
       "gsisId": "00-0041066",
       "name": "Kendal Daniels",
       "slug": "kendal-daniels",
@@ -1084,6 +1069,21 @@
       "college": "Rutgers"
     },
     {
+      "gsisId": "00-0038395",
+      "name": "Terell Smith",
+      "slug": "terell-smith",
+      "number": 39,
+      "position": "CB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 207,
+      "age": 27,
+      "experience": 3,
+      "college": "Minnesota"
+    },
+    {
       "gsisId": "00-0040148",
       "name": "Xavier Watts",
       "slug": "xavier-watts",
@@ -1150,8 +1150,8 @@
       "number": 34,
       "position": "SS",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 71,
       "weight": 195,
       "age": 25,

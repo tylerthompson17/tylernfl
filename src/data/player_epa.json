@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 11,
-  "updated": "2026-11-23T21:46:05Z",
+  "updated": "2026-11-24T20:25:19Z",
   "categories": [
     {
       "key": "epa_per_dropback",
@@ -28,9 +28,9 @@
           "playerId": "00-0036442",
           "player": "Joe Burrow",
           "team": "CIN",
-          "value": 0.269,
-          "plays": 365,
-          "teamGames": 9
+          "value": 0.26,
+          "plays": 408,
+          "teamGames": 10
         },
         {
           "rank": 3,
@@ -145,9 +145,9 @@
           "playerId": "00-0039910",
           "player": "Jayden Daniels",
           "team": "WAS",
-          "value": 0.075,
-          "plays": 256,
-          "teamGames": 9
+          "value": 0.076,
+          "plays": 296,
+          "teamGames": 10
         },
         {
           "rank": 16,
@@ -457,7 +457,7 @@
           "team": "WAS",
           "value": 0.005,
           "plays": 65,
-          "teamGames": 9
+          "teamGames": 10
         },
         {
           "rank": 17,
@@ -488,6 +488,15 @@
         },
         {
           "rank": 20,
+          "playerId": "00-0040242",
+          "player": "Jacory Croskey-Merritt",
+          "team": "WAS",
+          "value": -0.024,
+          "plays": 80,
+          "teamGames": 10
+        },
+        {
+          "rank": 21,
           "playerId": "00-0040198",
           "player": "Ollie Gordon II",
           "team": "MIA",
@@ -496,7 +505,7 @@
           "teamGames": 10
         },
         {
-          "rank": 21,
+          "rank": 22,
           "playerId": "00-0034844",
           "player": "Saquon Barkley",
           "team": "PHI",
@@ -505,7 +514,7 @@
           "teamGames": 10
         },
         {
-          "rank": 22,
+          "rank": 23,
           "playerId": "00-0040719",
           "player": "Bhayshul Tuten",
           "team": "JAX",
@@ -514,7 +523,7 @@
           "teamGames": 10
         },
         {
-          "rank": 23,
+          "rank": 24,
           "playerId": "00-0032764",
           "player": "Derrick Henry",
           "team": "BAL",
@@ -523,7 +532,7 @@
           "teamGames": 11
         },
         {
-          "rank": 24,
+          "rank": 25,
           "playerId": "00-0036875",
           "player": "Rhamondre Stevenson",
           "team": "NE",
@@ -532,7 +541,7 @@
           "teamGames": 10
         },
         {
-          "rank": 25,
+          "rank": 26,
           "playerId": "00-0041052",
           "player": "Kaelon Black",
           "team": "SF",
@@ -541,22 +550,13 @@
           "teamGames": 10
         },
         {
-          "rank": 26,
+          "rank": 27,
           "playerId": "00-0036275",
           "player": "D'Andre Swift",
           "team": "CHI",
           "value": -0.05,
           "plays": 168,
           "teamGames": 10
-        },
-        {
-          "rank": 27,
-          "playerId": "00-0040242",
-          "player": "Jacory Croskey-Merritt",
-          "team": "WAS",
-          "value": -0.055,
-          "plays": 67,
-          "teamGames": 9
         },
         {
           "rank": 28,
@@ -595,16 +595,7 @@
           "teamGames": 10
         },
         {
-          "rank": 31,
-          "playerId": "00-0038597",
-          "player": "Chase Brown",
-          "team": "CIN",
-          "value": -0.081,
-          "plays": 113,
-          "teamGames": 9
-        },
-        {
-          "rank": 33,
+          "rank": 32,
           "playerId": "00-0040583",
           "player": "Woody Marks",
           "team": "HOU",
@@ -613,13 +604,22 @@
           "teamGames": 10
         },
         {
-          "rank": 34,
+          "rank": 33,
           "playerId": "00-0041027",
           "player": "Jeremiyah Love",
           "team": "ARI",
           "value": -0.088,
           "plays": 76,
           "teamGames": 11
+        },
+        {
+          "rank": 34,
+          "playerId": "00-0038597",
+          "player": "Chase Brown",
+          "team": "CIN",
+          "value": -0.095,
+          "plays": 119,
+          "teamGames": 10
         },
         {
           "rank": 35,

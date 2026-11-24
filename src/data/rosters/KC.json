@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "KC",
   "week": 12,
-  "updated": "2026-11-23T21:46:05Z",
+  "updated": "2026-11-24T20:25:19Z",
   "groups": [
     {
       "key": "offense",
@@ -124,29 +124,14 @@
       "college": "Oklahoma; California"
     },
     {
-      "gsisId": "00-0040964",
-      "name": "EJ Smith",
-      "slug": "ej-smith",
-      "number": 35,
-      "position": "RB",
-      "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
-      "heightInches": 72,
-      "weight": 215,
-      "age": 24,
-      "experience": 0,
-      "college": "Texas A&M; Stanford"
-    },
-    {
       "gsisId": "00-0040547",
       "name": "Nate Carter",
       "slug": "nate-carter",
       "number": 35,
       "position": "RB",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 70,
       "weight": 202,
       "age": 24,
@@ -610,8 +595,8 @@
       "number": 50,
       "position": "C",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
       "heightInches": 76,
       "weight": 300,
       "age": 24,
@@ -872,6 +857,21 @@
       "age": 24,
       "experience": 1,
       "college": "Oklahoma"
+    },
+    {
+      "gsisId": "00-0035900",
+      "name": "Cole Christiansen",
+      "slug": "cole-christiansen",
+      "number": 48,
+      "position": "OLB",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 73,
+      "weight": 230,
+      "age": 29,
+      "experience": 6,
+      "college": "Army"
     },
     {
       "gsisId": "00-0041329",
