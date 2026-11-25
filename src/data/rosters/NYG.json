@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "NYG",
   "week": 12,
-  "updated": "2026-11-24T20:25:19Z",
+  "updated": "2026-11-25T19:39:11Z",
   "groups": [
     {
       "key": "offense",
@@ -604,6 +604,21 @@
       "college": "Minnesota"
     },
     {
+      "gsisId": "00-0041234",
+      "name": "Geno VanDeMark",
+      "slug": "geno-vandemark",
+      "number": 69,
+      "position": "C",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 314,
+      "age": 24,
+      "experience": 0,
+      "college": "Alabama; Michigan State"
+    },
+    {
       "gsisId": "00-0036983",
       "name": "Kendrick Green",
       "slug": "kendrick-green",
@@ -655,8 +670,8 @@
       "number": 96,
       "position": "DE",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 75,
       "weight": 264,
       "age": 31,
@@ -970,8 +985,8 @@
       "number": 20,
       "position": "CB",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 72,
       "weight": 192,
       "age": 26,

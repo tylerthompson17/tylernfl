@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "IND",
   "week": 12,
-  "updated": "2026-11-24T20:25:19Z",
+  "updated": "2026-11-25T19:39:11Z",
   "groups": [
     {
       "key": "offense",
@@ -32,6 +32,21 @@
       "age": 24,
       "experience": 3,
       "college": "Florida"
+    },
+    {
+      "gsisId": "00-0036679",
+      "name": "Shane Buechele",
+      "slug": "shane-buechele",
+      "number": 6,
+      "position": "QB",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 72,
+      "weight": 210,
+      "age": 28,
+      "experience": 5,
+      "college": "SMU"
     },
     {
       "gsisId": "00-0040206",
@@ -319,6 +334,21 @@
       "college": "Oregon"
     },
     {
+      "gsisId": "00-0036032",
+      "name": "Sean McKeon",
+      "slug": "sean-mckeon",
+      "number": 49,
+      "position": "TE",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 246,
+      "age": 28,
+      "experience": 6,
+      "college": "Michigan"
+    },
+    {
       "gsisId": "00-0033217",
       "name": "Mo Alie-Cox",
       "slug": "mo-alie-cox",
@@ -392,21 +422,6 @@
       "age": 27,
       "experience": 4,
       "college": "Virginia Tech"
-    },
-    {
-      "gsisId": "00-0036195",
-      "name": "Charlie Heck",
-      "slug": "charlie-heck",
-      "number": 73,
-      "position": "T",
-      "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 80,
-      "weight": 315,
-      "age": 30,
-      "experience": 6,
-      "college": "North Carolina"
     },
     {
       "gsisId": "00-0040163",
@@ -610,13 +625,28 @@
       "number": 55,
       "position": "DE",
       "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 74,
       "weight": 257,
       "age": 23,
       "experience": 0,
       "college": "Ohio State"
+    },
+    {
+      "gsisId": "00-0036850",
+      "name": "Cameron Sample",
+      "slug": "cameron-sample",
+      "number": 69,
+      "position": "DE",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 75,
+      "weight": 272,
+      "age": 27,
+      "experience": 5,
+      "college": "Tulane"
     },
     {
       "gsisId": "00-0038107",
@@ -655,8 +685,8 @@
       "number": 96,
       "position": "DE",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 74,
       "weight": 265,
       "age": 31,

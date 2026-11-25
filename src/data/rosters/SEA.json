@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "SEA",
   "week": 12,
-  "updated": "2026-11-23T21:46:05Z",
+  "updated": "2026-11-25T19:39:11Z",
   "groups": [
     {
       "key": "offense",
@@ -47,6 +47,21 @@
       "age": 23,
       "experience": 1,
       "college": "Alabama"
+    },
+    {
+      "gsisId": "00-0038658",
+      "name": "Adrian Martinez",
+      "slug": "adrian-martinez",
+      "number": 9,
+      "position": "QB",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 74,
+      "weight": 225,
+      "age": 26,
+      "experience": 3,
+      "college": "Kansas State; Nebraska"
     },
     {
       "gsisId": "00-0034869",
@@ -145,8 +160,8 @@
       "number": 36,
       "position": "RB",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 70,
       "weight": 210,
       "age": 26,
@@ -257,6 +272,21 @@
       "age": 28,
       "experience": 4,
       "college": "Weber State"
+    },
+    {
+      "gsisId": "00-0040967",
+      "name": "Jacob De Jesus",
+      "slug": "jacob-de-jesus",
+      "number": 82,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 66,
+      "weight": 170,
+      "age": 24,
+      "experience": 0,
+      "college": "California; UNLV; Modesto Junior College"
     },
     {
       "gsisId": "00-0040895",
@@ -404,7 +434,7 @@
       "statusLabel": "Active",
       "heightInches": 77,
       "weight": 317,
-      "age": 25,
+      "age": 26,
       "experience": 4,
       "college": "Mississippi State"
     },
@@ -415,8 +445,8 @@
       "number": 68,
       "position": "T",
       "group": "offense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 77,
       "weight": 310,
       "age": 32,
@@ -467,6 +497,21 @@
       "age": 29,
       "experience": 6,
       "college": "Houston"
+    },
+    {
+      "gsisId": "00-0040217",
+      "name": "Chase Lundt",
+      "slug": "chase-lundt",
+      "number": 77,
+      "position": "T",
+      "group": "offense",
+      "status": "ACT",
+      "statusLabel": "Active",
+      "heightInches": 79,
+      "weight": 305,
+      "age": 26,
+      "experience": 1,
+      "college": "Connecticut"
     },
     {
       "gsisId": "00-0040652",
@@ -925,8 +970,8 @@
       "number": 16,
       "position": "CB",
       "group": "defense",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 73,
       "weight": 203,
       "age": 28,
@@ -962,21 +1007,6 @@
       "age": 25,
       "experience": 3,
       "college": "Illinois"
-    },
-    {
-      "gsisId": "00-0041382",
-      "name": "Avery Smith",
-      "slug": "avery-smith",
-      "number": 27,
-      "position": "CB",
-      "group": "defense",
-      "status": "ACT",
-      "statusLabel": "Active",
-      "heightInches": 71,
-      "weight": 196,
-      "age": 22,
-      "experience": 0,
-      "college": "Toledo"
     },
     {
       "gsisId": "00-0039795",
