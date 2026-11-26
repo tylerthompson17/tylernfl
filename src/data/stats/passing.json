@@ -2,7 +2,7 @@
   "key": "passing",
   "label": "Passing",
   "season": 2026,
-  "throughWeek": 11,
+  "throughWeek": 12,
   "primary": "passing_yards",
   "qualifier": {
     "column": "attempts",
@@ -139,18 +139,18 @@
       "player": "Jordan Love",
       "team": "GB",
       "position": "QB",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": true,
       "values": {
-        "games": 10,
-        "completions": 232,
-        "attempts": 368,
-        "passing_yards": 2838,
-        "passing_tds": 20,
-        "passing_interceptions": 7,
-        "sacks_suffered": 25,
-        "cmp_pct": 0.63,
-        "pass_ypa": 7.7
+        "games": 11,
+        "completions": 249,
+        "attempts": 397,
+        "passing_yards": 3036,
+        "passing_tds": 21,
+        "passing_interceptions": 9,
+        "sacks_suffered": 26,
+        "cmp_pct": 0.627,
+        "pass_ypa": 7.6
       }
     },
     {
@@ -175,6 +175,26 @@
     },
     {
       "rank": 5,
+      "playerId": "00-0026498",
+      "player": "Matthew Stafford",
+      "team": "LAR",
+      "position": "QB",
+      "teamGames": 11,
+      "qualified": true,
+      "values": {
+        "games": 11,
+        "completions": 264,
+        "attempts": 395,
+        "passing_yards": 2763,
+        "passing_tds": 19,
+        "passing_interceptions": 11,
+        "sacks_suffered": 16,
+        "cmp_pct": 0.668,
+        "pass_ypa": 7.0
+      }
+    },
+    {
+      "rank": 6,
       "playerId": "00-0033106",
       "player": "Jared Goff",
       "team": "DET",
@@ -194,7 +214,7 @@
       }
     },
     {
-      "rank": 6,
+      "rank": 7,
       "playerId": "00-0033873",
       "player": "Patrick Mahomes",
       "team": "KC",
@@ -214,7 +234,7 @@
       }
     },
     {
-      "rank": 7,
+      "rank": 8,
       "playerId": "00-0039163",
       "player": "C.J. Stroud",
       "team": "HOU",
@@ -234,7 +254,7 @@
       }
     },
     {
-      "rank": 8,
+      "rank": 9,
       "playerId": "00-0039150",
       "player": "Bryce Young",
       "team": "CAR",
@@ -254,7 +274,7 @@
       }
     },
     {
-      "rank": 9,
+      "rank": 10,
       "playerId": "00-0037834",
       "player": "Brock Purdy",
       "team": "SF",
@@ -271,26 +291,6 @@
         "sacks_suffered": 14,
         "cmp_pct": 0.71,
         "pass_ypa": 9.0
-      }
-    },
-    {
-      "rank": 10,
-      "playerId": "00-0026498",
-      "player": "Matthew Stafford",
-      "team": "LAR",
-      "position": "QB",
-      "teamGames": 10,
-      "qualified": true,
-      "values": {
-        "games": 10,
-        "completions": 248,
-        "attempts": 372,
-        "passing_yards": 2623,
-        "passing_tds": 19,
-        "passing_interceptions": 10,
-        "sacks_suffered": 15,
-        "cmp_pct": 0.667,
-        "pass_ypa": 7.1
       }
     },
     {
@@ -1399,7 +1399,7 @@
       "player": "Stetson Bennett",
       "team": "LAR",
       "position": "QB",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": false,
       "values": {
         "games": 1,
@@ -1559,7 +1559,7 @@
       "player": "Tyrod Taylor",
       "team": "GB",
       "position": "QB",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": false,
       "values": {
         "games": 2,

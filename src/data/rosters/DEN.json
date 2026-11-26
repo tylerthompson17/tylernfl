@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "DEN",
   "week": 12,
-  "updated": "2026-11-25T19:39:11Z",
+  "updated": "2026-11-26T19:19:32Z",
   "groups": [
     {
       "key": "offense",
@@ -115,8 +115,8 @@
       "number": 27,
       "position": "RB",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 70,
       "weight": 214,
       "age": 27,
@@ -767,6 +767,21 @@
       "age": 23,
       "experience": 0,
       "college": "Texas A&M; Iowa State"
+    },
+    {
+      "gsisId": "00-0035656",
+      "name": "Khalen Saunders",
+      "slug": "khalen-saunders",
+      "number": 59,
+      "position": "NT",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 72,
+      "weight": 324,
+      "age": 30,
+      "experience": 7,
+      "college": "Western Illinois"
     },
     {
       "gsisId": "00-0036952",

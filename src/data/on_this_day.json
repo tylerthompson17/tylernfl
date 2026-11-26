@@ -1,19 +1,67 @@
 {
   "month": 11,
-  "day": 25,
-  "gamesOnDate": 61,
+  "day": 26,
+  "gamesOnDate": 59,
   "items": [
     {
-      "year": 2019,
-      "gameId": "2019_12_BAL_LA",
-      "text": "The Ravens beat the Rams 45-6.",
+      "year": 2023,
+      "gameId": "2023_12_BUF_PHI",
+      "text": "The Eagles beat the Bills 37-34 in overtime with 71 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Ravens",
-          "team": "BAL"
+          "text": "Eagles",
+          "team": "PHI"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Bills",
+          "team": "BUF"
+        },
+        {
+          "text": " 37-34 in overtime with 71 combined points."
+        }
+      ]
+    },
+    {
+      "year": 2006,
+      "gameId": "2006_12_CIN_CLE",
+      "text": "The Bengals shut out the Browns 30-0.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Bengals",
+          "team": "CIN"
+        },
+        {
+          "text": " shut out the "
+        },
+        {
+          "text": "Browns",
+          "team": "CLE"
+        },
+        {
+          "text": " 30-0."
+        }
+      ]
+    },
+    {
+      "year": 2000,
+      "gameId": "2000_13_NO_STL",
+      "text": "The Saints beat the Rams 31-24 as 13.5-point underdogs.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Saints",
+          "team": "NO"
         },
         {
           "text": " beat the "
@@ -23,55 +71,7 @@
           "team": "LAR"
         },
         {
-          "text": " 45-6."
-        }
-      ]
-    },
-    {
-      "year": 2018,
-      "gameId": "2018_12_ARI_LAC",
-      "text": "The Chargers beat the Cardinals 45-10.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Chargers",
-          "team": "LAC"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Cardinals",
-          "team": "ARI"
-        },
-        {
-          "text": " 45-10."
-        }
-      ]
-    },
-    {
-      "year": 2007,
-      "gameId": "2007_12_DEN_CHI",
-      "text": "The Bears beat the Broncos 37-34 in overtime with 71 combined points.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Bears",
-          "team": "CHI"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Broncos",
-          "team": "DEN"
-        },
-        {
-          "text": " 37-34 in overtime with 71 combined points."
+          "text": " 31-24 as 13.5-point underdogs."
         }
       ]
     }

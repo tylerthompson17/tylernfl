@@ -1,7 +1,7 @@
 {
   "season": 2026,
-  "throughWeek": 11,
-  "updated": "2026-11-24T20:25:19Z",
+  "throughWeek": 12,
+  "updated": "2026-11-26T19:19:32Z",
   "categories": [
     {
       "key": "epa_per_dropback",
@@ -115,21 +115,21 @@
         },
         {
           "rank": 12,
-          "playerId": "00-0036264",
-          "player": "Jordan Love",
-          "team": "GB",
-          "value": 0.131,
-          "plays": 395,
-          "teamGames": 10
-        },
-        {
-          "rank": 13,
           "playerId": "00-0026498",
           "player": "Matthew Stafford",
           "team": "LAR",
-          "value": 0.13,
-          "plays": 388,
-          "teamGames": 10
+          "value": 0.118,
+          "plays": 412,
+          "teamGames": 11
+        },
+        {
+          "rank": 13,
+          "playerId": "00-0036264",
+          "player": "Jordan Love",
+          "team": "GB",
+          "value": 0.116,
+          "plays": 426,
+          "teamGames": 11
         },
         {
           "rank": 14,
@@ -320,9 +320,9 @@
           "playerId": "00-0039738",
           "player": "Blake Corum",
           "team": "LAR",
-          "value": 0.17,
-          "plays": 103,
-          "teamGames": 10
+          "value": 0.156,
+          "plays": 135,
+          "teamGames": 11
         },
         {
           "rank": 2,
@@ -461,15 +461,6 @@
         },
         {
           "rank": 17,
-          "playerId": "00-0037840",
-          "player": "Kyren Williams",
-          "team": "LAR",
-          "value": -0.002,
-          "plays": 139,
-          "teamGames": 10
-        },
-        {
-          "rank": 18,
           "playerId": "00-0036919",
           "player": "Kenny Gainwell",
           "team": "TB",
@@ -478,13 +469,22 @@
           "teamGames": 10
         },
         {
-          "rank": 19,
+          "rank": 18,
           "playerId": "00-0035261",
           "player": "Tony Pollard",
           "team": "TEN",
           "value": -0.008,
           "plays": 163,
           "teamGames": 10
+        },
+        {
+          "rank": 19,
+          "playerId": "00-0037840",
+          "player": "Kyren Williams",
+          "team": "LAR",
+          "value": -0.009,
+          "plays": 151,
+          "teamGames": 11
         },
         {
           "rank": 20,
@@ -710,15 +710,6 @@
           "value": -0.184,
           "plays": 134,
           "teamGames": 11
-        },
-        {
-          "rank": 45,
-          "playerId": "00-0039811",
-          "player": "MarShawn Lloyd",
-          "team": "GB",
-          "value": -0.208,
-          "plays": 61,
-          "teamGames": 10
         }
       ]
     }

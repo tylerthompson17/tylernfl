@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "SF",
   "week": 12,
-  "updated": "2026-11-25T19:39:11Z",
+  "updated": "2026-11-26T19:19:32Z",
   "groups": [
     {
       "key": "offense",
@@ -304,6 +304,21 @@
       "college": "N.C. State; Wake Forest"
     },
     {
+      "gsisId": "00-0031236",
+      "name": "Brandin Cooks",
+      "slug": "brandin-cooks",
+      "number": 84,
+      "position": "WR",
+      "group": "offense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 70,
+      "weight": 183,
+      "age": 33,
+      "experience": 12,
+      "college": "Oregon State"
+    },
+    {
       "gsisId": "00-0041361",
       "name": "Will Pauling",
       "slug": "will-pauling",
@@ -475,8 +490,8 @@
       "number": 68,
       "position": "T",
       "group": "offense",
-      "status": "ACT",
-      "statusLabel": "Active",
+      "status": "RES",
+      "statusLabel": "Reserve",
       "heightInches": 78,
       "weight": 301,
       "age": 30,
@@ -1075,8 +1090,8 @@
       "number": 22,
       "position": "CB",
       "group": "defense",
-      "status": "RES",
-      "statusLabel": "Reserve",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 73,
       "weight": 195,
       "age": 27,

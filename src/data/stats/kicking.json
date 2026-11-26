@@ -2,7 +2,7 @@
   "key": "kicking",
   "label": "Kicking",
   "season": 2026,
-  "throughWeek": 11,
+  "throughWeek": 12,
   "primary": "fg_made",
   "qualifier": {
     "column": "fg_att",
@@ -447,6 +447,25 @@
     },
     {
       "rank": 17,
+      "playerId": "00-0040899",
+      "player": "Trey Smack",
+      "team": "GB",
+      "position": "K",
+      "teamGames": 11,
+      "qualified": true,
+      "values": {
+        "games": 11,
+        "fg_made": 17,
+        "fg_att": 23,
+        "fg_long": 59,
+        "pat_made": 22,
+        "pat_att": 25,
+        "fg_pct": 0.739,
+        "xp_pct": 0.88
+      }
+    },
+    {
+      "rank": 17,
       "playerId": "00-0032569",
       "player": "Wil Lutz",
       "team": "DEN",
@@ -465,7 +484,7 @@
       }
     },
     {
-      "rank": 21,
+      "rank": 22,
       "playerId": "00-0031492",
       "player": "Jason Myers",
       "team": "SEA",
@@ -484,7 +503,7 @@
       }
     },
     {
-      "rank": 22,
+      "rank": 23,
       "playerId": "00-0036854",
       "player": "Evan McPherson",
       "team": "CIN",
@@ -500,25 +519,6 @@
         "pat_att": 35,
         "fg_pct": 0.938,
         "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 22,
-      "playerId": "00-0040899",
-      "player": "Trey Smack",
-      "team": "GB",
-      "position": "K",
-      "teamGames": 10,
-      "qualified": true,
-      "values": {
-        "games": 10,
-        "fg_made": 15,
-        "fg_att": 21,
-        "fg_long": 59,
-        "pat_made": 21,
-        "pat_att": 24,
-        "fg_pct": 0.714,
-        "xp_pct": 0.875
       }
     },
     {
@@ -656,6 +656,25 @@
     },
     {
       "rank": 31,
+      "playerId": "00-0029822",
+      "player": "Brandon McManus",
+      "team": "LAR",
+      "position": "K",
+      "teamGames": 11,
+      "qualified": false,
+      "values": {
+        "games": 5,
+        "fg_made": 9,
+        "fg_att": 9,
+        "fg_long": 43,
+        "pat_made": 16,
+        "pat_att": 16,
+        "fg_pct": 1.0,
+        "xp_pct": 1.0
+      }
+    },
+    {
+      "rank": 32,
       "playerId": "00-0034173",
       "player": "Eddy Pineiro",
       "team": "SF",
@@ -674,7 +693,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0039229",
       "player": "Charlie Smyth",
       "team": "NO",
@@ -693,7 +712,7 @@
       }
     },
     {
-      "rank": 32,
+      "rank": 33,
       "playerId": "00-0033862",
       "player": "Zane Gonzalez",
       "team": "MIA",
@@ -712,31 +731,12 @@
       }
     },
     {
-      "rank": 34,
-      "playerId": "00-0029822",
-      "player": "Brandon McManus",
-      "team": "LAR",
-      "position": "K",
-      "teamGames": 10,
-      "qualified": false,
-      "values": {
-        "games": 4,
-        "fg_made": 5,
-        "fg_att": 5,
-        "fg_long": 43,
-        "pat_made": 14,
-        "pat_att": 14,
-        "fg_pct": 1.0,
-        "xp_pct": 1.0
-      }
-    },
-    {
-      "rank": 34,
+      "rank": 35,
       "playerId": "00-0039498",
       "player": "Harrison Mevis",
       "team": "LAR",
       "position": "K",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": false,
       "values": {
         "games": 5,
@@ -774,7 +774,7 @@
       "player": "Blake Grupe",
       "team": "LAR",
       "position": "K",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": false,
       "values": {
         "games": 1,
@@ -793,10 +793,10 @@
       "player": "Ethan Evans",
       "team": "LAR",
       "position": "P",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": false,
       "values": {
-        "games": 10,
+        "games": 11,
         "fg_made": 0,
         "fg_att": 0,
         "fg_long": null,

@@ -2,7 +2,7 @@
   "season": 2026,
   "team": "MIA",
   "week": 12,
-  "updated": "2026-11-24T20:25:19Z",
+  "updated": "2026-11-26T19:19:32Z",
   "groups": [
     {
       "key": "offense",
@@ -574,6 +574,21 @@
       "college": "Texas-El Paso"
     },
     {
+      "gsisId": "00-0041531",
+      "name": "Max Llewellyn",
+      "slug": "max-llewellyn",
+      "number": 57,
+      "position": "DE",
+      "group": "defense",
+      "status": "DEV",
+      "statusLabel": "Practice squad",
+      "heightInches": 77,
+      "weight": 258,
+      "age": 24,
+      "experience": 0,
+      "college": "Iowa"
+    },
+    {
       "gsisId": "00-0041159",
       "name": "Rodney McGraw",
       "slug": "rodney-mcgraw",
@@ -1120,8 +1135,8 @@
       "number": 31,
       "position": "P",
       "group": "specialists",
-      "status": "DEV",
-      "statusLabel": "Practice squad",
+      "status": "ACT",
+      "statusLabel": "Active",
       "heightInches": 71,
       "weight": 190,
       "age": 25,
