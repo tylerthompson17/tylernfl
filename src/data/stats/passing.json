@@ -155,6 +155,26 @@
     },
     {
       "rank": 4,
+      "playerId": "00-0033106",
+      "player": "Jared Goff",
+      "team": "DET",
+      "position": "QB",
+      "teamGames": 11,
+      "qualified": true,
+      "values": {
+        "games": 11,
+        "completions": 250,
+        "attempts": 368,
+        "passing_yards": 3029,
+        "passing_tds": 21,
+        "passing_interceptions": 5,
+        "sacks_suffered": 23,
+        "cmp_pct": 0.679,
+        "pass_ypa": 8.2
+      }
+    },
+    {
+      "rank": 5,
       "playerId": "00-0029604",
       "player": "Kirk Cousins",
       "team": "MIN",
@@ -174,7 +194,7 @@
       }
     },
     {
-      "rank": 5,
+      "rank": 6,
       "playerId": "00-0026498",
       "player": "Matthew Stafford",
       "team": "LAR",
@@ -191,26 +211,6 @@
         "sacks_suffered": 16,
         "cmp_pct": 0.668,
         "pass_ypa": 7.0
-      }
-    },
-    {
-      "rank": 6,
-      "playerId": "00-0033106",
-      "player": "Jared Goff",
-      "team": "DET",
-      "position": "QB",
-      "teamGames": 10,
-      "qualified": true,
-      "values": {
-        "games": 10,
-        "completions": 225,
-        "attempts": 332,
-        "passing_yards": 2716,
-        "passing_tds": 20,
-        "passing_interceptions": 4,
-        "sacks_suffered": 22,
-        "cmp_pct": 0.678,
-        "pass_ypa": 8.2
       }
     },
     {
@@ -455,6 +455,26 @@
     },
     {
       "rank": 19,
+      "playerId": "00-0039918",
+      "player": "Caleb Williams",
+      "team": "CHI",
+      "position": "QB",
+      "teamGames": 11,
+      "qualified": true,
+      "values": {
+        "games": 8,
+        "completions": 179,
+        "attempts": 262,
+        "passing_yards": 2072,
+        "passing_tds": 12,
+        "passing_interceptions": 6,
+        "sacks_suffered": 20,
+        "cmp_pct": 0.683,
+        "pass_ypa": 7.9
+      }
+    },
+    {
+      "rank": 20,
       "playerId": "00-0035710",
       "player": "Daniel Jones",
       "team": "IND",
@@ -474,7 +494,7 @@
       }
     },
     {
-      "rank": 20,
+      "rank": 21,
       "playerId": "00-0040676",
       "player": "Cam Ward",
       "team": "TEN",
@@ -494,7 +514,7 @@
       }
     },
     {
-      "rank": 21,
+      "rank": 22,
       "playerId": "00-0039732",
       "player": "Bo Nix",
       "team": "DEN",
@@ -514,7 +534,7 @@
       }
     },
     {
-      "rank": 22,
+      "rank": 23,
       "playerId": "00-0036355",
       "player": "Justin Herbert",
       "team": "LAC",
@@ -534,7 +554,7 @@
       }
     },
     {
-      "rank": 23,
+      "rank": 24,
       "playerId": "00-0039910",
       "player": "Jayden Daniels",
       "team": "WAS",
@@ -554,7 +574,7 @@
       }
     },
     {
-      "rank": 24,
+      "rank": 25,
       "playerId": "00-0039917",
       "player": "Michael Penix Jr.",
       "team": "ATL",
@@ -571,26 +591,6 @@
         "sacks_suffered": 12,
         "cmp_pct": 0.607,
         "pass_ypa": 7.1
-      }
-    },
-    {
-      "rank": 25,
-      "playerId": "00-0039918",
-      "player": "Caleb Williams",
-      "team": "CHI",
-      "position": "QB",
-      "teamGames": 10,
-      "qualified": true,
-      "values": {
-        "games": 7,
-        "completions": 149,
-        "attempts": 218,
-        "passing_yards": 1727,
-        "passing_tds": 10,
-        "passing_interceptions": 6,
-        "sacks_suffered": 16,
-        "cmp_pct": 0.683,
-        "pass_ypa": 7.9
       }
     },
     {
@@ -859,7 +859,7 @@
       "player": "Tyson Bagent",
       "team": "CHI",
       "position": "QB",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": false,
       "values": {
         "games": 3,
@@ -899,7 +899,7 @@
       "player": "Case Keenum",
       "team": "CHI",
       "position": "QB",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": false,
       "values": {
         "games": 2,
@@ -1419,10 +1419,10 @@
       "player": "Jack Fox",
       "team": "DET",
       "position": "P",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": false,
       "values": {
-        "games": 10,
+        "games": 11,
         "completions": 1,
         "attempts": 1,
         "passing_yards": 11,
@@ -1499,7 +1499,7 @@
       "player": "Joshua Dobbs",
       "team": "DET",
       "position": "QB",
-      "teamGames": 10,
+      "teamGames": 11,
       "qualified": false,
       "values": {
         "games": 1,

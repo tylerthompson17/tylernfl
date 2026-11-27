@@ -1,7 +1,7 @@
 {
   "season": 2026,
   "throughWeek": 12,
-  "updated": "2026-11-26T21:45:05Z",
+  "updated": "2026-11-27T01:45:05Z",
   "teams": [
     {
       "team": "BUF",
@@ -463,33 +463,6 @@
       "conferenceTiebreak": null
     },
     {
-      "team": "DAL",
-      "conference": "NFC",
-      "division": "NFC East",
-      "wins": 5,
-      "losses": 6,
-      "ties": 0,
-      "pct": 0.455,
-      "pointsFor": 337,
-      "pointsAgainst": 312,
-      "diff": 25,
-      "divisionRecord": [
-        2,
-        1,
-        0
-      ],
-      "conferenceRecord": [
-        2,
-        5,
-        0
-      ],
-      "streak": "W1",
-      "divisionRank": 2,
-      "conferenceRank": 10,
-      "divisionTiebreak": null,
-      "conferenceTiebreak": null
-    },
-    {
       "team": "WAS",
       "conference": "NFC",
       "division": "NFC East",
@@ -511,6 +484,33 @@
         1
       ],
       "streak": "W2",
+      "divisionRank": 2,
+      "conferenceRank": 10,
+      "divisionTiebreak": null,
+      "conferenceTiebreak": null
+    },
+    {
+      "team": "DAL",
+      "conference": "NFC",
+      "division": "NFC East",
+      "wins": 5,
+      "losses": 7,
+      "ties": 0,
+      "pct": 0.417,
+      "pointsFor": 375,
+      "pointsAgainst": 351,
+      "diff": 24,
+      "divisionRecord": [
+        2,
+        2,
+        0
+      ],
+      "conferenceRecord": [
+        2,
+        6,
+        0
+      ],
+      "streak": "L1",
       "divisionRank": 3,
       "conferenceRank": 11,
       "divisionTiebreak": null,
@@ -520,26 +520,26 @@
       "team": "PHI",
       "conference": "NFC",
       "division": "NFC East",
-      "wins": 3,
+      "wins": 4,
       "losses": 7,
       "ties": 0,
-      "pct": 0.3,
-      "pointsFor": 167,
-      "pointsAgainst": 237,
-      "diff": -70,
+      "pct": 0.364,
+      "pointsFor": 206,
+      "pointsAgainst": 275,
+      "diff": -69,
       "divisionRecord": [
-        1,
+        2,
         3,
         0
       ],
       "conferenceRecord": [
-        1,
+        2,
         6,
         0
       ],
-      "streak": "W1",
+      "streak": "W2",
       "divisionRank": 4,
-      "conferenceRank": 15,
+      "conferenceRank": 12,
       "divisionTiebreak": null,
       "conferenceTiebreak": null
     },
@@ -701,9 +701,9 @@
       ],
       "streak": "L2",
       "divisionRank": 2,
-      "conferenceRank": 12,
+      "conferenceRank": 13,
       "divisionTiebreak": "head_to_head",
-      "conferenceTiebreak": "conference_record"
+      "conferenceTiebreak": "division_order"
     },
     {
       "team": "ATL",
@@ -728,9 +728,9 @@
       ],
       "streak": "L3",
       "divisionRank": 3,
-      "conferenceRank": 13,
+      "conferenceRank": 14,
       "divisionTiebreak": "head_to_head",
-      "conferenceTiebreak": "conference_record"
+      "conferenceTiebreak": "division_order"
     },
     {
       "team": "NO",
@@ -755,9 +755,9 @@
       ],
       "streak": "L2",
       "divisionRank": 4,
-      "conferenceRank": 14,
+      "conferenceRank": 15,
       "divisionTiebreak": "head_to_head",
-      "conferenceTiebreak": "conference_record"
+      "conferenceTiebreak": "division_order"
     },
     {
       "team": "SF",
