@@ -1,33 +1,33 @@
 {
-  "date": "2026-11-26",
-  "number": 33,
+  "date": "2026-11-27",
+  "number": 34,
   "season": 2026,
   "modelVersion": "nfl4th-ecb7293",
   "closeMargin": 0.02,
   "plays": [
     {
-      "key": "2026_11_CIN_WAS:3780",
-      "gameId": "2026_11_CIN_WAS",
-      "week": 11,
-      "away": "CIN",
-      "home": "WAS",
-      "offense": "WAS",
-      "defense": "CIN",
-      "coach": "Dan Quinn",
+      "key": "2026_08_LV_NYJ:4079",
+      "gameId": "2026_08_LV_NYJ",
+      "week": 8,
+      "away": "LV",
+      "home": "NYJ",
+      "offense": "LV",
+      "defense": "NYJ",
+      "coach": "Klint Kubiak",
       "quarter": 4,
-      "clock": 150,
-      "distance": 1,
-      "yardline100": 24,
-      "scoreDiff": -1,
-      "timeoutsOffense": 3,
-      "timeoutsDefense": 3,
+      "clock": 31,
+      "distance": 5,
+      "yardline100": 35,
+      "scoreDiff": 2,
+      "timeoutsOffense": 2,
+      "timeoutsDefense": 0,
       "wp": {
-        "go": 0.48591,
-        "punt": null,
-        "field goal": 0.46356
+        "go": 0.88633,
+        "punt": 0.83776,
+        "field goal": 0.8661
       },
       "call": "go",
-      "margin": 0.02235,
+      "margin": 0.02023,
       "close": false,
       "asOf": {
         "season": 2026,
@@ -35,57 +35,57 @@
       },
       "nfl4th": {
         "wp": {
-          "go": 0.48848,
-          "punt": null,
-          "field goal": 0.46356
+          "go": 0.87788,
+          "punt": 0.83776,
+          "field goal": 0.8661
         },
         "call": "go",
-        "margin": 0.02492
+        "margin": 0.01178
       },
       "teamCall": "field goal",
-      "coachWpLost": 0.02235,
-      "result": "Made a 41-yard field goal",
-      "description": "(2:30) 19-D.Stevens 41 yard field goal is GOOD, Center-69-T.Ott, Holder-10-T.Way.",
+      "coachWpLost": 0.02023,
+      "result": "Made a 53-yard field goal",
+      "description": "(:31) 14-M.Gay 53 yard field goal is GOOD, Center-47-A.Ward, Holder-6-A.Cole.",
       "next": {
         "converted": false,
         "drive": {
-          "team": "CIN",
-          "startYardline100": 77,
-          "plays": 6,
-          "yards": 40,
-          "result": "field goal"
+          "team": "NYJ",
+          "startYardline100": 65,
+          "plays": 3,
+          "yards": 30,
+          "result": "turnover"
         },
         "ended": null,
         "final": {
-          "away": 20,
-          "home": 22,
+          "away": 38,
+          "home": 33,
           "overtime": false
         }
       }
     },
     {
-      "key": "2026_10_CAR_NO:3145",
-      "gameId": "2026_10_CAR_NO",
-      "week": 10,
-      "away": "CAR",
-      "home": "NO",
-      "offense": "CAR",
-      "defense": "NO",
-      "coach": "Dave Canales",
-      "quarter": 4,
-      "clock": 900,
-      "distance": 15,
-      "yardline100": 64,
+      "key": "2026_09_BUF_MIN:1033",
+      "gameId": "2026_09_BUF_MIN",
+      "week": 9,
+      "away": "BUF",
+      "home": "MIN",
+      "offense": "BUF",
+      "defense": "MIN",
+      "coach": "Joe Brady",
+      "quarter": 1,
+      "clock": 3,
+      "distance": 11,
+      "yardline100": 88,
       "scoreDiff": 3,
-      "timeoutsOffense": 1,
+      "timeoutsOffense": 3,
       "timeoutsDefense": 3,
       "wp": {
-        "go": 0.52621,
-        "punt": 0.59249,
+        "go": 0.596,
+        "punt": 0.6235,
         "field goal": null
       },
       "call": "punt",
-      "margin": 0.06628,
+      "margin": 0.0275,
       "close": false,
       "asOf": {
         "season": 2026,
@@ -93,57 +93,57 @@
       },
       "nfl4th": {
         "wp": {
-          "go": 0.52099,
-          "punt": 0.59234,
+          "go": 0.59003,
+          "punt": 0.62401,
           "field goal": null
         },
         "call": "punt",
-        "margin": 0.07136
+        "margin": 0.03397
       },
       "teamCall": "punt",
       "coachWpLost": 0.0,
-      "result": "Punted 46 yards",
-      "description": "(15:00) 6-S.Martin punts 46 yards to NO 18, Center-44-J.Jansen. 19-B.Brown to NO 21 for 3 yards (39-N.Hampton).",
+      "result": "Punted 43 yards",
+      "description": "(:03) 39-T.Doman punts 43 yards to MIN 45, Center-69-R.Ferguson, downed by BUF-83-K.Latu.",
       "next": {
         "converted": false,
         "drive": {
-          "team": "NO",
-          "startYardline100": 79,
-          "plays": 6,
-          "yards": 19,
+          "team": "MIN",
+          "startYardline100": 55,
+          "plays": 3,
+          "yards": 0,
           "result": "punt"
         },
         "ended": null,
         "final": {
-          "away": 20,
-          "home": 17,
+          "away": 23,
+          "home": 6,
           "overtime": false
         }
       }
     },
     {
-      "key": "2026_07_NE_CHI:344",
-      "gameId": "2026_07_NE_CHI",
+      "key": "2026_07_DEN_ARI:1300",
+      "gameId": "2026_07_DEN_ARI",
       "week": 7,
-      "away": "NE",
-      "home": "CHI",
-      "offense": "CHI",
-      "defense": "NE",
-      "coach": "Ben Johnson",
-      "quarter": 1,
-      "clock": 598,
-      "distance": 7,
-      "yardline100": 25,
-      "scoreDiff": 0,
+      "away": "DEN",
+      "home": "ARI",
+      "offense": "ARI",
+      "defense": "DEN",
+      "coach": "Mike LaFleur",
+      "quarter": 2,
+      "clock": 859,
+      "distance": 11,
+      "yardline100": 11,
+      "scoreDiff": -6,
       "timeoutsOffense": 3,
-      "timeoutsDefense": 3,
+      "timeoutsDefense": 1,
       "wp": {
-        "go": 0.63435,
+        "go": 0.23643,
         "punt": null,
-        "field goal": 0.6099
+        "field goal": 0.25689
       },
-      "call": "go",
-      "margin": 0.02445,
+      "call": "field goal",
+      "margin": 0.02046,
       "close": false,
       "asOf": {
         "season": 2026,
@@ -151,57 +151,57 @@
       },
       "nfl4th": {
         "wp": {
-          "go": 0.63078,
+          "go": 0.2308,
           "punt": null,
-          "field goal": 0.6099
+          "field goal": 0.25689
         },
-        "call": "go",
-        "margin": 0.02088
+        "call": "field goal",
+        "margin": 0.0261
       },
       "teamCall": "field goal",
-      "coachWpLost": 0.02445,
-      "result": "Made a 43-yard field goal",
-      "description": "(9:58) 8-C.Santos 43 yard field goal is GOOD, Center-46-S.Daly, Holder-19-T.Taylor.",
+      "coachWpLost": 0.0,
+      "result": "Made a 30-yard field goal",
+      "description": "(14:19) 38-C.Ryland 30 yard field goal is GOOD, Center-59-C.Kreiter, Holder-12-B.Gillikin.",
       "next": {
         "converted": false,
         "drive": {
-          "team": "NE",
-          "startYardline100": 73,
+          "team": "DEN",
+          "startYardline100": 85,
           "plays": 3,
-          "yards": 6,
+          "yards": 9,
           "result": "punt"
         },
         "ended": null,
         "final": {
-          "away": 24,
-          "home": 30,
+          "away": 30,
+          "home": 16,
           "overtime": false
         }
       }
     },
     {
-      "key": "2026_11_MIN_SF:458",
-      "gameId": "2026_11_MIN_SF",
-      "week": 11,
-      "away": "MIN",
-      "home": "SF",
-      "offense": "MIN",
-      "defense": "SF",
-      "coach": "Kevin O'Connell",
+      "key": "2026_10_PIT_CIN:381",
+      "gameId": "2026_10_PIT_CIN",
+      "week": 10,
+      "away": "PIT",
+      "home": "CIN",
+      "offense": "CIN",
+      "defense": "PIT",
+      "coach": "Zac Taylor",
       "quarter": 1,
-      "clock": 458,
-      "distance": 11,
-      "yardline100": 37,
-      "scoreDiff": -7,
+      "clock": 539,
+      "distance": 6,
+      "yardline100": 6,
+      "scoreDiff": 0,
       "timeoutsOffense": 3,
       "timeoutsDefense": 3,
       "wp": {
-        "go": 0.21189,
-        "punt": 0.20037,
-        "field goal": 0.23767
+        "go": 0.65654,
+        "punt": null,
+        "field goal": 0.63074
       },
-      "call": "field goal",
-      "margin": 0.02578,
+      "call": "go",
+      "margin": 0.0258,
       "close": false,
       "asOf": {
         "season": 2026,
@@ -209,57 +209,57 @@
       },
       "nfl4th": {
         "wp": {
-          "go": 0.2072,
-          "punt": 0.20047,
-          "field goal": 0.23767
+          "go": 0.65328,
+          "punt": null,
+          "field goal": 0.63074
         },
-        "call": "field goal",
-        "margin": 0.03047
+        "call": "go",
+        "margin": 0.02254
       },
       "teamCall": "field goal",
-      "coachWpLost": 0.0,
-      "result": "Missed a 55-yard field goal",
-      "description": "(7:38) 16-W.Reichard 55 yard field goal is No Good, Wide Left, Center-42-A.DePaola, Holder-19-B.Thorson.",
+      "coachWpLost": 0.0258,
+      "result": "Made a 24-yard field goal",
+      "description": "(8:59) 2-E.McPherson 24 yard field goal is GOOD, Center-46-W.Wagner, Holder-8-R.Rehkow.",
       "next": {
         "converted": false,
         "drive": {
-          "team": "SF",
-          "startYardline100": 55,
+          "team": "PIT",
+          "startYardline100": 65,
           "plays": 3,
-          "yards": -9,
+          "yards": 3,
           "result": "punt"
         },
         "ended": null,
         "final": {
-          "away": 10,
-          "home": 35,
+          "away": 18,
+          "home": 38,
           "overtime": false
         }
       }
     },
     {
-      "key": "2026_09_NYJ_KC:2147",
-      "gameId": "2026_09_NYJ_KC",
-      "week": 9,
-      "away": "NYJ",
-      "home": "KC",
-      "offense": "NYJ",
-      "defense": "KC",
-      "coach": "Aaron Glenn",
+      "key": "2026_11_NO_CHI:2258",
+      "gameId": "2026_11_NO_CHI",
+      "week": 11,
+      "away": "NO",
+      "home": "CHI",
+      "offense": "NO",
+      "defense": "CHI",
+      "coach": "Kellen Moore",
       "quarter": 2,
-      "clock": 37,
-      "distance": 15,
-      "yardline100": 35,
-      "scoreDiff": -2,
+      "clock": 3,
+      "distance": 1,
+      "yardline100": 37,
+      "scoreDiff": -9,
       "timeoutsOffense": 0,
       "timeoutsDefense": 1,
       "wp": {
-        "go": 0.16962,
-        "punt": 0.16177,
-        "field goal": 0.22418
+        "go": 0.07033,
+        "punt": 0.06904,
+        "field goal": 0.10181
       },
       "call": "field goal",
-      "margin": 0.05456,
+      "margin": 0.03148,
       "close": false,
       "asOf": {
         "season": 2026,
@@ -267,37 +267,41 @@
       },
       "nfl4th": {
         "wp": {
-          "go": 0.16659,
-          "punt": 0.1619,
-          "field goal": 0.22418
+          "go": 0.0703,
+          "punt": 0.06904,
+          "field goal": 0.10181
         },
         "call": "field goal",
-        "margin": 0.05759
+        "margin": 0.03151
       },
       "teamCall": "field goal",
       "coachWpLost": 0.0,
-      "result": "Missed a 53-yard field goal",
-      "description": "(:37) 19-J.Sanders 53 yard field goal is No Good, Wide Left, Center-42-T.Hennessy, Holder-14-A.McNamara.",
+      "result": "Made a 56-yard field goal",
+      "description": "(:03) 39-C.Smyth 56 yard field goal is GOOD, Center-49-Z.Wood, Holder-17-R.Wright.",
       "next": {
         "converted": false,
-        "drive": {
-          "team": "KC",
-          "startYardline100": 57,
-          "plays": 3,
-          "yards": 24,
-          "result": "missed field goal"
-        },
-        "ended": null,
+        "drive": null,
+        "ended": "half",
         "final": {
-          "away": 12,
-          "home": 35,
+          "away": 13,
+          "home": 21,
           "overtime": false
         }
       }
     }
   ],
-  "coachWpLost": 0.0468,
+  "coachWpLost": 0.04603,
   "history": [
+    {
+      "date": "2026-11-27",
+      "keys": [
+        "2026_08_LV_NYJ:4079",
+        "2026_09_BUF_MIN:1033",
+        "2026_07_DEN_ARI:1300",
+        "2026_10_PIT_CIN:381",
+        "2026_11_NO_CHI:2258"
+      ]
+    },
     {
       "date": "2026-11-26",
       "keys": [
@@ -506,16 +510,6 @@
         "2026_07_DEN_ARI:430",
         "2026_08_MIN_DET:3887",
         "2026_08_TEN_CIN:930"
-      ]
-    },
-    {
-      "date": "2026-11-05",
-      "keys": [
-        "2026_07_PIT_NO:231",
-        "2026_07_CIN_BAL:340",
-        "2026_07_DEN_ARI:1300",
-        "2026_07_CLE_TEN:2912",
-        "2026_08_MIN_DET:1700"
       ]
     }
   ]

@@ -1,36 +1,60 @@
 {
   "month": 11,
-  "day": 26,
-  "gamesOnDate": 59,
+  "day": 27,
+  "gamesOnDate": 64,
   "items": [
     {
-      "year": 2023,
-      "gameId": "2023_12_BUF_PHI",
-      "text": "The Eagles beat the Bills 37-34 in overtime with 71 combined points.",
+      "year": 2022,
+      "gameId": "2022_12_LV_SEA",
+      "text": "The Raiders beat the Seahawks 40-34 in overtime with 74 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Eagles",
-          "team": "PHI"
+          "text": "Raiders",
+          "team": "LV"
         },
         {
           "text": " beat the "
         },
         {
-          "text": "Bills",
-          "team": "BUF"
+          "text": "Seahawks",
+          "team": "SEA"
         },
         {
-          "text": " 37-34 in overtime with 71 combined points."
+          "text": " 40-34 in overtime with 74 combined points."
         }
       ]
     },
     {
-      "year": 2006,
-      "gameId": "2006_12_CIN_CLE",
-      "text": "The Bengals shut out the Browns 30-0.",
+      "year": 2008,
+      "gameId": "2008_13_TEN_DET",
+      "text": "The Titans beat the Lions 47-10.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Titans",
+          "team": "TEN"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Lions",
+          "team": "DET"
+        },
+        {
+          "text": " 47-10."
+        }
+      ]
+    },
+    {
+      "year": 2005,
+      "gameId": "2005_12_BAL_CIN",
+      "text": "The Bengals beat the Ravens 42-29 with 71 combined points.",
       "parts": [
         {
           "text": "The "
@@ -40,38 +64,14 @@
           "team": "CIN"
         },
         {
-          "text": " shut out the "
-        },
-        {
-          "text": "Browns",
-          "team": "CLE"
-        },
-        {
-          "text": " 30-0."
-        }
-      ]
-    },
-    {
-      "year": 2000,
-      "gameId": "2000_13_NO_STL",
-      "text": "The Saints beat the Rams 31-24 as 13.5-point underdogs.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Saints",
-          "team": "NO"
-        },
-        {
           "text": " beat the "
         },
         {
-          "text": "Rams",
-          "team": "LAR"
+          "text": "Ravens",
+          "team": "BAL"
         },
         {
-          "text": " 31-24 as 13.5-point underdogs."
+          "text": " 42-29 with 71 combined points."
         }
       ]
     }
