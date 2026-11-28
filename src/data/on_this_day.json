@@ -1,60 +1,36 @@
 {
   "month": 11,
-  "day": 27,
+  "day": 28,
   "gamesOnDate": 64,
   "items": [
     {
-      "year": 2022,
-      "gameId": "2022_12_LV_SEA",
-      "text": "The Raiders beat the Seahawks 40-34 in overtime with 74 combined points.",
+      "year": 2011,
+      "gameId": "2011_12_NYG_NO",
+      "text": "The Saints beat the Giants 49-24 with 73 combined points.",
       "parts": [
         {
           "text": "The "
         },
         {
-          "text": "Raiders",
-          "team": "LV"
+          "text": "Saints",
+          "team": "NO"
         },
         {
           "text": " beat the "
         },
         {
-          "text": "Seahawks",
-          "team": "SEA"
+          "text": "Giants",
+          "team": "NYG"
         },
         {
-          "text": " 40-34 in overtime with 74 combined points."
+          "text": " 49-24 with 73 combined points."
         }
       ]
     },
     {
-      "year": 2008,
-      "gameId": "2008_13_TEN_DET",
-      "text": "The Titans beat the Lions 47-10.",
-      "parts": [
-        {
-          "text": "The "
-        },
-        {
-          "text": "Titans",
-          "team": "TEN"
-        },
-        {
-          "text": " beat the "
-        },
-        {
-          "text": "Lions",
-          "team": "DET"
-        },
-        {
-          "text": " 47-10."
-        }
-      ]
-    },
-    {
-      "year": 2005,
-      "gameId": "2005_12_BAL_CIN",
-      "text": "The Bengals beat the Ravens 42-29 with 71 combined points.",
+      "year": 2004,
+      "gameId": "2004_12_CLE_CIN",
+      "text": "The Bengals beat the Browns 58-48 with 106 combined points.",
       "parts": [
         {
           "text": "The "
@@ -67,11 +43,35 @@
           "text": " beat the "
         },
         {
-          "text": "Ravens",
-          "team": "BAL"
+          "text": "Browns",
+          "team": "CLE"
         },
         {
-          "text": " 42-29 with 71 combined points."
+          "text": " 58-48 with 106 combined points."
+        }
+      ]
+    },
+    {
+      "year": 1999,
+      "gameId": "1999_12_CIN_PIT",
+      "text": "The Bengals beat the Steelers 27-20 as 11-point underdogs.",
+      "parts": [
+        {
+          "text": "The "
+        },
+        {
+          "text": "Bengals",
+          "team": "CIN"
+        },
+        {
+          "text": " beat the "
+        },
+        {
+          "text": "Steelers",
+          "team": "PIT"
+        },
+        {
+          "text": " 27-20 as 11-point underdogs."
         }
       ]
     }
